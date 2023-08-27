@@ -1,8 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import Header from "@/components/header";
+import Link from "next/link";
 
 const Login = () => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -11,14 +13,15 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://backend.headpat.de/api/auth/local",
+        "https://backend.headpat.de/api/auth/local/register",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            identifier: email,
+            username: username,
+            email: email,
             password: password,
           }),
         }
@@ -32,7 +35,7 @@ const Login = () => {
         data.user.username
       }; expires=${expirationTime.toUTCString()}; path=/`;
       //console.log("User authenticated successfully");
-      window.location.href = "/";
+      window.location.href = "/account";
     } catch (error) {
       console.log(error);
       setError("E-Mail oder Passwort inkorrekt!");
@@ -54,6 +57,27 @@ const Login = () => {
           </h2>
 
           <form className="mt-10 space-y-6" action="#" method="POST">
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-white"
+              >
+                Username
+              </label>
+              <div className="mt-2">
+                <input
+                  id="username"
+                  name="username"
+                  type="text"
+                  autoComplete="username"
+                  required
+                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+            </div>
+
             <div>
               <label
                 htmlFor="email"
@@ -84,12 +108,12 @@ const Login = () => {
                   Password:
                 </label>
                 <div className="text-sm">
-                  <a
-                    href="#"
+                  <Link
+                    href="/forgot-password"
                     className="font-semibold text-indigo-400 hover:text-indigo-300"
                   >
-                    Forgot password?
-                  </a>
+                    Passwort vergessen?
+                  </Link>
                 </div>
               </div>
               <div className="mt-2">
