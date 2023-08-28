@@ -1,37 +1,23 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import {
-  BookmarkSquareIcon,
-  BookOpenIcon,
-  QueueListIcon,
-  RssIcon,
+  PhotoIcon,
+  HomeIcon
 } from "@heroicons/react/24/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
 
 const links = [
   {
-    name: "Documentation",
-    href: "#",
-    description: "Learn how to integrate our tools with your app.",
-    icon: BookOpenIcon,
+    name: "Home",
+    href: "/",
+    description: "Die Homepage.",
+    icon: HomeIcon,
   },
   {
-    name: "API Reference",
-    href: "#",
-    description: "A complete API reference for our libraries.",
-    icon: QueueListIcon,
-  },
-  {
-    name: "Guides",
-    href: "#",
-    description: "Installation guides that cover popular setups.",
-    icon: BookmarkSquareIcon,
-  },
-  {
-    name: "Blog",
-    href: "#",
-    description: "Read our latest news and articles.",
-    icon: RssIcon,
+    name: "Gallerie",
+    href: "/gallery",
+    description: "Alle Fotos die hochgeladen wurden von der Community.",
+    icon: PhotoIcon,
   },
 ];
 const social = [
@@ -54,21 +40,21 @@ const social = [
 export default function Example() {
   return (
     <div className="flex flex-col justify-center items-center h-screen">
-      <main className="mx-auto w-full max-w-7xl px-6 pb-16 pt-10 sm:pb-24 lg:px-8">
+      <main className="mx-auto w-full max-w-7xl px-6 pb-8 pt-10 sm:pb-12 lg:px-8">
         <img
-          className="mx-auto h-12 w-auto sm:h-16"
-          src="/logo.png"
+          className="mx-auto h-36 w-auto sm:h-72"
+          src="/404.png"
           alt="Headpat Community"
         />
-        <div className="mx-auto mt-20 max-w-2xl text-center sm:mt-24">
+        <div className="mx-auto mt-4 max-w-2xl text-center sm:mt-8">
           <p className="text-base font-semibold leading-8 text-indigo-600">
             404
           </p>
           <h1 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
-            This page does not exist
+            Wo bist du denn gelandet?
           </h1>
           <p className="mt-4 text-base leading-7 text-white/70 sm:mt-6 sm:text-lg sm:leading-8">
-            Sorry, we couldn’t find the page you’re looking for.
+            Sorry, die Seite wurde nicht gefunden!
           </p>
         </div>
         <div className="mx-auto mt-16 flow-root max-w-lg sm:mt-20">
