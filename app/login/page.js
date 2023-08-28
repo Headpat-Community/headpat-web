@@ -32,7 +32,7 @@ const Login = () => {
         data.user.username
       }; expires=${expirationTime.toUTCString()}; path=/`;
       //console.log("User authenticated successfully");
-      window.location.href = "/";
+      window.location.href = "/account";
     } catch (error) {
       console.log(error);
       setError("E-Mail oder Passwort inkorrekt!");

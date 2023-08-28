@@ -4,21 +4,19 @@ import { Dialog, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
   CalendarIcon,
-  ChartPieIcon,
-  DocumentDuplicateIcon,
+  PhotoIcon,
   FolderIcon,
   HomeIcon,
   UsersIcon,
   XMarkIcon,
+  ArrowUpOnSquareIcon
 } from "@heroicons/react/24/outline";
 
 const navigation = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: false },
-  { name: "Team", href: "#", icon: UsersIcon, current: false },
-  { name: "Projects", href: "#", icon: FolderIcon, current: false },
-  { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
-  { name: "Documents", href: "#", icon: DocumentDuplicateIcon, current: false },
-  { name: "Reports", href: "#", icon: ChartPieIcon, current: false },
+  { name: "Dashboard", href: "/account", icon: HomeIcon, current: false },
+  { name: "Bild hochladen", href: "/account/upload", icon: ArrowUpOnSquareIcon, current: false },
+  { name: "Gallerie", href: "/account/gallery", icon: PhotoIcon, current: false },
+  { name: "Projekte", href: "/account/projects", icon: FolderIcon, current: false },
 ];
 
 function classNames(...classes) {

@@ -8,7 +8,7 @@ import {
   ReceiptRefundIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
-import Layout from "../account-layout"
+import Layout from "../layouts/account-layout"
 
 const actions = [
   {

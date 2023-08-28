@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Layout from "../../account-layout";
+import Layout from "../../layouts/account-layout";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 
 export default function UploadPage() {
@@ -8,13 +8,19 @@ export default function UploadPage() {
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(event.target.files[0]);
+    fileReader.onload = (event) => {
+      const imgElement = document.getElementById("selected-image");
+      imgElement.src = event.target.result;
+    };
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append("files", selectedFile);
+    formData.append("files.img", selectedFile);
 
     try {
       const token = document.cookie.replace(
@@ -22,7 +28,37 @@ export default function UploadPage() {
         "$1"
       );
 
-      const response = await fetch("https://backend.headpat.de/api/upload", {
+      const userResponse = await fetch(
+        "https://backend.headpat.de/api/users/me",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const userResponseData = await userResponse.json();
+      const userId = userResponseData.id;
+
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+      const day = String(currentDate.getDate()).padStart(2, "0");
+      const formattedDate = `${year}-${month}-${day}`;
+
+      formData.append(
+        "data",
+        JSON.stringify({
+          name: imagename.value,
+          imgalt: imgalt.value,
+          nsfw: nsfw.checked,
+          date: formattedDate,
+          users_permissions_user: userId,
+        })
+      );
+
+      const response = await fetch("https://backend.headpat.de/api/galleries", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -30,10 +66,19 @@ export default function UploadPage() {
         body: formData,
       });
 
+      const responseData = await response.json();
       if (response.ok) {
         console.log("File uploaded successfully");
+        // Add the "Saved!" text to the form
+        const savedText = document.createElement("p");
+        savedText.textContent = "Saved!";
+        savedText.style.color = "green";
+        event.target.appendChild(savedText);
+        // Remove the "Saved!" text after 5 seconds
+        setTimeout(() => {
+          savedText.remove();
+        }, 5000);
       } else {
-        const responseData = await response.json();
         console.error("Failed to upload file:", responseData);
       }
     } catch (error) {
@@ -65,29 +110,35 @@ export default function UploadPage() {
                   </label>
                   <div className="mt-2 flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10">
                     <div className="text-center">
-                      <PhotoIcon
-                        className="mx-auto h-12 w-12 text-gray-500"
-                        aria-hidden="true"
-                      />
-                      <div className="mt-4 flex text-sm leading-6 text-gray-400">
-                        <label
-                          htmlFor="file-upload"
-                          className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
-                        >
-                          <span className="p-4">Upload a file</span>
-                          <input
-                            id="file-upload"
-                            name="file-upload"
-                            type="file"
-                            className="sr-only"
-                            onChange={handleFileChange}
-                          />
-                        </label>
-                        <p className="pl-1">or drag and drop</p>
-                      </div>
-                      <p className="text-xs leading-5 text-gray-400">
-                        PNG, JPG, GIF up to 10MB
-                      </p>
+                      <label
+                        htmlFor="file-upload"
+                        className="w-full text-center cursor-pointer"
+                      >
+                        <img
+                          id="selected-image"
+                          className="mx-auto h-96 min-w-full object-cover rounded-md"
+                          alt=""
+                        />
+                        <div className="mt-4 flex text-sm leading-6 text-gray-400">
+                          <label
+                            htmlFor="file-upload"
+                            className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
+                          >
+                            <span className="p-4">Upload a file</span>
+                            <input
+                              id="file-upload"
+                              name="file-upload"
+                              type="file"
+                              className="sr-only bg-transparent"
+                              required
+                              onChange={handleFileChange}
+                            />
+                          </label>
+                          <p className="pl-1">
+                            PNG, JPEG, GIF, SVG, TIFF, ICO, DVU up to 10MB
+                          </p>
+                        </div>
+                      </label>
                     </div>
                   </div>
                 </div>
@@ -96,45 +147,53 @@ export default function UploadPage() {
 
             <div className="border-b border-white/10 pb-12">
               <h2 className="text-base font-semibold leading-7 text-white">
-                Personal Information
+                Informationen
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">
-                Use a permanent address where you can receive mail.
+                Alles mit ein asterisk (<span className="text-red-500">*</span>)
+                ist nötig.
               </p>
 
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-3">
-                  <label
-                    htmlFor="first-name"
-                    className="block text-sm font-medium leading-6 text-white"
-                  >
-                    First name
+                  <label className="block text-sm font-medium leading-6 text-white">
+                    Name <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
                       type="text"
-                      name="first-name"
-                      id="first-name"
-                      autoComplete="given-name"
+                      name="imagename"
+                      id="imagename"
+                      required
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
 
                 <div className="sm:col-span-3">
-                  <label
-                    htmlFor="last-name"
-                    className="block text-sm font-medium leading-6 text-white"
-                  >
-                    Last name
+                  <label className="block text-sm font-medium leading-6 text-white">
+                    Alternative Informationen (SEO)
                   </label>
                   <div className="mt-2">
                     <input
                       type="text"
-                      name="last-name"
-                      id="last-name"
-                      autoComplete="family-name"
+                      name="imgalt"
+                      id="imgalt"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </div>
+
+                <div className="sm:col-span-3">
+                  <label className="block text-sm font-medium leading-6 text-white">
+                    NSFW
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      type="checkbox"
+                      name="nsfw"
+                      id="nsfw"
+                      className="checked:bg-red-500 block rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
