@@ -1,18 +1,31 @@
 "use client";
 import { useState } from "react";
 import Layout from "../../layouts/account-layout";
-import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 
 export default function UploadPage() {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const selectedFile = event.target.files[0];
+    if (selectedFile.size > 16 * 1024 * 1024) {
+      alert("File size must be less than 16 MB.");
+      return;
+    }
     const fileReader = new FileReader();
-    fileReader.readAsDataURL(event.target.files[0]);
+    fileReader.readAsDataURL(selectedFile);
     fileReader.onload = (event) => {
       const imgElement = document.getElementById("selected-image");
       imgElement.src = event.target.result;
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        if (img.width >= 128 && img.height >= 128) {
+          setSelectedFile(selectedFile);
+        } else {
+          alert("Image resolution must be at least 128x128 pixels.");
+        }
+      };
     };
   };
 
@@ -58,6 +71,8 @@ export default function UploadPage() {
         })
       );
 
+      setIsUploading(true); // Set isUploading to true before making the API call
+
       const response = await fetch("https://backend.headpat.de/api/galleries", {
         method: "POST",
         headers: {
@@ -69,6 +84,7 @@ export default function UploadPage() {
       const responseData = await response.json();
       if (response.ok) {
         console.log("File uploaded successfully");
+        setIsUploading(false); // Set isUploading to false after the API call is complete
         // Add the "Saved!" text to the form
         const savedText = document.createElement("p");
         savedText.textContent = "Saved!";
@@ -135,7 +151,7 @@ export default function UploadPage() {
                             />
                           </label>
                           <p className="pl-1">
-                            PNG, JPEG, GIF, SVG, TIFF, ICO, DVU up to 10MB
+                            PNG, JPEG, GIF, SVG, TIFF, ICO, DVU up to 16MB
                           </p>
                         </div>
                       </label>

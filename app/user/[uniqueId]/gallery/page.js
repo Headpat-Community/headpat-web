@@ -7,8 +7,26 @@ export default function FetchGallery() {
   const [loadMore, setLoadMore] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userId, setUserId] = useState(null);
 
-  const apiUrl = `https://backend.headpat.de/api/galleries?populate=*`;
+  const username = window.location.pathname.split("/")[2];
+  const userApiUrl = `https://backend.headpat.de/api/users?filters[username][$eq]=${username}`;
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const response = await fetch(userApiUrl);
+        const data = await response.json();
+        setUserId(data[0].id);
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    fetchUserId();
+  }, [userApiUrl]);
+
+  const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&filters[users_permissions_user][id][$eq]=${userId}`;
 
   useEffect(() => {
     setIsLoading(true);
