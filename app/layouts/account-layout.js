@@ -12,7 +12,6 @@ import {
   ArrowUpOnSquareIcon,
 } from "@heroicons/react/24/outline";
 
-
 const navigation = [
   { name: "Dashboard", href: "/account", icon: HomeIcon, current: false },
   {
@@ -41,6 +40,7 @@ function classNames(...classes) {
 
 export default function Example({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -55,6 +55,42 @@ export default function Example({ children }) {
     if (!jwt) {
       window.location.href = "/login";
     }
+  }, []);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = document.cookie.replace(
+          /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
+          "$1"
+        );
+        const userResponse = await fetch(
+          "https://backend.headpat.de/api/users/me",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const userResponseData = await userResponse.json();
+        const userId = userResponseData.id;
+        const userDataResponse = await fetch(
+          `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const userDataResponseData = await userDataResponse.json();
+        setUserData(userDataResponseData.data.attributes);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUserData();
   }, []);
 
   return (
@@ -118,10 +154,13 @@ export default function Example({ children }) {
                       <img
                         className="h-8 w-auto"
                         src="/logo.png"
-                        alt="Your Company"
+                        alt="Headpat Community"
                       />
                     </div>
                     <nav className="flex flex-1 flex-col">
+                      <ul role="list" className="flex flex-1 flex-col gap-y-7">
+                        <li>hi</li>
+                      </ul>
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
                         <li>
                           <ul role="list" className="-mx-2 space-y-1">
@@ -191,20 +230,28 @@ export default function Example({ children }) {
                     ))}
                   </ul>
                 </li>
-                <li className="-mx-6 mt-auto">
-                  <a
-                    href="#"
-                    className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
-                  >
-                    <img
-                      className="h-8 w-8 rounded-full bg-gray-800"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      alt=""
-                    />
-                    <span className="sr-only">Your profile</span>
-                    <span aria-hidden="true">Tom Cook</span>
-                  </a>
-                </li>
+                {userData ? (
+                  <li className="-mx-6 mt-auto">
+                    <a
+                      href="#"
+                      className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
+                    >
+                      <img
+                        className="h-8 w-8 rounded-full bg-gray-800"
+                        src={
+                          userData.avatar
+                            ? userData.avatar.data.attributes.url
+                            : "/logo-512.png"
+                        }
+                        alt=""
+                      />
+                      <span className="sr-only">Your profile</span>
+                      <span aria-hidden="true">{userData.displayname}</span>
+                    </a>
+                  </li>
+                ) : (
+                  <li>Loading...</li>
+                )}
               </ul>
             </nav>
           </div>
