@@ -31,32 +31,30 @@ export default function FetchGallery() {
 
   useEffect(() => {
     if (!userId) return; // Wait for userId to be available
-
+  
     const userDataApiUrl = `https://backend.headpat.de/api/user-data/${userId}`;
-
+  
     const fetchUserData = async () => {
       try {
         const token = document.cookie.replace(
           /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
           "$1"
         );
-
+  
         const response = await fetch(userDataApiUrl, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-
+  
         const data = await response.json();
-        console.log(data);
-        setEnableNsfw(response.data.attributes.enablensfw);
-        console.log(setEnableNsfw);
+        setEnableNsfw(data.data.attributes.enablensfw);
       } catch (error) {
         setError(error);
       }
     };
-
+  
     fetchUserData();
   }, [userId]);
 
@@ -65,7 +63,7 @@ export default function FetchGallery() {
 
     const filters = enableNsfw
       ? `filters[users_permissions_user][id][$eq]=${userId}`
-      : `filters[users_permissions_user][id][$eq]=${userId}&filters[nsfw][$eq]=false&filters[nsfw][$eq]=true`;
+      : `filters[users_permissions_user][id][$eq]=${userId}&filters[nsfw][$eq]=false`;
 
     const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&${filters}`;
 
@@ -74,7 +72,7 @@ export default function FetchGallery() {
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
-        setGallery(data.data.reverse()); // Reverse the order of the array
+        setGallery(data.data.reverse());
         setVisibleGallery(getVisibleGallery(data.data, window.innerWidth));
         setIsLoading(false);
       })
@@ -115,7 +113,9 @@ export default function FetchGallery() {
       <div>
         {isLoading ? (
           error ? (
-            <p className="text-center text-red-500 font-bold my-8">{error}</p>
+            <p className="text-center text-red-500 font-bold my-8">
+              Error: {error.message}
+            </p>
           ) : (
             <p className="text-center text-gray-500 font-bold my-8">
               Loading...
@@ -131,23 +131,16 @@ export default function FetchGallery() {
                 {item.attributes.img && item.attributes.img.data && (
                   <div
                     className={`rounded-lg overflow-hidden h-64 ${
-                      item.attributes.nsfw ? "relative" : ""
+                      item.attributes.nsfw && !enableNsfw ? "relative" : ""
                     }`}
                   >
-                    {item.attributes.nsfw && (
+                    {item.attributes.nsfw && !enableNsfw && (
                       <div className="absolute inset-0 bg-black opacity-50"></div>
                     )}
                     <img
                       src={
-                        item.attributes.nsfw
-                          ? item.attributes.img.data.attributes.formats.small
-                              .url
-                          : item.attributes.img.data.attributes.mime ===
-                            "image/gif"
-                          ? item.attributes.img.data.attributes.url
-                          : item.attributes.img.data.attributes.height < 156 ||
-                            item.attributes.img.data.attributes.width < 156
-                          ? item.attributes.img.data.attributes.url
+                        item.attributes.nsfw && !enableNsfw
+                          ? "https://placekitten.com/200/300" // Replace with placeholder image URL
                           : item.attributes.img.data.attributes.formats.small
                               .url
                       }

@@ -250,7 +250,7 @@ export default function AccountPage() {
                       name="email"
                       type="email"
                       autoComplete="email"
-                      value={emailValue}
+                      placeholder={userMe ? userMe.email : ""}
                       onChange={(e) => setEmailValue(e.target.value)}
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                     />
@@ -272,7 +272,7 @@ export default function AccountPage() {
                         type="text"
                         name="username"
                         id="username_login"
-                        value={usernameValue}
+                        placeholder={userMe ? userMe.username : ""}
                         onChange={(e) => setUsernameValue(e.target.value)}
                         className="flex-1 border-0 bg-transparent py-1.5 pl-1 text-white focus:ring-0 sm:text-sm sm:leading-6"
                       />
@@ -320,7 +320,7 @@ export default function AccountPage() {
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
             <div>
               <h2 className="text-base font-semibold leading-7 text-white">
-                Enable NSFW
+                Enable NSFW (Soon)
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">
                 Update your password associated with your account.
