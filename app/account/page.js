@@ -3,10 +3,10 @@ import Layout from "../layouts/account-layout";
 import { useState, useEffect } from "react";
 
 export default function AccountPage() {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
   const [userData, setUserData] = useState(null);
   const [userMe, setUserMe] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [nsfw, setNsfw] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -139,6 +139,55 @@ export default function AccountPage() {
     { name: "Socials", href: "/account/socials", current: false },
   ];
 
+  const handleNsfwChange = async (event) => {
+    const token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
+
+    const isChecked = event.target.checked;
+    setNsfw(isChecked);
+
+    const userResponse = await fetch(
+      "https://backend.headpat.de/api/users/me",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const userResponseData = await userResponse.json();
+    setUserMe(userResponseData);
+    const userId = userResponseData.id;
+    console.log("User ID:", userId);
+
+    const formData = new FormData();
+    formData.append("enablensfw", isChecked);
+
+    try {
+      const putResponse = await fetch(
+        `https://backend.headpat.de/api/user-data/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(Object.fromEntries(formData)),
+        }
+      );
+
+      if (!putResponse.ok) {
+        console.log(error.message);
+        throw new Error("PUT request failed");
+      }
+
+      console.log("PUT request successful");
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   return (
     <>
       <Layout>
@@ -248,6 +297,33 @@ export default function AccountPage() {
                   >
                     Send password reset E-Mail
                   </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+            <div>
+              <h2 className="text-base font-semibold leading-7 text-white">
+                Enable NSFW
+              </h2>
+              <p className="mt-1 text-sm leading-6 text-gray-400">
+                Update your password associated with your account.
+              </p>
+            </div>
+
+            <form className="md:col-span-2">
+              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+                <div className="col-span-full">
+                  <input
+                    id="nsfwtoggle"
+                    aria-describedby="nsfwtoggle"
+                    name="nsfwtoggle"
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    checked={nsfw}
+                    onChange={handleNsfwChange}
+                  />
                 </div>
               </div>
             </form>

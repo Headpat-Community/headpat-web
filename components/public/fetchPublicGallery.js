@@ -8,7 +8,7 @@ export default function FetchGallery() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const apiUrl = `https://backend.headpat.de/api/galleries?populate=*`;
+  const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&filters[nsfw][$eq]=false`;
 
   useEffect(() => {
     setIsLoading(true);
@@ -91,6 +91,7 @@ export default function FetchGallery() {
                     style={{
                       filter: item.attributes.nsfw ? "blur(30px)" : "none",
                     }}
+                    draggable="false" // Add this attribute to prevent dragging
                   />
                 </div>
               )}
