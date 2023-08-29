@@ -5,6 +5,48 @@ import { useState, useEffect } from "react";
 export default function AccountPage() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = document.cookie.replace(
+          /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
+          "$1"
+        );
+
+        const userResponse = await fetch(
+          "https://backend.headpat.de/api/users/me",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const userResponseData = await userResponse.json();
+        const userId = userResponseData.id;
+
+        const userDataResponse = await fetch(
+          `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const userDataResponseData = await userDataResponse.json();
+        setUserData(userDataResponseData.data.attributes);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleAvatarChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -59,25 +101,28 @@ export default function AccountPage() {
       formData.append(
         "data",
         JSON.stringify({
-          email: birthday.value,
           users_permissions_user: userId,
         })
       );
 
       setIsUploading(true); // Set isUploading to true before making the API call
 
-      const response = await fetch(`https://backend.headpat.de/api/user-data/${userId}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
 
       const responseData = await response.json();
       if (response.ok) {
         console.log("File uploaded successfully");
         setIsUploading(false); // Set isUploading to false after the API call is complete
+        setUserData(responseData); // Set the userData state with the response data
         // Add the "Saved!" text to the form
         const savedText = document.createElement("p");
         savedText.textContent = "Saved!";
@@ -96,31 +141,34 @@ export default function AccountPage() {
   };
 
   const secondaryNavigation = [
-    { name: 'Account', href: '/account', current: true },
-    { name: 'Frontpage', href: '/account/frontpage', current: false },
-    { name: 'Socials', href: '/account/socials', current: false },
-  ]
+    { name: "Account", href: "/account", current: false },
+    { name: "Frontpage", href: "/account/frontpage", current: true },
+    { name: "Socials", href: "/account/socials", current: false },
+  ];
 
   return (
     <>
       <Layout>
-      <header className="border-b border-white/5">
-              {/* Secondary navigation */}
-              <nav className="flex overflow-x-auto py-4">
-                <ul
-                  role="list"
-                  className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
-                >
-                  {secondaryNavigation.map((item) => (
-                    <li key={item.name}>
-                      <a href={item.href} className={item.current ? 'text-indigo-400' : ''}>
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </header>
+        <header className="border-b border-white/5">
+          {/* Secondary navigation */}
+          <nav className="flex overflow-x-auto py-4">
+            <ul
+              role="list"
+              className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
+            >
+              {secondaryNavigation.map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.href}
+                    className={item.current ? "text-indigo-400" : ""}
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </header>
         <div className="divide-y divide-white/5">
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
             <div>
@@ -137,7 +185,11 @@ export default function AccountPage() {
                 <div className="col-span-full flex items-center gap-x-8">
                   <img
                     id="avatar-image"
-                    src="/logo.png"
+                    src={
+                      userData
+                        ? userData.avatar.data.attributes.url
+                        : "/logo.png"
+                    }
                     alt=""
                     className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
                   />

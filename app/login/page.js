@@ -66,7 +66,7 @@ const Login = () => {
             alt="Headpat Logo"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
-            Sign in to your account
+            Einloggen
           </h2>
 
           <form className="mt-10 space-y-6" action="#" method="POST">

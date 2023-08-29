@@ -66,13 +66,16 @@ export default function AccountPage() {
 
       setIsUploading(true); // Set isUploading to true before making the API call
 
-      const response = await fetch(`https://backend.headpat.de/api/user-data/${userId}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        `https://backend.headpat.de/api/user-data/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
 
       const responseData = await response.json();
       if (response.ok) {
@@ -96,31 +99,34 @@ export default function AccountPage() {
   };
 
   const secondaryNavigation = [
-    { name: 'Account', href: '/account', current: true },
-    { name: 'Frontpage', href: '/account/frontpage', current: false },
-    { name: 'Socials', href: '/account/socials', current: false },
-  ]
+    { name: "Account", href: "/account", current: false },
+    { name: "Frontpage", href: "/account/frontpage", current: false },
+    { name: "Socials", href: "/account/socials", current: true },
+  ];
 
   return (
     <>
       <Layout>
-      <header className="border-b border-white/5">
-              {/* Secondary navigation */}
-              <nav className="flex overflow-x-auto py-4">
-                <ul
-                  role="list"
-                  className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
-                >
-                  {secondaryNavigation.map((item) => (
-                    <li key={item.name}>
-                      <a href={item.href} className={item.current ? 'text-indigo-400' : ''}>
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </header>
+        <header className="border-b border-white/5">
+          {/* Secondary navigation */}
+          <nav className="flex overflow-x-auto py-4">
+            <ul
+              role="list"
+              className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
+            >
+              {secondaryNavigation.map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.href}
+                    className={item.current ? "text-indigo-400" : ""}
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </header>
         <div className="divide-y divide-white/5">
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
             <div>
