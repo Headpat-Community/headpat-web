@@ -1,11 +1,27 @@
 "use client";
 import React, { useState } from "react";
 import Header from "@/components/header";
+import { useEffect } from "react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop().split(";").shift();
+    }
+  }
+
+  useEffect(() => {
+    const jwt = getCookie("jwt");
+    if (jwt) {
+      window.location.href = "/account";
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -9,14 +9,30 @@ import {
   HomeIcon,
   UsersIcon,
   XMarkIcon,
-  ArrowUpOnSquareIcon
+  ArrowUpOnSquareIcon,
 } from "@heroicons/react/24/outline";
+
 
 const navigation = [
   { name: "Dashboard", href: "/account", icon: HomeIcon, current: false },
-  { name: "Bild hochladen", href: "/account/upload", icon: ArrowUpOnSquareIcon, current: false },
-  { name: "Gallerie", href: "/account/gallery", icon: PhotoIcon, current: false },
-  { name: "Projekte", href: "/account/projects", icon: FolderIcon, current: false },
+  {
+    name: "Bild hochladen",
+    href: "/account/upload",
+    icon: ArrowUpOnSquareIcon,
+    current: false,
+  },
+  {
+    name: "Gallerie",
+    href: "/account/gallery",
+    icon: PhotoIcon,
+    current: false,
+  },
+  {
+    name: "Projekte",
+    href: "/account/projects",
+    icon: FolderIcon,
+    current: false,
+  },
 ];
 
 function classNames(...classes) {
@@ -25,6 +41,21 @@ function classNames(...classes) {
 
 export default function Example({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop().split(";").shift();
+    }
+  }
+
+  useEffect(() => {
+    const jwt = getCookie("jwt");
+    if (!jwt) {
+      window.location.href = "/login";
+    }
+  }, []);
 
   return (
     <>
