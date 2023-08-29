@@ -60,10 +60,12 @@ export default function Example({ children }) {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        // Get the JWT token from the cookie
         const token = document.cookie.replace(
           /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
           "$1"
         );
+        // Fetch the user data from the API
         const userResponse = await fetch(
           "https://backend.headpat.de/api/users/me",
           {
@@ -85,11 +87,13 @@ export default function Example({ children }) {
           }
         );
         const userDataResponseData = await userDataResponse.json();
+        // Set the userData state to the attributes object of the API response
         setUserData(userDataResponseData.data.attributes);
       } catch (error) {
         console.error(error);
       }
     };
+    // Call the fetchUserData function when the component mounts
     fetchUserData();
   }, []);
 

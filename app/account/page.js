@@ -36,6 +36,7 @@ export default function AccountPage() {
         const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
         const blobBin = atob(dataUrl.split(",")[1]);
         const array = [];
+        setSelectedFile(selectedFile);
         for (let i = 0; i < blobBin.length; i++) {
           array.push(blobBin.charCodeAt(i));
         }
