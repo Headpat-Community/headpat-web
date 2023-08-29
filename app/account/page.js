@@ -1,6 +1,7 @@
 "use client";
 import Layout from "../layouts/account-layout";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function AccountPage() {
   const [userData, setUserData] = useState(null);
@@ -200,12 +201,12 @@ export default function AccountPage() {
             >
               {secondaryNavigation.map((item) => (
                 <li key={item.name}>
-                  <a
+                  <Link
                     href={item.href}
                     className={item.current ? "text-indigo-400" : ""}
                   >
                     {item.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

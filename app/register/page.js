@@ -51,7 +51,21 @@ const Login = () => {
         data.user.username
       }; expires=${expirationTime.toUTCString()}; path=/`;
       //console.log("User authenticated successfully");
-      window.location.href = "/account";
+
+      // Make a POST request to https://backend.headpat.de/api/user-data with a "status" field
+      await fetch("https://backend.headpat.de/api/user-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: {
+            status: "bin neu hier!",
+          },
+        }),
+      });
+
+      //window.location.href = "/account";
     } catch (error) {
       console.log(error);
       setError("E-Mail oder Passwort inkorrekt!");
