@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function AccountPage() {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState({ enablensfw: false }); // Initialize with an empty object and a default value
   const [userMe, setUserMe] = useState(null);
-  const [userId, setUserId] = useState(null);
   const [nsfw, setNsfw] = useState(false);
+  const [emailValue, setEmailValue] = useState(userMe?.email || "");
+  const [usernameValue, setUsernameValue] = useState(userMe?.username || "");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -146,6 +147,12 @@ export default function AccountPage() {
       "$1"
     );
 
+    const { checked } = event.target;
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      enablensfw: checked,
+    }));
+
     const isChecked = event.target.checked;
     setNsfw(isChecked);
 
@@ -163,9 +170,6 @@ export default function AccountPage() {
     const userId = userResponseData.id;
     console.log("User ID:", userId);
 
-    const formData = new FormData();
-    formData.append("enablensfw", isChecked);
-
     try {
       const putResponse = await fetch(
         `https://backend.headpat.de/api/user-data/${userId}`,
@@ -173,19 +177,27 @@ export default function AccountPage() {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(Object.fromEntries(formData)),
+          body: JSON.stringify({
+            data: {
+              enablensfw: isChecked,
+            },
+          }),
         }
       );
 
       if (!putResponse.ok) {
-        console.log(error.message);
         throw new Error("PUT request failed");
       }
 
       console.log("PUT request successful");
     } catch (error) {
       console.error(error.message);
+      if (error.response) {
+        const response = await error.response.json();
+        console.log(response);
+      }
     }
   };
 
@@ -238,7 +250,8 @@ export default function AccountPage() {
                       name="email"
                       type="email"
                       autoComplete="email"
-                      placeholder={userMe ? userMe.email : ""}
+                      value={emailValue}
+                      onChange={(e) => setEmailValue(e.target.value)}
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -259,8 +272,9 @@ export default function AccountPage() {
                         type="text"
                         name="username"
                         id="username_login"
+                        value={usernameValue}
+                        onChange={(e) => setUsernameValue(e.target.value)}
                         className="flex-1 border-0 bg-transparent py-1.5 pl-1 text-white focus:ring-0 sm:text-sm sm:leading-6"
-                        placeholder={userMe ? userMe.username : ""}
                       />
                     </div>
                   </div>
@@ -322,7 +336,7 @@ export default function AccountPage() {
                     name="nsfwtoggle"
                     type="checkbox"
                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    checked={nsfw}
+                    checked={userData.enablensfw}
                     onChange={handleNsfwChange}
                   />
                 </div>

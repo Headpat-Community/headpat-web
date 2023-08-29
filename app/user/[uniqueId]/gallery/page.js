@@ -1,4 +1,5 @@
 "use client";
+import Header from "@/components/header";
 import { useState, useEffect } from "react";
 
 export default function FetchGallery() {
@@ -8,9 +9,10 @@ export default function FetchGallery() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [enableNsfw, setEnableNsfw] = useState(false);
 
   useEffect(() => {
-    const pathnameParts = window.location.pathname.split('/');
+    const pathnameParts = window.location.pathname.split("/");
     const username = pathnameParts[2];
     const userApiUrl = `https://backend.headpat.de/api/users?filters[username][$eq]=${username}`;
 
@@ -30,7 +32,42 @@ export default function FetchGallery() {
   useEffect(() => {
     if (!userId) return; // Wait for userId to be available
 
-    const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&filters[users_permissions_user][id][$eq]=${userId}`;
+    const userDataApiUrl = `https://backend.headpat.de/api/user-data/${userId}`;
+
+    const fetchUserData = async () => {
+      try {
+        const token = document.cookie.replace(
+          /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
+          "$1"
+        );
+
+        const response = await fetch(userDataApiUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+        console.log(data);
+        setEnableNsfw(response.data.attributes.enablensfw);
+        console.log(setEnableNsfw);
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    fetchUserData();
+  }, [userId]);
+
+  useEffect(() => {
+    if (!userId) return; // Wait for userId to be available
+
+    const filters = enableNsfw
+      ? `filters[users_permissions_user][id][$eq]=${userId}`
+      : `filters[users_permissions_user][id][$eq]=${userId}&filters[nsfw][$eq]=false&filters[nsfw][$eq]=true`;
+
+    const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&${filters}`;
 
     setIsLoading(true);
 
@@ -45,7 +82,7 @@ export default function FetchGallery() {
         setError(error);
         setIsLoading(false);
       });
-  }, [userId]);
+  }, [userId, enableNsfw]);
 
   const handleLoadMore = () => {
     const nextVisibleGallery = gallery.slice(0, visibleGallery.length + 12);
@@ -73,67 +110,66 @@ export default function FetchGallery() {
   };
 
   return (
-    <div>
-      {isLoading ? (
-        error ? (
-          <p className="text-center text-red-500 font-bold my-8">{error}</p>
+    <>
+      <Header />
+      <div>
+        {isLoading ? (
+          error ? (
+            <p className="text-center text-red-500 font-bold my-8">{error}</p>
+          ) : (
+            <p className="text-center text-gray-500 font-bold my-8">
+              Loading...
+            </p>
+          )
         ) : (
-          <p className="text-center text-gray-500 font-bold my-8">Loading...</p>
-        )
-      ) : (
-        <ul
-          role="list"
-          className="p-8 flex flex-wrap gap-4 justify-center items-center"
-        >
-          {visibleGallery.map((item) => (
-            <div key={item.id}>
-              {item.attributes.img && item.attributes.img.data && (
-                <div
-                  className={`rounded-lg overflow-hidden h-64 ${
-                    item.attributes.nsfw ? "relative" : ""
-                  }`}
-                >
-                  {item.attributes.nsfw && (
-                    <div className="absolute inset-0 bg-black opacity-50"></div>
-                  )}
-                  <img
-                    src={
-                      item.attributes.nsfw
-                        ? item.attributes.img.data.attributes.formats.small.url
-                        : item.attributes.img.data.attributes.mime ===
-                          "image/gif"
-                        ? item.attributes.img.data.attributes.url
-                        : item.attributes.img.data.attributes.height < 156 ||
-                          item.attributes.img.data.attributes.width < 156
-                        ? item.attributes.img.data.attributes.url
-                        : item.attributes.img.data.attributes.formats.small.url
-                    }
-                    alt={item.attributes.imgalt}
-                    className={`object-cover h-full w-full ${
-                      item.attributes.nsfw ? "backdrop-blur-xl" : ""
+          <ul
+            role="list"
+            className="p-8 flex flex-wrap gap-4 justify-center items-center"
+          >
+            {visibleGallery.map((item) => (
+              <div key={item.id}>
+                {item.attributes.img && item.attributes.img.data && (
+                  <div
+                    className={`rounded-lg overflow-hidden h-64 ${
+                      item.attributes.nsfw ? "relative" : ""
                     }`}
-                    style={{
-                      filter: item.attributes.nsfw ? "blur(30px)" : "none",
-                    }}
-                    onClick={(event) => {
-                      event.target.style.filter = "none";
-                    }}
-                  />
-                </div>
-              )}
-              <h2>{item.attributes.name}</h2>
-            </div>
-          ))}
-        </ul>
-      )}
-      {loadMore && (
-        <button
-          onClick={handleLoadMore}
-          className="flex mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-8"
-        >
-          Load More
-        </button>
-      )}
-    </div>
+                  >
+                    {item.attributes.nsfw && (
+                      <div className="absolute inset-0 bg-black opacity-50"></div>
+                    )}
+                    <img
+                      src={
+                        item.attributes.nsfw
+                          ? item.attributes.img.data.attributes.formats.small
+                              .url
+                          : item.attributes.img.data.attributes.mime ===
+                            "image/gif"
+                          ? item.attributes.img.data.attributes.url
+                          : item.attributes.img.data.attributes.height < 156 ||
+                            item.attributes.img.data.attributes.width < 156
+                          ? item.attributes.img.data.attributes.url
+                          : item.attributes.img.data.attributes.formats.small
+                              .url
+                      }
+                      alt={item.attributes.imgalt}
+                      className={`object-cover h-full w-full`}
+                    />
+                  </div>
+                )}
+                <h2>{item.attributes.name}</h2>
+              </div>
+            ))}
+          </ul>
+        )}
+        {loadMore && (
+          <button
+            onClick={handleLoadMore}
+            className="flex mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-8"
+          >
+            Load More
+          </button>
+        )}
+      </div>
+    </>
   );
 }

@@ -63,10 +63,10 @@ export default function AccountPage() {
       const img = new Image();
       img.src = event.target.result;
       img.onload = () => {
-        if (img.width <= 1024 && img.height <= 1024) {
+        if (img.width <= 2048 && img.height <= 2048) {
           setSelectedFile(selectedFile);
         } else {
-          alert("Image resolution must be at most 1024x1024 pixels.");
+          alert("Image resolution darf nur bis 2048x2048 pixel groß sein.");
         }
       };
     };
@@ -187,7 +187,7 @@ export default function AccountPage() {
                   <img
                     id="avatar-image"
                     src={
-                      userData
+                      userData && userData.avatar && userData.avatar.data
                         ? userData.avatar.data.attributes.url
                         : "/logo.png"
                     }
@@ -212,12 +212,8 @@ export default function AccountPage() {
                   </div>
                 </div>
               </div>
-            </form>
-          </div>
 
-          <div className="grid max-w-full grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-            <form className="md:col-span-2">
-              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6">
+              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6 mt-12">
                 <div className="col-span-full">
                   <label
                     htmlFor="current-password"
