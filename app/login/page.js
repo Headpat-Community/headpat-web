@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Header from "@/components/header";
 import { useEffect } from "react";
+import Link from "next/link";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -100,12 +101,12 @@ const Login = () => {
                   Password:
                 </label>
                 <div className="text-sm">
-                  <a
+                  <Link
                     href="#"
                     className="font-semibold text-indigo-400 hover:text-indigo-300"
                   >
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="mt-2">

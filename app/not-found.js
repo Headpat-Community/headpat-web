@@ -5,6 +5,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
+import Link from "next/link";
 
 const links = [
   {
@@ -73,10 +74,10 @@ export default function Example() {
                 </div>
                 <div className="flex-auto">
                   <h3 className="text-sm font-semibold leading-6 text-indigo-600">
-                    <a href={link.href}>
+                    <Link href={link.href}>
                       <span className="absolute inset-0" aria-hidden="true" />
                       {link.name}
-                    </a>
+                    </Link>
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-white">
                     {link.description}
@@ -92,13 +93,13 @@ export default function Example() {
             ))}
           </ul>
           <div className="mt-10 flex justify-center">
-            <a
+            <Link
               href="#"
               className="text-sm font-semibold leading-6 text-indigo-600"
             >
               <span aria-hidden="true">&larr;</span>
               Back to home
-            </a>
+            </Link>
           </div>
         </div>
       </main>
@@ -110,14 +111,14 @@ export default function Example() {
           <div className="hidden sm:block sm:h-7 sm:w-px sm:flex-none sm:bg-gray-200" />
           <div className="flex gap-x-4">
             {social.map((item, itemIdx) => (
-              <a
+              <Link
                 key={itemIdx}
                 href={item.href}
                 className="text-white hover:text-gray-500"
               >
                 <span className="sr-only">{item.name}</span>
                 <item.icon className="h-6 w-6" aria-hidden="true" />
-              </a>
+              </Link>
             ))}
           </div>
         </div>

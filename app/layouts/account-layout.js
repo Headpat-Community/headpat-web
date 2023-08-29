@@ -3,14 +3,13 @@ import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
-  CalendarIcon,
   PhotoIcon,
   FolderIcon,
   HomeIcon,
-  UsersIcon,
   XMarkIcon,
   ArrowUpOnSquareIcon,
 } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 const navigation = [
   { name: "Dashboard", href: "/account", icon: HomeIcon, current: false },
@@ -170,7 +169,7 @@ export default function Example({ children }) {
                           <ul role="list" className="-mx-2 space-y-1">
                             {navigation.map((item) => (
                               <li key={item.name}>
-                                <a
+                                <Link
                                   href={item.href}
                                   className={classNames(
                                     item.current
@@ -184,7 +183,7 @@ export default function Example({ children }) {
                                     aria-hidden="true"
                                   />
                                   {item.name}
-                                </a>
+                                </Link>
                               </li>
                             ))}
                           </ul>
@@ -215,7 +214,7 @@ export default function Example({ children }) {
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
                       <li key={item.name}>
-                        <a
+                        <Link
                           href={item.href}
                           className={classNames(
                             item.current
@@ -229,14 +228,14 @@ export default function Example({ children }) {
                             aria-hidden="true"
                           />
                           {item.name}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
                 </li>
                 {userData ? (
                   <li className="-mx-6 mt-auto">
-                    <a
+                    <Link
                       href="#"
                       className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
                     >
@@ -251,7 +250,7 @@ export default function Example({ children }) {
                       />
                       <span className="sr-only">Your profile</span>
                       <span aria-hidden="true">{userData.displayname}</span>
-                    </a>
+                    </Link>
                   </li>
                 ) : (
                   <li>Loading...</li>
@@ -273,14 +272,14 @@ export default function Example({ children }) {
           <div className="flex-1 text-sm font-semibold leading-6 text-white">
             Dashboard
           </div>
-          <a href="#">
+          <Link href="#">
             <span className="sr-only">Your profile</span>
             <img
               className="h-8 w-8 rounded-full bg-gray-800"
               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
               alt=""
             />
-          </a>
+          </Link>
         </div>
 
         <main className="lg:pl-72">

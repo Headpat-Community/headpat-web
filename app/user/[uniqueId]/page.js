@@ -284,19 +284,6 @@ export default function UserProfile() {
                           </button>
                         )}
                       </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-50" : "",
-                              "block px-3 py-1 text-sm leading-6 text-white"
-                            )}
-                          >
-                            Edit
-                          </a>
-                        )}
-                      </Menu.Item>
                     </Menu.Items>
                   </Transition>
                 </Menu>
