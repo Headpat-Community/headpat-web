@@ -9,10 +9,11 @@ export default function FetchGallery() {
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
 
-  const username = window.location.pathname.split("/")[2];
-  const userApiUrl = `https://backend.headpat.de/api/users?filters[username][$eq]=${username}`;
-
   useEffect(() => {
+    const pathnameParts = window.location.pathname.split('/');
+    const username = pathnameParts[2];
+    const userApiUrl = `https://backend.headpat.de/api/users?filters[username][$eq]=${username}`;
+
     const fetchUserId = async () => {
       try {
         const response = await fetch(userApiUrl);
@@ -24,11 +25,13 @@ export default function FetchGallery() {
     };
 
     fetchUserId();
-  }, [userApiUrl]);
-
-  const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&filters[users_permissions_user][id][$eq]=${userId}`;
+  }, []);
 
   useEffect(() => {
+    if (!userId) return; // Wait for userId to be available
+
+    const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&filters[users_permissions_user][id][$eq]=${userId}`;
+
     setIsLoading(true);
 
     fetch(apiUrl)
@@ -38,8 +41,11 @@ export default function FetchGallery() {
         setVisibleGallery(getVisibleGallery(data.data, window.innerWidth));
         setIsLoading(false);
       })
-      .catch((error) => console.error(error));
-  }, [apiUrl]);
+      .catch((error) => {
+        setError(error);
+        setIsLoading(false);
+      });
+  }, [userId]);
 
   const handleLoadMore = () => {
     const nextVisibleGallery = gallery.slice(0, visibleGallery.length + 12);
@@ -108,6 +114,9 @@ export default function FetchGallery() {
                     }`}
                     style={{
                       filter: item.attributes.nsfw ? "blur(30px)" : "none",
+                    }}
+                    onClick={(event) => {
+                      event.target.style.filter = "none";
                     }}
                   />
                 </div>
