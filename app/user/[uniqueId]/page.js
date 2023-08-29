@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useState, Fragment } from "react";
-import { Dialog, Listbox, Menu, Transition } from "@headlessui/react";
+import { Listbox, Menu, Transition } from "@headlessui/react";
 import {
-  Bars3Icon,
   CalendarDaysIcon,
   CreditCardIcon,
   EllipsisVerticalIcon,
@@ -15,22 +14,11 @@ import {
   UserCircleIcon,
   XMarkIcon as XMarkIconMini,
 } from "@heroicons/react/20/solid";
-import {
-  BellIcon,
-  XMarkIcon as XMarkIconOutline,
-} from "@heroicons/react/24/outline";
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import Header from "@/components/header";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const navigation = [
-  { name: "Home", href: "#" },
-  { name: "Invoices", href: "#" },
-  { name: "Clients", href: "#" },
-  { name: "Expenses", href: "#" },
-];
 const invoice = {
   subTotal: "$8,800.00",
   tax: "$1,760.00",
@@ -164,6 +152,8 @@ const moods = [
     bgColor: "bg-transparent",
   },
 ];
+
+export const runtime = 'edge';
 
 export default function UserProfile() {
   const [userData, setUserData] = useState(null);

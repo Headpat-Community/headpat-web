@@ -2,6 +2,8 @@
 import Header from "@/components/header";
 import { useState, useEffect } from "react";
 
+export const runtime = 'edge';
+
 export default function FetchGallery() {
   const [gallery, setGallery] = useState([]);
   const [visibleGallery, setVisibleGallery] = useState([]);
