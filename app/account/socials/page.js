@@ -113,7 +113,7 @@ export default function AccountPage() {
 
       const responseData = await response.json();
       if (response.ok) {
-        console.log("Data uploaded successfully");
+        //console.log("Data uploaded successfully");
         setIsUploading(false); // Set isUploading to false after the API call is complete
         // Add the "Saved!" text to the form
         alert("Saved!");

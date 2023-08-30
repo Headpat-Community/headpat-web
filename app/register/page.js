@@ -80,16 +80,16 @@ const Login = () => {
             }
           );
           if (response.status === 200) {
-            console.log("Second POST request successful");
+            //console.log("Second POST request successful");
           } else {
-            console.log("Second POST request failed");
+            //console.log("Second POST request failed");
           }
         } catch (error) {
-          console.log(error);
+          //console.log(error);
         }
       }
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       setError("Error!");
     }
   };

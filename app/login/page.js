@@ -46,9 +46,28 @@ const Login = () => {
         data.jwt
       }; expires=${expirationTime.toUTCString()}; path=/`;
       //console.log("User authenticated successfully");
-      window.location.href = "/account";
+      if (response.status === 400) {
+        setError(
+          `Incorrect credentials or already made account! We tried everything, It's just not possible.`
+        );
+        setTimeout(() => {
+          setError("");
+        }, 5000);
+      } else if (response.status === 429) {
+        setError("Too many requests!");
+        setTimeout(() => {
+          setError("");
+        }, 5000);
+      } else if (response.status === 500) {
+        setError("Server error!");
+        setTimeout(() => {
+          setError("");
+        }, 5000);
+      } else if (response.status === 200) {
+        window.location.href = "/account";
+      }
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       setError("E-Mail oder Passwort inkorrekt!");
     }
   };

@@ -175,7 +175,7 @@ export default function AccountPage() {
     const userResponseData = await userResponse.json();
     setUserMe(userResponseData);
     const userId = userResponseData.id;
-    console.log("User ID:", userId);
+    //console.log("User ID:", userId);
 
     try {
       const putResponse = await fetch(
@@ -198,12 +198,12 @@ export default function AccountPage() {
         throw new Error("PUT request failed");
       }
 
-      console.log("PUT request successful");
+      //console.log("PUT request successful");
     } catch (error) {
       console.error(error.message);
       if (error.response) {
         const response = await error.response.json();
-        console.log(response);
+        //console.log(response);
       }
     }
   };

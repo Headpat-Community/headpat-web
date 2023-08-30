@@ -143,7 +143,7 @@ export default function AccountPage() {
 
       const responseData = await response.json();
       if (response.ok) {
-        console.log("File uploaded successfully");
+        //console.log("File uploaded successfully");
         setIsUploading(false); // Set isUploading to false after the API call is complete
         setUserData(responseData); // Set the userData state with the response data
         // Reload the window

@@ -16,7 +16,7 @@ export default function FetchGallery() {
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
+        //console.log(data)
         setName(data.data.reverse()); // Reverse the order of the array
         setVisibleName(data.data.slice(0, 12));
         setIsLoading(false);

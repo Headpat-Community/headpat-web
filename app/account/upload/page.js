@@ -53,7 +53,7 @@ export default function UploadPage() {
 
       const userResponseData = await userResponse.json();
       const userId = userResponseData.id;
-      console.log(userId);
+      //console.log(userId);
 
       const currentDate = new Date();
       const year = currentDate.getFullYear();
@@ -84,7 +84,7 @@ export default function UploadPage() {
 
       const responseData = await response.json();
       if (response.ok) {
-        console.log("File uploaded successfully");
+        //console.log("File uploaded successfully");
         setIsUploading(false); // Set isUploading to false after the API call is complete
         // Add the "Saved!" text to the form
         alert("Saved!")
