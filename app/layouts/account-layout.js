@@ -156,7 +156,7 @@ export default function Example({ children }) {
                     <div className="flex h-16 shrink-0 items-center">
                       <img
                         className="h-8 w-auto"
-                        src="/logo.png"
+                        src="/logo-512.png"
                         alt="Headpat Community"
                       />
                     </div>
@@ -204,7 +204,7 @@ export default function Example({ children }) {
             <div className="flex h-20 shrink-0 items-center">
               <img
                 className="h-12 w-auto"
-                src="/logo.png"
+                src="/logo-512.png"
                 alt="Headpat Community"
               />
             </div>

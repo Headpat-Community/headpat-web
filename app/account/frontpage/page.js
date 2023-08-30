@@ -189,7 +189,7 @@ export default function AccountPage() {
                     src={
                       userData && userData.avatar && userData.avatar.data
                         ? userData.avatar.data.attributes.url
-                        : "/logo.png"
+                        : "/logo-512.png"
                     }
                     alt=""
                     className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"

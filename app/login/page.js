@@ -63,7 +63,7 @@ const Login = () => {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col justify-center">
           <img
             className="mx-auto h-24 w-auto"
-            src="/logo.png"
+            src="/logo-512.png"
             alt="Headpat Logo"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
