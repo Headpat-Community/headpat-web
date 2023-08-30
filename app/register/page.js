@@ -65,7 +65,7 @@ const Login = () => {
         }),
       });
 
-      //window.location.href = "/account";
+      window.location.href = "/account";
     } catch (error) {
       console.log(error);
       setError("E-Mail oder Passwort inkorrekt!");
