@@ -50,10 +50,29 @@ export default function Example({ children }) {
     }
   }
 
+  function deleteCookie(name) {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  }
+
   useEffect(() => {
     const jwt = getCookie("jwt");
     if (!jwt) {
       window.location.href = "/login";
+    } else {
+      fetch("/api/user", {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
+        .then((response) => {
+          if (response.status === 401) {
+            deleteCookie("jwt");
+            window.location.href = "/login";
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }, []);
 
@@ -253,7 +272,9 @@ export default function Example({ children }) {
                         alt=""
                       />
                       <span className="sr-only">Your profile</span>
-                      <span aria-hidden="true">{userData.displayname || userMeData.username}</span>
+                      <span aria-hidden="true">
+                        {userData.displayname || userMeData.username}
+                      </span>
                     </Link>
                   </li>
                 ) : (
