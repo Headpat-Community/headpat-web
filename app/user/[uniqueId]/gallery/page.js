@@ -2,7 +2,7 @@
 import Header from "@/components/header";
 import { useState, useEffect } from "react";
 
-export const runtime = 'edge';
+export const runtime = "edge";
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState([]);
@@ -33,39 +33,42 @@ export default function FetchGallery() {
 
   useEffect(() => {
     if (!userId) return; // Wait for userId to be available
-  
+
     const userDataApiUrl = `https://backend.headpat.de/api/user-data/${userId}`;
-  
+    console.log(userDataApiUrl);
+
     const fetchUserData = async () => {
+      const token = document.cookie.replace(
+        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
+        "$1"
+      );
+      if (!token) return; // Return if "jwt" token does not exist
+
       try {
-        const token = document.cookie.replace(
-          /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-          "$1"
-        );
-  
         const response = await fetch(userDataApiUrl, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-  
+
         const data = await response.json();
         setEnableNsfw(data.data.attributes.enablensfw);
+        console.log(data.data.attributes.enablensfw);
       } catch (error) {
         setError(error);
       }
     };
-  
+
     fetchUserData();
   }, [userId]);
 
   useEffect(() => {
     if (!userId) return; // Wait for userId to be available
 
-    const filters = enableNsfw
+    const filters = !enableNsfw
       ? `filters[users_permissions_user][id][$eq]=${userId}&filters[nsfw][$eq]=false`
-      : `filters[users_permissions_user][id][$eq]=${userId}&filters[nsfw][$eq]=true`;
+      : `filters[users_permissions_user][id][$eq]=${userId}`;
 
     const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&${filters}`;
 

@@ -45,19 +45,6 @@ const Login = () => {
       const data = await response.json();
       //console.log("User authenticated successfully");
 
-      // Make a POST request to https://backend.headpat.de/api/user-data with a "status" field
-      await fetch("https://backend.headpat.de/api/user-data", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          data: {
-            status: "I'm new here!",
-          },
-        }),
-      });
-
       if (response.status === 400) {
         setError(
           `Incorrect credentials or already made account! We tried everything, It's just not possible.`
@@ -77,13 +64,33 @@ const Login = () => {
         }, 5000);
       } else if (response.status === 200) {
         setError("Please confirm your E-Mail!");
-        setTimeout(() => {
-          setError("");
-        }, 20000);
+        try {
+          const response = await fetch(
+            "https://backend.headpat.de/api/user-data",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                data: {
+                  status: "I'm new here!",
+                },
+              }),
+            }
+          );
+          if (response.status === 200) {
+            console.log("Second POST request successful");
+          } else {
+            console.log("Second POST request failed");
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
     } catch (error) {
       console.log(error);
-      setError("Fehler!");
+      setError("Error!");
     }
   };
 
