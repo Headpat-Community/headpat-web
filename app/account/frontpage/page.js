@@ -189,7 +189,7 @@ export default function AccountPage() {
                     src={
                       userData && userData.avatar && userData.avatar.data
                         ? userData.avatar.data.attributes.url
-                        : "https://cdn.headpat.de/public/logo.svg"
+                        : "/logo-512.png"
                     }
                     alt=""
                     className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"

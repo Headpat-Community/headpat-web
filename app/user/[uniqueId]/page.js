@@ -213,7 +213,7 @@ export default function UserProfile() {
                       />
                     ) : (
                       <img
-                        src="https://cdn.headpat.de/public/logo.svg"
+                        src="/logo-512.png"
                         alt=""
                         className="h-16 w-16 flex-none rounded-full ring-1 ring-white/10"
                       />
