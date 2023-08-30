@@ -27,9 +27,9 @@ export default function FetchGallery() {
           },
         });
         const data = await response.json();
-        //console.log(data);
+        console.log(data);
         setUserId(data.id);
-        //console.log(data.id);
+        console.log(data.id);
       } catch (error) {
         setError(error);
       }
@@ -42,7 +42,7 @@ export default function FetchGallery() {
     if (!userId) return; // Wait for userId to be available
 
     const userDataApiUrl = `https://backend.headpat.de/api/user-data/${userId}`;
-    //console.log(userDataApiUrl);
+    console.log(userDataApiUrl);
 
     const fetchUserData = async () => {
       const token = document.cookie.replace(
@@ -61,7 +61,7 @@ export default function FetchGallery() {
 
         const data = await response.json();
         setEnableNsfw(data.data.attributes.enablensfw);
-        //console.log(data.data.attributes.enablensfw);
+        console.log(data.data.attributes.enablensfw);
       } catch (error) {
         setError(error);
       }
@@ -73,10 +73,10 @@ export default function FetchGallery() {
   useEffect(() => {
     if (!userId) return; // Wait for userId to be available
 
-    const filters = !enableNsfw ? `filters[nsfw][$eq]=false` : ``;
+    const filters = !enableNsfw ? `filters[nsfw][$eq]=false` : `filters[nsfw][$eq]=false`;
 
     const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&${filters}`;
-    //console.log(apiUrl);
+    console.log(apiUrl);
 
     setIsLoading(true);
 

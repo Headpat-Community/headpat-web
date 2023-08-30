@@ -59,7 +59,7 @@ export default function Example({ children }) {
     if (!jwt) {
       window.location.href = "/login";
     } else {
-      fetch("/api/user", {
+      fetch("https://backend.headpat.de/api/users/me", {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
