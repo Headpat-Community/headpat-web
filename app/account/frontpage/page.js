@@ -146,8 +146,9 @@ export default function AccountPage() {
         console.log("File uploaded successfully");
         setIsUploading(false); // Set isUploading to false after the API call is complete
         setUserData(responseData); // Set the userData state with the response data
-        // Add the "Saved!" text to the form
-        alert("Saved!");
+        // Reload the window
+        alert("Saved!")
+        window.location.reload();
       } else {
         // Check for the specific error structure
         if (
