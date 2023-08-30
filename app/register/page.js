@@ -43,10 +43,6 @@ const Login = () => {
         }
       );
       const data = await response.json();
-      const expirationTime = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-      document.cookie = `jwt=${
-        data.jwt
-      }; expires=${expirationTime.toUTCString()}; path=/`;
       //console.log("User authenticated successfully");
 
       // Make a POST request to https://backend.headpat.de/api/user-data with a "status" field
@@ -62,10 +58,32 @@ const Login = () => {
         }),
       });
 
-      window.location.href = "/account";
+      if (response.status === 400) {
+        setError(
+          `Incorrect credentials or already made account! We tried everything, It's just not possible.`
+        );
+        setTimeout(() => {
+          setError("");
+        }, 5000);
+      } else if (response.status === 429) {
+        setError("Too many requests!");
+        setTimeout(() => {
+          setError("");
+        }, 5000);
+      } else if (response.status === 500) {
+        setError("Server error!");
+        setTimeout(() => {
+          setError("");
+        }, 5000);
+      } else if (response.status === 200) {
+        setError("Please confirm your E-Mail!");
+        setTimeout(() => {
+          setError("");
+        }, 20000);
+      }
     } catch (error) {
       console.log(error);
-      setError("E-Mail oder Passwort inkorrekt!");
+      setError("Fehler!");
     }
   };
 
@@ -82,6 +100,10 @@ const Login = () => {
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
             Register
           </h2>
+
+          {error && (
+            <div className="text-red-500 text-center mt-2">{error}</div>
+          )}
 
           <form className="mt-10 space-y-6" action="#" method="POST">
             <div>
@@ -134,14 +156,6 @@ const Login = () => {
                 >
                   Password:
                 </label>
-                <div className="text-sm">
-                  <Link
-                    href="/forgot-password"
-                    className="font-semibold text-indigo-400 hover:text-indigo-300"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
               </div>
               <div className="mt-2">
                 <input
@@ -160,11 +174,20 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mb-6"
                 onClick={handleSubmit}
               >
                 Sign in
               </button>
+              <div>
+                <Link
+                  href="/login"
+                  type="submit"
+                  className="flex w-full justify-center rounded-md bg-red-800 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                >
+                  &larr; Already have an account?
+                </Link>
+              </div>
             </div>
           </form>
         </div>
