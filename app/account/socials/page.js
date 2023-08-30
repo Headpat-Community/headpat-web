@@ -4,37 +4,61 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function AccountPage() {
-  const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [userData, setUserData] = useState({
+    discordname: "",
+    telegramname: "",
+    furaffinityname: "",
+  });
 
-  const handleAvatarChange = (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile.size > 2 * 1024 * 1024) {
-      alert("File size must be less than 2 MB.");
-      return;
-    }
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(selectedFile);
-    fileReader.onload = (event) => {
-      const imgElement = document.getElementById("avatar-image");
-      imgElement.src = event.target.result;
-      const img = new Image();
-      img.src = event.target.result;
-      img.onload = () => {
-        if (img.width <= 1024 && img.height <= 1024) {
-          setSelectedFile(selectedFile);
-        } else {
-          alert("Image resolution must be at most 1024x1024 pixels.");
-        }
-      };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = document.cookie.replace(
+          /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
+          "$1"
+        );
+
+        const userResponse = await fetch(
+          "https://backend.headpat.de/api/users/me",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const userResponseData = await userResponse.json();
+        const userId = userResponseData.id;
+
+        const userDataResponse = await fetch(
+          `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const userDataResponseData = await userDataResponse.json();
+        const userDataAttributes = userDataResponseData.data.attributes;
+        setUserData({
+          discordname: userDataAttributes.discordname || "",
+          telegramname: userDataAttributes.telegramname || "",
+          furaffinityname: userDataAttributes.furaffinityname || "",
+        });
+      } catch (error) {
+        console.error(error);
+      }
     };
-  };
+
+    fetchData();
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const formData = new FormData();
-    formData.append("files.avatar", selectedFile);
 
     try {
       const token = document.cookie.replace(
@@ -55,17 +79,22 @@ export default function AccountPage() {
       const userResponseData = await userResponse.json();
       const userId = userResponseData.id;
 
-      // Year-Month-Day (YYYY-MM-DD)
+      const formData = new FormData();
 
+      // Append the data for Discord, Telegram, and Furaffinity
       formData.append(
         "data",
         JSON.stringify({
-          email: birthday.value,
           users_permissions_user: userId,
+          discordname: document.getElementById("discordname").value,
+          telegramname: document.getElementById("telegramname").value,
+          furaffinityname: document.getElementById("furaffinityname").value,
+          X_name: document.getElementById("X_name").value,
+          twitchname: document.getElementById("twitchname").value,
         })
       );
 
-      setIsUploading(true); // Set isUploading to true before making the API call
+      setIsUploading(true);
 
       const response = await fetch(
         `https://backend.headpat.de/api/user-data/${userId}`,
@@ -80,21 +109,16 @@ export default function AccountPage() {
 
       const responseData = await response.json();
       if (response.ok) {
-        console.log("File uploaded successfully");
+        console.log("Data uploaded successfully");
         setIsUploading(false); // Set isUploading to false after the API call is complete
         // Add the "Saved!" text to the form
-        const savedText = document.createElement("p");
-        savedText.textContent = "Saved!";
-        savedText.style.color = "green";
-        event.target.appendChild(savedText);
-        // Remove the "Saved!" text after 5 seconds
-        setTimeout(() => {
-          savedText.remove();
-        }, 5000);
+        alert("Saved!");
       } else {
-        console.error("Failed to upload file:", responseData);
+        alert("Failed to upload Data");
+        console.error("Failed to upload Data:", responseData);
       }
     } catch (error) {
+      alert("Failed to upload Data");
       console.error(error);
     }
   };
@@ -130,12 +154,12 @@ export default function AccountPage() {
         </header>
         <div className="divide-y divide-white/5">
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-            <div>
+          <div>
               <h2 className="text-base font-semibold leading-7 text-white">
                 Socials
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">
-                Hier kannst du deine Socials verwalten.
+                Hier kannst du deine Links zu deinen Social Media Accounts eintragen.
               </p>
             </div>
 
@@ -143,10 +167,10 @@ export default function AccountPage() {
               <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
                 <div className="sm:col-span-3">
                   <label
-                    htmlFor="first-name"
+                    htmlFor="discordname"
                     className="block text-sm font-medium leading-6 text-white"
                   >
-                    Discord Name
+                    Discord ID
                   </label>
                   <div className="mt-2">
                     <input
@@ -154,13 +178,20 @@ export default function AccountPage() {
                       name="discordname"
                       id="discordname"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.discordname}
+                      onChange={(e) =>
+                        setUserData({
+                          ...userData,
+                          discordname: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </div>
 
                 <div className="sm:col-span-3">
                   <label
-                    htmlFor="last-name"
+                    htmlFor="telegramname"
                     className="block text-sm font-medium leading-6 text-white"
                   >
                     Telegram Name
@@ -171,13 +202,20 @@ export default function AccountPage() {
                       name="telegramname"
                       id="telegramname"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.telegramname}
+                      onChange={(e) =>
+                        setUserData({
+                          ...userData,
+                          telegramname: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </div>
 
                 <div className="sm:col-span-3">
                   <label
-                    htmlFor="last-name"
+                    htmlFor="furaffinityname"
                     className="block text-sm font-medium leading-6 text-white"
                   >
                     Furaffinity Name
@@ -188,23 +226,61 @@ export default function AccountPage() {
                       name="furaffinityname"
                       id="furaffinityname"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.furaffinityname}
+                      onChange={(e) =>
+                        setUserData({
+                          ...userData,
+                          furaffinityname: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </div>
 
                 <div className="sm:col-span-3">
                   <label
-                    htmlFor="last-name"
+                    htmlFor="furaffinityname"
                     className="block text-sm font-medium leading-6 text-white"
                   >
-                    Placeholder
+                    X (Twitter) Name
                   </label>
                   <div className="mt-2">
                     <input
                       type="text"
-                      name="placeholdername"
-                      id="placeholdername"
+                      name="X_name"
+                      id="X_name"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.X_name}
+                      onChange={(e) =>
+                        setUserData({
+                          ...userData,
+                          X_name: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="sm:col-span-3">
+                  <label
+                    htmlFor="furaffinityname"
+                    className="block text-sm font-medium leading-6 text-white"
+                  >
+                    Twitch
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      type="text"
+                      name="twitchname"
+                      id="twitchname"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.twitchname}
+                      onChange={(e) =>
+                        setUserData({
+                          ...userData,
+                          twitchname: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </div>

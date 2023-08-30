@@ -86,14 +86,7 @@ export default function UploadPage() {
         console.log("File uploaded successfully");
         setIsUploading(false); // Set isUploading to false after the API call is complete
         // Add the "Saved!" text to the form
-        const savedText = document.createElement("p");
-        savedText.textContent = "Saved!";
-        savedText.style.color = "green";
-        event.target.appendChild(savedText);
-        // Remove the "Saved!" text after 5 seconds
-        setTimeout(() => {
-          savedText.remove();
-        }, 5000);
+        alert("Saved!")
       } else {
         console.error("Failed to upload file:", responseData);
       }

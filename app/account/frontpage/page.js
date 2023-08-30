@@ -135,14 +135,7 @@ export default function AccountPage() {
         setIsUploading(false); // Set isUploading to false after the API call is complete
         setUserData(responseData); // Set the userData state with the response data
         // Add the "Saved!" text to the form
-        const savedText = document.createElement("p");
-        savedText.textContent = "Saved!";
-        savedText.style.color = "green";
-        event.target.appendChild(savedText);
-        // Remove the "Saved!" text after 5 seconds
-        setTimeout(() => {
-          savedText.remove();
-        }, 5000);
+        alert("Saved!");
       } else {
         // Check for the specific error structure
         if (
@@ -150,14 +143,7 @@ export default function AccountPage() {
           responseData.error.message === "bio must be at most 256 characters"
         ) {
           // Show an error message to the user
-          const errorText = document.createElement("p");
-          errorText.textContent = "Bio must be at most 256 characters.";
-          errorText.style.color = "red";
-          event.target.appendChild(errorText);
-          // Remove the error message after 5 seconds
-          setTimeout(() => {
-            errorText.remove();
-          }, 5000);
+          alert("Biografie darf nur bis 256 zeichen lang sein.");
         } else {
           console.error("Failed to upload file:", responseData);
         }

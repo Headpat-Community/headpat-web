@@ -17,7 +17,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPersonHalfDress } from "@fortawesome/free-solid-svg-icons";
-import { faTelegram, faDiscord } from "@fortawesome/free-brands-svg-icons";
+import { faTelegram, faDiscord, faXTwitter, faTwitch } from "@fortawesome/free-brands-svg-icons";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -204,6 +204,30 @@ export default function UserProfile() {
                   >
                     <FontAwesomeIcon
                       icon={faDiscord}
+                      className="text-white hover:text-indigo-500 text-2xl"
+                    />
+                  </Link>
+                )}
+                {userData?.data?.attributes?.X_name && (
+                  <Link
+                    href={`https://x.com/${userData.data.attributes.X_name}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FontAwesomeIcon
+                      icon={faXTwitter}
+                      className="text-white hover:text-indigo-500 text-2xl"
+                    />
+                  </Link>
+                )}
+                {userData?.data?.attributes?.discordname && (
+                  <Link
+                    href={`https://twitch.tv/${userData.data.attributes.twitchname}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FontAwesomeIcon
+                      icon={faTwitch}
                       className="text-white hover:text-indigo-500 text-2xl"
                     />
                   </Link>

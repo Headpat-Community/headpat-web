@@ -91,13 +91,7 @@ export default function AccountPage() {
       );
 
       if (userResponseUpdate.status === 200) {
-        console.log("User updated successfully");
-        const savedText = document.createElement("p");
-        savedText.textContent = "Gespeichert!";
-        event.target.appendChild(savedText);
-        setTimeout(() => {
-          savedText.remove();
-        }, 5000);
+        alert("User data updated successfully");
       }
     } catch (error) {
       console.error(error);
@@ -106,29 +100,33 @@ export default function AccountPage() {
 
   const handlePasswordReset = async () => {
     try {
+      const token = document.cookie.replace(
+        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
+        "$1"
+      );
+
       const response = await fetch(
-        "https://backend.headpat.de/api/auth/forgot-password",
+        "https://backend.headpat.de/api/auth/change-password",
         {
           method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: email.value, // Replace with the user's email address
+            currentPassword: currentpassword.value,
+            password: newpassword.value,
+            passwordConfirmation: confirmpassword.value,
           }),
         }
       );
 
       if (response.ok) {
-        console.log("Password reset email sent successfully");
-        const savedText = document.createElement("p");
-        savedText.textContent = "Password reset email sent!";
-        document.body.appendChild(savedText);
-        setTimeout(() => {
-          savedText.remove();
-        }, 5000);
+        alert("Password reset email sent");
       } else {
-        console.error("Failed to send password reset email");
+        alert("Password reset email failed to send");
       }
     } catch (error) {
       console.error(error);
@@ -305,12 +303,63 @@ export default function AccountPage() {
             <form className="md:col-span-2">
               <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
                 <div className="col-span-full">
-                  <button
-                    type="button"
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    onClick={handlePasswordReset}
+                  <label
+                    htmlFor="current-password"
+                    className="block text-sm font-medium text-gray-700"
                   >
-                    Send password reset E-Mail
+                    Current password
+                  </label>
+                  <input
+                    type="password"
+                    name="currentpassword"
+                    id="currentpassword"
+                    autoComplete="current-password"
+                    required
+                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                  />
+                </div>
+                <div className="col-span-full">
+                  <label
+                    htmlFor="new-password"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    New password
+                  </label>
+                  <input
+                    type="password"
+                    name="newpassword"
+                    id="newpassword"
+                    autoComplete="new-password"
+                    required
+                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                  />
+                </div>
+                <div className="col-span-full">
+                  <label
+                    htmlFor="confirm-password"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Confirm new password
+                  </label>
+                  <input
+                    type="password"
+                    name="confirmpassword"
+                    id="confirmpassword"
+                    autoComplete="new-password"
+                    required
+                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                  />
+                </div>
+                <div className="col-span-full">
+                  <button
+                    type="submit"
+                    className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      handlePasswordReset();
+                    }}
+                  >
+                    Save
                   </button>
                 </div>
               </div>
@@ -323,7 +372,7 @@ export default function AccountPage() {
                 Enable NSFW (Soon)
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">
-                Update your password associated with your account.
+                CHecking this box will enable NSFW images. 18+ only.
               </p>
             </div>
 
