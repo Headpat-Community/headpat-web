@@ -98,7 +98,18 @@ export default function AccountPage() {
     }
   };
 
-  const handlePasswordReset = async () => {
+  const handlePasswordReset = async (event) => {
+    event.preventDefault();
+
+    const currentPassword = event.target.currentpassword.value;
+    const newPassword = event.target.newpassword.value;
+    const confirmPassword = event.target.confirmpassword.value;
+
+    if (newPassword !== confirmPassword) {
+      alert("New password and confirm password do not match");
+      return;
+    }
+
     try {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
@@ -111,22 +122,20 @@ export default function AccountPage() {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
-          },
-          headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            currentPassword: currentpassword.value,
-            password: newpassword.value,
-            passwordConfirmation: confirmpassword.value,
+            currentPassword: currentPassword,
+            password: newPassword,
+            passwordConfirmation: confirmPassword,
           }),
         }
       );
 
       if (response.ok) {
-        alert("Password reset email sent");
+        alert("Password reset successful");
       } else {
-        alert("Password reset email failed to send");
+        alert("Password reset failed");
       }
     } catch (error) {
       console.error(error);
@@ -299,34 +308,33 @@ export default function AccountPage() {
               </p>
             </div>
 
-            <form className="md:col-span-2">
+            <form className="md:col-span-2" onSubmit={handlePasswordReset}>
               <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
                 <div className="col-span-full">
-                  <label
+                  <span
                     htmlFor="current-password"
-                    className="block text-sm font-medium text-white"
+                    className="block text-sm font-medium text-white mb-2"
                   >
                     Current password
-                  </label>
+                  </span>
                   <input
                     type="password"
-                    name="currentpassword"
+                    name="currentpassword" // Updated name
                     id="currentpassword"
                     autoComplete="current-password"
-                    required
                     className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   />
                 </div>
                 <div className="col-span-full">
-                  <label
+                  <span
                     htmlFor="new-password"
-                    className="block text-sm font-medium text-white"
+                    className="block text-sm font-medium text-white mb-2"
                   >
                     New password
-                  </label>
+                  </span>
                   <input
                     type="password"
-                    name="newpassword"
+                    name="newpassword" // Updated name
                     id="newpassword"
                     autoComplete="new-password"
                     required
@@ -334,15 +342,15 @@ export default function AccountPage() {
                   />
                 </div>
                 <div className="col-span-full">
-                  <label
+                  <span
                     htmlFor="confirm-password"
-                    className="block text-sm font-medium text-white"
+                    className="block text-sm font-medium text-white mb-2"
                   >
                     Confirm new password
-                  </label>
+                  </span>
                   <input
                     type="password"
-                    name="confirmpassword"
+                    name="confirmpassword" // Updated name
                     id="confirmpassword"
                     autoComplete="new-password"
                     required
@@ -353,10 +361,6 @@ export default function AccountPage() {
                   <button
                     type="submit"
                     className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      handlePasswordReset();
-                    }}
                   >
                     Save
                   </button>
