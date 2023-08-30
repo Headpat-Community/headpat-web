@@ -45,12 +45,13 @@ export default function AccountPage() {
         );
 
         const userDataResponseData = await userDataResponse.json();
+        //console.log(userDataResponseData.data.attributes);
         setUserData({
           status: userDataResponseData.data.attributes.status || "", // Set the status value or an empty string
           bio: userDataResponseData.data.attributes.bio || "", // Set the bio value or an empty string
           displayname: userDataResponseData.data.attributes.displayname || "", // Set the bio value or an empty string
           avatar:
-            userDataResponseData.data.attributes.avatar.data.attributes.url ||
+            userDataResponseData.data.attributes.avatar?.data?.attributes?.url ||
             "/logo.png", // Set the avatar value or an empty string
         });
       } catch (error) {
