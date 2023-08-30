@@ -6,6 +6,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
+import Image from "next/image";
 
 const links = [
   {
@@ -42,8 +43,10 @@ export default function Example() {
   return (
     <div className="flex flex-col justify-center items-center h-screen">
       <main className="mx-auto w-full max-w-7xl px-6 pb-8 pt-10 sm:pb-12 lg:px-8">
-        <img
+        <Image
           className="mx-auto h-36 w-auto sm:h-72"
+          height={256}
+          width={256}          
           src="https://cdn.headpat.de/public/404.svg"
           alt="Headpat Community"
         />
