@@ -119,7 +119,7 @@ export default function FetchGallery() {
         {isLoading ? (
           error ? (
             <p className="text-center text-red-500 font-bold my-8">
-              Error: {error.message}
+              Error: {error && error.message}
             </p>
           ) : (
             <p className="text-center text-gray-500 font-bold my-8">

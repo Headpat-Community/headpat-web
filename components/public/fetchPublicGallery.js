@@ -7,21 +7,91 @@ export default function FetchGallery() {
   const [loadMore, setLoadMore] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&filters[nsfw][$eq]=false&randomSort=true`;
+  const [userId, setUserId] = useState(null);
+  const [enableNsfw, setEnableNsfw] = useState(false);
 
   useEffect(() => {
+    const userApiUrl = `https://backend.headpat.de/api/users/me`;
+
+    const fetchUserId = async () => {
+      const token = document.cookie.replace(
+        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
+        "$1"
+      );
+      if (!token) return; // Return if "jwt" token does not exist
+
+      try {
+        const response = await fetch(userApiUrl, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        //console.log(data);
+        setUserId(data.id);
+        //console.log(data.id);
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
+  useEffect(() => {
+    if (!userId) return; // Wait for userId to be available
+
+    const userDataApiUrl = `https://backend.headpat.de/api/user-data/${userId}`;
+    //console.log(userDataApiUrl);
+
+    const fetchUserData = async () => {
+      const token = document.cookie.replace(
+        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
+        "$1"
+      );
+      if (!token) return; // Return if "jwt" token does not exist
+
+      try {
+        const response = await fetch(userDataApiUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+        setEnableNsfw(data.data.attributes.enablensfw);
+        //console.log(data.data.attributes.enablensfw);
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    fetchUserData();
+  }, [userId]);
+
+  useEffect(() => {
+    if (!userId) return; // Wait for userId to be available
+
+    const filters = !enableNsfw ? `filters[nsfw][$eq]=false` : ``;
+
+    const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&${filters}`;
+    //console.log(apiUrl);
+
     setIsLoading(true);
 
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
-        setGallery(data.data.reverse()); // Reverse the order of the array
+        setGallery(data.data.reverse());
         setVisibleGallery(getVisibleGallery(data.data, window.innerWidth));
         setIsLoading(false);
       })
-      .catch((error) => console.error(error));
-  }, [apiUrl]);
+      .catch((error) => {
+        setError(error);
+        setIsLoading(false);
+      });
+  }, [userId, enableNsfw]);
 
   const handleLoadMore = () => {
     const nextVisibleGallery = gallery.slice(0, visibleGallery.length + 12);
@@ -52,7 +122,9 @@ export default function FetchGallery() {
     <div>
       {isLoading ? (
         error ? (
-          <p className="text-center text-red-500 font-bold my-8">{error}</p>
+          <p className="text-center text-red-500 font-bold my-8">
+            Error: {error && error.message}
+          </p>
         ) : (
           <p className="text-center text-gray-500 font-bold my-8">Loading...</p>
         )
@@ -66,32 +138,22 @@ export default function FetchGallery() {
               {item.attributes.img && item.attributes.img.data && (
                 <div
                   className={`rounded-lg overflow-hidden h-64 ${
-                    item.attributes.nsfw ? "relative" : ""
+                    item.attributes.nsfw && !enableNsfw ? "relative" : ""
                   }`}
                 >
-                  {item.attributes.nsfw && (
+                  {item.attributes.nsfw && !enableNsfw && (
                     <div className="absolute inset-0 bg-black opacity-50"></div>
                   )}
                   <img
                     src={
-                      item.attributes.nsfw
-                        ? item.attributes.img.data.attributes.formats.small.url
-                        : item.attributes.img.data.attributes.mime ===
-                          "image/gif"
-                        ? item.attributes.img.data.attributes.url
-                        : item.attributes.img.data.attributes.height < 156 ||
-                          item.attributes.img.data.attributes.width < 156
+                      item.attributes.nsfw && !enableNsfw
+                        ? "https://placekitten.com/200/300" // Replace with placeholder image URL
+                        : item.attributes.img.data.attributes.ext === ".gif"
                         ? item.attributes.img.data.attributes.url
                         : item.attributes.img.data.attributes.formats.small.url
                     }
                     alt={item.attributes.imgalt}
-                    className={`object-cover h-full w-full ${
-                      item.attributes.nsfw ? "backdrop-blur-xl" : ""
-                    }`}
-                    style={{
-                      filter: item.attributes.nsfw ? "blur(30px)" : "none",
-                    }}
-                    draggable="false" // Add this attribute to prevent dragging
+                    className={`object-cover h-full w-full`}
                   />
                 </div>
               )}
