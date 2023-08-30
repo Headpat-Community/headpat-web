@@ -76,10 +76,10 @@ export default function AccountPage() {
       const img = new Image();
       img.src = event.target.result;
       img.onload = () => {
-        if (img.width <= 2048 && img.height <= 2048) {
+        if (img.width <= 1024 && img.height <= 1024) {
           setSelectedFile(selectedFile);
         } else {
-          alert("Image resolution darf nur bis 2048x2048 pixel groß sein.");
+          alert("Image resolution darf nur bis 1024x1024 pixel groß sein.");
         }
       };
     };
@@ -218,7 +218,7 @@ export default function AccountPage() {
                       onChange={handleAvatarChange}
                     />
                     <p className="mt-2 text-xs leading-5 text-gray-400">
-                      JPG, GIF or PNG. 1MB max.
+                      JPG, GIF or PNG. 2MB max.
                     </p>
                     <p className="mt-2 text-xs leading-5 text-gray-400">
                       1024x1024 max. resolution
