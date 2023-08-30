@@ -9,6 +9,7 @@ export default function AccountPage() {
   const [userData, setUserData] = useState({
     status: "", // Initialize with an empty string
     bio: "", // Initialize with an empty string
+    avatar: "", // Initialize with an empty string
   });
 
   useEffect(() => {
@@ -46,6 +47,7 @@ export default function AccountPage() {
         setUserData({
           status: userDataResponseData.data.attributes.status || "", // Set the status value or an empty string
           bio: userDataResponseData.data.attributes.bio || "", // Set the bio value or an empty string
+          avatar: userDataResponseData.data.attributes.avatar.data.attributes.url || "/logo.png", // Set the avatar value or an empty string
         });
       } catch (error) {
         console.error(error);
@@ -210,11 +212,7 @@ export default function AccountPage() {
                 <div className="col-span-full flex items-center gap-x-8">
                   <img
                     id="avatar-image"
-                    src={
-                      userData && userData.avatar && userData.avatar.data
-                        ? userData.avatar.data.attributes.url
-                        : "/logo-512.png"
-                    }
+                    src={userData.avatar || "/logo.png"}
                     alt=""
                     className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
                   />
@@ -270,7 +268,7 @@ export default function AccountPage() {
                     <textarea
                       id="biostatus"
                       name="biostatus"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 h-24"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 h-72"
                       value={userData.bio} // Set the value from state
                       onChange={(e) =>
                         setUserData({ ...userData, bio: e.target.value })
