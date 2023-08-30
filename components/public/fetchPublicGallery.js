@@ -8,7 +8,7 @@ export default function FetchGallery() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&filters[nsfw][$eq]=false`;
+  const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&filters[nsfw][$eq]=false&randomSort=true`;
 
   useEffect(() => {
     setIsLoading(true);

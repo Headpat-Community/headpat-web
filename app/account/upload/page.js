@@ -88,6 +88,7 @@ export default function UploadPage() {
         setIsUploading(false); // Set isUploading to false after the API call is complete
         // Add the "Saved!" text to the form
         alert("Saved!")
+        window.location.reload();
       } else {
         console.error("Failed to upload file:", responseData);
       }
