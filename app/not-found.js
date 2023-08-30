@@ -45,8 +45,9 @@ export default function Example() {
       <main className="mx-auto w-full max-w-7xl px-6 pb-8 pt-10 sm:pb-12 lg:px-8">
         <Image
           className="mx-auto h-36 w-auto sm:h-72"
+          priority
           height={256}
-          width={256}          
+          width={256}
           src="https://cdn.headpat.de/public/404.svg"
           alt="Headpat Community"
         />

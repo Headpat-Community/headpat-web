@@ -129,6 +129,7 @@ export default function UploadPage() {
                           id="selected-image"
                           className="mx-auto h-96 min-w-full object-cover rounded-md"
                           alt=""
+                          src="/placeholder-image.png"
                         />
                         <div className="mt-4 flex text-sm leading-6 text-gray-400">
                           <label
