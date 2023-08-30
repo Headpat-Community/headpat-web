@@ -32,7 +32,7 @@ const activity = [
       imageUrl: "/logo.png",
     },
     comment: "Irgendwann könnt ihr hier auch comments schreiben! :3",
-    date: "3d ago",
+    date: "soon",
     dateTime: "2023-01-23T15:56",
   },
 ];
@@ -565,7 +565,8 @@ export default function UserProfile() {
                     </div>
                     <button
                       type="submit"
-                      className="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                      className="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700"
+                      disabled
                     >
                       Comment
                     </button>
