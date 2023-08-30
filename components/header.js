@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Gallerie", href: "/gallery" },
+  { name: "Gallery", href: "/gallery" },
 ];
 
 export default function Header() {
