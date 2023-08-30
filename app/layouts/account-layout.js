@@ -156,7 +156,7 @@ export default function Example({ children }) {
                     <div className="flex h-16 shrink-0 items-center">
                       <img
                         className="h-8 w-auto"
-                        src="/logo-512.png"
+                        src="https://cdn.headpat.de/public/logo.svg"
                         alt="Headpat Community"
                       />
                     </div>
@@ -204,7 +204,7 @@ export default function Example({ children }) {
             <div className="flex h-20 shrink-0 items-center">
               <img
                 className="h-12 w-auto"
-                src="/logo-512.png"
+                src="https://cdn.headpat.de/public/logo.svg"
                 alt="Headpat Community"
               />
             </div>
@@ -244,7 +244,7 @@ export default function Example({ children }) {
                         src={
                           userData.avatar
                             ? userData.avatar.data.attributes.url
-                            : "/logo-512.png"
+                            : "https://cdn.headpat.de/public/logo.svg"
                         }
                         alt=""
                       />

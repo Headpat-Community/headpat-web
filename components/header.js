@@ -18,7 +18,7 @@ export default function Header() {
         <div className="flex lg:flex-1">
           <Link href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">Headpat Community</span>
-            <img className="h-10 w-auto" src="/logo-512.png" alt="" />
+            <img className="h-10 w-auto" src="https://cdn.headpat.de/public/logo.svg" alt="" />
           </Link>
         </div>
         <div className="flex lg:hidden">
@@ -52,7 +52,7 @@ export default function Header() {
               <span className="sr-only">Your Company</span>
               <img
                 className="h-8 w-auto"
-                src="/logo-512.png"
+                src="https://cdn.headpat.de/public/logo.svg"
                 alt=""
               />
             </Link>
