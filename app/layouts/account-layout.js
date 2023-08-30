@@ -40,6 +40,7 @@ function classNames(...classes) {
 export default function Example({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [userMeData, setUserMeData] = useState(null);
 
   function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -75,7 +76,11 @@ export default function Example({ children }) {
           }
         );
         const userResponseData = await userResponse.json();
+        // Set the userMeData state to the attributes object of the API response
+        setUserMeData(userResponseData);
+        // Get the user ID from the API response
         const userId = userResponseData.id;
+
         const userDataResponse = await fetch(
           `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
           {
@@ -242,14 +247,13 @@ export default function Example({ children }) {
                       <img
                         className="h-8 w-8 rounded-full bg-gray-800"
                         src={
-                          userData.avatar
-                            ? userData.avatar.data.attributes.url
-                            : "/logo-512.png"
+                          userData.avatar?.data?.attributes?.url ||
+                          "/logo-512.png"
                         }
                         alt=""
                       />
                       <span className="sr-only">Your profile</span>
-                      <span aria-hidden="true">{userData.displayname}</span>
+                      <span aria-hidden="true">{userData.displayname || userMeData.username}</span>
                     </Link>
                   </li>
                 ) : (

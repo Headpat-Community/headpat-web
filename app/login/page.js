@@ -64,7 +64,7 @@ const Login = () => {
             alt="Headpat Logo"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
-            Einloggen
+            Login
           </h2>
 
           <form className="mt-10 space-y-6" action="#" method="POST">
@@ -99,7 +99,7 @@ const Login = () => {
                 </label>
                 <div className="text-sm">
                   <Link
-                    href="#"
+                    href="/forgot-password"
                     className="font-semibold text-indigo-400 hover:text-indigo-300"
                   >
                     Forgot password?
@@ -128,6 +128,15 @@ const Login = () => {
               >
                 Sign in
               </button>
+            </div>
+            <div>
+              <Link
+                href="/register"
+                type="submit"
+                className="flex w-full justify-center rounded-md bg-red-800 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+              >
+                Make an account &rarr;
+              </Link>
             </div>
           </form>
         </div>

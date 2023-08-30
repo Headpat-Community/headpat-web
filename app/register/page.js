@@ -80,7 +80,7 @@ const Login = () => {
             alt="Headpat Logo"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
-            Account erstellen
+            Register
           </h2>
 
           <form className="mt-10 space-y-6" action="#" method="POST">
@@ -139,7 +139,7 @@ const Login = () => {
                     href="/forgot-password"
                     className="font-semibold text-indigo-400 hover:text-indigo-300"
                   >
-                    Passwort vergessen?
+                    Forgot password?
                   </Link>
                 </div>
               </div>
