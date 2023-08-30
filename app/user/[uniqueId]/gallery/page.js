@@ -64,8 +64,8 @@ export default function FetchGallery() {
     if (!userId) return; // Wait for userId to be available
 
     const filters = enableNsfw
-      ? `filters[users_permissions_user][id][$eq]=${userId}`
-      : `filters[users_permissions_user][id][$eq]=${userId}&filters[nsfw][$eq]=false`;
+      ? `filters[users_permissions_user][id][$eq]=${userId}&filters[nsfw][$eq]=false`
+      : `filters[users_permissions_user][id][$eq]=${userId}&filters[nsfw][$eq]=true`;
 
     const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&${filters}`;
 
