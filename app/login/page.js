@@ -45,9 +45,6 @@ const Login = () => {
       document.cookie = `jwt=${
         data.jwt
       }; expires=${expirationTime.toUTCString()}; path=/`;
-      document.cookie = `username=${
-        data.user.username
-      }; expires=${expirationTime.toUTCString()}; path=/`;
       //console.log("User authenticated successfully");
       window.location.href = "/account";
     } catch (error) {

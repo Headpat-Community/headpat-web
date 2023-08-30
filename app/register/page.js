@@ -47,9 +47,6 @@ const Login = () => {
       document.cookie = `jwt=${
         data.jwt
       }; expires=${expirationTime.toUTCString()}; path=/`;
-      document.cookie = `username=${
-        data.user.username
-      }; expires=${expirationTime.toUTCString()}; path=/`;
       //console.log("User authenticated successfully");
 
       // Make a POST request to https://backend.headpat.de/api/user-data with a "status" field

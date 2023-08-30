@@ -21,13 +21,13 @@ const navigation = [
   },
   {
     name: "Gallerie",
-    href: "/account/gallery",
+    href: "#",
     icon: PhotoIcon,
     current: false,
   },
   {
     name: "Projekte",
-    href: "/account/projects",
+    href: "#",
     icon: FolderIcon,
     current: false,
   },
