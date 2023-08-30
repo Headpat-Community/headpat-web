@@ -220,7 +220,7 @@ export default function UserProfile() {
                     />
                   </Link>
                 )}
-                {userData?.data?.attributes?.discordname && (
+                {userData?.data?.attributes?.twitchname && (
                   <Link
                     href={`https://twitch.tv/${userData.data.attributes.twitchname}`}
                     target="_blank"

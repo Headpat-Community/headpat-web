@@ -57,7 +57,7 @@ const Login = () => {
         },
         body: JSON.stringify({
           data: {
-            status: "bin neu hier!",
+            status: "I'm new here!",
           },
         }),
       });

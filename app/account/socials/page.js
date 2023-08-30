@@ -9,6 +9,8 @@ export default function AccountPage() {
     discordname: "",
     telegramname: "",
     furaffinityname: "",
+    X_name: "",
+    twitchname: "",
   });
 
   useEffect(() => {
@@ -48,6 +50,8 @@ export default function AccountPage() {
           discordname: userDataAttributes.discordname || "",
           telegramname: userDataAttributes.telegramname || "",
           furaffinityname: userDataAttributes.furaffinityname || "",
+          X_name: userDataAttributes.X_name || "",
+          twitchname: userDataAttributes.twitchname || "",
         });
       } catch (error) {
         console.error(error);
@@ -239,7 +243,7 @@ export default function AccountPage() {
 
                 <div className="sm:col-span-3">
                   <label
-                    htmlFor="furaffinityname"
+                    htmlFor="X_name"
                     className="block text-sm font-medium leading-6 text-white"
                   >
                     X (Twitter) Name
@@ -263,7 +267,7 @@ export default function AccountPage() {
 
                 <div className="sm:col-span-3">
                   <label
-                    htmlFor="furaffinityname"
+                    htmlFor="twitchname"
                     className="block text-sm font-medium leading-6 text-white"
                   >
                     Twitch

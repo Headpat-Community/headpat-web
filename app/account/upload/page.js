@@ -53,6 +53,7 @@ export default function UploadPage() {
 
       const userResponseData = await userResponse.json();
       const userId = userResponseData.id;
+      console.log(userId);
 
       const currentDate = new Date();
       const year = currentDate.getFullYear();
@@ -63,11 +64,11 @@ export default function UploadPage() {
       formData.append(
         "data",
         JSON.stringify({
+          users_permissions_user: userId,
           name: imagename.value,
           imgalt: imgalt.value,
           nsfw: nsfw.checked,
           date: formattedDate,
-          users_permissions_user: userId,
         })
       );
 
