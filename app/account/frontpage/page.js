@@ -9,6 +9,7 @@ export default function AccountPage() {
   const [userData, setUserData] = useState({
     status: "", // Initialize with an empty string
     bio: "", // Initialize with an empty string
+    displayname: "", // Initialize with an empty string
     avatar: "", // Initialize with an empty string
   });
 
@@ -47,7 +48,10 @@ export default function AccountPage() {
         setUserData({
           status: userDataResponseData.data.attributes.status || "", // Set the status value or an empty string
           bio: userDataResponseData.data.attributes.bio || "", // Set the bio value or an empty string
-          avatar: userDataResponseData.data.attributes.avatar.data.attributes.url || "/logo.png", // Set the avatar value or an empty string
+          displayname: userDataResponseData.data.attributes.displayname || "", // Set the bio value or an empty string
+          avatar:
+            userDataResponseData.data.attributes.avatar.data.attributes.url ||
+            "/logo.png", // Set the avatar value or an empty string
         });
       } catch (error) {
         console.error(error);
@@ -113,6 +117,7 @@ export default function AccountPage() {
           users_permissions_user: userId,
           status: document.getElementById("status").value, // Get the value from the status input
           bio: document.getElementById("biostatus").value, // Get the value from the bio input
+          displayname: document.getElementById("displayname").value, // Get the value from the displayname input
         })
       );
 
@@ -222,6 +227,27 @@ export default function AccountPage() {
               </div>
 
               <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6 mt-12">
+                <div className="col-span-full">
+                  <label
+                    htmlFor="displayname"
+                    className="block text-sm font-medium leading-6 text-white"
+                  >
+                    Display Name
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="displayname"
+                      name="displayname"
+                      type="text"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.displayname} // Set the value from state
+                      onChange={(e) =>
+                        setUserData({ ...userData, displayname: e.target.value })
+                      } // Update state when the input changes
+                    />
+                  </div>
+                </div>
+
                 <div className="col-span-full">
                   <label
                     htmlFor="status"

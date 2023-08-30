@@ -304,7 +304,7 @@ export default function AccountPage() {
                 <div className="col-span-full">
                   <label
                     htmlFor="current-password"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-white"
                   >
                     Current password
                   </label>
@@ -320,7 +320,7 @@ export default function AccountPage() {
                 <div className="col-span-full">
                   <label
                     htmlFor="new-password"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-white"
                   >
                     New password
                   </label>
@@ -336,7 +336,7 @@ export default function AccountPage() {
                 <div className="col-span-full">
                   <label
                     htmlFor="confirm-password"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-white"
                   >
                     Confirm new password
                   </label>
