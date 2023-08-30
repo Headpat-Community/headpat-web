@@ -6,7 +6,10 @@ import Link from "next/link";
 export default function AccountPage() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState({
+    status: "", // Initialize with an empty string
+    bio: "", // Initialize with an empty string
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +43,10 @@ export default function AccountPage() {
         );
 
         const userDataResponseData = await userDataResponse.json();
-        setUserData(userDataResponseData.data.attributes);
+        setUserData({
+          status: userDataResponseData.data.attributes.status || "", // Set the status value or an empty string
+          bio: userDataResponseData.data.attributes.bio || "", // Set the bio value or an empty string
+        });
       } catch (error) {
         console.error(error);
       }
@@ -103,6 +109,8 @@ export default function AccountPage() {
         "data",
         JSON.stringify({
           users_permissions_user: userId,
+          status: document.getElementById("status").value, // Get the value from the status input
+          bio: document.getElementById("biostatus").value, // Get the value from the bio input
         })
       );
 
@@ -134,7 +142,23 @@ export default function AccountPage() {
           savedText.remove();
         }, 5000);
       } else {
-        console.error("Failed to upload file:", responseData);
+        // Check for the specific error structure
+        if (
+          responseData.error &&
+          responseData.error.message === "bio must be at most 256 characters"
+        ) {
+          // Show an error message to the user
+          const errorText = document.createElement("p");
+          errorText.textContent = "Bio must be at most 256 characters.";
+          errorText.style.color = "red";
+          event.target.appendChild(errorText);
+          // Remove the error message after 5 seconds
+          setTimeout(() => {
+            errorText.remove();
+          }, 5000);
+        } else {
+          console.error("Failed to upload file:", responseData);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -216,7 +240,7 @@ export default function AccountPage() {
               <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6 mt-12">
                 <div className="col-span-full">
                   <label
-                    htmlFor="current-password"
+                    htmlFor="status"
                     className="block text-sm font-medium leading-6 text-white"
                   >
                     status
@@ -227,40 +251,30 @@ export default function AccountPage() {
                       name="status"
                       type="text"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.status} // Set the value from state
+                      onChange={(e) =>
+                        setUserData({ ...userData, status: e.target.value })
+                      } // Update state when the input changes
                     />
                   </div>
                 </div>
 
                 <div className="col-span-full">
                   <label
-                    htmlFor="new-password"
+                    htmlFor="biostatus"
                     className="block text-sm font-medium leading-6 text-white"
                   >
                     bio
                   </label>
                   <div className="mt-2">
-                    <input
+                    <textarea
                       id="biostatus"
                       name="biostatus"
-                      type="text"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-span-full">
-                  <label
-                    htmlFor="confirm-password"
-                    className="block text-sm font-medium leading-6 text-white"
-                  >
-                    noch etwas
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      id="nochetwas"
-                      name="nochetwas"
-                      type="text"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 h-24"
+                      value={userData.bio} // Set the value from state
+                      onChange={(e) =>
+                        setUserData({ ...userData, bio: e.target.value })
+                      } // Update state when the input changes
                     />
                   </div>
                 </div>
