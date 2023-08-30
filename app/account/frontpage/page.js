@@ -10,6 +10,8 @@ export default function AccountPage() {
     status: "", // Initialize with an empty string
     bio: "", // Initialize with an empty string
     displayname: "", // Initialize with an empty string
+    pronouns: "", // Initialize with an empty string
+    birthday: "", // Initialize with an empty string
     avatar: "", // Initialize with an empty string
   });
 
@@ -50,6 +52,8 @@ export default function AccountPage() {
           status: userDataResponseData.data.attributes.status || "", // Set the status value or an empty string
           bio: userDataResponseData.data.attributes.bio || "", // Set the bio value or an empty string
           displayname: userDataResponseData.data.attributes.displayname || "", // Set the bio value or an empty string
+          birthday: userDataResponseData.data.attributes.birthday || "", // Set the bio value or an empty string
+          pronouns: userDataResponseData.data.attributes.pronouns || "", // Set the bio value or an empty string
           avatar:
             userDataResponseData.data.attributes.avatar?.data?.attributes?.url ||
             "/logo.png", // Set the avatar value or an empty string
@@ -119,6 +123,8 @@ export default function AccountPage() {
           status: document.getElementById("status").value, // Get the value from the status input
           bio: document.getElementById("biostatus").value, // Get the value from the bio input
           displayname: document.getElementById("displayname").value, // Get the value from the displayname input
+          birthday: document.getElementById("birthday").value, // Get the value from the displayname input
+          pronouns: document.getElementById("pronouns").value, // Get the value from the displayname input
         })
       );
 
@@ -254,7 +260,7 @@ export default function AccountPage() {
                     htmlFor="status"
                     className="block text-sm font-medium leading-6 text-white"
                   >
-                    status
+                    Status
                   </label>
                   <div className="mt-2">
                     <input
@@ -272,10 +278,52 @@ export default function AccountPage() {
 
                 <div className="col-span-full">
                   <label
+                    htmlFor="pronouns"
+                    className="block text-sm font-medium leading-6 text-white"
+                  >
+                    Pronouns
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="pronouns"
+                      name="pronouns"
+                      type="text"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.pronouns} // Set the value from state
+                      onChange={(e) =>
+                        setUserData({ ...userData, pronouns: e.target.value })
+                      } // Update state when the input changes
+                    />
+                  </div>
+                </div>
+
+                <div className="col-span-full">
+                  <label
+                    htmlFor="birthday"
+                    className="block text-sm font-medium leading-6 text-white"
+                  >
+                    Birthday
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="birthday"
+                      name="birthday"
+                      type="date"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.birthday} // Set the value from state
+                      onChange={(e) =>
+                        setUserData({ ...userData, birthday: e.target.value })
+                      } // Update state when the input changes
+                    />
+                  </div>
+                </div>
+
+                <div className="col-span-full">
+                  <label
                     htmlFor="biostatus"
                     className="block text-sm font-medium leading-6 text-white"
                   >
-                    bio
+                    Bio
                   </label>
                   <div className="mt-2">
                     <textarea
