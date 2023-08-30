@@ -371,7 +371,7 @@ export default function AccountPage() {
                 Enable NSFW (Soon)
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">
-                CHecking this box will enable NSFW images. 18+ only.
+                Checking this box will enable NSFW images. 18+ only.
               </p>
             </div>
 

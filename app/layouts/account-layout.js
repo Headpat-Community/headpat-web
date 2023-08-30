@@ -14,19 +14,19 @@ import Link from "next/link";
 const navigation = [
   { name: "Dashboard", href: "/account", icon: HomeIcon, current: false },
   {
-    name: "Bild hochladen",
+    name: "Upload image",
     href: "/account/upload",
     icon: ArrowUpOnSquareIcon,
     current: false,
   },
   {
-    name: "Gallerie",
+    name: "Gallery (Soon)",
     href: "#",
     icon: PhotoIcon,
     current: false,
   },
   {
-    name: "Projekte",
+    name: "Projects (Soon)",
     href: "#",
     icon: FolderIcon,
     current: false,
