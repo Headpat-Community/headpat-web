@@ -251,7 +251,7 @@ export default function UserProfile() {
                   </Link>
                 )}
                 <Link
-                  href={`/user/${username}/gallery`}
+                  href={`/user/${userMe?.[0]?.username}/gallery`}
                   className="hidden text-sm font-semibold leading-6 text-white sm:block bg-indigo-600 p-2 pt-1 pb-1 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Gallery

@@ -241,7 +241,7 @@ export default function Example({ children }) {
                 {userData ? (
                   <li className="-mx-6 mt-auto">
                     <Link
-                      href="#"
+                      href={`/user/${userMeData.username}`}
                       className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
                     >
                       <img
