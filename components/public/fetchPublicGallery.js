@@ -72,7 +72,7 @@ export default function FetchGallery() {
 
   useEffect(() => {
     const filters = !enableNsfw ? `filters[nsfw][$eq]=false` : ``;
-    const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&${filters}`;
+    const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&${filters}&randomSort=true`;
 
     if (!userId) {
       setIsLoading(true);

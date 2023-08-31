@@ -173,10 +173,6 @@ export default function UserProfile() {
                   </div>
                 </div>
                 <h1>
-                  <div className="text-sm leading-6 text-white/80">
-                    Profil{" "}
-                    <span className="text-white/80">#{userMe?.[0]?.id}</span>
-                  </div>
                   <div className="mt-1 text-base font-semibold leading-6 text-white">
                     {userData &&
                       (userData[0]?.displayname || userMe[0]?.username)}
