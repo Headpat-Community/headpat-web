@@ -1,26 +1,19 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/header";
-import { useEffect } from "react";
 import Link from "next/link";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
+const ResetPassword = () => {
+  const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      return parts.pop().split(";").shift();
-    }
-  }
-
   useEffect(() => {
-    const jwt = getCookie("jwt");
-    if (jwt) {
-      window.location.href = "/account";
+    const urlParams = new URLSearchParams(window.location.search);
+    const codeParam = urlParams.get("code");
+    if (codeParam) {
+      setCode(codeParam);
     }
   }, []);
 
@@ -28,23 +21,19 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://backend.headpat.de/api/auth/local",
+        "https://backend.headpat.de/api/auth/reset-password",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            identifier: email,
+            code: code,
             password: password,
+            passwordConfirmation: confirmPassword,
           }),
         }
       );
-      const data = await response.json();
-      const expirationTime = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-      document.cookie = `jwt=${
-        data.jwt
-      }; expires=${expirationTime.toUTCString()}; path=/`;
       //console.log("User authenticated successfully");
       if (response.status === 400) {
         setError(
@@ -64,11 +53,11 @@ const Login = () => {
           setError("");
         }, 5000);
       } else if (response.status === 200) {
-        window.location.href = "/account";
+        window.location.href = "/login";
       }
     } catch (error) {
       //console.log(error);
-      setError("E-Mail oder Passwort inkorrekt!");
+      setError("Passwort stimmt nicht!");
     }
   };
 
@@ -83,7 +72,7 @@ const Login = () => {
             alt="Headpat Logo"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
-            Login
+            Reset Password
           </h2>
 
           {error && (
@@ -96,18 +85,18 @@ const Login = () => {
                 htmlFor="email"
                 className="block text-sm font-medium leading-6 text-white"
               >
-                Email address
+                Code
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                  id="code"
+                  name="code"
+                  type="text"
                   required
                   className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                  disabled
                 />
               </div>
             </div>
@@ -120,25 +109,40 @@ const Login = () => {
                 >
                   Password:
                 </label>
-                <div className="text-sm">
-                  <Link
-                    href="/forgot-password"
-                    className="font-semibold text-indigo-400 hover:text-indigo-300"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
               </div>
               <div className="mt-2">
                 <input
-                  id="password"
-                  name="password"
+                  id="newpassword"
+                  name="newpassword"
                   type="password"
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                   required
                   className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium leading-6 text-white"
+                >
+                  Confirm Password:
+                </label>
+              </div>
+              <div className="mt-2">
+                <input
+                  id="confirmpassword"
+                  name="confirmpassword"
+                  type="password"
+                  autoComplete="confirm-password"
+                  required
+                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
               </div>
             </div>
@@ -149,7 +153,7 @@ const Login = () => {
                 className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                 onClick={handleSubmit}
               >
-                Sign in
+                Reset Password
               </button>
             </div>
             <div>
@@ -168,4 +172,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

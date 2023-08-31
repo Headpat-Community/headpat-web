@@ -63,7 +63,6 @@ const Login = () => {
           setError("");
         }, 5000);
       } else if (response.status === 200) {
-        setError("Please confirm your E-Mail!");
         try {
           const response = await fetch(
             "https://backend.headpat.de/api/user-data",
@@ -87,6 +86,7 @@ const Login = () => {
         } catch (error) {
           //console.log(error);
         }
+        setError("Please confirm your E-Mail!");
       }
     } catch (error) {
       //console.log(error);
@@ -171,6 +171,7 @@ const Login = () => {
                   type="password"
                   autoComplete="current-password"
                   required
+                  minLength={6}
                   className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -184,7 +185,7 @@ const Login = () => {
                 className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mb-6"
                 onClick={handleSubmit}
               >
-                Sign in
+                Register your account
               </button>
               <div>
                 <Link

@@ -202,7 +202,7 @@ export default function AccountPage() {
                 Frontpage Einstellungen
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">
-                Hier kannst du deine biografie, profilbild etc. verwalten.
+                Hier kannst du deine Biografie, Profilbild etc. verwalten.
               </p>
             </div>
 
