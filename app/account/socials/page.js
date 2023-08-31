@@ -299,7 +299,6 @@ export default function AccountPage() {
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
-                    />
                   </div>
                 </div>
               </div>
