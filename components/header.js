@@ -107,8 +107,7 @@ export default function Header() {
                     href={item.href}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800"
                   >
-                    {/* Wrap the content in an <a> tag */}
-                    <a>{item.name}</a>
+                    {item.name}
                   </Link>
                 ))}
               </div>
@@ -118,16 +117,14 @@ export default function Header() {
                     href="/account"
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800"
                   >
-                    {/* Wrap the content in an <a> tag */}
-                    <a>Account</a>
+                    Account
                   </Link>
                 ) : (
                   <Link
                     href="/login"
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800"
                   >
-                    {/* Wrap the content in an <a> tag */}
-                    <a>Sign in</a>
+                    Sign in
                   </Link>
                 )}
               </div>
