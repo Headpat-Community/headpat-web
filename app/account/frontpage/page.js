@@ -55,8 +55,8 @@ export default function AccountPage() {
           birthday: userDataResponseData.data.attributes.birthday || "", // Set the bio value or an empty string
           pronouns: userDataResponseData.data.attributes.pronouns || "", // Set the bio value or an empty string
           avatar:
-            userDataResponseData.data.attributes.avatar?.data?.attributes?.url ||
-            "/logo.png", // Set the avatar value or an empty string
+            userDataResponseData.data.attributes.avatar?.data?.attributes
+              ?.url || "/logo.png", // Set the avatar value or an empty string
         });
       } catch (error) {
         console.error(error);
@@ -147,7 +147,7 @@ export default function AccountPage() {
         setIsUploading(false); // Set isUploading to false after the API call is complete
         setUserData(responseData); // Set the userData state with the response data
         // Reload the window
-        alert("Saved!")
+        alert("Saved!");
         window.location.reload();
       } else {
         // Check for the specific error structure
@@ -250,7 +250,10 @@ export default function AccountPage() {
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.displayname} // Set the value from state
                       onChange={(e) =>
-                        setUserData({ ...userData, displayname: e.target.value })
+                        setUserData({
+                          ...userData,
+                          displayname: e.target.value,
+                        })
                       } // Update state when the input changes
                     />
                   </div>
@@ -270,9 +273,12 @@ export default function AccountPage() {
                       type="text"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.status} // Set the value from state
-                      onChange={(e) =>
-                        setUserData({ ...userData, status: e.target.value })
-                      } // Update state when the input changes
+                      onChange={(e) => {
+                        if (e.target.value.length <= 24) {
+                          setUserData({ ...userData, status: e.target.value });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 24
+                      maxLength={24} // Limit the maximum number of characters to 24
                     />
                   </div>
                 </div>
@@ -291,9 +297,12 @@ export default function AccountPage() {
                       type="text"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.pronouns} // Set the value from state
-                      onChange={(e) =>
-                        setUserData({ ...userData, pronouns: e.target.value })
-                      } // Update state when the input changes
+                      onChange={(e) => {
+                        if (e.target.value.length <= 16) {
+                          setUserData({ ...userData, pronouns: e.target.value });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 16
+                      maxLength={16} // Limit the maximum number of characters to 16
                     />
                   </div>
                 </div>
@@ -332,9 +341,12 @@ export default function AccountPage() {
                       name="biostatus"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 h-72"
                       value={userData.bio} // Set the value from state
-                      onChange={(e) =>
-                        setUserData({ ...userData, bio: e.target.value })
-                      } // Update state when the input changes
+                      onChange={(e) => {
+                        if (e.target.value.length <= 256) {
+                          setUserData({ ...userData, bio: e.target.value });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 256
+                      maxLength={256} // Limit the maximum number of characters to 256
                     />
                   </div>
                 </div>
