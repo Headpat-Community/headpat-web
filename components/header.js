@@ -33,7 +33,7 @@ export default function Header() {
           <div className="-m-1.5 p-1.5">
             <span className="sr-only">Headpat Community</span>
             <Link href="/">
-              <img className="h-10 w-auto" src="/logo-512.png" alt="" />
+              <img aria-label="Headpat Logo" title="Headpat Logo" className="h-10 w-auto" src="/logo-512.png" alt="" />
             </Link>
           </div>
         </div>

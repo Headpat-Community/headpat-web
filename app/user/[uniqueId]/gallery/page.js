@@ -134,45 +134,49 @@ export default function FetchGallery() {
             </p>
           )
         ) : (
-          <ul
-            role="list"
-            className="p-8 flex flex-wrap gap-4 justify-center items-center"
-          >
-            {visibleGallery.map((item) => (
-              <div key={item.id}>
-                {item.attributes.img && item.attributes.img.data && (
-                  <div
-                    className={`rounded-lg overflow-hidden h-64 ${
-                      item.attributes.nsfw && !enableNsfw ? "relative" : ""
-                    }`}
-                  >
-                    {item.attributes.nsfw && !enableNsfw && (
-                      <div className="absolute inset-0 bg-black opacity-50"></div>
-                    )}
-                    <img
-                      src={
-                        item.attributes.nsfw && !enableNsfw
-                          ? "https://placekitten.com/200/300" // Replace with placeholder image URL
-                          : item.attributes.img.data.attributes.formats.small
-                              .url
-                      }
-                      alt={item.attributes.imgalt}
-                      className={`object-cover h-full w-full`}
-                    />
-                  </div>
-                )}
-                <h2>{item.attributes.name}</h2>
-              </div>
-            ))}
-            {loadMore && (
-              <button
-                onClick={handleLoadMore}
-                className="flex mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-8"
-              >
-                Load More
-              </button>
-            )}
-          </ul>
+          <>
+            <ul
+              role="list"
+              className="p-8 flex flex-wrap gap-4 justify-center items-center"
+            >
+              {visibleGallery.map((item) => (
+                <div key={item.id}>
+                  {item.attributes.img && item.attributes.img.data && (
+                    <div
+                      className={`rounded-lg overflow-hidden h-64 ${
+                        item.attributes.nsfw && !enableNsfw ? "relative" : ""
+                      }`}
+                    >
+                      {item.attributes.nsfw && !enableNsfw && (
+                        <div className="absolute inset-0 bg-black opacity-50"></div>
+                      )}
+                      <img
+                        src={
+                          item.attributes.nsfw && !enableNsfw
+                            ? "https://placekitten.com/200/300" // Replace with placeholder image URL
+                            : item.attributes.img.data.attributes.formats.small
+                                .url
+                        }
+                        alt={item.attributes.imgalt}
+                        className={`object-cover h-full w-full`}
+                      />
+                    </div>
+                  )}
+                  <h2>{item.attributes.name}</h2>
+                </div>
+              ))}
+            </ul>
+            <div className="flex justify-center">
+              {loadMore && (
+                <button
+                  onClick={handleLoadMore}
+                  className="flex mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-8"
+                >
+                  Load More
+                </button>
+              )}
+            </div>
+          </>
         )}
       </div>
     </>
