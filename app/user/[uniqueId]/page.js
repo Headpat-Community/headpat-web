@@ -162,9 +162,12 @@ export default function UserProfile() {
                   <div className="mt-1 text-base font-semibold leading-6 text-white">
                     {userData &&
                     userData.data.attributes.avatar &&
-                    userData.data.attributes.avatar.url ? (
+                    userData.data.attributes.avatar.data &&
+                    userData.data.attributes.avatar.data.attributes ? (
                       <img
-                        src={userData.data.attributes.avatar.url}
+                        src={
+                          userData.data.attributes.avatar.data.attributes.url
+                        }
                         alt=""
                         className="h-16 w-16 flex-none rounded-full ring-1 ring-white/10"
                       />
