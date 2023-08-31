@@ -47,6 +47,10 @@ export default function FetchGallery() {
                 const name = gallery?.data?.attributes?.name;
                 const createdAt = gallery?.data?.attributes?.createdAt;
                 const longtext = gallery?.data?.attributes?.longtext;
+                const width =
+                  gallery?.data?.attributes?.img?.data?.attributes?.width;
+                const height =
+                  gallery?.data?.attributes?.img?.data?.attributes?.width;
 
                 if (!url || !name) {
                   throw new Error("W-where am I? This is not a gallery!");
@@ -54,7 +58,7 @@ export default function FetchGallery() {
 
                 return (
                   <div className="flex flex-wrap items-start">
-                    <div className="mr-4 mt-1">
+                    <div className="mr-4 sm:mt-4 mb-4 md:mb-0 flex">
                       <Link
                         href="."
                         className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
@@ -65,7 +69,11 @@ export default function FetchGallery() {
                     <img
                       src={url}
                       alt={name || "Headpat Community Image"}
-                      className="rounded-lg object-cover h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px] mx-auto"
+                      className={`rounded-lg object-cover imgsinglegallery ${
+                        width < 800
+                          ? `w-${width}`
+                          : `h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`
+                      } mx-auto`}
                     />
 
                     <div className="ml-4">
