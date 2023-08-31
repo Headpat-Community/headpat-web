@@ -4,7 +4,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 const navigation = [
-//  { name: "Home", href: "/" },
+  //  { name: "Home", href: "/" },
   { name: "Gallery", href: "/gallery" },
 ];
 
@@ -105,24 +105,27 @@ export default function Header() {
                     href={item.href}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800"
                   >
-                    {item.name}
+                    {/* Wrap the content in an <a> tag */}
+                    <a>{item.name}</a>
                   </Link>
                 ))}
               </div>
               <div className="py-6">
                 {isLoggedIn ? (
                   <Link
-                    href="#"
+                    href="/account"
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800"
                   >
-                    Account
+                    {/* Wrap the content in an <a> tag */}
+                    <a>Account</a>
                   </Link>
                 ) : (
                   <Link
-                    href="#"
+                    href="/login"
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800"
                   >
-                    Sign in
+                    {/* Wrap the content in an <a> tag */}
+                    <a>Sign in</a>
                   </Link>
                 )}
               </div>
