@@ -53,17 +53,23 @@ export default function FetchGallery() {
                 }
 
                 return (
-                  <div className="flex">
-                    <div>
-                      <div className="px-4 sm:px-0">
-                        <div className="mb-4">
-                          <Link
-                            href="."
-                            className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                          >
-                            &larr; Go back
-                          </Link>
-                        </div>
+                  <div className="flex flex-wrap items-start">
+                    <div className="mr-4 mt-1">
+                      <Link
+                        href="."
+                        className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                      >
+                        &larr; Go back
+                      </Link>
+                    </div>
+                    <img
+                      src={url}
+                      alt={name || "Headpat Community Image"}
+                      className="rounded-lg object-cover h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px] mx-auto"
+                    />
+
+                    <div className="ml-4">
+                      <div className="px-4 sm:px-0 mt-4">
                         <h3 className="text-base font-semibold leading-7 text-white">
                           Image description
                         </h3>
@@ -95,19 +101,13 @@ export default function FetchGallery() {
                             <dt className="text-sm font-medium leading-6 text-white">
                               About
                             </dt>
-                            <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                            <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0 max-w-full break-words">
                               {longtext || "No description provided."}
                             </dd>
                           </div>
                         </dl>
                       </div>
                     </div>
-
-                    <img
-                      src={url}
-                      alt={name || "Headpat Community Image"}
-                      className="rounded-lg object-cover h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px] ml-16"
-                    />
                   </div>
                 );
               } catch (e) {
