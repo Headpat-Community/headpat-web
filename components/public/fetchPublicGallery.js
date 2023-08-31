@@ -74,33 +74,18 @@ export default function FetchGallery() {
     const filters = !enableNsfw ? `filters[nsfw][$eq]=false` : ``;
     const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&${filters}&randomSort=true`;
 
-    if (!userId) {
-      setIsLoading(true);
-      fetch(apiUrl)
-        .then((response) => response.json())
-        .then((data) => {
-          setGallery(data.data.reverse());
-          setVisibleGallery(getVisibleGallery(data.data, window.innerWidth));
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          setError(error);
-          setIsLoading(false);
-        });
-    } else {
-      setIsLoading(true);
-      fetch(`${apiUrl}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setGallery(data.data.reverse());
-          setVisibleGallery(getVisibleGallery(data.data, window.innerWidth));
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          setError(error);
-          setIsLoading(false);
-        });
-    }
+    setIsLoading(true);
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        setGallery(data.data.reverse());
+        setVisibleGallery(getVisibleGallery(data.data, window.innerWidth));
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setIsLoading(false);
+      });
   }, [userId, enableNsfw]);
 
   const handleLoadMore = () => {
