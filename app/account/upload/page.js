@@ -8,6 +8,21 @@ export default function UploadPage() {
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
+    const validImageTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/svg+xml",
+      "image/tiff",
+      "image/x-icon",
+      "image/vnd.djvu",
+    ];
+    if (!validImageTypes.includes(selectedFile.type)) {
+      alert(
+        "Please select a valid image file type (JPEG, PNG, GIF, SVG, TIFF, ICO, DVU)."
+      );
+      return;
+    }
     if (selectedFile.size > 16 * 1024 * 1024) {
       alert("File size must be less than 16 MB.");
       return;
