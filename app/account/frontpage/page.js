@@ -381,7 +381,7 @@ export default function AccountPage() {
                       }} // Update state when the input changes, only if the length is less than or equal to 256
                       maxLength={256} // Limit the maximum number of characters to 256
                     />
-                    <div className="absolute inset-y-0 right-0 pr-4 flex items-end text-sm leading-5 pointer-events-none">
+                    <div className="absolute inset-y-0 right-0 pr-4 pb-2 flex items-end text-sm leading-5 pointer-events-none">
                       <span className="text-white select-none">
                         {userData.bio ? userData.bio.length : 0}{" "}
                       </span>
