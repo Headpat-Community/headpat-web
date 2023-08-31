@@ -175,7 +175,7 @@ export default function AccountPage() {
                     htmlFor="discordname"
                     className="block text-sm font-medium leading-6 text-white"
                   >
-                    Discord ID
+                    Discord ID (196742608846979072 z.B.)
                   </label>
                   <div className="mt-2">
                     <input

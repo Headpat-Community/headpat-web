@@ -30,12 +30,12 @@ export default function Header() {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <Link href="#" className="-m-1.5 p-1.5">
+          <div className="-m-1.5 p-1.5">
             <span className="sr-only">Headpat Community</span>
             <Link href="/">
               <img className="h-10 w-auto" src="/logo-512.png" alt="" />
             </Link>
-          </Link>
+          </div>
         </div>
         <div className="flex lg:hidden">
           <button

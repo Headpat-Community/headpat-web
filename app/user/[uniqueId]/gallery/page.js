@@ -1,6 +1,7 @@
 "use client";
 import Header from "@/components/header";
 import { useState, useEffect } from "react";
+import ErrorPage from "@/components/404";
 
 export const runtime = "edge";
 
@@ -119,7 +120,13 @@ export default function FetchGallery() {
         {isLoading ? (
           error ? (
             <p className="text-center text-red-500 font-bold my-8">
-              Error: {error && error.message}
+              {error.message.includes(
+                "Cannot read properties of undefined (reading 'id')"
+              ) ? (
+                <ErrorPage />
+              ) : (
+                `Error: ${error.message}`
+              )}
             </p>
           ) : (
             <p className="text-center text-gray-500 font-bold my-8">
@@ -157,15 +164,15 @@ export default function FetchGallery() {
                 <h2>{item.attributes.name}</h2>
               </div>
             ))}
+            {loadMore && (
+              <button
+                onClick={handleLoadMore}
+                className="flex mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-8"
+              >
+                Load More
+              </button>
+            )}
           </ul>
-        )}
-        {loadMore && (
-          <button
-            onClick={handleLoadMore}
-            className="flex mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-8"
-          >
-            Load More
-          </button>
         )}
       </div>
     </>
