@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Layout from "../../layouts/account-layout";
 
 export default function UploadPage() {
@@ -28,6 +28,12 @@ export default function UploadPage() {
       };
     };
   };
+
+  const handleDrop = useCallback((event) => {
+    event.preventDefault();
+    const droppedFile = event.dataTransfer.files[0];
+    handleFileChange({ target: { files: [droppedFile] } });
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -87,7 +93,7 @@ export default function UploadPage() {
         //console.log("File uploaded successfully");
         setIsUploading(false); // Set isUploading to false after the API call is complete
         // Add the "Saved!" text to the form
-        alert("Saved!")
+        alert("Saved!");
         window.location.reload();
       } else {
         console.error("Failed to upload file:", responseData);
@@ -110,6 +116,9 @@ export default function UploadPage() {
                 Diese Informationen werden öffentlich angezeigt. Sei also
                 vorsichtig, was du teilst.
               </p>
+              <p className="mt-1 text-sm leading-6 text-gray-400">
+                Drag & Drop geht noch nicht :(
+              </p>
 
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="col-span-full">
@@ -123,13 +132,17 @@ export default function UploadPage() {
                     <div className="text-center">
                       <label
                         htmlFor="file-upload"
-                        className="w-full text-center cursor-pointer"
+                        className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
+                        onDrop={handleDrop}
+                        onDragOver={(event) => event.preventDefault()}
                       >
                         <img
                           id="selected-image"
                           className="mx-auto h-96 min-w-full object-cover rounded-md"
                           alt=""
                           src="/placeholder-image.png"
+                          onDrop={handleDrop}
+                          onDragOver={(event) => event.preventDefault()}
                         />
                         <div className="mt-4 flex text-sm leading-6 text-gray-400">
                           <label
@@ -144,6 +157,8 @@ export default function UploadPage() {
                               className="sr-only bg-transparent"
                               required
                               onChange={handleFileChange}
+                              onDrop={handleDrop}
+                              onDragOver={(event) => event.preventDefault()}
                             />
                           </label>
                           <p className="pl-1">
@@ -205,7 +220,7 @@ export default function UploadPage() {
                       type="checkbox"
                       name="nsfw"
                       id="nsfw"
-                      className="checked:bg-red-500 block rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                     />
                   </div>
                 </div>
