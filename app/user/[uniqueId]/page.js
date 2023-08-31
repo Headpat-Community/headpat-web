@@ -94,6 +94,7 @@ export default function UserProfile() {
   const [userMe, setUserMe] = useState(null);
   const [selected, setSelected] = useState(moods[5]);
   const [isHovered, setIsHovered] = useState(false);
+  const [hasError, setHasError] = useState(false); // Add this state
 
   const rawBirthday = userData?.data?.attributes?.birthday; // ISO date string
 
@@ -128,10 +129,12 @@ export default function UserProfile() {
           })
           .catch((error) => {
             console.error("API error:", error);
+            setHasError(true); // Set the error state to true
           });
       })
       .catch((error) => {
         console.error("API error:", error);
+        setHasError(true); // Set the error state to true
       });
   }, [username]);
 
@@ -596,10 +599,10 @@ export default function UserProfile() {
               </div>
             </div>
           </>
+        ) : hasError ? (
+          <ErrorPage />
         ) : (
-          setTimeout(() => {
-            <ErrorPage />;
-          }, 1000)
+          <p>Loading...</p>
         )}
       </main>
     </>
