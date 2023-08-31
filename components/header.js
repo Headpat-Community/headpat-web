@@ -32,7 +32,9 @@ export default function Header() {
         <div className="flex lg:flex-1">
           <Link href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">Headpat Community</span>
-            <img className="h-10 w-auto" src="/logo-512.png" alt="" />
+            <Link href="/">
+              <img className="h-10 w-auto" src="/logo-512.png" alt="" />
+            </Link>
           </Link>
         </div>
         <div className="flex lg:hidden">
