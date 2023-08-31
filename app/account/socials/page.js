@@ -170,20 +170,20 @@ export default function AccountPage() {
 
             <form onSubmit={handleSubmit} className="md:col-span-2">
               <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-                <div className="sm:col-span-3">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="discordname"
                     className="block text-sm font-medium leading-6 text-white"
                   >
                     Discord ID (196742608846979072 z.B.)
                   </label>
-                  <div className="mt-2">
+                  <div className="mt-2 relative">
                     <input
                       type="text"
                       name="discordname"
                       id="discordname"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                      value={userData.discordname}
+                      value={userData.discordname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
                           setUserData({
@@ -194,23 +194,30 @@ export default function AccountPage() {
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                      <span className="text-white select-none">
+                        {userData.discordname ? userData.discordname.length : 0}{" "}
+                        {/* Check if userData.discordname is defined before accessing its length property */}
+                      </span>
+                      <span className="text-gray-400 select-none">/{32}</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="sm:col-span-3">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="telegramname"
                     className="block text-sm font-medium leading-6 text-white"
                   >
                     Telegram Name
                   </label>
-                  <div className="mt-2">
+                  <div className="mt-2 relative">
                     <input
                       type="text"
                       name="telegramname"
                       id="telegramname"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                      value={userData.telegramname}
+                      value={userData.telegramname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
                           setUserData({
@@ -221,23 +228,32 @@ export default function AccountPage() {
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                      <span className="text-white select-none">
+                        {userData.telegramname
+                          ? userData.telegramname.length
+                          : 0}{" "}
+                        {/* Check if userData.telegramname is defined before accessing its length property */}
+                      </span>
+                      <span className="text-gray-400 select-none">/{32}</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="sm:col-span-3">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="furaffinityname"
                     className="block text-sm font-medium leading-6 text-white"
                   >
                     Furaffinity Name
                   </label>
-                  <div className="mt-2">
+                  <div className="mt-2 relative">
                     <input
                       type="text"
                       name="furaffinityname"
                       id="furaffinityname"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                      value={userData.furaffinityname}
+                      value={userData.furaffinityname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
                           setUserData({
@@ -248,47 +264,62 @@ export default function AccountPage() {
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                      <span className="text-white select-none">
+                        {userData.furaffinityname ? userData.furaffinityname.length : 0} {/* Check if userData.furaffinityname is defined before accessing its length property */}
+                      </span>
+                      <span className="text-gray-400 select-none">/{32}</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="sm:col-span-3">
+                <div className="sm:col-span-6">
                   <label
-                    htmlFor="X_name"
+                    htmlFor="twittername"
                     className="block text-sm font-medium leading-6 text-white"
                   >
-                    X (Twitter) Name
+                    Twitter Name
                   </label>
-                  <div className="mt-2">
+                  <div className="mt-2 relative">
                     <input
                       type="text"
-                      name="X_name"
-                      id="X_name"
+                      name="twittername"
+                      id="twittername"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                      value={userData.X_name}
+                      value={userData.twittername} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
-                          setUserData({ ...userData, X_name: e.target.value });
+                          setUserData({
+                            ...userData,
+                            twittername: e.target.value,
+                          });
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                      <span className="text-white select-none">
+                        {userData.twittername ? userData.twittername.length : 0} {/* Check if userData.twittername is defined before accessing its length property */}
+                      </span>
+                      <span className="text-gray-400 select-none">/{32}</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="sm:col-span-3">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="twitchname"
                     className="block text-sm font-medium leading-6 text-white"
                   >
                     Twitch
                   </label>
-                  <div className="mt-2">
+                  <div className="mt-2 relative">
                     <input
                       type="text"
                       name="twitchname"
                       id="twitchname"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                      value={userData.twitchname}
+                      value={userData.twitchname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
                           setUserData({
@@ -299,6 +330,12 @@ export default function AccountPage() {
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                      <span className="text-white select-none">
+                        {userData.twitchname ? userData.twitchname.length : 0} {/* Check if userData.twitchname is defined before accessing its length property */}
+                      </span>
+                      <span className="text-gray-400 select-none">/{32}</span>
+                    </div>
                   </div>
                 </div>
               </div>
