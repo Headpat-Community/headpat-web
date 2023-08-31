@@ -249,12 +249,15 @@ export default function AccountPage() {
                       type="text"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.displayname} // Set the value from state
-                      onChange={(e) =>
-                        setUserData({
-                          ...userData,
-                          displayname: e.target.value,
-                        })
-                      } // Update state when the input changes
+                      onChange={(e) => {
+                        if (e.target.value.length <= 32) {
+                          setUserData({
+                            ...userData,
+                            displayname: e.target.value,
+                          });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 32
+                      maxLength={32} // Limit the maximum number of characters to 32
                     />
                   </div>
                 </div>
@@ -299,7 +302,10 @@ export default function AccountPage() {
                       value={userData.pronouns} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 16) {
-                          setUserData({ ...userData, pronouns: e.target.value });
+                          setUserData({
+                            ...userData,
+                            pronouns: e.target.value,
+                          });
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 16
                       maxLength={16} // Limit the maximum number of characters to 16
