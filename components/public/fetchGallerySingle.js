@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import ErrorPage from "@/components/404";
+import Link from "next/link";
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState({});
@@ -47,29 +48,67 @@ export default function FetchGallery() {
                 const createdAt = gallery?.data?.attributes?.createdAt;
                 const longtext = gallery?.data?.attributes?.longtext;
 
-                if (!url || !name || !createdAt || !longtext) {
+                if (!url || !name) {
                   throw new Error("W-where am I? This is not a gallery!");
                 }
 
                 return (
-                  <>
+                  <div className="flex">
+                    <div>
+                      <div className="px-4 sm:px-0">
+                        <div className="mb-4">
+                          <Link
+                            href="."
+                            className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                          >
+                            &larr; Go back
+                          </Link>
+                        </div>
+                        <h3 className="text-base font-semibold leading-7 text-white">
+                          Image description
+                        </h3>
+                      </div>
+                      <div className="mt-4 border-t border-white/10">
+                        <dl className="divide-y divide-white/10">
+                          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                            <dt className="text-sm font-medium leading-6 text-white">
+                              Title
+                            </dt>
+                            <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                              {name || "No title provided."}
+                            </dd>
+                          </div>
+                          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                            <dt className="text-sm font-medium leading-6 text-white">
+                              Creation Date
+                            </dt>
+                            <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                              {new Date(createdAt).toLocaleDateString("de-DE", {
+                                day: "numeric",
+                                month: "numeric",
+                                year: "numeric",
+                                timeZone: "Europe/Berlin",
+                              })}
+                            </dd>
+                          </div>
+                          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                            <dt className="text-sm font-medium leading-6 text-white">
+                              About
+                            </dt>
+                            <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                              {longtext || "No description provided."}
+                            </dd>
+                          </div>
+                        </dl>
+                      </div>
+                    </div>
+
                     <img
                       src={url}
-                      alt={name}
-                      className="rounded-lg object-cover h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]"
+                      alt={name || "Headpat Community Image"}
+                      className="rounded-lg object-cover h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px] ml-16"
                     />
-                    <h2>Title: {name}</h2>
-                    <p>
-                      Time added:{" "}
-                      {new Date(createdAt).toLocaleDateString("de-DE", {
-                        day: "numeric",
-                        month: "numeric",
-                        year: "numeric",
-                        timeZone: "Europe/Berlin",
-                      })}
-                    </p>
-                    <p>Description: {longtext}</p>
-                  </>
+                  </div>
                 );
               } catch (e) {
                 return (
