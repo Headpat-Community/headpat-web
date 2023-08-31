@@ -88,6 +88,7 @@ export default function UploadPage() {
           users_permissions_user: userId,
           name: imagename.value,
           imgalt: imgalt.value,
+          longtext: longtext.value,
           nsfw: nsfw.checked,
           date: formattedDate,
         })
@@ -236,6 +237,22 @@ export default function UploadPage() {
                       name="nsfw"
                       id="nsfw"
                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    />
+                  </div>
+                </div>
+                
+                <div className="col-span-full">
+                  <label
+                    htmlFor="biostatus"
+                    className="block text-sm font-medium leading-6 text-white"
+                  >
+                    Description
+                  </label>
+                  <div className="mt-2 relative">
+                    <textarea
+                      id="longtext"
+                      name="longtext"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 h-72"
                     />
                   </div>
                 </div>
