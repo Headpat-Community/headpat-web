@@ -356,7 +356,7 @@ export default function UserProfile() {
                   </div>
                   <div
                     className={`mt-4 flex w-full flex-none gap-x-4 px-6 ${
-                      formattedBirthday === "31.01.1970" ? "mb-6" : ""
+                      formattedBirthday === "31.01.1900" ? "mb-6" : ""
                     }`}
                   >
                     <dt className="flex-none">
@@ -370,7 +370,7 @@ export default function UserProfile() {
                       {userData?.data?.attributes?.pronouns}
                     </dd>
                   </div>
-                  {formattedBirthday !== "31.01.1970" && (
+                  {formattedBirthday !== "31.01.1900" && (
                     <div className="mt-4 flex w-full flex-none gap-x-4 px-6 mb-6">
                       <dt className="flex-none">
                         <span className="sr-only">Birthday</span>
