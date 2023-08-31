@@ -158,12 +158,13 @@ export default function AccountPage() {
         </header>
         <div className="divide-y divide-white/5">
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-          <div>
+            <div>
               <h2 className="text-base font-semibold leading-7 text-white">
                 Socials
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">
-                Hier kannst du deine Links zu deinen Social Media Accounts eintragen.
+                Hier kannst du deine Links zu deinen Social Media Accounts
+                eintragen.
               </p>
             </div>
 
@@ -183,12 +184,15 @@ export default function AccountPage() {
                       id="discordname"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.discordname}
-                      onChange={(e) =>
-                        setUserData({
-                          ...userData,
-                          discordname: e.target.value,
-                        })
-                      }
+                      onChange={(e) => {
+                        if (e.target.value.length <= 32) {
+                          setUserData({
+                            ...userData,
+                            discordname: e.target.value,
+                          });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 32
+                      maxLength={32} // Limit the maximum number of characters to 32
                     />
                   </div>
                 </div>
@@ -207,12 +211,15 @@ export default function AccountPage() {
                       id="telegramname"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.telegramname}
-                      onChange={(e) =>
-                        setUserData({
-                          ...userData,
-                          telegramname: e.target.value,
-                        })
-                      }
+                      onChange={(e) => {
+                        if (e.target.value.length <= 32) {
+                          setUserData({
+                            ...userData,
+                            telegramname: e.target.value,
+                          });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 32
+                      maxLength={32} // Limit the maximum number of characters to 32
                     />
                   </div>
                 </div>
@@ -231,12 +238,15 @@ export default function AccountPage() {
                       id="furaffinityname"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.furaffinityname}
-                      onChange={(e) =>
-                        setUserData({
-                          ...userData,
-                          furaffinityname: e.target.value,
-                        })
-                      }
+                      onChange={(e) => {
+                        if (e.target.value.length <= 32) {
+                          setUserData({
+                            ...userData,
+                            furaffinityname: e.target.value,
+                          });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 32
+                      maxLength={32} // Limit the maximum number of characters to 32
                     />
                   </div>
                 </div>
@@ -255,12 +265,12 @@ export default function AccountPage() {
                       id="X_name"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.X_name}
-                      onChange={(e) =>
-                        setUserData({
-                          ...userData,
-                          X_name: e.target.value,
-                        })
-                      }
+                      onChange={(e) => {
+                        if (e.target.value.length <= 32) {
+                          setUserData({ ...userData, X_name: e.target.value });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 32
+                      maxLength={32} // Limit the maximum number of characters to 32
                     />
                   </div>
                 </div>
@@ -279,12 +289,16 @@ export default function AccountPage() {
                       id="twitchname"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.twitchname}
-                      onChange={(e) =>
-                        setUserData({
-                          ...userData,
-                          twitchname: e.target.value,
-                        })
-                      }
+                      onChange={(e) => {
+                        if (e.target.value.length <= 32) {
+                          setUserData({
+                            ...userData,
+                            twitchname: e.target.value,
+                          });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 32
+                      maxLength={32} // Limit the maximum number of characters to 32
+                    />
                     />
                   </div>
                 </div>
