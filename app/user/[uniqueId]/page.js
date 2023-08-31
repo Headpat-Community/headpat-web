@@ -17,7 +17,12 @@ import {
 } from "@heroicons/react/20/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPersonHalfDress } from "@fortawesome/free-solid-svg-icons";
-import { faTelegram, faDiscord, faXTwitter, faTwitch } from "@fortawesome/free-brands-svg-icons";
+import {
+  faTelegram,
+  faDiscord,
+  faXTwitter,
+  faTwitch,
+} from "@fortawesome/free-brands-svg-icons";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -349,7 +354,11 @@ export default function UserProfile() {
                       {userData?.data?.attributes?.status}
                     </dd>
                   </div>
-                  <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
+                  <div
+                    className={`mt-4 flex w-full flex-none gap-x-4 px-6 ${
+                      formattedBirthday === "31.01.1970" ? "mb-6" : ""
+                    }`}
+                  >
                     <dt className="flex-none">
                       <span className="sr-only">Pronouns</span>
                       <FontAwesomeIcon
@@ -361,18 +370,20 @@ export default function UserProfile() {
                       {userData?.data?.attributes?.pronouns}
                     </dd>
                   </div>
-                  <div className="mt-4 flex w-full flex-none gap-x-4 px-6 mb-6">
-                    <dt className="flex-none">
-                      <span className="sr-only">Birthday</span>
-                      <CalendarDaysIcon
-                        className="h-6 w-5 text-gray-400"
-                        aria-hidden="true"
-                      />
-                    </dt>
-                    <dd className="text-sm leading-6 text-white">
-                      <time dateTime={rawBirthday}>{formattedBirthday}</time>
-                    </dd>
-                  </div>
+                  {formattedBirthday !== "31.01.1970" && (
+                    <div className="mt-4 flex w-full flex-none gap-x-4 px-6 mb-6">
+                      <dt className="flex-none">
+                        <span className="sr-only">Birthday</span>
+                        <CalendarDaysIcon
+                          className="h-6 w-5 text-gray-400"
+                          aria-hidden="true"
+                        />
+                      </dt>
+                      <dd className="text-sm leading-6 text-white">
+                        <time dateTime={rawBirthday}>{formattedBirthday}</time>
+                      </dd>
+                    </div>
+                  )}
                 </dl>
               </div>
             </div>
