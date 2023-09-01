@@ -47,11 +47,13 @@ export default function FetchGallery() {
                 const name = gallery?.data?.attributes?.name;
                 const createdAt = gallery?.data?.attributes?.createdAt;
                 const modifiedAt = gallery?.data?.attributes?.updatedAt;
+                const imgalt = gallery?.data?.attributes?.imgalt;
                 const longtext = gallery?.data?.attributes?.longtext;
+                const nsfw = gallery?.data?.attributes?.nsfw;
                 const width =
                   gallery?.data?.attributes?.img?.data?.attributes?.width;
                 const height =
-                  gallery?.data?.attributes?.img?.data?.attributes?.width;
+                  gallery?.data?.attributes?.img?.data?.attributes?.height;
 
                 if (!url || !name) {
                   throw new Error("W-where am I? This is not a gallery!");
@@ -111,12 +113,31 @@ export default function FetchGallery() {
                               Last Modified
                             </dt>
                             <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                              {new Date(modifiedAt).toLocaleDateString("de-DE", {
-                                day: "numeric",
-                                month: "numeric",
-                                year: "numeric",
-                                timeZone: "Europe/Berlin",
-                              })}
+                              {new Date(modifiedAt).toLocaleDateString(
+                                "de-DE",
+                                {
+                                  day: "numeric",
+                                  month: "numeric",
+                                  year: "numeric",
+                                  timeZone: "Europe/Berlin",
+                                }
+                              )}
+                            </dd>
+                          </div>
+                          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                            <dt className="text-sm font-medium leading-6 text-white">
+                              NSFW
+                            </dt>
+                            <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                              {nsfw ? "Yes" : "No"}
+                            </dd>
+                          </div>
+                          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                            <dt className="text-sm font-medium leading-6 text-white">
+                              Width/Height
+                            </dt>
+                            <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                              {width}x{height}
                             </dd>
                           </div>
                           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
