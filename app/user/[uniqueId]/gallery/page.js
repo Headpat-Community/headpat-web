@@ -2,6 +2,7 @@
 import Header from "@/components/header";
 import { useState, useEffect } from "react";
 import ErrorPage from "@/components/404";
+import Link from "next/link";
 
 export const runtime = "edge";
 
@@ -150,16 +151,18 @@ export default function FetchGallery() {
                       {item.attributes.nsfw && !enableNsfw && (
                         <div className="absolute inset-0 bg-black opacity-50"></div>
                       )}
-                      <img
-                        src={
-                          item.attributes.nsfw && !enableNsfw
-                            ? "https://placekitten.com/200/300" // Replace with placeholder image URL
-                            : item.attributes.img.data.attributes.formats.small
-                                .url
-                        }
-                        alt={item.attributes.imgalt}
-                        className={`object-cover h-full w-full`}
-                      />
+                      <Link target="_blank" href={`/gallery/${item.id}`}>
+                        <img
+                          src={
+                            item.attributes.nsfw && !enableNsfw
+                              ? "https://placekitten.com/200/300" // Replace with placeholder image URL
+                              : item.attributes.img.data.attributes.formats
+                                  .small.url
+                          }
+                          alt={item.attributes.imgalt}
+                          className={`object-cover h-full w-full`}
+                        />
+                      </Link>
                     </div>
                   )}
                   <h2>{item.attributes.name}</h2>
