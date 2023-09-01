@@ -150,7 +150,7 @@ export default function FetchGallery() {
                           : item.attributes.img.data.attributes.formats.small.url
                       }
                       alt={item.attributes.imgalt}
-                      className={`object-cover h-full w-full max-h-[600px] max-w-[300px]`}
+                      className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
                     />
                   </Link>
                 </div>
