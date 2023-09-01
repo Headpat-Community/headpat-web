@@ -25,7 +25,7 @@ const links = [
 const social = [
   {
     name: "Discord",
-    href: "https://discord.gg/headpatcommunity",
+    href: "https://discord.gg/headpat",
     icon: (props) => (
       <FontAwesomeIcon icon={faDiscord} className="h-6 w-6" {...props} />
     ),
