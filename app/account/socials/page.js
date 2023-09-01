@@ -266,7 +266,10 @@ export default function AccountPage() {
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                       <span className="text-white select-none">
-                        {userData.furaffinityname ? userData.furaffinityname.length : 0} {/* Check if userData.furaffinityname is defined before accessing its length property */}
+                        {userData.furaffinityname
+                          ? userData.furaffinityname.length
+                          : 0}{" "}
+                        {/* Check if userData.furaffinityname is defined before accessing its length property */}
                       </span>
                       <span className="text-gray-400 select-none">/{32}</span>
                     </div>
@@ -299,7 +302,8 @@ export default function AccountPage() {
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                       <span className="text-white select-none">
-                        {userData.X_name ? userData.X_name.length : 0} {/* Check if userData.X_name is defined before accessing its length property */}
+                        {userData.X_name ? userData.X_name.length : 0}{" "}
+                        {/* Check if userData.X_name is defined before accessing its length property */}
                       </span>
                       <span className="text-gray-400 select-none">/{32}</span>
                     </div>
@@ -332,7 +336,8 @@ export default function AccountPage() {
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                       <span className="text-white select-none">
-                        {userData.twitchname ? userData.twitchname.length : 0} {/* Check if userData.twitchname is defined before accessing its length property */}
+                        {userData.twitchname ? userData.twitchname.length : 0}{" "}
+                        {/* Check if userData.twitchname is defined before accessing its length property */}
                       </span>
                       <span className="text-gray-400 select-none">/{32}</span>
                     </div>
