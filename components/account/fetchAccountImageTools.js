@@ -220,7 +220,7 @@ export default function FetchGallery() {
               const width =
                 gallery?.data?.attributes?.img?.data?.attributes?.width;
               const height =
-                gallery?.data?.attributes?.img?.data?.attributes?.width;
+                gallery?.data?.attributes?.img?.data?.attributes?.height;
 
               return (
                 <div className="flex flex-wrap items-start">
@@ -289,6 +289,62 @@ export default function FetchGallery() {
                       </div>
 
                       <div className="sm:col-span-3">
+                        <label className="block text-sm font-medium leading-6 text-white">
+                          Creation Date
+                        </label>
+                        <div className="mt-2">
+                          <span
+                            type="text"
+                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                          >
+                            {userData.createdAt}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="sm:col-span-3">
+                        <label className="block text-sm font-medium leading-6 text-white">
+                          Modified Date
+                        </label>
+                        <div className="mt-2">
+                          <span
+                            type="text"
+                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                          >
+                            {userData.createdAt}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="sm:col-span-3">
+                        <label className="block text-sm font-medium leading-6 text-white">
+                          Width
+                        </label>
+                        <div className="mt-2">
+                          <span
+                            type="text"
+                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                          >
+                            {width}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="sm:col-span-3">
+                        <label className="block text-sm font-medium leading-6 text-white">
+                          Height
+                        </label>
+                        <div className="mt-2">
+                          <span
+                            type="text"
+                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                          >
+                            {height}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="sm:col-span-6">
                         <label className="block text-sm font-medium leading-6 text-white">
                           NSFW
                         </label>
