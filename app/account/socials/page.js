@@ -275,23 +275,23 @@ export default function AccountPage() {
 
                 <div className="sm:col-span-6">
                   <label
-                    htmlFor="twittername"
+                    htmlFor="X_name"
                     className="block text-sm font-medium leading-6 text-white"
                   >
-                    Twitter Name
+                    X / Twitter Name
                   </label>
                   <div className="mt-2 relative">
                     <input
                       type="text"
-                      name="twittername"
-                      id="twittername"
+                      name="X_name"
+                      id="X_name"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                      value={userData.twittername} // Set the value from state
+                      value={userData.X_name} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
                           setUserData({
                             ...userData,
-                            twittername: e.target.value,
+                            X_name: e.target.value,
                           });
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 32
@@ -299,7 +299,7 @@ export default function AccountPage() {
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                       <span className="text-white select-none">
-                        {userData.twittername ? userData.twittername.length : 0} {/* Check if userData.twittername is defined before accessing its length property */}
+                        {userData.X_name ? userData.X_name.length : 0} {/* Check if userData.X_name is defined before accessing its length property */}
                       </span>
                       <span className="text-gray-400 select-none">/{32}</span>
                     </div>
