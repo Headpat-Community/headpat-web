@@ -22,7 +22,7 @@ const navigation = [
   },
   {
     name: "User Gallery",
-    href: "#",
+    href: "/account/gallery",
     icon: PhotoIcon,
     current: false,
   },
