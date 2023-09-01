@@ -6,6 +6,7 @@ export default function FetchGallery() {
   const [gallery, setGallery] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [displayname, setDisplayname] = useState(null);
 
   useEffect(() => {
     const pathParts = window.location.pathname.split("/");
@@ -21,6 +22,16 @@ export default function FetchGallery() {
         setGallery(data); // Set the entire data object
         //console.log(data)
         setIsLoading(false);
+        fetch(
+          `https://backend.headpat.de/api/user-data/${data.data.attributes.users_permissions_user.data.id}`
+        )
+          .then((response) => response.json())
+          .then((userData) => {
+            setDisplayname(userData.data.attributes.displayname);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       })
       .catch((error) => {
         setError(error.message);
@@ -47,13 +58,14 @@ export default function FetchGallery() {
                 const name = gallery?.data?.attributes?.name;
                 const createdAt = gallery?.data?.attributes?.createdAt;
                 const modifiedAt = gallery?.data?.attributes?.updatedAt;
-                const imgalt = gallery?.data?.attributes?.imgalt;
                 const longtext = gallery?.data?.attributes?.longtext;
                 const nsfw = gallery?.data?.attributes?.nsfw;
                 const width =
                   gallery?.data?.attributes?.img?.data?.attributes?.width;
                 const height =
                   gallery?.data?.attributes?.img?.data?.attributes?.height;
+                const username = gallery?.data?.attributes?.users_permissions_user?.data?.attributes?.username
+                console.log(gallery?.data?.attributes?.users_permissions_user?.data.attributes.username)
 
                 if (!url || !name) {
                   throw new Error("W-where am I? This is not a gallery!");
@@ -93,6 +105,19 @@ export default function FetchGallery() {
                             </dt>
                             <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
                               {name || "No title provided."}
+                            </dd>
+                          </div>
+                          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                            <dt className="text-sm font-medium leading-6 text-white">
+                              Uploaded by:
+                            </dt>
+                            <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                              <Link
+                                href={`/user/${username}`}
+                                className="text-indigo-500 hover:text-indigo-400"
+                              >
+                                {displayname || "Unknown"}
+                              </Link>
                             </dd>
                           </div>
                           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
