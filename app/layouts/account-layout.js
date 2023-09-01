@@ -21,7 +21,7 @@ const navigation = [
     current: false,
   },
   {
-    name: "User Gallery (Soon)",
+    name: "User Gallery",
     href: "#",
     icon: PhotoIcon,
     current: false,

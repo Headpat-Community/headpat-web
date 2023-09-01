@@ -46,6 +46,7 @@ export default function FetchGallery() {
                 const url = imgAttributes?.url;
                 const name = gallery?.data?.attributes?.name;
                 const createdAt = gallery?.data?.attributes?.createdAt;
+                const modifiedAt = gallery?.data?.attributes?.updatedAt;
                 const longtext = gallery?.data?.attributes?.longtext;
                 const width =
                   gallery?.data?.attributes?.img?.data?.attributes?.width;
@@ -98,6 +99,19 @@ export default function FetchGallery() {
                             </dt>
                             <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
                               {new Date(createdAt).toLocaleDateString("de-DE", {
+                                day: "numeric",
+                                month: "numeric",
+                                year: "numeric",
+                                timeZone: "Europe/Berlin",
+                              })}
+                            </dd>
+                          </div>
+                          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                            <dt className="text-sm font-medium leading-6 text-white">
+                              Last Modified
+                            </dt>
+                            <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                              {new Date(modifiedAt).toLocaleDateString("de-DE", {
                                 day: "numeric",
                                 month: "numeric",
                                 year: "numeric",
