@@ -41,6 +41,7 @@ export default function FetchGallery() {
           .then((userData) => {
             setDisplayname(userData.data.attributes.displayname);
             setNsfwProfile(userData.data.attributes.enablensfw);
+            console.log(nsfwProfile);
           })
           .catch((error) => {
             console.error(error);
@@ -50,7 +51,7 @@ export default function FetchGallery() {
         setError(error.message);
         setIsLoading(false);
       });
-  }, []);
+  }, [nsfwProfile]);
 
   return (
     <div>
@@ -86,18 +87,20 @@ export default function FetchGallery() {
                 }
 
                 const isNsfwImage = nsfw && !nsfwProfile;
+                console.log("NSFW:" + nsfw)
+                console.log("NSFWProfile:" + nsfwProfile)
 
                 return (
                   <div className="flex flex-wrap items-start">
                     <div className="mr-4 sm:mt-4 mb-4 md:mb-0 flex">
                       <Link
                         href="."
-                        className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                        className="rounded-md bg-indigo-500 px-3 py-2 mb-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                       >
                         &larr; Go back
                       </Link>
                     </div>
-                    {isNsfwImage || !token ? (
+                    {isNsfwImage ? (
                       <div
                         className={`fixed inset-0 flex items-center justify-center`}
                       >
@@ -106,29 +109,117 @@ export default function FetchGallery() {
                         </div>
                       </div>
                     ) : (
-                      <img
-                        src={url}
-                        alt={name || "Headpat Community Image"}
-                        className={`rounded-lg object-cover imgsinglegallery ${
-                          width < 800
-                            ? `w-${width}`
-                            : `h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`
-                        } mx-auto`}
-                      />
-                    )}
+                      <>
+                        <img
+                          src={url}
+                          alt={name || "Headpat Community Image"}
+                          className={`rounded-lg object-cover imgsinglegallery ${
+                            width < 800
+                              ? `w-${width}`
+                              : `h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`
+                          } mx-auto`}
+                        />
 
-                    <div className="ml-4">
-                      <div className="px-4 sm:px-0 mt-4">
-                        <h3 className="text-base font-semibold leading-7 text-white">
-                          Image description
-                        </h3>
-                      </div>
-                      <div className="mt-4 border-t border-white/10">
-                        <dl className="divide-y divide-white/10">
-                          {/* Rest of your code for displaying image details */}
-                        </dl>
-                      </div>
-                    </div>
+                        <div className="ml-4">
+                          <div className="px-4 sm:px-0 mt-4">
+                            <h3 className="text-base font-semibold leading-7 text-white">
+                              Image description
+                            </h3>
+                          </div>
+                          <div className="mt-4 border-t border-white/10">
+                            <dl className="divide-y divide-white/10">
+                              <div className="ml-4">
+                                <div className="px-4 sm:px-0 mt-4">
+                                  <h3 className="text-base font-semibold leading-7 text-white">
+                                    Image description
+                                  </h3>
+                                </div>
+                                <div className="mt-4 border-t border-white/10">
+                                  <dl className="divide-y divide-white/10">
+                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                      <dt className="text-sm font-medium leading-6 text-white">
+                                        Title
+                                      </dt>
+                                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                                        {name || "No title provided."}
+                                      </dd>
+                                    </div>
+                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                      <dt className="text-sm font-medium leading-6 text-white">
+                                        Uploaded by:
+                                      </dt>
+                                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                                        <Link
+                                          href={`/user/${username}`}
+                                          className="text-indigo-500 hover:text-indigo-400"
+                                        >
+                                          {displayname || "Unknown"}
+                                        </Link>
+                                      </dd>
+                                    </div>
+                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                      <dt className="text-sm font-medium leading-6 text-white">
+                                        Creation Date
+                                      </dt>
+                                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                                        {new Date(createdAt).toLocaleDateString(
+                                          "de-DE",
+                                          {
+                                            day: "numeric",
+                                            month: "numeric",
+                                            year: "numeric",
+                                            timeZone: "Europe/Berlin",
+                                          }
+                                        )}
+                                      </dd>
+                                    </div>
+                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                      <dt className="text-sm font-medium leading-6 text-white">
+                                        Last Modified
+                                      </dt>
+                                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                                        {new Date(
+                                          modifiedAt
+                                        ).toLocaleDateString("de-DE", {
+                                          day: "numeric",
+                                          month: "numeric",
+                                          year: "numeric",
+                                          timeZone: "Europe/Berlin",
+                                        })}
+                                      </dd>
+                                    </div>
+                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                      <dt className="text-sm font-medium leading-6 text-white">
+                                        NSFW
+                                      </dt>
+                                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                                        {nsfw ? "Yes" : "No"}
+                                      </dd>
+                                    </div>
+                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                      <dt className="text-sm font-medium leading-6 text-white">
+                                        Width/Height
+                                      </dt>
+                                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                                        {width}x{height}
+                                      </dd>
+                                    </div>
+                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                      <dt className="text-sm font-medium leading-6 text-white">
+                                        About
+                                      </dt>
+                                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0 max-w-full break-words">
+                                        {longtext || "No description provided."}
+                                      </dd>
+                                    </div>
+                                  </dl>
+                                </div>
+                              </div>
+                            </dl>
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 );
               } catch (e) {
