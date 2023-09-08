@@ -352,7 +352,9 @@ export default function UserProfile() {
                           {userData?.data?.attributes?.displayname}
                         </dd>
                       </div>
-                      <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
+                      <div
+                        className={`mt-4 mb-6 flex w-full flex-none gap-x-4 px-6`}
+                      >
                         <dt className="flex-none">
                           <span className="sr-only">Status</span>
                           <PencilSquareIcon
@@ -364,22 +366,24 @@ export default function UserProfile() {
                           {userData?.data?.attributes?.status}
                         </dd>
                       </div>
-                      <div
-                        className={`mt-4 flex w-full flex-none gap-x-4 px-6 ${
-                          formattedBirthday === "31.01.1900" ? "mb-6" : ""
-                        }`}
-                      >
-                        <dt className="flex-none">
-                          <span className="sr-only">Pronouns</span>
-                          <FontAwesomeIcon
-                            className="h-6 w-5 text-gray-400"
-                            icon={faPersonHalfDress}
-                          />
-                        </dt>
-                        <dd className="text-sm font-medium leading-6 text-white">
-                          {userData?.data?.attributes?.pronouns}
-                        </dd>
-                      </div>
+                      {userData?.data?.attributes?.pronouns == "" && (
+                        <div
+                          className={`flex w-full flex-none gap-x-4 px-6 ${
+                            formattedBirthday === "31.01.1900" ? "mb-6" : ""
+                          }`}
+                        >
+                          <dt className="flex-none">
+                            <span className="sr-only">Pronouns</span>
+                            <FontAwesomeIcon
+                              className="h-6 w-5 text-gray-400"
+                              icon={faPersonHalfDress}
+                            />
+                          </dt>
+                          <dd className="text-sm font-medium leading-6 text-white">
+                            {userData?.data?.attributes?.pronouns}
+                          </dd>
+                        </div>
+                      )}
                       {formattedBirthday !== "31.01.1900" && (
                         <div className="mt-4 flex w-full flex-none gap-x-4 px-6 mb-6">
                           <dt className="flex-none">
