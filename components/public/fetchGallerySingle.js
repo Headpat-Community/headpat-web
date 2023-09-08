@@ -87,19 +87,21 @@ export default function FetchGallery() {
                 }
 
                 const isNsfwImage = nsfw && !nsfwProfile;
-                console.log("NSFW:" + nsfw)
-                console.log("NSFWProfile:" + nsfwProfile)
+                console.log("NSFW:" + nsfw);
+                console.log("NSFWProfile:" + nsfwProfile);
 
                 return (
                   <div className="flex flex-wrap items-start">
-                    <div className="mr-4 sm:mt-4 mb-4 md:mb-0 flex">
-                      <Link
-                        href="."
-                        className="rounded-md bg-indigo-500 px-3 py-2 mb-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                      >
-                        &larr; Go back
-                      </Link>
-                    </div>
+                    {!error && (
+                      <div className="mr-4 sm:mt-4 mb-4 md:mb-0 flex">
+                        <Link
+                          href="."
+                          className="rounded-md bg-indigo-500 px-3 py-2 mb-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                        >
+                          &larr; Go back
+                        </Link>
+                      </div>
+                    )}
                     {isNsfwImage ? (
                       <div
                         className={`fixed inset-0 flex items-center justify-center`}
