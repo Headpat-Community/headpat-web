@@ -1,5 +1,5 @@
 "use client";
-import FetchAccountImageTools from "../../components/account/fetchAccountImageTools";
+import FetchAccountImageTools from "../../../../components/account/fetchAccountImageTools";
 import Layout from "../../../layouts/account-layout";
 
 export const runtime = 'edge';

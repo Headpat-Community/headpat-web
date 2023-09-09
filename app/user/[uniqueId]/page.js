@@ -2,7 +2,7 @@
 import { useEffect, useState, Fragment } from "react";
 import { Listbox, Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
-import Header from "../../components/header";
+import Header from "../../../components/header";
 import {
   CalendarDaysIcon,
   EllipsisVerticalIcon,
@@ -23,7 +23,7 @@ import {
   faXTwitter,
   faTwitch,
 } from "@fortawesome/free-brands-svg-icons";
-import ErrorPage from "../../components/404";
+import ErrorPage from "../../../components/404";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");

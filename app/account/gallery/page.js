@@ -1,7 +1,6 @@
 "use client";
-import Header from "../../components/header";
 import { useState, useEffect } from "react";
-import ErrorPage from "../../components/404";
+import ErrorPage from "../../../components/404";
 import Layout from "../../layouts/account-layout";
 import Link from "next/link";
 
