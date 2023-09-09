@@ -7,12 +7,13 @@ export default function AccountPage() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [userData, setUserData] = useState({
-    status: "", // Initialize with an empty string
-    bio: "", // Initialize with an empty string
-    displayname: "", // Initialize with an empty string
-    pronouns: "", // Initialize with an empty string
-    birthday: "", // Initialize with an empty string
-    avatar: "", // Initialize with an empty string
+    status: "",
+    bio: "",
+    displayname: "",
+    pronouns: "",
+    birthday: "",
+    location: "",
+    avatar: "",
   });
 
   useEffect(() => {
@@ -49,11 +50,12 @@ export default function AccountPage() {
         const userDataResponseData = await userDataResponse.json();
         //console.log(userDataResponseData.data.attributes);
         setUserData({
-          status: userDataResponseData.data.attributes.status || "", // Set the status value or an empty string
-          bio: userDataResponseData.data.attributes.bio || "", // Set the bio value or an empty string
-          displayname: userDataResponseData.data.attributes.displayname || "", // Set the bio value or an empty string
-          birthday: userDataResponseData.data.attributes.birthday || "", // Set the bio value or an empty string
-          pronouns: userDataResponseData.data.attributes.pronouns || "", // Set the bio value or an empty string
+          status: userDataResponseData.data.attributes.status || "",
+          bio: userDataResponseData.data.attributes.bio || "",
+          displayname: userDataResponseData.data.attributes.displayname || "",
+          birthday: userDataResponseData.data.attributes.birthday || "",
+          pronouns: userDataResponseData.data.attributes.pronouns || "",
+          location: userDataResponseData.data.attributes.location || "",
           avatar:
             userDataResponseData.data.attributes.avatar?.data?.attributes
               ?.url || "/logo.png", // Set the avatar value or an empty string
@@ -120,11 +122,12 @@ export default function AccountPage() {
         "data",
         JSON.stringify({
           users_permissions_user: userId,
-          status: document.getElementById("status").value, // Get the value from the status input
-          bio: document.getElementById("biostatus").value, // Get the value from the bio input
-          displayname: document.getElementById("displayname").value, // Get the value from the displayname input
-          birthday: document.getElementById("birthday").value, // Get the value from the displayname input
-          pronouns: document.getElementById("pronouns").value, // Get the value from the displayname input
+          status: document.getElementById("status").value,
+          bio: document.getElementById("biostatus").value,
+          displayname: document.getElementById("displayname").value,
+          birthday: document.getElementById("birthday").value,
+          pronouns: document.getElementById("pronouns").value,
+          location: document.getElementById("location").value,
         })
       );
 
@@ -351,12 +354,42 @@ export default function AccountPage() {
                       }} // Update state when the input changes
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                      <span
-                        aria-disabled
-                        className="text-gray-400 select-none"
-                      >
+                      <span aria-disabled className="text-gray-400 select-none">
                         DD/MM/YYYY
                       </span>{" "}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-span-full">
+                  <label
+                    htmlFor="location"
+                    className="block text-sm font-medium leading-6 text-white"
+                  >
+                    Location
+                  </label>
+                  <div className="mt-2 relative">
+                    <input
+                      id="location"
+                      name="location"
+                      type="text"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.location} // Set the value from state
+                      onChange={(e) => {
+                        if (e.target.value.length <= 256) {
+                          setUserData({
+                            ...userData,
+                            location: e.target.value,
+                          });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 16
+                      maxLength={256} // Limit the maximum number of characters to 16
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                      <span className="text-white  select-none">
+                        {userData.location ? userData.location.length : 0}{" "}
+                      </span>
+                      <span className="text-gray-400  select-none">/{256}</span>
                     </div>
                   </div>
                 </div>

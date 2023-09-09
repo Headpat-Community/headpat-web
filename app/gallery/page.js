@@ -1,6 +1,6 @@
 'use client';
-import Header from "@/components/header";
-import PublicGallery from "@/components/public/fetchPublicGallery";
+import Header from "../../components/header";
+import PublicGallery from "../../components/public/fetchPublicGallery";
 
 export default function Gallery() {
 

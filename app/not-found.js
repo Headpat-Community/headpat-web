@@ -1,4 +1,4 @@
-import ErrorPage from "@/components/404";
+import ErrorPage from "../components/404";
 
 export default function ErrorFrontPage() {
   return (
