@@ -89,7 +89,6 @@ const MapHeadpat: NextPage = () => {
                 lat: event.attributes.latitude,
                 lng: event.attributes.longitude,
               }}
-              options={{ enableEventPropagation: true }}
             >
               <div
                 className="text-black flex justify-center items-center bg-transparent"
