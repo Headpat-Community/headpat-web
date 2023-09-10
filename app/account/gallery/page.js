@@ -166,12 +166,17 @@ export default function FetchGallery() {
                             src={
                               item.attributes.nsfw && !enableNsfw
                                 ? "https://placekitten.com/200/300" // Replace with placeholder image URL
+                                : item.attributes.img.data.attributes.ext ===
+                                  ".gif"
+                                ? item.attributes.img.data.attributes.url
                                 : item.attributes.img.data.attributes.formats
-                                    .small?.url || // Use small.url if it exists
-                                  item.attributes.img.data.attributes.url // Use url if small.url does not exist
+                                    .small
+                                ? item.attributes.img.data.attributes.formats
+                                    .small.url
+                                : item.attributes.img.data.attributes.url
                             }
                             alt={item.attributes.imgalt}
-                            className={`object-cover h-full w-full`}
+                            className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
                           />
                         </Link>
                       </div>

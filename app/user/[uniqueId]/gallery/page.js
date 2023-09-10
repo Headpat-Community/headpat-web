@@ -160,7 +160,10 @@ export default function FetchGallery() {
                                 ".gif"
                               ? item.attributes.img.data.attributes.url
                               : item.attributes.img.data.attributes.formats
+                                  .small
+                              ? item.attributes.img.data.attributes.formats
                                   .small.url
+                              : item.attributes.img.data.attributes.url
                           }
                           alt={item.attributes.imgalt}
                           className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
