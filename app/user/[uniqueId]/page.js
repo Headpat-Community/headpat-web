@@ -123,12 +123,10 @@ export default function UserProfile() {
     .padStart(2, "0")}.${today.getFullYear()}`;
 
   useEffect(() => {
-    setIsBirthdayToday(formattedBirthday === formattedToday);
+    if (formattedBirthday !== '31.01.1900') {
+      setIsBirthdayToday(formattedBirthday === formattedToday);
+    }
   }, [formattedBirthday, formattedToday]);
-
-  const handleDismiss = () => {
-    setIsBirthdayToday(false);
-  };
 
   const username =
     typeof window !== "undefined" ? window.location.pathname.split("/")[2] : "";
