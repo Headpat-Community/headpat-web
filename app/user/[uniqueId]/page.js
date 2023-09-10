@@ -3,6 +3,7 @@ import { useEffect, useState, Fragment } from "react";
 import { Listbox, Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import Header from "../../../components/header";
+import Footer from "../../../components/footer";
 import {
   CalendarDaysIcon,
   EllipsisVerticalIcon,
@@ -715,6 +716,7 @@ export default function UserProfile() {
           <p>Loading...</p>
         )}
       </main>
+      <Footer />
     </>
   );
 }
