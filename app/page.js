@@ -75,10 +75,10 @@ export default function Home() {
               <p className="mt-6 text-lg leading-8 text-gray-600">
                 Hier könnt ihr eure Portfolios erstellen, sie mit anderen
                 austauschen und vieles mehr! Ihr könnt auch eure Bilder in der
-                Gallerie hochladen, um sie mit anderen zu teilen.
+                Galerie hochladen, um sie mit anderen zu teilen.
                 <br />
                 <br />
-                Diese Seite ist nicht fertig.
+                Diese Seite ist noch nicht fertig.
               </p>
               <div className="mt-10 flex items-center gap-x-6">
                 <Link
