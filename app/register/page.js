@@ -43,7 +43,6 @@ const Login = () => {
         }
       );
       const data = await response.json();
-      //console.log("User authenticated successfully");
 
       if (response.status === 400) {
         setError(
@@ -64,7 +63,7 @@ const Login = () => {
         }, 5000);
       } else if (response.status === 200) {
         try {
-          const response = await fetch(
+          const userDataResponse = await fetch(
             "https://backend.headpat.de/api/user-data",
             {
               method: "POST",
@@ -74,11 +73,12 @@ const Login = () => {
               body: JSON.stringify({
                 data: {
                   status: "I'm new here!",
+                  users_permissions_user: data.user.id,
                 },
               }),
             }
           );
-          if (response.status === 200) {
+          if (userDataResponse.status === 200) {
             //console.log("Second POST request successful");
           } else {
             //console.log("Second POST request failed");
