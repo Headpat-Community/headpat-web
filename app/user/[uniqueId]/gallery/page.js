@@ -78,7 +78,6 @@ export default function FetchGallery() {
 
         const data = await response.json();
         console.log(data);
-        setUserData(data.data);
         setEnableNsfw(data.data.attributes.enablensfw);
         console.log(data.data.attributes.enablensfw);
       } catch (error) {
