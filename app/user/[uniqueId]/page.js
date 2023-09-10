@@ -123,7 +123,7 @@ export default function UserProfile() {
     .padStart(2, "0")}.${today.getFullYear()}`;
 
   useEffect(() => {
-    setIsBirthdayToday(formattedBirthday !== formattedToday);
+    setIsBirthdayToday(formattedBirthday === formattedToday);
   }, [formattedBirthday, formattedToday]);
 
   const handleDismiss = () => {
