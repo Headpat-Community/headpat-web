@@ -73,9 +73,12 @@ export default function Home() {
                 Headpat Community
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
-                Hier könnt ihr eure Portfolios teilen, euch mit anderen
-                Künstlern austauschen und neue Freunde finden. Ihr könnt eigene
-                Galerien erstellen und eure Bilder mit anderen teilen.
+                Hier könnt ihr eure Portfolios erstellen, sie mit anderen
+                austauschen und vieles mehr! Ihr könnt auch eure Bilder in der
+                Gallerie hochladen, um sie mit anderen zu teilen.
+                <br />
+                <br />
+                Diese Seite ist nicht fertig.
               </p>
               <div className="mt-10 flex items-center gap-x-6">
                 <Link
