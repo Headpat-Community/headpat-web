@@ -55,7 +55,11 @@ export default function Home() {
                     className="h-4 w-px bg-gray-900/10"
                     aria-hidden="true"
                   />
-                  <Link href="https://discord.gg/headpat" className="flex items-center gap-x-1" target="_blank">
+                  <Link
+                    href="https://discord.gg/headpat"
+                    className="flex items-center gap-x-1"
+                    target="_blank"
+                  >
                     <span className="absolute inset-0" aria-hidden="true" />
                     Klick hier um beizutreten
                     <ChevronRightIcon
@@ -69,9 +73,9 @@ export default function Home() {
                 Headpat Community
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
-                Esse id magna consectetur fugiat non dolor in ad laboris magna
-                laborum ea consequat. Nisi irure aliquip nisi adipisicing veniam
-                voluptate id. In veniam incididunt ex veniam adipisicing sit.
+                Hier könnt ihr eure Portfolios teilen, euch mit anderen
+                Künstlern austauschen und neue Freunde finden. Ihr könnt eigene
+                Galerien erstellen und eure Bilder mit anderen teilen.
               </p>
               <div className="mt-10 flex items-center gap-x-6">
                 <Link
@@ -108,10 +112,7 @@ export default function Home() {
                   transform="translate(24 24)"
                   clipPath="url(#2ade4387-9c63-4fc4-b754-10e687a0d332)"
                 >
-                  <img
-                    src="/images/phone.png"
-                    alt=""
-                  />
+                  <img src="/images/phone.png" alt="" />
                 </foreignObject>
               </svg>
             </div>

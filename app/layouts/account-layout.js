@@ -10,10 +10,12 @@ import {
   XMarkIcon,
   ArrowUpOnSquareIcon,
   ArrowLeftIcon,
+  UserCircleIcon,
 } from "@heroicons/react/24/outline";
 
 const navigation = [
-  { name: "Dashboard", href: "/account", icon: HomeIcon, current: false },
+  { name: "Home page", href: "/", icon: HomeIcon, current: false },
+  { name: "Dashboard", href: "/account", icon: UserCircleIcon, current: false },
   {
     name: "Upload image",
     href: "/account/upload",
@@ -317,7 +319,8 @@ export default function Example({ children }) {
                 <img
                   className="h-8 w-8 rounded-full bg-gray-800"
                   src={
-                    userData.avatar?.data?.attributes?.url || "/logos/logo-512.png"
+                    userData.avatar?.data?.attributes?.url ||
+                    "/logos/logo-512.png"
                   }
                   alt=""
                 />
