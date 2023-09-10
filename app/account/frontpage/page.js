@@ -58,7 +58,7 @@ export default function AccountPage() {
           location: userDataResponseData.data.attributes.location || "",
           avatar:
             userDataResponseData.data.attributes.avatar?.data?.attributes
-              ?.url || "/logo.png", // Set the avatar value or an empty string
+              ?.url || "/logos/logo.png", // Set the avatar value or an empty string
         });
       } catch (error) {
         console.error(error);
@@ -214,7 +214,7 @@ export default function AccountPage() {
                 <div className="col-span-full flex items-center gap-x-8">
                   <img
                     id="avatar-image"
-                    src={userData.avatar || "/logo.png"}
+                    src={userData.avatar || "/logos/logo.png"}
                     alt=""
                     className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
                   />

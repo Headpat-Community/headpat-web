@@ -40,7 +40,7 @@ const activity = [
     type: "commented",
     person: {
       name: "fafa",
-      imageUrl: "/logo.png",
+      imageUrl: "/logos/logo.png",
     },
     comment: "Irgendwann könnt ihr hier auch comments schreiben! :3",
     date: "soon",
@@ -195,7 +195,7 @@ export default function UserProfile() {
                         />
                       ) : (
                         <img
-                          src="/logo-512.png"
+                          src="/logos/logo-512.png"
                           alt=""
                           className="h-10 rounded-full"
                         />
@@ -265,7 +265,7 @@ export default function UserProfile() {
                           />
                         ) : (
                           <img
-                            src="/logo-512.png"
+                            src="/logos/logo-512.png"
                             alt=""
                             className="h-16 w-16 flex-none rounded-full ring-1 ring-white/10"
                           />
@@ -337,8 +337,8 @@ export default function UserProfile() {
                         <img
                           src={
                             isHovered
-                              ? "/furaffinity-hover.png"
-                              : "/furaffinity.png"
+                              ? "/logos/furaffinity-hover.png"
+                              : "/logos/furaffinity.png"
                           }
                           className="w-8 hover:text-indigo-600"
                           onMouseEnter={() => setIsHovered(true)}
@@ -584,7 +584,7 @@ export default function UserProfile() {
                   {/* New comment form */}
                   <div className="mt-6 flex gap-x-3">
                     <img
-                      src="/logo.png"
+                      src="/logos/logo.png"
                       alt=""
                       className="h-6 w-6 flex-none rounded-full bg-gray-50"
                     />
