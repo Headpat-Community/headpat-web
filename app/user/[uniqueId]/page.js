@@ -16,7 +16,11 @@ import {
   XMarkIcon as XMarkIconMini,
 } from "@heroicons/react/20/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFlag, faPersonHalfDress } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBirthdayCake,
+  faFlag,
+  faPersonHalfDress,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   faTelegram,
   faDiscord,
@@ -95,6 +99,7 @@ export default function UserProfile() {
   const [selected, setSelected] = useState(moods[5]);
   const [isHovered, setIsHovered] = useState(false);
   const [hasError, setHasError] = useState(false); // Add this state
+  const [isBirthdayToday, setIsBirthdayToday] = useState(false);
 
   const rawBirthday = userData?.data?.attributes?.birthday; // ISO date string
 
@@ -108,6 +113,22 @@ export default function UserProfile() {
     .padStart(2, "0")}.${(dateObject.getMonth() + 1)
     .toString()
     .padStart(2, "0")}.${dateObject.getFullYear()}`;
+
+  // Check if the formatted birthday is equal to today's date
+  const today = new Date();
+  const formattedToday = `${today.getDate().toString().padStart(2, "0")}.${(
+    today.getMonth() + 1
+  )
+    .toString()
+    .padStart(2, "0")}.${today.getFullYear()}`;
+
+  useEffect(() => {
+    setIsBirthdayToday(formattedBirthday === formattedToday);
+  }, [formattedBirthday, formattedToday]);
+
+  const handleDismiss = () => {
+    setIsBirthdayToday(false);
+  };
 
   const username =
     typeof window !== "undefined" ? window.location.pathname.split("/")[2] : "";
@@ -142,6 +163,52 @@ export default function UserProfile() {
     <>
       <Header />
       <main>
+        {isBirthdayToday && (
+          <div className="bg-indigo-600">
+            <div className="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between flex-wrap">
+                <div className="w-0 flex-1 flex items-center">
+                  <span className="flex p-2 rounded-lg bg-indigo-800">
+                    <FontAwesomeIcon
+                      icon={faBirthdayCake}
+                      className="h-6 w-6 text-white"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <p className="ml-3 font-medium text-white truncate">
+                    <span className="md:hidden">
+                      Happy birthday, {userData?.data?.attributes?.displayname}!
+                    </span>
+                    <span className="hidden md:inline">
+                      Happy birthday, {userData?.data?.attributes?.displayname}!
+                    </span>
+                  </p>
+                </div>
+                <div className="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
+                  <Link
+                    href="/birthday"
+                    className="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50"
+                  >
+                    Learn more
+                  </Link>
+                </div>
+                <div className="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
+                  <button
+                    type="button"
+                    className="-mr-1 flex p-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2"
+                    onClick={handleDismiss}
+                  >
+                    <span className="sr-only">Dismiss</span>
+                    <XMarkIconMini
+                      className="h-6 w-6 text-white"
+                      aria-hidden="true"
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         {userData ? ( // Check if userData exists
           <>
             <header className="relative isolate pt-16">
@@ -385,9 +452,13 @@ export default function UserProfile() {
                         </div>
                       )}
                       {formattedBirthday !== "31.01.1900" && (
-                        <div className={`mt-4 flex w-full flex-none gap-x-4 px-6 mb-4 ${
-                          userData?.data?.attributes?.location === "" ? "mb-6" : ""
-                        }`}>
+                        <div
+                          className={`mt-4 flex w-full flex-none gap-x-4 px-6 mb-4 ${
+                            userData?.data?.attributes?.location === ""
+                              ? "mb-6"
+                              : ""
+                          }`}
+                        >
                           <dt className="flex-none">
                             <span className="sr-only">Birthday</span>
                             <CalendarDaysIcon
