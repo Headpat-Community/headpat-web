@@ -89,10 +89,14 @@ export default function FetchGallery() {
       });
   }, [userId, enableNsfw]);
 
-  const handleLoadMore = () => {
+  const handleLoadMore = (event) => {
+    event.preventDefault();
     const nextVisibleGallery = gallery.slice(0, visibleGallery.length + 12);
     setVisibleGallery(nextVisibleGallery);
     if (nextVisibleGallery.length === gallery.length) {
+      setLoadMore(false);
+    }
+    if (nextVisibleGallery.length >= gallery.length) {
       setLoadMore(false);
     }
   };
