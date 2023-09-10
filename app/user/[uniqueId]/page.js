@@ -16,7 +16,7 @@ import {
   XMarkIcon as XMarkIconMini,
 } from "@heroicons/react/20/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPersonHalfDress } from "@fortawesome/free-solid-svg-icons";
+import { faFlag, faPersonHalfDress } from "@fortawesome/free-solid-svg-icons";
 import {
   faTelegram,
   faDiscord,
@@ -353,7 +353,7 @@ export default function UserProfile() {
                         </dd>
                       </div>
                       <div
-                        className={`mt-4 mb-6 flex w-full flex-none gap-x-4 px-6`}
+                        className={`mt-4 mb-4 flex w-full flex-none gap-x-4 px-6`}
                       >
                         <dt className="flex-none">
                           <span className="sr-only">Status</span>
@@ -366,7 +366,7 @@ export default function UserProfile() {
                           {userData?.data?.attributes?.status}
                         </dd>
                       </div>
-                      {userData?.data?.attributes?.pronouns == "" && (
+                      {userData?.data?.attributes?.pronouns !== "" && (
                         <div
                           className={`flex w-full flex-none gap-x-4 px-6 ${
                             formattedBirthday === "31.01.1900" ? "mb-6" : ""
@@ -385,7 +385,9 @@ export default function UserProfile() {
                         </div>
                       )}
                       {formattedBirthday !== "31.01.1900" && (
-                        <div className="mt-4 flex w-full flex-none gap-x-4 px-6 mb-6">
+                        <div className={`mt-4 flex w-full flex-none gap-x-4 px-6 mb-4 ${
+                          userData?.data?.attributes?.location === "" ? "mb-6" : ""
+                        }`}>
                           <dt className="flex-none">
                             <span className="sr-only">Birthday</span>
                             <CalendarDaysIcon
@@ -397,6 +399,22 @@ export default function UserProfile() {
                             <time dateTime={rawBirthday}>
                               {formattedBirthday}
                             </time>
+                          </dd>
+                        </div>
+                      )}
+                      {userData?.data?.attributes?.location !== "" && (
+                        <div
+                          className={`flex w-full flex-none gap-x-4 px-6 mb-4`}
+                        >
+                          <dt className="flex-none">
+                            <span className="sr-only">Location</span>
+                            <FontAwesomeIcon
+                              className="h-6 w-5 text-gray-400"
+                              icon={faFlag}
+                            />
+                          </dt>
+                          <dd className="text-sm font-medium leading-6 text-white">
+                            {userData?.data?.attributes?.location}
                           </dd>
                         </div>
                       )}
