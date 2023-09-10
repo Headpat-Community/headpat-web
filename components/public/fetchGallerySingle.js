@@ -29,19 +29,34 @@ export default function FetchGallery() {
 
     setIsLoading(true);
 
-    fetch(apiUrl)
+    const token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
+
+    if (!token) return;
+
+    fetch(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         setGallery(data);
         setIsLoading(false);
         fetch(
-          `https://backend.headpat.de/api/user-data/${data.data.attributes.users_permissions_user.data.id}`
+          `https://backend.headpat.de/api/user-data/${data.data.attributes.users_permissions_user.data.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         )
           .then((response) => response.json())
           .then((userData) => {
             setDisplayname(userData.data.attributes.displayname);
             setNsfwProfile(userData.data.attributes.enablensfw);
-            console.log(nsfwProfile);
           })
           .catch((error) => {
             console.error(error);
@@ -87,8 +102,6 @@ export default function FetchGallery() {
                 }
 
                 const isNsfwImage = nsfw && !nsfwProfile;
-                console.log("NSFW:" + nsfw);
-                console.log("NSFWProfile:" + nsfwProfile);
 
                 return (
                   <div className="flex flex-wrap items-start">
