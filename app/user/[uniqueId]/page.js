@@ -14,10 +14,10 @@ import {
   UserCircleIcon,
   PencilSquareIcon,
   XMarkIcon as XMarkIconMini,
+  XMarkIcon,
 } from "@heroicons/react/20/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBirthdayCake,
   faFlag,
   faPersonHalfDress,
 } from "@fortawesome/free-solid-svg-icons";
@@ -123,7 +123,7 @@ export default function UserProfile() {
     .padStart(2, "0")}.${today.getFullYear()}`;
 
   useEffect(() => {
-    setIsBirthdayToday(formattedBirthday === formattedToday);
+    setIsBirthdayToday(formattedBirthday !== formattedToday);
   }, [formattedBirthday, formattedToday]);
 
   const handleDismiss = () => {
@@ -163,52 +163,71 @@ export default function UserProfile() {
     <>
       <Header />
       <main>
-        {isBirthdayToday && (
-          <div className="bg-indigo-600">
-            <div className="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between flex-wrap">
-                <div className="w-0 flex-1 flex items-center">
-                  <span className="flex p-2 rounded-lg bg-indigo-800">
-                    <FontAwesomeIcon
-                      icon={faBirthdayCake}
-                      className="h-6 w-6 text-white"
-                      aria-hidden="true"
-                    />
-                  </span>
-                  <p className="ml-3 font-medium text-white truncate">
-                    <span className="md:hidden">
-                      Happy birthday, {userData?.data?.attributes?.displayname}!
-                    </span>
-                    <span className="hidden md:inline">
-                      Happy birthday, {userData?.data?.attributes?.displayname}!
-                    </span>
-                  </p>
-                </div>
-                <div className="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
-                  <Link
-                    href="/birthday"
-                    className="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50"
-                  >
-                    Learn more
-                  </Link>
-                </div>
-                <div className="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
-                  <button
-                    type="button"
-                    className="-mr-1 flex p-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2"
-                    onClick={handleDismiss}
-                  >
-                    <span className="sr-only">Dismiss</span>
-                    <XMarkIconMini
-                      className="h-6 w-6 text-white"
-                      aria-hidden="true"
-                    />
-                  </button>
+        <div
+          aria-live="assertive"
+          className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
+        >
+          <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
+            {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
+            <Transition
+              show={isBirthdayToday}
+              as={Fragment}
+              enter="transform ease-out duration-300 transition"
+              enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+              enterTo="translate-y-0 opacity-100 sm:translate-x-0"
+              leave="transition ease-in duration-100"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="pointer-events-auto w-full max-w-sm rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                <div className="p-4">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5">
+                      {userData &&
+                      userData.data.attributes.avatar &&
+                      userData.data.attributes.avatar.data &&
+                      userData.data.attributes.avatar.data.attributes ? (
+                        <img
+                          src={
+                            userData.data.attributes.avatar.data.attributes.url
+                          }
+                          alt=""
+                          className="h-10 rounded-full"
+                        />
+                      ) : (
+                        <img
+                          src="/logo-512.png"
+                          alt=""
+                          className="h-10 rounded-full"
+                        />
+                      )}
+                    </div>
+                    <div className="ml-3 w-0 flex-1">
+                      <p className="text-sm font-medium text-gray-900">
+                        {userData?.data?.attributes?.displayname}
+                      </p>
+                      <p className="mt-1 text-sm text-gray-500">
+                        It&apos;s their birthday today!
+                      </p>
+                    </div>
+                    <div className="ml-4 flex flex-shrink-0">
+                      <button
+                        type="button"
+                        className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        onClick={() => {
+                          setIsBirthdayToday(false);
+                        }}
+                      >
+                        <span className="sr-only">Close</span>
+                        <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Transition>
           </div>
-        )}
+        </div>
         {userData ? ( // Check if userData exists
           <>
             <header className="relative isolate pt-16">
