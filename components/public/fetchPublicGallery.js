@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useInView } from "react-intersection-observer";
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState([]);
   const [visibleGallery, setVisibleGallery] = useState([]);
-  const [loadMore, setLoadMore] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -27,9 +27,7 @@ export default function FetchGallery() {
           },
         });
         const data = await response.json();
-        //console.log(data);
         setUserId(data.id);
-        //console.log(data.id);
       } catch (error) {
         setError(error);
       }
@@ -42,7 +40,6 @@ export default function FetchGallery() {
     if (!userId) return; // Wait for userId to be available
 
     const userDataApiUrl = `https://backend.headpat.de/api/user-data/${userId}`;
-    //console.log(userDataApiUrl);
 
     const fetchUserData = async () => {
       const token = document.cookie.replace(
@@ -61,7 +58,6 @@ export default function FetchGallery() {
 
         const data = await response.json();
         setEnableNsfw(data.data.attributes.enablensfw);
-        //console.log(data.data.attributes.enablensfw);
       } catch (error) {
         setError(error);
       }
@@ -88,17 +84,22 @@ export default function FetchGallery() {
       });
   }, [userId, enableNsfw]);
 
-  const handleLoadMore = (event) => {
-    event.preventDefault();
-    const nextVisibleGallery = gallery.slice(0, visibleGallery.length + 12);
-    setVisibleGallery(nextVisibleGallery);
-    if (nextVisibleGallery.length === gallery.length) {
-      setLoadMore(false);
+  const loadMoreItems = useCallback(() => {
+    // Implement logic to load more items here
+    // You can use a similar approach to handleLoadMore
+    // For example, you can slice the gallery array to load more items
+  }, [gallery]);
+
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.2, // Adjust this threshold as needed
+  });
+
+  useEffect(() => {
+    if (inView) {
+      loadMoreItems();
     }
-    if (nextVisibleGallery.length >= gallery.length) {
-      setLoadMore(false);
-    }
-  };
+  }, [inView, loadMoreItems]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -132,8 +133,8 @@ export default function FetchGallery() {
           role="list"
           className="p-8 flex flex-wrap gap-4 justify-center items-center"
         >
-          {visibleGallery.map((item) => (
-            <div key={item.id}>
+          {visibleGallery.map((item, index) => (
+            <div key={item.id} ref={index === visibleGallery.length - 1 ? ref : null}>
               {item.attributes.img && item.attributes.img.data && (
                 <div
                   className={`rounded-lg overflow-hidden h-64 ${
@@ -164,14 +165,6 @@ export default function FetchGallery() {
             </div>
           ))}
         </ul>
-      )}
-      {loadMore && (
-        <button
-          onClick={handleLoadMore}
-          className="flex mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-8"
-        >
-          Load More
-        </button>
       )}
     </div>
   );
