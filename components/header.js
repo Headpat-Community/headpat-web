@@ -6,6 +6,7 @@ import Link from "next/link";
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Gallery", href: "/gallery" },
+  { name: "Pawcraft", href: "/pawcraft" },
 ];
 
 export default function Header() {
@@ -33,7 +34,13 @@ export default function Header() {
           <div className="-m-1.5 p-1.5">
             <span className="sr-only">Headpat Community</span>
             <Link href="/">
-              <img aria-label="Headpat Logo" title="Headpat Logo" className="h-10 w-auto" src="/logos/logo-512.png" alt="" />
+              <img
+                aria-label="Headpat Logo"
+                title="Headpat Logo"
+                className="h-10 w-auto"
+                src="/logos/logo-512.png"
+                alt=""
+              />
             </Link>
           </div>
         </div>

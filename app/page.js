@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <div className="bg-white">
+      <div className="bg-transparent">
         <div className="relative isolate pt-14">
           <svg
             className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
@@ -47,17 +47,12 @@ export default function Home() {
           <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40">
             <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
               <div className="flex">
-                <div className="relative flex items-center gap-x-4 rounded-full px-4 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                  <span className="font-semibold text-indigo-600">
-                    Wir haben ein Discord
-                  </span>
-                  <span
-                    className="h-4 w-px bg-gray-900/10"
-                    aria-hidden="true"
-                  />
+                <div className="relative flex items-center gap-x-4 rounded-full px-4 py-1 text-sm leading-6 text-gray-600 ring-1 ring-white/30 hover:ring-white/50">
+                  <span className="font-semibold text-indigo-600">Discord</span>
+                  <span className="h-4 w-px bg-white/90" aria-hidden="true" />
                   <Link
                     href="https://discord.gg/headpat"
-                    className="flex items-center gap-x-1"
+                    className="flex items-center gap-x-1 text-white"
                     target="_blank"
                   >
                     <span className="absolute inset-0" aria-hidden="true" />
@@ -69,16 +64,20 @@ export default function Home() {
                   </Link>
                 </div>
               </div>
-              <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+              <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-white sm:text-6xl">
                 Headpat Community
               </h1>
-              <p className="mt-6 text-lg leading-8 text-gray-600">
-                Hier könnt ihr eure Portfolios erstellen, sie mit anderen
-                austauschen und vieles mehr! Ihr könnt auch eure Bilder in der
-                Galerie hochladen, um sie mit anderen zu teilen.
+              <p className="mt-6 text-lg leading-8 text-white/80">
+                Die Headpat Community ist eine Online-Community für soziale
+                Medien. Wir stellen unseren Mitgliedern freiwillig eine
+                Plattform zum Verbinden, Austauschen und Ausdrücken zur
+                Verfügung.
                 <br />
                 <br />
-                Diese Seite ist noch nicht fertig.
+                Dazu gehören unter anderem unser Discord-Server, unsere
+                Telegram-Gruppe, Minecraft-Server (Pawcraft), ein
+                Online-Portfolio (headpat.de), ein Social media Con-Planer, eine
+                VR-Map, Online- und Offline-Events und vieles mehr!
               </p>
               <div className="mt-10 flex items-center gap-x-6">
                 <Link
