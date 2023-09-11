@@ -1,14 +1,16 @@
 import Link from "next/link";
-import { useState, useEffect, useCallback } from "react";
-import { useInView } from "react-intersection-observer";
+import { useState, useEffect, useRef } from "react";
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState([]);
-  const [visibleGallery, setVisibleGallery] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
   const [enableNsfw, setEnableNsfw] = useState(false);
+  const galleryContainerRef = useRef(null);
+  const [visibleGallery, setVisibleGallery] = useState([]);
+  const [loadMore, setLoadMore] = useState(true);
+  const [loadedImageCount, setLoadedImageCount] = useState(0);
 
   useEffect(() => {
     const userApiUrl = `https://backend.headpat.de/api/users/me`;
@@ -35,6 +37,10 @@ export default function FetchGallery() {
 
     fetchUserId();
   }, []);
+
+  const handleImageLoad = () => {
+    setLoadedImageCount((prevCount) => prevCount + 1);
+  };
 
   useEffect(() => {
     if (!userId) return; // Wait for userId to be available
@@ -75,7 +81,6 @@ export default function FetchGallery() {
       .then((response) => response.json())
       .then((data) => {
         setGallery(data.data.reverse());
-        setVisibleGallery(getVisibleGallery(data.data, window.innerWidth));
         setIsLoading(false);
       })
       .catch((error) => {
@@ -84,42 +89,55 @@ export default function FetchGallery() {
       });
   }, [userId, enableNsfw]);
 
-  const loadMoreItems = useCallback(() => {
-    // Implement logic to load more items here
-    // You can use a similar approach to handleLoadMore
-    // For example, you can slice the gallery array to load more items
+  useEffect(() => {
+    // Calculate the initial number of images to display
+    const initialVisibleImages = 6; // Adjust this value as needed
+
+    // Slice the gallery array to get the initial set of visible images
+    const initialVisibleGallery = gallery.slice(0, initialVisibleImages);
+
+    // Update the state with the initial set of visible images
+    setVisibleGallery(initialVisibleGallery);
   }, [gallery]);
 
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.2, // Adjust this threshold as needed
-  });
-
   useEffect(() => {
-    if (inView) {
-      loadMoreItems();
-    }
-  }, [inView, loadMoreItems]);
+    const handleLoadMore = () => {
+      // Calculate the number of additional images to load
+      const loadIncrement = 12; // You can adjust this value as needed
 
-  useEffect(() => {
-    const handleResize = () => {
-      setVisibleGallery(getVisibleGallery(gallery, window.innerWidth));
+      // Calculate the new end index for the visibleGallery
+      const newEndIndex = visibleGallery.length + loadIncrement;
+
+      // Slice the gallery array to get the new set of visible images
+      const newVisibleGallery = gallery.slice(0, newEndIndex);
+
+      // Update the state with the new set of visible images
+      setVisibleGallery(newVisibleGallery);
+
+      // Check if all images have been loaded
+      if (newEndIndex >= gallery.length) {
+        setLoadMore(false); // Disable further loading
+      }
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [gallery]);
+    const handleScroll = () => {
+      const container = galleryContainerRef.current;
+      if (!container) return;
 
-  const getVisibleGallery = (gallery, screenWidth) => {
-    if (screenWidth > 900) {
-      return gallery.slice(0, 60);
-    } else {
-      return gallery.slice(0, 6);
-    }
-  };
+      const containerRect = container.getBoundingClientRect();
+      const loadThreshold = 200; // Adjust this threshold as needed
+      if (containerRect.bottom - window.innerHeight < loadThreshold) {
+        // User has scrolled to the bottom, load more images
+        handleLoadMore();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [gallery, visibleGallery]);
 
   return (
-    <div>
+    <div ref={galleryContainerRef}>
       {isLoading ? (
         error ? (
           <p className="text-center text-red-500 font-bold my-8">
@@ -133,8 +151,8 @@ export default function FetchGallery() {
           role="list"
           className="p-8 flex flex-wrap gap-4 justify-center items-center"
         >
-          {visibleGallery.map((item, index) => (
-            <div key={item.id} ref={index === visibleGallery.length - 1 ? ref : null}>
+          {gallery.map((item, index) => (
+            <div key={item.id}>
               {item.attributes.img && item.attributes.img.data && (
                 <div
                   className={`rounded-lg overflow-hidden h-64 ${
@@ -152,11 +170,13 @@ export default function FetchGallery() {
                           : item.attributes.img.data.attributes.ext === ".gif"
                           ? item.attributes.img.data.attributes.url
                           : item.attributes.img.data.attributes.formats.small
-                          ? item.attributes.img.data.attributes.formats.small.url
+                          ? item.attributes.img.data.attributes.formats.small
+                              .url
                           : item.attributes.img.data.attributes.url
                       }
                       alt={item.attributes.imgalt}
                       className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
+                      onLoad={() => handleImageLoad()}
                     />
                   </Link>
                 </div>

@@ -13,8 +13,6 @@ import {
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState([]);
-  const [visibleGallery, setVisibleGallery] = useState([]);
-  const [loadMore, setLoadMore] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -33,14 +31,12 @@ export default function FetchGallery() {
     )
       .then((response) => response.json())
       .then((data) => {
-        //console.log("API response1:", data);
         setUserMe(data); // Access the first (and only) object in the array
         setUserId(data[0].id);
         const userId = data[0].id; // Access the id field of the first (and only) object in the array
         fetch(`https://backend.headpat.de/api/user-data/${userId}?populate=*`)
           .then((response) => response.json())
           .then((data) => {
-            //console.log("API response2:", data);
             setUserData(data);
           })
           .catch((error) => {
@@ -76,9 +72,7 @@ export default function FetchGallery() {
         );
 
         const data = await response.json();
-        console.log(data);
         setEnableNsfw(data.data.attributes.enablensfw);
-        console.log(data.data.attributes.enablensfw);
       } catch (error) {
         setError(error);
       }
@@ -102,7 +96,6 @@ export default function FetchGallery() {
       .then((response) => response.json())
       .then((data) => {
         setGallery(data.data.reverse());
-        setVisibleGallery(getVisibleGallery(data.data, window.innerWidth));
         setIsLoading(false);
       })
       .catch((error) => {
@@ -110,27 +103,6 @@ export default function FetchGallery() {
         setIsLoading(false);
       });
   }, [userId, enableNsfw]);
-
-  const handleLoadMore = (event) => {
-    event.preventDefault();
-    const nextVisibleGallery = gallery.slice(0, visibleGallery.length + 12);
-    setVisibleGallery(nextVisibleGallery);
-    if (nextVisibleGallery.length === gallery.length) {
-      setLoadMore(false);
-    }
-    if (nextVisibleGallery.length >= gallery.length) {
-      setLoadMore(false);
-    }
-  };
-
-  useEffect(() => {
-    const handleResize = () => {
-      setVisibleGallery(getVisibleGallery(gallery, window.innerWidth));
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [gallery]);
 
   const getVisibleGallery = (gallery, screenWidth) => {
     if (screenWidth > 900) {
@@ -344,13 +316,13 @@ export default function FetchGallery() {
 
                 <ul
                   role="list"
-                  className="p-8 flex flex-wrap gap-4 justify-center items-center"
+                  className="p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center"
                 >
-                  {visibleGallery.map((item) => (
+                  {gallery.map((item) => (
                     <div key={item.id}>
                       {item.attributes.img && item.attributes.img.data && (
                         <div
-                          className={`rounded-lg overflow-hidden h-64 ${
+                          className={`rounded-lg overflow-hidden ${
                             item.attributes.nsfw && !enableNsfw
                               ? "relative"
                               : ""
@@ -374,7 +346,8 @@ export default function FetchGallery() {
                                   : item.attributes.img.data.attributes.url
                               }
                               alt={item.attributes.imgalt}
-                              className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
+                              className={`object-cover h-full w-full`}
+                              loading="lazy" // Add this attribute for lazy loading
                             />
                           </Link>
                         </div>
@@ -383,16 +356,6 @@ export default function FetchGallery() {
                     </div>
                   ))}
                 </ul>
-                <div className="flex justify-center">
-                  {loadMore && (
-                    <button
-                      onClick={handleLoadMore}
-                      className="flex mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-8"
-                    >
-                      Load More
-                    </button>
-                  )}
-                </div>
               </>
             ) : hasError ? (
               <ErrorPage />
