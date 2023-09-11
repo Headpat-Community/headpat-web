@@ -486,7 +486,7 @@ export default function UserProfile() {
                           </dd>
                         </div>
                       )}
-                      {userData?.data?.attributes?.location !== "" && (
+                      {userData?.data?.attributes?.location !== null && (
                         <div
                           className={`flex w-full flex-none gap-x-4 px-6 mb-4`}
                         >
