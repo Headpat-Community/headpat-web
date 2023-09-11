@@ -23,6 +23,7 @@ export default function FetchGallery() {
   const [userData, setUserData] = useState(null);
   const [hasError, setHasError] = useState(false); // Add this state
   const [userMe, setUserMe] = useState(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   const username =
     typeof window !== "undefined" ? window.location.pathname.split("/")[2] : "";
