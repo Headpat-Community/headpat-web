@@ -4,8 +4,6 @@ import Link from "next/link";
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState([]);
-  const [visibleGallery, setVisibleGallery] = useState([]);
-  const [loadMore, setLoadMore] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -86,7 +84,6 @@ export default function FetchGallery() {
       .then((response) => response.json())
       .then((data) => {
         setGallery(data.data.reverse());
-        setVisibleGallery(getVisibleGallery(data.data, window.innerWidth));
         setIsLoading(false);
       })
       .catch((error) => {
@@ -94,31 +91,6 @@ export default function FetchGallery() {
         setIsLoading(false);
       });
   }, [userId, enableNsfw]);
-
-  const handleLoadMore = () => {
-    const nextVisibleGallery = gallery.slice(0, visibleGallery.length + 12);
-    setVisibleGallery(nextVisibleGallery);
-    if (nextVisibleGallery.length === gallery.length) {
-      setLoadMore(false);
-    }
-  };
-
-  useEffect(() => {
-    const handleResize = () => {
-      setVisibleGallery(getVisibleGallery(gallery, window.innerWidth));
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [gallery]);
-
-  const getVisibleGallery = (gallery, screenWidth) => {
-    if (screenWidth > 900) {
-      return gallery.slice(0, 60);
-    } else {
-      return gallery.slice(0, 6);
-    }
-  };
 
   return (
     <>
@@ -145,7 +117,7 @@ export default function FetchGallery() {
               role="list"
               className="p-8 flex flex-wrap gap-4 justify-center items-center"
             >
-              {visibleGallery.map((item) => (
+              {gallery.map((item) => (
                 <div key={item.id}>
                   {item.attributes.img && item.attributes.img.data && (
                     <div
@@ -172,6 +144,7 @@ export default function FetchGallery() {
                           }
                           alt={item.attributes.imgalt}
                           className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
+                          loading="lazy" // Add this attribute for lazy loading
                         />
                       </Link>
                     </div>
@@ -180,16 +153,6 @@ export default function FetchGallery() {
                 </div>
               ))}
             </ul>
-            <div className="flex justify-center">
-              {loadMore && (
-                <button
-                  onClick={handleLoadMore}
-                  className="flex mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-8"
-                >
-                  Load More
-                </button>
-              )}
-            </div>
           </>
         )}
       </div>
