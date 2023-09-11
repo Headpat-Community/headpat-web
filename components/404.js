@@ -9,12 +9,12 @@ import Link from "next/link";
 import Image from "next/image";
 
 const links = [
-//  {
-//    name: "Home",
-//    href: "/",
-//    description: "Die Homepage.",
-//    icon: HomeIcon,
-//  },
+  {
+    name: "Home",
+    href: "/",
+    description: "Die Homepage.",
+    icon: HomeIcon,
+  },
   {
     name: "Gallerie",
     href: "/gallery",

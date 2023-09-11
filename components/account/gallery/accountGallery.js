@@ -1,4 +1,3 @@
-"use client";
 import { useState, useEffect } from "react";
 import ErrorPage from "../../404";
 import Link from "next/link";
