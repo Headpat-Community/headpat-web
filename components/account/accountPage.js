@@ -5,9 +5,9 @@ import Link from "next/link";
 export default function AccountPage() {
   const [userData, setUserData] = useState({ enablensfw: false }); // Initialize with an empty object and a default value
   const [userMe, setUserMe] = useState(null);
-  const [setNsfw] = useState(false);
-  const [setEmailValue] = useState(userMe?.email || "");
-  const [setUsernameValue] = useState(userMe?.username || "");
+  const [nsfw, setNsfw] = useState(false);
+  const [emailvalue, setEmailValue] = useState(userMe?.email || "");
+  const [usernamevalue, setUsernameValue] = useState(userMe?.username || "");
 
   useEffect(() => {
     const fetchUserData = async () => {

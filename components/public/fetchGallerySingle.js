@@ -34,8 +34,6 @@ export default function FetchGallery() {
       "$1"
     );
 
-    if (!token) return;
-
     fetch(apiUrl, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -71,11 +69,7 @@ export default function FetchGallery() {
   return (
     <div>
       {isLoading ? (
-        error ? (
-          <p className="text-center text-red-500 font-bold my-8">{error}</p>
-        ) : (
-          <p className="text-center text-gray-500 font-bold my-8">Loading...</p>
-        )
+        <p className="text-center text-gray-500 font-bold my-8">Loading...</p>
       ) : (
         <div className="p-8 flex flex-wrap gap-4 justify-center items-center">
           <div>
@@ -105,21 +99,30 @@ export default function FetchGallery() {
 
                 return (
                   <div className="flex flex-wrap items-start">
-                    <div className="mr-4 sm:mt-4 mb-4 md:mb-0 flex">
-                      <Link
-                        href="."
-                        className="rounded-md bg-indigo-500 px-3 py-2 mb-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                      >
-                        &larr; Go back
-                      </Link>
-                    </div>
-
+                    {!error && (
+                      <div className="mr-4 sm:mt-4 mb-4 md:mb-0 flex">
+                        <Link
+                          href="."
+                          className="rounded-md bg-indigo-500 px-3 py-2 mb-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                        >
+                          &larr; Go back
+                        </Link>
+                      </div>
+                    )}
                     {isNsfwImage ? (
-                      <div
-                        className={`fixed inset-0 flex items-center justify-center`}
-                      >
-                        <div className="bg-white p-4 rounded-lg shadow-lg z-50 text-xl text-black">
+                      <div className="fixed inset-0 flex items-center justify-center">
+                        {/* Semi-transparent overlay */}
+                        <div
+                          className="fixed inset-0 bg-black opacity-50"
+                          onClick={() => {
+                            // Handle overlay click if needed (e.g., close the error message)
+                          }}
+                        ></div>
+                        <div className="bg-white p-4 rounded-lg shadow-lg text-xl text-black relative z-10">
                           {error}
+                          <br />
+                          <br />
+                          <Link className="text-indigo-600" href=".">Click here to go back</Link>
                         </div>
                       </div>
                     ) : (
