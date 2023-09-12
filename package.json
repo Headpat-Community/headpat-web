@@ -1,6 +1,7 @@
 {
-  "name": "latest",
+  "name": "headpat-de",
   "version": "0.1.0",
+  "author": "Faye",
   "private": true,
   "scripts": {
     "dev": "next dev",
