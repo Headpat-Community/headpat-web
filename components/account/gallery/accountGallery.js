@@ -60,7 +60,6 @@ export default function FetchGallery() {
 
         const data = await response.json();
         setEnableNsfw(data.data.attributes.enablensfw);
-        //console.log(data.data.attributes.enablensfw);
       } catch (error) {
         setError(error);
       }

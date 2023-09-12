@@ -151,7 +151,7 @@ export default function FetchGallery() {
           role="list"
           className="p-8 flex flex-wrap gap-4 justify-center items-center"
         >
-          {gallery.map((item, index) => (
+          {gallery.map((item) => (
             <div key={item.id}>
               {item.attributes.img && item.attributes.img.data && (
                 <div

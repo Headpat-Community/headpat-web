@@ -104,12 +104,8 @@ export default function FetchGallery() {
       });
   }, [userId, enableNsfw]);
 
-  const getVisibleGallery = (gallery, screenWidth) => {
-    if (screenWidth > 900) {
-      return gallery.slice(0, 60);
-    } else {
-      return gallery.slice(0, 6);
-    }
+  const handleImageLoad = () => {
+    setLoadedImageCount((prevCount) => prevCount + 1);
   };
 
   return (
@@ -316,13 +312,13 @@ export default function FetchGallery() {
 
                 <ul
                   role="list"
-                  className="p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center"
+                  className="p-8 flex flex-wrap gap-4 justify-center items-center"
                 >
                   {gallery.map((item) => (
                     <div key={item.id}>
                       {item.attributes.img && item.attributes.img.data && (
                         <div
-                          className={`rounded-lg overflow-hidden ${
+                          className={`rounded-lg overflow-hidden h-64 ${
                             item.attributes.nsfw && !enableNsfw
                               ? "relative"
                               : ""
@@ -331,7 +327,7 @@ export default function FetchGallery() {
                           {item.attributes.nsfw && !enableNsfw && (
                             <div className="absolute inset-0 bg-black opacity-50"></div>
                           )}
-                          <Link target="_blank" href={`/gallery/${item.id}`}>
+                          <Link href={`/gallery/${item.id}`}>
                             <img
                               src={
                                 item.attributes.nsfw && !enableNsfw
@@ -346,8 +342,8 @@ export default function FetchGallery() {
                                   : item.attributes.img.data.attributes.url
                               }
                               alt={item.attributes.imgalt}
-                              className={`object-cover h-full w-full`}
-                              loading="lazy" // Add this attribute for lazy loading
+                              className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
+                              onLoad={() => handleImageLoad()}
                             />
                           </Link>
                         </div>
