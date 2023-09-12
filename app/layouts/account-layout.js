@@ -66,6 +66,10 @@ export default function Example({ children }) {
   useEffect(() => {
     const jwt = getCookie("jwt");
     if (!jwt) {
+      deleteCookie("jwt");
+      window.location.href = "/login";
+    } else if (jwt === "undefined") {
+      deleteCookie("jwt");
       window.location.href = "/login";
     } else {
       fetch("https://backend.headpat.de/api/users/me", {
