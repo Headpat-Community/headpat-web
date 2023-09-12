@@ -4,6 +4,8 @@ import Header from "../../../components/header";
 import Footer from "../../../components/footer";
 import Link from "next/link";
 
+export const runtime = "edge";
+
 export default function AnnouncementInfo() {
   const [announcementData, setAnnouncementData] = useState(null);
   const [userData, setUserData] = useState({});
@@ -46,15 +48,15 @@ export default function AnnouncementInfo() {
           </h3>
         </div>
         <div className="mt-6 max-w-4xl mx-auto">
-          <dd className="mt-1 text-sm leading-6 text-white sm:col-span-2 sm:mt-0 mb-4">
+          <dd className="mt-1 text-sm leading-6 text-white sm:col-span-2 sm:mt-0 mb-8">
             <Link
               href="."
-              className="rounded-md bg-indigo-500 px-3 py-2 mb-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+              className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
             >
               &larr; Go back
             </Link>
           </dd>
-          <dl className="divide-y divide-white/10 border-t border-white/10">
+          <dl className="divide-y divide-white/40 border-t border-white/20">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm font-medium leading-6 text-white">
                 Author
