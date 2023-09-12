@@ -4,6 +4,8 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 
 export default function Home() {
   useEffect(() => {
@@ -48,7 +50,8 @@ export default function Home() {
             <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
               <div className="flex">
                 <div className="relative flex items-center gap-x-4 rounded-full px-4 py-1 text-sm leading-6 text-gray-600 ring-1 ring-white/30 hover:ring-white/50">
-                  <span className="font-semibold text-indigo-600">Discord</span>
+                  <FontAwesomeIcon className="text-indigo-500" icon={faDiscord} />
+                  <span className="font-semibold text-indigo-500">Discord</span>
                   <span className="h-4 w-px bg-white/90" aria-hidden="true" />
                   <Link
                     href="https://discord.gg/headpat"
