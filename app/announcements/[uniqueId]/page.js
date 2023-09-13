@@ -9,7 +9,6 @@ export const runtime = "edge";
 export default function AnnouncementInfo() {
   const [announcementData, setAnnouncementData] = useState(null);
   const [userData, setUserData] = useState({});
-  const [userMe, setUserMe] = useState({});
 
   useEffect(() => {
     const pathParts = window.location.pathname.split("/");
@@ -26,17 +25,13 @@ export default function AnnouncementInfo() {
           .then((response) => response.json())
           .then((data) => {
             setUserData(data);
-            fetch(`https://backend.headpat.de/api/users/${createdById}`)
-              .then((response) => response.json())
-              .then((data) => {
-                setUserMe(data);
-              })
-              .catch((error) => console.error(error));
           })
           .catch((error) => console.error(error));
       })
       .catch((error) => console.error(error));
   }, []);
+
+  console.log(userData?.data?.attributes)
 
   return (
     <>
@@ -64,7 +59,7 @@ export default function AnnouncementInfo() {
               <dd className="mt-1 text-sm leading-6 text-white sm:col-span-2 sm:mt-0 flex items-center">
                 <Link
                   className="text-indigo-500 hover:text-indigo-400 flex items-center"
-                  href={`/user/${userMe?.username}`}
+                  href={`/user/${userData?.data?.attributes?.users_permissions_user?.data?.attributes?.username}`}
                   passHref
                 >
                   <img
@@ -76,7 +71,7 @@ export default function AnnouncementInfo() {
                     alt=""
                   />
                   {userData?.data?.attributes?.displayname ||
-                    userMe?.username ||
+                    userData?.data?.attributes?.users_permissions_user?.data?.attributes?.username ||
                     "Unknown"}
                 </Link>
               </dd>
