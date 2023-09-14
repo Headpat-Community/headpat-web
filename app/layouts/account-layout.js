@@ -197,8 +197,8 @@ export default function Example({ children }) {
                           className="h-8 w-auto"
                           src="/logos/logo-512.webp"
                           alt="Headpat Community"
-                          width={64}
-                          height={64}
+                          width={32}
+                          height={32}
                         />
                       </Link>
                     </div>
