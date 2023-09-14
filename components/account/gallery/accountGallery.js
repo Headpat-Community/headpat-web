@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ErrorPage from "../../404";
 import Link from "next/link";
 
@@ -8,6 +8,9 @@ export default function FetchGallery() {
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
   const [enableNsfw, setEnableNsfw] = useState(false);
+  const galleryContainerRef = useRef(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const userApiUrl = `https://backend.headpat.de/api/users/me`;
@@ -17,7 +20,7 @@ export default function FetchGallery() {
         /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
         "$1"
       );
-      if (!token) return; // Return if "jwt" token does not exist
+      if (!token || typeof token === "undefined") return; // Return if "jwt" token does not exist
 
       try {
         const response = await fetch(userApiUrl, {
@@ -48,13 +51,13 @@ export default function FetchGallery() {
         /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
         "$1"
       );
-      if (!token) return; // Return if "jwt" token does not exist
+      if (!token || typeof token === "undefined") return; // Return if "jwt" token does not exist
 
       try {
         const response = await fetch(userDataApiUrl, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
           },
         });
 
@@ -75,24 +78,49 @@ export default function FetchGallery() {
       ? `filters[users_permissions_user][id][$eq]=${userId}&filters[nsfw][$eq]=false`
       : `filters[users_permissions_user][id][$eq]=${userId}`;
 
-    const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&${filters}`;
+    const pageSize = 25;
+    const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&${filters}&pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
 
     setIsLoading(true);
 
-    fetch(apiUrl)
+    fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         setGallery(data.data.reverse());
+        setTotalPages(data.meta.pagination.pageCount);
         setIsLoading(false);
       })
       .catch((error) => {
         setError(error);
         setIsLoading(false);
       });
-  }, [userId, enableNsfw]);
+  }, [userId, enableNsfw, currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
+      <div className="flex justify-center items-center my-4">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <button
+            key={page}
+            className={`mx-2 px-4 py-2 rounded-lg ${
+              page === currentPage ? "bg-blue-500 text-white" : "bg-gray-200"
+            }`}
+            onClick={() => handlePageChange(page)}
+          >
+            {page}
+          </button>
+        ))}
+      </div>
       <div>
         {isLoading ? (
           error ? (

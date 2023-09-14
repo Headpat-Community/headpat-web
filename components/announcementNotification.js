@@ -5,7 +5,11 @@ export default function AnnouncementNotification() {
   const [announcementData, setAnnouncementData] = useState(null);
 
   useEffect(() => {
-    fetch("https://backend.headpat.de/api/announcements")
+    fetch("https://backend.headpat.de/api/announcements", {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         const sortedData = data.data.sort((a, b) => {

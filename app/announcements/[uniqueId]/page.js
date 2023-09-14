@@ -14,13 +14,22 @@ export default function AnnouncementInfo() {
     const pathParts = window.location.pathname.split("/");
     const uniqueId = pathParts[2];
 
-    fetch(`https://backend.headpat.de/api/announcements/${uniqueId}`)
+    fetch(`https://backend.headpat.de/api/announcements/${uniqueId}`, {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         setAnnouncementData(data.data);
         const createdById = data.data.attributes.createdby;
         fetch(
-          `https://backend.headpat.de/api/user-data/${createdById}?populate=*`
+          `https://backend.headpat.de/api/user-data/${createdById}?populate=*`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+            },
+          }
         )
           .then((response) => response.json())
           .then((data) => {
@@ -30,8 +39,6 @@ export default function AnnouncementInfo() {
       })
       .catch((error) => console.error(error));
   }, []);
-
-  console.log(userData?.data?.attributes)
 
   return (
     <>

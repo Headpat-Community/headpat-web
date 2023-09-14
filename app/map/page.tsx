@@ -21,7 +21,11 @@ const MapHeadpat: NextPage = () => {
 
   useEffect(() => {
     // Fetch data from API and update state
-    fetch("https://backend.headpat.de/api/publicmaps")
+    fetch("https://backend.headpat.de/api/publicmaps", {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => setEvents(data.data))
       .catch((error) => console.log(error));

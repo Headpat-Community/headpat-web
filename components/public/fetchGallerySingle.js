@@ -22,19 +22,54 @@ export default function FetchGallery() {
   }, [nsfwProfile]);
 
   useEffect(() => {
+    const token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
+  
+    setIsLoading(true);
+  
+    fetch("https://backend.headpat.de/api/users/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const userId = data.id;
+        fetch(`https://backend.headpat.de/api/user-data/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setNsfwProfile(data.data.attributes.enablensfw);
+            setIsLoading(false);
+          })
+          .catch((error) => {
+            setError(error);
+            setIsLoading(false);
+          });
+      })
+      .catch((error) => {
+        setError(error);
+        setIsLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
     const pathParts = window.location.pathname.split("/");
     const uniqueId = pathParts[2];
-
-    const apiUrl = `https://backend.headpat.de/api/galleries/${uniqueId}?populate=*`;
-
-    setIsLoading(true);
 
     const token = document.cookie.replace(
       /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
       "$1"
     );
 
-    fetch(apiUrl, {
+    setIsLoading(true);
+
+    fetch(`https://backend.headpat.de/api/galleries/${uniqueId}?populate=*`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -54,7 +89,6 @@ export default function FetchGallery() {
           .then((response) => response.json())
           .then((userData) => {
             setDisplayname(userData.data.attributes.displayname);
-            setNsfwProfile(userData.data.attributes.enablensfw);
           })
           .catch((error) => {
             console.error(error);
@@ -122,7 +156,9 @@ export default function FetchGallery() {
                           {error}
                           <br />
                           <br />
-                          <Link className="text-indigo-600" href=".">Click here to go back</Link>
+                          <Link className="text-indigo-600" href=".">
+                            Click here to go back
+                          </Link>
                         </div>
                       </div>
                     ) : (

@@ -129,27 +129,37 @@ export default function UserProfile() {
 
   useEffect(() => {
     fetch(
-      `https://backend.headpat.de/api/users?populate=*&filters[username][$eq]=${username}`
+      `https://backend.headpat.de/api/users?populate=*&filters[username][$eq]=${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+        },
+      }
     )
       .then((response) => response.json())
       .then((data) => {
-        //console.log("API response1:", data);
-        setUserMe(data); // Access the first (and only) object in the array
+        setUserMe(data);
         const userId = data[0].id; // Access the id field of the first (and only) object in the array
-        fetch(`https://backend.headpat.de/api/user-data/${userId}?populate=*`)
+        fetch(
+          `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+            },
+          }
+        )
           .then((response) => response.json())
           .then((data) => {
-            //console.log("API response2:", data);
             setUserData(data);
           })
           .catch((error) => {
             console.error("API error:", error);
-            setHasError(true); // Set the error state to true
+            setHasError(true);
           });
       })
       .catch((error) => {
         console.error("API error:", error);
-        setHasError(true); // Set the error state to true
+        setHasError(true);
       });
   }, [username]);
 

@@ -97,7 +97,7 @@ export default function UploadPage() {
       const response = await fetch("https://backend.headpat.de/api/galleries", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
         },
         body: formData,
       });

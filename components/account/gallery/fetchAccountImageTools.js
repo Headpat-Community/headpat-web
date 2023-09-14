@@ -23,7 +23,7 @@ export default function FetchGallery() {
       /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
       "$1"
     );
-    if (!token) return; // Return if "jwt" token does not exist
+    if (!token || typeof token === "undefined") return; // Return if "jwt" token does not exist
 
     try {
       const response = await fetch(`https://backend.headpat.de/api/users/me`, {
@@ -44,7 +44,7 @@ export default function FetchGallery() {
       /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
       "$1"
     );
-    if (!token) return; // Return if "jwt" token does not exist
+    if (!token || typeof token === "undefined") return; // Return if "jwt" token does not exist
 
     try {
       // Get the ID from the URL
@@ -56,7 +56,7 @@ export default function FetchGallery() {
         `https://backend.headpat.de/api/galleries/${uniqueId}?populate=*`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
           },
         }
       );
@@ -69,7 +69,7 @@ export default function FetchGallery() {
       await fetch(`https://backend.headpat.de/api/upload/files/${imageId}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
         },
       });
 
@@ -77,7 +77,7 @@ export default function FetchGallery() {
       await fetch(`https://backend.headpat.de/api/galleries/${uniqueId}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
         },
       });
 
@@ -124,7 +124,7 @@ export default function FetchGallery() {
         {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
           },
           body: formData,
         }

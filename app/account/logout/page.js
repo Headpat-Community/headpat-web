@@ -16,7 +16,7 @@ function deleteCookie(name) {
 export default function LogoutPage() {
   useEffect(() => {
     const jwt = getCookie("jwt");
-    if (!jwt) {
+    if (!jwt || typeof jwt === "undefined") {
       window.location.href = "/";
     } else {
       deleteCookie("jwt");

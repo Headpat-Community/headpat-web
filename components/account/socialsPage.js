@@ -37,7 +37,7 @@ export default function AccountPage() {
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
             },
           }
         );
@@ -103,7 +103,7 @@ export default function AccountPage() {
         {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
           },
           body: formData,
         }

@@ -10,7 +10,11 @@ export default function AnnouncementsPage() {
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    fetch("https://backend.headpat.de/api/announcements")
+    fetch("https://backend.headpat.de/api/announcements", {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         setAnnouncementData(data.data.reverse());
@@ -19,7 +23,12 @@ export default function AnnouncementsPage() {
         );
         const fetchPromises = createdByIds.map((createdById) =>
           fetch(
-            `https://backend.headpat.de/api/user-data/${createdById}?populate=*`
+            `https://backend.headpat.de/api/user-data/${createdById}?populate=*`,
+            {
+              headers: {
+                Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+              },
+            }
           )
             .then((response) => response.json())
             .then((data) => {
@@ -90,14 +99,18 @@ export default function AnnouncementsPage() {
                             <div className="flex-none rounded-full bg-emerald-500/20 p-1">
                               <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                             </div>
-                            <p className="text-xs leading-5 text-white/80">Active</p>
+                            <p className="text-xs leading-5 text-white/80">
+                              Active
+                            </p>
                           </div>
                         ) : (
                           <div className="mt-1 flex items-center gap-x-1.5">
                             <div className="flex-none rounded-full bg-red-500/20 p-1">
                               <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
                             </div>
-                            <p className="text-xs leading-5 text-white/80">Inactive</p>
+                            <p className="text-xs leading-5 text-white/80">
+                              Inactive
+                            </p>
                           </div>
                         )}
                       </>

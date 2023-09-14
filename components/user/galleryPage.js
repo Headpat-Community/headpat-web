@@ -27,14 +27,26 @@ export default function FetchGallery() {
 
   useEffect(() => {
     fetch(
-      `https://backend.headpat.de/api/users?populate=*&filters[username][$eq]=${username}`
+      `https://backend.headpat.de/api/users?populate=*&filters[username][$eq]=${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+        },
+      }
     )
       .then((response) => response.json())
       .then((data) => {
         setUserMe(data); // Access the first (and only) object in the array
         setUserId(data[0].id);
         const userId = data[0].id; // Access the id field of the first (and only) object in the array
-        fetch(`https://backend.headpat.de/api/user-data/${userId}?populate=*`)
+        fetch(
+          `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+            },
+          }
+        )
           .then((response) => response.json())
           .then((data) => {
             setUserData(data);
@@ -58,7 +70,7 @@ export default function FetchGallery() {
         /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
         "$1"
       );
-      if (!token) return; // Return if "jwt" token does not exist
+      if (!token || typeof token === "undefined") return; // Return if "jwt" token does not exist
 
       try {
         const response = await fetch(
@@ -66,7 +78,7 @@ export default function FetchGallery() {
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
             },
           }
         );
@@ -92,7 +104,11 @@ export default function FetchGallery() {
 
     setIsLoading(true);
 
-    fetch(apiUrl)
+    fetch(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         setGallery(data.data.reverse());
@@ -103,10 +119,6 @@ export default function FetchGallery() {
         setIsLoading(false);
       });
   }, [userId, enableNsfw]);
-
-  const handleImageLoad = () => {
-    setLoadedImageCount((prevCount) => prevCount + 1);
-  };
 
   return (
     <>
@@ -343,7 +355,6 @@ export default function FetchGallery() {
                               }
                               alt={item.attributes.imgalt}
                               className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
-                              onLoad={() => handleImageLoad()}
                             />
                           </Link>
                         </div>

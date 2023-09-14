@@ -39,11 +39,6 @@ const Login = () => {
         }
       );
       const data = await response.json();
-      const expirationTime = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-      document.cookie = `jwt=${
-        data.jwt
-      }; expires=${expirationTime.toUTCString()}; path=/`;
-      //console.log("User authenticated successfully");
       if (response.status === 400) {
         setError(
           `Incorrect credentials or already made account! We tried everything, It's just not possible.`
@@ -62,6 +57,11 @@ const Login = () => {
           setError("");
         }, 5000);
       } else if (response.status === 200) {
+        const expirationTime = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+        document.cookie = `jwt=${
+          data.jwt
+        }; expires=${expirationTime.toUTCString()}; path=/`;
+        //console.log("User authenticated successfully");
         window.location.href = "/account";
       }
     } catch (error) {
@@ -140,7 +140,10 @@ const Login = () => {
               </div>
             </div>
 
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAAAKBrm1t6aDLrjRB"></div>
+            <div
+              className="cf-turnstile"
+              data-sitekey="0x4AAAAAAAKBrm1t6aDLrjRB"
+            ></div>
 
             <div>
               <button

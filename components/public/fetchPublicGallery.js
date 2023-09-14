@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState([]);
@@ -8,9 +8,12 @@ export default function FetchGallery() {
   const [userId, setUserId] = useState(null);
   const [enableNsfw, setEnableNsfw] = useState(false);
   const galleryContainerRef = useRef(null);
-  const [visibleGallery, setVisibleGallery] = useState([]);
-  const [loadMore, setLoadMore] = useState(true);
-  const [loadedImageCount, setLoadedImageCount] = useState(0);
+  const shuffledGallery = useMemo(
+    () => gallery.sort(() => Math.random() - 0.5),
+    [gallery]
+  );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const userApiUrl = `https://backend.headpat.de/api/users/me`;
@@ -38,10 +41,6 @@ export default function FetchGallery() {
     fetchUserId();
   }, []);
 
-  const handleImageLoad = () => {
-    setLoadedImageCount((prevCount) => prevCount + 1);
-  };
-
   useEffect(() => {
     if (!userId) return; // Wait for userId to be available
 
@@ -52,13 +51,18 @@ export default function FetchGallery() {
         /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
         "$1"
       );
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const page = parseInt(urlParams.get("page")) || 1;
+      setCurrentPage(page);
+
       if (!token) return; // Return if "jwt" token does not exist
 
       try {
         const response = await fetch(userDataApiUrl, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
           },
         });
 
@@ -73,119 +77,99 @@ export default function FetchGallery() {
   }, [userId]);
 
   useEffect(() => {
-    const filters = !enableNsfw ? `filters[nsfw][$eq]=false` : ``;
-    const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&${filters}&randomSort=true`;
+    const filters = !enableNsfw ? `&filters[nsfw][$eq]=false` : ``;
+    const pageSize = 500;
+    const apiUrl = `https://backend.headpat.de/api/galleries?populate=*${filters}&pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
 
     setIsLoading(true);
-    fetch(apiUrl)
+    fetch(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         setGallery(data.data.reverse());
+        setTotalPages(data.meta.pagination.pageCount);
         setIsLoading(false);
       })
       .catch((error) => {
         setError(error);
         setIsLoading(false);
       });
-  }, [userId, enableNsfw]);
+  }, [currentPage, enableNsfw]);
 
-  useEffect(() => {
-    // Calculate the initial number of images to display
-    const initialVisibleImages = 6; // Adjust this value as needed
-
-    // Slice the gallery array to get the initial set of visible images
-    const initialVisibleGallery = gallery.slice(0, initialVisibleImages);
-
-    // Update the state with the initial set of visible images
-    setVisibleGallery(initialVisibleGallery);
-  }, [gallery]);
-
-  useEffect(() => {
-    const handleLoadMore = () => {
-      // Calculate the number of additional images to load
-      const loadIncrement = 12; // You can adjust this value as needed
-
-      // Calculate the new end index for the visibleGallery
-      const newEndIndex = visibleGallery.length + loadIncrement;
-
-      // Slice the gallery array to get the new set of visible images
-      const newVisibleGallery = gallery.slice(0, newEndIndex);
-
-      // Update the state with the new set of visible images
-      setVisibleGallery(newVisibleGallery);
-
-      // Check if all images have been loaded
-      if (newEndIndex >= gallery.length) {
-        setLoadMore(false); // Disable further loading
-      }
-    };
-
-    const handleScroll = () => {
-      const container = galleryContainerRef.current;
-      if (!container) return;
-
-      const containerRect = container.getBoundingClientRect();
-      const loadThreshold = 200; // Adjust this threshold as needed
-      if (containerRect.bottom - window.innerHeight < loadThreshold) {
-        // User has scrolled to the bottom, load more images
-        handleLoadMore();
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [gallery, visibleGallery]);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.history.pushState({ page }, `Page ${page}`, `?page=${page}`);
+  };
 
   return (
-    <div ref={galleryContainerRef}>
-      {isLoading ? (
-        error ? (
-          <p className="text-center text-red-500 font-bold my-8">
-            Error: {error && error.message}
-          </p>
+    <div>
+      {/*<div className="flex justify-center items-center my-4">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <button
+            key={page}
+            className={`mx-2 px-4 py-2 rounded-lg ${
+              page === currentPage ? "bg-blue-500 text-white" : "bg-gray-200"
+            }`}
+            onClick={() => handlePageChange(page)}
+          >
+            {page}
+          </button>
+        ))}
+      </div>*/}
+      <div ref={galleryContainerRef}>
+        {isLoading ? (
+          error ? (
+            <p className="text-center text-red-500 font-bold my-8">
+              Error: {error && error.message}
+            </p>
+          ) : (
+            <p className="text-center text-gray-500 font-bold my-8">
+              Loading...
+            </p>
+          )
         ) : (
-          <p className="text-center text-gray-500 font-bold my-8">Loading...</p>
-        )
-      ) : (
-        <ul
-          role="list"
-          className="p-8 flex flex-wrap gap-4 justify-center items-center"
-        >
-          {gallery.map((item) => (
-            <div key={item.id}>
-              {item.attributes.img && item.attributes.img.data && (
-                <div
-                  className={`rounded-lg overflow-hidden h-64 ${
-                    item.attributes.nsfw && !enableNsfw ? "relative" : ""
-                  }`}
-                >
-                  {item.attributes.nsfw && !enableNsfw && (
-                    <div className="absolute inset-0 bg-black opacity-50"></div>
-                  )}
-                  <Link href={`/gallery/${item.id}`}>
-                    <img
-                      src={
-                        item.attributes.nsfw && !enableNsfw
-                          ? "https://placekitten.com/200/300" // Replace with placeholder image URL
-                          : item.attributes.img.data.attributes.ext === ".gif"
-                          ? item.attributes.img.data.attributes.url
-                          : item.attributes.img.data.attributes.formats.small
-                          ? item.attributes.img.data.attributes.formats.small
-                              .url
-                          : item.attributes.img.data.attributes.url
-                      }
-                      alt={item.attributes.imgalt}
-                      className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
-                      onLoad={() => handleImageLoad()}
-                    />
-                  </Link>
-                </div>
-              )}
-              <h2>{item.attributes.name}</h2>
-            </div>
-          ))}
-        </ul>
-      )}
+          <ul
+            role="list"
+            className="p-8 flex flex-wrap gap-4 justify-center items-center"
+          >
+            {gallery.map((item) => (
+              <div key={item.id}>
+                {item.attributes.img && item.attributes.img.data && (
+                  <div
+                    className={`rounded-lg overflow-hidden h-64 ${
+                      item.attributes.nsfw && !enableNsfw ? "relative" : ""
+                    }`}
+                  >
+                    {item.attributes.nsfw && !enableNsfw && (
+                      <div className="absolute inset-0 bg-black opacity-50"></div>
+                    )}
+                    <Link href={`/gallery/${item.id}`}>
+                      <img
+                        src={
+                          item.attributes.nsfw && !enableNsfw
+                            ? "https://placekitten.com/200/300" // Replace with placeholder image URL
+                            : item.attributes.img.data.attributes.ext === ".gif"
+                            ? item.attributes.img.data.attributes.url
+                            : item.attributes.img.data.attributes.formats.small
+                            ? item.attributes.img.data.attributes.formats.small
+                                .url
+                            : item.attributes.img.data.attributes.url
+                        }
+                        alt={item.attributes.imgalt}
+                        className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
+                      />
+                    </Link>
+                  </div>
+                )}
+                <h2>{item.attributes.name}</h2>
+              </div>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
