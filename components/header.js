@@ -3,6 +3,7 @@ import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import AnnouncementNotification from "../components/announcementNotification";
+import Image from "next/image";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -40,12 +41,14 @@ export default function Header() {
             <div className="-m-1.5 p-1.5">
               <span className="sr-only">Headpat Community</span>
               <Link href="/">
-                <img
+                <Image
                   aria-label="Headpat Logo"
                   title="Headpat Logo"
                   className="h-10 w-auto"
                   src="/logos/logo-512.png"
                   alt=""
+                  width={128}
+                  height={128}
                 />
               </Link>
             </div>
@@ -100,7 +103,7 @@ export default function Header() {
             <div className="flex items-center justify-between">
               <Link href="#" className="-m-1.5 p-1.5">
                 <span className="sr-only">Headpat Community</span>
-                <img className="h-8 w-auto" src="/logos/logo-512.png" alt="" />
+                <Image className="h-8 w-auto" src="/logos/logo-512.png" alt="" width={128} height={128} />
               </Link>
               <button
                 type="button"

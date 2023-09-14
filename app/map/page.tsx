@@ -12,6 +12,7 @@ import usePlacesAutocomplete, {
 } from "use-places-autocomplete";
 import styles from "../../css/Map.module.css";
 import Header from "../../components/header";
+import Image from "next/image";
 
 const MapHeadpat: NextPage = () => {
   const [lat, setLat] = useState(53.56171391445263);
@@ -97,9 +98,10 @@ const MapHeadpat: NextPage = () => {
               <div
                 className="text-black flex justify-center items-center bg-transparent"
               >
-                <img
+                <Image
                   src="/logos/logo.png"
                   width={48}
+                  height={48}
                   alt={event.attributes.name}
                   className=""
                 />

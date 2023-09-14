@@ -12,6 +12,7 @@ import {
   ArrowLeftIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 const navigation = [
   { name: "Home page", href: "/", icon: HomeIcon, current: false },
@@ -192,10 +193,12 @@ export default function Example({ children }) {
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-2 ring-1 ring-white/10">
                     <div className="flex h-16 shrink-0 items-center">
                       <Link href="/">
-                        <img
+                        <Image
                           className="h-8 w-auto"
                           src="/logos/logo-512.png"
                           alt="Headpat Community"
+                          width={64}
+                          height={64}
                         />
                       </Link>
                     </div>
@@ -242,10 +245,12 @@ export default function Example({ children }) {
           <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6">
             <div className="flex h-20 shrink-0 items-center">
               <Link href="/">
-                <img
+                <Image
                   className="h-12 w-auto"
                   src="/logos/logo-512.png"
                   alt="Headpat Community"
+                  width={64}
+                  height={64}
                 />
               </Link>
             </div>
@@ -280,13 +285,15 @@ export default function Example({ children }) {
                       href={`/user/${userMeData.username}`}
                       className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
                     >
-                      <img
+                      <Image
                         className="h-8 w-8 rounded-full bg-gray-800"
                         src={
                           userData.avatar?.data?.attributes?.url ||
                           "/logos/logo-512.png"
                         }
                         alt=""
+                        width={32}
+                        height={32}
                       />
                       <span className="sr-only">Your profile</span>
                       <span aria-hidden="true">

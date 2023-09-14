@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Header from "../../../components/header";
 import Footer from "../../../components/footer";
 import Link from "next/link";
+import Image from "next/image";
 
 export const runtime = "edge";
 
@@ -69,13 +70,15 @@ export default function AnnouncementInfo() {
                   href={`/user/${userData?.data?.attributes?.users_permissions_user?.data?.attributes?.username}`}
                   passHref
                 >
-                  <img
+                  <Image
                     className="h-12 w-12 flex-none rounded-full bg-gray-50 mr-4"
                     src={
                       userData?.data?.attributes?.avatar?.data?.attributes
                         ?.url || "/logos/logo-64.png"
                     }
                     alt=""
+                    width={48}
+                    height={48}
                   />
                   {userData?.data?.attributes?.displayname ||
                     userData?.data?.attributes?.users_permissions_user?.data?.attributes?.username ||

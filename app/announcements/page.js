@@ -4,6 +4,7 @@ import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AnnouncementsPage() {
   const [announcementData, setAnnouncementData] = useState(null);
@@ -61,13 +62,15 @@ export default function AnnouncementsPage() {
                 className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50/10 sm:px-6"
               >
                 <div className="flex min-w-0 gap-x-4">
-                  <img
+                  <Image
                     className="h-12 w-12 flex-none rounded-full bg-gray-50"
                     src={
                       createdBy?.avatar?.data?.attributes?.url ||
                       "/logos/logo-64.png"
                     }
                     alt=""
+                    width={48}
+                    height={48}
                   />
                   <div className="min-w-0 flex-auto">
                     <p className="text-sm font-semibold leading-6 text-white">

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useEffect } from "react";
+import Image from "next/image";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -98,10 +99,12 @@ export default function Register() {
     <>
       <div className="flex lg:pt-[200px] justify-center items-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col justify-center">
-          <img
+          <Image
             className="mx-auto h-24 w-auto"
             src="/logos/logo-512.png"
             alt="Headpat Logo"
+            width={256}
+            height={256}
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
             Register
@@ -179,7 +182,7 @@ export default function Register() {
             </div>
 
             <div
-              class="cf-turnstile"
+              className="cf-turnstile"
               data-sitekey="0x4AAAAAAAKBrm1t6aDLrjRB"
             ></div>
 
