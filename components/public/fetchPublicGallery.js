@@ -162,7 +162,7 @@ export default function FetchGallery() {
                                 .url
                             : item.attributes.img.data.attributes.url
                         }
-                        alt={item.attributes.imgalt}
+                        alt={item.attributes.imgalt || item.attributes.name}
                         className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
                         width={600}
                         height={600}
