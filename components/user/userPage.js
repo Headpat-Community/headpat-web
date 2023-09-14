@@ -38,7 +38,7 @@ const activity = [
     type: "commented",
     person: {
       name: "fafa",
-      imageUrl: "/logos/logo.png",
+      imageUrl: "/logos/logo.webp",
     },
     comment: "Irgendwann könnt ihr hier auch comments schreiben! :3",
     date: "soon",
@@ -202,7 +202,7 @@ export default function UserProfile() {
                         />
                       ) : (
                         <Image
-                          src="/logos/logo-512.png"
+                          src="/logos/logo-512.webp"
                           alt=""
                           className="h-10 rounded-full"
                           width={64}
@@ -276,7 +276,7 @@ export default function UserProfile() {
                           />
                         ) : (
                           <Image
-                            src="/logos/logo-512.png"
+                            src="/logos/logo-512.webp"
                             alt=""
                             className="h-16 w-16 flex-none rounded-full ring-1 ring-white/10"
                             width={64}
@@ -350,8 +350,8 @@ export default function UserProfile() {
                         <Image
                           src={
                             isHovered
-                              ? "/logos/furaffinity-hover.png"
-                              : "/logos/furaffinity.png"
+                              ? "/logos/furaffinity-hover.webp"
+                              : "/logos/furaffinity.webp"
                           }
                           className="w-8 hover:text-indigo-600"
                           alt="FurAffinity Logo"
@@ -602,7 +602,7 @@ export default function UserProfile() {
                   {/* New comment form */}
                   <div className="mt-6 flex gap-x-3">
                     <Image
-                      src="/logos/logo.png"
+                      src="/logos/logo.webp"
                       alt=""
                       className="h-6 w-6 flex-none rounded-full bg-gray-50"
                       width={24}

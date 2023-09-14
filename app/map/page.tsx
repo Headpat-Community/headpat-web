@@ -99,7 +99,7 @@ const MapHeadpat: NextPage = () => {
                 className="text-black flex justify-center items-center bg-transparent"
               >
                 <Image
-                  src="/logos/logo.png"
+                  src="/logos/logo.webp"
                   width={48}
                   height={48}
                   alt={event.attributes.name}

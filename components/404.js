@@ -48,7 +48,7 @@ export default function NotFoundComponent() {
           priority
           height={256}
           width={256}
-          src="https://cdn.headpat.de/public/404.svg"
+          src="https://cdn.headpat.de/public/404.webp"
           alt="Headpat Community"
         />
         <div className="mx-auto mt-4 max-w-2xl text-center sm:mt-8">

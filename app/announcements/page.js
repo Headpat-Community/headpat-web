@@ -66,7 +66,7 @@ export default function AnnouncementsPage() {
                     className="h-12 w-12 flex-none rounded-full bg-gray-50"
                     src={
                       createdBy?.avatar?.data?.attributes?.url ||
-                      "/logos/logo-64.png"
+                      "/logos/logo-64.webp"
                     }
                     alt=""
                     width={48}

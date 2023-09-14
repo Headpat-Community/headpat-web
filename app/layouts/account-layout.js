@@ -195,7 +195,7 @@ export default function Example({ children }) {
                       <Link href="/">
                         <Image
                           className="h-8 w-auto"
-                          src="/logos/logo-512.png"
+                          src="/logos/logo-512.webp"
                           alt="Headpat Community"
                           width={64}
                           height={64}
@@ -247,7 +247,7 @@ export default function Example({ children }) {
               <Link href="/">
                 <Image
                   className="h-12 w-auto"
-                  src="/logos/logo-512.png"
+                  src="/logos/logo-512.webp"
                   alt="Headpat Community"
                   width={64}
                   height={64}
@@ -289,7 +289,7 @@ export default function Example({ children }) {
                         className="h-8 w-8 rounded-full bg-gray-800"
                         src={
                           userData.avatar?.data?.attributes?.url ||
-                          "/logos/logo-512.png"
+                          "/logos/logo-512.webp"
                         }
                         alt=""
                         width={32}
@@ -331,7 +331,7 @@ export default function Example({ children }) {
                   className="h-8 w-8 rounded-full bg-gray-800"
                   src={
                     userData.avatar?.data?.attributes?.url ||
-                    "/logos/logo-512.png"
+                    "/logos/logo-512.webp"
                   }
                   alt=""
                   width={64}

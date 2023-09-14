@@ -154,7 +154,7 @@ export default function UploadPage() {
                         id="selected-image"
                         className="mx-auto h-96 min-w-full object-cover rounded-md"
                         alt=""
-                        src="/images/placeholder-image.png"
+                        src="/images/placeholder-image.webp"
                         onDrop={handleDrop}
                         onDragOver={(event) => event.preventDefault()}
                         width={400}

@@ -182,7 +182,7 @@ export default function FetchGallery() {
                               />
                             ) : (
                               <Image
-                                src="/logos/logo-512.png"
+                                src="/logos/logo-512.webp"
                                 alt=""
                                 className="h-16 w-16 flex-none rounded-full ring-1 ring-white/10"
                                 width={64}
@@ -256,8 +256,8 @@ export default function FetchGallery() {
                             <Image
                               src={
                                 isHovered
-                                  ? "/logos/furaffinity-hover.png"
-                                  : "/logos/furaffinity.png"
+                                  ? "/logos/furaffinity-hover.webp"
+                                  : "/logos/furaffinity.webp"
                               }
                               className="w-8 hover:text-indigo-600"
                               alt="FurAffinity Logo"

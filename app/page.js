@@ -127,7 +127,7 @@ export default function Home() {
                   transform="translate(24 24)"
                   clipPath="url(#2ade4387-9c63-4fc4-b754-10e687a0d332)"
                 >
-                  <Image src="/images/phone.png" alt="Headpat Phone View" width={316} height={684} />
+                  <Image src="/images/phone.webp" alt="Headpat Phone View" width={316} height={684} />
                 </foreignObject>
               </svg>
             </div>

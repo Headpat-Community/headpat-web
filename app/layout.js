@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Headpat Community",
   description: "Social network for headpawties",
-  image: "/logos/logo-512.png",
+  image: "/logos/logo-512.webp",
   url: "https://headpat.de",
 };
 

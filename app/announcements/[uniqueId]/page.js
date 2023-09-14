@@ -74,7 +74,7 @@ export default function AnnouncementInfo() {
                     className="h-12 w-12 flex-none rounded-full bg-gray-50 mr-4"
                     src={
                       userData?.data?.attributes?.avatar?.data?.attributes
-                        ?.url || "/logos/logo-64.png"
+                        ?.url || "/logos/logo-64.webp"
                     }
                     alt=""
                     width={48}

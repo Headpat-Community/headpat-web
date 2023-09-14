@@ -43,7 +43,7 @@ export default function Example() {
               </div>
             </div>
             <Image
-              src="/images/pawcraft_anzeige.png"
+              src="/images/pawcraft_anzeige.webp"
               alt="App screenshot"
               width={1280}
               height={720}
