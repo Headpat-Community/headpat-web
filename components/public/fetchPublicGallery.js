@@ -52,10 +52,6 @@ export default function FetchGallery() {
         "$1"
       );
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const page = parseInt(urlParams.get("page")) || 1;
-      setCurrentPage(page);
-
       if (!token) return; // Return if "jwt" token does not exist
 
       try {
@@ -104,8 +100,15 @@ export default function FetchGallery() {
     window.history.pushState({ page }, `Page ${page}`, `?page=${page}`);
   };
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = parseInt(urlParams.get("page")) || 1;
+    setCurrentPage(page);
+  }, []);
+
   return (
     <div>
+      {/* Pagination buttons */}
       {/*<div className="flex justify-center items-center my-4">
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button

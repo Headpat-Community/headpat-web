@@ -13,6 +13,12 @@ export default function FetchGallery() {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = parseInt(urlParams.get("page")) || 1;
+    setCurrentPage(page);
+  }, []);
+
+  useEffect(() => {
     const userApiUrl = `https://backend.headpat.de/api/users/me`;
 
     const fetchUserId = async () => {
@@ -104,23 +110,11 @@ export default function FetchGallery() {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    window.history.pushState({ page }, `Page ${page}`, `?page=${page}`);
   };
 
   return (
     <>
-      <div className="flex justify-center items-center my-4">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <button
-            key={page}
-            className={`mx-2 px-4 py-2 rounded-lg ${
-              page === currentPage ? "bg-blue-500 text-white" : "bg-gray-200"
-            }`}
-            onClick={() => handlePageChange(page)}
-          >
-            {page}
-          </button>
-        ))}
-      </div>
       <div>
         {isLoading ? (
           error ? (
@@ -182,6 +176,20 @@ export default function FetchGallery() {
             </ul>
           </>
         )}
+      </div>
+      {/* Pagination buttons */}
+      <div className="flex justify-center items-center my-4">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <button
+            key={page}
+            className={`mx-2 px-4 py-2 rounded-lg ${
+              page === currentPage ? "bg-blue-500 text-white" : "bg-gray-200"
+            }`}
+            onClick={() => handlePageChange(page)}
+          >
+            {page}
+          </button>
+        ))}
       </div>
     </>
   );
