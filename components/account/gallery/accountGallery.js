@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import ErrorPage from "../../404";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState([]);
@@ -150,7 +151,7 @@ export default function FetchGallery() {
                         <div className="absolute inset-0 bg-black opacity-50"></div>
                       )}
                       <Link href={`/account/gallery/${item.id}`}>
-                        <img
+                        <Image
                           src={
                             item.attributes.nsfw && !enableNsfw
                               ? "https://placekitten.com/200/300" // Replace with placeholder image URL
@@ -165,6 +166,8 @@ export default function FetchGallery() {
                           }
                           alt={item.attributes.imgalt}
                           className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
+                          width={600}
+                          height={600}
                           loading="lazy" // Add this attribute for lazy loading
                         />
                       </Link>

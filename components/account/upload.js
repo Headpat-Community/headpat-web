@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useState, useCallback } from "react";
 
 export default function UploadPage() {
@@ -149,13 +150,15 @@ export default function UploadPage() {
                       onDrop={handleDrop}
                       onDragOver={(event) => event.preventDefault()}
                     >
-                      <img
+                      <Image
                         id="selected-image"
                         className="mx-auto h-96 min-w-full object-cover rounded-md"
                         alt=""
                         src="/images/placeholder-image.png"
                         onDrop={handleDrop}
                         onDragOver={(event) => event.preventDefault()}
+                        width={400}
+                        height={300}
                       />
                       <div className="mt-4 flex text-sm leading-6 text-gray-400">
                         <label

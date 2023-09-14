@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AccountPage() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -209,11 +210,13 @@ export default function AccountPage() {
           <form onSubmit={handleSubmit} className="md:col-span-2">
             <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
               <div className="col-span-full flex items-center gap-x-8">
-                <img
+                <Image
                   id="avatar-image"
                   src={userData.avatar || "/logos/logo.png"}
                   alt=""
                   className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
+                  width={96}
+                  height={96}
                 />
                 <div>
                   <input

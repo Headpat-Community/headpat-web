@@ -26,6 +26,7 @@ import {
   faTwitch,
 } from "@fortawesome/free-brands-svg-icons";
 import ErrorPage from "../../components/404";
+import Image from "next/image";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -190,18 +191,22 @@ export default function UserProfile() {
                       userData.data.attributes.avatar &&
                       userData.data.attributes.avatar.data &&
                       userData.data.attributes.avatar.data.attributes ? (
-                        <img
+                        <Image
                           src={
                             userData.data.attributes.avatar.data.attributes.url
                           }
                           alt=""
                           className="h-10 rounded-full"
+                          width={64}
+                          height={64}
                         />
                       ) : (
-                        <img
+                        <Image
                           src="/logos/logo-512.png"
                           alt=""
                           className="h-10 rounded-full"
+                          width={64}
+                          height={64}
                         />
                       )}
                     </div>
@@ -259,19 +264,23 @@ export default function UserProfile() {
                         userData.data.attributes.avatar &&
                         userData.data.attributes.avatar.data &&
                         userData.data.attributes.avatar.data.attributes ? (
-                          <img
+                          <Image
                             src={
                               userData.data.attributes.avatar.data.attributes
                                 .url
                             }
                             alt=""
                             className="h-16 w-16 flex-none rounded-full ring-1 ring-white/10"
+                            width={64}
+                            height={64}
                           />
                         ) : (
-                          <img
+                          <Image
                             src="/logos/logo-512.png"
                             alt=""
                             className="h-16 w-16 flex-none rounded-full ring-1 ring-white/10"
+                            width={64}
+                            height={64}
                           />
                         )}
                       </div>
@@ -338,13 +347,16 @@ export default function UserProfile() {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <img
+                        <Image
                           src={
                             isHovered
                               ? "/logos/furaffinity-hover.png"
                               : "/logos/furaffinity.png"
                           }
                           className="w-8 hover:text-indigo-600"
+                          alt="FurAffinity Logo"
+                          width={32}
+                          height={32}
                           onMouseEnter={() => setIsHovered(true)}
                           onMouseLeave={() => setIsHovered(false)}
                         />
@@ -495,7 +507,7 @@ export default function UserProfile() {
                           </dd>
                         </div>
                       )}
-                      {userData?.data?.attributes?.location !== null && (
+                      {userData?.data?.attributes?.location !== null && userData?.data?.attributes?.location !== "" && (
                         <div
                           className={`flex w-full flex-none gap-x-4 px-6 mb-4`}
                         >
@@ -555,10 +567,12 @@ export default function UserProfile() {
                         </div>
                         {activityItem.type === "commented" && (
                           <>
-                            <img
+                            <Image
                               src={activityItem.person.imageUrl}
                               alt=""
                               className="relative mt-3 h-6 w-6 flex-none rounded-full bg-gray-50"
+                              width={24}
+                              height={24}
                             />
                             <div className="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200">
                               <div className="flex justify-between gap-x-4">
@@ -587,10 +601,12 @@ export default function UserProfile() {
 
                   {/* New comment form */}
                   <div className="mt-6 flex gap-x-3">
-                    <img
+                    <Image
                       src="/logos/logo.png"
                       alt=""
                       className="h-6 w-6 flex-none rounded-full bg-gray-50"
+                      width={24}
+                      height={24}
                     />
                     <form action="#" className="relative flex-auto">
                       <div className="overflow-hidden rounded-lg pb-12 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600">

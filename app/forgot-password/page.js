@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Header from "../../components/header";
 import { useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -66,10 +67,12 @@ const ForgotPassword = () => {
       <Header />
       <div className="flex lg:pt-[200px] justify-center items-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col justify-center">
-          <img
+          <Image
             className="mx-auto h-24 w-auto"
             src="/logos/logo-512.png"
             alt="Headpat Logo"
+            width={128}
+            height={128}
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
             Forgot password?

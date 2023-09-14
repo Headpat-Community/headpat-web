@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef, useMemo } from "react";
 
@@ -150,7 +151,7 @@ export default function FetchGallery() {
                       <div className="absolute inset-0 bg-black opacity-50"></div>
                     )}
                     <Link href={`/gallery/${item.id}`}>
-                      <img
+                      <Image
                         src={
                           item.attributes.nsfw && !enableNsfw
                             ? "https://placekitten.com/200/300" // Replace with placeholder image URL
@@ -163,6 +164,8 @@ export default function FetchGallery() {
                         }
                         alt={item.attributes.imgalt}
                         className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
+                        width={600}
+                        height={600}
                       />
                     </Link>
                   </div>

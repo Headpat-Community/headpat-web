@@ -10,6 +10,7 @@ import {
   faTwitch,
   faXTwitter,
 } from "@fortawesome/free-brands-svg-icons";
+import Image from "next/image";
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState([]);
@@ -169,19 +170,23 @@ export default function FetchGallery() {
                             userData.data.attributes.avatar &&
                             userData.data.attributes.avatar.data &&
                             userData.data.attributes.avatar.data.attributes ? (
-                              <img
+                              <Image
                                 src={
                                   userData.data.attributes.avatar.data
                                     .attributes.url
                                 }
                                 alt=""
                                 className="h-16 w-16 flex-none rounded-full ring-1 ring-white/10"
+                                width={64}
+                                height={64}
                               />
                             ) : (
-                              <img
+                              <Image
                                 src="/logos/logo-512.png"
                                 alt=""
                                 className="h-16 w-16 flex-none rounded-full ring-1 ring-white/10"
+                                width={64}
+                                height={64}
                               />
                             )}
                           </div>
@@ -248,13 +253,16 @@ export default function FetchGallery() {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            <img
+                            <Image
                               src={
                                 isHovered
                                   ? "/logos/furaffinity-hover.png"
                                   : "/logos/furaffinity.png"
                               }
                               className="w-8 hover:text-indigo-600"
+                              alt="FurAffinity Logo"
+                              width={32}
+                              height={32}
                               onMouseEnter={() => setIsHovered(true)}
                               onMouseLeave={() => setIsHovered(false)}
                             />
@@ -340,7 +348,7 @@ export default function FetchGallery() {
                             <div className="absolute inset-0 bg-black opacity-50"></div>
                           )}
                           <Link href={`/gallery/${item.id}`}>
-                            <img
+                            <Image
                               src={
                                 item.attributes.nsfw && !enableNsfw
                                   ? "https://placekitten.com/200/300" // Replace with placeholder image URL
@@ -355,6 +363,8 @@ export default function FetchGallery() {
                               }
                               alt={item.attributes.imgalt}
                               className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
+                              width={600}
+                              height={600}
                             />
                           </Link>
                         </div>

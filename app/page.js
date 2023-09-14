@@ -6,6 +6,7 @@ import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
+import Image from "next/image";
 
 export default function Home() {
   useEffect(() => {
@@ -126,7 +127,7 @@ export default function Home() {
                   transform="translate(24 24)"
                   clipPath="url(#2ade4387-9c63-4fc4-b754-10e687a0d332)"
                 >
-                  <img src="/images/phone.png" alt="" />
+                  <Image src="/images/phone.png" alt="Headpat Phone View" width={316} height={684} />
                 </foreignObject>
               </svg>
             </div>

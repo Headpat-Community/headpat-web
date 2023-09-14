@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function FetchGallery() {
   const [username, setUsername] = useState(null);
@@ -223,7 +224,7 @@ export default function FetchGallery() {
 
               return (
                 <div className="flex flex-wrap items-start">
-                  <img
+                  <Image
                     src={url}
                     alt={name || "Headpat Community Image"}
                     className={`rounded-lg imgsinglegallery ${
@@ -231,6 +232,8 @@ export default function FetchGallery() {
                         ? `w-${width}`
                         : `h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`
                     }`}
+                    width={width}
+                    height={height}
                     style={{ objectFit: "contain" }} // Use object-fit: contain to maintain aspect ratio
                   />
 

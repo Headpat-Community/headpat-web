@@ -327,13 +327,15 @@ export default function Example({ children }) {
                 href={`/user/${userMeData.username}`}
                 className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
               >
-                <img
+                <Image
                   className="h-8 w-8 rounded-full bg-gray-800"
                   src={
                     userData.avatar?.data?.attributes?.url ||
                     "/logos/logo-512.png"
                   }
                   alt=""
+                  width={64}
+                  height={64}
                 />
                 <span className="sr-only">Your profile</span>
                 <span aria-hidden="true">

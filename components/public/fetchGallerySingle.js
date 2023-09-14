@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ErrorPage from "../../components/404";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState({});
@@ -163,7 +164,7 @@ export default function FetchGallery() {
                       </div>
                     ) : (
                       <>
-                        <img
+                        <Image
                           src={url}
                           alt={name || "Headpat Community Image"}
                           className={`rounded-lg object-cover imgsinglegallery ${
@@ -171,6 +172,8 @@ export default function FetchGallery() {
                               ? `w-${width}`
                               : `h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`
                           } mx-auto`}
+                          width={width}
+                          height={height}
                         />
 
                         <div className="ml-4">

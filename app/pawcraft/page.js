@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
+import Image from "next/image";
 
 export default function Example() {
   return (
@@ -41,11 +42,11 @@ export default function Example() {
                 </Link>
               </div>
             </div>
-            <img
+            <Image
               src="/images/pawcraft_anzeige.png"
               alt="App screenshot"
-              width={1920}
-              height={1080}
+              width={1280}
+              height={720}
               className="mt-16 rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10 sm:mt-24"
             />
           </div>
