@@ -57,6 +57,8 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+export const runtime = 'edge';
+
 export default function Example() {
   const [selectedSize, setSelectedSize] = useState(null);
 
