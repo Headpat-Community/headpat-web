@@ -61,7 +61,7 @@ const Login = () => {
         const expirationTime = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
         document.cookie = `jwt=${
           data.jwt
-        }; expires=${expirationTime.toUTCString()}; path=/`;
+        }; expires=${expirationTime.toUTCString()}; path=/; Secure`;
         //console.log("User authenticated successfully");
         window.location.href = "/account";
       }
