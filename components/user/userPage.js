@@ -15,10 +15,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/20/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFlag,
-  faPersonHalfDress,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFlag, faPersonHalfDress } from "@fortawesome/free-solid-svg-icons";
 import {
   faTelegram,
   faDiscord,
@@ -120,7 +117,7 @@ export default function UserProfile() {
     .padStart(2, "0")}.${today.getFullYear()}`;
 
   useEffect(() => {
-    if (formattedBirthday !== '31.01.1900') {
+    if (formattedBirthday !== "31.01.1900") {
       setIsBirthdayToday(formattedBirthday === formattedToday);
     }
   }, [formattedBirthday, formattedToday]);
@@ -141,14 +138,11 @@ export default function UserProfile() {
       .then((data) => {
         setUserMe(data);
         const userId = data[0].id; // Access the id field of the first (and only) object in the array
-        fetch(
-          `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-            },
-          }
-        )
+        fetch(`https://backend.headpat.de/api/user-data/${userId}?populate=*`, {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+          },
+        })
           .then((response) => response.json())
           .then((data) => {
             setUserData(data);
@@ -470,7 +464,7 @@ export default function UserProfile() {
                       {userData?.data?.attributes?.pronouns !== "" && (
                         <div
                           className={`flex w-full flex-none gap-x-4 px-6 ${
-                            formattedBirthday === "31.01.1900" ? "mb-6" : ""
+                            formattedBirthday === "31.01.1900" ? " mb-4" : ""
                           }`}
                         >
                           <dt className="flex-none">
@@ -507,22 +501,23 @@ export default function UserProfile() {
                           </dd>
                         </div>
                       )}
-                      {userData?.data?.attributes?.location !== null && userData?.data?.attributes?.location !== "" && (
-                        <div
-                          className={`flex w-full flex-none gap-x-4 px-6 mb-4`}
-                        >
-                          <dt className="flex-none">
-                            <span className="sr-only">Location</span>
-                            <FontAwesomeIcon
-                              className="h-6 w-5 text-gray-400"
-                              icon={faFlag}
-                            />
-                          </dt>
-                          <dd className="text-sm font-medium leading-6 text-white">
-                            {userData?.data?.attributes?.location}
-                          </dd>
-                        </div>
-                      )}
+                      {userData?.data?.attributes?.location !== null &&
+                        userData?.data?.attributes?.location !== "" && (
+                          <div
+                            className={`flex w-full flex-none gap-x-4 px-6 mb-4`}
+                          >
+                            <dt className="flex-none">
+                              <span className="sr-only">Location</span>
+                              <FontAwesomeIcon
+                                className="h-6 w-5 text-gray-400"
+                                icon={faFlag}
+                              />
+                            </dt>
+                            <dd className="text-sm font-medium leading-6 text-white">
+                              {userData?.data?.attributes?.location}
+                            </dd>
+                          </div>
+                        )}
                     </dl>
                   </div>
                 </div>

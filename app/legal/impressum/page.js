@@ -20,17 +20,10 @@ export default function Loading() {
             Contact
           </h1>
           <br />
-          <p>Dominic Stilma</p>
-          <p>
-            Friedhofsweg 10
-            <br />
-            49843 Uelsen
-            <br />
-            Germany
-          </p>
+          <p>Only on request: help@headpat.de</p>
           <br />
           <p>
-            <strong>Kontaktdaten</strong>
+            <strong>Contact info</strong>
           </p>
           <p>E-Mail: help@headpat.de</p>
           <p>Webseite: https://headpat.de</p>
