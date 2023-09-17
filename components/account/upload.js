@@ -73,13 +73,6 @@ export default function UploadPage() {
 
       const userResponseData = await userResponse.json();
       const userId = userResponseData.id;
-      //console.log(userId);
-
-      const currentDate = new Date();
-      const year = currentDate.getFullYear();
-      const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-      const day = String(currentDate.getDate()).padStart(2, "0");
-      const formattedDate = `${year}-${month}-${day}`;
 
       formData.append(
         "data",
@@ -89,7 +82,6 @@ export default function UploadPage() {
           imgalt: imgalt.value,
           longtext: longtext.value,
           nsfw: nsfw.checked,
-          date: formattedDate,
         })
       );
 
