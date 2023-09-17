@@ -11,7 +11,7 @@ export default function AnnouncementsPage() {
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    fetch("https://backend.headpat.de/api/announcements", {
+    fetch("https://backend.headpat.de/api/announcements?populate=*", {
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
       },
@@ -20,7 +20,7 @@ export default function AnnouncementsPage() {
       .then((data) => {
         setAnnouncementData(data.data.reverse());
         const createdByIds = data.data.map(
-          (announcement) => announcement.attributes.createdby
+          (announcement) => announcement.attributes.users_permissions_user.data.id
         );
         const fetchPromises = createdByIds.map((createdById) =>
           fetch(
