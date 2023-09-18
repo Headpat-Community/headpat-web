@@ -167,7 +167,7 @@ export default function FetchGallery() {
                         <Image
                           src={url}
                           alt={name || "Headpat Community Image"}
-                          className={`rounded-lg object-cover imgsinglegallery ${
+                          className={`rounded-lg object-contain imgsinglegallery ${
                             width < 800
                               ? `w-${width}`
                               : `h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`
@@ -177,12 +177,7 @@ export default function FetchGallery() {
                         />
 
                         <div className="ml-4">
-                          <div className="px-4 sm:px-0 mt-4">
-                            <h3 className="text-base font-semibold leading-7 text-white">
-                              Image description
-                            </h3>
-                          </div>
-                          <div className="mt-4 border-t border-white/10">
+                          <div className="mt-4">
                             <dl className="divide-y divide-white/10">
                               <div className="ml-4">
                                 <div className="px-4 sm:px-0 mt-4">
