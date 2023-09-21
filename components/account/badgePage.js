@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useEffect, useCallback, useState } from "react";
 
 export default function BadgePageComponent() {
@@ -121,10 +122,12 @@ export default function BadgePageComponent() {
     <>
       <main className="relative lg:min-h-full">
         <div className="h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12 flex items-center">
-          <img
+          <Image
             src="/images/badgefront.webp"
             alt="Badge Preview"
             className="h-full w-full object-contain object-center max-h-[600px]"
+            width={600}
+            height={1000}
           />
         </div>
 
