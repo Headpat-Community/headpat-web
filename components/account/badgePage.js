@@ -1,9 +1,13 @@
 import { useEffect, useCallback, useState } from "react";
-import Image from "next/image";
 
 export default function BadgePageComponent() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [deliverAtEurofurence, setDeliverAtEurofurence] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    setDeliverAtEurofurence(event.target.checked);
+  };
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -22,8 +26,8 @@ export default function BadgePageComponent() {
       );
       return;
     }
-    if (selectedFile.size > 16 * 1024 * 1024) {
-      alert("File size must be less than 16 MB.");
+    if (selectedFile.size > 1 * 1024 * 1024) {
+      alert("File size must be less than 1 MB.");
       return;
     }
     const fileReader = new FileReader();
@@ -78,19 +82,22 @@ export default function BadgePageComponent() {
         "data",
         JSON.stringify({
           users_permissions_user: userId,
-          name: imagename.value,
-          imgalt: imgalt.value,
-          longtext: longtext.value,
-          nsfw: nsfw.checked,
+          displayname: displayname.value,
+          address: address.value,
+          city: city.value,
+          country: country.value,
+          state: state.value,
+          postalcode: postalcode.value,
+          deliver_at_eurofurence: deliver_at_eurofurence.checked,
         })
       );
 
       setIsUploading(true); // Set isUploading to true before making the API call
 
-      const response = await fetch("https://backend.headpat.de/api/galleries", {
+      const response = await fetch("https://backend.headpat.de/api/badges", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+          Authorization: `Bearer ${token}`,
         },
         body: formData,
       });
@@ -113,11 +120,11 @@ export default function BadgePageComponent() {
   return (
     <>
       <main className="relative lg:min-h-full">
-        <div className="h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12">
+        <div className="h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12 flex items-center">
           <img
-            src="https://tailwindui.com/img/ecommerce-images/confirmation-page-06-hero.jpg"
+            src="/images/badgefront.webp"
             alt="Badge Preview"
-            className="h-full w-full object-cover object-center"
+            className="h-full w-full object-contain object-center max-h-[600px]"
           />
         </div>
 
@@ -127,103 +134,188 @@ export default function BadgePageComponent() {
               <h1 className="text-sm font-medium text-indigo-600">
                 Badge Request
               </h1>
-              <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-                Thanks for considering!
+              <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                Danke für deine Überlegung!
               </p>
               <p className="mt-2 text-base text-gray-500">
-                We appreciate your order, we’re currently processing it. So hang
-                tight and we’ll send you confirmation very soon!
+                Danke das du dich für einen Badge interessierst! Bitte fülle das
+                Formular aus und wir werden uns so schnell wie möglich bei dir
+                melden.
               </p>
-
-              <ul
-                role="list"
-                className="mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-gray-500"
-              >
-                <li key="Badge" className="flex space-x-6 py-6">
-                  <div className="text-center">
-                    <h1 className="text-left text-xl">Upload image</h1>
-                    <label
-                      htmlFor="file-upload"
-                      className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
-                      onDrop={handleDrop}
-                      onDragOver={(event) => event.preventDefault()}
-                    >
-                    <Image
-                        id="selected-image"
-                        className="h-32 w-32 rounded-md"
-                        alt=""
-                        src="/images/placeholder-image.webp"
+              <form onSubmit={handleSubmit}>
+                <ul
+                  role="list"
+                  className="mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-gray-500"
+                >
+                  <li key="Badge" className="flex space-x-6 py-6">
+                    <div className="text-center">
+                      <h1 className="text-left text-xl">Upload image</h1>
+                      <label
+                        htmlFor="file-upload"
+                        className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
                         onDrop={handleDrop}
                         onDragOver={(event) => event.preventDefault()}
-                        width={200}
-                        height={200}
+                      >
+                        <img
+                          id="selected-image"
+                          className="h-32 w-32 rounded-md"
+                          alt=""
+                          src="/images/placeholder-image.webp"
+                          onDrop={handleDrop}
+                          onDragOver={(event) => event.preventDefault()}
+                        />
+                        <div className="mt-4 flex text-sm leading-6 text-gray-400">
+                          <label
+                            htmlFor="file-upload"
+                            className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
+                          >
+                            <span className="p-4">Upload a file</span>
+                            <input
+                              id="file-upload"
+                              name="file-upload"
+                              type="file"
+                              className="sr-only bg-transparent"
+                              required
+                              onChange={handleFileChange}
+                              onDrop={handleDrop}
+                              onDragOver={(event) => event.preventDefault()}
+                            />
+                          </label>
+                        </div>
+                      </label>
+                    </div>
+                    <div className="mt-1 align-middle text-center">
+                      <p className="text-red-500">
+                        PNG, JPEG, GIF, SVG, TIFF, ICO, DVU
+                      </p>
+                      <p className="text-red-500 pt-2">Max. 512x512px, 1MB</p>
+                    </div>
+                  </li>
+                </ul>
+
+                <div className="sm:col-span-3 mb-4">
+                  <label className="block text-sm font-medium leading-6 text-white">
+                    Bei Eurofurence abholen?
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      type="checkbox"
+                      name="deliver_at_eurofurence"
+                      id="deliver_at_eurofurence"
+                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      checked={deliverAtEurofurence}
+                      onChange={handleCheckboxChange}
                     />
-                      <div className="mt-4 flex text-sm leading-6 text-gray-400">
-                        <label
-                          htmlFor="file-upload"
-                          className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
-                        >
-                          <span className="p-4">Upload a file</span>
-                          <input
-                            id="file-upload"
-                            name="file-upload"
-                            type="file"
-                            className="sr-only bg-transparent"
-                            required
-                            onChange={handleFileChange}
-                            onDrop={handleDrop}
-                            onDragOver={(event) => event.preventDefault()}
-                          />
-                        </label>
-                        <p className="pl-1">
-                          PNG, JPEG, GIF, SVG, TIFF, ICO, DVU up to 1MB
-                        </p>
-                      </div>
-                    </label>
                   </div>
-                </li>
-              </ul>
-
-              <dl className="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-white">
-                <div className="flex justify-between">
-                  <dt>First Name</dt>
-                  <input type="text" name="firstname" className="text-black rounded" />
                 </div>
 
-                <div className="flex justify-between">
-                  <dt>Last name</dt>
-                  <input type="text" name="lastname" className="text-black rounded" />
-                </div>
+                <dl className="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-white">
+                  <div className="flex justify-between">
+                    <dt>Name</dt>
+                    <input
+                      type="text"
+                      name="displayname"
+                      id="displayname"
+                      className="text-black rounded"
+                    />
+                  </div>
 
-                <div className="flex justify-between">
-                  <dt>Address</dt>
-                  <input type="text" name="address" className="text-black rounded" />
-                </div>
+                  {!deliverAtEurofurence && (
+                    <>
+                      <div className="flex justify-between">
+                        <dt>Address</dt>
+                        <input
+                          type="text"
+                          name="address"
+                          id="address"
+                          className="text-black rounded"
+                        />
+                      </div>
 
-                <div className="flex justify-between">
-                  <dt>City</dt>
-                  <input type="text" name="city" className="text-black rounded" />
-                </div>
+                      <div className="flex justify-between">
+                        <dt>City</dt>
+                        <input
+                          type="text"
+                          name="city"
+                          id="city"
+                          className="text-black rounded"
+                        />
+                      </div>
 
-                <div className="flex justify-between">
-                  <label htmlFor="country-select" className="text-white rounded">Country</label>
-                  <select id="country-select" name="country" className="text-black appearance-none rounded">
-                    <option value="Germany" className="bg-black text-white">Germany</option>
-                    <option value="Austria" className="bg-black text-white">Austria</option>
-                    <option value="Switzerland" className="bg-black text-white">Switzerland</option>
-                  </select>
-                </div>
+                      <div className="flex justify-between">
+                        <label
+                          htmlFor="country-select"
+                          className="text-white rounded"
+                        >
+                          Country
+                        </label>
+                        <select
+                          id="country"
+                          name="country"
+                          className="text-black appearance-none rounded"
+                        >
+                          <option
+                            value="Germany"
+                            className="bg-black text-white"
+                          >
+                            Germany
+                          </option>
+                          <option
+                            value="Austria"
+                            className="bg-black text-white"
+                          >
+                            Austria
+                          </option>
+                          <option
+                            value="Switzerland"
+                            className="bg-black text-white"
+                          >
+                            Switzerland
+                          </option>
+                        </select>
+                      </div>
 
-                <div className="flex justify-between">
-                  <dt>State</dt>
-                  <input type="text" name="state" className="text-black rounded" />
-                </div>
+                      <div className="flex justify-between">
+                        <dt>State</dt>
+                        <input
+                          type="text"
+                          name="state"
+                          id="state"
+                          className="text-black rounded"
+                        />
+                      </div>
 
-                <div className="flex justify-between">
-                  <dt>Postal code</dt>
-                  <input type="text" name="postalcode" className="text-black rounded" />
+                      <div className="flex justify-between">
+                        <dt>Postal code</dt>
+                        <input
+                          type="text"
+                          name="postalcode"
+                          id="postalcode"
+                          className="text-black rounded"
+                        />
+                      </div>
+                    </>
+                  )}
+                </dl>
+
+                <div className="mt-6 flex items-center justify-end gap-x-6">
+                  <button
+                    type="button"
+                    className="text-sm font-semibold leading-6 text-white"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    value="Submit"
+                    className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                    disabled={isUploading} // Disable the button if isUploading is true
+                  >
+                    {isUploading ? "Uploading..." : "Save"}{" "}
+                    {/* Show different text based on the upload state */}
+                  </button>
                 </div>
-              </dl>
+              </form>
             </div>
           </div>
         </div>
