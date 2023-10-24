@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
@@ -14,26 +15,15 @@ export default function AccountPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = document.cookie.replace(
-          /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-          "$1"
-        );
-
-        const userResponse = await fetch(
-          "https://backend.headpat.de/api/users/me",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const userResponse = await fetch("/api/user/getUser", {
+          method: "GET",
+        });
 
         const userResponseData = await userResponse.json();
         const userId = userResponseData.id;
 
         const userDataResponse = await fetch(
-          `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
+          `/api/user/getUserData/${userId}?populate=*`,
           {
             method: "GET",
             headers: {
@@ -68,15 +58,9 @@ export default function AccountPage() {
         "$1"
       );
 
-      const userResponse = await fetch(
-        "https://backend.headpat.de/api/users/me",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const userResponse = await fetch("/api/user/getUser", {
+        method: "GET",
+      });
 
       const userResponseData = await userResponse.json();
       const userId = userResponseData.id;
@@ -98,16 +82,10 @@ export default function AccountPage() {
 
       setIsUploading(true);
 
-      const response = await fetch(
-        `https://backend.headpat.de/api/user-data/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`/api/user/editUserData/${userId}`, {
+        method: "PUT",
+        body: formData,
+      });
 
       const responseData = await response.json();
       if (response.ok) {

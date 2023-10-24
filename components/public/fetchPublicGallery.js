@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef, useMemo } from "react";
@@ -17,8 +18,6 @@ export default function FetchGallery() {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    const userApiUrl = `https://backend.headpat.de/api/users/me`;
-
     const fetchUserId = async () => {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
@@ -27,10 +26,8 @@ export default function FetchGallery() {
       if (!token) return; // Return if "jwt" token does not exist
 
       try {
-        const response = await fetch(userApiUrl, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const response = await fetch(`/api/user/getUser`, {
+          method: "GET",
         });
         const data = await response.json();
         setUserId(data.id);
@@ -45,7 +42,7 @@ export default function FetchGallery() {
   useEffect(() => {
     if (!userId) return; // Wait for userId to be available
 
-    const userDataApiUrl = `https://backend.headpat.de/api/user-data/${userId}`;
+    const userDataApiUrl = `/api/user/getUserData/${userId}`;
 
     const fetchUserData = async () => {
       const token = document.cookie.replace(
@@ -135,9 +132,7 @@ export default function FetchGallery() {
             </p>
           )
         ) : (
-          <ul
-            className="p-8 flex flex-wrap gap-4 justify-center items-center"
-          >
+          <ul className="p-8 flex flex-wrap gap-4 justify-center items-center">
             {gallery.map((item) => (
               <div key={item.id}>
                 {item.attributes.img && item.attributes.img.data && (

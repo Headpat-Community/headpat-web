@@ -1,9 +1,5 @@
 "use client";
-import {
-  useLoadScript,
-  GoogleMap,
-  InfoWindow
-} from "@react-google-maps/api";
+import { useLoadScript, GoogleMap, InfoWindow } from "@react-google-maps/api";
 import type { NextPage } from "next";
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import usePlacesAutocomplete, {
@@ -22,10 +18,8 @@ const MapHeadpat: NextPage = () => {
 
   useEffect(() => {
     // Fetch data from API and update state
-    fetch("https://backend.headpat.de/api/publicmaps", {
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-      },
+    fetch("/api/publicmaps/getMaps", {
+      method: "GET",
     })
       .then((response) => response.json())
       .then((data) => setEvents(data.data))
@@ -95,9 +89,7 @@ const MapHeadpat: NextPage = () => {
                 lng: event.attributes.longitude,
               }}
             >
-              <div
-                className="text-black flex justify-center items-center bg-transparent"
-              >
+              <div className="text-black flex justify-center items-center bg-transparent">
                 <Image
                   src="/logos/logo.webp"
                   width={48}

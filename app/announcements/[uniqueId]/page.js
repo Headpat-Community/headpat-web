@@ -15,23 +15,16 @@ export default function AnnouncementInfo() {
     const pathParts = window.location.pathname.split("/");
     const uniqueId = pathParts[2];
 
-    fetch(`https://backend.headpat.de/api/announcements/${uniqueId}?populate=*`, {
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-      },
+    fetch(`/api/announcements/getAnnouncement/${uniqueId}?populate=*`, {
+      method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {
         setAnnouncementData(data.data);
         const createdById = data.data.attributes.users_permissions_user.data.id;
-        fetch(
-          `https://backend.headpat.de/api/user-data/${createdById}?populate=*`,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-            },
-          }
-        )
+        fetch(`/api/user/getUserData/${createdById}?populate=*`, {
+          method: "GET",
+        })
           .then((response) => response.json())
           .then((data) => {
             setUserData(data);
@@ -81,7 +74,8 @@ export default function AnnouncementInfo() {
                     height={48}
                   />
                   {userData?.data?.attributes?.displayname ||
-                    userData?.data?.attributes?.users_permissions_user?.data?.attributes?.username ||
+                    userData?.data?.attributes?.users_permissions_user?.data
+                      ?.attributes?.username ||
                     "Unknown"}
                 </Link>
               </dd>

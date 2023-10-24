@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -23,21 +24,15 @@ export default function AccountPage() {
           "$1"
         );
 
-        const userResponse = await fetch(
-          "https://backend.headpat.de/api/users/me",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const userResponse = await fetch("/api/user/getUser", {
+          method: "GET",
+        });
 
         const userResponseData = await userResponse.json();
         const userId = userResponseData.id;
 
         const userDataResponse = await fetch(
-          `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
+          `/api/user/getUserData/${userId}?populate=*`,
           {
             method: "GET",
             headers: {
@@ -97,20 +92,9 @@ export default function AccountPage() {
     formData.append("files.avatar", selectedFile);
 
     try {
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-
-      const userResponse = await fetch(
-        "https://backend.headpat.de/api/users/me",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const userResponse = await fetch("/api/user/getUser", {
+        method: "GET",
+      });
 
       const userResponseData = await userResponse.json();
       const userId = userResponseData.id;
@@ -133,12 +117,9 @@ export default function AccountPage() {
       setIsUploading(true); // Set isUploading to true before making the API call
 
       const response = await fetch(
-        `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
+        `/api/user/editUserData/${userId}?populate=*`,
         {
           method: "PUT",
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-          },
           body: formData,
         }
       );

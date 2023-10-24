@@ -73,10 +73,8 @@ export default function Example({ children }) {
       deleteCookie("jwt");
       window.location.href = "/login";
     } else {
-      fetch("https://backend.headpat.de/api/users/me", {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
+      fetch("/api/user/getUser", {
+        method: "GET",
       })
         .then((response) => {
           if (response.status === 401) {
@@ -93,21 +91,10 @@ export default function Example({ children }) {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Get the JWT token from the cookie
-        const token = document.cookie.replace(
-          /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-          "$1"
-        );
         // Fetch the user data from the API
-        const userResponse = await fetch(
-          "https://backend.headpat.de/api/users/me",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const userResponse = await fetch("/api/user/getUser", {
+          method: "GET",
+        });
         const userResponseData = await userResponse.json();
         // Set the userMeData state to the attributes object of the API response
         setUserMeData(userResponseData);
@@ -115,12 +102,9 @@ export default function Example({ children }) {
         const userId = userResponseData.id;
 
         const userDataResponse = await fetch(
-          `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
+          `/api/user/getUserData/${userId}?populate=*`,
           {
             method: "GET",
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-            },
           }
         );
         const userDataResponseData = await userDataResponse.json();

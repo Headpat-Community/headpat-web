@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+"use client";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function Register() {
@@ -28,7 +28,7 @@ export default function Register() {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://backend.headpat.de/api/auth/local/register",
+        "/api/user/createUser",
         {
           method: "POST",
           headers: {

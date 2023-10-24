@@ -22,7 +22,7 @@ const ResetPassword = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://backend.headpat.de/api/auth/reset-password",
+        "/api/user/resetPassword",
         {
           method: "POST",
           headers: {

@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useCallback, useState, useRef } from "react";
 
 export default function BadgePageComponent() {
@@ -105,26 +106,17 @@ export default function BadgePageComponent() {
         "$1"
       );
 
-      const userResponse = await fetch(
-        "https://backend.headpat.de/api/users/me",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const userResponse = await fetch("/api/user/getUser", {
+        method: "GET",
+      });
 
       const userResponseData = await userResponse.json();
       const userId = userResponseData.id;
 
       const response = await fetch(
-        `https://backend.headpat.de/api/badges?filters[users_permissions_user][id][$eq]=${userId}`,
+        `/api/account/getBadges?filters[users_permissions_user][id][$eq]=${userId}`,
         {
           method: "GET",
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-          },
         }
       );
 
@@ -150,11 +142,8 @@ export default function BadgePageComponent() {
 
         setIsUploading(true); // Set isUploading to true before making the API call
 
-        const response = await fetch("https://backend.headpat.de/api/badges", {
+        const response = await fetch("/api/account/createBadge", {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-          },
           body: formData,
         });
 

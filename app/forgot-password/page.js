@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import Header from "../../components/header";
-import { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -21,12 +20,9 @@ const ForgotPassword = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://backend.headpat.de/api/auth/forgot-password",
+        "/api/user/forgotPassword",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
           body: JSON.stringify({
             email: email,
           }),

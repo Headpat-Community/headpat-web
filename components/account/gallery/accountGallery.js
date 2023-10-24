@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect, useRef } from "react";
 import ErrorPage from "../../404";
 import Link from "next/link";
@@ -9,7 +10,6 @@ export default function FetchGallery() {
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
   const [enableNsfw, setEnableNsfw] = useState(false);
-  const galleryContainerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -20,8 +20,6 @@ export default function FetchGallery() {
   }, []);
 
   useEffect(() => {
-    const userApiUrl = `https://backend.headpat.de/api/users/me`;
-
     const fetchUserId = async () => {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
@@ -30,10 +28,8 @@ export default function FetchGallery() {
       if (!token || typeof token === "undefined") return; // Return if "jwt" token does not exist
 
       try {
-        const response = await fetch(userApiUrl, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const response = await fetch(`/api/user/getUser`, {
+          method: "GET",
         });
 
         const data = await response.json();
@@ -50,9 +46,6 @@ export default function FetchGallery() {
   useEffect(() => {
     if (!userId) return; // Wait for userId to be available
 
-    const userDataApiUrl = `https://backend.headpat.de/api/user-data/${userId}`;
-    //console.log(userDataApiUrl);
-
     const fetchUserData = async () => {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
@@ -61,11 +54,8 @@ export default function FetchGallery() {
       if (!token || typeof token === "undefined") return; // Return if "jwt" token does not exist
 
       try {
-        const response = await fetch(userDataApiUrl, {
+        const response = await fetch(`/api/user/getUserData/${userId}`, {
           method: "GET",
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-          },
         });
 
         const data = await response.json();
@@ -86,16 +76,12 @@ export default function FetchGallery() {
       : `filters[users_permissions_user][id][$eq]=${userId}`;
 
     const pageSize = 25;
-    const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&${filters}&pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
+    const apiUrl = `/api/gallery/getTotalGallery?populate=*&${filters}&pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
 
     setIsLoading(true);
 
     fetch(apiUrl, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-      },
     })
       .then((response) => response.json())
       .then((data) => {

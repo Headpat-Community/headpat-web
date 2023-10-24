@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -27,10 +28,8 @@ export default function FetchGallery() {
     if (!token || typeof token === "undefined") return; // Return if "jwt" token does not exist
 
     try {
-      const response = await fetch(`https://backend.headpat.de/api/users/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const response = await fetch(`/api/user/getUser`, {
+        method: "GET",
       });
 
       const data = await response.json();
@@ -54,11 +53,9 @@ export default function FetchGallery() {
 
       // Fetch the gallery data
       const response = await fetch(
-        `https://backend.headpat.de/api/galleries/${uniqueId}?populate=*`,
+        `/api/gallery/getUserGallery/${uniqueId}?populate=*`,
         {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-          },
+          method: "GET",
         }
       );
       const data = await response.json();
@@ -67,19 +64,13 @@ export default function FetchGallery() {
       const imageId = data.data.attributes.img.data.id;
 
       // Delete the image file
-      await fetch(`https://backend.headpat.de/api/upload/files/${imageId}`, {
+      await fetch(`/api/system/deleteImageFile/${imageId}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-        },
       });
 
       // Delete the gallery
-      await fetch(`https://backend.headpat.de/api/galleries/${uniqueId}`, {
+      await fetch(`/api/gallery/deleteUserGallery/${uniqueId}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-        },
       });
 
       alert("Image deleted successfully!");
@@ -120,16 +111,10 @@ export default function FetchGallery() {
         })
       );
       // Make the PUT request
-      const response = await fetch(
-        `https://backend.headpat.de/api/galleries/${uniqueId}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`/api/gallery/editUserGallery/${uniqueId}`, {
+        method: "PUT",
+        body: formData,
+      });
 
       // Handle response and update state accordingly
     } catch (error) {
@@ -148,7 +133,7 @@ export default function FetchGallery() {
     const pathParts = window.location.pathname.split("/");
     const uniqueId = pathParts[3];
 
-    const apiUrl = `https://backend.headpat.de/api/galleries/${uniqueId}?populate=*`;
+    const apiUrl = `/api/gallery/getUserGallery/${uniqueId}?populate=*`;
 
     setIsLoading(true);
 
@@ -224,18 +209,17 @@ export default function FetchGallery() {
 
               return (
                 <div className="flex flex-wrap items-start">
-                  <Image
-                    src={url}
-                    alt={name || "Headpat Community Image"}
-                    className={`rounded-lg imgsinglegallery ${
-                      width < 800
-                        ? `w-${width}`
-                        : `h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`
-                    }`}
-                    width={width}
-                    height={height}
-                    style={{ objectFit: "contain" }} // Use object-fit: contain to maintain aspect ratio
-                  />
+                  <div className="flex mx-auto">
+                    <img
+                      src={url}
+                      alt={name || "Headpat Community Image"}
+                      className={`rounded-lg imgsinglegallery object-contain ${
+                        width < 800
+                          ? `w-${width}`
+                          : `h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`
+                      }`}
+                    />
+                  </div>
 
                   <div className="pb-12 ml-8 mt-2">
                     <h2 className="text-base font-semibold leading-7 text-white">

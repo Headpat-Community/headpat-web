@@ -1,3 +1,4 @@
+"use client";
 import { useState, useCallback } from "react";
 
 export default function UploadPage() {
@@ -55,20 +56,9 @@ export default function UploadPage() {
     formData.append("files.img", selectedFile);
 
     try {
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-
-      const userResponse = await fetch(
-        "https://backend.headpat.de/api/users/me",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const userResponse = await fetch("/api/user/getUser", {
+        method: "GET",
+      });
 
       const userResponseData = await userResponse.json();
       const userId = userResponseData.id;
@@ -86,11 +76,8 @@ export default function UploadPage() {
 
       setIsUploading(true); // Set isUploading to true before making the API call
 
-      const response = await fetch("https://backend.headpat.de/api/galleries", {
+      const response = await fetch("/api/gallery/uploadImage", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-        },
         body: formData,
       });
 
