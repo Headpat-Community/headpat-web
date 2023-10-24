@@ -56,7 +56,7 @@ export default function UploadPage() {
     formData.append("files.img", selectedFile);
 
     try {
-      const userResponse = await fetch("/api/user/getUser", {
+      const userResponse = await fetch("/api/user/getUserSelf", {
         method: "GET",
       });
 

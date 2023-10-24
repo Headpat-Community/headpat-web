@@ -128,21 +128,17 @@ export default function UserProfile() {
 
   useEffect(() => {
     fetch(
-      `https://backend.headpat.de/api/users?populate=*&filters[username][$eq]=${username}`,
+      `/api/user/getUserFilter?populate=*&filters[username][$eq]=${username}`,
       {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-        },
+        method: "GET",
       }
     )
       .then((response) => response.json())
       .then((data) => {
         setUserMe(data);
         const userId = data[0].id; // Access the id field of the first (and only) object in the array
-        fetch(`https://backend.headpat.de/api/user-data/${userId}?populate=*`, {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-          },
+        fetch(`/api/user/getUserData/${userId}?populate=*`, {
+          method: "GET",
         })
           .then((response) => response.json())
           .then((data) => {

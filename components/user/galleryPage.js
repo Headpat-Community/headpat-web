@@ -1,9 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import ErrorPage from "../../components/404";
 import Link from "next/link";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faDiscord,
@@ -29,7 +28,7 @@ export default function FetchGallery() {
 
   useEffect(() => {
     fetch(
-      `https://backend.headpat.de/api/users?populate=*&filters[username][$eq]=${username}`,
+      `/api/user/getUserFilter?populate=*&filters[username][$eq]=${username}`,
       {
         headers: {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
@@ -41,14 +40,9 @@ export default function FetchGallery() {
         setUserMe(data); // Access the first (and only) object in the array
         setUserId(data[0].id);
         const userId = data[0].id; // Access the id field of the first (and only) object in the array
-        fetch(
-          `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-            },
-          }
-        )
+        fetch(`/api/user/getUserData/${userId}?populate=*`, {
+          method: "GET",
+        })
           .then((response) => response.json())
           .then((data) => {
             setUserData(data);
@@ -76,12 +70,9 @@ export default function FetchGallery() {
 
       try {
         const response = await fetch(
-          `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
+          `/api/user/getUserData/${userId}?populate=*`,
           {
             method: "GET",
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-            },
           }
         );
 
@@ -102,14 +93,12 @@ export default function FetchGallery() {
       ? `filters[users_permissions_user][id][$eq]=${userId}&filters[nsfw][$eq]=false`
       : `filters[users_permissions_user][id][$eq]=${userId}`;
 
-    const apiUrl = `https://backend.headpat.de/api/galleries?populate=*&${filters}`;
+    const apiUrl = `/api/gallery/getTotalGallery?populate=*&${filters}`;
 
     setIsLoading(true);
 
     fetch(apiUrl, {
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-      },
+      method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {

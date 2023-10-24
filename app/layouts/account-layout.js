@@ -73,7 +73,7 @@ export default function Example({ children }) {
       deleteCookie("jwt");
       window.location.href = "/login";
     } else {
-      fetch("/api/user/getUser", {
+      fetch("/api/user/getUserSelf", {
         method: "GET",
       })
         .then((response) => {
@@ -92,7 +92,7 @@ export default function Example({ children }) {
     const fetchUserData = async () => {
       try {
         // Fetch the user data from the API
-        const userResponse = await fetch("/api/user/getUser", {
+        const userResponse = await fetch("/api/user/getUserSelf", {
           method: "GET",
         });
         const userResponseData = await userResponse.json();

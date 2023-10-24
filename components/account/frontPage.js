@@ -24,7 +24,7 @@ export default function AccountPage() {
           "$1"
         );
 
-        const userResponse = await fetch("/api/user/getUser", {
+        const userResponse = await fetch("/api/user/getUserSelf", {
           method: "GET",
         });
 
@@ -92,7 +92,7 @@ export default function AccountPage() {
     formData.append("files.avatar", selectedFile);
 
     try {
-      const userResponse = await fetch("/api/user/getUser", {
+      const userResponse = await fetch("/api/user/getUserSelf", {
         method: "GET",
       });
 

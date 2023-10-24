@@ -26,7 +26,7 @@ export default function FetchGallery() {
       if (!token) return; // Return if "jwt" token does not exist
 
       try {
-        const response = await fetch(`/api/user/getUser`, {
+        const response = await fetch(`/api/user/getUserSelf`, {
           method: "GET",
         });
         const data = await response.json();
@@ -73,13 +73,11 @@ export default function FetchGallery() {
   useEffect(() => {
     const filters = !enableNsfw ? `&filters[nsfw][$eq]=false` : ``;
     const pageSize = 500;
-    const apiUrl = `https://backend.headpat.de/api/galleries?populate=*${filters}&pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
+    const apiUrl = `/api/gallery/getTotalGallery?populate=*${filters}&pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
 
     setIsLoading(true);
     fetch(apiUrl, {
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-      },
+      method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {

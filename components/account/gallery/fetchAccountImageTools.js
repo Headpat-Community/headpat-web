@@ -28,7 +28,7 @@ export default function FetchGallery() {
     if (!token || typeof token === "undefined") return; // Return if "jwt" token does not exist
 
     try {
-      const response = await fetch(`/api/user/getUser`, {
+      const response = await fetch(`/api/user/getUserSelf`, {
         method: "GET",
       });
 

@@ -106,7 +106,7 @@ export default function BadgePageComponent() {
         "$1"
       );
 
-      const userResponse = await fetch("/api/user/getUser", {
+      const userResponse = await fetch("/api/user/getUserSelf", {
         method: "GET",
       });
 

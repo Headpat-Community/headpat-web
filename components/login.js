@@ -26,19 +26,13 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        "https://backend.headpat.de/api/auth/local",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            identifier: email,
-            password: password,
-          }),
-        }
-      );
+      const response = await fetch("/api/user/loginUser", {
+        method: "POST",
+        body: JSON.stringify({
+          identifier: email,
+          password: password,
+        }),
+      });
       const data = await response.json();
       if (response.status === 400) {
         setError(

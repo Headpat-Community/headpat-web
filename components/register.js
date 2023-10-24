@@ -27,21 +27,18 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        "/api/user/createUser",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-          },
-          body: JSON.stringify({
-            username: username,
-            email: email,
-            password: password,
-          }),
-        }
-      );
+      const response = await fetch("/api/user/createUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+        },
+        body: JSON.stringify({
+          username: username,
+          email: email,
+          password: password,
+        }),
+      });
       const data = await response.json();
 
       if (response.status === 400) {
@@ -63,22 +60,15 @@ export default function Register() {
         }, 5000);
       } else if (response.status === 200) {
         try {
-          const userDataResponse = await fetch(
-            "https://backend.headpat.de/api/user-data",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
+          const userDataResponse = await fetch("/api/user/createUserData", {
+            method: "POST",
+            body: JSON.stringify({
+              data: {
+                status: "Ich bin neu hier!",
+                users_permissions_user: data.user.id,
               },
-              body: JSON.stringify({
-                data: {
-                  status: "I'm new here!",
-                  users_permissions_user: data.user.id,
-                },
-              }),
-            }
-          );
+            }),
+          });
           if (userDataResponse.status === 200) {
             //console.log("Second POST request successful");
           } else {

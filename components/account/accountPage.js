@@ -12,7 +12,7 @@ export default function AccountPage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userResponse = await fetch("/api/user/getUser", {
+        const userResponse = await fetch("/api/user/getUserSelf", {
           method: "GET",
         });
         const userResponseData = await userResponse.json();
@@ -47,7 +47,7 @@ export default function AccountPage() {
     }
 
     try {
-      const userResponse = await fetch("/api/user/getUser", {
+      const userResponse = await fetch("/api/user/getUserSelf", {
         method: "GET",
       });
 
@@ -117,7 +117,7 @@ export default function AccountPage() {
     const isChecked = event.target.checked;
     setNsfw(isChecked);
 
-    const userResponse = await fetch("/api/user/getUser", {
+    const userResponse = await fetch("/api/user/getUserSelf", {
       method: "GET",
     });
     const userResponseData = await userResponse.json();
