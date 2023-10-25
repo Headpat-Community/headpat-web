@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import ErrorPage from "../../404";
 import Link from "next/link";
 import Image from "next/image";
@@ -13,6 +13,21 @@ export default function FetchGallery() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  const getToken = () => {
+    return document.cookie.replace(
+      /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
+  };
+
+  const handleApiResponse = (response) => {
+    if (response.status === 401 || !response.ok) {
+      deleteCookie("jwt");
+      window.location.reload();
+    }
+    return response.json();
+  };
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const page = parseInt(urlParams.get("page")) || 1;
@@ -20,53 +35,35 @@ export default function FetchGallery() {
   }, []);
 
   useEffect(() => {
-    const fetchUserId = async () => {
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-      if (!token || typeof token === "undefined") return; // Return if "jwt" token does not exist
+    const token = getToken();
+    if (!token) {
+      setError("You need to login to be able to see NSFW images!");
+      return;
+    }
 
-      try {
-        const response = await fetch(`/api/user/getUserSelf`, {
-          method: "GET",
-        });
+    setIsLoading(true);
 
-        const data = await response.json();
-        //console.log(data);
+    fetch("/api/user/getUserSelf", {
+      method: "GET",
+    })
+      .then(handleApiResponse)
+      .then((data) => {
         setUserId(data.id);
-      } catch (error) {
-        setError(error);
-      }
-    };
-
-    fetchUserId();
-  }, []);
-
-  useEffect(() => {
-    if (!userId) return; // Wait for userId to be available
-
-    const fetchUserData = async () => {
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-      if (!token || typeof token === "undefined") return; // Return if "jwt" token does not exist
-
-      try {
-        const response = await fetch(`/api/user/getUserData/${userId}`, {
+        return fetch(`/api/user/getUserData/${data.id}`, {
           method: "GET",
         });
-
-        const data = await response.json();
-        setEnableNsfw(data.data.attributes.enablensfw);
-      } catch (error) {
-        setError(error);
-      }
-    };
-
-    fetchUserData();
-  }, [userId]);
+      })
+      .then(handleApiResponse)
+      .then((userData) => {
+        setEnableNsfw(userData.data.attributes.enablensfw);
+      })
+      .catch((err) => {
+        setError(err.message || "An error occurred.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     if (!userId) return; // Wait for userId to be available
@@ -83,14 +80,15 @@ export default function FetchGallery() {
     fetch(apiUrl, {
       method: "GET",
     })
-      .then((response) => response.json())
+      .then(handleApiResponse)
       .then((data) => {
         setGallery(data.data.reverse());
         setTotalPages(data.meta.pagination.pageCount);
-        setIsLoading(false);
       })
-      .catch((error) => {
-        setError(error);
+      .catch((err) => {
+        setError(err.message || "An error occurred.");
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   }, [userId, enableNsfw, currentPage]);
@@ -100,6 +98,7 @@ export default function FetchGallery() {
     window.history.pushState({ page }, `Page ${page}`, `?page=${page}`);
   };
 
+  // The rest of the component remains unchanged with conditional rendering based on the data's availability.
   return (
     <>
       <div>
