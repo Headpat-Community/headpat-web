@@ -2,26 +2,32 @@ import { NextResponse } from "next/server";
 
 export const runtime = "edge";
 
-export async function GET() {
+export async function GET(request) {
   try {
-    // Extract query parameters from the incoming request
-    const queryParams = new URLSearchParams(
-      request.url.split("?")[1]
-    ).toString();
+    // Use the URL object to parse and get query parameters
+    const requestURL = new URL(request.url);
+    const queryParams = requestURL.search;
 
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/users?${queryParams}`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/users${queryParams}`;
 
-    const response = await fetch(fetchURL, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-    });
+    let response;
+    try {
+      response = await fetch(fetchURL, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return NextResponse.error(500, "Error fetching data");
+    }
 
     if (!response.ok) {
-      throw new Error("Failed to fetch data");
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch data. Status: ${response.status}. Message: ${errorText}`);
     }
 
     const data = await response.json();
