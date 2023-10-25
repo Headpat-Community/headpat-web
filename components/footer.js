@@ -10,7 +10,7 @@ const navigation = [
   },
   {
     name: "GitHub",
-    href: "https://github.com/docimin/headpat.de",
+    href: "https://github.com/Headpat-Community/headpat.de",
     icon: faGithub,
   },
 ];

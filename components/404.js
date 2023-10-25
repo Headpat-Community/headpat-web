@@ -32,7 +32,7 @@ const social = [
   },
   {
     name: "GitHub",
-    href: "https://github.com/docimin/headpat.de",
+    href: "https://github.com/Headpat-Community/headpat.de",
     icon: (props) => (
       <FontAwesomeIcon icon={faGithub} className="h-6 w-6" {...props} />
     ),
