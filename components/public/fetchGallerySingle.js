@@ -11,55 +11,51 @@ export default function FetchGallery() {
   const [displayname, setDisplayname] = useState(null);
   const [nsfwProfile, setNsfwProfile] = useState(null);
 
-  useEffect(() => {
-    const token = document.cookie.replace(
+  const getToken = () => {
+    return document.cookie.replace(
       /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
       "$1"
     );
-    if (!token) {
-      setError("You need to login to be able to see NSFW images!");
-    } else if (nsfwProfile === false) {
-      setError("You don't have NSFW enabled!");
+  };
+
+  const handleApiResponse = (response) => {
+    if (response.status === 401 || !response.ok) {
+      deleteCookie("jwt");
+      window.location.reload();
     }
-  }, [nsfwProfile]);
+    return response.json();
+  };
 
   useEffect(() => {
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1"
-    );
+    const token = getToken();
+    if (!token) {
+      setError("You need to login to be able to see NSFW images!");
+      return;
+    }
 
     setIsLoading(true);
 
     fetch("/apt/user/getUserSelf", {
       method: "GET",
     })
-      .then((response) => response.json())
+      .then(handleApiResponse)
       .then((data) => {
         const userId = data.id;
-        fetch(`/api/user/getUserData/${userId}`, {
+        return fetch(`/api/user/getUserData/${userId}`, {
           method: "GET",
-        })
-          .then((response) => {
-            if (response.status === 401) {
-              deleteCookie("jwt");
-              window.location.reload();
-            } else if (!response.ok) {
-              deleteCookie("jwt");
-              window.location.reload();
-            }
-          })
-          .then((data) => {
-            setNsfwProfile(data.data.attributes.enablensfw);
-            setIsLoading(false);
-          })
-          .catch((error) => {
-            setError(error);
-            setIsLoading(false);
-          });
+        });
       })
-      .catch((error) => {
-        setError(error);
+      .then(handleApiResponse)
+      .then((userData) => {
+        setNsfwProfile(userData.data.attributes.enablensfw);
+        if (!nsfwProfile) {
+          setError("You don't have NSFW enabled!");
+        }
+      })
+      .catch((err) => {
+        setError(err.message || "An error occurred.");
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   }, []);
@@ -68,42 +64,36 @@ export default function FetchGallery() {
     const pathParts = window.location.pathname.split("/");
     const uniqueId = pathParts[2];
 
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1"
-    );
-
     setIsLoading(true);
 
     fetch(`/api/gallery/getUserGallery/${uniqueId}?populate=*`, {
       method: "GET",
     })
-      .then((response) => response.json())
+      .then(handleApiResponse)
       .then((data) => {
         setGallery(data);
-        setIsLoading(false);
-        fetch(
+        return fetch(
           `/api/user/getUserData/${data.data.attributes.users_permissions_user.data.id}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${getToken()}`,
             },
           }
-        )
-          .then((response) => response.json())
-          .then((userData) => {
-            setDisplayname(userData.data.attributes.displayname);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        );
       })
-      .catch((error) => {
-        setError(error.message);
+      .then(handleApiResponse)
+      .then((userData) => {
+        setDisplayname(userData.data.attributes.displayname);
+      })
+      .catch((err) => {
+        setError(err.message || "An error occurred.");
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   }, [nsfwProfile]);
 
+  // The rest of the component remains unchanged with conditional rendering based on the data's availability.
   return (
     <div>
       {isLoading ? (
