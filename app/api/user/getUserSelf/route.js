@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { cookies } from 'next/headers'
+import { cookies } from "next/headers";
 
 export const runtime = "edge";
 
@@ -7,8 +7,12 @@ export async function GET() {
   try {
     // Construct the URL for the external fetch
     const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/users/me`;
-    const cookieStore = cookies()
-    const jwtCookie = cookieStore.get('jwt')
+    const cookieStore = cookies();
+    const jwtCookie = cookieStore.get("jwt");
+
+    if (!jwtCookie) {
+      return NextResponse.error(400, "No JWT token provided");
+    }
 
     const response = await fetch(fetchURL, {
       method: "GET",
@@ -18,7 +22,9 @@ export async function GET() {
       },
     });
 
-    if (!response.ok) {
+    if (response.status === 401) {
+      return NextResponse.error(401, "Unauthorized");
+    } else if (!response.ok) {
       throw new Error("Failed to fetch data");
     }
 

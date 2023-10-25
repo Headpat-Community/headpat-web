@@ -31,7 +31,7 @@ export async function POST(request) {
       expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     });
 
-    return NextResponse.json(200, data);
+    return NextResponse.json(data);
   } catch (error) {
     return NextResponse.error(500, error.message);
   }

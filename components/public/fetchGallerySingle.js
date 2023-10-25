@@ -40,7 +40,15 @@ export default function FetchGallery() {
         fetch(`/api/user/getUserData/${userId}`, {
           method: "GET",
         })
-          .then((response) => response.json())
+          .then((response) => {
+            if (response.status === 401) {
+              deleteCookie("jwt");
+              window.location.reload();
+            } else if (!response.ok) {
+              deleteCookie("jwt");
+              window.location.reload();
+            }
+          })
           .then((data) => {
             setNsfwProfile(data.data.attributes.enablensfw);
             setIsLoading(false);

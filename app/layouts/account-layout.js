@@ -80,6 +80,9 @@ export default function Example({ children }) {
           if (response.status === 401) {
             deleteCookie("jwt");
             window.location.href = "/login";
+          } else if (!response.ok) {
+            deleteCookie("jwt");
+            window.location.href = "/login";
           }
         })
         .catch((error) => {

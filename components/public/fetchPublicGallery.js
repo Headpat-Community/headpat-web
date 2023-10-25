@@ -26,9 +26,20 @@ export default function FetchGallery() {
       if (!token) return; // Return if "jwt" token does not exist
 
       try {
-        const response = await fetch(`/api/user/getUserSelf`, {
-          method: "GET",
-        });
+        const response = await fetch(
+          `/api/user/getUserSelf`,
+          {
+            method: "GET",
+          }.then((response) => {
+            if (response.status === 401) {
+              deleteCookie("jwt");
+              window.location.reload();
+            } else if (!response.ok) {
+              deleteCookie("jwt");
+              window.location.reload();
+            }
+          })
+        );
         const data = await response.json();
         setUserId(data.id);
       } catch (error) {
@@ -55,9 +66,6 @@ export default function FetchGallery() {
       try {
         const response = await fetch(userDataApiUrl, {
           method: "GET",
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-          },
         });
 
         const data = await response.json();
