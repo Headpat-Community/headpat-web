@@ -128,15 +128,7 @@ export default function FetchGallery() {
       </div>*/}
       <div ref={galleryContainerRef}>
         {isLoading ? (
-          error ? (
-            <p className="text-center text-red-500 font-bold my-8">
-              Error: {error && error.message}
-            </p>
-          ) : (
-            <p className="text-center text-gray-500 font-bold my-8">
-              Loading...
-            </p>
-          )
+          <p className="text-center text-gray-500 font-bold my-8">Loading...</p>
         ) : (
           <ul className="p-8 flex flex-wrap gap-4 justify-center items-center">
             {gallery.map((item) => (
