@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import ErrorPage from "../../components/404";
 import Link from "next/link";
@@ -27,23 +28,27 @@ export default function FetchGallery() {
       /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
       "$1"
     );
-  
+
     setIsLoading(true);
-  
-    fetch("https://backend.headpat.de/api/users/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+
+    fetch("/apt/user/getUserSelf", {
+      method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {
         const userId = data.id;
-        fetch(`https://backend.headpat.de/api/user-data/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        fetch(`/api/user/getUserData/${userId}`, {
+          method: "GET",
         })
-          .then((response) => response.json())
+          .then((response) => {
+            if (response.status === 401) {
+              deleteCookie("jwt");
+              window.location.reload();
+            } else if (!response.ok) {
+              deleteCookie("jwt");
+              window.location.reload();
+            }
+          })
           .then((data) => {
             setNsfwProfile(data.data.attributes.enablensfw);
             setIsLoading(false);
@@ -70,17 +75,15 @@ export default function FetchGallery() {
 
     setIsLoading(true);
 
-    fetch(`https://backend.headpat.de/api/galleries/${uniqueId}?populate=*`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    fetch(`/api/gallery/getUserGallery/${uniqueId}?populate=*`, {
+      method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {
         setGallery(data);
         setIsLoading(false);
         fetch(
-          `https://backend.headpat.de/api/user-data/${data.data.attributes.users_permissions_user.data.id}`,
+          `/api/user/getUserData/${data.data.attributes.users_permissions_user.data.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

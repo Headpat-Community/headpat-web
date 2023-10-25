@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
@@ -11,29 +12,16 @@ export default function AccountPage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = document.cookie.replace(
-          /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-          "$1"
-        );
-        const userResponse = await fetch(
-          "https://backend.headpat.de/api/users/me",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const userResponse = await fetch("/api/user/getUserSelf", {
+          method: "GET",
+        });
         const userResponseData = await userResponse.json();
         setUserMe(userResponseData);
         const userId = userResponseData.id;
         const userDataResponse = await fetch(
-          `https://backend.headpat.de/api/user-data/${userId}?populate=*`,
+          `/api/user/getUserData/${userId}?populate=*`,
           {
             method: "GET",
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-            },
           }
         );
         const userDataResponseData = await userDataResponse.json();
@@ -59,34 +47,17 @@ export default function AccountPage() {
     }
 
     try {
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-
-      const userResponse = await fetch(
-        "https://backend.headpat.de/api/users/me",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const userResponse = await fetch("/api/user/getUserSelf", {
+        method: "GET",
+      });
 
       const userResponseData = await userResponse.json();
       const userId = userResponseData.id;
 
-      const userResponseUpdate = await fetch(
-        `https://backend.headpat.de/api/users/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-          },
-          body: userFormData,
-        }
-      );
+      const userResponseUpdate = await fetch(`/api/user/editUser/${userId}`, {
+        method: "PUT",
+        body: userFormData,
+      });
 
       if (userResponseUpdate.status === 200) {
         alert("User data updated successfully");
@@ -111,26 +82,14 @@ export default function AccountPage() {
     }
 
     try {
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-
-      const response = await fetch(
-        "https://backend.headpat.de/api/auth/change-password",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            currentPassword: currentPassword,
-            password: newPassword,
-            passwordConfirmation: confirmPassword,
-          }),
-        }
-      );
+      const response = await fetch("/api/user/editUserPassword", {
+        method: "POST",
+        body: JSON.stringify({
+          currentPassword: currentPassword,
+          password: newPassword,
+          passwordConfirmation: confirmPassword,
+        }),
+      });
 
       if (response.ok) {
         alert("Password reset successful");
@@ -149,11 +108,6 @@ export default function AccountPage() {
   ];
 
   const handleNsfwChange = async (event) => {
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1"
-    );
-
     const { checked } = event.target;
     setUserData((prevUserData) => ({
       ...prevUserData,
@@ -163,35 +117,22 @@ export default function AccountPage() {
     const isChecked = event.target.checked;
     setNsfw(isChecked);
 
-    const userResponse = await fetch(
-      "https://backend.headpat.de/api/users/me",
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const userResponse = await fetch("/api/user/getUserSelf", {
+      method: "GET",
+    });
     const userResponseData = await userResponse.json();
     setUserMe(userResponseData);
     const userId = userResponseData.id;
 
     try {
-      const putResponse = await fetch(
-        `https://backend.headpat.de/api/user-data/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-            "Content-Type": "application/json",
+      const putResponse = await fetch(`/api/user/editUserData/${userId}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          data: {
+            enablensfw: isChecked,
           },
-          body: JSON.stringify({
-            data: {
-              enablensfw: isChecked,
-            },
-          }),
-        }
-      );
+        }),
+      });
 
       if (!putResponse.ok) {
         throw new Error("PUT request failed");

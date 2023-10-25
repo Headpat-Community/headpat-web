@@ -11,26 +11,20 @@ export default function AnnouncementsPage() {
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    fetch("https://backend.headpat.de/api/announcements?populate=*", {
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-      },
+    fetch("/api/announcements/getAnnouncements?populate=*", {
+      method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {
         setAnnouncementData(data.data.reverse());
         const createdByIds = data.data.map(
-          (announcement) => announcement.attributes.users_permissions_user.data.id
+          (announcement) =>
+            announcement.attributes.users_permissions_user.data.id
         );
         const fetchPromises = createdByIds.map((createdById) =>
-          fetch(
-            `https://backend.headpat.de/api/user-data/${createdById}?populate=*`,
-            {
-              headers: {
-                Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-              },
-            }
-          )
+          fetch(`/api/user/getUserData/${createdById}?populate=*`, {
+            method: "GET",
+          })
             .then((response) => response.json())
             .then((data) => {
               setUserData((prevUserData) => ({

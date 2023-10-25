@@ -32,7 +32,7 @@ const social = [
   },
   {
     name: "GitHub",
-    href: "https://github.com/docimin/headpat.de",
+    href: "https://github.com/Headpat-Community/headpat.de",
     icon: (props) => (
       <FontAwesomeIcon icon={faGithub} className="h-6 w-6" {...props} />
     ),
@@ -48,7 +48,7 @@ export default function NotFoundComponent() {
           priority
           height={256}
           width={256}
-          src="https://cdn.headpat.de/public/404.webp"
+          src="/images/404.webp"
           alt="Headpat Community"
         />
         <div className="mx-auto mt-4 max-w-2xl text-center sm:mt-8">
