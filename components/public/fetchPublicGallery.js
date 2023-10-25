@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState([]);
@@ -9,96 +9,83 @@ export default function FetchGallery() {
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
   const [enableNsfw, setEnableNsfw] = useState(false);
-  const galleryContainerRef = useRef(null);
-  const shuffledGallery = useMemo(
-    () => gallery.sort(() => Math.random() - 0.5),
-    [gallery]
-  );
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  const getToken = () => {
+    return document.cookie.replace(
+      /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
+  };
+
+  const handleApiResponse = (response) => {
+    if (response.status === 401 || !response.ok) {
+      deleteCookie("jwt");
+      window.location.reload();
+    }
+    return response.json();
+  };
+
   useEffect(() => {
-    const fetchUserId = async () => {
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-      if (!token) return; // Return if "jwt" token does not exist
+    const fetchInitialData = async () => {
+      const token = getToken();
+      if (!token) return;
 
       try {
-        const response = await fetch(
-          `/api/user/getUserSelf`,
+        const response = await fetch("/api/user/getUserSelf", {
+          method: "GET",
+        });
+        const data = await handleApiResponse(response);
+        setUserId(data.id);
+
+        const userDataResponse = await fetch(
+          `/api/user/getUserData/${data.id}`,
           {
             method: "GET",
-          }.then((response) => {
-            if (response.status === 401) {
-              deleteCookie("jwt");
-              window.location.reload();
-            } else if (!response.ok) {
-              deleteCookie("jwt");
-              window.location.reload();
-            }
-          })
+          }
         );
-        const data = await response.json();
-        setUserId(data.id);
-      } catch (error) {
-        setError(error);
+        const userData = await handleApiResponse(userDataResponse);
+        setEnableNsfw(userData.data.attributes.enablensfw);
+      } catch (err) {
+        setError(err);
       }
     };
 
-    fetchUserId();
+    fetchInitialData();
   }, []);
 
   useEffect(() => {
-    if (!userId) return; // Wait for userId to be available
+    const fetchGalleryData = async () => {
+      const filters = !enableNsfw ? `&filters[nsfw][$eq]=false` : ``;
+      const pageSize = 500;
+      const apiUrl = `/api/gallery/getTotalGallery?populate=*${filters}&pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
 
-    const userDataApiUrl = `/api/user/getUserData/${userId}`;
-
-    const fetchUserData = async () => {
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-
-      if (!token) return; // Return if "jwt" token does not exist
+      setIsLoading(true);
 
       try {
-        const response = await fetch(userDataApiUrl, {
+        const response = await fetch(apiUrl, {
           method: "GET",
         });
-
-        const data = await response.json();
-        setEnableNsfw(data.data.attributes.enablensfw);
-      } catch (error) {
-        setError(error);
+        const data = await handleApiResponse(response);
+        // Shuffle once when fetched
+        const shuffledData = data.data
+          .sort(() => Math.random() - 0.5)
+          .reverse();
+        setGallery(shuffledData);
+        setTotalPages(data.meta.pagination.pageCount);
+        setIsLoading(false);
+      } catch (err) {
+        setError(err);
+        setIsLoading(false);
       }
     };
 
-    fetchUserData();
-  }, [userId]);
-
-  useEffect(() => {
-    const filters = !enableNsfw ? `&filters[nsfw][$eq]=false` : ``;
-    const pageSize = 500;
-    const apiUrl = `/api/gallery/getTotalGallery?populate=*${filters}&pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
-
-    setIsLoading(true);
-    fetch(apiUrl, {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setGallery(data.data.reverse());
-        setTotalPages(data.meta.pagination.pageCount);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setError(error);
-        setIsLoading(false);
-      });
-  }, [currentPage, enableNsfw]);
-
+    if (userId) {
+      fetchGalleryData();
+    }
+  }, [currentPage, enableNsfw, userId]);
+  
   const handlePageChange = (page) => {
     setCurrentPage(page);
     window.history.pushState({ page }, `Page ${page}`, `?page=${page}`);
@@ -126,7 +113,7 @@ export default function FetchGallery() {
           </button>
         ))}
       </div>*/}
-      <div ref={galleryContainerRef}>
+      <div>
         {isLoading ? (
           <p className="text-center text-gray-500 font-bold my-8">Loading...</p>
         ) : (
