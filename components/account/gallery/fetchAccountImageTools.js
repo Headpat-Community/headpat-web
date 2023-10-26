@@ -100,20 +100,20 @@ export default function FetchGallery() {
       const uniqueId = pathParts[3];
 
       // Create the form data
-      const formData = new FormData();
-      formData.append(
-        "data",
-        JSON.stringify({
-          name: document.getElementById("imagename").value,
-          imgalt: document.getElementById("imgalt").value,
-          longtext: document.getElementById("longtext").value,
-          nsfw: document.getElementById("nsfw").checked,
-        })
-      );
+      const data = {
+        name: document.getElementById("imagename").value,
+        imgalt: document.getElementById("imgalt").value,
+        longtext: document.getElementById("longtext").value,
+        nsfw: document.getElementById("nsfw").checked,
+      };
+
       // Make the PUT request
       const response = await fetch(`/api/gallery/editUserGallery/${uniqueId}`, {
         method: "PUT",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: data }), // Nest the requestBody inside a "data" key
       });
 
       // Handle response and update state accordingly
