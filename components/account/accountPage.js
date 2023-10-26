@@ -36,14 +36,14 @@ export default function AccountPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const userFormData = new FormData();
+    let userFormData = {};
 
     if (email.value) {
-      userFormData.append("email", email.value);
+      userFormData.email = email.value;
     }
 
     if (username_login.value) {
-      userFormData.append("username", username_login.value);
+      userFormData.username = username_login.value;
     }
 
     try {
@@ -56,7 +56,10 @@ export default function AccountPage() {
 
       const userResponseUpdate = await fetch(`/api/user/editUser/${userId}`, {
         method: "PUT",
-        body: userFormData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userFormData),
       });
 
       if (userResponseUpdate.status === 200) {
@@ -91,7 +94,10 @@ export default function AccountPage() {
         }),
       });
 
-      if (response.ok) {
+      if (response.status === 400) {
+        const data = await response.json();
+        alert(data.error.message);
+      } else if (response.ok) {
         alert("Password reset successful");
       } else {
         alert("Password reset failed");

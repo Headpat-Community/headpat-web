@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export const runtime = "edge";
 
@@ -6,8 +7,11 @@ export async function POST(request) {
   try {
     const requestBody = await request.json();
 
-    if (!userId) {
-      throw new Error("User ID is required");
+    const cookieStore = cookies();
+    const jwtCookie = cookieStore.get("jwt");
+
+    if (!jwtCookie) {
+      return NextResponse.json({ error: "No JWT Token" }, { status: 403 });
     }
 
     // Construct the URL for the external fetch
@@ -16,19 +20,25 @@ export async function POST(request) {
     const response = await fetch(fetchURL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
+        Authorization: `Bearer ${jwtCookie.value}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),
     });
+
+    if (response.status === 400) {
+      const data = await response.json();
+      return NextResponse.json(data, { status: 400 });
+    }
 
     if (!response.ok) {
       throw new Error("Failed to update data");
     }
 
     const data = await response.json();
-    return NextResponse.json(data);
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    return NextResponse.error(500, error.message);
+    console.log(error);
+    return NextResponse.json(error.message, { status: 500 });
   }
 }

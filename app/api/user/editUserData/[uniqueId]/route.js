@@ -22,7 +22,7 @@ export async function PUT(request) {
         Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(requestBody),
+      body: requestBody,
     });
 
     if (!response.ok) {
@@ -30,8 +30,8 @@ export async function PUT(request) {
     }
 
     const data = await response.json();
-    return NextResponse.json(data);
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    return NextResponse.error(500, error.message);
+    return NextResponse.json(error.message, { status: 500 });
   }
 }
