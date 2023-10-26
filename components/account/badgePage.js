@@ -6,32 +6,15 @@ export default function BadgePageComponent() {
   const [isUploading, setIsUploading] = useState(false);
   const [deliverAtEurofurence, setDeliverAtEurofurence] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedLanguages, setSelectedLanguages] = useState("");
   const displaynameRef = useRef("");
+  const nicknameRef = useRef("");
   const pronounsRef = useRef("");
+  const speciesRef = useRef("");
   const addressRef = useRef("");
   const cityRef = useRef("");
   const countryRef = useRef("");
   const stateRef = useRef("");
   const postalcodeRef = useRef("");
-
-  useEffect(() => {
-    const checkboxes = document.querySelectorAll(
-      "input[type=checkbox][name=languages]"
-    );
-    const hiddenInput = document.getElementById("selectedLanguages");
-
-    checkboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", function () {
-        const selectedLanguages = Array.from(checkboxes)
-          .filter((c) => c.checked)
-          .map((c) => c.value)
-          .join(", ");
-        hiddenInput.value = selectedLanguages;
-        setSelectedLanguages(selectedLanguages);
-      });
-    });
-  }, []);
 
   const handleCheckboxChange = useCallback((event) => {
     setDeliverAtEurofurence(event.target.checked);
@@ -83,29 +66,11 @@ export default function BadgePageComponent() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const checkboxes = document.querySelectorAll(
-      "input[type=checkbox][name=languages]"
-    );
-    const selectedCheckboxes = Array.from(checkboxes).filter((c) => c.checked);
-    if (selectedCheckboxes.length === 0) {
-      setError("Bitte eine sprache auswählen.");
-      setTimeout(() => {
-        setError(null);
-      }, 5000);
-      return;
-    }
-
-    event.preventDefault();
 
     const formData = new FormData();
     formData.append("files.img", selectedFile);
 
     try {
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-
       const userResponse = await fetch("/api/user/getUserSelf", {
         method: "GET",
       });
@@ -129,8 +94,9 @@ export default function BadgePageComponent() {
           JSON.stringify({
             users_permissions_user: userId,
             displayname: displaynameRef.current?.value,
+            nickname: nicknameRef.current?.value,
             pronouns: pronounsRef.current?.value,
-            languages: selectedLanguages,
+            species: speciesRef.current?.value,
             address: addressRef.current?.value,
             city: cityRef.current?.value,
             country: countryRef.current?.value,
@@ -171,96 +137,19 @@ export default function BadgePageComponent() {
 
   return (
     <>
+      <div className="mx-auto my-8 max-w-7xl text-center">
+        {/* TODO: Change image */}
+        <img
+          src="/images/badgefront.webp"
+          alt="Badge Preview"
+          className="mx-auto h-full w-full object-contain object-center max-h-[300px] rounded"
+        />
+      </div>
       <form onSubmit={handleSubmit}>
-        <main className="relative lg:min-h-full">
-          <div className="h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12 flex items-center">
-            <div className="flex-none">
-              <img
-                src="/images/badgefront.webp"
-                alt="Badge Preview"
-                className="h-full w-full object-contain object-center max-h-[600px] rounded"
-              />
-
-              <fieldset className="mt-4">
-                <legend className="text-xl font-semibold leading-6 text-white">
-                  Sprachen
-                </legend>
-                <div className="mt-4 divide-y divide-gray-200 border-b border-t border-gray-200">
-                  <div className="relative flex items-start py-4">
-                    <div className="min-w-0 flex-1 text-sm leading-6">
-                      <label
-                        htmlFor={`german`}
-                        className="select-none font-medium text-white"
-                      >
-                        German
-                      </label>
-                    </div>
-                    <div className="ml-3 flex h-6 items-center">
-                      <input
-                        id={`german`}
-                        name={`languages`}
-                        type="checkbox"
-                        value="German"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                    </div>
-                  </div>
-                  <div className="relative flex items-start py-4">
-                    <div className="min-w-0 flex-1 text-sm leading-6">
-                      <label
-                        htmlFor={`english`}
-                        className="select-none font-medium text-white"
-                      >
-                        English
-                      </label>
-                    </div>
-                    <div className="ml-3 flex h-6 items-center">
-                      <input
-                        id={`english`}
-                        name={`languages`}
-                        type="checkbox"
-                        value="English"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                    </div>
-                  </div>
-                  <div className="relative flex items-start py-4">
-                    <div className="min-w-0 flex-1 text-sm leading-6">
-                      <label
-                        htmlFor={`dutch`}
-                        className="select-none font-medium text-white"
-                      >
-                        Dutch
-                      </label>
-                    </div>
-                    <div className="ml-3 flex h-6 items-center">
-                      <input
-                        id={`dutch`}
-                        name={`languages`}
-                        type="checkbox"
-                        value="Dutch"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                    </div>
-                  </div>
-                  <input
-                    type="hidden"
-                    id="selectedLanguages"
-                    name="selectedLanguages"
-                  />
-                </div>
-                {error && (
-                  <p className="mt-2 text-sm text-red-600" id="error">
-                    {error}
-                  </p>
-                )}
-              </fieldset>
-            </div>
-          </div>
-
+        <main className="lg:min-h-full mx-auto flex justify-center">
           <div>
             <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8 lg:py-32 xl:gap-x-24">
-              <div className="lg:col-start-2">
+              <div className="lg:col-start-1">
                 <h1 className="text-sm font-medium text-indigo-600">
                   Badge Request
                 </h1>
@@ -322,7 +211,62 @@ export default function BadgePageComponent() {
                   </li>
                 </ul>
 
-                <div className="sm:col-span-3 mb-4">
+                <dl className="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-white">
+                  <div className="flex justify-between">
+                    <dt>Name</dt>
+                    <input
+                      type="text"
+                      name="displayname"
+                      id="displayname"
+                      ref={displaynameRef}
+                      className="text-black rounded"
+                      required
+                    />
+                  </div>
+
+                  <div className="flex justify-between">
+                    <dt>Spitzname/Nickname</dt>
+                    <input
+                      type="text"
+                      name="nickname"
+                      id="nickname"
+                      ref={nicknameRef}
+                      className="text-black rounded"
+                    />
+                  </div>
+
+                  <div className="flex justify-between">
+                    <dt>Pronouns</dt>
+                    <input
+                      type="text"
+                      name="pronouns"
+                      id="pronouns"
+                      ref={pronounsRef}
+                      className="text-black rounded"
+                    />
+                  </div>
+
+                  <div className="flex justify-between">
+                    <dt>Spezies/Species</dt>
+                    <input
+                      type="text"
+                      name="species"
+                      id="species"
+                      ref={speciesRef}
+                      className="text-black rounded"
+                    />
+                  </div>
+                </dl>
+              </div>
+              <div className="lg:col-start-2">
+                <h1 className="text-sm font-medium text-indigo-600">
+                  Abholung
+                </h1>
+                <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                  Wie möchtest du deinen Badge erhalten?
+                </p>
+
+                <div className="sm:col-span-3 mb-4 mt-6">
                   <label className="block text-xl font-medium leading-6 text-white">
                     Bei Eurofurence abholen?
                   </label>
@@ -339,33 +283,22 @@ export default function BadgePageComponent() {
                 </div>
 
                 <dl className="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-white">
-                  <div className="flex justify-between">
-                    <dt>Name</dt>
-                    <input
-                      type="text"
-                      name="displayname"
-                      id="displayname"
-                      ref={displaynameRef}
-                      className="text-black rounded"
-                      required
-                    />
-                  </div>
-
-                  <div className="flex justify-between">
-                    <dt>Pronouns</dt>
-                    <input
-                      type="text"
-                      name="pronouns"
-                      id="pronouns"
-                      ref={pronounsRef}
-                      className="text-black rounded"
-                    />
-                  </div>
-
                   {!deliverAtEurofurence && (
                     <>
                       <div className="flex justify-between">
-                        <dt>Address</dt>
+                        <dt>Name</dt>
+                        <input
+                          type="text"
+                          name="displayname"
+                          id="displayname"
+                          ref={displaynameRef}
+                          className="text-black rounded"
+                          required
+                        />
+                      </div>
+
+                      <div className="flex justify-between">
+                        <dt>Adresse/Address</dt>
                         <input
                           type="text"
                           name="address"
@@ -376,7 +309,7 @@ export default function BadgePageComponent() {
                       </div>
 
                       <div className="flex justify-between">
-                        <dt>City</dt>
+                        <dt>Stadt/City</dt>
                         <input
                           type="text"
                           name="city"
@@ -387,11 +320,22 @@ export default function BadgePageComponent() {
                       </div>
 
                       <div className="flex justify-between">
+                        <dt>Postleitzahl/Postalcode</dt>
+                        <input
+                          type="text"
+                          name="postalcode"
+                          id="postalcode"
+                          ref={postalcodeRef}
+                          className="text-black rounded"
+                        />
+                      </div>
+
+                      <div className="flex justify-between">
                         <label
                           htmlFor="country-select"
                           className="text-white rounded"
                         >
-                          Country
+                          Land/Country
                         </label>
                         <select
                           name="country"
@@ -403,41 +347,30 @@ export default function BadgePageComponent() {
                             value="Germany"
                             className="bg-black text-white"
                           >
-                            Germany
+                            Deutschland
                           </option>
                           <option
                             value="Austria"
                             className="bg-black text-white"
                           >
-                            Austria
+                            Österreich
                           </option>
                           <option
                             value="Switzerland"
                             className="bg-black text-white"
                           >
-                            Switzerland
+                            Schweiz
                           </option>
                         </select>
                       </div>
 
                       <div className="flex justify-between">
-                        <dt>State</dt>
+                        <dt>Bundesland/State</dt>
                         <input
                           type="text"
                           name="state"
                           id="state"
                           ref={stateRef}
-                          className="text-black rounded"
-                        />
-                      </div>
-
-                      <div className="flex justify-between">
-                        <dt>Postal code</dt>
-                        <input
-                          type="text"
-                          name="postalcode"
-                          id="postalcode"
-                          ref={postalcodeRef}
                           className="text-black rounded"
                         />
                       </div>
@@ -450,7 +383,7 @@ export default function BadgePageComponent() {
                     type="button"
                     className="text-sm font-semibold leading-6 text-white"
                   >
-                    Cancel
+                    Abbrechen
                   </button>
                   <button
                     type="submit"
@@ -458,7 +391,7 @@ export default function BadgePageComponent() {
                     className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                     disabled={isUploading} // Disable the button if isUploading is true
                   >
-                    {isUploading ? "Uploading..." : "Save"}{" "}
+                    {isUploading ? "Uploading..." : "Speichern"}{" "}
                     {/* Show different text based on the upload state */}
                   </button>
                 </div>
