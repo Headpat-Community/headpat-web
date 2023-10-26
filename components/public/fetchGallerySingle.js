@@ -35,6 +35,7 @@ export default function FetchGallery() {
       })
         .then(handleApiResponse)
         .then((data) => {
+          console.log(data);
           const userId = data.id;
           return fetch(`/api/user/getUserData/${userId}`, {
             method: "GET",
@@ -81,7 +82,7 @@ export default function FetchGallery() {
       })
       .then(handleApiResponse)
       .then((userData) => {
-        setDisplayname(userData.data.attributes.displayname);
+        setDisplayname(userData.data?.attributes?.displayname);
       })
       .catch((err) => {
         setError(err.message || "An error occurred.");
@@ -195,7 +196,7 @@ export default function FetchGallery() {
                                           href={`/user/${username}`}
                                           className="text-indigo-500 hover:text-indigo-400"
                                         >
-                                          {displayname || "Unknown"}
+                                          {displayname || username}
                                         </Link>
                                       </dd>
                                     </div>
