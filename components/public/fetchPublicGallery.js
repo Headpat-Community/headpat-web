@@ -19,13 +19,9 @@ export default function FetchGallery() {
     );
   };
 
-  function deleteCookie(name) {
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-  }
-
   const handleApiResponse = (response) => {
     if (response.status === 401 || !response.ok) {
-      deleteCookie("jwt");
+      //deleteCookie("jwt");
       window.location.reload();
     }
     return response.json();
@@ -85,11 +81,9 @@ export default function FetchGallery() {
       }
     };
 
-    if (userId) {
-      fetchGalleryData();
-    }
-  }, [currentPage, enableNsfw, userId]);
-  
+    fetchGalleryData();
+  }, [currentPage, enableNsfw]);
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
     window.history.pushState({ page }, `Page ${page}`, `?page=${page}`);
