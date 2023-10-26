@@ -4,8 +4,13 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Headpat Community",
+  title: {
+    default: "Headpat Community",
+    template: "%s - Headpat",
+  },
   description: "Social network für headpawties",
+  keywords: ["headpat", "community", "social", "network"],
+  lang: "de",
   image: "/logos/logo-512.webp",
   url: "https://headpat.de",
 };
@@ -13,9 +18,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className}`}>
-        {children}
-      </body>
+      <body className={`${inter.className}`}>{children}</body>
     </html>
   );
 }
