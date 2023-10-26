@@ -18,6 +18,10 @@ export default function FetchGallery() {
     );
   };
 
+  function deleteCookie(name) {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  }
+
   const handleApiResponse = (response) => {
     if (response.status === 401 || !response.ok) {
       deleteCookie("jwt");
