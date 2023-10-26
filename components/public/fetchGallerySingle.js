@@ -18,51 +18,46 @@ export default function FetchGallery() {
     );
   };
 
-  function deleteCookie(name) {
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-  }
-
   const handleApiResponse = (response) => {
     if (response.status === 401 || !response.ok) {
-      deleteCookie("jwt");
+      //deleteCookie("jwt");
       window.location.reload();
     }
     return response.json();
   };
 
   useEffect(() => {
-    const token = getToken();
-    if (!token) {
-      setError("You need to login to be able to see NSFW images!");
-      return;
-    }
+    const fetchInitialData = async () => {
+      setIsLoading(true);
 
-    setIsLoading(true);
-
-    fetch("/apt/user/getUserSelf", {
-      method: "GET",
-    })
-      .then(handleApiResponse)
-      .then((data) => {
-        const userId = data.id;
-        return fetch(`/api/user/getUserData/${userId}`, {
-          method: "GET",
+      fetch("/api/user/getUserSelf", {
+        method: "GET",
+      })
+        .then(handleApiResponse)
+        .then((data) => {
+          console.log(data);
+          const userId = data.id;
+          return fetch(`/api/user/getUserData/${userId}`, {
+            method: "GET",
+          });
+        })
+        .then(handleApiResponse)
+        .then((userData) => {
+          setNsfwProfile(userData.data.attributes.enablensfw);
+          if (!nsfwProfile) {
+            setError("You don't have NSFW enabled!");
+          }
+        })
+        .catch((err) => {
+          setError(err.message || "An error occurred.");
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
-      })
-      .then(handleApiResponse)
-      .then((userData) => {
-        setNsfwProfile(userData.data.attributes.enablensfw);
-        if (!nsfwProfile) {
-          setError("You don't have NSFW enabled!");
-        }
-      })
-      .catch((err) => {
-        setError(err.message || "An error occurred.");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+    };
+
+    fetchInitialData();
+  }, [nsfwProfile]);
 
   useEffect(() => {
     const pathParts = window.location.pathname.split("/");
@@ -87,7 +82,7 @@ export default function FetchGallery() {
       })
       .then(handleApiResponse)
       .then((userData) => {
-        setDisplayname(userData.data.attributes.displayname);
+        setDisplayname(userData.data?.attributes?.displayname);
       })
       .catch((err) => {
         setError(err.message || "An error occurred.");
@@ -201,7 +196,7 @@ export default function FetchGallery() {
                                           href={`/user/${username}`}
                                           className="text-indigo-500 hover:text-indigo-400"
                                         >
-                                          {displayname || "Unknown"}
+                                          {displayname || username}
                                         </Link>
                                       </dd>
                                     </div>

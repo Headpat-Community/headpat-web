@@ -11,7 +11,7 @@ export async function GET() {
     const jwtCookie = cookieStore.get("jwt");
 
     if (!jwtCookie) {
-      return NextResponse.error(400, "No JWT token provided");
+      return NextResponse.json({ error: "No JWT Token" }, { status: 403 });
     }
 
     const response = await fetch(fetchURL, {
@@ -23,14 +23,19 @@ export async function GET() {
     });
 
     if (response.status === 401) {
+      console.log("Unauthorized");
       return NextResponse.error(401, "Unauthorized");
     } else if (!response.ok) {
       throw new Error("Failed to fetch data");
     }
 
     const data = await response.json();
-    return NextResponse.json(data);
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    return NextResponse.error(500, error.message);
+    console.error(error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
