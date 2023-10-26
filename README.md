@@ -1,8 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# The Headpat Website - NextJS 14
 
-## Getting Started
+## How to contribute
 
-First, run the development server:
+You want to help? Great. Here's how you can do that:
+Fork the repository, make your changes, and submit a pull request. If you don't know how to do that, [here's a guide](https://guides.github.com/activities/forking/).
+
+## Code of Conduct
+
+We work with short and simple rules:
+Name the branch after the type of PR you're working on (e.g. `feature/feature-name` or `bugfix/bug-name`). This will help us to keep track of what's going on.
+
+## How to run the website locally
+
+First, install the dependencies:
+
+```bash
+npm install
+```
+
+#### After that, you need to rename `.env.example` to `.env` and fill in the values:
+
+```env
+DOMAIN_API_KEY=
+NEXT_PUBLIC_DOMAIN_API=
+```
+
+The values are needed to access the API. You can get them by hosting your own Strapi Backend and creating an API key.
+
+#### Then, run the development server:
 
 ```bash
 npm run dev
@@ -26,9 +51,3 @@ To learn more about Next.js, take a look at the following resources:
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
