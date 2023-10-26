@@ -7,13 +7,12 @@ export async function PUT(request) {
     // Assume the last segment of the URL is the gallery ID
     const uniqueId = request.url.split("/").pop();
 
+    if (!uniqueId) {
+      return NextResponse.error(400, "Gallery ID is required");
+    }
+
     // Capture the incoming request data
-    const requestData = await new Promise((resolve, reject) => {
-      const chunks = [];
-      request.on("data", (chunk) => chunks.push(chunk));
-      request.on("end", () => resolve(Buffer.concat(chunks)));
-      request.on("error", reject);
-    });
+    const requestBody = await request.json();
 
     // Construct the URL for the external fetch
     const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/galleries/${uniqueId}`;
@@ -22,18 +21,21 @@ export async function PUT(request) {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
-        "Content-Type": "multipart/form-data", // Important to set the content type
+        "Content-Type": "application/json",
       },
-      body: requestData, // Use the captured request data
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
-      throw new Error("Failed to update data");
+      const errorData = await response.text();
+      throw new Error(`Failed to update data: ${errorData}`);
     }
 
     const data = await response.json();
     return NextResponse.json(data);
+
   } catch (error) {
+    console.error("Error in editUserGallery API route:", error);
     return NextResponse.error(500, error.message);
   }
 }

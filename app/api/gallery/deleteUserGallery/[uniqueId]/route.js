@@ -12,7 +12,7 @@ export async function DELETE(request) {
     }
 
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/upload/files/${uniqueId}`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/galleries/${uniqueId}`;
 
     const response = await fetch(fetchURL, {
       method: "DELETE",
