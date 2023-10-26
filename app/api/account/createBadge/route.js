@@ -27,7 +27,6 @@ export async function POST(request) {
     const data = await response.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error("Error in createBadge API route:", error);
     return NextResponse.json(error.message, { status: 500 });
   }
 }

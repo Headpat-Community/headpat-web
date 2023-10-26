@@ -23,20 +23,14 @@ export async function GET() {
     });
 
     if (response.status === 403) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 403 }
-      );    } else if (!response.ok) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    } else if (!response.ok) {
       throw new Error("Failed to fetch data");
     }
 
     const data = await response.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json(error.message, { status: 500 });
   }
 }

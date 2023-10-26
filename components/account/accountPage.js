@@ -64,6 +64,7 @@ export default function AccountPage() {
 
       if (userResponseUpdate.status === 200) {
         alert("User data updated successfully");
+        window.location.reload();
       } else if (userResponseUpdate.status === 400) {
         alert("Username needs to be at least 3 characters long");
       }

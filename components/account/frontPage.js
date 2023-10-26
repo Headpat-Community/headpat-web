@@ -131,7 +131,7 @@ export default function AccountPage() {
         setUserData(responseData); // Set the userData state with the response data
         // Reload the window
         alert("Saved!");
-        window.location.reload();
+        //window.location.reload();
       } else {
         // Check for the specific error structure
         if (

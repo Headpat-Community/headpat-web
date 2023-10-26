@@ -7,7 +7,7 @@ export async function PUT(request) {
     // Assume the last segment of the URL is the user ID
     const userId = request.url.split("/").pop();
 
-    const requestBody = await request.json();
+    const requestData = await request.arrayBuffer();
 
     if (!userId) {
       throw new Error("User ID is required");
@@ -20,9 +20,9 @@ export async function PUT(request) {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
-        "Content-Type": "application/json",
+        "Content-Type": request.headers.get("Content-Type") || "multipart/form-data",
       },
-      body: requestBody,
+      body: requestData,
     });
 
     if (!response.ok) {

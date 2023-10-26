@@ -23,8 +23,8 @@ export async function POST(request) {
     }
 
     const data = await response.json();
-    return NextResponse.json(data);
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    return NextResponse.error(500, error.message);
+    return NextResponse.json(error.message, { status: 500 });
   }
 }
