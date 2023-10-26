@@ -77,56 +77,54 @@ export default function BadgePageComponent() {
       const userResponseData = await userResponse.json();
       const userId = userResponseData.id;
 
-      const response = await fetch(
+      const badgeResponse = await fetch(
         `/api/account/getBadges?filters[users_permissions_user][id][$eq]=${userId}`,
         {
           method: "GET",
         }
       );
 
-      const responseData = await response.json();
-      if (response.ok) {
-        formData.append(
-          "data",
-          JSON.stringify({
-            users_permissions_user: userId,
-            displayname: displaynameRef.current?.value,
-            nickname: nicknameRef.current?.value,
-            pronouns: pronounsRef.current?.value,
-            species: speciesRef.current?.value,
-            address: addressRef.current?.value,
-            city: cityRef.current?.value,
-            country: countryRef.current?.value,
-            state: stateRef.current?.value,
-            postalcode: postalcodeRef.current?.value,
-            deliver_at_eurofurence: deliver_at_eurofurence.checked,
-          })
+      const badgeData = await badgeResponse.json();
+
+      if (badgeData.data && badgeData.data.length > 0) {
+        const userDecision = window.confirm(
+          "You've already submitted before. Do you want to continue?"
         );
+        if (!userDecision) return; // If user clicks "No", then return and don't proceed
+      }
 
-        setIsUploading(true); // Set isUploading to true before making the API call
+      formData.append(
+        "data",
+        JSON.stringify({
+          users_permissions_user: userId,
+          displayname: displaynameRef.current?.value,
+          nickname: nicknameRef.current?.value,
+          pronouns: pronounsRef.current?.value,
+          species: speciesRef.current?.value,
+          address: addressRef.current?.value,
+          city: cityRef.current?.value,
+          country: countryRef.current?.value,
+          state: stateRef.current?.value,
+          postalcode: postalcodeRef.current?.value,
+          deliver_at_eurofurence: deliver_at_eurofurence.checked,
+        })
+      );
 
-        const response = await fetch("/api/account/createBadge", {
-          method: "POST",
-          body: formData,
-        });
+      setIsUploading(true);
 
-        console.log("response:", response);
+      const response = await fetch("/api/account/createBadge", {
+        method: "POST",
+        body: formData,
+      });
 
-        const responseData = await response.json();
-        if (response.ok) {
-          //console.log("File uploaded successfully");
-          setIsUploading(false); // Set isUploading to false after the API call is complete
-          // Add the "Saved!" text to the form
-          alert("Saved!");
-          window.location.reload();
-        } else {
-          console.error("Failed to upload file:", responseData);
-        }
+      const responseData = await response.json();
+      setIsUploading(false);
+
+      if (response.ok) {
+        alert("Saved!");
+        window.location.reload();
       } else {
-        setError("Du darfst dies nur einmal anfragen.");
-        setTimeout(() => {
-          setError(null);
-        }, 5000);
+        console.error("Failed to upload file:", responseData);
       }
     } catch (error) {
       console.error(error);
