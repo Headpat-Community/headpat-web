@@ -19,12 +19,19 @@ export default function FetchGallery() {
   };
 
   const handleApiResponse = (response) => {
-    if (response.status === 401 || !response.ok) {
-      //deleteCookie("jwt");
-      window.location.reload();
+    if (response.status === 403 || !response.ok) {
+      throw new Error("Du musst eingeloggt sein, da dieses Bild NSFW ist!");
     }
     return response.json();
   };
+
+  function getWidthHeightClass(width) {
+    if (width < 800) {
+      return `w-${width}`;
+    } else {
+      return 'h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]';
+    }
+  }
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -150,22 +157,16 @@ export default function FetchGallery() {
                           <br />
                           <br />
                           <Link className="text-indigo-600" href=".">
-                            Click here to go back
+                            Zurück zur Galerie
                           </Link>
                         </div>
                       </div>
                     ) : (
                       <>
-                        <Image
+                        <img
                           src={url}
                           alt={name || "Headpat Community Image"}
-                          className={`rounded-lg object-contain imgsinglegallery ${
-                            width < 800
-                              ? `w-${width}`
-                              : `h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`
-                          } mx-auto`}
-                          width={width}
-                          height={height}
+                          className={`rounded-lg object-contain imgsinglegallery mx-auto ${getWidthHeightClass(width)}`}
                         />
 
                         <div className="ml-4">
@@ -267,9 +268,9 @@ export default function FetchGallery() {
                 );
               } catch (e) {
                 return (
-                  <p className="text-center text-red-500 font-bold my-8">
+                  <div className="text-center text-red-500 font-bold my-8">
                     <ErrorPage />
-                  </p>
+                  </div>
                 );
               }
             })()}

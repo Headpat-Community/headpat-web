@@ -22,10 +22,11 @@ export async function GET() {
       },
     });
 
-    if (response.status === 401) {
-      console.log("Unauthorized");
-      return NextResponse.error(401, "Unauthorized");
-    } else if (!response.ok) {
+    if (response.status === 403) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 403 }
+      );    } else if (!response.ok) {
       throw new Error("Failed to fetch data");
     }
 

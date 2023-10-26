@@ -20,7 +20,7 @@ export default function FetchGallery() {
   };
 
   const handleApiResponse = (response) => {
-    if (response.status === 401 || !response.ok) {
+    if (response.status === 403 || !response.ok) {
       //deleteCookie("jwt");
       window.location.reload();
     }
