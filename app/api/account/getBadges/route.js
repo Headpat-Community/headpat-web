@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 
 export const runtime = "edge";
 
-export async function GET() {
+export async function GET(request) {
   try {
     // Extract query parameters from the incoming request
     const queryParams = new URLSearchParams(
@@ -12,13 +11,11 @@ export async function GET() {
 
     // Construct the URL for the external fetch
     const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/badges?${queryParams}`;
-    const cookieStore = cookies();
-    const jwtCookie = cookieStore.get("jwt");
 
     const response = await fetch(fetchURL, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${jwtCookie.value}`,
+        Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
         "Content-Type": "application/json",
       },
     });
@@ -28,8 +25,8 @@ export async function GET() {
     }
 
     const data = await response.json();
-    return NextResponse.json(data);
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    return NextResponse.error(500, error.message);
+    return NextResponse.json(error.message, { status: 500 });
   }
 }

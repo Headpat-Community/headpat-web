@@ -25,7 +25,6 @@ export default function BadgePageComponent() {
     const validImageTypes = [
       "image/jpeg",
       "image/png",
-      "image/gif",
       "image/svg+xml",
       "image/tiff",
       "image/x-icon",
@@ -33,7 +32,7 @@ export default function BadgePageComponent() {
     ];
     if (!validImageTypes.includes(selectedFile.type)) {
       alert(
-        "Please select a valid image file type (JPEG, PNG, GIF, SVG, TIFF, ICO, DVU)."
+        "Please select a valid image file type (JPEG, PNG, SVG, TIFF, ICO, DVU)."
       );
       return;
     }
@@ -85,8 +84,6 @@ export default function BadgePageComponent() {
         }
       );
 
-      console.log("response:", response);
-
       const responseData = await response.json();
       if (response.ok) {
         formData.append(
@@ -117,7 +114,7 @@ export default function BadgePageComponent() {
 
         const responseData = await response.json();
         if (response.ok) {
-          console.log("File uploaded successfully");
+          //console.log("File uploaded successfully");
           setIsUploading(false); // Set isUploading to false after the API call is complete
           // Add the "Saved!" text to the form
           alert("Saved!");
@@ -126,8 +123,9 @@ export default function BadgePageComponent() {
           console.error("Failed to upload file:", responseData);
         }
       } else {
-        setInterval(() => {
-          setError("Du darfst dies nur einmal anfragen.");
+        setError("Du darfst dies nur einmal anfragen.");
+        setTimeout(() => {
+          setError(null);
         }, 5000);
       }
     } catch (error) {

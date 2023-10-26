@@ -4,7 +4,8 @@ export const runtime = "edge";
 
 export async function POST(request) {
   try {
-    const requestBody = await request.json();
+    // Get the raw body data as ArrayBuffer
+    const requestData = await request.arrayBuffer();
 
     // Construct the URL for the external fetch
     const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/badges`;
@@ -13,18 +14,20 @@ export async function POST(request) {
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
-        "Content-Type": "application/json",
+        "Content-Type": request.headers.get("Content-Type") || "multipart/form-data",
       },
-      body: JSON.stringify(requestBody),
+      body: requestData, // Use the ArrayBuffer directly
     });
 
     if (!response.ok) {
+      console.log(response);
       throw new Error("Failed to update data");
     }
 
     const data = await response.json();
-    return NextResponse.json(data);
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    return NextResponse.error(500, error.message);
+    console.error("Error in createBadge API route:", error);
+    return NextResponse.json(error.message, { status: 500 });
   }
 }
