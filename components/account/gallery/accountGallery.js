@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import ErrorPage from "../../404";
+import ErrorPage from "@/app/not-found";
 import Link from "next/link";
 import Image from "next/image";
 

@@ -1,10 +1,14 @@
-"use client";
 import Link from "next/link";
-import Header from "../../components/header";
-import Footer from "../../components/footer";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 import Image from "next/image";
 
-export default function Example() {
+export const metadata = {
+  title: "Pawcraft",
+  description: "Minecraft Vanilla Server mit viel Spaß und Orten zum Erkunden!",
+};
+
+export default function PawcraftPage() {
   return (
     <div className="bg-gray-900">
       <div className="relative isolate">
@@ -27,12 +31,12 @@ export default function Example() {
               <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
                 Pawcraft 3
               </h1>
-              <p className="mt-6 text-lg leading-8 text-gray-300">
-                Minecraft Vanilla Server with a lot of fun and places to
-                explore. Join us now!
+              <h2 className="mt-6 text-lg leading-8 text-gray-300">
+                Minecraft Vanilla Server mit viel Spaß und Orten zum Erkunden!
                 <br />
-                <span className="text-red-400">Whitelist is required.</span>
-              </p>
+              </h2>
+              <span className="text-red-400">Es gibt eine Whitelist.</span>
+
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <Link
                   href="https://pawcraft.tk"

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import Footer from "../../../components/footer";
-import Header from "../../../components/header";
+import Footer from "@/components/footer";
+import Header from "@/components/header";
 
 export default function Loading() {
   // You can add any UI inside Loading, including a Skeleton.

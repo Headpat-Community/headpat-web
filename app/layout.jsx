@@ -18,8 +18,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="de">
-      <body className={`${inter.className}`}>
+    <html lang="de" className="h-full" suppressHydrationWarning >
+      <body className={`${inter.className} flex min-h-full bg-white antialiased dark:bg-black`}>
         <Providers>
           <div className="w-full">{children}</div>
         </Providers>

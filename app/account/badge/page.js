@@ -1,6 +1,6 @@
 "use client";
-import Layout from "../../layouts/account-layout";
-import BadgePage from "../../../components/account/badgePage";
+import Layout from "@/app/layouts/account-layout";
+import BadgePage from "@/components/account/badgePage";
 
 export default function AccountBadgePage() {
   return (

@@ -1,7 +1,7 @@
 "use client";
 import { PaperClipIcon } from "@heroicons/react/20/solid";
-import Header from "../../components/header";
-import Footer from "../../components/footer";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 import Link from "next/link";
 
 export default function LegalPage() {
