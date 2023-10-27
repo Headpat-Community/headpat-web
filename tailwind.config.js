@@ -7,6 +7,18 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    backgroundColor: (theme) => ({
+      ...theme("colors"),
+      primary: "#5865F2",
+      secondary: "#757575",
+      accent: "#FEE75C",
+      danger: "#DC2626",
+      success: "#10B981",
+      warning: "#F97316",
+      info: "#3B82F6",
+      dark: "#111827",
+      light: "#F9FAFB",
+    }),
     fontSize: {
       "2xs": ["0.75rem", { lineHeight: "1.25rem" }],
       xs: ["0.8125rem", { lineHeight: "1.5rem" }],

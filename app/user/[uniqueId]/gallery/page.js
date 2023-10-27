@@ -1,6 +1,6 @@
-import Header from "../../../../components/header";
-import Footer from "../../../../components/footer";
-import UserGalleryPage from "../../../../components/user/galleryPage";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import UserGalleryPage from "@/components/user/galleryPage";
 
 export const runtime = "edge";
 

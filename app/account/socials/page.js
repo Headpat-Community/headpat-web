@@ -1,8 +1,8 @@
 "use client";
 import dynamic from 'next/dynamic'
-import Layout from "../../layouts/account-layout";
+import Layout from "@/app/layouts/account-layout";
 
-const SocialsPage = dynamic(() => import('../../../components/account/socialsPage'), {
+const SocialsPage = dynamic(() => import('@/components/account/socialsPage'), {
   ssr: false,
 })
 

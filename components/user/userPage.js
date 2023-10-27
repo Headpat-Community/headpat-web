@@ -23,7 +23,7 @@ import {
   faXTwitter,
   faTwitch,
 } from "@fortawesome/free-brands-svg-icons";
-import ErrorPage from "../../components/404";
+import ErrorPage from "@/components/404";
 import Image from "next/image";
 
 function classNames(...classes) {

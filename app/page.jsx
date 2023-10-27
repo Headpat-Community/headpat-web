@@ -1,9 +1,7 @@
-import Header from "../components/header";
-import Footer from "../components/footer";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import Image from "next/image";
 
 export default function Home() {
@@ -13,7 +11,7 @@ export default function Home() {
       <div className="bg-transparent">
         <div className="relative isolate pt-14">
           <svg
-            className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+            className="absolute inset-0 -z-10 h-full w-full dark:stroke-gray-200 stroke-black [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
             aria-hidden="true"
           >
             <defs>
@@ -28,7 +26,7 @@ export default function Home() {
                 <path d="M100 200V.5M.5 .5H200" fill="none" />
               </pattern>
             </defs>
-            <svg x="50%" y={-1} className="overflow-visible fill-gray-50">
+            <svg x="50%" y={-1} className="overflow-visible dark:fill-gray-50 fill-black">
               <path
                 d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M-300.5 600h201v201h-201Z"
                 strokeWidth={0}
@@ -44,7 +42,7 @@ export default function Home() {
           <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40">
             <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
               <div className="flex">
-                <div className="relative flex items-center gap-x-4 rounded-full px-4 py-1 text-sm leading-6 text-gray-600 ring-1 ring-white/30 hover:ring-white/50">
+                <div className="relative flex items-center gap-x-4 rounded-full px-4 py-1 text-sm leading-6 text-gray-600  ring-1 dark:ring-white/30 ring-black/30 dark:hover:ring-white/50 hover:ring-black/50">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     height="0.75em"
@@ -55,25 +53,27 @@ export default function Home() {
                     <path d="M524.531,69.836a1.5,1.5,0,0,0-.764-.7A485.065,485.065,0,0,0,404.081,32.03a1.816,1.816,0,0,0-1.923.91,337.461,337.461,0,0,0-14.9,30.6,447.848,447.848,0,0,0-134.426,0,309.541,309.541,0,0,0-15.135-30.6,1.89,1.89,0,0,0-1.924-.91A483.689,483.689,0,0,0,116.085,69.137a1.712,1.712,0,0,0-.788.676C39.068,183.651,18.186,294.69,28.43,404.354a2.016,2.016,0,0,0,.765,1.375A487.666,487.666,0,0,0,176.02,479.918a1.9,1.9,0,0,0,2.063-.676A348.2,348.2,0,0,0,208.12,430.4a1.86,1.86,0,0,0-1.019-2.588,321.173,321.173,0,0,1-45.868-21.853,1.885,1.885,0,0,1-.185-3.126c3.082-2.309,6.166-4.711,9.109-7.137a1.819,1.819,0,0,1,1.9-.256c96.229,43.917,200.41,43.917,295.5,0a1.812,1.812,0,0,1,1.924.233c2.944,2.426,6.027,4.851,9.132,7.16a1.884,1.884,0,0,1-.162,3.126,301.407,301.407,0,0,1-45.89,21.83,1.875,1.875,0,0,0-1,2.611,391.055,391.055,0,0,0,30.014,48.815,1.864,1.864,0,0,0,2.063.7A486.048,486.048,0,0,0,610.7,405.729a1.882,1.882,0,0,0,.765-1.352C623.729,277.594,590.933,167.465,524.531,69.836ZM222.491,337.58c-28.972,0-52.844-26.587-52.844-59.239S193.056,219.1,222.491,219.1c29.665,0,53.306,26.82,52.843,59.239C275.334,310.993,251.924,337.58,222.491,337.58Zm195.38,0c-28.971,0-52.843-26.587-52.843-59.239S388.437,219.1,417.871,219.1c29.667,0,53.307,26.82,52.844,59.239C470.715,310.993,447.538,337.58,417.871,337.58Z" />
                   </svg>
                   <span className="font-semibold text-indigo-500">Discord</span>
-                  <span className="h-4 w-px bg-white/90" aria-hidden="true" />
+                  <span className="h-4 w-px dark:bg-white/90 bg-black/90" aria-hidden="true" />
                   <Link
                     href="https://discord.gg/headpat"
                     className="flex items-center gap-x-1 text-white"
                     target="_blank"
                   >
-                    <span className="absolute inset-0" aria-hidden="true" />
-                    Klick hier um beizutreten
+                    <span className="absolute inset-0 " aria-hidden="true" />
+                    <span className="text-black dark:text-white">
+                      Klick hier um beizutreten
+                    </span>
                     <ChevronRightIcon
-                      className="-mr-2 h-5 w-5 text-gray-400"
+                      className="-mr-2 h-5 w-5 text-black dark:text-white"
                       aria-hidden="true"
                     />
                   </Link>
                 </div>
               </div>
-              <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-white sm:text-6xl">
+              <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight dark:text-white sm:text-6xl">
                 Headpat Community
               </h1>
-              <p className="mt-6 text-lg leading-8 text-white/80">
+              <p className="mt-6 text-lg leading-8 dark:text-white/80">
                 Die Headpat Community ist eine Online-Community für soziale
                 Medien. Wir stellen unseren Mitgliedern freiwillig eine
                 Plattform zum Verbinden, Austauschen und Ausdrücken zur

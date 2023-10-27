@@ -1,6 +1,6 @@
-import Footer from "../../components/footer";
-import Header from "../../components/header";
-import PublicGallery from "../../components/public/fetchPublicGallery";
+import Footer from "@/components/footer";
+import Header from "@/components/header";
+import PublicGallery from "@/components/public/fetchPublicGallery";
 
 export const metadata = {
   title: "Gallerie",
