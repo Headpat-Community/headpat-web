@@ -53,6 +53,12 @@ export default function UploadPage() {
     event.preventDefault();
 
     const formData = new FormData();
+
+    if (!selectedFile) {
+      alert("Bitte wähle ein Bild aus.");
+      return;
+    }
+
     formData.append("files.img", selectedFile);
 
     try {
@@ -147,10 +153,10 @@ export default function UploadPage() {
                             name="file-upload"
                             type="file"
                             className="sr-only bg-transparent"
-                            required
                             onChange={handleFileChange}
                             onDrop={handleDrop}
                             onDragOver={(event) => event.preventDefault()}
+                            onDragEnter={(event) => event.preventDefault()}
                           />
                         </label>
                         <p className="pl-1">
