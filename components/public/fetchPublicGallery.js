@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import Loading from "../../app/loading";
 import { useState, useEffect } from "react";
 
 export default function FetchGallery() {
@@ -113,7 +114,7 @@ export default function FetchGallery() {
       </div>*/}
       <div>
         {isLoading ? (
-          <p className="text-center text-gray-500 font-bold my-8">Loading...</p>
+          <Loading />
         ) : (
           <ul className="p-8 flex flex-wrap gap-4 justify-center items-center">
             {gallery.map((item) => (
