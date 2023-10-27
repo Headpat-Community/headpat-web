@@ -1,9 +1,10 @@
-'use client';
+"use client";
 import { useState, useEffect } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import Link from "next/link";
-import AnnouncementNotification from "../components/announcementNotification";
+import AnnouncementNotification from "@/components/announcementNotification";
 import Image from "next/image";
 
 const navigation = [
@@ -15,6 +16,7 @@ const navigation = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const isAnnouncementPage =
     typeof window !== "undefined" &&
     window.location.pathname.startsWith("/announcements");
@@ -39,9 +41,9 @@ export default function Header() {
           aria-label="Global"
         >
           <div className="flex lg:flex-1">
-            <div className="-m-1.5 p-1.5">
+            <div className="-m-1.5 p-1.5 flex items-center">
               <span className="sr-only">Headpat Community</span>
-              <Link href="/">
+              <Link className="mr-4" href="/">
                 <Image
                   aria-label="Headpat Logo"
                   title="Headpat Logo"
@@ -52,6 +54,7 @@ export default function Header() {
                   height={128}
                 />
               </Link>
+              <ThemeToggle />
             </div>
           </div>
           <div className="flex lg:hidden">
@@ -69,7 +72,7 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm font-semibold leading-6 text-white"
+                className="text-sm font-semibold leading-6 dark:text-white"
               >
                 {item.name}
               </Link>
@@ -79,14 +82,14 @@ export default function Header() {
             {isLoggedIn ? (
               <Link
                 href="/account"
-                className="text-sm font-semibold leading-6 text-white"
+                className="text-sm font-semibold leading-6 dark:text-white"
               >
                 Account <span aria-hidden="true">&rarr;</span>
               </Link>
             ) : (
               <Link
                 href="/login"
-                className="text-sm font-semibold leading-6 text-white"
+                className="text-sm font-semibold leading-6 dark:text-white"
               >
                 Sign in <span aria-hidden="true">&rarr;</span>
               </Link>
@@ -104,7 +107,13 @@ export default function Header() {
             <div className="flex items-center justify-between">
               <Link href="#" className="-m-1.5 p-1.5">
                 <span className="sr-only">Headpat Community</span>
-                <Image className="h-8 w-auto" src="/logos/logo-512.webp" alt="" width={128} height={128} />
+                <Image
+                  className="h-8 w-auto"
+                  src="/logos/logo-512.webp"
+                  alt=""
+                  width={128}
+                  height={128}
+                />
               </Link>
               <button
                 type="button"

@@ -47,7 +47,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example({ children }) {
+export default function AccountLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userData, setUserData] = useState(null);
   const [userMeData, setUserMeData] = useState(null);
