@@ -1,10 +1,5 @@
-"use client";
-import dynamic from 'next/dynamic'
 import Layout from "@/app/layouts/account-layout";
-
-const SocialsPage = dynamic(() => import('@/components/account/socialsPage'), {
-  ssr: false,
-})
+import SocialsPage from "@/components/account/socialsPage";
 
 export const metadata = {
   title: "Socials",

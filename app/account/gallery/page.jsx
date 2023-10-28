@@ -1,4 +1,3 @@
-"use client";
 import Layout from "@/app/layouts/account-layout";
 import AccountGallery from "@/components/account/gallery/accountGallery";
 
