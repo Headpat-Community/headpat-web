@@ -50,8 +50,9 @@ export default function FetchGallery() {
           }
         );
         const userData = await userDataResponse.json();
-        setNsfwProfile(userData.data.attributes.enablensfw);
-        if (!nsfwProfile) {
+        const enableNsfw = userData.data.attributes.enablensfw;
+        setNsfwProfile(enableNsfw);
+        if (!enableNsfw) {
           setError("You don't have NSFW enabled!");
         }
       } catch (error) {
