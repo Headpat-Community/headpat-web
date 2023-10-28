@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useEffect, useCallback, useState, useRef } from "react";
 
 export default function BadgePageComponent() {
@@ -149,7 +150,7 @@ export default function BadgePageComponent() {
                 <h1 className="text-sm font-medium text-indigo-600">
                   Badge Request
                 </h1>
-                <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                <p className="mt-2 text-3xl font-bold tracking-tight dark:text-white text-black sm:text-4xl">
                   Danke für deine Überlegung!
                 </p>
                 <p className="mt-2 text-base text-gray-500">
@@ -159,29 +160,31 @@ export default function BadgePageComponent() {
                 </p>
                 <ul
                   role="list"
-                  className="mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-gray-500"
+                  className="mt-6 divide-y dark:border-gray-200 border-gray-500 border-t text-sm font-medium text-gray-500"
                 >
                   <li key="Badge" className="flex space-x-6 py-6">
                     <div className="text-center">
                       <h1 className="text-left text-xl">Upload image</h1>
                       <label
                         htmlFor="file-upload"
-                        className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
+                        className="relative cursor-pointer rounded-md bg-gray-900 font-semibold focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
                         onDrop={handleDrop}
                         onDragOver={(event) => event.preventDefault()}
                       >
-                        <img
+                        <Image
                           id="selected-image"
-                          className="h-32 w-32 rounded-md"
-                          alt=""
-                          src="/images/placeholder-image.webp"
+                          className="h-32 w-32 rounded-md object-contain"
+                          alt="Placeholder Image"
+                          src="/images/placeholder-image-color.webp"
                           onDrop={handleDrop}
                           onDragOver={(event) => event.preventDefault()}
+                          width={128}
+                          height={128}
                         />
                         <div className="mt-4 flex text-sm leading-6 text-gray-400">
                           <label
                             htmlFor="file-upload"
-                            className="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500"
+                            className="relative cursor-pointer rounded-md bg-blurple font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:bg-blurple/80"
                           >
                             <span className="p-4">Upload a file</span>
                             <input
@@ -189,10 +192,10 @@ export default function BadgePageComponent() {
                               name="file-upload"
                               type="file"
                               className="sr-only bg-transparent"
-                              required
                               onChange={handleFileChange}
                               onDrop={handleDrop}
                               onDragOver={(event) => event.preventDefault()}
+                              onDragEnter={(event) => event.preventDefault()}
                             />
                           </label>
                         </div>
@@ -207,7 +210,7 @@ export default function BadgePageComponent() {
                   </li>
                 </ul>
 
-                <dl className="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-white">
+                <dl className="space-y-6 border-t dark:border-gray-200 border-gray-500 pt-6 text-sm font-medium dark:text-white text-black">
                   <div className="flex justify-between">
                     <dt>Name</dt>
                     <input
@@ -256,14 +259,14 @@ export default function BadgePageComponent() {
               </div>
               <div className="lg:col-start-2">
                 <h1 className="text-sm font-medium text-indigo-600">
-                  Abholung
+                  Erhaltung
                 </h1>
-                <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
                   Wie möchtest du deinen Badge erhalten?
                 </p>
 
                 <div className="sm:col-span-3 mb-4 mt-6">
-                  <label className="block text-xl font-medium leading-6 text-white">
+                  <label className="block text-xl font-medium leading-6 dark:text-white/80 text-black/80">
                     Bei Eurofurence abholen?
                   </label>
                   <div className="mt-2">
@@ -271,14 +274,14 @@ export default function BadgePageComponent() {
                       type="checkbox"
                       name="deliver_at_eurofurence"
                       id="deliver_at_eurofurence"
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      className="h-4 w-4 rounded dark:border-gray-300 border-gray-600 text-indigo-600 focus:ring-transparent"
                       checked={deliverAtEurofurence}
                       onChange={handleCheckboxChange}
                     />
                   </div>
                 </div>
 
-                <dl className="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-white">
+                <dl className="space-y-6 border-t dark:border-gray-200 border-gray-500 pt-6 text-sm font-medium dark:text-white text-black">
                   {!deliverAtEurofurence && (
                     <>
                       <div className="flex justify-between">
@@ -329,7 +332,7 @@ export default function BadgePageComponent() {
                       <div className="flex justify-between">
                         <label
                           htmlFor="country-select"
-                          className="text-white rounded"
+                          className="dark:text-white text-black rounded"
                         >
                           Land/Country
                         </label>
@@ -377,7 +380,7 @@ export default function BadgePageComponent() {
                 <div className="mt-6 flex items-center justify-end gap-x-6">
                   <button
                     type="button"
-                    className="text-sm font-semibold leading-6 text-white"
+                    className="text-sm font-semibold leading-6 dark:text-white text-black"
                   >
                     Abbrechen
                   </button>

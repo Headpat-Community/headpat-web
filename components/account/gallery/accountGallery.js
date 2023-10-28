@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import ErrorPage from "@/app/not-found";
 import Link from "next/link";
 import Image from "next/image";
+import Loading from "@/app/loading";
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState([]);
@@ -114,9 +115,7 @@ export default function FetchGallery() {
               )}
             </p>
           ) : (
-            <p className="text-center text-gray-500 font-bold my-8">
-              Loading...
-            </p>
+            <Loading />
           )
         ) : (
           <>

@@ -250,7 +250,7 @@ export default function AccountLayout({ children }) {
                             item.current
                               ? "bg-gray-50 text-indigo-600"
                               : "text-light-color hover:text-indigo-600 hover:bg-gray-100",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-white"
                           )}
                         >
                           <item.icon
@@ -286,7 +286,7 @@ export default function AccountLayout({ children }) {
                     </Link>
                   </li>
                 ) : (
-                  <li>Loading...</li>
+                  <li className="-mx-6 py-3 mt-auto text-white text-center">Loading...</li>
                 )}
               </ul>
             </nav>

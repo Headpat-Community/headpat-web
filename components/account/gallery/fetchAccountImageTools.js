@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import Loading from "@/app/loading";
 
 export default function FetchGallery() {
   const [username, setUsername] = useState(null);
@@ -188,7 +188,7 @@ export default function FetchGallery() {
   return (
     <div>
       {isLoading ? (
-        <p className="text-center text-gray-500 font-bold my-8">Loading...</p>
+        <Loading />
       ) : (
         <div className="p-8 flex flex-wrap gap-4 justify-center items-center">
           <div>
@@ -232,7 +232,7 @@ export default function FetchGallery() {
 
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                       <div className="sm:col-span-3">
-                        <label className="block text-sm font-medium leading-6 text-white">
+                        <label className="block text-sm font-medium leading-6 dark:text-white text-black">
                           Name <span className="text-red-500">*</span>
                         </label>
                         <div className="mt-2">
@@ -241,8 +241,8 @@ export default function FetchGallery() {
                             name="imagename"
                             id="imagename"
                             required
-                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                            value={userData.name} // Use userData.displayname
+                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                            value={userData.name}
                             onChange={(e) =>
                               setUserData({
                                 ...userData,
@@ -254,7 +254,7 @@ export default function FetchGallery() {
                       </div>
 
                       <div className="sm:col-span-3">
-                        <label className="block text-sm font-medium leading-6 text-white">
+                        <label className="block text-sm font-medium leading-6 dark:text-white text-black">
                           Alternative Informationen (SEO)
                         </label>
                         <div className="mt-2">
@@ -262,7 +262,7 @@ export default function FetchGallery() {
                             type="text"
                             name="imgalt"
                             id="imgalt"
-                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                             value={userData.imgalt} // Use userData.imgalt
                             onChange={(e) =>
                               setUserData({
@@ -275,13 +275,13 @@ export default function FetchGallery() {
                       </div>
 
                       <div className="sm:col-span-3">
-                        <label className="block text-sm font-medium leading-6 text-white">
-                          Creation Date
+                        <label className="block text-sm font-medium leading-6 dark:text-white text-black">
+                          Erstellt am
                         </label>
                         <div className="mt-2">
                           <span
                             type="text"
-                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                           >
                             {userData.createdAt}
                           </span>
@@ -289,13 +289,13 @@ export default function FetchGallery() {
                       </div>
 
                       <div className="sm:col-span-3">
-                        <label className="block text-sm font-medium leading-6 text-white">
-                          Modified Date
+                        <label className="block text-sm font-medium leading-6 dark:text-white text-black">
+                          Letztes Update
                         </label>
                         <div className="mt-2">
                           <span
                             type="text"
-                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                           >
                             {userData.createdAt}
                           </span>
@@ -303,13 +303,13 @@ export default function FetchGallery() {
                       </div>
 
                       <div className="sm:col-span-3">
-                        <label className="block text-sm font-medium leading-6 text-white">
-                          Width
+                        <label className="block text-sm font-medium leading-6 dark:text-white text-black">
+                          Breite
                         </label>
                         <div className="mt-2">
                           <span
                             type="text"
-                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                           >
                             {width}
                           </span>
@@ -317,13 +317,13 @@ export default function FetchGallery() {
                       </div>
 
                       <div className="sm:col-span-3">
-                        <label className="block text-sm font-medium leading-6 text-white">
-                          Height
+                        <label className="block text-sm font-medium leading-6 dark:text-white text-black">
+                          Höhe
                         </label>
                         <div className="mt-2">
                           <span
                             type="text"
-                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                           >
                             {height}
                           </span>
@@ -331,7 +331,7 @@ export default function FetchGallery() {
                       </div>
 
                       <div className="sm:col-span-6">
-                        <label className="block text-sm font-medium leading-6 text-white">
+                        <label className="block text-sm font-medium leading-6 dark:text-white text-black">
                           NSFW
                         </label>
                         <div className="mt-2">
@@ -352,14 +352,14 @@ export default function FetchGallery() {
                       </div>
 
                       <div className="col-span-full">
-                        <label className="block text-sm font-medium leading-6 text-white">
-                          Description
+                        <label className="block text-sm font-medium leading-6 dark:text-white text-black">
+                          Beschreibung
                         </label>
                         <div className="mt-2 relative">
                           <textarea
                             id="longtext"
                             name="longtext"
-                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 h-72"
+                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 h-72"
                             value={userData.longtext || ""}
                             maxLength={256}
                             onChange={(e) =>
