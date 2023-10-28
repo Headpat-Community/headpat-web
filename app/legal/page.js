@@ -10,7 +10,7 @@ export default function LegalPage() {
       <Header />
       <div className="mx-auto max-w-7xl mt-8 mb-4">
         <div className="px-4 sm:px-0">
-          <h3 className="text-base font-semibold leading-7 text-white">
+          <h3 className="text-base font-semibold leading-7">
             Legal Information
           </h3>
           <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
@@ -20,10 +20,10 @@ export default function LegalPage() {
         <div className="mt-6 border-t border-gray-100">
           <dl className="divide-y divide-gray-100">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6 text-white">
+              <dt className="text-sm font-medium leading-6">
                 About
               </dt>
-              <dd className="mt-1 text-sm leading-6 text-white/80 sm:col-span-2 sm:mt-0">
+              <dd className="mt-1 text-sm leading-6 dark:text-white/80 text-black/80 sm:col-span-2 sm:mt-0">
                 Here you can download all the legal documents that are related
                 to the use of our website or app. If you have any questions,
                 please contact us at{" "}
@@ -37,13 +37,13 @@ export default function LegalPage() {
               </dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6 text-white">
+              <dt className="text-sm font-medium leading-6">
                 Attachments
               </dt>
-              <dd className="mt-2 text-sm text-white sm:col-span-2 sm:mt-0">
+              <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
                 <ul
                   role="list"
-                  className="divide-y divide-gray-100 rounded-md border border-gray-200"
+                  className="divide-y divide-gray-100 rounded-md border dark:border-gray-200 border-gray-700"
                 >
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">

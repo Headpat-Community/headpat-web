@@ -9,14 +9,14 @@ export default function Loading() {
     <>
       <Header />
       <div className="px-6 py-32 lg:px-8">
-        <div className="mx-auto max-w-3xl text-base leading-7 text-white">
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        <div className="mx-auto max-w-3xl text-base leading-7">
+          <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
             Impressum
           </h1>
           <br />
           <p>Information according to § 5 TMG.</p>
           <br />
-          <h1 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+          <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
             Contact
           </h1>
           <br />
@@ -28,7 +28,7 @@ export default function Loading() {
           <p>E-Mail: help@headpat.de</p>
           <p>Webseite: https://headpat.de</p>
           <br />
-          <h1 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+          <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
             Online dispute reoslution
           </h1>
           <p>
