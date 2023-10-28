@@ -6,6 +6,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import Link from "next/link";
 import AnnouncementNotification from "@/components/announcementNotification";
 import Image from "next/image";
+import { usePathname } from 'next/navigation'
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -16,10 +17,10 @@ const navigation = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const pathname = usePathname()
 
-  const isAnnouncementPage =
-    typeof window !== "undefined" &&
-    window.location.pathname.startsWith("/announcements");
+  const isPawcraftPage = pathname === "/pawcraft";
+  const isAnnouncementPage = pathname.startsWith("/announcements");
 
   useEffect(() => {
     const jwtCookie = getCookie("jwt");
@@ -35,7 +36,11 @@ export default function Header() {
   return (
     <>
       {!isAnnouncementPage && <AnnouncementNotification />}
-      <header className="bg-transparent border-b-2">
+      <header
+        className={`border-b-2 ${
+          isPawcraftPage ? "text-white" : "dark:text-white"
+        }`}
+      >
         <nav
           className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8"
           aria-label="Global"

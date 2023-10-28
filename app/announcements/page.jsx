@@ -44,7 +44,7 @@ export default function AnnouncementsPage() {
       <h1 className="text-4xl text-center mt-4">Announcements</h1>
       <ul
         role="list"
-        className="divide-y divide-gray-100 overflow-hidden shadow-sm ring-1 ring-white/95 sm:rounded-xl mb-4 mt-8 max-w-4xl mx-auto"
+        className="divide-y divide-gray-100 overflow-hidden shadow-sm ring-1 dark:ring-white/95 ring-black/95 sm:rounded-xl mb-4 mt-8 max-w-4xl mx-auto"
       >
         {announcementData &&
           announcementData.map((announcement) => {
@@ -53,11 +53,11 @@ export default function AnnouncementsPage() {
             return (
               <li
                 key={announcement.id}
-                className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50/10 sm:px-6"
+                className="relative flex justify-between gap-x-6 px-4 py-5 dark:hover:bg-gray-50/10 hover:bg-gray-50/90 sm:px-6"
               >
                 <div className="flex min-w-0 gap-x-4">
                   <Image
-                    className="h-12 w-12 flex-none rounded-full bg-gray-50"
+                    className="h-12 w-12 flex-none rounded-full"
                     src={
                       createdBy?.avatar?.data?.attributes?.url ||
                       "/logos/logo-64.webp"
@@ -67,13 +67,13 @@ export default function AnnouncementsPage() {
                     height={48}
                   />
                   <div className="min-w-0 flex-auto">
-                    <p className="text-sm font-semibold leading-6 text-white">
+                    <p className="text-sm font-semibold leading-6 dark:text-white text-black">
                       <Link href={`/announcements/${announcement.id}`}>
                         <span className="absolute inset-x-0 -top-px bottom-0" />
                         {announcement.attributes.title}
                       </Link>
                     </p>
-                    <p className="mt-1 flex text-xs leading-5 text-gray-300">
+                    <p className="mt-1 flex text-xs leading-5 dark:text-gray-300 text-gray-400">
                       {announcement.attributes.sidetext}
                     </p>
                   </div>
@@ -82,7 +82,7 @@ export default function AnnouncementsPage() {
                   <div className="hidden sm:flex sm:flex-col sm:items-end">
                     {announcement.attributes.validuntil ? (
                       <>
-                        <p className="mt-1 text-xs leading-5 text-white/80">
+                        <p className="mt-1 text-xs leading-5 dark:text-white/80 text-black/80">
                           Valid until{" "}
                           <time dateTime={announcement.attributes.validuntil}>
                             {new Date(
@@ -96,7 +96,7 @@ export default function AnnouncementsPage() {
                             <div className="flex-none rounded-full bg-emerald-500/20 p-1">
                               <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                             </div>
-                            <p className="text-xs leading-5 text-white/80">
+                            <p className="text-xs leading-5 dark:text-white/80 text-black/80">
                               Active
                             </p>
                           </div>
@@ -105,7 +105,7 @@ export default function AnnouncementsPage() {
                             <div className="flex-none rounded-full bg-red-500/20 p-1">
                               <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
                             </div>
-                            <p className="text-xs leading-5 text-white/80">
+                            <p className="text-xs leading-5 dark:text-white/80 text-black/80">
                               Inactive
                             </p>
                           </div>

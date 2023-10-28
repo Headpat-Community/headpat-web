@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import ErrorPage from "@/components/404";
 import Link from "next/link";
-import Image from "next/image";
+import Loading from "@/app/loading";
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState({});
@@ -18,67 +18,69 @@ export default function FetchGallery() {
     );
   };
 
-  const handleApiResponse = (response) => {
-    if (response.status === 403 || !response.ok) {
-      throw new Error("Du musst eingeloggt sein, da dieses Bild NSFW ist!");
-    }
-    return response.json();
-  };
-
   function getWidthHeightClass(width) {
     if (width < 800) {
       return `w-${width}`;
     } else {
-      return 'h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]';
+      return "h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]";
     }
   }
 
   useEffect(() => {
     const fetchInitialData = async () => {
-      setIsLoading(true);
+      const token = getToken();
+      if (!token) {
+        return;
+      }
 
-      fetch("/api/user/getUserSelf", {
-        method: "GET",
-      })
-        .then(handleApiResponse)
-        .then((data) => {
-          console.log(data);
-          const userId = data.id;
-          return fetch(`/api/user/getUserData/${userId}`, {
-            method: "GET",
-          });
-        })
-        .then(handleApiResponse)
-        .then((userData) => {
-          setNsfwProfile(userData.data.attributes.enablensfw);
-          if (!nsfwProfile) {
-            setError("You don't have NSFW enabled!");
-          }
-        })
-        .catch((err) => {
-          setError(err.message || "An error occurred.");
-        })
-        .finally(() => {
-          setIsLoading(false);
+      setIsLoading(true);
+      try {
+        const response = await fetch("/api/user/getUserSelf", {
+          method: "GET",
         });
+        if (!response.ok) {
+          throw new Error("Error fetching user self");
+        }
+        const data = await response.json();
+        const userId = data.id;
+        const userDataResponse = await fetch(
+          `/api/user/getUserData/${userId}`,
+          {
+            method: "GET",
+          }
+        );
+        const userData = await userDataResponse.json();
+        setNsfwProfile(userData.data.attributes.enablensfw);
+        if (!nsfwProfile) {
+          setError("You don't have NSFW enabled!");
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchInitialData();
   }, [nsfwProfile]);
 
   useEffect(() => {
-    const pathParts = window.location.pathname.split("/");
-    const uniqueId = pathParts[2];
+    const fetchGalleryData = async () => {
+      const pathParts = window.location.pathname.split("/");
+      const uniqueId = pathParts[2];
 
-    setIsLoading(true);
+      setIsLoading(true);
 
-    fetch(`/api/gallery/getUserGallery/${uniqueId}?populate=*`, {
-      method: "GET",
-    })
-      .then(handleApiResponse)
-      .then((data) => {
+      try {
+        const response = await fetch(
+          `/api/gallery/getUserGallery/${uniqueId}?populate=*`,
+          {
+            method: "GET",
+          }
+        );
+        const data = await response.json();
         setGallery(data);
-        return fetch(
+        const userDataResponse = await fetch(
           `/api/user/getUserData/${data.data.attributes.users_permissions_user.data.id}`,
           {
             headers: {
@@ -86,24 +88,23 @@ export default function FetchGallery() {
             },
           }
         );
-      })
-      .then(handleApiResponse)
-      .then((userData) => {
+        const userData = await userDataResponse.json();
         setDisplayname(userData.data?.attributes?.displayname);
-      })
-      .catch((err) => {
-        setError(err.message || "An error occurred.");
-      })
-      .finally(() => {
+      } catch (error) {
+        setError(error.message || "An error occurred.");
+      } finally {
         setIsLoading(false);
-      });
+      }
+    };
+
+    fetchGalleryData();
   }, [nsfwProfile]);
 
   // The rest of the component remains unchanged with conditional rendering based on the data's availability.
   return (
     <div>
       {isLoading ? (
-        <p className="text-center text-gray-500 font-bold my-8">Loading...</p>
+        <Loading />
       ) : (
         <div className="p-8 flex flex-wrap gap-4 justify-center items-center">
           <div>
@@ -133,16 +134,19 @@ export default function FetchGallery() {
 
                 return (
                   <div className="flex flex-wrap items-start">
-                    {!error && (
-                      <div className="mr-4 sm:mt-4 mb-4 md:mb-0 flex">
-                        <Link
-                          href="."
-                          className="rounded-md bg-indigo-500 px-3 py-2 mb-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                        >
-                          &larr; Go back
-                        </Link>
-                      </div>
-                    )}
+                    {error ||
+                      (isNsfwImage ? (
+                        <></>
+                      ) : (
+                        <div className="mr-4 sm:mt-4 mb-4 md:mb-0 flex">
+                          <Link
+                            href="/gallery"
+                            className="rounded-md bg-indigo-500 px-3 py-2 mb-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                          >
+                            &larr; Go back
+                          </Link>
+                        </div>
+                      ))}
                     {isNsfwImage ? (
                       <div className="fixed inset-0 flex items-center justify-center">
                         {/* Semi-transparent overlay */}
@@ -153,7 +157,8 @@ export default function FetchGallery() {
                           }}
                         ></div>
                         <div className="bg-white p-4 rounded-lg shadow-lg text-xl text-black relative z-10">
-                          {error}
+                          Du hast NSFW deaktiviert oder du bist nicht
+                          eingeloggt, daher kannst du dieses Bild nicht sehen.
                           <br />
                           <br />
                           <Link className="text-indigo-600" href=".">
@@ -166,22 +171,23 @@ export default function FetchGallery() {
                         <img
                           src={url}
                           alt={name || "Headpat Community Image"}
-                          className={`rounded-lg object-contain imgsinglegallery mx-auto ${getWidthHeightClass(width)}`}
+                          className={`rounded-lg object-contain imgsinglegallery mx-auto ${getWidthHeightClass(
+                            width
+                          )}`}
                         />
-
                         <div className="ml-4">
                           <div className="mt-4">
-                            <dl className="divide-y divide-white/10">
+                            <dl className="divide-y dark:divide-white/10 divide-black/10">
                               <div className="ml-4">
                                 <div className="px-4 sm:px-0 mt-4">
-                                  <h3 className="text-base font-semibold leading-7 text-white">
+                                  <h3 className="text-base font-semibold leading-7 dark:text-white text-black">
                                     Image description
                                   </h3>
                                 </div>
-                                <div className="mt-4 border-t border-white/10">
-                                  <dl className="divide-y divide-white/10">
+                                <div className="mt-4 border-t dark:border-white/10 border-black/10">
+                                  <dl className="divide-y dark:divide-white/10 divide-black/10">
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                      <dt className="text-sm font-medium leading-6 text-white">
+                                      <dt className="text-sm font-medium leading-6 dark:text-white text-black">
                                         Title
                                       </dt>
                                       <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
@@ -189,7 +195,7 @@ export default function FetchGallery() {
                                       </dd>
                                     </div>
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                      <dt className="text-sm font-medium leading-6 text-white">
+                                      <dt className="text-sm font-medium leading-6 dark:text-white text-black">
                                         Uploaded by:
                                       </dt>
                                       <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
@@ -202,7 +208,7 @@ export default function FetchGallery() {
                                       </dd>
                                     </div>
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                      <dt className="text-sm font-medium leading-6 text-white">
+                                      <dt className="text-sm font-medium leading-6 dark:text-white text-black">
                                         Creation Date
                                       </dt>
                                       <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
@@ -218,7 +224,7 @@ export default function FetchGallery() {
                                       </dd>
                                     </div>
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                      <dt className="text-sm font-medium leading-6 text-white">
+                                      <dt className="text-sm font-medium leading-6 dark:text-white text-black">
                                         Last Modified
                                       </dt>
                                       <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
@@ -233,7 +239,7 @@ export default function FetchGallery() {
                                       </dd>
                                     </div>
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                      <dt className="text-sm font-medium leading-6 text-white">
+                                      <dt className="text-sm font-medium leading-6 dark:text-white text-black">
                                         NSFW
                                       </dt>
                                       <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
@@ -241,7 +247,7 @@ export default function FetchGallery() {
                                       </dd>
                                     </div>
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                      <dt className="text-sm font-medium leading-6 text-white">
+                                      <dt className="text-sm font-medium leading-6 dark:text-white text-black">
                                         Width/Height
                                       </dt>
                                       <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
@@ -249,7 +255,7 @@ export default function FetchGallery() {
                                       </dd>
                                     </div>
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                      <dt className="text-sm font-medium leading-6 text-white">
+                                      <dt className="text-sm font-medium leading-6 dark:text-white text-black">
                                         About
                                       </dt>
                                       <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0 max-w-full break-words">

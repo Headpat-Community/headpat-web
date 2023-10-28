@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import Loading from "@/app/loading";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -10,6 +11,7 @@ export const runtime = "edge";
 export default function AnnouncementInfo() {
   const [announcementData, setAnnouncementData] = useState(null);
   const [userData, setUserData] = useState({});
+  const [loading, setLoading] = useState(true); // Added loading state
 
   useEffect(() => {
     const pathParts = window.location.pathname.split("/");
@@ -22,17 +24,24 @@ export default function AnnouncementInfo() {
       .then((data) => {
         setAnnouncementData(data.data);
         const createdById = data.data.attributes.users_permissions_user.data.id;
-        fetch(`/api/user/getUserData/${createdById}?populate=*`, {
+        return fetch(`/api/user/getUserData/${createdById}?populate=*`, {
           method: "GET",
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            setUserData(data);
-          })
-          .catch((error) => console.error(error));
+        });
       })
-      .catch((error) => console.error(error));
+      .then((response) => response.json())
+      .then((data) => {
+        setUserData(data);
+        setLoading(false); // Data fetching is done, set loading to false
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false); // In case of error, set loading to false
+      });
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -44,7 +53,7 @@ export default function AnnouncementInfo() {
           </h3>
         </div>
         <div className="mt-6 max-w-4xl mx-auto">
-          <dd className="mt-1 text-sm leading-6 text-white sm:col-span-2 sm:mt-0 mb-8">
+          <dd className="mt-1 text-sm leading-6 dark:text-white text-black sm:col-span-2 sm:mt-0 mb-8">
             <Link
               href="."
               className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
@@ -52,19 +61,19 @@ export default function AnnouncementInfo() {
               &larr; Go back
             </Link>
           </dd>
-          <dl className="divide-y divide-white/40 border-t border-white/20">
+          <dl className="divide-y divide-white/40 border-t dark:border-white/20 border-black/20">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6 text-white">
+              <dt className="text-sm font-medium leading-6 dark:text-white text-black">
                 Author
               </dt>
-              <dd className="mt-1 text-sm leading-6 text-white sm:col-span-2 sm:mt-0 flex items-center">
+              <dd className="mt-1 text-sm leading-6 dark:text-white text-black sm:col-span-2 sm:mt-0 flex items-center">
                 <Link
                   className="text-indigo-500 hover:text-indigo-400 flex items-center"
                   href={`/user/${userData?.data?.attributes?.users_permissions_user?.data?.attributes?.username}`}
                   passHref
                 >
                   <Image
-                    className="h-12 w-12 flex-none rounded-full bg-gray-50 mr-4"
+                    className="h-12 w-12 flex-none rounded-full dark:bg-gray-50 bg-gray-950 mr-4"
                     src={
                       userData?.data?.attributes?.avatar?.data?.attributes
                         ?.url || "/logos/logo-64.webp"
@@ -81,10 +90,10 @@ export default function AnnouncementInfo() {
               </dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6 text-white">
+              <dt className="text-sm font-medium leading-6">
                 Title
               </dt>
-              <dd className="mt-1 text-sm leading-6 text-white0 sm:col-span-2 sm:mt-0">
+              <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
                 <strong>
                   {announcementData?.attributes?.title || "Unknown"}
                 </strong>{" "}
@@ -99,10 +108,10 @@ export default function AnnouncementInfo() {
               </dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6 text-white">
+              <dt className="text-sm font-medium leading-6 dark:text-white text-black">
                 Valid until
               </dt>
-              <dd className="mt-1 text-sm leading-6 text-white sm:col-span-2 sm:mt-0">
+              <dd className="mt-1 text-sm leading-6 dark:text-white text-black sm:col-span-2 sm:mt-0">
                 {announcementData?.attributes?.validuntil &&
                   new Date(
                     announcementData?.attributes?.validuntil
@@ -113,23 +122,23 @@ export default function AnnouncementInfo() {
                     <div className="flex-none rounded-full bg-emerald-500/20 p-1">
                       <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                     </div>
-                    <p className="text-xs leading-5 text-white/80">Active</p>
+                    <p className="text-xs leading-5 dark:text-white/80 text-black/80">Active</p>
                   </div>
                 ) : (
                   <div className="mt-1 flex items-center gap-x-1.5">
                     <div className="flex-none rounded-full bg-red-500/20 p-1">
                       <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
                     </div>
-                    <p className="text-xs leading-5 text-white/80">Inactive</p>
+                    <p className="text-xs leading-5 dark:text-white/80 text-black/80">Inactive</p>
                   </div>
                 )}
               </dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6 text-white">
+              <dt className="text-sm font-medium leading-6 dark:text-white text-black">
                 Description
               </dt>
-              <dd className="mt-1 text-sm leading-6 text-white sm:col-span-2 sm:mt-0 mb-4">
+              <dd className="mt-1 text-sm leading-6 dark:text-white text-black sm:col-span-2 sm:mt-0 mb-4">
                 {announcementData?.attributes?.description || "Unknown"}
               </dd>
             </div>

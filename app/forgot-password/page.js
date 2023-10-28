@@ -19,20 +19,15 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        "/api/user/forgotPassword",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            email: email,
-          }),
-        }
-      );
+      const response = await fetch("/api/user/forgotPassword", {
+        method: "POST",
+        body: JSON.stringify({
+          email: email,
+        }),
+      });
       //console.log("User authenticated successfully");
       if (response.status === 400) {
-        setError(
-          `E-Mail inkorrekt!`
-        );
+        setError(`E-Mail inkorrekt!`);
         setTimeout(() => {
           setError("");
         }, 5000);
@@ -70,7 +65,7 @@ const ForgotPassword = () => {
             width={128}
             height={128}
           />
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
+          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight dark:text-white text-black">
             Forgot password?
           </h2>
 
@@ -82,7 +77,7 @@ const ForgotPassword = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium leading-6 text-white"
+                className="block text-sm font-medium leading-6 dark:text-white text-black"
               >
                 Email address
               </label>
@@ -93,7 +88,7 @@ const ForgotPassword = () => {
                   type="email"
                   autoComplete="email"
                   required
-                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
