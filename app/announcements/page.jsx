@@ -67,7 +67,7 @@ export default function AnnouncementsPage() {
                     height={48}
                   />
                   <div className="min-w-0 flex-auto">
-                    <p className="text-sm font-semibold leading-6 dark:text-white text-black">
+                    <p className="text-sm font-semibold leading-6">
                       <Link href={`/announcements/${announcement.id}`}>
                         <span className="absolute inset-x-0 -top-px bottom-0" />
                         {announcement.attributes.title}

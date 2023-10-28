@@ -180,14 +180,14 @@ export default function FetchGallery() {
                             <dl className="divide-y dark:divide-white/10 divide-black/10">
                               <div className="ml-4">
                                 <div className="px-4 sm:px-0 mt-4">
-                                  <h3 className="text-base font-semibold leading-7 dark:text-white text-black">
+                                  <h3 className="text-base font-semibold leading-7">
                                     Image description
                                   </h3>
                                 </div>
                                 <div className="mt-4 border-t dark:border-white/10 border-black/10">
                                   <dl className="divide-y dark:divide-white/10 divide-black/10">
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                      <dt className="text-sm font-medium leading-6 dark:text-white text-black">
+                                      <dt className="text-sm font-medium leading-6">
                                         Title
                                       </dt>
                                       <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
@@ -195,7 +195,7 @@ export default function FetchGallery() {
                                       </dd>
                                     </div>
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                      <dt className="text-sm font-medium leading-6 dark:text-white text-black">
+                                      <dt className="text-sm font-medium leading-6">
                                         Uploaded by:
                                       </dt>
                                       <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
@@ -208,7 +208,7 @@ export default function FetchGallery() {
                                       </dd>
                                     </div>
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                      <dt className="text-sm font-medium leading-6 dark:text-white text-black">
+                                      <dt className="text-sm font-medium leading-6">
                                         Creation Date
                                       </dt>
                                       <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
@@ -224,7 +224,7 @@ export default function FetchGallery() {
                                       </dd>
                                     </div>
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                      <dt className="text-sm font-medium leading-6 dark:text-white text-black">
+                                      <dt className="text-sm font-medium leading-6">
                                         Last Modified
                                       </dt>
                                       <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
@@ -239,7 +239,7 @@ export default function FetchGallery() {
                                       </dd>
                                     </div>
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                      <dt className="text-sm font-medium leading-6 dark:text-white text-black">
+                                      <dt className="text-sm font-medium leading-6">
                                         NSFW
                                       </dt>
                                       <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
@@ -247,7 +247,7 @@ export default function FetchGallery() {
                                       </dd>
                                     </div>
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                      <dt className="text-sm font-medium leading-6 dark:text-white text-black">
+                                      <dt className="text-sm font-medium leading-6">
                                         Width/Height
                                       </dt>
                                       <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
@@ -255,7 +255,7 @@ export default function FetchGallery() {
                                       </dd>
                                     </div>
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                      <dt className="text-sm font-medium leading-6 dark:text-white text-black">
+                                      <dt className="text-sm font-medium leading-6">
                                         About
                                       </dt>
                                       <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0 max-w-full break-words">

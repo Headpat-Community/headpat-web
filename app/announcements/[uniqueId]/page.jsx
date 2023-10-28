@@ -53,7 +53,7 @@ export default function AnnouncementInfo() {
           </h3>
         </div>
         <div className="mt-6 max-w-4xl mx-auto">
-          <dd className="mt-1 text-sm leading-6 dark:text-white text-black sm:col-span-2 sm:mt-0 mb-8">
+          <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0 mb-8">
             <Link
               href="."
               className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
@@ -61,12 +61,12 @@ export default function AnnouncementInfo() {
               &larr; Go back
             </Link>
           </dd>
-          <dl className="divide-y divide-white/40 border-t dark:border-white/20 border-black/20">
+          <dl className="divide-y dark:divide-white/40 divide-black/40">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6 dark:text-white text-black">
+              <dt className="text-sm font-medium leading-6">
                 Author
               </dt>
-              <dd className="mt-1 text-sm leading-6 dark:text-white text-black sm:col-span-2 sm:mt-0 flex items-center">
+              <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0 flex items-center">
                 <Link
                   className="text-indigo-500 hover:text-indigo-400 flex items-center"
                   href={`/user/${userData?.data?.attributes?.users_permissions_user?.data?.attributes?.username}`}
@@ -108,10 +108,10 @@ export default function AnnouncementInfo() {
               </dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6 dark:text-white text-black">
+              <dt className="text-sm font-medium leading-6">
                 Valid until
               </dt>
-              <dd className="mt-1 text-sm leading-6 dark:text-white text-black sm:col-span-2 sm:mt-0">
+              <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
                 {announcementData?.attributes?.validuntil &&
                   new Date(
                     announcementData?.attributes?.validuntil
@@ -135,10 +135,10 @@ export default function AnnouncementInfo() {
               </dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6 dark:text-white text-black">
+              <dt className="text-sm font-medium leading-6">
                 Description
               </dt>
-              <dd className="mt-1 text-sm leading-6 dark:text-white text-black sm:col-span-2 sm:mt-0 mb-4">
+              <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0 mb-4">
                 {announcementData?.attributes?.description || "Unknown"}
               </dd>
             </div>

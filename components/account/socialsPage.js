@@ -1,9 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Loading from "@/app/loading";
 
 export default function AccountPage() {
   const [isUploading, setIsUploading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState({
     discordname: "",
     telegramname: "",
@@ -14,6 +16,7 @@ export default function AccountPage() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const userResponse = await fetch("/api/user/getUserSelf", {
           method: "GET",
@@ -41,8 +44,10 @@ export default function AccountPage() {
           X_name: userDataAttributes.X_name || "",
           twitchname: userDataAttributes.twitchname || "",
         });
+        setIsLoading(false);
       } catch (error) {
         console.error(error);
+        setIsLoading(false);
       }
     };
 
@@ -53,11 +58,6 @@ export default function AccountPage() {
     event.preventDefault();
 
     try {
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-
       const userResponse = await fetch("/api/user/getUserSelf", {
         method: "GET",
       });
@@ -131,204 +131,210 @@ export default function AccountPage() {
           </ul>
         </nav>
       </header>
-      <div className="divide-y divide-white/5">
-        <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-          <div>
-            <h2 className="text-base font-semibold leading-7 text-white">
-              Socials
-            </h2>
-            <p className="mt-1 text-sm leading-6 text-gray-400">
-              Hier kannst du deine Links zu deinen Social Media Accounts
-              eintragen.
-            </p>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="divide-y divide-white/5">
+          <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+            <div>
+              <h2 className="text-base font-semibold leading-7 text-white">
+                Socials
+              </h2>
+              <p className="mt-1 text-sm leading-6 text-gray-400">
+                Hier kannst du deine Links zu deinen Social Media Accounts
+                eintragen.
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="md:col-span-2">
+              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+                <div className="sm:col-span-6">
+                  <label
+                    htmlFor="discordname"
+                    className="block text-sm font-medium leading-6 text-white"
+                  >
+                    Discord ID (196742608846979072 z.B.)
+                  </label>
+                  <div className="mt-2 relative">
+                    <input
+                      type="text"
+                      name="discordname"
+                      id="discordname"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.discordname} // Set the value from state
+                      onChange={(e) => {
+                        if (e.target.value.length <= 32) {
+                          setUserData({
+                            ...userData,
+                            discordname: e.target.value,
+                          });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 32
+                      maxLength={32} // Limit the maximum number of characters to 32
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                      <span className="text-white select-none">
+                        {userData.discordname ? userData.discordname.length : 0}{" "}
+                        {/* Check if userData.discordname is defined before accessing its length property */}
+                      </span>
+                      <span className="text-gray-400 select-none">/{32}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="sm:col-span-6">
+                  <label
+                    htmlFor="telegramname"
+                    className="block text-sm font-medium leading-6 text-white"
+                  >
+                    Telegram Name
+                  </label>
+                  <div className="mt-2 relative">
+                    <input
+                      type="text"
+                      name="telegramname"
+                      id="telegramname"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.telegramname} // Set the value from state
+                      onChange={(e) => {
+                        if (e.target.value.length <= 32) {
+                          setUserData({
+                            ...userData,
+                            telegramname: e.target.value,
+                          });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 32
+                      maxLength={32} // Limit the maximum number of characters to 32
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                      <span className="text-white select-none">
+                        {userData.telegramname
+                          ? userData.telegramname.length
+                          : 0}{" "}
+                        {/* Check if userData.telegramname is defined before accessing its length property */}
+                      </span>
+                      <span className="text-gray-400 select-none">/{32}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="sm:col-span-6">
+                  <label
+                    htmlFor="furaffinityname"
+                    className="block text-sm font-medium leading-6 text-white"
+                  >
+                    Furaffinity Name
+                  </label>
+                  <div className="mt-2 relative">
+                    <input
+                      type="text"
+                      name="furaffinityname"
+                      id="furaffinityname"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.furaffinityname} // Set the value from state
+                      onChange={(e) => {
+                        if (e.target.value.length <= 32) {
+                          setUserData({
+                            ...userData,
+                            furaffinityname: e.target.value,
+                          });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 32
+                      maxLength={32} // Limit the maximum number of characters to 32
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                      <span className="text-white select-none">
+                        {userData.furaffinityname
+                          ? userData.furaffinityname.length
+                          : 0}{" "}
+                        {/* Check if userData.furaffinityname is defined before accessing its length property */}
+                      </span>
+                      <span className="text-gray-400 select-none">/{32}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="sm:col-span-6">
+                  <label
+                    htmlFor="X_name"
+                    className="block text-sm font-medium leading-6 text-white"
+                  >
+                    X / Twitter Name
+                  </label>
+                  <div className="mt-2 relative">
+                    <input
+                      type="text"
+                      name="X_name"
+                      id="X_name"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.X_name} // Set the value from state
+                      onChange={(e) => {
+                        if (e.target.value.length <= 32) {
+                          setUserData({
+                            ...userData,
+                            X_name: e.target.value,
+                          });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 32
+                      maxLength={32} // Limit the maximum number of characters to 32
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                      <span className="text-white select-none">
+                        {userData.X_name ? userData.X_name.length : 0}{" "}
+                        {/* Check if userData.X_name is defined before accessing its length property */}
+                      </span>
+                      <span className="text-gray-400 select-none">/{32}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="sm:col-span-6">
+                  <label
+                    htmlFor="twitchname"
+                    className="block text-sm font-medium leading-6 text-white"
+                  >
+                    Twitch
+                  </label>
+                  <div className="mt-2 relative">
+                    <input
+                      type="text"
+                      name="twitchname"
+                      id="twitchname"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      value={userData.twitchname} // Set the value from state
+                      onChange={(e) => {
+                        if (e.target.value.length <= 32) {
+                          setUserData({
+                            ...userData,
+                            twitchname: e.target.value,
+                          });
+                        }
+                      }} // Update state when the input changes, only if the length is less than or equal to 32
+                      maxLength={32} // Limit the maximum number of characters to 32
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                      <span className="text-white select-none">
+                        {userData.twitchname ? userData.twitchname.length : 0}{" "}
+                        {/* Check if userData.twitchname is defined before accessing its length property */}
+                      </span>
+                      <span className="text-gray-400 select-none">/{32}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 flex">
+                <button
+                  type="submit"
+                  className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
           </div>
-
-          <form onSubmit={handleSubmit} className="md:col-span-2">
-            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-              <div className="sm:col-span-6">
-                <label
-                  htmlFor="discordname"
-                  className="block text-sm font-medium leading-6 text-white"
-                >
-                  Discord ID (196742608846979072 z.B.)
-                </label>
-                <div className="mt-2 relative">
-                  <input
-                    type="text"
-                    name="discordname"
-                    id="discordname"
-                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                    value={userData.discordname} // Set the value from state
-                    onChange={(e) => {
-                      if (e.target.value.length <= 32) {
-                        setUserData({
-                          ...userData,
-                          discordname: e.target.value,
-                        });
-                      }
-                    }} // Update state when the input changes, only if the length is less than or equal to 32
-                    maxLength={32} // Limit the maximum number of characters to 32
-                  />
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                    <span className="text-white select-none">
-                      {userData.discordname ? userData.discordname.length : 0}{" "}
-                      {/* Check if userData.discordname is defined before accessing its length property */}
-                    </span>
-                    <span className="text-gray-400 select-none">/{32}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="sm:col-span-6">
-                <label
-                  htmlFor="telegramname"
-                  className="block text-sm font-medium leading-6 text-white"
-                >
-                  Telegram Name
-                </label>
-                <div className="mt-2 relative">
-                  <input
-                    type="text"
-                    name="telegramname"
-                    id="telegramname"
-                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                    value={userData.telegramname} // Set the value from state
-                    onChange={(e) => {
-                      if (e.target.value.length <= 32) {
-                        setUserData({
-                          ...userData,
-                          telegramname: e.target.value,
-                        });
-                      }
-                    }} // Update state when the input changes, only if the length is less than or equal to 32
-                    maxLength={32} // Limit the maximum number of characters to 32
-                  />
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                    <span className="text-white select-none">
-                      {userData.telegramname ? userData.telegramname.length : 0}{" "}
-                      {/* Check if userData.telegramname is defined before accessing its length property */}
-                    </span>
-                    <span className="text-gray-400 select-none">/{32}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="sm:col-span-6">
-                <label
-                  htmlFor="furaffinityname"
-                  className="block text-sm font-medium leading-6 text-white"
-                >
-                  Furaffinity Name
-                </label>
-                <div className="mt-2 relative">
-                  <input
-                    type="text"
-                    name="furaffinityname"
-                    id="furaffinityname"
-                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                    value={userData.furaffinityname} // Set the value from state
-                    onChange={(e) => {
-                      if (e.target.value.length <= 32) {
-                        setUserData({
-                          ...userData,
-                          furaffinityname: e.target.value,
-                        });
-                      }
-                    }} // Update state when the input changes, only if the length is less than or equal to 32
-                    maxLength={32} // Limit the maximum number of characters to 32
-                  />
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                    <span className="text-white select-none">
-                      {userData.furaffinityname
-                        ? userData.furaffinityname.length
-                        : 0}{" "}
-                      {/* Check if userData.furaffinityname is defined before accessing its length property */}
-                    </span>
-                    <span className="text-gray-400 select-none">/{32}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="sm:col-span-6">
-                <label
-                  htmlFor="X_name"
-                  className="block text-sm font-medium leading-6 text-white"
-                >
-                  X / Twitter Name
-                </label>
-                <div className="mt-2 relative">
-                  <input
-                    type="text"
-                    name="X_name"
-                    id="X_name"
-                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                    value={userData.X_name} // Set the value from state
-                    onChange={(e) => {
-                      if (e.target.value.length <= 32) {
-                        setUserData({
-                          ...userData,
-                          X_name: e.target.value,
-                        });
-                      }
-                    }} // Update state when the input changes, only if the length is less than or equal to 32
-                    maxLength={32} // Limit the maximum number of characters to 32
-                  />
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                    <span className="text-white select-none">
-                      {userData.X_name ? userData.X_name.length : 0}{" "}
-                      {/* Check if userData.X_name is defined before accessing its length property */}
-                    </span>
-                    <span className="text-gray-400 select-none">/{32}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="sm:col-span-6">
-                <label
-                  htmlFor="twitchname"
-                  className="block text-sm font-medium leading-6 text-white"
-                >
-                  Twitch
-                </label>
-                <div className="mt-2 relative">
-                  <input
-                    type="text"
-                    name="twitchname"
-                    id="twitchname"
-                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                    value={userData.twitchname} // Set the value from state
-                    onChange={(e) => {
-                      if (e.target.value.length <= 32) {
-                        setUserData({
-                          ...userData,
-                          twitchname: e.target.value,
-                        });
-                      }
-                    }} // Update state when the input changes, only if the length is less than or equal to 32
-                    maxLength={32} // Limit the maximum number of characters to 32
-                  />
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                    <span className="text-white select-none">
-                      {userData.twitchname ? userData.twitchname.length : 0}{" "}
-                      {/* Check if userData.twitchname is defined before accessing its length property */}
-                    </span>
-                    <span className="text-gray-400 select-none">/{32}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 flex">
-              <button
-                type="submit"
-                className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-              >
-                Save
-              </button>
-            </div>
-          </form>
         </div>
-      </div>
+      )}
     </>
   );
 }

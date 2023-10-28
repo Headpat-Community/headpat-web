@@ -15,28 +15,28 @@ import {
 import Image from "next/image";
 
 const navigation = [
-  { name: "Home page", href: "/", icon: HomeIcon, current: false },
+  { name: "Startseite", href: "/", icon: HomeIcon, current: false },
   { name: "Dashboard", href: "/account", icon: UserCircleIcon, current: false },
   {
-    name: "Upload image",
+    name: "Bild hochladen",
     href: "/account/upload",
     icon: ArrowUpOnSquareIcon,
     current: false,
   },
   {
-    name: "User Gallery",
+    name: "User Gallerie",
     href: "/account/gallery",
     icon: PhotoIcon,
     current: false,
   },
   {
-    name: "Projects (Soon)",
+    name: "Projekte (Soon)",
     href: "#",
     icon: FolderIcon,
     current: false,
   },
   {
-    name: "Logout",
+    name: "Ausloggen",
     href: "/account/logout",
     icon: ArrowLeftIcon,
     current: false,

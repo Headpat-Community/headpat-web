@@ -70,7 +70,7 @@ export default function Home() {
                   </Link>
                 </div>
               </div>
-              <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight dark:text-white sm:text-6xl">
+              <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight sm:text-6xl">
                 Headpat Community
               </h1>
               <p className="mt-6 text-lg leading-8 dark:text-white/80">
