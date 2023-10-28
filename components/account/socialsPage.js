@@ -111,12 +111,12 @@ export default function AccountPage() {
 
   return (
     <>
-      <header className="border-b border-white/5">
+      <header className="border-b dark:border-white/5 border-black/5">
         {/* Secondary navigation */}
         <nav className="flex overflow-x-auto py-4">
           <ul
             role="list"
-            className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
+            className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 dark:text-gray-400 text-gray-900 sm:px-6 lg:px-8"
           >
             {secondaryNavigation.map((item) => (
               <li key={item.name}>
@@ -134,10 +134,10 @@ export default function AccountPage() {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="divide-y divide-white/5">
+        <div className="divide-y dark:divide-white/5 divide-black/5">
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
             <div>
-              <h2 className="text-base font-semibold leading-7 text-white">
+              <h2 className="text-base font-semibold leading-7">
                 Socials
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">
@@ -151,7 +151,7 @@ export default function AccountPage() {
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="discordname"
-                    className="block text-sm font-medium leading-6 text-white"
+                    className="block text-sm font-medium leading-6"
                   >
                     Discord ID (196742608846979072 z.B.)
                   </label>
@@ -160,7 +160,7 @@ export default function AccountPage() {
                       type="text"
                       name="discordname"
                       id="discordname"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:dark:ring-white/10 ring-black/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.discordname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -173,7 +173,7 @@ export default function AccountPage() {
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                      <span className="text-white select-none">
+                      <span className="select-none">
                         {userData.discordname ? userData.discordname.length : 0}{" "}
                         {/* Check if userData.discordname is defined before accessing its length property */}
                       </span>
@@ -185,7 +185,7 @@ export default function AccountPage() {
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="telegramname"
-                    className="block text-sm font-medium leading-6 text-white"
+                    className="block text-sm font-medium leading-6"
                   >
                     Telegram Name
                   </label>
@@ -194,7 +194,7 @@ export default function AccountPage() {
                       type="text"
                       name="telegramname"
                       id="telegramname"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:dark:ring-white/10 ring-black/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.telegramname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -207,7 +207,7 @@ export default function AccountPage() {
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                      <span className="text-white select-none">
+                      <span className="select-none">
                         {userData.telegramname
                           ? userData.telegramname.length
                           : 0}{" "}
@@ -221,7 +221,7 @@ export default function AccountPage() {
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="furaffinityname"
-                    className="block text-sm font-medium leading-6 text-white"
+                    className="block text-sm font-medium leading-6"
                   >
                     Furaffinity Name
                   </label>
@@ -230,7 +230,7 @@ export default function AccountPage() {
                       type="text"
                       name="furaffinityname"
                       id="furaffinityname"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.furaffinityname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -243,7 +243,7 @@ export default function AccountPage() {
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                      <span className="text-white select-none">
+                      <span className="select-none">
                         {userData.furaffinityname
                           ? userData.furaffinityname.length
                           : 0}{" "}
@@ -257,7 +257,7 @@ export default function AccountPage() {
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="X_name"
-                    className="block text-sm font-medium leading-6 text-white"
+                    className="block text-sm font-medium leading-6"
                   >
                     X / Twitter Name
                   </label>
@@ -266,7 +266,7 @@ export default function AccountPage() {
                       type="text"
                       name="X_name"
                       id="X_name"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.X_name} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -279,7 +279,7 @@ export default function AccountPage() {
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                      <span className="text-white select-none">
+                      <span className="select-none">
                         {userData.X_name ? userData.X_name.length : 0}{" "}
                         {/* Check if userData.X_name is defined before accessing its length property */}
                       </span>
@@ -291,7 +291,7 @@ export default function AccountPage() {
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="twitchname"
-                    className="block text-sm font-medium leading-6 text-white"
+                    className="block text-sm font-medium leading-6"
                   >
                     Twitch
                   </label>
@@ -300,7 +300,7 @@ export default function AccountPage() {
                       type="text"
                       name="twitchname"
                       id="twitchname"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.twitchname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -313,7 +313,7 @@ export default function AccountPage() {
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                      <span className="text-white select-none">
+                      <span className="select-none">
                         {userData.twitchname ? userData.twitchname.length : 0}{" "}
                         {/* Check if userData.twitchname is defined before accessing its length property */}
                       </span>

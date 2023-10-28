@@ -29,6 +29,7 @@ export function ThemeToggle() {
   const pathname = usePathname();
 
   const isPawcraftPage = pathname === "/pawcraft";
+  const isAccountPage = pathname.startsWith("/account");
 
   useEffect(() => {
     setMounted(true);
@@ -46,7 +47,7 @@ export function ThemeToggle() {
       ) : (
         <SunIcon
           className={`h-8 w-8  ${
-            isPawcraftPage ? "stroke-white" : "stroke-zinc-900"
+            isPawcraftPage || isAccountPage ? "stroke-white" : "stroke-zinc-900"
           }`}
         />
       )}

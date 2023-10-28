@@ -137,7 +137,7 @@ export default function AccountPage() {
     const userId = userResponseData.id;
 
     try {
-      const putResponse = await fetch(`/api/user/editUserData/${userId}`, {
+      const putResponse = await fetch(`/api/user/handleNsfwChange/${userId}`, {
         method: "PUT",
         body: JSON.stringify({
           data: {
@@ -165,7 +165,7 @@ export default function AccountPage() {
         <nav className="flex overflow-x-auto py-4">
           <ul
             role="list"
-            className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
+            className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 dark:text-gray-400 text-gray-900 sm:px-6 lg:px-8"
           >
             {secondaryNavigation.map((item) => (
               <li key={item.name}>
@@ -186,7 +186,7 @@ export default function AccountPage() {
         <div className="divide-y dark:divide-white/5 divide-black/5">
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
             <div>
-              <h2 className="text-base font-semibold leading-7 dark:text-white text-black">
+              <h2 className="text-base font-semibold leading-7">
                 Personal Information
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">
@@ -199,7 +199,7 @@ export default function AccountPage() {
                 <div className="col-span-full">
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium leading-6 dark:text-white text-black"
+                    className="block text-sm font-medium leading-6"
                   >
                     Email address
                   </label>
@@ -210,14 +210,14 @@ export default function AccountPage() {
                       type="email"
                       placeholder={userMe ? userMe.email : ""}
                       onChange={(e) => setEmailValue(e.target.value)}
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
                 <div className="col-span-full">
                   <label
                     htmlFor="username"
-                    className="block text-sm font-medium leading-6 dark:text-white text-black"
+                    className="block text-sm font-medium leading-6"
                   >
                     Username
                   </label>
@@ -232,7 +232,7 @@ export default function AccountPage() {
                         id="username_login"
                         placeholder={userMe ? userMe.username : ""}
                         onChange={(e) => setUsernameValue(e.target.value)}
-                        className="flex-1 border-0 bg-transparent py-1.5 pl-1 dark:text-white text-black focus:ring-0 sm:text-sm sm:leading-6"
+                        className="flex-1 border-0 bg-transparent py-1.5 pl-1 focus:ring-0 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
@@ -252,7 +252,7 @@ export default function AccountPage() {
 
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
             <div>
-              <h2 className="text-base font-semibold leading-7 dark:text-white text-black">
+              <h2 className="text-base font-semibold leading-">
                 Change password
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">
@@ -265,7 +265,7 @@ export default function AccountPage() {
                 <div className="col-span-full">
                   <span
                     htmlFor="current-password"
-                    className="block text-sm font-medium text-white mb-2"
+                    className="block text-sm font-medium mb-2"
                   >
                     Current password
                   </span>
@@ -274,13 +274,13 @@ export default function AccountPage() {
                     name="currentpassword" // Updated name
                     id="currentpassword"
                     autoComplete="current-password"
-                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   />
                 </div>
                 <div className="col-span-full">
                   <span
                     htmlFor="new-password"
-                    className="block text-sm font-medium dark:text-white text-black mb-2"
+                    className="block text-sm font-medium mb-2"
                   >
                     New password
                   </span>
@@ -290,13 +290,13 @@ export default function AccountPage() {
                     id="newpassword"
                     autoComplete="new-password"
                     required
-                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   />
                 </div>
                 <div className="col-span-full">
                   <span
                     htmlFor="confirm-password"
-                    className="block text-sm font-medium text-white mb-2"
+                    className="block text-sm font-medium mb-2"
                   >
                     Confirm new password
                   </span>
@@ -306,7 +306,7 @@ export default function AccountPage() {
                     id="confirmpassword"
                     autoComplete="new-password"
                     required
-                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   />
                 </div>
                 <div className="col-span-full">
@@ -323,7 +323,7 @@ export default function AccountPage() {
 
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
             <div>
-              <h2 className="text-base font-semibold leading-7 dark:text-white text-black">
+              <h2 className="text-base font-semibold leading-7">
                 Enable NSFW
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">

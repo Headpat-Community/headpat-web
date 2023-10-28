@@ -13,6 +13,7 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import { ThemeToggle } from "@/components//ThemeToggle";
 
 const navigation = [
   { name: "Startseite", href: "/", icon: HomeIcon, current: false },
@@ -188,6 +189,7 @@ export default function AccountLayout({ children }) {
                           height={32}
                         />
                       </Link>
+                      <ThemeToggle />
                     </div>
                     <nav className="flex flex-1 flex-col">
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -230,13 +232,14 @@ export default function AccountLayout({ children }) {
             <div className="flex h-20 shrink-0 items-center">
               <Link href="/">
                 <Image
-                  className="h-12 w-auto"
+                  className="h-12 w-auto mr-4"
                   src="/logos/logo-512.webp"
                   alt="Headpat Community"
                   width={64}
                   height={64}
                 />
               </Link>
+              <ThemeToggle />
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">

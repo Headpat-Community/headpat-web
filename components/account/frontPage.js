@@ -127,8 +127,8 @@ export default function AccountPage() {
         setIsUploading(false); // Set isUploading to false after the API call is complete
         setUserData(responseData); // Set the userData state with the response data
         // Reload the window
-        alert("Saved!");
-        //window.location.reload();
+        //alert("Saved!");
+        window.location.reload();
       } else {
         // Check for the specific error structure
         if (
@@ -154,12 +154,12 @@ export default function AccountPage() {
 
   return (
     <>
-      <header className="border-b border-white/5">
+      <header className="border-b dark:border-white/5 border-black/5">
         {/* Secondary navigation */}
         <nav className="flex overflow-x-auto py-4">
           <ul
             role="list"
-            className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
+            className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 dark:text-gray-400 text-gray-900 sm:px-6 lg:px-8"
           >
             {secondaryNavigation.map((item) => (
               <li key={item.name}>
@@ -177,13 +177,13 @@ export default function AccountPage() {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="divide-y divide-white/5">
+        <div className="divide-y dark:divide-white/5 divide-black/5">
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
             <div>
-              <h2 className="text-base font-semibold leading-7 text-white">
+              <h2 className="text-base font-semibold leading-7">
                 Frontpage Einstellungen
               </h2>
-              <p className="mt-1 text-sm leading-6 text-gray-400">
+              <p className="mt-1 text-sm leading-6 dark:text-gray-400 text-gray-900">
                 Hier kannst du deine Biografie, Profilbild etc. verwalten.
               </p>
             </div>
@@ -202,16 +202,16 @@ export default function AccountPage() {
                   <div>
                     <input
                       accept="image/*"
-                      className="rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
+                      className="rounded-md px-3 py-2 text-sm font-semibold shadow-sm hover:bg-white/20 ring-1 dark:ring-white/10 ring-black/10"
                       id="avatar-upload"
                       name="avatar-upload"
                       type="file"
                       onChange={handleAvatarChange}
                     />
-                    <p className="mt-2 text-xs leading-5 text-gray-400">
+                    <p className="mt-2 text-xs leading-5 dark:text-gray-400 text-gray-900">
                       JPG, GIF or PNG. 2MB max.
                     </p>
-                    <p className="mt-2 text-xs leading-5 text-gray-400">
+                    <p className="mt-2 text-xs leading-5 dark:text-gray-400 text-gray-900">
                       1024x1024 max. resolution
                     </p>
                   </div>
@@ -222,7 +222,7 @@ export default function AccountPage() {
                 <div className="col-span-full">
                   <label
                     htmlFor="displayname"
-                    className="block text-sm font-medium leading-6 text-white"
+                    className="block text-sm font-medium leading-6"
                   >
                     Display Name
                   </label>
@@ -231,7 +231,7 @@ export default function AccountPage() {
                       id="displayname"
                       name="displayname"
                       type="text"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.displayname || ""} // Set the value from state, or an empty string if it's undefined
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -244,7 +244,7 @@ export default function AccountPage() {
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                      <span className="text-white select-none">
+                      <span className="select-none">
                         {userData.displayname ? userData.displayname.length : 0}{" "}
                         {/* Check if userData.displayname is defined before accessing its length property */}
                       </span>
@@ -256,7 +256,7 @@ export default function AccountPage() {
                 <div className="col-span-full">
                   <label
                     htmlFor="status"
-                    className="block text-sm font-medium leading-6 text-white"
+                    className="block text-sm font-medium leading-6"
                   >
                     Status
                   </label>
@@ -265,7 +265,7 @@ export default function AccountPage() {
                       id="status"
                       name="status"
                       type="text"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.status} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 24) {
@@ -275,10 +275,10 @@ export default function AccountPage() {
                       maxLength={24} // Limit the maximum number of characters to 24
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                      <span className="text-white  select-none">
+                      <span className="select-none">
                         {userData.status ? userData.status.length : 0}{" "}
                       </span>
-                      <span className="text-gray-400  select-none">/{24}</span>
+                      <span className="text-gray-400 select-none">/{24}</span>
                     </div>
                   </div>
                 </div>
@@ -286,7 +286,7 @@ export default function AccountPage() {
                 <div className="col-span-full">
                   <label
                     htmlFor="pronouns"
-                    className="block text-sm font-medium leading-6 text-white"
+                    className="block text-sm font-medium leading-6"
                   >
                     Pronouns
                   </label>
@@ -295,7 +295,7 @@ export default function AccountPage() {
                       id="pronouns"
                       name="pronouns"
                       type="text"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.pronouns} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 16) {
@@ -308,10 +308,10 @@ export default function AccountPage() {
                       maxLength={16} // Limit the maximum number of characters to 16
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                      <span className="text-white  select-none">
+                      <span className="select-none">
                         {userData.pronouns ? userData.pronouns.length : 0}{" "}
                       </span>
-                      <span className="text-gray-400  select-none">/{16}</span>
+                      <span className="text-gray-400 select-none">/{16}</span>
                     </div>
                   </div>
                 </div>
@@ -319,7 +319,7 @@ export default function AccountPage() {
                 <div className="col-span-full">
                   <label
                     htmlFor="birthday"
-                    className="block text-sm font-medium leading-6 text-white"
+                    className="block text-sm font-medium leading-6"
                   >
                     Birthday
                   </label>
@@ -328,7 +328,7 @@ export default function AccountPage() {
                       id="birthday"
                       name="birthday"
                       type="date"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.birthday} // Set the value from state
                       onChange={(e) => {
                         setUserData({ ...userData, birthday: e.target.value });
@@ -345,7 +345,7 @@ export default function AccountPage() {
                 <div className="col-span-full">
                   <label
                     htmlFor="location"
-                    className="block text-sm font-medium leading-6 text-white"
+                    className="block text-sm font-medium leading-6"
                   >
                     Location
                   </label>
@@ -354,7 +354,7 @@ export default function AccountPage() {
                       id="location"
                       name="location"
                       type="text"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.location} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 256) {
@@ -367,10 +367,10 @@ export default function AccountPage() {
                       maxLength={256} // Limit the maximum number of characters to 16
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                      <span className="text-white  select-none">
+                      <span className="select-none">
                         {userData.location ? userData.location.length : 0}{" "}
                       </span>
-                      <span className="text-gray-400  select-none">/{256}</span>
+                      <span className="text-gray-400 select-none">/{256}</span>
                     </div>
                   </div>
                 </div>
@@ -378,7 +378,7 @@ export default function AccountPage() {
                 <div className="col-span-full">
                   <label
                     htmlFor="biostatus"
-                    className="block text-sm font-medium leading-6 text-white"
+                    className="block text-sm font-medium leading-6"
                   >
                     Bio
                   </label>
@@ -386,7 +386,7 @@ export default function AccountPage() {
                     <textarea
                       id="biostatus"
                       name="biostatus"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 h-72"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 h-72"
                       value={userData.bio} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 256) {
@@ -396,7 +396,7 @@ export default function AccountPage() {
                       maxLength={256} // Limit the maximum number of characters to 256
                     />
                     <div className="absolute inset-y-0 right-0 pr-4 pb-2 flex items-end text-sm leading-5 pointer-events-none">
-                      <span className="text-white select-none">
+                      <span className="select-none">
                         {userData.bio ? userData.bio.length : 0}{" "}
                       </span>
                       <span className="text-gray-400 select-none">/{256}</span>
