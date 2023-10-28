@@ -133,11 +133,11 @@ export default function FetchGallery() {
                         src={
                           item.attributes.nsfw && !enableNsfw
                             ? "https://placekitten.com/200/300" // Replace with placeholder image URL
-                            : item.attributes.img.data.attributes.ext === ".gif"
-                            ? item.attributes.img.data.attributes.url
-                            : item.attributes.img.data.attributes.formats.small
+                            : item.attributes.img.data.attributes.size > 512 // Check if size is above 1MB (assuming size is in KB)
                             ? item.attributes.img.data.attributes.formats.small
-                                .url
+                              ? item.attributes.img.data.attributes.formats
+                                  .small.url
+                              : item.attributes.img.data.attributes.url
                             : item.attributes.img.data.attributes.url
                         }
                         alt={item.attributes.imgalt || item.attributes.name}
