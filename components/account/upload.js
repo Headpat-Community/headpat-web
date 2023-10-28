@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useState, useCallback } from "react";
 
 export default function UploadPage() {
@@ -108,9 +107,7 @@ export default function UploadPage() {
       <form onSubmit={handleSubmit}>
         <div className="space-y-12">
           <div className="border-b border-white/10 pb-12">
-            <h2 className="text-base font-semibold leading-7">
-              Image Upload
-            </h2>
+            <h2 className="text-base font-semibold leading-7">Image Upload</h2>
             <p className="mt-1 text-sm leading-6 dark:text-gray-400 text-gray-900">
               Diese Informationen werden öffentlich angezeigt. Sei also
               vorsichtig, was du teilst.
@@ -132,15 +129,13 @@ export default function UploadPage() {
                       onDrop={handleDrop}
                       onDragOver={(event) => event.preventDefault()}
                     >
-                      <Image
+                      <img
                         id="selected-image"
                         className="mx-auto h-96 min-w-full object-cover rounded-md"
                         alt="Placeholder Image"
                         src="/images/placeholder-image-color.webp"
                         onDrop={handleDrop}
                         onDragOver={(event) => event.preventDefault()}
-                        width={256}
-                        height={256}
                       />
                       <div className="mt-4 flex text-sm leading-6 text-gray-400">
                         <label
@@ -171,9 +166,7 @@ export default function UploadPage() {
           </div>
 
           <div className="border-b border-white/10 pb-12">
-            <h2 className="text-base font-semibold leading-7">
-              Informationen
-            </h2>
+            <h2 className="text-base font-semibold leading-7">Informationen</h2>
             <p className="mt-1 text-sm leading-6 dark:text-gray-400 text-gray-900">
               Alles mit ein asterisk (<span className="text-red-500">*</span>)
               ist nötig.
@@ -243,10 +236,7 @@ export default function UploadPage() {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <button
-            type="button"
-            className="text-sm font-semibold leading-6"
-          >
+          <button type="button" className="text-sm font-semibold leading-6">
             Cancel
           </button>
           <button

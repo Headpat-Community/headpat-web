@@ -1,6 +1,5 @@
 "use client";
-import Image from "next/image";
-import { useEffect, useCallback, useState, useRef } from "react";
+import { useCallback, useState, useRef } from "react";
 
 export default function BadgePageComponent() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -171,15 +170,13 @@ export default function BadgePageComponent() {
                         onDrop={handleDrop}
                         onDragOver={(event) => event.preventDefault()}
                       >
-                        <Image
+                        <img
                           id="selected-image"
                           className="h-32 w-32 rounded-md object-contain"
                           alt="Placeholder Image"
                           src="/images/placeholder-image-color.webp"
                           onDrop={handleDrop}
                           onDragOver={(event) => event.preventDefault()}
-                          width={128}
-                          height={128}
                         />
                         <div className="mt-4 flex text-sm leading-6 text-gray-400">
                           <label
