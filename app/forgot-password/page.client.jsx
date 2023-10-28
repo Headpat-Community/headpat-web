@@ -1,20 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import Header from "@/components/header";
 import Link from "next/link";
 import Image from "next/image";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      return parts.pop().split(";").shift();
-    }
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,7 +46,6 @@ const ForgotPassword = () => {
 
   return (
     <>
-      <Header />
       <div className="flex lg:pt-[200px] justify-center items-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col justify-center">
           <Image

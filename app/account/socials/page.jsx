@@ -6,6 +6,10 @@ const SocialsPage = dynamic(() => import('@/components/account/socialsPage'), {
   ssr: false,
 })
 
+export const metadata = {
+  title: "Socials",
+};
+
 export default function SocialSettings() {
 
   return (

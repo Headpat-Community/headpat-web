@@ -1,11 +1,10 @@
 import Header from "@/components/header";
-import Footer from "@/components/footer";
 import Client from "./page.client";
 
 export const runtime = "edge";
 
 export const metadata = {
-  title: "Announcements",
+  title: "Forgot Password",
 };
 
 export default function Page() {
@@ -13,7 +12,6 @@ export default function Page() {
     <>
       <Header />
       <Client />
-      <Footer />
     </>
   );
 }

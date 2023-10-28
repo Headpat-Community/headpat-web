@@ -1,10 +1,12 @@
-"use client";
 import Link from "next/link";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 
+export const metadata = {
+  title: "Impressum",
+};
+
 export default function Loading() {
-  // You can add any UI inside Loading, including a Skeleton.
   return (
     <>
       <Header />
