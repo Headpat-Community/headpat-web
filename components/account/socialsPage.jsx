@@ -160,7 +160,7 @@ export default function AccountPage() {
                       type="text"
                       name="discordname"
                       id="discordname"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:dark:ring-white/10 ring-black/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.discordname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -194,7 +194,7 @@ export default function AccountPage() {
                       type="text"
                       name="telegramname"
                       id="telegramname"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:dark:ring-white/10 ring-black/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={userData.telegramname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
