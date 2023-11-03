@@ -23,6 +23,14 @@ export async function GET() {
       },
     });
 
+    if (response.status === 401) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    if (response.status === 403) {
+      return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+    }
+
     if (!response.ok) {
       throw new Error("Failed to fetch data");
     }
