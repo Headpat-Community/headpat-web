@@ -124,8 +124,7 @@ export default function Home() {
 
   return (
     <>
-      <div>User ID: {userId}</div>
-      <div>Pat Count: {patCount}</div>
+      <div>Dein Pat Count: {patCount}</div>
       <div>Total Count: {totalCount}</div>
       <img onClick={handleIncrement} src="/logos/Headpat_new_logo.png" alt="pat" className="transition active:scale-75 transition-transform" />
     </>
