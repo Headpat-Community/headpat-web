@@ -2,13 +2,10 @@ import { NextResponse } from "next/server";
 
 export const runtime = "edge";
 
-export async function GET(request) {
+export async function GET() {
   try {
-    // Assume the last segment of the URL is the user ID
-    const userId = request.url.split("/").pop();
-
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/pats?filters[users_permissions_user]=${userId}`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/pats`;
 
     const response = await fetch(fetchURL, {
       method: "GET",

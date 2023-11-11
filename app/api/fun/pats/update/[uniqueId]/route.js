@@ -2,33 +2,36 @@ import { NextResponse } from "next/server";
 
 export const runtime = "edge";
 
-export async function GET(request) {
+export async function PUT(request) {
   try {
     // Assume the last segment of the URL is the user ID
-    const userId = request.url.split("/").pop();
+    const patId = request.url.split("/").pop();
+
+    const requestBody = await request.json();
+
+    if (!patId) {
+      throw new Error("Pat ID is required");
+    }
 
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/pats?filters[users_permissions_user]=${userId}`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/pats/${patId}`;
 
     const response = await fetch(fetchURL, {
-      method: "GET",
+      method: "PUT",
       headers: {
         Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(requestBody), // Serialize requestBody to JSON
     });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch data");
+      throw new Error("Failed to update data");
     }
 
     const data = await response.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json(error.message, { status: 500 });
   }
 }
