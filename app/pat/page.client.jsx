@@ -143,15 +143,16 @@ export default function PatClient() {
 
         <main className="flex-1">
           <img
-            onClick={handleIncrement}
             src="/images/Headpat_paw_4.0.1.png"
             alt="pat"
-            className="transition active:scale-75 transition-transform"
+            className="relative w-[80%] top-96 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-80 transition active:scale-75 transition-transform"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={handleIncrement}
           />
         </main>
 
         <aside className="sticky top-8 hidden w-96 shrink-0 xl:block">
-          <h2>Upgrades</h2>
+          <h2>Upgrades (Bald?)</h2>
         </aside>
       </div>
     </div>
