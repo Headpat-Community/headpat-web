@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { BellIcon } from "@heroicons/react/24/outline";
 
 export default function PatClient() {
   const [userId, setUserId] = useState(null);
@@ -123,15 +124,36 @@ export default function PatClient() {
   };
 
   return (
-    <main className="flex justify-center">
-      <div>Dein Pat Count: {patCount}</div>
-      <div>Total Count: {totalCount}</div>
-      <img
-        onClick={handleIncrement}
-        src="/logos/Headpat_new_logo.png"
-        alt="pat"
-        className="transition active:scale-75 transition-transform"
-      />
-    </main>
+    <div className="flex min-h-full flex-col">
+      <div className="mx-auto flex w-full max-w-7xl items-start gap-x-8 px-4 py-10 sm:px-6 lg:px-8">
+        <aside className="sticky top-8 hidden w-44 shrink-0 lg:block">
+          <div className="overflow-hidden rounded-lg px-4 py-5 shadow sm:p-6 border">
+            <dt className="truncate text-sm font-medium">Total Count:</dt>
+            <dd className="mt-1 text-3xl font-semibold tracking-tight">
+              {totalCount}
+            </dd>
+          </div>
+          <div className="overflow-hidden rounded-lg px-4 py-5 shadow sm:p-6 mt-6 border">
+            <dt className="truncate text-sm font-medium">Dein Pat Count:</dt>
+            <dd className="mt-1 text-3xl font-semibold tracking-tight">
+              {patCount}
+            </dd>
+          </div>
+        </aside>
+
+        <main className="flex-1">
+          <img
+            onClick={handleIncrement}
+            src="/images/Headpat_paw_4.0.1.png"
+            alt="pat"
+            className="transition active:scale-75 transition-transform"
+          />
+        </main>
+
+        <aside className="sticky top-8 hidden w-96 shrink-0 xl:block">
+          <h2>Upgrades</h2>
+        </aside>
+      </div>
+    </div>
   );
 }
