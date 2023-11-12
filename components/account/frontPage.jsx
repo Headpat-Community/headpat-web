@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import Loading from "@/app/loading";
 
 export default function AccountPage() {
@@ -191,13 +190,11 @@ export default function AccountPage() {
             <form onSubmit={handleSubmit} className="md:col-span-2">
               <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
                 <div className="col-span-full flex items-center gap-x-8">
-                  <Image
+                  <img
                     id="avatar-image"
                     src={userData.avatar || "/logos/logo.webp"}
                     alt=""
                     className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
-                    width={96}
-                    height={96}
                   />
                   <div>
                     <input

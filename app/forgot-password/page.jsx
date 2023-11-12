@@ -4,7 +4,7 @@ import Client from "./page.client";
 export const runtime = "edge";
 
 export const metadata = {
-  title: "Forgot Password",
+  title: "Passwort vergessen?",
 };
 
 export default function Page() {
