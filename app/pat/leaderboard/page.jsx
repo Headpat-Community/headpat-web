@@ -1,6 +1,8 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Client from "./page.client";
+import Loading from "@/app/loading";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Headpat Clicker Leaderboard",
@@ -12,6 +14,7 @@ export default async function PatLeaderBoard() {
     `${process.env.NEXT_PUBLIC_DOMAIN}/api/fun/pats?populate=*`,
     {
       method: "GET",
+      next: { revalidate: 60 },
     }
   );
   const data = await response.json();
@@ -23,6 +26,7 @@ export default async function PatLeaderBoard() {
       `${process.env.NEXT_PUBLIC_DOMAIN}/api/user/getUserData/${userId}?populate=avatar`,
       {
         method: "GET",
+        next: { revalidate: 300 },
       }
     );
     const userData = await userResponse.json();
@@ -56,7 +60,9 @@ export default async function PatLeaderBoard() {
   return (
     <>
       <Header />
-      <Client usersData={usersData} />
+      <Suspense fallback={<Loading />}>
+        <Client usersData={usersData} />
+      </Suspense>
       <Footer />
     </>
   );
