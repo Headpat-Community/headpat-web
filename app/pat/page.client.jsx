@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { createPatData } from "./page.api";  // Adjust the path based on your project structure
-import { BellIcon } from "@heroicons/react/24/outline";
+import { createPatData } from "./page.api";
 
 const PATS_API = "/api/fun/pats";
 const USER_API = "/api/user/getUserSelf";
@@ -11,50 +10,7 @@ export default function PatClient() {
   const [patCount, setPatCount] = useState(null);
   const [totalCount, setTotalCount] = useState(null);
 
-  const fetchUserData = useCallback(async (jwtCookie) => {
-    try {
-      const userResponse = await fetch(USER_API, {
-        method: "GET",
-      });
-      const userData = await userResponse.json();
-
-      if (!userData) {
-        return;
-      }
-
-      const { id } = userData;
-      await fetchPatData(id, jwtCookie);
-    } catch (error) {
-      handleFetchError(error);
-    }
-  }, []);
-
-  const fetchPatData = useCallback(async (id, jwtCookie) => {
-    const patResponse = await fetch(`${PATS_API}/${id}`, {
-      method: "GET",
-    });
-
-    const patData = await patResponse.json();
-
-    if (patData.data && patData.data.length === 0) {
-      await createPatData(id);
-    }
-
-    const updatedPatResponse = await fetch(`${PATS_API}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${jwtCookie}`,
-      },
-    });
-
-    const updatedPatData = await updatedPatResponse.json();
-
-    const count = updatedPatData?.data[0]?.attributes?.count;
-
-    setUserId(id);
-    setPatCount(count);
-  }, [createPatData]);
-
-    const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async () => {
     try {
       const jwtCookie = document.cookie.replace(
         /(?:(?:^|.*;\s*)jwt\s*=\s*([^;]*).*$)|^.*$/,
@@ -171,11 +127,15 @@ export default function PatClient() {
         <aside className="sticky top-8 hidden w-44 shrink-0 lg:block">
           <div className="overflow-hidden rounded-lg px-4 py-5 shadow sm:p-6 border">
             <dt className="truncate text-sm font-medium">Total Count:</dt>
-            <dd className="mt-1 text-3xl font-semibold tracking-tight">{totalCount}</dd>
+            <dd className="mt-1 text-3xl font-semibold tracking-tight">
+              {totalCount}
+            </dd>
           </div>
           <div className="overflow-hidden rounded-lg px-4 py-5 shadow sm:p-6 mt-6 border">
             <dt className="truncate text-sm font-medium">Dein Pat Count:</dt>
-            <dd className="mt-1 text-3xl font-semibold tracking-tight">{patCount}</dd>
+            <dd className="mt-1 text-3xl font-semibold tracking-tight">
+              {patCount}
+            </dd>
           </div>
         </aside>
 

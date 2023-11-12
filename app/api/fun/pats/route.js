@@ -2,10 +2,15 @@ import { NextResponse } from "next/server";
 
 export const runtime = "edge";
 
-export async function GET() {
+export async function GET(request) {
   try {
+    // Extract query parameters from the incoming request
+    const queryParams = new URLSearchParams(
+      request.url.split("?")[1]
+    ).toString();
+
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/pats`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/pats?${queryParams}`;
 
     const response = await fetch(fetchURL, {
       method: "GET",
