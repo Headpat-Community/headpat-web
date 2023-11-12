@@ -1,58 +1,28 @@
 "use client";
 import { useEffect, useState } from "react";
+import { getLeaderboardData } from "./page.server";
 
 export default function PatLeaderBoardClient() {
   const [userData, setUserData] = useState([]);
+  const [usersData, setUsersData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch("/api/fun/pats?populate=*");
-        const data = await response.json();
-        const usersData = [];
+      const data = await getLeaderboardData();
+      const sortedData = data.sort((a, b) => parseInt(b.count) - parseInt(a.count));
 
-        for (const item of data.data) {
-          const userId = item.attributes.users_permissions_user.data.id;
-          const userResponse = await fetch(
-            `/api/user/getUserData/${userId}?populate=avatar`
-          );
-          const userData = await userResponse.json();
-
-          const displayName =
-            userData.data.attributes.displayname ||
-            item.attributes.users_permissions_user.data.attributes.username;
-
-          usersData.push({
-            id: item.id,
-            count: item.attributes.count,
-            userId: userId,
-            username:
-              item.attributes.users_permissions_user.data.attributes.username,
-            displayName: displayName,
-            image:
-              userData.data?.attributes?.avatar?.data?.attributes?.url ||
-              "/logos/logo-64.webp",
-            lastclicked: new Date(item.attributes.updatedAt).toLocaleDateString(
-              "en-GB",
-              {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-              }
-            ),
-          });
-        }
-
-        setUserData(usersData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+      setUserData(sortedData);
     };
 
     fetchData();
   }, []);
+
+  console.log(userData);
+
+    // If userData is empty, return a loading message or placeholder
+    if (userData.length === 0) {
+      return <div>Loading...</div>; // You can customize this loading indicator
+    }
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
