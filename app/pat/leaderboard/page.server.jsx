@@ -1,13 +1,29 @@
-'use server'
+"use server";
 export const getLeaderboardData = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/fun/pats?populate=*`);
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/pats?populate=*`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const data = await response.json();
   const usersData = [];
 
   for (const item of data.data) {
     const userId = item.attributes.users_permissions_user.data.id;
     const userResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_DOMAIN}/api/user/getUserData/${userId}?populate=avatar`
+      `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/user-data/${userId}?populate=avatar`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
     );
     const userData = await userResponse.json();
 

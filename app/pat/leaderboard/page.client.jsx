@@ -4,12 +4,13 @@ import { getLeaderboardData } from "./page.server";
 
 export default function PatLeaderBoardClient() {
   const [userData, setUserData] = useState([]);
-  const [usersData, setUsersData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await getLeaderboardData();
-      const sortedData = data.sort((a, b) => parseInt(b.count) - parseInt(a.count));
+      const sortedData = data.sort(
+        (a, b) => parseInt(b.count) - parseInt(a.count)
+      );
 
       setUserData(sortedData);
     };
@@ -17,12 +18,10 @@ export default function PatLeaderBoardClient() {
     fetchData();
   }, []);
 
-  console.log(userData);
-
-    // If userData is empty, return a loading message or placeholder
-    if (userData.length === 0) {
-      return <div>Loading...</div>; // You can customize this loading indicator
-    }
+  // If userData is empty, return a loading message or placeholder
+  if (userData.length === 0) {
+    return <div>Loading...</div>; // You can customize this loading indicator
+  }
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
