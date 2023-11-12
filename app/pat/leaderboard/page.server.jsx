@@ -1,4 +1,5 @@
 "use server";
+
 export const getLeaderboardData = async () => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/pats?populate=*`,

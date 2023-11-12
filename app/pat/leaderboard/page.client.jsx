@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { getLeaderboardData } from "./page.server";
 
+export const runtime = "edge";
+
 export default function PatLeaderBoardClient() {
   const [userData, setUserData] = useState([]);
 
