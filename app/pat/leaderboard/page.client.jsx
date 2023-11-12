@@ -1,15 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getLeaderboardData } from "./page.server";
 
-export const runtime = "edge";
-
-export default function PatLeaderBoardClient() {
+export default function PatLeaderBoardClient({ usersData }) {
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getLeaderboardData();
+      const data = usersData;
       const sortedData = data.sort(
         (a, b) => parseInt(b.count) - parseInt(a.count)
       );
@@ -18,12 +15,7 @@ export default function PatLeaderBoardClient() {
     };
 
     fetchData();
-  }, []);
-
-  // If userData is empty, return a loading message or placeholder
-  if (userData.length === 0) {
-    return <div>Loading...</div>; // You can customize this loading indicator
-  }
+  }, [usersData]);
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
