@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { createPatData } from "./page.api";
+import { createPatData, updatePatData } from "./page.api";
 
 const PATS_API = "/api/fun/pats";
 const USER_API = "/api/user/getUserSelf";
@@ -17,39 +17,54 @@ export default function PatClient() {
         "$1"
       );
 
-      const headers = {
-        Authorization: `Bearer ${jwtCookie}`,
-      };
+      // Fetch data from /api/fun/pats regardless of whether the user is logged in
+      const patsResponse = await fetch(PATS_API);
+      const patsData = await patsResponse.json();
 
-      // Fetch total count directly from the server
-      const totalResponse = await fetch(PATS_API, { headers });
-      const totalData = await totalResponse.json();
-      const totalCount = totalData.data.reduce(
+      // Calculate the total count from the fetched data
+      const totalCount = patsData.data.reduce(
         (acc, pat) => acc + Number(pat.attributes.count),
         0
       );
+
+      // Update state
       setTotalCount(totalCount);
 
       if (jwtCookie) {
-        // Fetch user-specific data directly from the server
-        const userResponse = await fetch(USER_API, { headers });
+        // If JWT cookie exists, fetch user-specific data
+        const userResponse = await fetch(USER_API, {
+          method: "GET",
+        });
         const userData = await userResponse.json();
 
         if (!userData) {
           return;
         }
 
+        // Extract user ID
         const { id } = userData;
 
-        // Fetch pat count using user ID directly from the server
-        const patResponse = await fetch(`${PATS_API}/${id}`, { headers });
+        // Fetch pat count using user ID
+        const patResponse = await fetch(`${PATS_API}/${id}`, {
+          method: "GET",
+        });
+
         const patData = await patResponse.json();
 
         if (patData.data && patData.data.length === 0) {
           await createPatData(id);
         }
 
-        const count = patData?.data[0]?.attributes?.count;
+        const updatedPatResponse = await fetch(`${PATS_API}/${id}`, {
+          headers: {
+            Authorization: `Bearer ${jwtCookie}`,
+          },
+        });
+
+        const updatedPatData = await updatedPatResponse.json();
+
+        const count = updatedPatData?.data[0]?.attributes?.count;
+
         setUserId(id);
         setPatCount(count);
       }
@@ -59,52 +74,13 @@ export default function PatClient() {
   }, [createPatData]);
 
   const handleIncrement = useCallback(async () => {
-    try {
-      const jwtCookie = document.cookie.replace(
-        /(?:(?:^|.*;\s*)jwt\s*=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
+    const { updatedTotalCount, newCount } = await updatePatData(userId);
 
-      const headers = {
-        Authorization: `Bearer ${jwtCookie}`,
-        "Content-Type": "application/json",
-      };
-
-      // Fetch current pat count directly from the server
-      const currentPatResponse = await fetch(`${PATS_API}/${userId}`, {
-        headers,
-      });
-      const currentPatData = await currentPatResponse.json();
-      const patId = currentPatData?.data[0]?.id;
-
-      const currentCount = Number(currentPatData?.data[0]?.attributes?.count);
-      const newCount = currentCount + 1;
-
-      // Update the pat count directly on the server
-      await fetch(`${PATS_API}/update/${patId}`, {
-        method: "PUT",
-        headers,
-        body: JSON.stringify({
-          data: {
-            count: newCount,
-          },
-        }),
-      });
-
-      // Fetch the total count directly from the server and update the state
-      const updatedTotalResponse = await fetch(PATS_API, { headers });
-      const updatedTotalData = await updatedTotalResponse.json();
-      const updatedTotalCount = updatedTotalData.data.reduce(
-        (acc, pat) => acc + Number(pat.attributes.count),
-        0
-      );
-
-      setTotalCount(updatedTotalCount);
-      setPatCount(newCount);
-    } catch (error) {
-      handleFetchError(error);
-    }
+    setTotalCount(updatedTotalCount);
+    setPatCount(newCount);
   }, [userId]);
+
+  console.log(userId, patCount, totalCount);
 
   const handleFetchError = useCallback((error) => {
     console.error("Error fetching data:", error);
