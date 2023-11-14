@@ -9,15 +9,17 @@ const Login = () => {
   const [error, setError] = useState("");
 
   function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      return parts.pop().split(";").shift();
+    if (typeof document !== "undefined") {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(";").shift();
     }
+    return undefined;
   }
 
   useEffect(() => {
-    const jwt = getCookie("jwt");
+    const jwt = getCookie(`a_session_` + process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID);
+    console.log(jwt);
     if (jwt) {
       window.location.href = "/account";
     }
@@ -26,42 +28,51 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/user/loginUser", {
-        method: "POST",
-        body: JSON.stringify({
-          identifier: email,
-          password: password,
-        }),
-      });
-      const data = await response.json();
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN}/api/user/loginUser`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        }
+      );
+
+      const data = await response.json(); // Not needed
+      //console.log(data);
+
       if (response.status === 400) {
         setError(
-          `Incorrect credentials or already made account! We tried everything, It's just not possible.`
+          `Incorrect credentials or already made account! Please try again.`
         );
         setTimeout(() => {
           setError("");
-        }, 5000);
+        }, 7000);
+      } else if (response.status === 401) {
+        setError("E-Mail or Password incorrect!");
+        setTimeout(() => {
+          setError("");
+        }, 7000);
       } else if (response.status === 429) {
         setError("Too many requests!");
         setTimeout(() => {
           setError("");
-        }, 5000);
+        }, 7000);
       } else if (response.status === 500) {
         setError("Server error!");
         setTimeout(() => {
           setError("");
-        }, 5000);
-      } else if (response.status === 200) {
-        const expirationTime = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-        document.cookie = `jwt=${
-          data.jwt
-        }; expires=${expirationTime.toUTCString()}; path=/; Secure`;
-        //console.log("User authenticated successfully");
+        }, 7000);
+      } else if (response.status === 201) {
         window.location.href = "/account";
       }
     } catch (error) {
-      //console.log(error);
-      setError("E-Mail oder Passwort inkorrekt!");
+      console.log(error);
+      setError("Server error!");
+      setTimeout(() => {
+        setError("");
+      }, 7000);
     }
   };
 
@@ -84,7 +95,7 @@ const Login = () => {
             <div className="text-red-500 text-center mt-2">{error}</div>
           )}
 
-          <form className="mt-10 space-y-6" action="#" method="POST">
+          <form className="mt-10 space-y-6">
             <div>
               <label
                 htmlFor="email"

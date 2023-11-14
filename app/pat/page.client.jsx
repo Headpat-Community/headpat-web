@@ -80,8 +80,6 @@ export default function PatClient() {
     setPatCount(newCount);
   }, [userId]);
 
-  console.log(userId, patCount, totalCount);
-
   const handleFetchError = useCallback((error) => {
     console.error("Error fetching data:", error);
   }, []);

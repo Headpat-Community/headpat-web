@@ -1,4 +1,3 @@
-'use server'
 const PATS_API = `${process.env.NEXT_PUBLIC_DOMAIN}/api/fun/pats`;
 
 export const createPatData = async (id) => {
@@ -18,6 +17,7 @@ export const createPatData = async (id) => {
 export const updatePatData = async (userId) => {
   const currentPatResponse = await fetch(`${PATS_API}/${userId}`);
   const currentPatData = await currentPatResponse.json();
+  console.log(currentPatData)
   const patId = currentPatData?.data[0]?.id;
 
   const currentCount = Number(currentPatData?.data[0]?.attributes?.count);
@@ -43,5 +43,5 @@ export const updatePatData = async (userId) => {
     0
   );
 
-  return { updatedTotalCount };
+  return { updatedTotalCount, newCount };
 };
