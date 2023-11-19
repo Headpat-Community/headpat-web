@@ -6,7 +6,7 @@ import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from "use-places-autocomplete";
-import styles from "@/css/Map.module.css";
+import styles from "../../../css/Map.module.css";
 import Header from "@/components/header";
 import Image from "next/image";
 
