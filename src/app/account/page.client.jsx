@@ -9,8 +9,9 @@ export default function AccountPage() {
   const [nsfw, setNsfw] = useState(false);
   const [emailvalue, setEmailValue] = useState(userMe?.email || "");
   const [usernamevalue, setUsernameValue] = useState(userMe?.username || "");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
+  /*
   useEffect(() => {
     const fetchUserData = async () => {
       setIsLoading(true); // Start loading
@@ -37,6 +38,7 @@ export default function AccountPage() {
     };
     fetchUserData();
   }, []);
+  */
 
   const handleSubmit = async (event) => {
     event.preventDefault();

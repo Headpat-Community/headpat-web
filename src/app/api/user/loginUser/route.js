@@ -31,9 +31,14 @@ export async function POST(request) {
     const setCookieHeader = response.headers.get("Set-Cookie");
     if (setCookieHeader) {
       const cookiesToSet = setCookieHeader.split(", ");
-      cookiesToSet.forEach(cookie => {
+      cookiesToSet.forEach((cookie) => {
         const [cookieNameAndValue, ...cookieAttrs] = cookie.split("; ");
         const [cookieName, cookieValue] = cookieNameAndValue.split("=");
+
+        // Skip this iteration if the cookie name includes "legacy"
+        if (cookieName.includes("_legacy")) {
+          return;
+        }
 
         const cookieOptions = cookieAttrs.reduce((options, attr) => {
           const [attrName, attrValue] = attr.split("=");
@@ -42,17 +47,18 @@ export async function POST(request) {
         }, {});
 
         cookies().set(cookieName, cookieValue, {
-          path: cookieOptions.path || "/",
-          secure: cookieOptions.secure || true,
+          path: "/",
+          secure: true,
           expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
           domain: cookieOptions.domain || process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
+          httpOnly: false,
         });
       });
     }
 
     return NextResponse.json(data, { status: 201 });
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     return NextResponse.json(error.message, { status: 500 });
   }
 }

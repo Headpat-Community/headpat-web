@@ -21,7 +21,7 @@ export async function POST(request) {
         "Content-Type": "application/json",
         "X-Appwrite-Response-Format": "1.4.0",
         "X-Appwrite-Project": process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID,
-        "X-Appwrite-JWT":
+        Cookie:
           `a_session_` +
           process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID +
           `=${jwtCookie.value}`,

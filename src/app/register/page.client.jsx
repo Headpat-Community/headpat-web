@@ -59,7 +59,25 @@ export default function Register() {
         setTimeout(() => {
           setError("");
         }, 5000);
-      } else if (response.status === 200) {
+      } else if (response.status === 201) {
+        try {
+          const userDataResponse = await fetch("/api/user/createUserData", {
+            method: "POST",
+            body: JSON.stringify({
+              documentId: data.$id,
+              data: {
+                status: "Ich bin neu hier!",
+              },
+            }),
+          });
+          if (userDataResponse.status === 201) {
+            console.log("Second POST request successful");
+          } else {
+            console.log("Second POST request failed");
+          }
+        } catch (error) {
+          console.log(error);
+        }
         setError("Please confirm your E-Mail!");
       }
     } catch (error) {

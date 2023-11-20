@@ -66,29 +66,19 @@ export default function AccountLayout({ children }) {
   }
 
   useEffect(() => {
-    const jwt = getCookie("jwt");
+    const jwt = getCookie(
+      `a_session_` + `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
+    );
     if (!jwt) {
-      deleteCookie("jwt");
+      deleteCookie(
+        `a_session_` + `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
+      );
       window.location.href = "/login";
     } else if (jwt === "undefined") {
-      deleteCookie("jwt");
+      deleteCookie(
+        `a_session_` + `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
+      );
       window.location.href = "/login";
-    } else {
-      fetch("/api/user/getUserSelf", {
-        method: "GET",
-      })
-        .then((response) => {
-          if (response.status === 401) {
-            deleteCookie("jwt");
-            window.location.href = "/login";
-          } else if (!response.ok) {
-            deleteCookie("jwt");
-            window.location.href = "/login";
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
     }
   }, []);
 
@@ -289,7 +279,9 @@ export default function AccountLayout({ children }) {
                     </Link>
                   </li>
                 ) : (
-                  <li className="-mx-6 py-3 mt-auto text-white text-center">Loading...</li>
+                  <li className="-mx-6 py-3 mt-auto text-white text-center">
+                    Loading...
+                  </li>
                 )}
               </ul>
             </nav>
