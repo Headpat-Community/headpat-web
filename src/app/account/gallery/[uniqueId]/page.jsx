@@ -1,5 +1,5 @@
-import FetchAccountImageTools from "@/components/account/gallery/fetchAccountImageTools";
 import Layout from "@/app/layouts/account-layout";
+import Client from "./page.client";
 
 export const runtime = "edge";
 
@@ -10,7 +10,7 @@ export const metadata = {
 const ImageAccountTools = () => {
   return (
     <Layout>
-      <FetchAccountImageTools />
+      <Client />
     </Layout>
   );
 };

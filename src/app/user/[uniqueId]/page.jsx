@@ -1,6 +1,6 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import UserPage from "@/components/user/userPage";
+import Client from "./page.client";
 
 export const runtime = "edge";
 
@@ -13,7 +13,7 @@ export default function UserProfile() {
   return (
     <>
       <Header />
-      <UserPage />
+      <Client />
       <Footer />
     </>
   );

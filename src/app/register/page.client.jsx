@@ -59,25 +59,7 @@ export default function Register() {
         setTimeout(() => {
           setError("");
         }, 5000);
-      } else if (response.status === 201) {
-        try {
-          const userDataResponse = await fetch("/api/user/createUserData", {
-            method: "POST",
-            body: JSON.stringify({
-              documentId: data.$id,
-              data: {
-                status: "Ich bin neu hier!",
-              },
-            }),
-          });
-          if (userDataResponse.status === 200) {
-            console.log("Second POST request successful");
-          } else {
-            console.log("Second POST request failed");
-          }
-        } catch (error) {
-          console.log(error);
-        }
+      } else if (response.status === 200) {
         setError("Please confirm your E-Mail!");
       }
     } catch (error) {
@@ -100,7 +82,7 @@ export default function Register() {
                 height={600}
               />
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
-                Sign in to your account
+                Create your account
               </h2>
               <p className="mt-2 text-sm leading-6 text-gray-400">
                 Already a member?{" "}
@@ -132,7 +114,7 @@ export default function Register() {
                         required
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset dark:text-black text-white dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset text-black dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
@@ -153,7 +135,7 @@ export default function Register() {
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset dark:text-black text-white dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset text-black dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
@@ -174,7 +156,7 @@ export default function Register() {
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset dark:text-black text-white dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset text-black dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>

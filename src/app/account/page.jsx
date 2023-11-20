@@ -1,5 +1,5 @@
 import Layout from "@/app/layouts/account-layout";
-import AccountPage from "@/components/account/accountPage";
+import Client from "./page.client";
 
 export const metadata = {
   title: "Account Settings",
@@ -9,7 +9,7 @@ export default function AccountSettings() {
   return (
     <>
       <Layout>
-        <AccountPage />
+        <Client />
       </Layout>
     </>
   );

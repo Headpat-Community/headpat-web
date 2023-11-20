@@ -1,5 +1,5 @@
 import Header from "@/components/header";
-import PublicGallerySingle from "@/components/public/fetchGallerySingle";
+import Client from "./page.client";
 
 export const runtime = "edge";
 
@@ -12,7 +12,7 @@ export default function Gallery() {
   return (
     <div>
       <Header />
-      <PublicGallerySingle />
+      <Client />
     </div>
   );
 }

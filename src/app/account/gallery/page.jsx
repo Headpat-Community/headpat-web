@@ -1,5 +1,5 @@
 import Layout from "@/app/layouts/account-layout";
-import AccountGallery from "@/components/account/gallery/accountGallery";
+import Client from "./page.client";
 
 export const runtime = "edge";
 
@@ -11,7 +11,7 @@ export default function FetchGallery() {
 
   return (
     <Layout>
-      <AccountGallery />
+      <Client />
     </Layout>
   );
 }

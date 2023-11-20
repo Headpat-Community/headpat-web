@@ -1,5 +1,5 @@
 import Layout from "@/app/layouts/account-layout";
-import SocialsPage from "@/components/account/socialsPage";
+import Client from "./page.client";
 
 export const metadata = {
   title: "Socials",
@@ -10,7 +10,7 @@ export default function SocialSettings() {
   return (
     <>
       <Layout>
-        <SocialsPage node={SocialsPage} />
+        <Client node={SocialsPage} />
       </Layout>
     </>
   );

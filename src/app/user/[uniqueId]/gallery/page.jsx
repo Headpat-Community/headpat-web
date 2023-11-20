@@ -1,6 +1,6 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import UserGalleryPage from "@/components/user/galleryPage";
+import Client from "./page.client";
 
 export const runtime = "edge";
 
@@ -8,7 +8,7 @@ export default function FetchGallery() {
   return (
     <>
       <Header />
-      <UserGalleryPage />
+      <Client />
       <Footer />
     </>
   );
