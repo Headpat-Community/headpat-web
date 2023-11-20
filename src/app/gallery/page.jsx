@@ -1,6 +1,6 @@
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import PublicGallery from "@/components/public/fetchPublicGallery";
+import Client from "./page.client";
 
 export const metadata = {
   title: "Gallerie",
@@ -11,7 +11,7 @@ export default function Gallery() {
     return (
       <div>
         <Header />
-        <PublicGallery />
+        <Client />
         <Footer />
       </div>
     );

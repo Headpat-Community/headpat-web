@@ -4,7 +4,7 @@ import Link from "next/link";
 import Loading from "@/app/loading";
 import { useState, useEffect } from "react";
 
-export default function FetchGallery() {
+export default function FetchGallery({ data }) {
   const [gallery, setGallery] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,6 +12,7 @@ export default function FetchGallery() {
   const [enableNsfw, setEnableNsfw] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+
 
   const getToken = () => {
     return document.cookie.replace(
@@ -58,9 +59,10 @@ export default function FetchGallery() {
 
   useEffect(() => {
     const fetchGalleryData = async () => {
+      setIsLoading(true);
       const filters = !enableNsfw ? `&filters[nsfw][$eq]=false` : ``;
       const pageSize = 500;
-      const apiUrl = `/api/gallery/getTotalGallery?populate=*${filters}&pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
+      const apiUrl = `/api/gallery/getTotalGallery?populate=img${filters}&pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
 
       setIsLoading(true);
 

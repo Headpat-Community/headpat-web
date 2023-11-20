@@ -28,23 +28,31 @@ export async function POST(request) {
 
     const data = await response.json();
 
-    const fallbackCookies = response.headers.get("x-fallback-cookies");
-    if (fallbackCookies) {
-      const parsedCookies = JSON.parse(fallbackCookies);
-      Object.entries(parsedCookies).forEach(([cookieName, cookieValue]) => {
+    const setCookieHeader = response.headers.get("Set-Cookie");
+    if (setCookieHeader) {
+      const cookiesToSet = setCookieHeader.split(", ");
+      cookiesToSet.forEach(cookie => {
+        const [cookieNameAndValue, ...cookieAttrs] = cookie.split("; ");
+        const [cookieName, cookieValue] = cookieNameAndValue.split("=");
+
+        const cookieOptions = cookieAttrs.reduce((options, attr) => {
+          const [attrName, attrValue] = attr.split("=");
+          options[attrName.toLowerCase()] = attrValue || true;
+          return options;
+        }, {});
+
         cookies().set(cookieName, cookieValue, {
-          path: "/",
-          secure: true,
-          sameSite: "strict",
+          path: cookieOptions.path || "/",
+          secure: cookieOptions.secure || true,
           expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-          httpOnly: true,
-          domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
+          domain: cookieOptions.domain || process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
         });
       });
     }
 
     return NextResponse.json(data, { status: 201 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(error.message, { status: 500 });
   }
 }

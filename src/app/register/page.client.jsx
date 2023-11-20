@@ -31,15 +31,16 @@ export default function Register() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
         },
         body: JSON.stringify({
-          username: username,
+          userId: "unique()", // This creates a unique ID for the user automatically
           email: email,
           password: password,
+          name: username,
         }),
       });
       const data = await response.json();
+      console.log(data);
 
       if (response.status === 400) {
         setError(
@@ -58,29 +59,29 @@ export default function Register() {
         setTimeout(() => {
           setError("");
         }, 5000);
-      } else if (response.status === 200) {
+      } else if (response.status === 201) {
         try {
           const userDataResponse = await fetch("/api/user/createUserData", {
             method: "POST",
             body: JSON.stringify({
+              documentId: data.$id,
               data: {
                 status: "Ich bin neu hier!",
-                users_permissions_user: data.user.id,
               },
             }),
           });
           if (userDataResponse.status === 200) {
-            //console.log("Second POST request successful");
+            console.log("Second POST request successful");
           } else {
-            //console.log("Second POST request failed");
+            console.log("Second POST request failed");
           }
         } catch (error) {
-          //console.log(error);
+          console.log(error);
         }
         setError("Please confirm your E-Mail!");
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
       setError("Error!");
     }
   };
@@ -131,7 +132,7 @@ export default function Register() {
                         required
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset dark:text-black text-white dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
@@ -152,7 +153,7 @@ export default function Register() {
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset dark:text-black text-white dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
@@ -173,7 +174,7 @@ export default function Register() {
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset dark:text-black text-white dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
