@@ -91,11 +91,31 @@ export default function UploadPage() {
 
       const responseData = await response.json();
       if (response.status === 201) {
+        const editImage = await fetch("/api/gallery/editImage", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            gallery_id: responseData.$id,
+            name: imagename.value,
+            imgalt: imgalt.value,
+            longtext: longtext.value,
+            nsfw: nsfw.checked,
+            user_id: userId,
+          }),
+        });
+
+        const editImageData = await editImage.json();
+        if (editImage.status === 201) {
+          alert("Saved!");
+          //window.location.reload();
+        } else {
+          console.error("Failed to edit image:", editImageData);
+        }
         //console.log("File uploaded successfully");
         //setIsUploading(false); // Set isUploading to false after the API call is complete
         // Add the "Saved!" text to the form
-        alert("Saved!");
-        //window.location.reload();
       } else {
         console.error("Failed to upload file:", responseData);
       }

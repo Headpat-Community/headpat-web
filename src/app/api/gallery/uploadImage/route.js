@@ -60,7 +60,7 @@ export async function POST(request) {
       }),
     });
 
-    console.log("External API Response Status:", response.status);
+    //console.log("External API Response Status:", response.status);
     /*console.log(
       "External API Response Headers:",
       JSON.stringify([...response.headers])
@@ -72,10 +72,10 @@ export async function POST(request) {
     }
 
     const data = await response.json();
-    console.log("External API Response Body:", data);
+    //console.log("External API Response Body:", data);
     return NextResponse.json(data, { status: 201 });
   } catch (error) {
-    console.log("Error:", error.message);
+    //console.log("Error:", error.message);
     return NextResponse.json(error.message, { status: 500 });
   }
 }
