@@ -82,7 +82,7 @@ export default function UploadPage() {
       );
       */
 
-      setIsUploading(true); // Set isUploading to true before making the API call
+      //setIsUploading(true); // Set isUploading to true before making the API call
 
       const response = await fetch("/api/gallery/uploadImage", {
         method: "POST",
@@ -90,9 +90,9 @@ export default function UploadPage() {
       });
 
       const responseData = await response.json();
-      if (response.ok) {
+      if (response.status === 201) {
         //console.log("File uploaded successfully");
-        setIsUploading(false); // Set isUploading to false after the API call is complete
+        //setIsUploading(false); // Set isUploading to false after the API call is complete
         // Add the "Saved!" text to the form
         alert("Saved!");
         //window.location.reload();

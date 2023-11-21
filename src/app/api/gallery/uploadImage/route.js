@@ -53,15 +53,14 @@ export async function POST(request) {
           `=${jwtCookie.value}`,
       },
       body: JSON.stringify({
-        documentId: imageData.$id,
+        documentId: "unique()",
         data: {
           gallery_id: imageData.$id,
-          nsfw: false,
         },
       }),
     });
 
-    //console.log("External API Response Status:", response.status);
+    console.log("External API Response Status:", response.status);
     /*console.log(
       "External API Response Headers:",
       JSON.stringify([...response.headers])
@@ -73,8 +72,10 @@ export async function POST(request) {
     }
 
     const data = await response.json();
-    return NextResponse.json(data.documents, { status: 201 });
+    console.log("External API Response Body:", data);
+    return NextResponse.json(data, { status: 201 });
   } catch (error) {
+    console.log("Error:", error.message);
     return NextResponse.json(error.message, { status: 500 });
   }
 }
