@@ -20,13 +20,10 @@ export default function AccountPage() {
         });
         const userResponseData = await userResponse.json();
         setUserMe(userResponseData[0]);
-        
-        const userDataResponse = await fetch(
-          `/api/user/getUserDataSelf`,
-          {
-            method: "GET",
-          }
-        );
+
+        const userDataResponse = await fetch(`/api/user/getUserDataSelf`, {
+          method: "GET",
+        });
         const userDataResponseData = await userDataResponse.json();
         setUserData(userDataResponseData.documents[0]);
         setIsLoading(false); // Done loading
@@ -37,8 +34,6 @@ export default function AccountPage() {
     };
     fetchUserData();
   }, []);
-
-  console.log(userData);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -85,20 +80,13 @@ export default function AccountPage() {
 
     const currentPassword = event.target.currentpassword.value;
     const newPassword = event.target.newpassword.value;
-    const confirmPassword = event.target.confirmpassword.value;
-
-    if (newPassword !== confirmPassword) {
-      alert("New password and confirm password do not match");
-      return;
-    }
 
     try {
       const response = await fetch("/api/user/editUserPassword", {
-        method: "POST",
+        method: "PATCH",
         body: JSON.stringify({
-          currentPassword: currentPassword,
           password: newPassword,
-          passwordConfirmation: confirmPassword,
+          oldpassword: currentPassword,
         }),
       });
 
@@ -135,8 +123,8 @@ export default function AccountPage() {
       method: "GET",
     });
     const userResponseData = await userResponse.json();
-    setUserMe(userResponseData);
-    const userId = userResponseData.id;
+    setUserMe(userResponseData[0]);
+    const userId = userResponseData[0].$id;
 
     try {
       const putResponse = await fetch(`/api/user/handleNsfwChange/${userId}`, {
@@ -290,22 +278,6 @@ export default function AccountPage() {
                     type="password"
                     name="newpassword" // Updated name
                     id="newpassword"
-                    autoComplete="new-password"
-                    required
-                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                  />
-                </div>
-                <div className="col-span-full">
-                  <span
-                    htmlFor="confirm-password"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    Confirm new password
-                  </span>
-                  <input
-                    type="password"
-                    name="confirmpassword" // Updated name
-                    id="confirmpassword"
                     autoComplete="new-password"
                     required
                     className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
