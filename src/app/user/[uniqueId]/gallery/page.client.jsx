@@ -29,7 +29,7 @@ export default function FetchGallery() {
 
   useEffect(() => {
     fetch(
-      `/api/user/getUserFilter?populate=*&filters[username][$eq]=${username}`,
+      `/api/user/getUserProfileUrlFilter?filters[username][$eq]=${username}`,
       {
         headers: {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,

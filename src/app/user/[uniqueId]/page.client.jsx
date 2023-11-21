@@ -26,6 +26,7 @@ import {
 import ErrorPage from "@/components/404";
 import Image from "next/image";
 import Loading from "@/app/loading";
+import { useParams } from "next/navigation";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -91,11 +92,11 @@ const moods = [
 
 export default function UserProfile() {
   const [userData, setUserData] = useState(null);
-  const [userMe, setUserMe] = useState(null);
   const [selected, setSelected] = useState(moods[5]);
-  const [isHovered, setIsHovered] = useState(false);
   const [hasError, setHasError] = useState(false); // Add this state
   const [isBirthdayToday, setIsBirthdayToday] = useState(false);
+  const params = useParams();
+  const username = params.uniqueId;
 
   const rawBirthday = userData?.data?.attributes?.birthday; // ISO date string
 
@@ -124,31 +125,17 @@ export default function UserProfile() {
     }
   }, [formattedBirthday, formattedToday]);
 
-  const username =
-    typeof window !== "undefined" ? window.location.pathname.split("/")[2] : "";
-
   useEffect(() => {
     fetch(
-      `/api/user/getUserFilter?populate=*&filters[username][$eq]=${username}`,
+      `/api/user/getUserProfileFilter?queries[]=equal("profileurl","${username}")`,
       {
         method: "GET",
       }
     )
       .then((response) => response.json())
       .then((data) => {
-        setUserMe(data);
-        const userId = data[0].id; // Access the id field of the first (and only) object in the array
-        fetch(`/api/user/getUserData/${userId}?populate=*`, {
-          method: "GET",
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            setUserData(data);
-          })
-          .catch((error) => {
-            console.error("API error:", error);
-            setHasError(true);
-          });
+        setUserData(data);
+        console.log(data);
       })
       .catch((error) => {
         console.error("API error:", error);
@@ -279,8 +266,7 @@ export default function UserProfile() {
                     </div>
                     <h1>
                       <div className="mt-1 text-base font-semibold leading-6">
-                        {userData &&
-                          (userData[0]?.displayname || userMe[0]?.username)}
+                        {userData && userData[0]?.displayname}
                       </div>
                     </h1>
                   </div>
@@ -418,7 +404,7 @@ export default function UserProfile() {
                       </Link>
                     )}
                     <Link
-                      href={`/user/${userMe?.[0]?.username}/gallery`}
+                      href={`/user/${userData?.[0]?.username}/gallery`}
                       className="hidden text-sm font-semibold leading-6 text-white sm:block bg-indigo-600 p-2 pt-1 pb-1 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       Gallery

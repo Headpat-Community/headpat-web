@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export const runtime = "edge";
 
 export async function POST(request) {
   try {
-    //console.log("Starting uploadImage API route execution");
+    const cookieStore = cookies();
+    const jwtCookie = cookieStore.get(
+      `a_session_` + process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID
+    );
 
     // Read the entire stream and buffer it
     const requestData = await request.arrayBuffer();
@@ -15,18 +19,46 @@ export async function POST(request) {
     );*/
 
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/galleries`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files`;
     //console.log("Forwarding request to:", fetchURL);
 
-    const response = await fetch(fetchURL, {
+    const uploadImage = await fetch(fetchURL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
         "Content-Type":
           request.headers.get("Content-Type") || "multipart/form-data",
+        "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+        "X-Appwrite-Response-Format": "1.4.0",
+        Cookie:
+          `a_session_` +
+          process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID +
+          `=${jwtCookie.value}`,
       },
-
       body: requestData,
+    });
+
+    const imageData = await uploadImage.json();
+
+    const postURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655cb829dbf6102f2436/documents`;
+
+    const response = await fetch(postURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+        "X-Appwrite-Response-Format": "1.4.0",
+        Cookie:
+          `a_session_` +
+          process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID +
+          `=${jwtCookie.value}`,
+      },
+      body: JSON.stringify({
+        documentId: imageData.$id,
+        data: {
+          gallery_id: imageData.$id,
+          nsfw: false,
+        },
+      }),
     });
 
     //console.log("External API Response Status:", response.status);
@@ -41,10 +73,8 @@ export async function POST(request) {
     }
 
     const data = await response.json();
-    //console.log("Data from external API:", data);
-    return NextResponse.json(data);
+    return NextResponse.json(data.documents, { status: 201 });
   } catch (error) {
-    //console.error("Error in uploadImage API route:", error);
-    return NextResponse.error(500, error.message);
+    return NextResponse.json(error.message, { status: 500 });
   }
 }

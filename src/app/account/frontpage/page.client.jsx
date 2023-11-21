@@ -29,7 +29,7 @@ export default function AccountPage() {
         const userId = userResponseData.id;
 
         const userDataResponse = await fetch(
-          `/api/user/getUserData/${userId}?populate=*`,
+          `/api/user/getUserDataSelf`,
           {
             method: "GET",
           }
@@ -38,14 +38,14 @@ export default function AccountPage() {
         const userDataResponseData = await userDataResponse.json();
         //console.log(userDataResponseData.data.attributes);
         setUserData({
-          status: userDataResponseData.data.attributes.status || "",
-          bio: userDataResponseData.data.attributes.bio || "",
-          displayname: userDataResponseData.data.attributes.displayname || "",
-          birthday: userDataResponseData.data.attributes.birthday || "",
-          pronouns: userDataResponseData.data.attributes.pronouns || "",
-          location: userDataResponseData.data.attributes.location || "",
+          status: userDataResponseData.documents[0].status || "",
+          bio: userDataResponseData.documents[0].bio || "",
+          displayname: userDataResponseData.documents[0].displayname || "",
+          birthday: userDataResponseData.documents[0].birthday || "",
+          pronouns: userDataResponseData.documents[0].pronouns || "",
+          location: userDataResponseData.documents[0].location || "",
           avatar:
-            userDataResponseData.data.attributes.avatar?.data?.attributes
+          userDataResponseData.documents[0].avatar?.data?.attributes
               ?.url || "/logos/logo.webp", // Set the avatar value or a placeholder image
         });
         setIsLoading(false);

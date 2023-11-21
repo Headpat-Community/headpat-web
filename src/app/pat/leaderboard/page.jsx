@@ -11,10 +11,9 @@ export const metadata = {
 
 export default async function PatLeaderBoard() {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_DOMAIN}/api/fun/pats?populate=*`,
+    `${process.env.NEXT_PUBLIC_DOMAIN}/api/fun/pats`,
     {
       method: "GET",
-      next: { revalidate: 60 },
     }
   );
   const data = await response.json();
@@ -23,10 +22,9 @@ export default async function PatLeaderBoard() {
   for (const item of data.data) {
     const userId = item.attributes.users_permissions_user.data.id;
     const userResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_DOMAIN}/api/user/getUserData/${userId}?populate=avatar`,
+      `${process.env.NEXT_PUBLIC_DOMAIN}/api/user/getUserData/${userId}`,
       {
         method: "GET",
-        next: { revalidate: 300 },
       }
     );
     const userData = await userResponse.json();

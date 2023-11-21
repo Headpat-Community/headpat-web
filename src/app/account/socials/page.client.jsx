@@ -23,26 +23,20 @@ export default function AccountPage() {
         });
 
         const userResponseData = await userResponse.json();
-        const userId = userResponseData.id;
 
-        const userDataResponse = await fetch(
-          `/api/user/getUserData/${userId}?populate=*`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-            },
-          }
-        );
+        const userDataResponse = await fetch(`/api/user/getUserDataSelf`, {
+          method: "GET",
+        });
 
         const userDataResponseData = await userDataResponse.json();
-        const userDataAttributes = userDataResponseData.data.attributes;
+        const userData = userDataResponseData.documents[0];
+        
         setUserData({
-          discordname: userDataAttributes.discordname || "",
-          telegramname: userDataAttributes.telegramname || "",
-          furaffinityname: userDataAttributes.furaffinityname || "",
-          X_name: userDataAttributes.X_name || "",
-          twitchname: userDataAttributes.twitchname || "",
+          discordname: userData.discordname || "",
+          telegramname: userData.telegramname || "",
+          furaffinityname: userData.furaffinityname || "",
+          X_name: userData.X_name || "",
+          twitchname: userData.twitchname || "",
         });
         setIsLoading(false);
       } catch (error) {
@@ -137,9 +131,7 @@ export default function AccountPage() {
         <div className="divide-y dark:divide-white/5 divide-black/5">
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
             <div>
-              <h2 className="text-base font-semibold leading-7">
-                Socials
-              </h2>
+              <h2 className="text-base font-semibold leading-7">Socials</h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">
                 Hier kannst du deine Links zu deinen Social Media Accounts
                 eintragen.

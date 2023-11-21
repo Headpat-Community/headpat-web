@@ -59,7 +59,8 @@ export default function UploadPage() {
       return;
     }
 
-    formData.append("files.img", selectedFile);
+    formData.append("fileId", "unique()");
+    formData.append("file", selectedFile);
 
     try {
       const userResponse = await fetch("/api/user/getUserSelf", {
@@ -69,16 +70,17 @@ export default function UploadPage() {
       const userResponseData = await userResponse.json();
       const userId = userResponseData.id;
 
+      /*
       formData.append(
         "data",
         JSON.stringify({
-          users_permissions_user: userId,
           name: imagename.value,
           imgalt: imgalt.value,
           longtext: longtext.value,
           nsfw: nsfw.checked,
         })
       );
+      */
 
       setIsUploading(true); // Set isUploading to true before making the API call
 
@@ -93,7 +95,7 @@ export default function UploadPage() {
         setIsUploading(false); // Set isUploading to false after the API call is complete
         // Add the "Saved!" text to the form
         alert("Saved!");
-        window.location.reload();
+        //window.location.reload();
       } else {
         console.error("Failed to upload file:", responseData);
       }

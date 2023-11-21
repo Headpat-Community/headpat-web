@@ -13,7 +13,7 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import { ThemeToggle } from "@/components//ThemeToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navigation = [
   { name: "Startseite", href: "/", icon: HomeIcon, current: false },
@@ -92,18 +92,16 @@ export default function AccountLayout({ children }) {
         const userResponseData = await userResponse.json();
         // Set the userMeData state to the attributes object of the API response
         setUserMeData(userResponseData);
-        // Get the user ID from the API response
-        const userId = userResponseData.id;
 
         const userDataResponse = await fetch(
-          `/api/user/getUserData/${userId}?populate=*`,
+          `/api/user/getUserDataSelf`,
           {
             method: "GET",
           }
         );
         const userDataResponseData = await userDataResponse.json();
         // Set the userData state to the attributes object of the API response
-        setUserData(userDataResponseData.data.attributes);
+        setUserData(userDataResponseData.documents[0]);
       } catch (error) {
         console.error(error);
       }
@@ -111,7 +109,7 @@ export default function AccountLayout({ children }) {
     // Call the fetchUserData function when the component mounts
     fetchUserData();
   }, []);
-
+  
   return (
     <>
       <div>
@@ -259,7 +257,7 @@ export default function AccountLayout({ children }) {
                 {userData ? (
                   <li className="-mx-6 mt-auto">
                     <Link
-                      href={`/user/${userMeData.username}`}
+                      href={`/user/${userData.profileurl}`}
                       className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
                     >
                       <Image
@@ -274,7 +272,7 @@ export default function AccountLayout({ children }) {
                       />
                       <span className="sr-only">Your profile</span>
                       <span aria-hidden="true">
-                        {userData.displayname || userMeData.username}
+                        {userData.displayname}
                       </span>
                     </Link>
                   </li>
@@ -303,7 +301,7 @@ export default function AccountLayout({ children }) {
           {userData ? (
             <li className="-mx-6 mt-auto">
               <Link
-                href={`/user/${userMeData.username}`}
+                href={`/user/${userData.profileurl}`}
                 className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
               >
                 <Image
@@ -318,7 +316,7 @@ export default function AccountLayout({ children }) {
                 />
                 <span className="sr-only">Your profile</span>
                 <span aria-hidden="true">
-                  {userData.displayname || userMeData.username}
+                  {userData.displayname}
                 </span>
               </Link>
             </li>

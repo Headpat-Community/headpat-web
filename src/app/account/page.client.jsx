@@ -11,7 +11,6 @@ export default function AccountPage() {
   const [usernamevalue, setUsernameValue] = useState(userMe?.username || "");
   const [isLoading, setIsLoading] = useState(false);
 
-  /*
   useEffect(() => {
     const fetchUserData = async () => {
       setIsLoading(true); // Start loading
@@ -20,16 +19,16 @@ export default function AccountPage() {
           method: "GET",
         });
         const userResponseData = await userResponse.json();
-        setUserMe(userResponseData);
-        const userId = userResponseData.id;
+        setUserMe(userResponseData[0]);
+        
         const userDataResponse = await fetch(
-          `/api/user/getUserData/${userId}?populate=*`,
+          `/api/user/getUserDataSelf`,
           {
             method: "GET",
           }
         );
         const userDataResponseData = await userDataResponse.json();
-        setUserData(userDataResponseData.data.attributes);
+        setUserData(userDataResponseData.documents[0]);
         setIsLoading(false); // Done loading
       } catch (error) {
         console.error(error);
@@ -38,7 +37,8 @@ export default function AccountPage() {
     };
     fetchUserData();
   }, []);
-  */
+
+  console.log(userData);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -232,7 +232,7 @@ export default function AccountPage() {
                         type="text"
                         name="username"
                         id="username_login"
-                        placeholder={userMe ? userMe.username : ""}
+                        placeholder={userData ? userData.profileurl : ""}
                         onChange={(e) => setUsernameValue(e.target.value)}
                         className="flex-1 border-0 bg-transparent py-1.5 pl-1 focus:ring-0 sm:text-sm sm:leading-6"
                       />
@@ -325,9 +325,7 @@ export default function AccountPage() {
 
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
             <div>
-              <h2 className="text-base font-semibold leading-7">
-                Enable NSFW
-              </h2>
+              <h2 className="text-base font-semibold leading-7">Enable NSFW</h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">
                 Checking this box will enable NSFW images. 18+ only.
               </p>

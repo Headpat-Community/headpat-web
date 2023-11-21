@@ -10,7 +10,7 @@ export default function SocialSettings() {
   return (
     <>
       <Layout>
-        <Client node={SocialsPage} />
+        <Client />
       </Layout>
     </>
   );
