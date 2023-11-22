@@ -86,7 +86,7 @@ export default function AccountPage() {
         method: "PATCH",
         body: JSON.stringify({
           password: newPassword,
-          oldpassword: currentPassword,
+          oldPassword: currentPassword,
         }),
       });
 

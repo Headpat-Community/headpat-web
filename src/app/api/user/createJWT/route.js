@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { headers } from "next/headers";
 
 export const runtime = "edge";
 
 export async function POST(request) {
-  const cookieStore = cookies();
-  const jwtCookie = cookieStore.get(
-    `a_session_` + process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID
-  );
-  
+  const headersList = headers();
+  const cookieHeader = headersList.get("cookie");
+
   try {
     // Construct the URL for the external fetch
     const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/account/jwt`;
@@ -19,10 +18,7 @@ export async function POST(request) {
         "Content-Type": "application/json",
         "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
         "X-Appwrite-Response-Format": "1.4.0",
-        Cookies:
-          `a_session_` +
-          process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID +
-          `=${jwtCookie.value}`,
+        Cookies: cookieHeader,
       },
     });
     console.log(response.status);

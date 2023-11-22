@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 
 export const runtime = "edge";
 
@@ -11,14 +11,8 @@ export async function GET() {
     const userData = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/65564fa28d1942747a72/documents`;
     const accountURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/account`;
 
-    const cookieStore = cookies();
-    const jwtCookie = cookieStore.get(
-      `a_session_` + process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID
-    );
-
-    if (!jwtCookie) {
-      return NextResponse.json({ error: "No JWT Token" }, { status: 403 });
-    }
+    const headersList = headers();
+    const cookieHeader = headersList.get("cookie");
 
     const response = await fetch(fetchURL, {
       method: "GET",
@@ -26,10 +20,7 @@ export async function GET() {
         "Content-Type": "application/json",
         "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
         "X-Appwrite-Response-Format": "1.4.0",
-        Cookie:
-          `a_session_` +
-          process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID +
-          `=${jwtCookie.value}`,
+        Cookie: cookieHeader,
       },
     });
 
@@ -42,10 +33,7 @@ export async function GET() {
           "Content-Type": "application/json",
           "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
           "X-Appwrite-Response-Format": "1.4.0",
-          Cookie:
-            `a_session_` +
-            process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID +
-            `=${jwtCookie.value}`,
+          Cookie: cookieHeader,
         },
       });
 
@@ -57,10 +45,7 @@ export async function GET() {
           "Content-Type": "application/json",
           "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
           "X-Appwrite-Response-Format": "1.4.0",
-          Cookie:
-            `a_session_` +
-            process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID +
-            `=${jwtCookie.value}`,
+          Cookie: cookieHeader,
         },
         body: JSON.stringify({
           documentId: getAccountData.$id,
@@ -87,6 +72,7 @@ export async function GET() {
     //console.log(data.documents);
     return NextResponse.json(data.documents, { status: 201 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(error.message, { status: 500 });
   }
 }

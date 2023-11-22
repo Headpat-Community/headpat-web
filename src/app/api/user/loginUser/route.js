@@ -51,7 +51,7 @@ export async function POST(request) {
           secure: true,
           expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
           domain: cookieOptions.domain || process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
-          httpOnly: false,
+          httpOnly: true,
         });
       });
     }

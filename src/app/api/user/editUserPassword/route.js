@@ -1,23 +1,17 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 
 export const runtime = "edge";
 
 export async function PATCH(request) {
+  const headersList = headers();
+  const cookieHeader = headersList.get("cookie");
+
   try {
     const requestBody = await request.json();
 
-    const cookieStore = cookies();
-    const jwtCookie = cookieStore.get(
-      `a_session_` + process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID
-    );
-
-    if (!jwtCookie) {
-      return NextResponse.json({ error: "No JWT Token" }, { status: 403 });
-    }
-
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/users/6553c91d403c07c5e8e8/password`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/account/password`;
 
     const response = await fetch(fetchURL, {
       method: "PATCH",
@@ -25,9 +19,12 @@ export async function PATCH(request) {
         "Content-Type": "application/json",
         "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
         "X-Appwrite-Response-Format": "1.4.0",
+        Cookie: cookieHeader,
       },
       body: JSON.stringify(requestBody),
     });
+
+    console.log(requestBody);
 
     console.log(response.status + " " + response.statusText);
 
@@ -47,6 +44,7 @@ export async function PATCH(request) {
     }
 
     const data = await response.json();
+    console.log(data);
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     console.log(error);

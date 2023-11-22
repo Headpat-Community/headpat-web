@@ -1,14 +1,12 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 
 export const runtime = "edge";
 
 export async function PUT(request) {
   try {
-    const cookieStore = cookies();
-    const jwtCookie = cookieStore.get(
-      `a_session_` + process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID
-    );
+    const headersList = headers();
+    const cookieHeader = headersList.get("cookie");
 
     // Assume the last segment of the URL is the user ID
     const userId = request.url.split("/").pop();
@@ -29,10 +27,7 @@ export async function PUT(request) {
         "Content-Type": "application/json",
         "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
         "X-Appwrite-Response-Format": "1.4.0",
-        Cookie:
-          `a_session_` +
-          process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID +
-          `=${jwtCookie.value}`,
+        Cookie: cookieHeader,
       },
       body: JSON.stringify(requestBody),
     });
