@@ -53,35 +53,6 @@ export default function AccountLayout({ children }) {
   const [userData, setUserData] = useState(null);
   const [userMeData, setUserMeData] = useState(null);
 
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      return parts.pop().split(";").shift();
-    }
-  }
-
-  function deleteCookie(name) {
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-  }
-
-  useEffect(() => {
-    const jwt = getCookie(
-      `a_session_` + `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
-    );
-    if (!jwt) {
-      deleteCookie(
-        `a_session_` + `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
-      );
-      window.location.href = "/login";
-    } else if (jwt === "undefined") {
-      deleteCookie(
-        `a_session_` + `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
-      );
-      window.location.href = "/login";
-    }
-  }, []);
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -89,16 +60,19 @@ export default function AccountLayout({ children }) {
         const userResponse = await fetch("/api/user/getUserSelf", {
           method: "GET",
         });
+
+        if (userResponse.status === 401) {
+          window.location.href = "/login";
+        }
+
         const userResponseData = await userResponse.json();
         // Set the userMeData state to the attributes object of the API response
         setUserMeData(userResponseData);
 
-        const userDataResponse = await fetch(
-          `/api/user/getUserDataSelf`,
-          {
-            method: "GET",
-          }
-        );
+        const userDataResponse = await fetch(`/api/user/getUserDataSelf`, {
+          method: "GET",
+        });
+        
         const userDataResponseData = await userDataResponse.json();
         // Set the userData state to the attributes object of the API response
         setUserData(userDataResponseData.documents[0]);
@@ -109,7 +83,7 @@ export default function AccountLayout({ children }) {
     // Call the fetchUserData function when the component mounts
     fetchUserData();
   }, []);
-  
+
   return (
     <>
       <div>
@@ -271,9 +245,7 @@ export default function AccountLayout({ children }) {
                         height={32}
                       />
                       <span className="sr-only">Your profile</span>
-                      <span aria-hidden="true">
-                        {userData.displayname}
-                      </span>
+                      <span aria-hidden="true">{userData.displayname}</span>
                     </Link>
                   </li>
                 ) : (
@@ -315,9 +287,7 @@ export default function AccountLayout({ children }) {
                   height={64}
                 />
                 <span className="sr-only">Your profile</span>
-                <span aria-hidden="true">
-                  {userData.displayname}
-                </span>
+                <span aria-hidden="true">{userData.displayname}</span>
               </Link>
             </li>
           ) : (

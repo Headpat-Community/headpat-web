@@ -8,23 +8,27 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  function getCookie(name) {
-    if (typeof document !== "undefined") {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(";").shift();
-    }
-    return undefined;
-  }
-
   useEffect(() => {
-    const jwt = getCookie(
-      `a_session_` + process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID
-    );
-    console.log(jwt);
-    if (jwt) {
-      window.location.href = "/account";
-    }
+    const checkIfUserExists = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_DOMAIN}/api/user/checkUserExists`,
+          {
+            method: "GET",
+          }
+        );
+
+        if (response.status === 201) {
+          window.location.href = "/account";
+        } else if (response.status === 401) {
+          return;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    checkIfUserExists();
   }, []);
 
   const handleSubmit = async (e) => {
