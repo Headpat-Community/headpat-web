@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 
 export const runtime = "edge";
 
-export async function PUT(request) {
+export async function PATCH(request) {
   try {
     const headersList = headers();
     const cookieHeader = headersList.get("cookie");

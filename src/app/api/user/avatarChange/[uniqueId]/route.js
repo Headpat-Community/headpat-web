@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 
 export const runtime = "edge";
 
-export async function PATCH(request) {
+export async function POST(request) {
   try {
     const headersList = headers();
     const cookieHeader = headersList.get("cookie");
@@ -11,29 +11,29 @@ export async function PATCH(request) {
     // Assume the last segment of the URL is the user ID
     const userId = request.url.split("/").pop();
 
-    // get request json
-    const requestBody = await request.json();
+    const requestData = await request.arrayBuffer();
 
     if (!userId) {
-      return NextResponse.json("User ID is required", { status: 400 });
+      throw new Error("User ID is required");
     }
 
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/65564fa28d1942747a72/documents/${userId}`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/user-data/${userId}`;
+    const uploadUrl = `${process.env.NEXT_PUBLIC_DOMAIN_API}/v1/storage/buckets/655842922bac16a94a25/files`;
 
     const response = await fetch(fetchURL, {
-      method: "PATCH",
+      method: "POST",
       headers: {
-        "Content-Type": "application/json",
         "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
         "X-Appwrite-Response-Format": "1.4.0",
+        "Content-Type":
+          request.headers.get("Content-Type") || "multipart/form-data",
         Cookie: cookieHeader,
       },
-      body: JSON.stringify(requestBody),
+      body: requestData,
     });
 
     if (!response.ok) {
-      console.log(response.status, response.statusText);
       throw new Error("Failed to update data");
     }
 

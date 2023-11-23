@@ -111,24 +111,23 @@ export default function AccountPage() {
 
   const handleNsfwChange = async (event) => {
     const { checked } = event.target;
+
     setUserData((prevUserData) => ({
       ...prevUserData,
       enablensfw: checked,
     }));
 
-    const isChecked = event.target.checked;
-    setNsfw(isChecked);
-
-    const userResponse = await fetch("/api/user/getUserSelf", {
-      method: "GET",
-    });
-    const userResponseData = await userResponse.json();
-    setUserMe(userResponseData[0]);
-    const userId = userResponseData[0].$id;
+    const isChecked = checked; // Save the value before async operations
 
     try {
+      const userResponse = await fetch("/api/user/getUserSelf", {
+        method: "GET",
+      });
+      const userResponseData = await userResponse.json();
+      const userId = userResponseData[0].$id;
+
       const putResponse = await fetch(`/api/user/handleNsfwChange/${userId}`, {
-        method: "PUT",
+        method: "PATCH",
         body: JSON.stringify({
           data: {
             enablensfw: isChecked,
@@ -139,11 +138,17 @@ export default function AccountPage() {
       if (!putResponse.ok) {
         throw new Error("PUT request failed");
       }
+
+      // Update userMe state after successful request
+      setUserMe((prevUserMe) => ({
+        ...prevUserMe,
+        enablensfw: isChecked,
+      }));
     } catch (error) {
       console.error(error.message);
       if (error.response) {
         const response = await error.response.json();
-        //console.log(response);
+        // console.log(response);
       }
     }
   };
@@ -316,7 +321,7 @@ export default function AccountPage() {
                     name="nsfwtoggle"
                     type="checkbox"
                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    checked={userData.enablensfw}
+                    checked={userMe?.enablensfw}
                     onChange={handleNsfwChange}
                   />
                 </div>

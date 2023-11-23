@@ -21,19 +21,9 @@ export default function AccountPage() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const userResponse = await fetch("/api/user/getUserSelf", {
+        const userDataResponse = await fetch(`/api/user/getUserDataSelf`, {
           method: "GET",
         });
-
-        const userResponseData = await userResponse.json();
-        const userId = userResponseData.id;
-
-        const userDataResponse = await fetch(
-          `/api/user/getUserDataSelf`,
-          {
-            method: "GET",
-          }
-        );
 
         const userDataResponseData = await userDataResponse.json();
         //console.log(userDataResponseData.data.attributes);
@@ -45,8 +35,8 @@ export default function AccountPage() {
           pronouns: userDataResponseData.documents[0].pronouns || "",
           location: userDataResponseData.documents[0].location || "",
           avatar:
-          userDataResponseData.documents[0].avatar?.data?.attributes
-              ?.url || "/logos/logo.webp", // Set the avatar value or a placeholder image
+            userDataResponseData.documents[0].avatar?.data?.attributes?.url ||
+            "/logos/logo.webp", // Set the avatar value or a placeholder image
         });
         setIsLoading(false);
       } catch (error) {
@@ -61,7 +51,7 @@ export default function AccountPage() {
   const handleAvatarChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile.size > 2 * 1024 * 1024) {
-      alert("File size must be less than 2 MB.");
+      alert("Dateigröße darf nur bis 2MB groß sein.");
       return;
     }
     const fileReader = new FileReader();
@@ -75,17 +65,17 @@ export default function AccountPage() {
         if (img.width <= 1024 && img.height <= 1024) {
           setSelectedFile(selectedFile);
         } else {
-          alert("Image resolution darf nur bis 1024x1024 pixel groß sein.");
+          alert("Bild darf nur bis 1024x1024 pixel groß sein.");
         }
       };
     };
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmitAVatar = async (event) => {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append("files.avatar", selectedFile);
+    formData.append("file", selectedFile);
 
     try {
       const userResponse = await fetch("/api/user/getUserSelf", {
@@ -93,32 +83,63 @@ export default function AccountPage() {
       });
 
       const userResponseData = await userResponse.json();
-      const userId = userResponseData.id;
+      const userId = userResponseData[0].$id;
 
       // Year-Month-Day (YYYY-MM-DD)
 
-      formData.append(
-        "data",
-        JSON.stringify({
-          users_permissions_user: userId,
-          status: document.getElementById("status").value,
-          bio: document.getElementById("biostatus").value,
-          displayname: document.getElementById("displayname").value,
-          birthday: document.getElementById("birthday").value,
-          pronouns: document.getElementById("pronouns").value,
-          location: document.getElementById("location").value,
-        })
-      );
+      setIsUploading(true); // Set isUploading to true before making the API call
+
+      const response = await fetch(`/api/user/avatarChange/${userId}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const responseData = await response.json();
+      if (response.ok) {
+        //console.log("File uploaded successfully");
+        setIsUploading(false); // Set isUploading to false after the API call is complete
+        // Reload the window
+        alert("Saved!");
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    //const formData = new FormData();
+    //formData.append("file", selectedFile);
+
+    try {
+      const userResponse = await fetch("/api/user/getUserSelf", {
+        method: "GET",
+      });
+
+      const userResponseData = await userResponse.json();
+      const userId = userResponseData[0].$id;
+
+      // Year-Month-Day (YYYY-MM-DD)
 
       setIsUploading(true); // Set isUploading to true before making the API call
 
-      const response = await fetch(
-        `/api/user/editUserData/${userId}?populate=*`,
-        {
-          method: "PUT",
-          body: formData,
-        }
-      );
+      const response = await fetch(`/api/user/editUserData/${userId}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          data: {
+            status: document.getElementById("status").value,
+            bio: document.getElementById("biostatus").value,
+            displayname: document.getElementById("displayname").value,
+            birthday: new Date(document.getElementById("birthday").value)
+              .toISOString()
+              .split("T")[0],
+            pronouns: document.getElementById("pronouns").value,
+            location: document.getElementById("location").value,
+          },
+        }),
+      });
 
       const responseData = await response.json();
       if (response.ok) {
@@ -127,7 +148,7 @@ export default function AccountPage() {
         setUserData(responseData); // Set the userData state with the response data
         // Reload the window
         //alert("Saved!");
-        window.location.reload();
+        //window.location.reload();
       } else {
         // Check for the specific error structure
         if (
@@ -326,13 +347,22 @@ export default function AccountPage() {
                       name="birthday"
                       type="date"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                      value={userData.birthday} // Set the value from state
+                      value={
+                        userData.birthday
+                          ? new Date(userData.birthday)
+                              .toISOString()
+                              .split("T")[0]
+                          : ""
+                      } // Set the value from state in the correct format
                       onChange={(e) => {
                         setUserData({ ...userData, birthday: e.target.value });
                       }} // Update state when the input changes
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                      <span aria-disabled className="text-gray-400 select-none">
+                      <span
+                        aria-disabled
+                        className="text-gray-400 select-none mr-6"
+                      >
                         DD/MM/YYYY
                       </span>{" "}
                     </div>

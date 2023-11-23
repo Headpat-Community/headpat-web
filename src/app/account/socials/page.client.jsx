@@ -18,19 +18,13 @@ export default function AccountPage() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const userResponse = await fetch("/api/user/getUserSelf", {
-          method: "GET",
-        });
-
-        const userResponseData = await userResponse.json();
-
         const userDataResponse = await fetch(`/api/user/getUserDataSelf`, {
           method: "GET",
         });
 
         const userDataResponseData = await userDataResponse.json();
         const userData = userDataResponseData.documents[0];
-        
+
         setUserData({
           discordname: userData.discordname || "",
           telegramname: userData.telegramname || "",
@@ -57,28 +51,21 @@ export default function AccountPage() {
       });
 
       const userResponseData = await userResponse.json();
-      const userId = userResponseData.id;
-
-      const formData = new FormData();
-
-      // Append the data for Discord, Telegram, and Furaffinity
-      formData.append(
-        "data",
-        JSON.stringify({
-          users_permissions_user: userId,
-          discordname: document.getElementById("discordname").value,
-          telegramname: document.getElementById("telegramname").value,
-          furaffinityname: document.getElementById("furaffinityname").value,
-          X_name: document.getElementById("X_name").value,
-          twitchname: document.getElementById("twitchname").value,
-        })
-      );
+      const userId = userResponseData[0].$id;
 
       setIsUploading(true);
 
       const response = await fetch(`/api/user/editUserData/${userId}`, {
-        method: "PUT",
-        body: formData,
+        method: "PATCH",
+        body: JSON.stringify({
+          data: {
+            discordname: document.getElementById("discordname").value,
+            telegramname: document.getElementById("telegramname").value,
+            furaffinityname: document.getElementById("furaffinityname").value,
+            X_name: document.getElementById("X_name").value,
+            twitchname: document.getElementById("twitchname").value,
+          },
+        }),
       });
 
       const responseData = await response.json();
