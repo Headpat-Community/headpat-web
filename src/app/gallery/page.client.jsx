@@ -13,42 +13,27 @@ export default function FetchGallery({ data }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-
-  const getToken = () => {
-    return document.cookie.replace(
-      /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1"
-    );
-  };
-
-  const handleApiResponse = (response) => {
-    if (response.status === 403 || !response.ok) {
-      //deleteCookie("jwt");
-      window.location.reload();
-    }
-    return response.json();
+  const getGalleryImageUrl = (galleryId) => {
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&quality=100&height=500&operation=fit`;
   };
 
   useEffect(() => {
     const fetchInitialData = async () => {
-      const token = getToken();
-      if (!token) return;
-
       try {
         const response = await fetch("/api/user/getUserSelf", {
           method: "GET",
         });
-        const data = await handleApiResponse(response);
-        setUserId(data.id);
+        const data = await response.json();
+        setUserId(data.documents[0].$id);
 
         const userDataResponse = await fetch(
-          `/api/user/getUserDataSelf/${data.id}`,
+          `/api/user/getUserDataSelf/${data.documents[0].$id}`,
           {
             method: "GET",
           }
         );
-        const userData = await handleApiResponse(userDataResponse);
-        setEnableNsfw(userData.data.attributes.enablensfw);
+        const userData = await userDataResponse.json();
+        setEnableNsfw(userData[0].enablensfw);
       } catch (err) {
         setError(err);
       }
@@ -60,9 +45,10 @@ export default function FetchGallery({ data }) {
   useEffect(() => {
     const fetchGalleryData = async () => {
       setIsLoading(true);
-      const filters = !enableNsfw ? `&filters[nsfw][$eq]=false` : ``;
-      const pageSize = 500;
-      const apiUrl = `/api/gallery/getTotalGallery?populate=img${filters}&pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
+      const filters = !enableNsfw ? `&queries[]=equal("nsfw",false)` : ``;
+      const pageSize = 500; // Number of items per page
+      const offset = (currentPage - 1) * pageSize; // Calculate offset based on current page
+      const apiUrl = `/api/gallery/getTotalGallery?${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`;
 
       setIsLoading(true);
 
@@ -70,13 +56,14 @@ export default function FetchGallery({ data }) {
         const response = await fetch(apiUrl, {
           method: "GET",
         });
-        const data = await handleApiResponse(response);
+
+        const data = await response.json();
         // Shuffle once when fetched
-        const shuffledData = data.data
+        const shuffledData = data.documents
           .sort(() => Math.random() - 0.5)
           .reverse();
         setGallery(shuffledData);
-        setTotalPages(data.meta.pagination.pageCount);
+        setTotalPages(data.total);
         setIsLoading(false);
       } catch (err) {
         setError(err);
@@ -120,37 +107,29 @@ export default function FetchGallery({ data }) {
         ) : (
           <ul className="p-8 flex flex-wrap gap-4 justify-center items-center">
             {gallery.map((item) => (
-              <div key={item.id}>
-                {item.attributes.img && item.attributes.img.data && (
+              <div key={item.$id}>
+                {item && (
                   <div
                     className={`rounded-lg overflow-hidden h-64 ${
-                      item.attributes.nsfw && !enableNsfw ? "relative" : ""
+                      item.nsfw && !enableNsfw ? "relative" : ""
                     }`}
                   >
-                    {item.attributes.nsfw && !enableNsfw && (
+                    {item.nsfw && !enableNsfw && (
                       <div className="absolute inset-0 bg-black opacity-50"></div>
                     )}
-                    <Link href={`/gallery/${item.id}`}>
+                    <Link href={`/gallery/${item.$id}`}>
                       <Image
-                        src={
-                          item.attributes.nsfw && !enableNsfw
-                            ? "https://placekitten.com/200/300" // Replace with placeholder image URL
-                            : item.attributes.img.data.attributes.size > 512 // Check if size is above 1MB (assuming size is in KB)
-                            ? item.attributes.img.data.attributes.formats.small
-                              ? item.attributes.img.data.attributes.formats
-                                  .small.url
-                              : item.attributes.img.data.attributes.url
-                            : item.attributes.img.data.attributes.url
-                        }
-                        alt={item.attributes.imgalt || item.attributes.name}
+                        src={getGalleryImageUrl(item.gallery_id)}
+                        alt={item.imgalt}
                         className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
                         width={600}
                         height={600}
+                        loading="lazy" // Add this attribute for lazy loading
                       />
                     </Link>
                   </div>
                 )}
-                <h2>{item.attributes.name}</h2>
+                <h2>{item.name}</h2>
               </div>
             ))}
           </ul>

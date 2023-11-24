@@ -52,8 +52,9 @@ export default function FetchGallery() {
       ? `queries[]=equal("userId","${userId}")&queries[]=equal("nsfw",false)`
       : `queries[]=equal("userId","${userId}")`;
 
-    const pageSize = 25;
-    const apiUrl = `/api/gallery/getUserGallery?${filters}&pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
+    const pageSize = 500; // Number of items per page
+    const offset = (currentPage - 1) * pageSize; // Calculate offset based on current page
+    const apiUrl = `/api/gallery/getUserGallery?${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`;
 
     setIsLoading(true);
 

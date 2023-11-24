@@ -23,35 +23,27 @@ export default function FetchGallery() {
   const [hasError, setHasError] = useState(false); // Add this state
   const [userMe, setUserMe] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  
   const username =
     typeof window !== "undefined" ? window.location.pathname.split("/")[2] : "";
 
+  const getGalleryImageUrl = (galleryId) => {
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`;
+  };
+
   useEffect(() => {
     fetch(
-      `/api/user/getUserProfileUrlFilter?filters[username][$eq]=${username}`,
+      `/api/user/getUserProfileFilter?queries[]=equal("profileurl","${username}")`,
       {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DOMAIN_API_KEY}`,
-        },
+        method: "GET",
       }
     )
       .then((response) => response.json())
       .then((data) => {
-        setUserMe(data); // Access the first (and only) object in the array
-        setUserId(data[0].id);
-        const userId = data[0].id; // Access the id field of the first (and only) object in the array
-        fetch(`/api/user/getUserData/${userId}?populate=*`, {
-          method: "GET",
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            setUserData(data);
-          })
-          .catch((error) => {
-            console.error("API error:", error);
-            setHasError(true); // Set the error state to true
-          });
+        setUserData(data.documents[0]); // Access the first (and only) object in the array
+        setUserId(data.documents[0].$id);
       })
       .catch((error) => {
         console.error("API error:", error);
@@ -63,22 +55,16 @@ export default function FetchGallery() {
     if (!userId) return; // Wait for userId to be available
 
     const fetchUserData = async () => {
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-      if (!token || typeof token === "undefined") return; // Return if "jwt" token does not exist
-
       try {
         const response = await fetch(
-          `/api/user/getUserData/${userId}?populate=*`,
+          `/api/user/getUserDataSelf`,
           {
             method: "GET",
           }
         );
 
         const data = await response.json();
-        setEnableNsfw(data.data.attributes.enablensfw);
+        setEnableNsfw(data[0].enablensfw);
       } catch (error) {
         setError(error);
       }
@@ -90,27 +76,39 @@ export default function FetchGallery() {
   useEffect(() => {
     if (!userId) return; // Wait for userId to be available
 
-    setIsLoading(true);
-
     const filters = !enableNsfw
-      ? `filters[users_permissions_user][id][$eq]=${userId}&filters[nsfw][$eq]=false`
-      : `filters[users_permissions_user][id][$eq]=${userId}`;
+      ? `queries[]=equal("userId","${userId}")&queries[]=equal("nsfw",false)`
+      : `queries[]=equal("userId","${userId}")`;
 
-    const apiUrl = `/api/gallery/getTotalGallery?populate=*&${filters}`;
+    const pageSize = 500; // Number of items per page
+    const offset = (currentPage - 1) * pageSize; // Calculate offset based on current page
+    const apiUrl = `/api/gallery/getUserGallery?${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`;
+
+    setIsLoading(true);
 
     fetch(apiUrl, {
       method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {
-        setGallery(data.data.reverse());
-        setIsLoading(false);
+        //setGallery(data.data.reverse());
+        setGallery(data.documents);
+        setTotalPages(data.meta.pagination.pageCount);
       })
-      .catch((error) => {
-        setError(error);
+      .catch((err) => {
+        setError(err.message || "An error occurred.");
+      })
+      .finally(() => {
         setIsLoading(false);
       });
-  }, [userId, enableNsfw]);
+
+    setIsLoading(false);
+  }, [userId, enableNsfw, currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.history.pushState({ page }, `Page ${page}`, `?page=${page}`);
+  };
 
   return (
     <>
@@ -405,13 +403,13 @@ export default function FetchGallery() {
                                 item.attributes.nsfw && !enableNsfw
                                   ? "https://placekitten.com/200/300" // Replace with placeholder image URL
                                   : item.attributes.img.data.attributes.ext ===
-                                    ".gif"
-                                  ? item.attributes.img.data.attributes.url
-                                  : item.attributes.img.data.attributes.formats
-                                      .small
-                                  ? item.attributes.img.data.attributes.formats
-                                      .small.url
-                                  : item.attributes.img.data.attributes.url
+                                      ".gif"
+                                    ? item.attributes.img.data.attributes.url
+                                    : item.attributes.img.data.attributes
+                                          .formats.small
+                                      ? item.attributes.img.data.attributes
+                                          .formats.small.url
+                                      : item.attributes.img.data.attributes.url
                               }
                               alt={item.attributes.imgalt}
                               className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}

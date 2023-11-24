@@ -98,7 +98,11 @@ export default function UserProfile() {
   const params = useParams();
   const username = params.uniqueId;
 
-  const rawBirthday = userData?.data?.attributes?.birthday; // ISO date string
+  const getAvatarImageUrl = (galleryId) => {
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`;
+  };
+
+  const rawBirthday = userData?.birthday; // ISO date string
 
   // Parse the ISO date string to a Date object
   const dateObject = new Date(rawBirthday);
@@ -134,7 +138,7 @@ export default function UserProfile() {
     )
       .then((response) => response.json())
       .then((data) => {
-        setUserData(data);
+        setUserData(data.documents[0]);
         console.log(data);
       })
       .catch((error) => {
@@ -166,13 +170,11 @@ export default function UserProfile() {
                 <div className="p-4">
                   <div className="flex items-start">
                     <div className="flex-shrink-0 pt-0.5">
-                      {userData &&
-                      userData.data.attributes.avatar &&
-                      userData.data.attributes.avatar.data &&
-                      userData.data.attributes.avatar.data.attributes ? (
+                      {userData ? (
                         <Image
                           src={
-                            userData.data.attributes.avatar.data.attributes.url
+                            getAvatarImageUrl(userData.avatarId) ||
+                            "/logos/logo-512.webp"
                           }
                           alt=""
                           className="rounded-full object-contain"
@@ -191,7 +193,7 @@ export default function UserProfile() {
                     </div>
                     <div className="ml-3 w-0 flex-1">
                       <p className="text-sm font-medium">
-                        {userData?.data?.attributes?.displayname || username}
+                        {userData?.displayname || username}
                       </p>
                       <p className="mt-1 text-sm dark:text-gray-300 text-gray-800">
                         It&apos;s their birthday today!
@@ -239,14 +241,11 @@ export default function UserProfile() {
                   <div className="flex items-center gap-x-6">
                     <div className="mt-1 text-base font-semibold leading-6">
                       <div className="mt-1 text-base font-semibold leading-6">
-                        {userData &&
-                        userData.data.attributes.avatar &&
-                        userData.data.attributes.avatar.data &&
-                        userData.data.attributes.avatar.data.attributes ? (
+                        {userData ? (
                           <Image
                             src={
-                              userData.data.attributes.avatar.data.attributes
-                                .url
+                              getAvatarImageUrl(userData.avatarId) ||
+                              "/logos/logo-512.webp"
                             }
                             alt=""
                             className="h-16 w-16 flex-none rounded-full ring-1 dark:ring-white/10 ring-black/10"
@@ -266,14 +265,14 @@ export default function UserProfile() {
                     </div>
                     <h1>
                       <div className="mt-1 text-base font-semibold leading-6">
-                        {userData && userData[0]?.displayname}
+                        {userData[0]?.displayname}
                       </div>
                     </h1>
                   </div>
                   <div className="flex items-center gap-x-4 sm:gap-x-6">
-                    {userData?.data?.attributes?.telegramname && (
+                    {userData?.telegramname && (
                       <Link
-                        href={`https://t.me/${userData.data.attributes.telegramname}`}
+                        href={`https://t.me/${userData.telegramname}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -283,9 +282,9 @@ export default function UserProfile() {
                         />
                       </Link>
                     )}
-                    {userData?.data?.attributes?.discordname && (
+                    {userData?.discordname && (
                       <Link
-                        href={`https://discord.com/users/${userData.data.attributes.discordname}`}
+                        href={`https://discord.com/users/${userData.discordname}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -295,9 +294,9 @@ export default function UserProfile() {
                         />
                       </Link>
                     )}
-                    {userData?.data?.attributes?.X_name && (
+                    {userData?.X_name && (
                       <Link
-                        href={`https://x.com/${userData.data.attributes.X_name}`}
+                        href={`https://x.com/${userData.X_name}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -307,9 +306,9 @@ export default function UserProfile() {
                         />
                       </Link>
                     )}
-                    {userData?.data?.attributes?.twitchname && (
+                    {userData?.twitchname && (
                       <Link
-                        href={`https://twitch.tv/${userData.data.attributes.twitchname}`}
+                        href={`https://twitch.tv/${userData.twitchname}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -319,9 +318,9 @@ export default function UserProfile() {
                         />
                       </Link>
                     )}
-                    {userData?.data?.attributes?.furaffinityname && (
+                    {userData?.furaffinityname && (
                       <Link
-                        href={`https://www.furaffinity.net/user/${userData.data.attributes.furaffinityname}`}
+                        href={`https://www.furaffinity.net/user/${userData.furaffinityname}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -404,7 +403,7 @@ export default function UserProfile() {
                       </Link>
                     )}
                     <Link
-                      href={`/user/${userData?.[0]?.username}/gallery`}
+                      href={`/user/${userData?.profileurl}/gallery`}
                       className="hidden text-sm font-semibold leading-6 text-white sm:block bg-indigo-600 p-2 pt-1 pb-1 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       Gallery
@@ -491,7 +490,7 @@ export default function UserProfile() {
                           />
                         </dt>
                         <dd className="text-sm font-medium leading-6">
-                          {userData?.data?.attributes?.displayname}
+                          {userData?.displayname}
                         </dd>
                       </div>
                       <div
@@ -505,10 +504,10 @@ export default function UserProfile() {
                           />
                         </dt>
                         <dd className="text-sm font-medium leading-6">
-                          {userData?.data?.attributes?.status}
+                          {userData?.status}
                         </dd>
                       </div>
-                      {userData?.data?.attributes?.pronouns !== "" && (
+                      {userData?.pronouns !== "" && (
                         <div
                           className={`flex w-full flex-none gap-x-4 px-6 ${
                             formattedBirthday === "31.01.1900" ? " mb-4" : ""
@@ -522,14 +521,14 @@ export default function UserProfile() {
                             />
                           </dt>
                           <dd className="text-sm font-medium leading-6">
-                            {userData?.data?.attributes?.pronouns}
+                            {userData?.pronouns}
                           </dd>
                         </div>
                       )}
                       {formattedBirthday !== "31.01.1900" && (
                         <div
                           className={`mt-4 flex w-full flex-none gap-x-4 px-6 mb-4 ${
-                            userData?.data?.attributes?.location === ""
+                            userData?.location === ""
                               ? "mb-6"
                               : ""
                           }`}
@@ -548,8 +547,8 @@ export default function UserProfile() {
                           </dd>
                         </div>
                       )}
-                      {userData?.data?.attributes?.location !== null &&
-                        userData?.data?.attributes?.location !== "" && (
+                      {userData?.location !== null &&
+                        userData?.location !== "" && (
                           <div
                             className={`flex w-full flex-none gap-x-4 px-6 mb-4`}
                           >
@@ -561,7 +560,7 @@ export default function UserProfile() {
                               />
                             </dt>
                             <dd className="text-sm font-medium leading-6">
-                              {userData?.data?.attributes?.location}
+                              {userData?.location}
                             </dd>
                           </div>
                         )}
@@ -580,7 +579,7 @@ export default function UserProfile() {
                         className="font-medium dark:text-gray-300 text-gray-800"
                         style={{ whiteSpace: "pre-line" }}
                       >
-                        {userData?.data?.attributes?.bio}
+                        {userData?.bio}
                       </div>
                     </div>
                   </dl>

@@ -17,6 +17,10 @@ export default function AccountPage() {
     avatar: "",
   });
 
+  const getAvatarImageUrl = (galleryId) => {
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -35,7 +39,7 @@ export default function AccountPage() {
           pronouns: userDataResponseData.documents[0].pronouns || "",
           location: userDataResponseData.documents[0].location || "",
           avatar:
-            userDataResponseData.documents[0].avatar?.data?.attributes?.url ||
+            getAvatarImageUrl(userDataResponseData.documents[0].avatarId) ||
             "/logos/logo.webp", // Set the avatar value or a placeholder image
         });
         setIsLoading(false);
@@ -76,6 +80,7 @@ export default function AccountPage() {
 
     const formData = new FormData();
     formData.append("file", selectedFile);
+    formData.append("fileId", "unique()");
 
     try {
       const userResponse = await fetch("/api/user/getUserSelf", {
@@ -226,9 +231,18 @@ export default function AccountPage() {
                       type="file"
                       onChange={handleAvatarChange}
                     />
-                    <p className="mt-2 text-xs leading-5 dark:text-gray-400 text-gray-900">
-                      JPG, GIF or PNG. 2MB max.
-                    </p>
+                    <div className="flex justify-between items-center">
+                      <p className="mt-2 text-xs leading-5 dark:text-gray-400 text-gray-900">
+                        JPG, GIF or PNG. 2MB max.
+                      </p>
+                      <button
+                        type="submit"
+                        onClick={handleSubmitAVatar}
+                        className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                      >
+                        Submit
+                      </button>
+                    </div>
                     <p className="mt-2 text-xs leading-5 dark:text-gray-400 text-gray-900">
                       1024x1024 max. resolution
                     </p>

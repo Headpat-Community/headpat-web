@@ -53,6 +53,10 @@ export default function AccountLayout({ children }) {
   const [userData, setUserData] = useState(null);
   const [userMeData, setUserMeData] = useState(null);
 
+  const getAvatarImageUrl = (galleryId) => {
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`;
+  };
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -72,7 +76,7 @@ export default function AccountLayout({ children }) {
         const userDataResponse = await fetch(`/api/user/getUserDataSelf`, {
           method: "GET",
         });
-        
+
         const userDataResponseData = await userDataResponse.json();
         // Set the userData state to the attributes object of the API response
         setUserData(userDataResponseData.documents[0]);
@@ -234,10 +238,10 @@ export default function AccountLayout({ children }) {
                       href={`/user/${userData.profileurl}`}
                       className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
                     >
-                      <Image
+                      <img
                         className="h-8 w-8 rounded-full bg-gray-800"
                         src={
-                          userData.avatar?.data?.attributes?.url ||
+                          getAvatarImageUrl(userData.avatarId) ||
                           "/logos/logo-512.webp"
                         }
                         alt=""
@@ -276,10 +280,10 @@ export default function AccountLayout({ children }) {
                 href={`/user/${userData.profileurl}`}
                 className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
               >
-                <Image
+                <img
                   className="h-8 w-8 rounded-full bg-gray-800"
                   src={
-                    userData.avatar?.data?.attributes?.url ||
+                    getAvatarImageUrl(userData.avatarId) ||
                     "/logos/logo-512.webp"
                   }
                   alt=""
