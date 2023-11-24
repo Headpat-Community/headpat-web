@@ -6,32 +6,19 @@ import Image from "next/image";
 
 export default function AnnouncementsPage() {
   const [announcementData, setAnnouncementData] = useState(null);
-  const [userData, setUserData] = useState({});
+
+  const getAvatarImageUrl = (galleryId) => {
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`;
+  };
 
   useEffect(() => {
-    fetch("/api/announcements/getAnnouncements?populate=*", {
+    fetch("/api/announcements/getAnnouncements", {
       method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {
-        setAnnouncementData(data.data.reverse());
-        const createdByIds = data.data.map(
-          (announcement) =>
-            announcement.attributes.users_permissions_user.data.id
-        );
-        const fetchPromises = createdByIds.map((createdById) =>
-          fetch(`/api/user/getUserData/${createdById}?populate=*`, {
-            method: "GET",
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              setUserData((prevUserData) => ({
-                ...prevUserData,
-                [createdById]: data.data,
-              }));
-            })
-        );
-        return Promise.all(fetchPromises);
+        console.log(data);
+        setAnnouncementData(data);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -45,56 +32,50 @@ export default function AnnouncementsPage() {
       >
         {announcementData &&
           announcementData.map((announcement) => {
-            const createdBy =
-              userData[announcement.attributes.createdby]?.attributes;
             return (
               <li
-                key={announcement.id}
+                key={announcement.$id}
                 className="relative flex justify-between gap-x-6 px-4 py-5 dark:hover:bg-gray-50/10 hover:bg-gray-50/90 sm:px-6"
               >
                 <div className="flex min-w-0 gap-x-4">
                   <Image
                     className="h-12 w-12 flex-none rounded-full"
-                    src={
-                      createdBy?.avatar?.data?.attributes?.url ||
-                      "/logos/logo-64.webp"
-                    }
+                    src={getAvatarImageUrl(announcement.userdata.avatarId || "/logos/logo-64.webp")}
                     alt=""
                     width={48}
                     height={48}
                   />
                   <div className="min-w-0 flex-auto">
                     <p className="text-sm font-semibold leading-6">
-                      <Link href={`/announcements/${announcement.id}`}>
+                      <Link href={`/announcements/${announcement.$id}`}>
                         <span className="absolute inset-x-0 -top-px bottom-0" />
-                        {announcement.attributes.title}
+                        {announcement.title}
                       </Link>
                     </p>
                     <p className="mt-1 flex text-xs leading-5 dark:text-gray-300 text-gray-400">
-                      {announcement.attributes.sidetext}
+                      {announcement.sidetext}
                     </p>
                   </div>
                 </div>
                 <div className="flex shrink-0 items-center gap-x-4">
                   <div className="hidden sm:flex sm:flex-col sm:items-end">
-                    {announcement.attributes.validuntil ? (
+                    {announcement.validuntil ? (
                       <>
                         <p className="mt-1 text-xs leading-5 dark:text-white/80 text-black/80">
                           Valid until{" "}
-                          <time dateTime={announcement.attributes.validuntil}>
+                          <time dateTime={announcement.validuntil}>
                             {new Date(
-                              announcement.attributes.validuntil
+                              announcement.validuntil
                             ).toLocaleDateString()}
                           </time>
                         </p>
-                        {new Date(announcement.attributes.validuntil) >
-                        new Date() ? (
+                        {new Date(announcement.validuntil) > new Date() ? (
                           <div className="mt-1 flex items-center gap-x-1.5">
                             <div className="flex-none rounded-full bg-emerald-500/20 p-1">
                               <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                             </div>
                             <p className="text-xs leading-5 dark:text-white/80 text-black/80">
-                              Active
+                              Aktiv
                             </p>
                           </div>
                         ) : (
@@ -103,7 +84,7 @@ export default function AnnouncementsPage() {
                               <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
                             </div>
                             <p className="text-xs leading-5 dark:text-white/80 text-black/80">
-                              Inactive
+                              Inaktiv
                             </p>
                           </div>
                         )}
