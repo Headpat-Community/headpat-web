@@ -368,32 +368,35 @@ export default function FetchGallery() {
             role="list"
             className="p-8 flex flex-wrap gap-4 justify-center items-center"
           >
-            {gallery.map((item) => (
-              console.log(item),
-              <div key={item.$id}>
-                {item && (
-                  <div
-                    className={`rounded-lg overflow-hidden h-64 ${
-                      item.nsfw && !enableNsfw ? "relative" : ""
-                    }`}
-                  >
-                    {item.nsfw && !enableNsfw && (
-                      <div className="absolute inset-0 bg-black opacity-50"></div>
+            {gallery.map(
+              (item) => (
+                (
+                  <div key={item.$id}>
+                    {item && (
+                      <div
+                        className={`rounded-lg overflow-hidden h-64 ${
+                          item.nsfw && !enableNsfw ? "relative" : ""
+                        }`}
+                      >
+                        {item.nsfw && !enableNsfw && (
+                          <div className="absolute inset-0 bg-black opacity-50"></div>
+                        )}
+                        <Link href={`/gallery/${item.$id}`}>
+                          <Image
+                            src={getGalleryImageUrl(item.gallery_id)}
+                            alt={item.imgalt}
+                            className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
+                            width={600}
+                            height={600}
+                          />
+                        </Link>
+                      </div>
                     )}
-                    <Link href={`/gallery/${item.$id}`}>
-                      <Image
-                        src={getGalleryImageUrl(item.gallery_id)}
-                        alt={item.imgalt}
-                        className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
-                        width={600}
-                        height={600}
-                      />
-                    </Link>
+                    <h2>{item.name}</h2>
                   </div>
-                )}
-                <h2>{item.name}</h2>
-              </div>
-            ))}
+                )
+              )
+            )}
           </ul>
         </>
       </div>
