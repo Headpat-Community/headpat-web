@@ -68,21 +68,9 @@ export default function UploadPage() {
       });
 
       const userResponseData = await userResponse.json();
-      const userId = userResponseData.id;
+      const userId = userResponseData[0].$id;
 
-      /*
-      formData.append(
-        "data",
-        JSON.stringify({
-          name: imagename.value,
-          imgalt: imgalt.value,
-          longtext: longtext.value,
-          nsfw: nsfw.checked,
-        })
-      );
-      */
-
-      //setIsUploading(true); // Set isUploading to true before making the API call
+      setIsUploading(true); // Set isUploading to true before making the API call
 
       const response = await fetch("/api/gallery/uploadImage", {
         method: "POST",
@@ -90,34 +78,38 @@ export default function UploadPage() {
       });
 
       const responseData = await response.json();
+      console.log("Response Data:", responseData);
+
       if (response.status === 201) {
-        const editImage = await fetch("/api/gallery/editImage", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            gallery_id: responseData.$id,
-            name: imagename.value,
-            imgalt: imgalt.value,
-            longtext: longtext.value,
-            nsfw: nsfw.checked,
-            user_id: userId,
-          }),
-        });
+        const editImage = await fetch(
+          `/api/gallery/editUserGallery/${responseData.$id}`,
+          {
+            method: "PATCH",
+            body: JSON.stringify({
+              data: {
+                name: imagename.value,
+                imgalt: imgalt.value,
+                longtext: longtext.value,
+                nsfw: nsfw.checked,
+                userId: userId,
+              },
+            }),
+          }
+        );
 
         const editImageData = await editImage.json();
-        if (editImage.status === 201) {
+        if (editImage.status === 200) {
           alert("Saved!");
-          //window.location.reload();
+          window.location.reload();
         } else {
           console.error("Failed to edit image:", editImageData);
         }
         //console.log("File uploaded successfully");
-        //setIsUploading(false); // Set isUploading to false after the API call is complete
+        setIsUploading(false);
         // Add the "Saved!" text to the form
       } else {
         console.error("Failed to upload file:", responseData);
+        setIsUploading(false);
       }
     } catch (error) {
       console.error(error);

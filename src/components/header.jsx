@@ -6,7 +6,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import Link from "next/link";
 import AnnouncementNotification from "@/components/announcementNotification";
 import Image from "next/image";
-import { usePathname } from 'next/navigation'
+import { usePathname } from "next/navigation";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -17,21 +17,33 @@ const navigation = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const isPawcraftPage = pathname === "/pawcraft";
   const isAnnouncementPage = pathname.startsWith("/announcements");
 
   useEffect(() => {
-    const jwtCookie = getCookie("jwt");
-    setIsLoggedIn(!!jwtCookie);
-  }, []);
+    const checkIfUserExists = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_DOMAIN}/api/user/checkUserExists`,
+          {
+            method: "GET",
+          }
+        );
 
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-  }
+        if (response.status === 201) {
+          setIsLoggedIn(true);
+        } else if (response.status === 401) {
+          return;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    checkIfUserExists();
+  }, []);
 
   return (
     <>

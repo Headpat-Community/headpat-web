@@ -20,40 +20,33 @@ export default function FetchGallery() {
     longtext: "", // Initialize with an empty string
   });
 
-  const fetchUserId = async () => {
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1"
-    );
-    if (!token || typeof token === "undefined") return; // Return if "jwt" token does not exist
+  const getGalleryImageUrl = (galleryId) => {
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`;
+  };
 
+  const fetchUserId = async () => {
     try {
       const response = await fetch(`/api/user/getUserSelf`, {
         method: "GET",
       });
 
       const data = await response.json();
-      setUsername(data.username);
+      setUsername(data[0].name);
     } catch (error) {
       setError(error);
     }
   };
 
   const deleteImage = async () => {
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1"
-    );
-    if (!token || typeof token === "undefined") return; // Return if "jwt" token does not exist
-
     try {
+      'use server'
       // Get the ID from the URL
       const pathParts = window.location.pathname.split("/");
       const uniqueId = pathParts[3];
 
       // Fetch the gallery data
       const response = await fetch(
-        `/api/gallery/getUserGallery/${uniqueId}?populate=*`,
+        `/api/gallery/getUserGallery?queries[]=equal("$id","${uniqueId}")`,
         {
           method: "GET",
         }
@@ -61,15 +54,16 @@ export default function FetchGallery() {
       const data = await response.json();
 
       // Get the image ID from the userData state
-      const imageId = data.data.attributes.img.data.id;
+      const documentId = data.documents[0].$id;
+      const imageId = data.documents[0].gallery_id;
 
-      // Delete the image file
-      await fetch(`/api/system/deleteImageFile/${imageId}`, {
+      // Delete the gallery image
+      await fetch(`/api/gallery/deleteImageFile/${imageId}`, {
         method: "DELETE",
       });
 
-      // Delete the gallery
-      await fetch(`/api/gallery/deleteUserGallery/${uniqueId}`, {
+      // Delete the gallery document
+      await fetch(`/api/gallery/deleteGalleryDocument/${documentId}`, {
         method: "DELETE",
       });
 
@@ -83,16 +77,6 @@ export default function FetchGallery() {
 
   const updateImage = async () => {
     setIsUploading(true);
-
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1"
-    );
-
-    if (!token) {
-      setIsUploading(false);
-      return;
-    }
 
     try {
       // Get the ID from the URL
@@ -109,7 +93,7 @@ export default function FetchGallery() {
 
       // Make the PUT request
       const response = await fetch(`/api/gallery/editUserGallery/${uniqueId}`, {
-        method: "PUT",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
@@ -133,7 +117,7 @@ export default function FetchGallery() {
     const pathParts = window.location.pathname.split("/");
     const uniqueId = pathParts[3];
 
-    const apiUrl = `/api/gallery/getUserGallery/${uniqueId}?populate=*`;
+    const apiUrl = `/api/gallery/getSingleImage/${uniqueId}`;
 
     setIsLoading(true);
 
@@ -149,19 +133,17 @@ export default function FetchGallery() {
         setGallery(data);
 
         // Set the galleryUsername and userData based on the fetched data
-        setGalleryUsername(
-          data.data.attributes.users_permissions_user.data.attributes.username
-        );
+        setGalleryUsername(data.name);
 
         // Set the userData state with the fetched data
         setUserData({
-          name: data.data.attributes.name,
-          imgalt: data.data.attributes.imgalt,
-          nsfw: data.data.attributes.nsfw,
-          createdAt: data.data.attributes.createdAt,
-          modifiedAt: data.data.attributes.updatedAt,
-          longtext: data.data.attributes.longtext,
-          imageId: data.data.attributes.img.data.id,
+          name: data.name,
+          imgalt: data.imgalt,
+          nsfw: data.nsfw,
+          createdAt: data.$createdAt,
+          modifiedAt: data.$updatedAt,
+          longtext: data.longtext,
+          imageId: data.$id,
         });
 
         setIsLoading(false);
@@ -181,7 +163,7 @@ export default function FetchGallery() {
     if (!username) return; // Wait for userId to be available
 
     if (galleryUsername != username) {
-      window.location.href = "/account/gallery";
+      //window.location.href = "/account/gallery";
     }
   }, [galleryUsername, username]);
 
@@ -193,31 +175,15 @@ export default function FetchGallery() {
         <div className="p-8 flex flex-wrap gap-4 justify-center items-center">
           <div>
             {(() => {
-              const imgAttributes =
-                gallery?.data?.attributes?.img?.data?.attributes;
-              const url = imgAttributes?.url;
               const name = gallery?.data?.attributes?.name;
-              const createdAt = gallery?.data?.attributes?.createdAt;
-              const modifiedAt = gallery?.data?.attributes?.updatedAt;
-              const imgalt = gallery?.data?.attributes?.imgalt;
-              const longtext = gallery?.data?.attributes?.longtext;
-              const nsfw = gallery?.data?.attributes?.nsfw;
-              const width =
-                gallery?.data?.attributes?.img?.data?.attributes?.width;
-              const height =
-                gallery?.data?.attributes?.img?.data?.attributes?.height;
 
               return (
                 <div className="flex flex-wrap items-start">
                   <div className="flex mx-auto">
                     <img
-                      src={url}
+                      src={getGalleryImageUrl(gallery.gallery_id)}
                       alt={name || "Headpat Community Image"}
-                      className={`rounded-lg imgsinglegallery object-contain ${
-                        width < 800
-                          ? `w-${width}`
-                          : `h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`
-                      }`}
+                      className={`rounded-lg imgsinglegallery object-contain h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`}
                     />
                   </div>
 
@@ -283,7 +249,16 @@ export default function FetchGallery() {
                             type="text"
                             className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                           >
-                            {userData.createdAt}
+                            {new Date(userData.createdAt).toLocaleString(
+                              "en-GB",
+                              {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }
+                            )}
                           </span>
                         </div>
                       </div>
@@ -297,35 +272,16 @@ export default function FetchGallery() {
                             type="text"
                             className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                           >
-                            {userData.createdAt}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="sm:col-span-3">
-                        <label className="block text-sm font-medium leading-6 dark:text-white text-black">
-                          Breite
-                        </label>
-                        <div className="mt-2">
-                          <span
-                            type="text"
-                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                          >
-                            {width}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="sm:col-span-3">
-                        <label className="block text-sm font-medium leading-6 dark:text-white text-black">
-                          Höhe
-                        </label>
-                        <div className="mt-2">
-                          <span
-                            type="text"
-                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 dark:text-white text-black shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                          >
-                            {height}
+                            {new Date(userData.modifiedAt).toLocaleString(
+                              "en-GB",
+                              {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }
+                            )}
                           </span>
                         </div>
                       </div>

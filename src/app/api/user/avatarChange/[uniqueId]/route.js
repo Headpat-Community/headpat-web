@@ -8,38 +8,67 @@ export async function POST(request) {
     const headersList = headers();
     const cookieHeader = headersList.get("cookie");
 
-    // Assume the last segment of the URL is the user ID
-    const userId = request.url.split("/").pop();
-
+    // Read the entire stream and buffer it
     const requestData = await request.arrayBuffer();
 
-    if (!userId) {
-      throw new Error("User ID is required");
-    }
+    /*console.log(
+      "Buffered request data (first 100 bytes):",
+      requestData.slice(0, 100).toString()
+    );*/
 
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/user-data/${userId}`;
-    const uploadUrl = `${process.env.NEXT_PUBLIC_DOMAIN_API}/v1/storage/buckets/655842922bac16a94a25/files`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files`;
+    //console.log("Forwarding request to:", fetchURL);
 
-    const response = await fetch(fetchURL, {
+    const uploadImage = await fetch(fetchURL, {
       method: "POST",
       headers: {
-        "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
-        "X-Appwrite-Response-Format": "1.4.0",
         "Content-Type":
           request.headers.get("Content-Type") || "multipart/form-data",
+        "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+        "X-Appwrite-Response-Format": "1.4.0",
         Cookie: cookieHeader,
       },
       body: requestData,
     });
 
+    const imageData = await uploadImage.json();
+
+    const postURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655cb829dbf6102f2436/documents`;
+
+    const response = await fetch(postURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+        "X-Appwrite-Response-Format": "1.4.0",
+        Cookie: cookieHeader,
+      },
+      body: JSON.stringify({
+        documentId: "unique()",
+        data: {
+          gallery_id: imageData.$id,
+          siteOriginal: imageData.sizeOriginal,
+        },
+      }),
+    });
+
+    //console.log("External API Response Status:", response.status);
+    /*console.log(
+      "External API Response Headers:",
+      JSON.stringify([...response.headers])
+    );*/
+
     if (!response.ok) {
-      throw new Error("Failed to update data");
+      const errorData = await response.text();
+      throw new Error(`Failed to forward data: ${errorData}`);
     }
 
     const data = await response.json();
-    return NextResponse.json(data, { status: 200 });
+    //console.log("External API Response Body:", data);
+    return NextResponse.json(data, { status: 201 });
   } catch (error) {
+    //console.log("Error:", error.message);
     return NextResponse.json(error.message, { status: 500 });
   }
 }

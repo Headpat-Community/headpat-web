@@ -8,7 +8,6 @@ export async function GET() {
     // Construct the URL for the external fetch
     const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655ad3d280feee3296b5/documents`;
     const postURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655ad3d280feee3296b5/documents`;
-    const userData = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/65564fa28d1942747a72/documents`;
     const accountURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/account`;
 
     const headersList = headers();

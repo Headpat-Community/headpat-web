@@ -42,7 +42,7 @@ export default function FetchGallery({ data }) {
         setUserId(data.id);
 
         const userDataResponse = await fetch(
-          `/api/user/getUserData/${data.id}`,
+          `/api/user/getUserDataSelf/${data.id}`,
           {
             method: "GET",
           }

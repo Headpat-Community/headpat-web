@@ -14,19 +14,8 @@ export default function FetchGallery() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const getToken = () => {
-    return document.cookie.replace(
-      /(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1"
-    );
-  };
-
-  const handleApiResponse = (response) => {
-    if (response.status === 401 || !response.ok) {
-      deleteCookie("jwt");
-      window.location.reload();
-    }
-    return response.json();
+  const getGalleryImageUrl = (galleryId) => {
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`;
   };
 
   useEffect(() => {
@@ -35,55 +24,46 @@ export default function FetchGallery() {
     setCurrentPage(page);
   }, []);
 
-  useEffect(() => {
-    const token = getToken();
-    if (!token) {
-      setError("You need to login to be able to see NSFW images!");
-      return;
-    }
-
-    setIsLoading(true);
-
-    fetch("/api/user/getUserSelf", {
-      method: "GET",
-    })
-      .then(handleApiResponse)
-      .then((data) => {
-        setUserId(data.id);
-        return fetch(`/api/user/getUserData/${data.id}`, {
-          method: "GET",
-        });
-      })
-      .then(handleApiResponse)
-      .then((userData) => {
-        setEnableNsfw(userData.data.attributes.enablensfw);
-      })
-      .catch((err) => {
-        setError(err.message || "An error occurred.");
-      })
-      .finally(() => {
-        setIsLoading(false);
+  fetch("/api/user/getUserSelf", {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      setUserId(data[0].$id);
+      return fetch(`/api/user/getUserDataSelf`, {
+        method: "GET",
       });
-  }, []);
+    })
+    .then((response) => response.json())
+    .then((userData) => {
+      setEnableNsfw(userData[0].enablensfw);
+    })
+    .catch((err) => {
+      setError(err.message || "An error occurred.");
+    })
+    .finally(() => {
+      setIsLoading(false);
+    });
 
   useEffect(() => {
     if (!userId) return; // Wait for userId to be available
 
     const filters = !enableNsfw
-      ? `filters[users_permissions_user][id][$eq]=${userId}&filters[nsfw][$eq]=false`
-      : `filters[users_permissions_user][id][$eq]=${userId}`;
+      ? `queries[]=equal("userId","${userId}")&queries[]=equal("nsfw",false)`
+      : `queries[]=equal("userId","${userId}")`;
 
     const pageSize = 25;
-    const apiUrl = `/api/gallery/getTotalGallery?populate=*&${filters}&pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
+    const apiUrl = `/api/gallery/getUserGallery?${filters}&pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
 
     setIsLoading(true);
 
     fetch(apiUrl, {
       method: "GET",
     })
-      .then(handleApiResponse)
+      .then((response) => response.json())
       .then((data) => {
-        setGallery(data.data.reverse());
+        //setGallery(data.data.reverse());
+        setGallery(data.documents);
         setTotalPages(data.meta.pagination.pageCount);
       })
       .catch((err) => {
@@ -105,15 +85,7 @@ export default function FetchGallery() {
       <div>
         {isLoading ? (
           error ? (
-            <p className="text-center text-red-500 font-bold my-8">
-              {error.message.includes(
-                "Cannot read properties of undefined (reading 'id')"
-              ) ? (
-                <ErrorPage />
-              ) : (
-                `Error: ${error.message}`
-              )}
-            </p>
+            <p className="text-center text-red-500 font-bold my-8">Error!</p>
           ) : (
             <Loading />
           )
@@ -125,30 +97,19 @@ export default function FetchGallery() {
             >
               {gallery.map((item) => (
                 <div key={item.id}>
-                  {item.attributes.img && item.attributes.img.data && (
+                  {item && (
                     <div
                       className={`rounded-lg overflow-hidden h-64 ${
-                        item.attributes.nsfw && !enableNsfw ? "relative" : ""
+                        item.nsfw && !enableNsfw ? "relative" : ""
                       }`}
                     >
-                      {item.attributes.nsfw && !enableNsfw && (
+                      {item.nsfw && !enableNsfw && (
                         <div className="absolute inset-0 bg-black opacity-50"></div>
                       )}
-                      <Link href={`/account/gallery/${item.id}`}>
+                      <Link href={`/account/gallery/${item.$id}`}>
                         <Image
-                          src={
-                            item.attributes.nsfw && !enableNsfw
-                              ? "https://placekitten.com/200/300" // Replace with placeholder image URL
-                              : item.attributes.img.data.attributes.ext ===
-                                ".gif"
-                              ? item.attributes.img.data.attributes.url
-                              : item.attributes.img.data.attributes.formats
-                                  .small
-                              ? item.attributes.img.data.attributes.formats
-                                  .small.url
-                              : item.attributes.img.data.attributes.url
-                          }
-                          alt={item.attributes.imgalt}
+                          src={getGalleryImageUrl(item.gallery_id)}
+                          alt={item.imgalt}
                           className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
                           width={600}
                           height={600}
@@ -157,7 +118,7 @@ export default function FetchGallery() {
                       </Link>
                     </div>
                   )}
-                  <h2>{item.attributes.name}</h2>
+                  <h2>{item.name}</h2>
                 </div>
               ))}
             </ul>
