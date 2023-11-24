@@ -11,16 +11,21 @@ export default function AnnouncementNotification() {
     })
       .then((response) => response.json())
       .then((data) => {
-        const sortedData = data.data.sort((a, b) => {
-          return (
-            new Date(b.attributes.createdAt) - new Date(a.attributes.createdAt)
-          );
-        });
-        const latestAnnouncement = sortedData.find((announcement) => {
-          const validUntil = new Date(announcement.attributes.validuntil);
-          return !validUntil || validUntil > new Date();
-        });
-        setAnnouncementData(latestAnnouncement);
+        console.log(data);
+
+        // Check if data and data.data exist
+        if (data && data.document) {
+          const sortedData = data.data.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          });
+
+          const latestAnnouncement = sortedData.find((announcement) => {
+            const validUntil = new Date(announcement.validuntil);
+            return !validUntil || validUntil > new Date();
+          });
+
+          setAnnouncementData(latestAnnouncement);
+        }
       })
       .catch((error) => console.error(error));
   }, []);
@@ -56,7 +61,7 @@ export default function AnnouncementNotification() {
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <p className="text-sm leading-6 text-gray-900">
               <strong className="font-semibold">
-                {announcementData.attributes.title}
+                {announcementData.title}
               </strong>
               <svg
                 viewBox="0 0 2 2"
@@ -65,7 +70,7 @@ export default function AnnouncementNotification() {
               >
                 <circle cx={1} cy={1} r={1} />
               </svg>
-              {announcementData.attributes.sidetext}
+              {announcementData.sidetext}
             </p>
             <Link
               href={`/announcements/${announcementData.id}`}
