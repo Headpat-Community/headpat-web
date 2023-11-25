@@ -17,7 +17,6 @@ export default function AnnouncementsPage() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setAnnouncementData(data);
       })
       .catch((error) => console.error(error));
@@ -32,6 +31,7 @@ export default function AnnouncementsPage() {
       >
         {announcementData &&
           announcementData.map((announcement) => {
+            console.log(announcement);
             return (
               <li
                 key={announcement.$id}
@@ -40,7 +40,9 @@ export default function AnnouncementsPage() {
                 <div className="flex min-w-0 gap-x-4">
                   <Image
                     className="h-12 w-12 flex-none rounded-full"
-                    src={getAvatarImageUrl(announcement.userdata.avatarId || "/logos/logo-64.webp")}
+                    src={getAvatarImageUrl(
+                      announcement.userdata.avatarId || "/logos/logo-64.webp"
+                    )}
                     alt=""
                     width={48}
                     height={48}
@@ -63,7 +65,11 @@ export default function AnnouncementsPage() {
                       <>
                         <p className="mt-1 text-xs leading-5 dark:text-white/80 text-black/80">
                           Valid until{" "}
-                          <time dateTime={announcement.validuntil}>
+                          <time
+                            dateTime={new Date(
+                              announcement.validuntil
+                            ).toISOString()}
+                          >
                             {new Date(
                               announcement.validuntil
                             ).toLocaleDateString()}

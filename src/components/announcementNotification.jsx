@@ -11,11 +11,10 @@ export default function AnnouncementNotification() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
 
-        // Check if data and data.data exist
-        if (data && data.document) {
-          const sortedData = data.data.sort((a, b) => {
+        // Check if data exists
+        if (data) {
+          const sortedData = data.sort((a, b) => {
             return new Date(b.createdAt) - new Date(a.createdAt);
           });
 
