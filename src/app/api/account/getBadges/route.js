@@ -10,13 +10,15 @@ export async function GET(request) {
     ).toString();
 
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/badges?${queryParams}`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/65564499f223ba3233ca/documents?${queryParams}`;
 
     const response = await fetch(fetchURL, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
         "Content-Type": "application/json",
+        "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+        "X-Appwrite-Response-Format": "1.4.0",
+        Cookie: cookieHeader,
       },
     });
 

@@ -8,15 +8,18 @@ export async function POST(request) {
     const requestData = await request.arrayBuffer();
 
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/badges`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/6561407c0697498ea08d/files`;
 
-    const response = await fetch(fetchURL, {
+    const uploadImage = await fetch(fetchURL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
-        "Content-Type": request.headers.get("Content-Type") || "multipart/form-data",
+        "Content-Type":
+          request.headers.get("Content-Type") || "multipart/form-data",
+        "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+        "X-Appwrite-Response-Format": "1.4.0",
+        Cookie: cookieHeader,
       },
-      body: requestData, // Use the ArrayBuffer directly
+      body: requestData,
     });
 
     if (!response.ok) {
@@ -25,7 +28,7 @@ export async function POST(request) {
     }
 
     const data = await response.json();
-    return NextResponse.json(data, { status: 200 });
+    return NextResponse.json({ status: 200 });
   } catch (error) {
     return NextResponse.json(error.message, { status: 500 });
   }

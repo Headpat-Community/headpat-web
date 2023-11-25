@@ -67,7 +67,7 @@ export default function BadgePageComponent() {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append("files.img", selectedFile);
+    formData.append("file", selectedFile);
 
     try {
       const userResponse = await fetch("/api/user/getUserSelf", {
@@ -78,7 +78,7 @@ export default function BadgePageComponent() {
       const userId = userResponseData.id;
 
       const badgeResponse = await fetch(
-        `/api/account/getBadges?filters[users_permissions_user][id][$eq]=${userId}`,
+        `/api/account/getBadges?queries[]=equal("$id","${userId}")`,
         {
           method: "GET",
         }
@@ -86,7 +86,7 @@ export default function BadgePageComponent() {
 
       const badgeData = await badgeResponse.json();
 
-      if (badgeData.data && badgeData.data.length > 0) {
+      if (badgeData.files && badgeData.files.length > 0) {
         const userDecision = window.confirm(
           "You've already submitted before. Do you want to continue?"
         );
