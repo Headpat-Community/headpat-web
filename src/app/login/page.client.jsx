@@ -2,11 +2,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
 import { Client, Account } from "appwrite";
 
 const client = new Client();
-
 const account = new Account(client);
 
 client
@@ -103,33 +101,33 @@ const Login = () => {
     const data = await response.json(); // Not needed
     console.log(data);*/
     account.createOAuth2Session(
-      provider="google",
-      success=`${process.env.NEXT_PUBLIC_DOMAIN}/account`,
-      failure=`${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
+      "google",
+      `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
+      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
     );
   };
 
   const handleDiscordLogin = async () => {
     account.createOAuth2Session(
-      provider="discord",
-      success=`${process.env.NEXT_PUBLIC_DOMAIN}/account`,
-      failure=`${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
+      "discord",
+      "https://appwrite.headpat-de.pages.dev/account",
+      "https://appwrite.headpat-de.pages.dev/login?failure=true"
     );
   };
 
   const handleGithubLogin = async () => {
     account.createOAuth2Session(
-      provider="github",
-      success=`${process.env.NEXT_PUBLIC_DOMAIN}/account`,
-      failure=`${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
+      "github",
+      `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
+      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
     );
   };
 
   const handleAppleLogin = async () => {
     account.createOAuth2Session(
-      provider="apple",
-      success=`${process.env.NEXT_PUBLIC_DOMAIN}/account`,
-      failure=`${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
+      "apple",
+      `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
+      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
     );
   };
 
