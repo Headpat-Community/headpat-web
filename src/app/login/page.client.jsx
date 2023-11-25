@@ -102,19 +102,10 @@ const Login = () => {
 
     const data = await response.json(); // Not needed
     console.log(data);*/
-    account.createOAuth2Session("google");
+    account.createOAuth2Session("google", `${process.env.NEXT_PUBLIC_DOMAIN}/account`, `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`);
   };
 
   const handleDiscordLogin = async () => {
-    /*const response = await fetch(
-      `${process.env.NEXT_PUBLIC_DOMAIN}/api/oauth/discordLogin`,
-      {
-        method: "GET",
-      }
-    );
-
-    const data = await response.json(); // Not needed
-    console.log(data);*/
     account.createOAuth2Session("discord");
   };
 
