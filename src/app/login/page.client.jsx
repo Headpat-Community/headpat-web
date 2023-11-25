@@ -116,7 +116,9 @@ const Login = () => {
 
     const session = account.getSession("current");
 
-    console.log(session);
+    console.log(session.provider);
+    console.log(session.providerUid);
+    console.log(session.providerAccessToken);
   };
 
   const handleGithubLogin = async () => {
