@@ -110,7 +110,7 @@ const Login = () => {
   const handleDiscordLogin = async () => {
     account.createOAuth2Session(
       "discord",
-      "https://appwrite.headpat-de.pages.dev/account",
+      "https://appwrite.headpat-de.pages.dev/",
       "https://appwrite.headpat-de.pages.dev/login?failure=true"
     );
   };
