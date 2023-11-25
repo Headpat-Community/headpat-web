@@ -95,6 +95,7 @@ export default function AccountPage() {
         alert(data.error.message);
       } else if (response.ok) {
         alert("Password reset successful");
+        window.location.reload();
       } else {
         alert("Password reset failed");
       }

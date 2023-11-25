@@ -1,26 +1,28 @@
-"use client";
-import { useEffect } from "react";
-
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) {
-    return parts.pop().split(";").shift();
-  }
-}
-
-function deleteCookie(name) {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-}
+'use client'
+import { useEffect, useState } from "react";
 
 export default function LogoutPage() {
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    const jwt = getCookie("jwt");
-    if (!jwt || typeof jwt === "undefined") {
+    fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/user/logoutUser`, {
+      method: "POST",
+    })
+    .then(response => {
+      if (!response.ok) { throw response; }
+      return response.json();  // we only get here if there is no error
+    })
+    .then(() => {
       window.location.href = "/";
-    } else {
-      deleteCookie("jwt");
-      window.location.href = "/";
-    }
+    })
+    .catch(err => {
+      setError(err);
+    });
   }, []);
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  return null;
 }

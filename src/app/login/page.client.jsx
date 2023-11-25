@@ -3,6 +3,16 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+import { Client, Account } from "appwrite";
+
+const client = new Client();
+
+const account = new Account(client);
+
+client
+  .setEndpoint("https://api.headpat.de/v1") // Your API Endpoint
+  .setProject("6557c1a8b6c2739b3ecf"); // Your project ID
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -80,6 +90,40 @@ const Login = () => {
         setError("");
       }, 7000);
     }
+  };
+
+  const handleGoogleLogin = async () => {
+    /*const response = await fetch(
+      `${process.env.NEXT_PUBLIC_DOMAIN}/api/oauth/googleLogin`,
+      {
+        method: "GET",
+      }
+    );
+
+    const data = await response.json(); // Not needed
+    console.log(data);*/
+    account.createOAuth2Session("google");
+  };
+
+  const handleDiscordLogin = async () => {
+    /*const response = await fetch(
+      `${process.env.NEXT_PUBLIC_DOMAIN}/api/oauth/discordLogin`,
+      {
+        method: "GET",
+      }
+    );
+
+    const data = await response.json(); // Not needed
+    console.log(data);*/
+    account.createOAuth2Session("discord");
+  };
+
+  const handleGithubLogin = async () => {
+    account.createOAuth2Session("github");
+  };
+
+  const handleAppleLogin = async () => {
+    account.createOAuth2Session("apple");
   };
 
   return (
@@ -193,8 +237,8 @@ const Login = () => {
                 </div>
 
                 <div className="mt-6 grid grid-cols-2 gap-4">
-                  <a
-                    href="#"
+                  <button
+                    onClick={handleDiscordLogin}
                     className="flex w-full items-center justify-center gap-3 rounded-md bg-[#5865F2] border dark:border-white/20 border-black/20 px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0]"
                   >
                     <svg
@@ -208,10 +252,10 @@ const Login = () => {
                     <span className="text-sm font-semibold leading-6">
                       Discord
                     </span>
-                  </a>
+                  </button>
 
-                  <a
-                    href="#"
+                  <button
+                    onClick={handleGithubLogin}
                     className="flex w-full items-center justify-center gap-3 rounded-md bg-[#24292F] border dark:border-white/20 border-black/20 px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
                   >
                     <svg
@@ -229,10 +273,10 @@ const Login = () => {
                     <span className="text-sm font-semibold leading-6">
                       GitHub
                     </span>
-                  </a>
+                  </button>
 
-                  <a
-                    href="#"
+                  <button
+                    onClick={handleAppleLogin}
                     className="flex w-full items-center justify-center gap-3 rounded-md bg-[#000000] border dark:border-white/20 border-black/20 px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
                   >
                     <svg
@@ -246,10 +290,10 @@ const Login = () => {
                     <span className="text-sm font-semibold leading-6">
                       Apple
                     </span>
-                  </a>
+                  </button>
 
-                  <a
-                    href="#"
+                  <button
+                    onClick={handleGoogleLogin}
                     className="flex w-full items-center justify-center gap-3 rounded-md bg-[#131314] border dark:border-white/20 border-black/20 px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
                   >
                     <svg
@@ -280,7 +324,7 @@ const Login = () => {
                     <span className="text-sm font-semibold leading-6">
                       Google
                     </span>
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

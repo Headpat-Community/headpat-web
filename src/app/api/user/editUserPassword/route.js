@@ -24,10 +24,6 @@ export async function PATCH(request) {
       body: JSON.stringify(requestBody),
     });
 
-    console.log(requestBody);
-
-    console.log(response.status + " " + response.statusText);
-
     if (response.status === 400) {
       const data = await response.json();
       return NextResponse.json(data, { status: 400 });
@@ -44,10 +40,8 @@ export async function PATCH(request) {
     }
 
     const data = await response.json();
-    console.log(data);
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.log(error);
     return NextResponse.json(error.message, { status: 500 });
   }
 }
