@@ -113,6 +113,10 @@ const Login = () => {
       "https://appwrite.headpat-de.pages.dev/",
       "https://appwrite.headpat-de.pages.dev/login?failure=true"
     );
+
+    const session = account.getSession("current");
+
+    console.log(session);
   };
 
   const handleGithubLogin = async () => {
