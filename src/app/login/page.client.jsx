@@ -103,33 +103,33 @@ const Login = () => {
     const data = await response.json(); // Not needed
     console.log(data);*/
     account.createOAuth2Session(
-      "google",
-      `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
-      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
+      provider="google",
+      success=`${process.env.NEXT_PUBLIC_DOMAIN}/account`,
+      failure=`${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
     );
   };
 
   const handleDiscordLogin = async () => {
     account.createOAuth2Session(
-      "discord",
-      `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
-      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
+      provider="discord",
+      success=`${process.env.NEXT_PUBLIC_DOMAIN}/account`,
+      failure=`${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
     );
   };
 
   const handleGithubLogin = async () => {
     account.createOAuth2Session(
-      "github",
-      `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
-      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
+      provider="github",
+      success=`${process.env.NEXT_PUBLIC_DOMAIN}/account`,
+      failure=`${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
     );
   };
 
   const handleAppleLogin = async () => {
     account.createOAuth2Session(
-      "apple",
-      `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
-      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
+      provider="apple",
+      success=`${process.env.NEXT_PUBLIC_DOMAIN}/account`,
+      failure=`${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
     );
   };
 
