@@ -102,19 +102,35 @@ const Login = () => {
 
     const data = await response.json(); // Not needed
     console.log(data);*/
-    account.createOAuth2Session("google", `${process.env.NEXT_PUBLIC_DOMAIN}/account`, `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`);
+    account.createOAuth2Session(
+      "google",
+      `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
+      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
+    );
   };
 
   const handleDiscordLogin = async () => {
-    account.createOAuth2Session("discord");
+    account.createOAuth2Session(
+      "discord",
+      `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
+      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
+    );
   };
 
   const handleGithubLogin = async () => {
-    account.createOAuth2Session("github");
+    account.createOAuth2Session(
+      "github",
+      `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
+      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
+    );
   };
 
   const handleAppleLogin = async () => {
-    account.createOAuth2Session("apple");
+    account.createOAuth2Session(
+      "apple",
+      `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
+      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
+    );
   };
 
   return (
