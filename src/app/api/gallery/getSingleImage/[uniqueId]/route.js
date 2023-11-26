@@ -11,11 +11,6 @@ export async function GET(request) {
     // Assume the last segment of the URL is the user ID
     const galleryId = request.url.split("/").pop();
 
-    // Extract query parameters from the incoming request
-    const queryParams = new URLSearchParams(
-      request.url.split("?")[1]
-    ).toString();
-
     // Construct the URL for the external fetch
     const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655cb829dbf6102f2436/documents/${galleryId}`;
 
@@ -34,8 +29,8 @@ export async function GET(request) {
     }
 
     const data = await response.json();
-    return NextResponse.json(data);
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    return NextResponse.error(500, error.message);
+    return NextResponse.json(error.message, { status: 500 });
   }
 }
