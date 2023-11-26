@@ -57,7 +57,6 @@ export default function Register() {
         }),
       });
       const data = await response.json();
-      console.log(data);
 
       if (response.status === 400) {
         setError(
@@ -84,7 +83,7 @@ export default function Register() {
           setError("");
         }, 7000);
       } else if (response.status === 201) {
-        setError("Please confirm your E-Mail!");
+        window.location.href = "/login";
       }
     } catch (error) {
       console.log(error);
