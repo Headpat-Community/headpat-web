@@ -30,6 +30,7 @@ export default function AccountPage() {
         setIsLoading(false); // Done loading
       } catch (error) {
         console.error(error);
+        window.location.reload();
         setIsLoading(false); // Done loading, even if there's an error
       }
     };

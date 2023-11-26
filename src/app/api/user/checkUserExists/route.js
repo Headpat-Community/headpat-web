@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
-import { cookies, headers } from "next/headers";
+import { headers } from "next/headers";
+import { useRouter } from "next/navigation";
 
 export const runtime = "edge";
 
 export async function GET() {
+  const router = useRouter();
   try {
     // Construct the URL for the external fetch
     const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655ad3d280feee3296b5/documents`;
