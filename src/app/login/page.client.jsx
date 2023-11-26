@@ -151,7 +151,7 @@ const Login = () => {
                 height={600}
               />
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
-                Sign in to your account
+                Einloggen in deinen Account
               </h2>
               <p className="mt-2 text-sm leading-6 text-gray-500">
                 Not a member?{" "}
@@ -159,7 +159,7 @@ const Login = () => {
                   href="/register"
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
                 >
-                  Click here to sign up
+                  Klick hier um dich zu registrieren!
                 </Link>
               </p>
             </div>
@@ -226,7 +226,7 @@ const Login = () => {
                       onClick={handleSubmit}
                       className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      Sign in
+                      Anmelden
                     </button>
                   </div>
                 </form>
