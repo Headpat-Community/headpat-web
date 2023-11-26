@@ -7,7 +7,7 @@ export async function PUT(request) {
     const requestBody = await request.json();
 
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/v1/account/recovery`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/account/recovery`;
 
     const response = await fetch(fetchURL, {
       method: "PUT",

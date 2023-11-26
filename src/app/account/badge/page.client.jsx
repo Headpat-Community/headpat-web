@@ -7,6 +7,7 @@ export default function BadgePageComponent() {
   const [isUploading, setIsUploading] = useState(false);
   const [deliverAtEurofurence, setDeliverAtEurofurence] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const displaynameRef = useRef("");
   const nicknameRef = useRef("");
   const pronounsRef = useRef("");
