@@ -7,7 +7,7 @@ export async function GET() {
     // Construct the URL for the external fetch
     // TODO: Replace URL with variable endpoint
     // BUG: Using the variable endpoint causes to only return the first document
-    const fetchURL = `https://dash.fayevr.dev/v1/databases/65527f2aafa5338cdb57/collections/65564fa28d1942747a72/documents`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/65564fa28d1942747a72/documents`;
 
     let response;
     try {
