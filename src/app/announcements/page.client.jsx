@@ -31,7 +31,6 @@ export default function AnnouncementsPage() {
       >
         {announcementData &&
           announcementData.map((announcement) => {
-            console.log(announcement);
             return (
               <li
                 key={announcement.$id}

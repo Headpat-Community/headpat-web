@@ -11,14 +11,8 @@ export async function POST(request) {
     // Read the entire stream and buffer it
     const requestData = await request.arrayBuffer();
 
-    /*console.log(
-      "Buffered request data (first 100 bytes):",
-      requestData.slice(0, 100).toString()
-    );*/
-
     // Construct the URL for the external fetch
     const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files`;
-    //console.log("Forwarding request to:", fetchURL);
 
     const uploadImage = await fetch(fetchURL, {
       method: "POST",

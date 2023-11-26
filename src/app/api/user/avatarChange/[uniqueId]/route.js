@@ -13,11 +13,6 @@ export async function POST(request) {
     // Read the entire stream and buffer it
     const requestData = await request.arrayBuffer();
 
-    /*console.log(
-      "Buffered request data (first 100 bytes):",
-      requestData.slice(0, 100).toString()
-    );*/
-
     // See if user has an avatar already
     const avatarResponse = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655f6354b7c3fff1d687/documents?queries[]=equal("userId","${uniqueId}")`,

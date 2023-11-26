@@ -76,7 +76,6 @@ export async function GET() {
     //console.log(data.documents);
     return NextResponse.json(data.documents, { status: 201 });
   } catch (error) {
-    console.log(error);
     return NextResponse.json(error.message, { status: 500 });
   }
 }

@@ -53,7 +53,7 @@ export default function PatClient() {
 
     // Connection error
     socket.addEventListener("error", (event) => {
-      console.log("WebSocket error: ", event);
+      //console.log("WebSocket error: ", event);
     });
   }
 
@@ -83,7 +83,7 @@ export default function PatClient() {
           return response.json();
         })
         .then((data) => {
-          console.log("PATCH request success:", data);
+          //console.log("PATCH request success:", data);
         })
         .catch((error) => {
           console.error("PATCH request error:", error);
@@ -100,7 +100,7 @@ export default function PatClient() {
     setPatCount((prevCount) => prevCount + 1);
   };
 
-  console.log(patCount);
+  //console.log(patCount);
 
   return (
     <div className="flex min-h-full flex-col">

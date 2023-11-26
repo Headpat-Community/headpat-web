@@ -46,7 +46,6 @@ export default function FetchGallery() {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setUserData(data.documents[0]); // Access the first (and only) object in the array
         setUserId(data.documents[0].$id);
       })

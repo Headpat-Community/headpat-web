@@ -20,7 +20,6 @@ export async function POST(request) {
         Cookies: cookieHeader,
       },
     });
-    console.log(response.status);
 
     if (!response.ok) {
       console.log(response.statusText);
@@ -36,10 +35,8 @@ export async function POST(request) {
       expires: new Date(Date.now() + 15 * 60 * 1000),
     });
 
-    console.log(data);
     return NextResponse.json(data, { status: 201 });
   } catch (error) {
-    console.log(error);
     return NextResponse.json(error.message, { status: 500 });
   }
 }

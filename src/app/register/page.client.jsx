@@ -36,6 +36,7 @@ export default function Register() {
         }
       } catch (error) {
         console.log(error);
+        setError("Error!" + error);
       }
     };
 
@@ -97,7 +98,7 @@ export default function Register() {
       }
     } catch (error) {
       console.log(error);
-      setError("Error!");
+      setError("Error!" + error);
     }
   };
 

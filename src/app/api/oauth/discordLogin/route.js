@@ -18,8 +18,6 @@ export async function GET() {
 
     const data = await response.text();
 
-    console.log(response.status);
-
     //console.log(data.documents);
     //console.log(data);
     return NextResponse.redirect(fetchURL);
