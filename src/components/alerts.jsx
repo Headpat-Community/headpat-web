@@ -1,7 +1,7 @@
 export function ErrorMessage({ attentionError }) {
   return (
     <>
-      <div className="fixed inset-x-0 bottom-0 z-10">
+      <div className="fixed inset-x-0 bottom-0 z-40">
         <div className="flex items-center justify-center gap-x-6 bg-red-900 px-6 py-2.5 sm:px-3.5">
           <p className="text-sm leading-6 text-white">
             <strong className="font-semibold">Attention needed</strong>
@@ -23,7 +23,7 @@ export function ErrorMessage({ attentionError }) {
 export function SuccessMessage({ attentionSuccess }) {
   return (
     <>
-      <div className="fixed inset-x-0 bottom-0 z-11">
+      <div className="fixed inset-x-0 bottom-0 z-50">
         <div className="flex items-center justify-center gap-x-6 bg-green-900 px-6 py-2.5 sm:px-3.5">
           <p className="text-sm leading-6 text-white">
             <strong className="font-semibold">Success!</strong>

@@ -2,13 +2,14 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ErrorMessage } from "@/components/alerts";
+import { ErrorMessage, SuccessMessage } from "@/components/alerts";
 
 export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -83,7 +84,16 @@ export default function Register() {
           setError("");
         }, 7000);
       } else if (response.status === 201) {
-        window.location.href = "/login";
+        setSuccess("Bitte einen moment warten!");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
+        /*const sendEmailVerification = await fetch(
+          "/api/user/createEmailVerification",
+          {
+            method: "POST",
+          }
+        );*/
       }
     } catch (error) {
       console.log(error);
@@ -94,6 +104,7 @@ export default function Register() {
   return (
     <>
       {error && <ErrorMessage attentionError={error} />}
+      {success && <SuccessMessage attentionSuccess={success} />}
       <div className="flex min-h-full flex-1">
         <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
