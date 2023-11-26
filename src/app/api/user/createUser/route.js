@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
+import { headers } from "next/headers";
 
 export const runtime = "edge";
 
 export async function POST(request) {
   try {
     const requestBody = await request.json();
+    const headersList = headers();
+    const cookieHeader = headersList.get("cookie");
 
     // Construct the URL for the external fetch
     const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/account`;
@@ -33,6 +36,22 @@ export async function POST(request) {
       console.log(response.status);
       throw new Error("Failed to update data");
     }
+
+    const sendEmailResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/v1/account/verification`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Appwrite-Response-Format": "1.4.0",
+          "X-Appwrite-Project": process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID,
+          Cookie: cookieHeader,
+        },
+        body: JSON.stringify({
+          url: `${process.env.NEXT_PUBLIC_DOMAIN}/i/verify-email`,
+        }),
+      }
+    );
 
     const data = await response.json();
     return NextResponse.json(data, { status: 201 });

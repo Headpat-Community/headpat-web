@@ -16,7 +16,7 @@ const ForgotPassword = () => {
         method: "POST",
         body: JSON.stringify({
           email: email,
-          url: `${process.env.NEXT_PUBLIC_DOMAIN}/reset-password`,
+          url: `${process.env.NEXT_PUBLIC_DOMAIN}/i/reset-password`,
         }),
       });
       //console.log("User authenticated successfully");
