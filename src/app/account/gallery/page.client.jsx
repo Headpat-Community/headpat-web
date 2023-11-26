@@ -4,11 +4,13 @@ import ErrorPage from "@/app/not-found";
 import Link from "next/link";
 import Image from "next/image";
 import Loading from "@/app/loading";
+import { ErrorMessage, SuccessMessage } from "@/components/alerts";
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [userId, setUserId] = useState(null);
   const [enableNsfw, setEnableNsfw] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,7 +41,10 @@ export default function FetchGallery() {
       setEnableNsfw(userData[0].enablensfw);
     })
     .catch((err) => {
-      setError(err.message || "An error occurred.");
+      setError(err.message || "Kann daten nicht laden. Bitte neu laden.");
+      setTimeout(() => {
+        setError(null);
+      }, 10000);
     })
     .finally(() => {
       setIsLoading(false);
@@ -68,7 +73,10 @@ export default function FetchGallery() {
         setTotalPages(data.meta.pagination.pageCount);
       })
       .catch((err) => {
-        setError(err.message || "An error occurred.");
+        setError(err.message || "Ein Fehler ist aufgetreten.");
+        setTimeout(() => {
+          setError(null);
+        }, 7000);
       })
       .finally(() => {
         setIsLoading(false);
@@ -83,6 +91,8 @@ export default function FetchGallery() {
   // The rest of the component remains unchanged with conditional rendering based on the data's availability.
   return (
     <>
+      {success && <SuccessMessage attentionSuccess={success} />}
+      {error && <ErrorMessage attentionError={error} />}
       <div>
         {isLoading ? (
           error ? (

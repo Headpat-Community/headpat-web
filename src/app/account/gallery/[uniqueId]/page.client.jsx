@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Loading from "@/app/loading";
+import { ErrorMessage, SuccessMessage } from "@/components/alerts";
 
 export default function FetchGallery() {
   const [username, setUsername] = useState(null);
@@ -9,6 +10,7 @@ export default function FetchGallery() {
   const [galleryUsername, setGalleryUsername] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [userData, setUserData] = useState({
@@ -33,13 +35,16 @@ export default function FetchGallery() {
       const data = await response.json();
       setUsername(data[0].name);
     } catch (error) {
-      setError(error);
+      console.log(error);
+      setError("Fehler beim Laden der Daten. Bist du eingeloggt?");
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
     }
   };
 
   const deleteImage = async () => {
     try {
-      'use server'
       // Get the ID from the URL
       const pathParts = window.location.pathname.split("/");
       const uniqueId = pathParts[3];
@@ -67,11 +72,16 @@ export default function FetchGallery() {
         method: "DELETE",
       });
 
-      alert("Image deleted successfully!");
+      setSuccess("Bild erfolgreich gelöscht! Kehre dich zur Galerie zurück...");
       // Redirect to the gallery list page
-      window.location.href = ".";
+      setTimeout(() => {
+        window.location.href = ".";
+      }, 3000);
     } catch (error) {
       setError(error);
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
     }
   };
 
@@ -103,8 +113,14 @@ export default function FetchGallery() {
       // Handle response and update state accordingly
     } catch (error) {
       setError(error);
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
     } finally {
-      alert("Image updated successfully!");
+      setSuccess("Bild erfolgreich aktualisiert!");
+      setTimeout(() => {
+        setSuccess(null);
+      }, 5000);
       setIsUploading(false);
     }
   };
@@ -153,6 +169,9 @@ export default function FetchGallery() {
           window.location.href = "/account/gallery";
         } else {
           setError(error.message);
+          setTimeout(() => {
+            setError(null);
+          }, 10000);
         }
         setIsLoading(false);
       });
@@ -168,7 +187,9 @@ export default function FetchGallery() {
   }, [galleryUsername, username]);
 
   return (
-    <div>
+    <>
+      {success && <SuccessMessage attentionSuccess={success} />}
+      {error && <ErrorMessage attentionError={error} />}
       {isLoading ? (
         <Loading />
       ) : (
@@ -364,6 +385,6 @@ export default function FetchGallery() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

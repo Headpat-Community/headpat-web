@@ -2,14 +2,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Loading from "@/app/loading";
+import { ErrorMessage, SuccessMessage } from "@/components/alerts";
 
 export default function AccountPage() {
   const [userData, setUserData] = useState({ enablensfw: false }); // Initialize with an empty object and a default value
   const [userMe, setUserMe] = useState(null);
-  const [nsfw, setNsfw] = useState(false);
-  const [emailvalue, setEmailValue] = useState(userMe?.email || "");
-  const [usernamevalue, setUsernameValue] = useState(userMe?.username || "");
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -35,40 +36,65 @@ export default function AccountPage() {
     fetchUserData();
   }, []);
 
-  const handleSubmit = async (event) => {
+  const handleEmailChange = async (event) => {
     event.preventDefault();
 
-    let userFormData = {};
-
-    if (email.value) {
-      userFormData.email = email.value;
-    }
-
-    if (username_login.value) {
-      userFormData.username = username_login.value;
-    }
-
     try {
-      const userResponse = await fetch("/api/user/getUserSelf", {
-        method: "GET",
+      const email = document.getElementById("email").value;
+      const email_password = document.getElementById("email_password").value;
+
+      // Check if profileUrl has at least 4 characters
+      if (email_password.length < 8) {
+        setError("Please enter a valid password.");
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
+        return;
+      }
+
+      setIsUploading(true); // Set isUploading to true before making the API call
+
+      const response = await fetch(`/api/user/editUserEmail`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          email: email,
+          password: email_password,
+        }),
       });
 
-      const userResponseData = await userResponse.json();
-      const userId = userResponseData.id;
-
-      const userResponseUpdate = await fetch(`/api/user/editUser/${userId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userFormData),
-      });
-
-      if (userResponseUpdate.status === 200) {
-        alert("User data updated successfully");
-        window.location.reload();
-      } else if (userResponseUpdate.status === 400) {
-        alert("Username needs to be at least 3 characters long");
+      const responseData = await response.json();
+      if (response.status === 401) {
+        setError("Passwort ist inkorrekt.");
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
+      }
+      if (response.status === 409) {
+        setError("Es existiert bereits ein Account mit dieser E-Mail-Adresse.");
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
+      }
+      if (response.ok) {
+        setIsUploading(false); // Set isUploading to false after the API call is complete
+        setSuccess("E-Mail-Adresse erfolgreich geändert.");
+        setTimeout(() => {
+          setSuccess(null);
+        }, 5000);
+        // Reload the window
+        //window.location.reload();
+      } else {
+        // Check for the specific error structure
+        if (
+          responseData.error &&
+          responseData.error.message === "bio must be at most 256 characters"
+        ) {
+          // Show an error message to the user
+          setError("Error");
+          setTimeout(() => {
+            setError(null);
+          }, 5000);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -92,12 +118,21 @@ export default function AccountPage() {
 
       if (response.status === 400) {
         const data = await response.json();
-        alert(data.error.message);
+        setError(data.error.message);
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
       } else if (response.ok) {
-        alert("Password reset successful");
+        setSuccess("Passwort erfolgreich geändert.");
+        setTimeout(() => {
+          setSuccess(null);
+        }, 5000);
         window.location.reload();
       } else {
-        alert("Password reset failed");
+        setError("Password reset failed");
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
       }
     } catch (error) {
       console.error(error);
@@ -141,6 +176,11 @@ export default function AccountPage() {
       }
 
       // Update userMe state after successful request
+      setSuccess("NSFW erfolgreich geändert.");
+      setTimeout(() => {
+        setSuccess(null);
+      }, 5000);
+
       setUserMe((prevUserMe) => ({
         ...prevUserMe,
         enablensfw: isChecked,
@@ -149,13 +189,76 @@ export default function AccountPage() {
       console.error(error.message);
       if (error.response) {
         const response = await error.response.json();
-        // console.log(response);
       }
+    }
+  };
+
+  const handleProfileUrlChange = async (event) => {
+    event.preventDefault();
+
+    try {
+      const userResponse = await fetch("/api/user/getUserSelf", {
+        method: "GET",
+      });
+
+      const userResponseData = await userResponse.json();
+      const userId = userResponseData[0].$id;
+      const profileUrl = document.getElementById("profileurl").value;
+
+      // Check if profileUrl has at least 4 characters
+      if (profileUrl.length < 3) {
+        setError("Profile URL must be at least 3 characters long.");
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
+        return;
+      }
+
+      setIsUploading(true); // Set isUploading to true before making the API call
+
+      const response = await fetch(`/api/user/editUserData/${userId}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          data: {
+            profileurl: profileUrl,
+          },
+        }),
+      });
+
+      const responseData = await response.json();
+      if (response.ok) {
+        setSuccess("Profile URL erfolgreich geändert.");
+        setTimeout(() => {
+          setSuccess(null);
+        }, 5000);
+
+        setIsUploading(false); // Set isUploading to false after the API call is complete
+        setUserData(responseData); // Set the userData state with the response data
+        //window.location.reload();
+      } else {
+        // Check for the specific error structure
+        if (
+          responseData.error &&
+          responseData.error.message === "bio must be at most 256 characters"
+        ) {
+          // Show an error message to the user
+          setError("Biografie darf nur bis 256 zeichen lang sein.");
+          setTimeout(() => {
+            setError(null);
+          }, 5000);
+        } else {
+          console.error("Failed to upload file:", responseData);
+        }
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
   return (
     <>
+      {success && <SuccessMessage attentionSuccess={success} />}
+      {error && <ErrorMessage attentionError={error} />}
       <header className="border-b dark:border-white/5 border-black/5">
         {/* Secondary navigation */}
         <nav className="flex overflow-x-auto py-4">
@@ -183,14 +286,14 @@ export default function AccountPage() {
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
             <div>
               <h2 className="text-base font-semibold leading-7">
-                Personal Information
+                Change Email
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">
-                Use a permanent address where you can receive mail.
+                Ändere deine E-Mail-Adresse.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="md:col-span-2">
+            <form onSubmit={handleEmailChange} className="md:col-span-2">
               <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
                 <div className="col-span-full">
                   <label
@@ -204,8 +307,8 @@ export default function AccountPage() {
                       id="email"
                       name="email"
                       type="email"
+                      required
                       placeholder={userMe ? userMe.email : ""}
-                      onChange={(e) => setEmailValue(e.target.value)}
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -215,7 +318,51 @@ export default function AccountPage() {
                     htmlFor="username"
                     className="block text-sm font-medium leading-6"
                   >
-                    Username
+                    Current Password
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex rounded-md bg-white/5 ring-1 ring-inset dark:ring-white/10 ring-black/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                      <input
+                        type="password"
+                        name="email_password"
+                        id="email_password"
+                        required
+                        autoComplete="current-password"
+                        className="flex-1 border-0 bg-transparent py-1.5 pl-1 focus:ring-0 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 flex">
+                <button
+                  type="submit"
+                  className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+            <div>
+              <h2 className="text-base font-semibold leading-7">Profile URL</h2>
+              <p className="mt-1 text-sm leading-6 text-gray-400">
+                Dein Profil-URL ist der Link, den du mit anderen teilen kannst,
+                um dein Profil zu zeigen.
+              </p>
+            </div>
+
+            <form onSubmit={handleProfileUrlChange} className="md:col-span-2">
+              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+                <div className="col-span-full">
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-medium leading-6"
+                  >
+                    URL
                   </label>
                   <div className="mt-2">
                     <div className="flex rounded-md bg-white/5 ring-1 ring-inset dark:ring-white/10 ring-black/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
@@ -224,11 +371,12 @@ export default function AccountPage() {
                       </span>
                       <input
                         type="text"
-                        name="username"
-                        id="username_login"
+                        name="profileurl"
+                        id="profileurl"
+                        required
                         placeholder={userData ? userData.profileurl : ""}
-                        onChange={(e) => setUsernameValue(e.target.value)}
                         className="flex-1 border-0 bg-transparent py-1.5 pl-1 focus:ring-0 sm:text-sm sm:leading-6"
+                        minLength="4"
                       />
                     </div>
                   </div>
@@ -252,7 +400,7 @@ export default function AccountPage() {
                 Change password
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-400">
-                Update your password associated with your account.
+                Ändere dein Passwort.
               </p>
             </div>
 
@@ -270,6 +418,7 @@ export default function AccountPage() {
                     name="currentpassword" // Updated name
                     id="currentpassword"
                     autoComplete="current-password"
+                    required
                     className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   />
                 </div>

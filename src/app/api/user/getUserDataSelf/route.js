@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 
 export const runtime = "edge";
 
-export async function GET(request) {
+export async function GET() {
   try {
     const headersList = headers();
     const cookieHeader = headersList.get("cookie");
@@ -23,6 +23,10 @@ export async function GET(request) {
       },
     });
 
+    if (getUserId.status === 401) {
+      return NextResponse.json({ status: "200" });
+    }
+
     const getUserIdData = await getUserId.json();
 
     const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/65564fa28d1942747a72/documents?queries[]=equal("$id","${getUserIdData.documents[0].$id}")`;
@@ -36,8 +40,8 @@ export async function GET(request) {
       },
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
+    if (response.status === 401) {
+      return NextResponse.json({ status: "200" });
     }
 
     const data = await response.json();
@@ -72,6 +76,10 @@ export async function GET(request) {
           },
         }),
       });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
 
       const postData = await postResponse.json();
       //console.log(postData);

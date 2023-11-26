@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { cookies, headers } from "next/headers";
 
 export const runtime = "edge";
 
@@ -8,7 +7,7 @@ export async function POST(request) {
     const requestBody = await request.json();
 
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/auth/forgot-password`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/account/recovery`;
 
     const response = await fetch(fetchURL, {
       method: "POST",
@@ -18,21 +17,18 @@ export async function POST(request) {
       body: JSON.stringify(requestBody),
     });
 
+    if (response.status === 405) {
+      return NextResponse.error("Method Not Allowed", { status: 405 });
+    }
+
     if (!response.ok) {
-      throw new Error("Failed to update data");
+      console.log(response.status + " " + response.statusText);
+      return NextResponse.error("Internal Server Error", { status: 500 });
     }
 
     const data = await response.json();
-
-    cookies().set("jwt", data.jwt, {
-      path: "/",
-      secure: true,
-      sameSite: "strict",
-      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-    });
-
-    return NextResponse.json(data);
+    return NextResponse.json(data, { status: 201 });
   } catch (error) {
-    return NextResponse.error(500, error.message);
+    return NextResponse.json(error.message, { status: 500 });
   }
 }

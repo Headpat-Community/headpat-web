@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ErrorMessage, SuccessMessage } from "@/components/alerts";
 import { Client, Account } from "appwrite";
 
 const client = new Client();
@@ -57,24 +58,22 @@ const Login = () => {
       //console.log(data);
 
       if (response.status === 400) {
-        setError(
-          `Incorrect credentials or already made account! Please try again.`
-        );
+        setError(`Fehler: ${data.message} Bitte versuche es später erneut.`);
         setTimeout(() => {
           setError("");
         }, 7000);
       } else if (response.status === 401) {
-        setError("E-Mail or Password incorrect!");
+        setError("E-Mail oder Passwort inkorrekt!");
         setTimeout(() => {
           setError("");
         }, 7000);
       } else if (response.status === 429) {
-        setError("Too many requests!");
+        setError("Zu viele Anfragen! Bitte versuche es später erneut.");
         setTimeout(() => {
           setError("");
         }, 7000);
       } else if (response.status === 500) {
-        setError("Server error!");
+        setError("Server fehler! Bitte versuche es später erneut.");
         setTimeout(() => {
           setError("");
         }, 7000);
@@ -83,7 +82,7 @@ const Login = () => {
       }
     } catch (error) {
       console.log(error);
-      setError("Server error!");
+      setError("Server fehler! Bitte versuche es später erneut.");
       setTimeout(() => {
         setError("");
       }, 7000);
@@ -139,13 +138,14 @@ const Login = () => {
 
   return (
     <>
+      {error && <ErrorMessage attentionError={error} />}
       <div className="flex min-h-full flex-1">
         <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
               <Image
                 className="h-10 w-auto"
-                src="/logos/Headpat_new_logo.png"
+                src="/logos/Headpat_new_logo.webp"
                 alt="Headpat Community"
                 width={600}
                 height={600}

@@ -66,7 +66,7 @@ export default function Header() {
                   aria-label="Headpat Logo"
                   title="Headpat Logo"
                   className="h-10 w-auto"
-                  src="/logos/logo-512.webp"
+                  src="/logos/Headpat_new_logo.webp"
                   alt=""
                   width={128}
                   height={128}
@@ -127,7 +127,7 @@ export default function Header() {
                 <span className="sr-only">Headpat Community</span>
                 <Image
                   className="h-8 w-auto"
-                  src="/logos/logo-512.webp"
+                  src="/logos/Headpat_new_logo.webp"
                   alt=""
                   width={128}
                   height={128}

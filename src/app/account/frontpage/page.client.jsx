@@ -2,9 +2,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Loading from "@/app/loading";
+import { ErrorMessage, SuccessMessage } from "@/components/alerts";
 
 export default function AccountPage() {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Added loading state
   const [userData, setUserData] = useState({
@@ -55,7 +58,10 @@ export default function AccountPage() {
   const handleAvatarChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile.size > 2 * 1024 * 1024) {
-      alert("Dateigröße darf nur bis 2MB groß sein.");
+      setError("Dateigröße darf nur bis 2MB groß sein.");
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
       return;
     }
     const fileReader = new FileReader();
@@ -69,7 +75,10 @@ export default function AccountPage() {
         if (img.width <= 1024 && img.height <= 1024) {
           setSelectedFile(selectedFile);
         } else {
-          alert("Bild darf nur bis 1024x1024 pixel groß sein.");
+          setError("Bild darf nur bis 1024x1024 pixel groß sein.");
+          setTimeout(() => {
+            setError(null);
+          }, 5000);
         }
       };
     };
@@ -104,7 +113,7 @@ export default function AccountPage() {
         //console.log("File uploaded successfully");
         setIsUploading(false); // Set isUploading to false after the API call is complete
         // Reload the window
-        alert("Saved!");
+        //setSuccess("Gespeichert und hochgeladen!");
         window.location.reload();
       }
     } catch (error) {
@@ -151,23 +160,31 @@ export default function AccountPage() {
         //console.log("File uploaded successfully");
         setIsUploading(false); // Set isUploading to false after the API call is complete
         setUserData(responseData); // Set the userData state with the response data
+        //setSuccess("Gespeichert!");
         // Reload the window
-        //alert("Saved!");
-        //window.location.reload();
+        window.location.reload();
       } else {
         // Check for the specific error structure
         if (
           responseData.error &&
-          responseData.error.message === "bio must be at most 256 characters"
+          responseData.error.message === "bio must be at most 2048 characters"
         ) {
           // Show an error message to the user
-          alert("Biografie darf nur bis 256 zeichen lang sein.");
+          setError("Biografie darf nur bis 2048 zeichen lang sein.");
         } else {
           console.error("Failed to upload file:", responseData);
+          setError("Ein Fehler ist aufgetreten.");
+          setTimeout(() => {
+            setError(null);
+          }, 5000);
         }
       }
     } catch (error) {
       console.error(error);
+      setError("Ein Fehler ist aufgetreten.");
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
     }
   };
 
@@ -179,6 +196,8 @@ export default function AccountPage() {
 
   return (
     <>
+      {success && <SuccessMessage attentionSuccess={success} />}
+      {error && <ErrorMessage attentionError={error} />}
       <header className="border-b dark:border-white/5 border-black/5">
         {/* Secondary navigation */}
         <nav className="flex overflow-x-auto py-4">
@@ -238,7 +257,7 @@ export default function AccountPage() {
                       <button
                         type="submit"
                         onClick={handleSubmitAVatar}
-                        className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        className="mt-2 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
                       >
                         Submit
                       </button>
@@ -430,17 +449,17 @@ export default function AccountPage() {
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 h-72"
                       value={userData.bio} // Set the value from state
                       onChange={(e) => {
-                        if (e.target.value.length <= 256) {
+                        if (e.target.value.length <= 2048) {
                           setUserData({ ...userData, bio: e.target.value });
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 256
-                      maxLength={256} // Limit the maximum number of characters to 256
+                      maxLength={2048} // Limit the maximum number of characters to 256
                     />
                     <div className="absolute inset-y-0 right-0 pr-4 pb-2 flex items-end text-sm leading-5 pointer-events-none">
                       <span className="select-none">
                         {userData.bio ? userData.bio.length : 0}{" "}
                       </span>
-                      <span className="text-gray-400 select-none">/{256}</span>
+                      <span className="text-gray-400 select-none">/{2048}</span>
                     </div>
                   </div>
                 </div>
@@ -449,7 +468,7 @@ export default function AccountPage() {
               <div className="mt-8 flex">
                 <button
                   type="submit"
-                  className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                  className="rounded-md bg-indigo-500 hover:bg-indigo-700 px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                 >
                   Save
                 </button>

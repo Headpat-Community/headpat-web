@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Loading from "@/app/loading";
+import { ErrorMessage, SuccessMessage } from "@/components/alerts";
 
 export default function AccountPage() {
   const [isUploading, setIsUploading] = useState(false);
@@ -13,6 +14,8 @@ export default function AccountPage() {
     X_name: "",
     twitchname: "",
   });
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +38,10 @@ export default function AccountPage() {
         setIsLoading(false);
       } catch (error) {
         console.error(error);
+        setError("Fehler beim Laden der Daten. Bitte neu laden.");
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
         setIsLoading(false);
       }
     };
@@ -70,16 +77,16 @@ export default function AccountPage() {
 
       const responseData = await response.json();
       if (response.ok) {
-        //console.log("Data uploaded successfully");
-        setIsUploading(false); // Set isUploading to false after the API call is complete
-        // Add the "Saved!" text to the form
-        alert("Saved!");
+        setIsUploading(false);
+        setSuccess("Gespeichert!");
       } else {
-        alert("Failed to upload Data");
+        setIsUploading(false);
+        setError("Failed to upload Data");
         console.error("Failed to upload Data:", responseData);
       }
     } catch (error) {
-      alert("Failed to upload Data");
+      setIsUploading(false);
+      setError("Failed to upload Data");
       console.error(error);
     }
   };
@@ -92,6 +99,8 @@ export default function AccountPage() {
 
   return (
     <>
+      {success && <SuccessMessage attentionSuccess={success} />}
+      {error && <ErrorMessage attentionError={error} />}
       <header className="border-b dark:border-white/5 border-black/5">
         {/* Secondary navigation */}
         <nav className="flex overflow-x-auto py-4">

@@ -1,9 +1,12 @@
 "use client";
 import { useState, useCallback } from "react";
+import { ErrorMessage, SuccessMessage } from "@/components/alerts";
 
 export default function UploadPage() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -17,13 +20,19 @@ export default function UploadPage() {
       "image/vnd.djvu",
     ];
     if (!validImageTypes.includes(selectedFile.type)) {
-      alert(
+      setError(
         "Please select a valid image file type (JPEG, PNG, GIF, SVG, TIFF, ICO, DVU)."
       );
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
       return;
     }
     if (selectedFile.size > 16 * 1024 * 1024) {
-      alert("File size must be less than 16 MB.");
+      setError("File size must be less than 16 MB.");
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
       return;
     }
     const fileReader = new FileReader();
@@ -37,7 +46,10 @@ export default function UploadPage() {
         if (img.width >= 128 && img.height >= 128) {
           setSelectedFile(selectedFile);
         } else {
-          alert("Image resolution must be at least 128x128 pixels.");
+          setError("Image resolution must be at least 128x128 pixels.");
+          setTimeout(() => {
+            setError(null);
+          }, 5000);
         }
       };
     };
@@ -55,7 +67,10 @@ export default function UploadPage() {
     const formData = new FormData();
 
     if (!selectedFile) {
-      alert("Bitte wähle ein Bild aus.");
+      setError("Bitte wähle ein Bild aus.");
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
       return;
     }
 
@@ -78,7 +93,6 @@ export default function UploadPage() {
       });
 
       const responseData = await response.json();
-      console.log("Response Data:", responseData);
 
       if (response.status === 201) {
         const editImage = await fetch(
@@ -99,15 +113,18 @@ export default function UploadPage() {
 
         const editImageData = await editImage.json();
         if (editImage.status === 200) {
-          alert("Saved!");
-          window.location.reload();
+          setSuccess("Gespeichert und hochgeladen! Einen moment bitte...");
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
         } else {
           console.error("Failed to edit image:", editImageData);
         }
-        //console.log("File uploaded successfully");
-        setIsUploading(false);
-        // Add the "Saved!" text to the form
       } else {
+        setError("Fehler beim hochladen. Bitte versuche es erneut.");
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
         console.error("Failed to upload file:", responseData);
         setIsUploading(false);
       }
@@ -118,6 +135,8 @@ export default function UploadPage() {
 
   return (
     <>
+      {success && <SuccessMessage attentionSuccess={success} />}
+      {error && <ErrorMessage attentionError={error} />}
       <form onSubmit={handleSubmit}>
         <div className="space-y-12">
           <div className="border-b border-white/10 pb-12">

@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useState, useRef } from "react";
+import { ErrorMessage, SuccessMessage } from "@/components/alerts";
 
 export default function BadgePageComponent() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -31,13 +32,19 @@ export default function BadgePageComponent() {
       "image/vnd.djvu",
     ];
     if (!validImageTypes.includes(selectedFile.type)) {
-      alert(
+      setError(
         "Please select a valid image file type (JPEG, PNG, SVG, TIFF, ICO, DVU)."
       );
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
       return;
     }
     if (selectedFile.size > 1 * 1024 * 1024) {
-      alert("File size must be less than 1 MB.");
+      setError("File size must be less than 1 MB.");
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
       return;
     }
     const fileReader = new FileReader();
@@ -51,7 +58,10 @@ export default function BadgePageComponent() {
         if (img.width >= 128 && img.height >= 128) {
           setSelectedFile(selectedFile);
         } else {
-          alert("Image resolution must be at least 128x128 pixels.");
+          setError("Image resolution must be at least 128x128 pixels.");
+          setTimeout(() => {
+            setError(null);
+          }, 5000);
         }
       };
     };
@@ -68,6 +78,7 @@ export default function BadgePageComponent() {
 
     const formData = new FormData();
     formData.append("file", selectedFile);
+    formData.append("fileId", "unique()");
 
     try {
       const userResponse = await fetch("/api/user/getUserSelf", {
@@ -96,17 +107,19 @@ export default function BadgePageComponent() {
       formData.append(
         "data",
         JSON.stringify({
-          users_permissions_user: userId,
-          displayname: displaynameRef.current?.value,
-          nickname: nicknameRef.current?.value,
-          pronouns: pronounsRef.current?.value,
-          species: speciesRef.current?.value,
-          address: addressRef.current?.value,
-          city: cityRef.current?.value,
-          country: countryRef.current?.value,
-          state: stateRef.current?.value,
-          postalcode: postalcodeRef.current?.value,
-          deliver_at_eurofurence: deliver_at_eurofurence.checked,
+          data: {
+            user_id: userId,
+            displayname: displaynameRef.current?.value,
+            nickname: nicknameRef.current?.value,
+            pronouns: pronounsRef.current?.value,
+            species: speciesRef.current?.value,
+            address: addressRef.current?.value,
+            city: cityRef.current?.value,
+            country: countryRef.current?.value,
+            state: stateRef.current?.value,
+            postalcode: postalcodeRef.current?.value,
+            deliver_at_eurofurence: deliver_at_eurofurence.checked,
+          },
         })
       );
 
@@ -121,9 +134,18 @@ export default function BadgePageComponent() {
       setIsUploading(false);
 
       if (response.ok) {
-        alert("Saved!");
-        window.location.reload();
+        setSuccess("Danke für deine Anfrage!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
       } else {
+        setError(
+          "Anfrage fehlgeschlagen, bitte versuche es erneut oder kontaktiere uns. Fehler: " +
+            responseData.message
+        );
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
         console.error("Failed to upload file:", responseData);
       }
     } catch (error) {
@@ -133,6 +155,8 @@ export default function BadgePageComponent() {
 
   return (
     <>
+      {success && <SuccessMessage attentionSuccess={success} />}
+      {error && <ErrorMessage attentionError={error} />}
       <div className="mx-auto my-8 max-w-7xl text-center">
         {/* TODO: Change image */}
         <img

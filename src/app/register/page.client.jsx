@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import ErrorMessage from "@/components/errorMessage";
+import { ErrorMessage } from "@/components/alerts";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -19,10 +19,26 @@ export default function Register() {
   }
 
   useEffect(() => {
-    const jwt = getCookie("jwt");
-    if (jwt) {
-      window.location.href = "/account";
-    }
+    const checkIfUserExists = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_DOMAIN}/api/user/checkUserExists`,
+          {
+            method: "GET",
+          }
+        );
+
+        if (response.status === 201) {
+          window.location.href = "/account";
+        } else if (response.status === 401) {
+          return;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    checkIfUserExists();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -85,7 +101,7 @@ export default function Register() {
             <div>
               <Image
                 className="h-10 w-auto"
-                src="/logos/Headpat_new_logo.png"
+                src="/logos/Headpat_new_logo.webp"
                 alt="Headpat Community"
                 width={600}
                 height={600}

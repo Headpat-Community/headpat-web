@@ -2,10 +2,12 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ErrorMessage, SuccessMessage } from "@/components/alerts";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -14,43 +16,49 @@ const ForgotPassword = () => {
         method: "POST",
         body: JSON.stringify({
           email: email,
+          url: `${process.env.NEXT_PUBLIC_DOMAIN}/reset-password`,
         }),
       });
       //console.log("User authenticated successfully");
       if (response.status === 400) {
         setError(`E-Mail inkorrekt!`);
         setTimeout(() => {
-          setError("");
+          setError(null);
         }, 5000);
       } else if (response.status === 429) {
-        setError("Too many requests!");
+        setError("Zu viele Anfragen! Bitte versuche es später erneut.");
         setTimeout(() => {
-          setError("");
+          setError(null);
         }, 5000);
       } else if (response.status === 500) {
-        setError("Server error!");
+        setError("Server Fehler! Bitte versuche es später erneut.");
         setTimeout(() => {
-          setError("");
+          setError(null);
         }, 5000);
       } else if (response.status === 200) {
-        setError("E-Mail sent!");
+        setSuccess("E-Mail gesendet! Bitte überprüfe deinen Posteingang.");
         setTimeout(() => {
-          window.location.href = "/login";
+          setSuccess(null);
         }, 10000);
       }
     } catch (error) {
       //console.log(error);
       setError("E-Mail inkorrekt!");
+      setTimeout(() => {
+        setError(null);
+      }, 10000);
     }
   };
 
   return (
     <>
+      {success && <SuccessMessage attentionSuccess={success} />}
+      {error && <ErrorMessage attentionError={error} />}
       <div className="flex lg:pt-[200px] justify-center items-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col justify-center">
           <Image
             className="mx-auto h-24 w-auto"
-            src="/logos/logo-512.webp"
+            src="/logos/Headpat_new_logo.webp"
             alt="Headpat Logo"
             width={128}
             height={128}
@@ -58,10 +66,6 @@ const ForgotPassword = () => {
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
             Forgot password?
           </h2>
-
-          {error && (
-            <div className="text-red-500 text-center mt-2">{error}</div>
-          )}
 
           <form className="mt-10 space-y-6" action="#" method="POST">
             <div>
