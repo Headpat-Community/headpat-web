@@ -12,6 +12,7 @@ const navigation = [
   { name: "Home", href: "/" },
   { name: "Gallery", href: "/gallery" },
   { name: "Pawcraft", href: "/pawcraft" },
+  { name: "Users", href: "/users" },
 ];
 
 export default function Header() {

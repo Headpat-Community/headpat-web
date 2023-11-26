@@ -1,31 +1,38 @@
 import { NextResponse } from "next/server";
+import { headers } from "next/headers";
 
 export const runtime = "edge";
 
-export async function PUT(request) {
+export async function PATCH(request) {
   try {
+    const headersList = headers();
+    const cookieHeader = headersList.get("cookie");
+
     // Assume the last segment of the URL is the user ID
-    const patId = request.url.split("/").pop();
+    const userId = request.url.split("/").pop();
 
     const requestBody = await request.json();
 
-    if (!patId) {
-      throw new Error("Pat ID is required");
+    if (!userId) {
+      throw new Error("User ID is required");
     }
 
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_DOMAIN_API}/api/pats/${patId}`;
+    const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655caf2e7a6d01e18184/documents/${userId}`;
 
     const response = await fetch(fetchURL, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
-        Authorization: `Bearer ${process.env.DOMAIN_API_KEY}`,
         "Content-Type": "application/json",
+        "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+        "X-Appwrite-Response-Format": "1.4.0",
+        Cookie: cookieHeader,
       },
       body: JSON.stringify(requestBody), // Serialize requestBody to JSON
     });
 
     if (!response.ok) {
+      console.log(response.status, response.statusText);
       throw new Error("Failed to update data");
     }
 

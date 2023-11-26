@@ -231,6 +231,7 @@ const Login = () => {
                   </div>
                 </form>
               </div>
+              {/*
 
               <div className="mt-8">
                 <div className="relative">
@@ -338,6 +339,7 @@ const Login = () => {
                   </button>
                 </div>
               </div>
+              */}
             </div>
           </div>
         </div>

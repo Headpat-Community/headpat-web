@@ -52,7 +52,7 @@ export default function FetchGallery() {
       ? `queries[]=equal("userId","${userId}")&queries[]=equal("nsfw",false)`
       : `queries[]=equal("userId","${userId}")`;
 
-    const pageSize = 500; // Number of items per page
+    const pageSize = 2; // Number of items per page
     const offset = (currentPage - 1) * pageSize; // Calculate offset based on current page
     const apiUrl = `/api/gallery/getUserGallery?${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`;
 
@@ -97,7 +97,7 @@ export default function FetchGallery() {
               className="p-8 flex flex-wrap gap-4 justify-center items-center"
             >
               {gallery.map((item) => (
-                <div key={item.id}>
+                <div key={item.$id}>
                   {item && (
                     <div
                       className={`rounded-lg overflow-hidden h-64 ${

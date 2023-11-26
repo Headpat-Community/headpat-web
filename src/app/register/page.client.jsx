@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import ErrorMessage from "@/components/errorMessage";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -48,24 +49,24 @@ export default function Register() {
         );
         setTimeout(() => {
           setError("");
-        }, 5000);
+        }, 7000);
       } else if (response.status === 409) {
         setError(
           `A user with the same id, email, or phone already exists in this project.`
         );
         setTimeout(() => {
           setError("");
-        }, 5000);
+        }, 7000);
       } else if (response.status === 429) {
         setError("Too many requests!");
         setTimeout(() => {
           setError("");
-        }, 5000);
+        }, 7000);
       } else if (response.status === 500) {
         setError("Server error!");
         setTimeout(() => {
           setError("");
-        }, 5000);
+        }, 7000);
       } else if (response.status === 201) {
         setError("Please confirm your E-Mail!");
       }
@@ -77,6 +78,7 @@ export default function Register() {
 
   return (
     <>
+      {error && <ErrorMessage attentionError={error} />}
       <div className="flex min-h-full flex-1">
         <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
@@ -180,6 +182,7 @@ export default function Register() {
                 </form>
               </div>
 
+              {/*
               <div className="mt-8">
                 <div className="relative">
                   <div
@@ -286,6 +289,7 @@ export default function Register() {
                   </a>
                 </div>
               </div>
+              */}
             </div>
           </div>
         </div>

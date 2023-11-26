@@ -19,10 +19,6 @@ export async function POST(request) {
       body: JSON.stringify(requestBody),
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to update data");
-    }
-
     if (response.status === 409) {
       return NextResponse.json(
         {
@@ -31,6 +27,11 @@ export async function POST(request) {
         },
         { status: 409 }
       );
+    }
+
+    if (!response.ok) {
+      console.log(response.status);
+      throw new Error("Failed to update data");
     }
 
     const data = await response.json();

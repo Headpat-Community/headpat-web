@@ -139,7 +139,6 @@ export default function UserProfile() {
       .then((response) => response.json())
       .then((data) => {
         setUserData(data.documents[0]);
-        console.log(data);
       })
       .catch((error) => {
         console.error("API error:", error);
@@ -193,7 +192,7 @@ export default function UserProfile() {
                     </div>
                     <div className="ml-3 w-0 flex-1">
                       <p className="text-sm font-medium">
-                        {userData?.displayname || username}
+                        {userData?.displayname}
                       </p>
                       <p className="mt-1 text-sm dark:text-gray-300 text-gray-800">
                         It&apos;s their birthday today!
@@ -265,7 +264,7 @@ export default function UserProfile() {
                     </div>
                     <h1>
                       <div className="mt-1 text-base font-semibold leading-6">
-                        {userData[0]?.displayname}
+                        {userData?.displayname}
                       </div>
                     </h1>
                   </div>
@@ -528,9 +527,7 @@ export default function UserProfile() {
                       {formattedBirthday !== "31.01.1900" && (
                         <div
                           className={`mt-4 flex w-full flex-none gap-x-4 px-6 mb-4 ${
-                            userData?.location === ""
-                              ? "mb-6"
-                              : ""
+                            userData?.location === "" ? "mb-6" : ""
                           }`}
                         >
                           <dt className="flex-none">

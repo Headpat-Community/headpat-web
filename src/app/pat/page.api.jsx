@@ -1,3 +1,4 @@
+'use server'
 const PATS_API = `${process.env.NEXT_PUBLIC_DOMAIN}/api/fun/pats`;
 
 export const createPatData = async (id) => {

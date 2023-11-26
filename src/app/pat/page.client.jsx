@@ -1,96 +1,106 @@
 "use client";
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { createPatData, updatePatData } from "./page.api";
-
-const PATS_API = "/api/fun/pats";
-const USER_API = "/api/user/getUserSelf";
+import React, { useState, useCallback, useEffect } from "react";
+import { client } from "../appwrite";
+import { createPatData } from "./page.api";
 
 export default function PatClient() {
   const [userId, setUserId] = useState(null);
-  const [patCount, setPatCount] = useState(null);
-  const [totalCount, setTotalCount] = useState(null);
-
-  const fetchData = useCallback(async () => {
-    try {
-      const jwtCookie = document.cookie.replace(
-        /(?:(?:^|.*;\s*)jwt\s*=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-
-      // Fetch data from /api/fun/pats regardless of whether the user is logged in
-      const patsResponse = await fetch(PATS_API);
-      const patsData = await patsResponse.json();
-
-      // Calculate the total count from the fetched data
-      const totalCount = patsData.data.reduce(
-        (acc, pat) => acc + Number(pat.attributes.count),
-        0
-      );
-
-      // Update state
-      setTotalCount(totalCount);
-
-      if (jwtCookie) {
-        // If JWT cookie exists, fetch user-specific data
-        const userResponse = await fetch(USER_API, {
-          method: "GET",
-        });
-        const userData = await userResponse.json();
-
-        if (!userData) {
-          return;
-        }
-
-        // Extract user ID
-        const { id } = userData;
-
-        // Fetch pat count using user ID
-        const patResponse = await fetch(`${PATS_API}/${id}`, {
-          method: "GET",
-        });
-
-        const patData = await patResponse.json();
-
-        if (patData.data && patData.data.length === 0) {
-          await createPatData(id);
-        }
-
-        const updatedPatResponse = await fetch(`${PATS_API}/${id}`, {
-          headers: {
-            Authorization: `Bearer ${jwtCookie}`,
-          },
-        });
-
-        const updatedPatData = await updatedPatResponse.json();
-
-        const count = updatedPatData?.data[0]?.attributes?.count;
-
-        setUserId(id);
-        setPatCount(count);
-      }
-    } catch (error) {
-      handleFetchError(error);
-    }
-  }, [createPatData]);
-
-  const handleIncrement = useCallback(async () => {
-    const { updatedTotalCount, newCount } = await updatePatData(userId);
-
-    setTotalCount(updatedTotalCount);
-    setPatCount(newCount);
-  }, [userId]);
-
-  const handleFetchError = useCallback((error) => {
-    console.error("Error fetching data:", error);
-  }, []);
+  const [patCount, setPatCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
-    fetchData();
+    // Fetch user ID
+    fetch(`/api/user/getUserSelf`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        // Add any additional headers if needed
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setUserId(data[0]?.$id);
+      })
+      .catch((error) => {
+        console.error("GET request error:", error);
+      });
+  }, []);
 
-    const intervalId = setInterval(fetchData, 5000);
+  // Create a WebSocket connection
+  let socket;
 
-    return () => clearInterval(intervalId);
-  }, [fetchData]);
+  function connect() {
+    socket = new WebSocket(
+      `wss://api.headpat.de/v1/realtime?project=6557c1a8b6c2739b3ecf&channels[]=databases.65527f2aafa5338cdb57.collections.655caf2e7a6d01e18184.documents`
+    );
+
+    // Listen for messages
+    socket.addEventListener("message", (event) => {
+      // Parse JSON data
+      const data = JSON.parse(event.data);
+      //console.log("Message from server: ", data);
+    });
+
+    // Connection closed
+    socket.addEventListener("close", (event) => {
+      setTimeout(connect, 1000); // try to reconnect after a second
+    });
+
+    // Connection error
+    socket.addEventListener("error", (event) => {
+      console.log("WebSocket error: ", event);
+    });
+  }
+
+  //connect();
+
+  useEffect(() => {
+    const patchInterval = setInterval(() => {
+      const apiUrl = `/api/fun/pats/update/${userId}`;
+      // Replace "your-collection-id" with the actual ID of the collection
+
+      fetch(apiUrl, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          // Add any additional headers if needed
+        },
+        body: JSON.stringify({
+          data: {
+            amount: patCount,
+          },
+        }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("PATCH request success:", data);
+        })
+        .catch((error) => {
+          console.error("PATCH request error:", error);
+        });
+    }, 10000);
+
+    return () => {
+      clearInterval(patchInterval);
+    };
+  }, [userId, patCount]);
+
+  const handlePatClick = () => {
+    // Increase the pat count by 1 when the button is clicked
+    setPatCount((prevCount) => prevCount + 1);
+  };
+
+  console.log(patCount);
 
   return (
     <div className="flex min-h-full flex-col">
@@ -116,12 +126,12 @@ export default function PatClient() {
             alt="pat"
             className="relative w-[80%] top-96 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-80 transition active:scale-75 transition-transform"
             onMouseDown={(e) => e.preventDefault()}
-            onClick={handleIncrement}
+            onClick={handlePatClick}
           />
         </main>
 
         <aside className="sticky top-8 hidden w-96 shrink-0 xl:block">
-          <h2>Upgrades (Bald?)</h2>
+          <h2>Diese seite funktioniert nicht.</h2>
         </aside>
       </div>
     </div>
