@@ -107,6 +107,15 @@ export default function AccountPage() {
     const currentPassword = event.target.currentpassword.value;
     const newPassword = event.target.newpassword.value;
 
+    // Check if profileUrl has at least 4 characters
+    if (newPassword.length < 8) {
+      setError("Please enter a valid password.");
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
+      return;
+    }
+
     try {
       const response = await fetch("/api/user/editUserPassword", {
         method: "PATCH",
