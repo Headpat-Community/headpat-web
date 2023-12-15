@@ -19,6 +19,7 @@ export async function POST() {
       "",
       { ...cookieOptions, expires: new Date(0) }
     );
+    cookies().set(`logged_in`, "", { ...cookieOptions, expires: new Date(0) });
 
     return NextResponse.json({ status: 201 });
   } catch (error) {

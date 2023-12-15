@@ -82,8 +82,7 @@ export default function AccountPage() {
         setTimeout(() => {
           setSuccess(null);
         }, 5000);
-        // Reload the window
-        //window.location.reload();
+        event.target.reset();
       } else {
         // Check for the specific error structure
         if (
@@ -128,7 +127,7 @@ export default function AccountPage() {
         setTimeout(() => {
           setSuccess(null);
         }, 5000);
-        window.location.reload();
+        event.target.reset();
       } else {
         setError("Password reset failed");
         setTimeout(() => {
