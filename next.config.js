@@ -11,6 +11,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: '*.headpat-de.pages.dev',
+      },
+      {
+        protocol: 'https',
         hostname: 'placekitten.com',
       }
     ]
