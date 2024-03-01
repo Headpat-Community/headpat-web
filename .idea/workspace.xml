@@ -4,13 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="feat: server actions">
-      <change afterPath="$PROJECT_DIR$/src/app/(main)/login/oauth/page.jsx" afterDir="false" />
+    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="test sdk">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(account)/account/frontpage/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/account/frontpage/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(account)/account/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/account/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/gallery/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/gallery/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/i/reset-password/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/i/reset-password/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/i/verify-email/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/i/verify-email/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/legal/impressum/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/legal/impressum/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/legal/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/legal/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/login/oauth/page.jsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/login/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/login/page.client.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/actions/user-actions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/actions/user-actions.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/login/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/login/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/pat/leaderboard/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/pat/leaderboard/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/pat/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/pat/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/pawcraft/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/pawcraft/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/register/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/register/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/users/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/users/page.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,31 +56,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;code.cleanup.on.save&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;appwrite&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.9.0&quot;,
-    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.9.5&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/git/headpat/headpat.de&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\git\\headpat\\headpat.de\\node_modules\\prettier&quot;,
-    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\git\\headpat\\headpat.de\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "code.cleanup.on.save": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "appwrite",
+    "ignore.virus.scanning.warn.message": "true",
+    "javascript.nodejs.core.library.configured.version": "20.9.0",
+    "javascript.nodejs.core.library.typings.version": "20.9.5",
+    "last_opened_file_path": "D:/git/headpat/headpat.de",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "D:\\git\\headpat\\headpat.de\\node_modules\\prettier",
+    "rearrange.code.on.save": "true",
+    "settings.editor.selected.configurable": "actions.on.save",
+    "ts.external.directory.path": "C:\\Users\\domin\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -89,7 +101,7 @@
       <workItem from="1709281023213" duration="7119000" />
       <workItem from="1709288218303" duration="87000" />
       <workItem from="1709288317518" duration="11394000" />
-      <workItem from="1709323400181" duration="7601000" />
+      <workItem from="1709323400181" duration="8597000" />
     </task>
     <task id="LOCAL-00001" summary="feat: server actions">
       <option name="closed" value="true" />
@@ -99,7 +111,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709306744795</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="test sdk">
+      <option name="closed" value="true" />
+      <created>1709331553646</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1709331553646</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -119,6 +139,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: server actions" />
     <MESSAGE value="&quot;some changes&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;some changes&quot;" />
+    <MESSAGE value="test sdk" />
+    <option name="LAST_COMMIT_MESSAGE" value="test sdk" />
   </component>
 </project>
