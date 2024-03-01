@@ -1,17 +1,25 @@
 import Layout from "@/app/layouts/account-layout";
 import Client from "./page.client";
+import { getUserSelf } from "../../../../utils/actions/user-actions";
 
 export const runtime = "edge";
 
 export const metadata = {
-  title: "Account Gallery",
+	title: "Account Gallery",
 };
 
-export default function FetchGallery() {
+export default async function FetchGallery() {
 
-  return (
-    <Layout>
-      <Client />
-    </Layout>
-  );
+	const userSelf = await getUserSelf();
+	const userId = userSelf?.$id;
+	let enableNsfw = userSelf?.enablensfw;
+
+	return (
+		<Layout>
+			<Client
+				enableNsfw={enableNsfw || false}
+				userId={userId}
+			/>
+		</Layout>
+	);
 }

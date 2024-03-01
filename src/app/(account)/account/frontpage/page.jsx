@@ -3,18 +3,18 @@ import Client from './page.client';
 import { getUserSelf } from '../../../../utils/actions/user-actions';
 
 export const metadata = {
-  title: 'Account',
+	title: 'Account',
 };
 
 export default async function AccountPage() {
-  const userResponseData = await getUserSelf();
-  const userId = userResponseData.documents[0].$id;
+	const userResponseData = await getUserSelf();
+	const userId = userResponseData.$id;
 
-  return (
-      <>
-        <Layout>
-          <Client userId={userId}/>
-        </Layout>
-      </>
-  );
+	return (
+		<>
+			<Layout>
+				<Client userId={userId}/>
+			</Layout>
+		</>
+	);
 }
