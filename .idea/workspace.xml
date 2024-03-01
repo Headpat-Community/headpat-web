@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="test sdk">
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="revert 1.4.10">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(account)/account/logout/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/account/logout/page.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +86,7 @@
       <workItem from="1709288218303" duration="87000" />
       <workItem from="1709288317518" duration="11394000" />
       <workItem from="1709323400181" duration="8597000" />
-      <workItem from="1709332078375" duration="2008000" />
+      <workItem from="1709332078375" duration="2371000" />
     </task>
     <task id="LOCAL-00001" summary="feat: server actions">
       <option name="closed" value="true" />
@@ -135,7 +136,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709334210594</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="revert 1.4.10">
+      <option name="closed" value="true" />
+      <created>1709334391537</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1709334391537</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,6 +165,7 @@
     <MESSAGE value="feat: server actions" />
     <MESSAGE value="&quot;some changes&quot;" />
     <MESSAGE value="test sdk" />
-    <option name="LAST_COMMIT_MESSAGE" value="test sdk" />
+    <MESSAGE value="revert 1.4.10" />
+    <option name="LAST_COMMIT_MESSAGE" value="revert 1.4.10" />
   </component>
 </project>
