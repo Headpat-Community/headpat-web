@@ -1,5 +1,5 @@
 'use server'
-import { cookies, headers } from 'next/headers'
+import { headers } from 'next/headers'
 
 export async function getUsers () {
   const response = await fetch(
