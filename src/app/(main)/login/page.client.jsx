@@ -1,17 +1,17 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ErrorMessage } from '../../../components/alerts'
-import { account } from '../../appwrite'
-import { loginUser } from '../../../utils/actions/user-actions'
+import { account, functions } from '../../appwrite'
+import { ExecutionMethod } from 'appwrite'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = async(e) => {
+  /*const handleSubmit = async(e) => {
     e.preventDefault()
     const email = document.getElementById('email').value
     const password = document.getElementById('password').value
@@ -51,6 +51,16 @@ const Login = () => {
       window.location.href = '/account'
     }
   }
+   */
+
+  const handleEmailLogin = async(e) => {
+    e.preventDefault()
+
+    await account.createEmailPasswordSession(
+      email,
+      password,
+    )
+  }
 
   const handleGoogleLogin = async() => {
     account.createOAuth2Session(
@@ -68,15 +78,14 @@ const Login = () => {
       'http://localhost:3000/login?failure=true',
     )
 
-    const session = await account.getSession('current')
+    //const session = await account.getSession('current')
+  }
 
-    console.log(session.provider)
-    console.log(session.providerUid)
-    console.log(session.providerAccessToken)
-    console.log(session.providerAccessTokenExpiry)
-
-    // create cookie with provideraccesstoken and expiry
-    document.cookie = `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}=${session.providerAccessToken}; expires=${new Date(session.providerAccessTokenExpiry)}; path=/; secure; samesite=strict;`
+  const handleSession = async() => {
+    const response = await account.getSession('current')
+    if (response) {
+      window.location.href = '/account'
+    }
   }
 
   /*
@@ -110,15 +119,6 @@ const Login = () => {
   }
    */
 
-  const handleManualLogin = async(e) => {
-    e.preventDefault()
-
-    const email = document.getElementById('email').value, password = document.getElementById('password').value
-    const promise = await account.createEmailPasswordSession(email, password)
-
-    console.log(promise)
-  }
-
   const handleGithubLogin = async() => {
     account.createOAuth2Session(
       'github',
@@ -133,6 +133,24 @@ const Login = () => {
       `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
       `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`,
     )
+  }
+
+  const handleSpotifyLogin = async() => {
+    account.createOAuth2Session(
+      'spotify',
+      `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
+      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`,
+    )
+  }
+
+  useEffect(() => {
+    //handleSession()
+  }, [])
+
+  const handleFunction = async() => {
+    const response = await functions.createExecution('65e2126d9e431eb3c473', '', false, '/getUserSelf', ExecutionMethod.GET)
+    console.log(response.responseBody)
+    return response.responseBody
   }
 
   return (
@@ -223,10 +241,28 @@ const Login = () => {
                   <div>
                     <button
                       type="submit"
-                      onClick={handleSubmit}
+                      onClick={handleEmailLogin}
                       className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Anmelden
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      type="submit"
+                      onClick={handleSession}
+                      className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      Get Session
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      type="submit"
+                      onClick={handleFunction}
+                      className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      Create function execution
                     </button>
                   </div>
                 </form>
@@ -337,6 +373,29 @@ const Login = () => {
 
                     <span className="text-sm font-semibold leading-6">
                       Google
+                    </span>
+                  </button>
+
+                  <button
+                    onClick={handleSpotifyLogin}
+                    className="flex w-full items-center justify-center gap-3 rounded-md bg-[#1DB954] border dark:border-white/20 border-black/20 px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
+                  >
+                    <svg
+                      height="24"
+                      viewBox="0 0 48 48"
+                      width="24"
+                      className="h-5 w-5"
+                    >
+                      <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                        <g id="Color-" transform="translate(-200.000000, -460.000000)" fill="#fff">
+                          <path
+                            d="M238.16,481.36 C230.48,476.8 217.64,476.32 210.32,478.6 C209.12,478.96 207.92,478.24 207.56,477.16 C207.2,475.96 207.92,474.76 209,474.4 C217.52,471.88 231.56,472.36 240.44,477.64 C241.52,478.24 241.88,479.68 241.28,480.76 C240.68,481.6 239.24,481.96 238.16,481.36 M237.92,488.08 C237.32,488.92 236.24,489.28 235.4,488.68 C228.92,484.72 219.08,483.52 211.52,485.92 C210.56,486.16 209.48,485.68 209.24,484.72 C209,483.76 209.48,482.68 210.44,482.44 C219.2,479.8 230,481.12 237.44,485.68 C238.16,486.04 238.52,487.24 237.92,488.08 M235.04,494.68 C234.56,495.4 233.72,495.64 233,495.16 C227.36,491.68 220.28,490.96 211.88,492.88 C211.04,493.12 210.32,492.52 210.08,491.8 C209.84,490.96 210.44,490.24 211.16,490 C220.28,487.96 228.2,488.8 234.44,492.64 C235.28,493 235.4,493.96 235.04,494.68 M224,460 C210.8,460 200,470.8 200,484 C200,497.2 210.8,508 224,508 C237.2,508 248,497.2 248,484 C248,470.8 237.32,460 224,460"
+                          />
+                        </g>
+                      </g>
+                    </svg>
+                    <span className="text-sm font-semibold leading-6">
+                      Spotify
                     </span>
                   </button>
                 </div>
