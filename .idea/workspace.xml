@@ -4,8 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="revert test build">
+    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/i/reset-password/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/i/reset-password/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/i/verify-email/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/i/verify-email/page.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/page.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -87,7 +91,7 @@
       <workItem from="1709288317518" duration="11394000" />
       <workItem from="1709323400181" duration="8597000" />
       <workItem from="1709332078375" duration="2751000" />
-      <workItem from="1709389134248" duration="2771000" />
+      <workItem from="1709389134248" duration="6138000" />
     </task>
     <task id="LOCAL-00001" summary="feat: server actions">
       <option name="closed" value="true" />
@@ -169,7 +173,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709390916234</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="test">
+      <option name="closed" value="true" />
+      <created>1709391990565</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1709391990565</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -194,6 +206,7 @@
     <MESSAGE value="fix logout url" />
     <MESSAGE value="test build" />
     <MESSAGE value="revert test build" />
-    <option name="LAST_COMMIT_MESSAGE" value="revert test build" />
+    <MESSAGE value="test" />
+    <option name="LAST_COMMIT_MESSAGE" value="test" />
   </component>
 </project>

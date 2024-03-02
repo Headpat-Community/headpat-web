@@ -4,8 +4,6 @@ import Image from 'next/image'
 
 export const runtime = 'edge'
 
-console.log('test')
-
 export default function Home() {
   return (
     <>

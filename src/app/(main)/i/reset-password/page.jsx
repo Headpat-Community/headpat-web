@@ -1,6 +1,5 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import Header from '../../../../components/header/header'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ErrorMessage } from '../../../../components/alerts'
@@ -60,7 +59,6 @@ const ResetPassword = () => {
   return (
     <>
       {error && <ErrorMessage attentionError={error}/>}
-      <Header/>
       <div
         className="flex lg:pt-[200px] justify-center items-center px-6 py-12 lg:px-8">
         <div
