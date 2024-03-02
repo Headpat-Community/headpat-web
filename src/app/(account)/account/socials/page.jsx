@@ -1,17 +1,14 @@
-import Layout from "@/app/layouts/account-layout";
-import Client from "./page.client";
+import Client from './page.client'
 
 export const metadata = {
-  title: "Socials",
-};
+  title: 'Socials',
+}
 
 export default function SocialSettings() {
 
   return (
     <>
-      <Layout>
-        <Client />
-      </Layout>
+      <Client/>
     </>
-  );
+  )
 }

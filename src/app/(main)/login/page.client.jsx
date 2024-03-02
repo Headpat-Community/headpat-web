@@ -64,8 +64,8 @@ const Login = () => {
 
     await account.createOAuth2Session(
       'discord',
-      'http://localhost:3000/',
-      'http://localhost:3000/login?failure=true',
+      'https://appwrite.headpat-de.pages.dev/',
+      'https://appwrite.headpat-de.pages.dev/login?failure=true',
     )
 
     const session = await account.getSession('current')

@@ -1,5 +1,5 @@
 import Client from './page.client'
-import Loading from '@/app/loading'
+import Loading from '../../../loading'
 import { Suspense } from 'react'
 
 export const metadata = {
@@ -9,7 +9,7 @@ export const metadata = {
 
 export const runtime = 'edge'
 
-export default async function PatLeaderBoard () {
+export default async function PatLeaderBoard() {
 
   return (
     <>
