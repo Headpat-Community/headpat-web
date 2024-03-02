@@ -4,7 +4,9 @@ import Image from 'next/image'
 
 export const runtime = 'edge'
 
-export default function Home () {
+console.log('test')
+
+export default function Home() {
   return (
     <>
       <div className="bg-transparent">
