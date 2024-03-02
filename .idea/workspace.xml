@@ -4,18 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="test n1.4.10">
+    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="fix account layout">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(account)/account/badge/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/account/badge/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(account)/account/frontpage/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/account/frontpage/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(account)/account/gallery/[galleryId]/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/account/gallery/[galleryId]/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(account)/account/gallery/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/account/gallery/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(account)/account/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/account/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(account)/account/socials/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/account/socials/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(account)/account/upload/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/account/upload/page.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/login/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/login/page.client.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/pat/leaderboard/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/pat/leaderboard/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/layouts/account-layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/layout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/actions/user-actions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/actions/user-actions.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +93,7 @@
       <workItem from="1709288317518" duration="11394000" />
       <workItem from="1709323400181" duration="8597000" />
       <workItem from="1709332078375" duration="2751000" />
-      <workItem from="1709389134248" duration="8530000" />
+      <workItem from="1709389134248" duration="9538000" />
     </task>
     <task id="LOCAL-00001" summary="feat: server actions">
       <option name="closed" value="true" />
@@ -199,7 +191,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709399584710</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="fix account layout">
+      <option name="closed" value="true" />
+      <created>1709402375241</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1709402375241</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -226,6 +226,7 @@
     <MESSAGE value="revert test build" />
     <MESSAGE value="test" />
     <MESSAGE value="test n1.4.10" />
-    <option name="LAST_COMMIT_MESSAGE" value="test n1.4.10" />
+    <MESSAGE value="fix account layout" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix account layout" />
   </component>
 </project>

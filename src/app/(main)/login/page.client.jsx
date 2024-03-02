@@ -16,14 +16,14 @@ const Login = () => {
     const email = document.getElementById('email').value
     const password = document.getElementById('password').value
 
-    const body1 = {
+    const body = {
       email: email,
       password: password,
     }
 
-    const response = await loginUser()
-    const data = await response.json() // Not needed
-    console.log(data)
+    const response = await loginUser(body)
+    //const data = await response.json() // Not needed
+    //console.log(data)
 
     if (response === 400) {
       setError(
@@ -64,8 +64,8 @@ const Login = () => {
 
     await account.createOAuth2Session(
       'discord',
-      'https://appwrite.headpat-de.pages.dev/',
-      'https://appwrite.headpat-de.pages.dev/login?failure=true',
+      'http://localhost:3000/',
+      'http://localhost:3000/login?failure=true',
     )
 
     const session = await account.getSession('current')

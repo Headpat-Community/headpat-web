@@ -1,7 +1,7 @@
 'use server'
-import { headers } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 
-export async function getUsers () {
+export async function getUsers() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/65564fa28d1942747a72/documents`,
     {
@@ -22,7 +22,7 @@ export async function getUsers () {
   return data.documents
 }
 
-export async function getUserSelf () {
+export async function getUserSelf() {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
 
@@ -47,7 +47,7 @@ export async function getUserSelf () {
   return data.documents[0]
 }
 
-export async function getUserData (query = '') {
+export async function getUserData(query = '') {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
 
@@ -72,7 +72,7 @@ export async function getUserData (query = '') {
   return data.documents
 }
 
-export async function getUserDataSelf () {
+export async function getUserDataSelf() {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
 
@@ -98,7 +98,7 @@ export async function getUserDataSelf () {
   return await getUserData.json()
 }
 
-export async function getUserDataById (userId) {
+export async function getUserDataById(userId) {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
 
@@ -122,7 +122,7 @@ export async function getUserDataById (userId) {
   return await response.json()
 }
 
-export async function editUserData (userId, requestBody) {
+export async function editUserData(userId, requestBody) {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
 
@@ -146,7 +146,7 @@ export async function editUserData (userId, requestBody) {
   return await response.json()
 }
 
-export async function checkUserDataExists () {
+export async function checkUserDataExists() {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
 
@@ -204,7 +204,7 @@ export async function checkUserDataExists () {
   return true
 }
 
-export async function getAccount () {
+export async function getAccount() {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
 
@@ -232,7 +232,7 @@ export async function getAccount () {
   return await response.json()
 }
 
-export async function createJWT () {
+export async function createJWT() {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
 
@@ -257,11 +257,60 @@ export async function createJWT () {
   return await response.json()
 }
 
-export async function loginUser () {
-  return true
+export async function loginUser(requestBody) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/account/sessions`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+        'X-Appwrite-Response-Format': '1.4.0',
+      },
+      body: JSON.stringify(requestBody),
+    },
+  )
+
+  if (!response.ok) {
+    // Return status code to the client
+    return response.status
+  }
+
+  const data = await response.json()
+
+  const setCookieHeader = response.headers.get('Set-Cookie')
+  if (setCookieHeader) {
+    const cookiesToSet = setCookieHeader.split(', ')
+    cookiesToSet.forEach((cookie) => {
+      const [cookieNameAndValue, ...cookieAttrs] = cookie.split('; ')
+      const [cookieName, cookieValue] = cookieNameAndValue.split('=')
+
+      // Skip this iteration if the cookie name includes "legacy"
+      if (cookieName.includes('_legacy')) {
+        return
+      }
+
+      const cookieOptions = cookieAttrs.reduce((options, attr) => {
+        const [attrName, attrValue] = attr.split('=')
+        options[attrName.toLowerCase()] = attrValue || true
+        return options
+      }, {})
+
+      cookies().set(cookieName, cookieValue, {
+        path: '/',
+        secure: true,
+        expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+        domain: cookieOptions.domain || process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
+        httpOnly: true,
+        sameSite: 'strict',
+      })
+    })
+  }
+
+  return data
 }
 
-export async function sendEmailVerification () {
+export async function sendEmailVerification() {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
 
@@ -284,7 +333,7 @@ export async function sendEmailVerification () {
   return response.ok
 }
 
-export async function emailVerification (requestBody) {
+export async function emailVerification(requestBody) {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
 
@@ -310,7 +359,7 @@ export async function emailVerification (requestBody) {
   return true
 }
 
-export async function forgotPassword (requestBody) {
+export async function forgotPassword(requestBody) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/v1/account/recovery`,
     {
@@ -332,7 +381,7 @@ export async function forgotPassword (requestBody) {
   return await response.json()
 }
 
-export async function resetPassword (requestBody) {
+export async function resetPassword(requestBody) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/v1/account/recovery`,
     {
@@ -354,7 +403,7 @@ export async function resetPassword (requestBody) {
   return await response.json()
 }
 
-export async function editUserPassword (requestBody) {
+export async function editUserPassword(requestBody) {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
 
@@ -380,7 +429,7 @@ export async function editUserPassword (requestBody) {
   return await response.json()
 }
 
-export async function editUserEmail (requestBody) {
+export async function editUserEmail(requestBody) {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
 
@@ -406,7 +455,7 @@ export async function editUserEmail (requestBody) {
   return await response.json()
 }
 
-export async function createAccount (requestBody) {
+export async function createAccount(requestBody) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/v1/account`,
     {
@@ -428,7 +477,7 @@ export async function createAccount (requestBody) {
   return await response.json()
 }
 
-export async function handleNsfwChange (userId, requestBody) {
+export async function handleNsfwChange(userId, requestBody) {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
 
@@ -454,7 +503,7 @@ export async function handleNsfwChange (userId, requestBody) {
   return await response.json()
 }
 
-export async function avatarChange (userId, formData) {
+export async function avatarChange(userId, formData) {
   // TODO: This does not work
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
