@@ -85,6 +85,8 @@ module.exports = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gradient-to-b': 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ffffff 75%, #ffffff 100%)',
+        'gradient-to-t': 'linear-gradient(to top, rgba(0, 0, 0, 0) 0%, #000000 75%, #000000 100%)'
       },
       colors: {
         blurple: '#5865F2',

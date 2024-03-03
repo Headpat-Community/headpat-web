@@ -69,7 +69,8 @@ const Login = () => {
         <div className="line"/>
       </div>
       <div className="flex min-h-full flex-1 min-h-full">
-        <div className="mx-auto p-8 mt-14 min-w-1/3 lg:w-96 bg-[#04050a]/85 rounded-xl z-10">
+        <div
+          className="mx-auto p-8 mt-14 min-w-1/3 dark:bg-[#04050a]/85 rounded-2xl z-10 ring-1 dark:ring-white ring-black">
           <div>
             <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
               Anmelden bei Headpat

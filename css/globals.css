@@ -38,7 +38,7 @@
     height: 100%;
     margin: auto;
     width: 90vw;
-    z-index: 1;
+    z-index: 0;
 }
 
 .line {
@@ -47,8 +47,8 @@
     height: 100%;
     top: 0;
     left: 50%;
-    background: rgba(255, 255, 255, 0.1);
     overflow: hidden;
+    @apply dark:bg-gray-800 bg-gray-200;
 }
 
 .line::after {
@@ -59,10 +59,10 @@
     width: 100%;
     top: -50%;
     left: 0;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ffffff 75%, #ffffff 100%);
     animation: drop 7s 0s infinite;
     animation-fill-mode: forwards;
     animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
+    @apply dark:bg-gradient-to-b bg-gradient-to-t from-transparent dark:to-black to-white;
 }
 
 .line:nth-child(1) {
