@@ -3,27 +3,89 @@
 @tailwind utilities;
 
 .blur {
-  backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
 }
 
 .imgsinglegallery {
-  --s: 50px; /* the size on the corner */
-  --t: 5px; /* the thickness of the border */
-  --g: 10px; /* the gap between the border and image */
+    --s: 50px; /* the size on the corner */
+    --t: 5px; /* the thickness of the border */
+    --g: 10px; /* the gap between the border and image */
 
-  padding: calc(var(--g) + var(--t));
-  outline: var(--t) solid #b38184; /* the color here */
-  outline-offset: calc(-1 * var(--t));
-  mask: none;
-  -webkit-mask: conic-gradient(at var(--s) var(--s), #0000 75%, #000 0) 0 0 /
+    padding: calc(var(--g) + var(--t));
+    outline: var(--t) solid #b38184; /* the color here */
+    outline-offset: calc(-1 * var(--t));
+    mask: none;
+    -webkit-mask: conic-gradient(at var(--s) var(--s), #0000 75%, #000 0) 0 0 /
       calc(100% - var(--s)) calc(100% - var(--s)),
     linear-gradient(#000 0 0) content-box;
 }
 
 .dropzone {
-  border: 2px dashed #ccc;
-  padding: 20px;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+/* Animation for lines */
+.lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    margin: auto;
+    width: 90vw;
+    z-index: 1;
+}
+
+.line {
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    top: 0;
+    left: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.line::after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 15vh;
+    width: 100%;
+    top: -50%;
+    left: 0;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ffffff 75%, #ffffff 100%);
+    animation: drop 7s 0s infinite;
+    animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
+}
+
+.line:nth-child(1) {
+    margin-left: -25%;
+}
+
+.line:nth-child(1)::after {
+    animation-delay: 2s;
+}
+
+.line:nth-child(3) {
+    margin-left: 25%;
+}
+
+.line:nth-child(3)::after {
+    animation-delay: 2.5s;
+}
+
+@keyframes drop {
+    0% {
+        top: -50%;
+    }
+    100% {
+        top: 110%;
+    }
 }

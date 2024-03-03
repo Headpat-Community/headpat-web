@@ -3,14 +3,9 @@ import { cookies, headers } from 'next/headers'
 
 export async function getUsers() {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/65564fa28d1942747a72/documents`,
+    `https://65e2126e0f1d5cc19391.functions.fayevr.dev/getUsers`,
     {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
-        'X-Appwrite-Response-Format': '1.4.0',
-      },
     },
   )
 
@@ -18,8 +13,7 @@ export async function getUsers() {
     return false
   }
 
-  const data = await response.json()
-  return data.documents
+  return await response.json()
 }
 
 export async function getUserSelf() {

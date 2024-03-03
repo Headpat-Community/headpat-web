@@ -6,10 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="test sdk">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/announcements/[announcementId]/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/announcements/[announcementId]/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/gallery/[galleryId]/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/gallery/[galleryId]/page.client.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/login/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/login/page.client.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/appwrite.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/appwrite.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/actions/user-actions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/actions/user-actions.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +97,7 @@
       <workItem from="1709288317518" duration="11394000" />
       <workItem from="1709323400181" duration="8597000" />
       <workItem from="1709332078375" duration="2751000" />
-      <workItem from="1709389134248" duration="20522000" />
+      <workItem from="1709389134248" duration="27482000" />
     </task>
     <task id="LOCAL-00001" summary="feat: server actions">
       <option name="closed" value="true" />
@@ -209,7 +211,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709405964055</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="test sdk">
+      <option name="closed" value="true" />
+      <created>1709420185771</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1709420185771</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
