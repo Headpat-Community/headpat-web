@@ -9,8 +9,6 @@ export const runtime = 'edge'
 const ResetPassword = () => {
   const [code, setCode] = useState('')
   const [userId, setUserId] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
 
   useEffect(() => {

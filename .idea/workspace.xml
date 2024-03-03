@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="make login nicer">
+    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="combine login/register">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/gallery/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/gallery/page.client.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/login/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/login/page.client.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/register/page.client.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/register/page.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/users/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/users/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/appwrite.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/appwrite.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/actions/user-actions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/actions/user-actions.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/i/reset-password/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/i/reset-password/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/i/verify-email/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/i/verify-email/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/user/[uniqueId]/gallery/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/user/[uniqueId]/gallery/page.client.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +95,7 @@
       <workItem from="1709323400181" duration="8597000" />
       <workItem from="1709332078375" duration="2751000" />
       <workItem from="1709389134248" duration="29482000" />
-      <workItem from="1709472126878" duration="11244000" />
+      <workItem from="1709472126878" duration="12528000" />
     </task>
     <task id="LOCAL-00001" summary="feat: server actions">
       <option name="closed" value="true" />
@@ -238,7 +233,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709430528043</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="combine login/register">
+      <option name="closed" value="true" />
+      <created>1709504963276</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1709504963276</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -269,6 +272,7 @@
     <MESSAGE value="test sdk" />
     <MESSAGE value="change login page" />
     <MESSAGE value="make login nicer" />
-    <option name="LAST_COMMIT_MESSAGE" value="make login nicer" />
+    <MESSAGE value="combine login/register" />
+    <option name="LAST_COMMIT_MESSAGE" value="combine login/register" />
   </component>
 </project>
