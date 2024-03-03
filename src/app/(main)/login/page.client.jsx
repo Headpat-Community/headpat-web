@@ -1,24 +1,35 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { ErrorMessage } from '../../../components/alerts'
 import { account, functions } from '../../appwrite'
-import { ExecutionMethod } from 'appwrite'
+import { ExecutionMethod, ID } from 'appwrite'
 
-const Login = () => {
+export default function Login() {
   const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [isRegistering, setIsRegistering] = useState(false)
 
   const handleEmailLogin = async(e) => {
     e.preventDefault()
 
     try {
-      const response = await account.createEmailPasswordSession(
-        email,
-        password,
-      )
+      let response
+      if (isRegistering) {
+        response = await account.create(
+          ID.unique(),
+          email,
+          password,
+          username
+        )
+      } else {
+        response = await account.createEmailPasswordSession(
+          email,
+          password,
+        )
+      }
       if (response) {
         window.location.href = '/account'
       }
@@ -26,9 +37,11 @@ const Login = () => {
       if (error.code === 400) {
         setError('Invalid email provided.')
       } else if (error.code === 401) {
-        setError('Email oder Passwort ist falsch.')
+        setError('Email or password is incorrect.')
+      } else if (error.code === 409) {
+        setError('Email already in use.')
       } else if (error.code === 429) {
-        setError('Zu viele Anfragen. Bitte versuche es später erneut.')
+        setError('Too many requests. Please try again later.')
       }
       setTimeout(() => {
         setError('')
@@ -68,20 +81,21 @@ const Login = () => {
         <div className="line"/>
         <div className="line"/>
       </div>
-      <div className="flex min-h-full flex-1 min-h-full">
+      <div className="flex min-h-full flex-1">
         <div
           className="mx-auto p-8 mt-14 min-w-1/3 dark:bg-[#04050a]/85 rounded-2xl z-10 ring-1 dark:ring-white ring-black">
           <div>
             <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
-              Anmelden bei Headpat
+              Welcome to Headpat!
             </h2>
             <p className="mt-2 text-sm leading-6 text-gray-500">
-              Nicht registriert?{' '}
+              {isRegistering ? 'Already registered?' : 'Not yet registered?'}{' '}
               <Link
-                href="/register"
+                href="#"
+                onClick={() => setIsRegistering(!isRegistering)}
                 className="font-semibold text-indigo-600 hover:text-indigo-500"
               >
-                Klick hier!
+                Click here!
               </Link>
             </p>
           </div>
@@ -89,6 +103,29 @@ const Login = () => {
           <div className="mt-10">
             <div>
               <form action="#" method="POST" className="space-y-6">
+                {isRegistering && (
+                  <div>
+                    <label
+                      htmlFor="username"
+                      className="block text-sm font-medium leading-6"
+                    >
+                      Username
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        autoComplete="username"
+                        required
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset text-black dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+                  </div>
+                )}
+
                 <div>
                   <label
                     htmlFor="email"
@@ -148,7 +185,7 @@ const Login = () => {
                     onClick={handleEmailLogin}
                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                    Anmelden
+                    {!isRegistering ? 'Sign in' : 'Register'}
                   </button>
                 </div>
                 <div>
@@ -157,7 +194,7 @@ const Login = () => {
                     onClick={handleFunction}
                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                    Create function execution
+                    Create function execution (Test)
                   </button>
                 </div>
               </form>
@@ -301,5 +338,3 @@ const Login = () => {
     </>
   )
 }
-
-export default Login

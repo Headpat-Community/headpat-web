@@ -3,9 +3,17 @@ import { cookies, headers } from 'next/headers'
 
 export async function getUsers() {
   const response = await fetch(
-    `https://65e2126e0f1d5cc19391.functions.fayevr.dev/getUsers`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/userdata/documents`,
     {
       method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+        'X-Appwrite-Response-Format': '1.4.0',
+      },
+      next: {
+        revalidate: 10,
+      }
     },
   )
 
@@ -13,7 +21,8 @@ export async function getUsers() {
     return false
   }
 
-  return await response.json()
+  const data = await response.json()
+  return data.documents
 }
 
 export async function getUserSelf() {
@@ -21,7 +30,7 @@ export async function getUserSelf() {
   const cookieHeader = headersList.get('cookie')
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655ad3d280feee3296b5/documents/`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/655ad3d280feee3296b5/documents/`,
     {
       method: 'GET',
       headers: {
@@ -46,7 +55,7 @@ export async function getUserData(query = '') {
   const cookieHeader = headersList.get('cookie')
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/65564fa28d1942747a72/documents?${query}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/65564fa28d1942747a72/documents?${query}`,
     {
       method: 'GET',
       headers: {
@@ -72,7 +81,7 @@ export async function getUserDataSelf() {
 
   const accountData = await getAccount()
   const userId = accountData.$id
-  const userUrl = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/65564fa28d1942747a72/documents/${userId}`
+  const userUrl = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/65564fa28d1942747a72/documents/${userId}`
 
   const getUserData = await fetch(userUrl, {
     method: 'GET',
@@ -97,7 +106,7 @@ export async function getUserDataById(userId) {
   const cookieHeader = headersList.get('cookie')
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655ad3d280feee3296b5/documents/${userId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/655ad3d280feee3296b5/documents/${userId}`,
     {
       method: 'GET',
       headers: {
@@ -121,7 +130,7 @@ export async function editUserData(userId, requestBody) {
   const cookieHeader = headersList.get('cookie')
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/65564fa28d1942747a72/documents/${userId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/65564fa28d1942747a72/documents/${userId}`,
     {
       method: 'PATCH',
       headers: {
@@ -144,8 +153,8 @@ export async function checkUserDataExists() {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
 
-  const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655ad3d280feee3296b5/documents`
-  const postURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655ad3d280feee3296b5/documents`
+  const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/655ad3d280feee3296b5/documents`
+  const postURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/655ad3d280feee3296b5/documents`
   const accountURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/account`
 
   const response = await fetch(fetchURL, {
@@ -476,7 +485,7 @@ export async function handleNsfwChange(userId, requestBody) {
   const cookieHeader = headersList.get('cookie')
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655ad3d280feee3296b5/documents/${userId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/655ad3d280feee3296b5/documents/${userId}`,
     {
       method: 'PATCH',
       headers: {
@@ -507,7 +516,7 @@ export async function avatarChange(userId, formData) {
 
   // See if user has an avatar already
   const avatarResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655f6354b7c3fff1d687/documents?queries[]=equal("userId","${userId}")`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/user-avatars/documents?queries[]=equal("userId","${userId}")`,
     {
       method: 'GET',
       headers: {
@@ -540,7 +549,7 @@ export async function avatarChange(userId, formData) {
     const deleteData = await deleteResponse.json()
     console.log(deleteData)
 
-    const deleteDocURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655f6354b7c3fff1d687/documents/${avatarDocumentId}`
+    const deleteDocURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/655f6354b7c3fff1d687/documents/${avatarDocumentId}`
 
     const deleteDocResponse = await fetch(deleteDocURL, {
       method: 'DELETE',
@@ -571,7 +580,7 @@ export async function avatarChange(userId, formData) {
   console.log(imageData)
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655f6354b7c3fff1d687/documents`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/655f6354b7c3fff1d687/documents`,
     {
       method: 'POST',
       headers: {
@@ -593,7 +602,7 @@ export async function avatarChange(userId, formData) {
 
   // PATCH the userdata with the new avatar id
   const patchResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/65564fa28d1942747a72/documents/${userId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/65564fa28d1942747a72/documents/${userId}`,
     {
       method: 'PATCH',
       headers: {
