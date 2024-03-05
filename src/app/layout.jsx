@@ -1,6 +1,6 @@
 import '../../css/globals.css'
 import { Inter } from 'next/font/google'
-import { Providers } from './providers'
+import { ThemeProvider } from './providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,14 +16,19 @@ export const metadata = {
   url: 'https://headpat.de',
 }
 
-export default function RootLayout ({ children }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="de" className="h-full" suppressHydrationWarning>
     <body
       className={`${inter.className} flex min-h-full bg-white antialiased dark:bg-[#04050a]`}>
-    <Providers>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
       <div className="w-full">{children}</div>
-    </Providers>
+    </ThemeProvider>
     </body>
     </html>
   )

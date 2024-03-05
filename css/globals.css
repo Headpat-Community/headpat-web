@@ -2,90 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
-.blur {
-    backdrop-filter: blur(10px);
-}
-
-.imgsinglegallery {
-    --s: 50px; /* the size on the corner */
-    --t: 5px; /* the thickness of the border */
-    --g: 10px; /* the gap between the border and image */
-
-    padding: calc(var(--g) + var(--t));
-    outline: var(--t) solid #b38184; /* the color here */
-    outline-offset: calc(-1 * var(--t));
-    mask: none;
-    -webkit-mask: conic-gradient(at var(--s) var(--s), #0000 75%, #000 0) 0 0 /
-      calc(100% - var(--s)) calc(100% - var(--s)),
-    linear-gradient(#000 0 0) content-box;
-}
-
-.dropzone {
-    border: 2px dashed #ccc;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-
-/* Animation for lines */
-.lines {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    margin: auto;
-    width: 90vw;
-    z-index: 0;
-}
-
-.line {
-    position: absolute;
-    width: 1px;
-    height: 100%;
-    top: 0;
-    left: 50%;
-    overflow: hidden;
-    @apply dark:bg-gray-800 bg-gray-200;
-}
-
-.line::after {
-    content: '';
-    display: block;
-    position: absolute;
-    height: 15vh;
-    width: 100%;
-    top: -50%;
-    left: 0;
-    animation: drop 7s 0s infinite;
-    animation-fill-mode: forwards;
-    animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
-    @apply dark:bg-gradient-to-b bg-gradient-to-t from-transparent dark:to-black to-white;
-}
-
-.line:nth-child(1) {
-    margin-left: -25%;
-}
-
-.line:nth-child(1)::after {
-    animation-delay: 2s;
-}
-
-.line:nth-child(3) {
-    margin-left: 25%;
-}
-
-.line:nth-child(3)::after {
-    animation-delay: 2.5s;
-}
-
-@keyframes drop {
-    0% {
-        top: -50%;
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 240 10% 3.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 240 10% 3.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 240 10% 3.9%;
+        --primary: 142.1 76.2% 36.3%;
+        --primary-foreground: 355.7 100% 97.3%;
+        --secondary: 240 4.8% 95.9%;
+        --secondary-foreground: 240 5.9% 10%;
+        --muted: 240 4.8% 95.9%;
+        --muted-foreground: 240 3.8% 46.1%;
+        --accent: 240 4.8% 95.9%;
+        --accent-foreground: 240 5.9% 10%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 240 5.9% 90%;
+        --input: 240 5.9% 90%;
+        --ring: 142.1 76.2% 36.3%;
+        --radius: 0.5rem;
     }
-    100% {
-        top: 110%;
+
+    .dark {
+        --background: 20 14.3% 4.1%;
+        --foreground: 0 0% 95%;
+        --card: 240.0 10.0% 3.9%;
+        --card-foreground: 0 0% 95%;
+        --popover: 0 0% 9%;
+        --popover-foreground: 0 0% 95%;
+        --primary: 142.1 70.6% 45.3%;
+        --primary-foreground: 144.9 80.4% 10%;
+        --secondary: 240 3.7% 15.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 0 0% 15%;
+        --muted-foreground: 240 5% 64.9%;
+        --accent: 12 6.5% 15.1%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 85.7% 97.3%;
+        --border: 240 3.7% 15.9%;
+        --input: 240 3.7% 15.9%;
+        --ring: 142.4 71.8% 29.2%;
     }
 }

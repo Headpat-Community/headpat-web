@@ -4,11 +4,76 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="combine login/register">
+    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="ui changes">
+      <change afterPath="$PROJECT_DIR$/components.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/providers.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ThemeToggle.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/account/header-server.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/account/header.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/accordion.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/alert-dialog.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/alert.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/aspect-ratio.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/avatar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/badge.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/button.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/calendar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/card.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/carousel.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/checkbox.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/collapsible.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/command.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/context-menu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/custom/chat/chat-bottombar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/custom/chat/chat-layout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/custom/chat/chat-list.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/custom/chat/chat-topbar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/custom/chat/chat.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/custom/multi-image-upload.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/dialog.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/drawer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/dropdown-menu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/form.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/hover-card.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/input.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/label.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/menubar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/navigation-menu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/pagination.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/popover.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/progress.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/radio-group.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/resizable.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/scroll-area.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/select.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/separator.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/sheet.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/skeleton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/slider.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/sonner.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/switch.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/table.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/tabs.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/textarea.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/toast.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/toaster.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/toggle-group.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/toggle.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/tooltip.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/use-toast.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/utils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/i/reset-password/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/i/reset-password/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/i/verify-email/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/i/verify-email/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/user/[uniqueId]/gallery/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/user/[uniqueId]/gallery/page.client.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/Map.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(account)/account/frontpage/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/account/frontpage/page.client.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(account)/layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/layout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/providers.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ThemeToggle.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,31 +107,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;code.cleanup.on.save&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;appwrite&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.9.0&quot;,
-    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.9.5&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/git/headpat/headpat.de&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\git\\headpat\\headpat.de\\node_modules\\prettier&quot;,
-    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.JavaScript&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\git\\headpat\\headpat.de\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "code.cleanup.on.save": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "appwrite",
+    "ignore.virus.scanning.warn.message": "true",
+    "javascript.nodejs.core.library.configured.version": "20.9.0",
+    "javascript.nodejs.core.library.typings.version": "20.9.5",
+    "last_opened_file_path": "D:/git/headpat/headpat.de/src/components/ui/custom",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "D:\\git\\headpat\\headpat.de\\node_modules\\prettier",
+    "rearrange.code.on.save": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "D:\\git\\headpat\\headpat.de\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -77,7 +143,13 @@
     </option>
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\git\headpat\headpat.de\src\components\ui\custom" />
+      <recent name="D:\git\headpat\headpat.de\src\components" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\git\headpat\headpat.de\src\components\ui" />
+      <recent name="D:\git\headpat\headpat.de\src\components\ui\custom" />
       <recent name="D:\git\headpat\headpat.de\src\app\(account)" />
     </key>
   </component>
@@ -95,7 +167,9 @@
       <workItem from="1709323400181" duration="8597000" />
       <workItem from="1709332078375" duration="2751000" />
       <workItem from="1709389134248" duration="29482000" />
-      <workItem from="1709472126878" duration="12528000" />
+      <workItem from="1709472126878" duration="13150000" />
+      <workItem from="1709560953387" duration="10974000" />
+      <workItem from="1709583361152" duration="8933000" />
     </task>
     <task id="LOCAL-00001" summary="feat: server actions">
       <option name="closed" value="true" />
@@ -241,11 +315,24 @@
       <option name="project" value="LOCAL" />
       <updated>1709504963276</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="cleanup">
+      <option name="closed" value="true" />
+      <created>1709508004798</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1709508004798</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/tailwind.config.js" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -259,6 +346,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="feat: server actions" />
     <MESSAGE value="&quot;some changes&quot;" />
     <MESSAGE value="revert 1.4.10" />
@@ -273,6 +361,8 @@
     <MESSAGE value="change login page" />
     <MESSAGE value="make login nicer" />
     <MESSAGE value="combine login/register" />
-    <option name="LAST_COMMIT_MESSAGE" value="combine login/register" />
+    <MESSAGE value="cleanup" />
+    <MESSAGE value="ui changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="ui changes" />
   </component>
 </project>
