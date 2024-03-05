@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="change announcements to tsx">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/headpat.de.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/headpat.de.iml" afterDir="false" />
+    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="remove chat components">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/custom/chat/chat-bottombar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ui/custom/chat/chat-bottombar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +107,7 @@
       <workItem from="1709560953387" duration="10974000" />
       <workItem from="1709583361152" duration="8933000" />
       <workItem from="1709660136166" duration="6069000" />
-      <workItem from="1709669387737" duration="2693000" />
+      <workItem from="1709669387737" duration="2809000" />
     </task>
     <task id="LOCAL-00001" summary="feat: server actions">
       <option name="closed" value="true" />
@@ -271,7 +269,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709672112610</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="remove chat components">
+      <option name="closed" value="true" />
+      <created>1709672361952</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1709672361952</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -307,6 +313,7 @@
     <MESSAGE value="cleanup" />
     <MESSAGE value="ui changes" />
     <MESSAGE value="change announcements to tsx" />
-    <option name="LAST_COMMIT_MESSAGE" value="change announcements to tsx" />
+    <MESSAGE value="remove chat components" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove chat components" />
   </component>
 </project>
