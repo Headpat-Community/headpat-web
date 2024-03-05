@@ -4,6 +4,8 @@ export const metadata = {
   title: 'Badge request',
 }
 
+export const runtime = 'edge'
+
 export default function AccountBadgePage() {
   return (
     <>
