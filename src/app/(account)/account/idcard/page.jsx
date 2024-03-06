@@ -1,12 +1,12 @@
 import Client from './page.client'
 
 export const metadata = {
-  title: 'Badge request',
+  title: 'ID Card',
 }
 
 export const runtime = 'edge'
 
-export default function AccountBadgePage() {
+export default function Page() {
   return (
     <>
       <Client/>

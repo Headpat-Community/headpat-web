@@ -11,9 +11,6 @@ export async function getUsers() {
         'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
         'X-Appwrite-Response-Format': '1.4.0',
       },
-      next: {
-        revalidate: 10,
-      }
     },
   )
 
@@ -30,7 +27,7 @@ export async function getUserSelf() {
   const cookieHeader = headersList.get('cookie')
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/655ad3d280feee3296b5/documents/`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655ad3d280feee3296b5/documents/`,
     {
       method: 'GET',
       headers: {

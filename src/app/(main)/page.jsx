@@ -1,6 +1,7 @@
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import Image from 'next/image'
+import { Button } from '../../components/ui/button'
 
 export const runtime = 'edge'
 
@@ -97,6 +98,9 @@ export default function Home() {
                   className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Zur Gallerie
+                </Link>
+                <Link href={'/gallery'}>
+                  <Button>Button</Button>
                 </Link>
                 <Link
                   href="/pawcraft"
