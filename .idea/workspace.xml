@@ -4,33 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="fix routes">
+    <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="change files to .ts&#10;added &quot;strict&quot;: true to tsconfig.json">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prettier.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/prettier.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(account)/account/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/account/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(account)/layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/announcements/[announcementId]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/announcements/[announcementId]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/announcements/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/announcements/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/forgot-password/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/forgot-password/page.client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/forgot-password/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/forgot-password/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/gallery/[galleryId]/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/gallery/[galleryId]/page.client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/gallery/[galleryId]/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/gallery/[galleryId]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/gallery/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/gallery/page.client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/gallery/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/gallery/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/i/reset-password/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/i/reset-password/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/i/verify-email/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/i/verify-email/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/legal/impressum/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/legal/impressum/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/legal/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/legal/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/login/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/login/page.client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/login/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/login/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/pawcraft/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/pawcraft/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/user/[uniqueId]/gallery/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/user/[uniqueId]/gallery/page.client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/user/[uniqueId]/gallery/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/user/[uniqueId]/gallery/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/user/[uniqueId]/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/user/[uniqueId]/page.client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/user/[uniqueId]/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/user/[uniqueId]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/users/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/users/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/actions/announcement-actions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/actions/announcement-actions.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,12 +19,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "docimin"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;docimin&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubProjectSettings">
     <option name="branchProtectionPatterns">
       <list>
@@ -146,7 +121,9 @@
       <workItem from="1709560953387" duration="10974000" />
       <workItem from="1709583361152" duration="8933000" />
       <workItem from="1709660136166" duration="6069000" />
-      <workItem from="1709669387737" duration="7882000" />
+      <workItem from="1709669387737" duration="7936000" />
+      <workItem from="1709751629246" duration="11000" />
+      <workItem from="1709751650057" duration="1290000" />
     </task>
     <task id="LOCAL-00001" summary="feat: server actions">
       <option name="closed" value="true" />
@@ -332,7 +309,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709672645845</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="change files to .ts&#10;added &quot;strict&quot;: true to tsconfig.json">
+      <option name="closed" value="true" />
+      <created>1709683646984</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1709683646984</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -371,6 +356,7 @@
     <MESSAGE value="remove chat components" />
     <MESSAGE value="test n14.1.2" />
     <MESSAGE value="fix routes" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix routes" />
+    <MESSAGE value="change files to .ts&#10;added &quot;strict&quot;: true to tsconfig.json" />
+    <option name="LAST_COMMIT_MESSAGE" value="change files to .ts&#10;added &quot;strict&quot;: true to tsconfig.json" />
   </component>
 </project>
