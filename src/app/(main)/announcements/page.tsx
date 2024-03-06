@@ -38,7 +38,7 @@ export default async function AnnouncementsPage() {
                                     <Image
                                         className="h-12 w-12 flex-none rounded-full"
                                         src={getAvatarImageUrl(
-                                            announcement?.userdata?.avatarId
+                                            announcement?.userData?.avatarId
                                         )}
                                         alt=""
                                         width={48}

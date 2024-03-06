@@ -8,7 +8,7 @@ export const metadata = {
 
 export const runtime = 'edge'
 
-export default function PawcraftPage () {
+export default function PawcraftPage() {
   return (
     <div className="bg-gray-900">
       <div className="relative isolate z-0">
@@ -38,7 +38,7 @@ export default function PawcraftPage () {
 
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <Link
-                  href="https://pawcraft.tk"
+                  href="https://pawcraft.headpat.de/"
                   className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
                 >
                   zur Seite →

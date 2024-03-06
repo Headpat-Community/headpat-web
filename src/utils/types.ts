@@ -17,7 +17,7 @@ export interface User {
 }
 
 /**
- * This data is returned from the API by calling the userdata function.
+ * This data is returned from the API by calling the userData function.
  */
 export interface UserDataType {
     $id: string;
@@ -55,7 +55,7 @@ export interface AnnouncementDocumentsType {
     sideText: string | null;
     description: string;
     validUntil: Date;
-    userdata: UserDataType;
+    userData: UserDataType;
     $createdAt: Date;
     $updatedAt: Date;
     $permissions: string[];

@@ -19,6 +19,7 @@ const getAvatarImageUrl = (galleryId: string) => {
 
 export default async function Page({params: {announcementId}}: { params: { announcementId: string } }) {
     const announcementData: AnnouncementDocumentsType = await getAnnouncement(announcementId)
+    console.log(announcementData)
     return (
         <>
             <div>
@@ -43,19 +44,19 @@ export default async function Page({params: {announcementId}}: { params: { annou
                             <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0 flex items-center">
                                 <Link
                                     className="text-indigo-500 hover:text-indigo-400 flex items-center"
-                                    href={`/user/${announcementData?.userdata?.profileUrl}`}
+                                    href={`/user/${announcementData?.userData?.profileUrl}`}
                                     passHref
                                 >
                                     <img
                                         className="h-12 w-12 flex-none rounded-full mr-4"
                                         src={getAvatarImageUrl(
-                                            announcementData?.userdata?.avatarId
+                                            announcementData?.userData?.avatarId
                                         )}
                                         alt=""
                                         width={48}
                                         height={48}
                                     />
-                                    {announcementData?.userdata?.displayName ||
+                                    {announcementData?.userData?.displayName ||
                                         'Unbekannter Benutzer'}
                                 </Link>
                             </dd>

@@ -35,9 +35,7 @@ export async function getAnnouncement(announcementId) {
         'X-Appwrite-Response-Format': '1.4.0',
         Cookie: cookieHeader,
       },
-      next: {
-        revalidate: 3600,
-      },
+      cache: 'no-cache',
     }).then((response) => response.json())
 
   if (response.code === 404) {

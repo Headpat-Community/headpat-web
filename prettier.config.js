@@ -1,7 +1,7 @@
 const config = {
   plugins: ['prettier-plugin-tailwindcss'],
   printWidth: 100,
-  tabWidth: 4,
+  tabWidth: 2,
   useTabs: true,
   semi: true,
   singleQuote: true,
@@ -10,6 +10,6 @@ const config = {
   bracketSameLine: true,
   arrowParens: 'always',
   endOfLine: 'lf',
-};
+}
 
-module.exports = config;
+module.exports = config
