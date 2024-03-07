@@ -20,40 +20,40 @@ export default function UploadPage() {
       "image/x-icon",
       "image/vnd.djvu",
     ];
+
     if (!validImageTypes.includes(selectedFile.type)) {
-      setError(
+      displayError(
         "Please select a valid image file type (JPEG, PNG, GIF, SVG, TIFF, ICO, DVU).",
       );
-      setTimeout(() => {
-        setError(null);
-      }, 5000);
       return;
     }
+
     if (selectedFile.size > 16 * 1024 * 1024) {
-      setError("File size must be less than 16 MB.");
-      setTimeout(() => {
-        setError(null);
-      }, 5000);
+      displayError("File size must be less than 16 MB.");
       return;
     }
+
     const fileReader = new FileReader();
     fileReader.readAsDataURL(selectedFile);
     fileReader.onload = (event) => {
-      const imgElement = document.getElementById("selected-image");
-      imgElement.src = event.target.result;
       const img = new Image();
       img.src = event.target.result;
       img.onload = () => {
         if (img.width >= 128 && img.height >= 128) {
           setSelectedFile(selectedFile);
         } else {
-          setError("Image resolution must be at least 128x128 pixels.");
-          setTimeout(() => {
-            setError(null);
-          }, 5000);
+          displayError("Image resolution must be at least 128x128 pixels.");
         }
       };
+      document.getElementById("selected-image").src = event.target.result;
     };
+  };
+
+  const displayError = (message) => {
+    setError(message);
+    setTimeout(() => {
+      setError(null);
+    }, 5000);
   };
 
   const handleDrop = useCallback((event) => {
