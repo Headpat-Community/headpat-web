@@ -36,4 +36,8 @@ next-env.d.ts
 
 .env
 
+# IDEA Jetbrains
 .idea/copilot
+
+# Cloudflare Wrangler
+.wrangler
