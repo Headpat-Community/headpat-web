@@ -106,10 +106,10 @@ export default function PatLeaderBoardClient({ usersData }) {
                       </div>
                     </td>
                     <td className="whitespace-nowrap px-3 py-5 text-sm">
-                      <div className="">{user.amount}</div>
+                      <div>{user.amount}</div>
                     </td>
                     <td className="whitespace-nowrap px-3 py-5 text-sm">
-                      <div className="">{user.modifiedAt}</div>
+                      <div>{user.modifiedAt}</div>
                     </td>
                   </tr>
                 ))}

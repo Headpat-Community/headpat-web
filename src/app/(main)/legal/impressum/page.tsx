@@ -1,12 +1,12 @@
-import Link from 'next/link'
+import Link from "next/link";
 
 export const metadata = {
-  title: 'Impressum',
-}
+  title: "Impressum",
+};
 
-export const runtime = 'edge'
+export const runtime = "edge";
 
-export default function Loading () {
+export default function Loading() {
   return (
     <>
       <div className="px-6 py-32 lg:px-8">
@@ -14,40 +14,40 @@ export default function Loading () {
           <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
             Impressum
           </h1>
-          <br/>
+          <br />
           <p>Information according to § 5 TMG.</p>
-          <br/>
+          <br />
           <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
             Contact
           </h1>
-          <br/>
+          <br />
           <p>Only on request: help@headpat.de</p>
-          <br/>
+          <br />
           <p>
             <strong>Contact info</strong>
           </p>
           <p>E-Mail: help@headpat.de</p>
           <p>Webseite: https://headpat.de</p>
-          <br/>
+          <br />
           <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
             Online dispute reoslution
           </h1>
           <p>
             The European Comission provides a platform for online dispute
-            resolution, available here:{' '}
+            resolution, available here:{" "}
             <Link
               className="text-indigo-600 hover:text-indigo-500"
               href="https://ec.europa.eu/consumers/odr/"
             >
               https://ec.europa.eu/consumers/odr/
             </Link>
-            <br/>
-            <br/>I am neither willing nor obliged to participate in dispute
+            <br />
+            <br />I am neither willing nor obliged to participate in dispute
             resolution proceedings in front of a consumer arbitration board.
           </p>
-          <br/>
+          <br />
         </div>
       </div>
     </>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
-import { headers } from 'next/headers';
+import { NextResponse } from "next/server";
+import { headers } from "next/headers";
 
-export const runtime = 'edge';
+export const runtime = "edge";
 
 export async function GET() {
   try {
@@ -11,14 +11,14 @@ export async function GET() {
     const accountURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/account`;
 
     const headersList = headers();
-    const cookieHeader = headersList.get('cookie');
+    const cookieHeader = headersList.get("cookie");
 
     const response = await fetch(fetchURL, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
-        'X-Appwrite-Response-Format': '1.4.0',
+        "Content-Type": "application/json",
+        "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+        "X-Appwrite-Response-Format": "1.4.0",
         Cookie: cookieHeader,
       },
     });
@@ -27,28 +27,28 @@ export async function GET() {
 
     if (data.documents.length === 0) {
       const getAccountResponse = await fetch(accountURL, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
-          'X-Appwrite-Response-Format': '1.4.0',
+          "Content-Type": "application/json",
+          "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+          "X-Appwrite-Response-Format": "1.4.0",
           Cookie: cookieHeader,
         },
       });
 
       if (getAccountResponse.status === 401) {
-        return NextResponse.json({error: 'Unauthorized'}, {status: 401});
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       }
 
       const getAccountData = await getAccountResponse.json();
       //console.log(getAccountData);
 
       const postResponse = await fetch(postURL, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
-          'X-Appwrite-Response-Format': '1.4.0',
+          "Content-Type": "application/json",
+          "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+          "X-Appwrite-Response-Format": "1.4.0",
           Cookie: cookieHeader,
         },
         body: JSON.stringify({
@@ -62,20 +62,20 @@ export async function GET() {
 
       const postData = await postResponse.json();
       //console.log(postData);
-      return NextResponse.json(postData.documents, {status: 201});
+      return NextResponse.json(postData.documents, { status: 201 });
     }
 
     if (response.status === 403) {
-      return NextResponse.json({error: 'Forbidden'}, {status: 403});
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     } else if (response.status === 401) {
-      return NextResponse.json({error: 'Unauthorized'}, {status: 401});
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     } else if (!response.ok) {
-      return NextResponse.json('Failed to fetch data', {status: 500});
+      return NextResponse.json("Failed to fetch data", { status: 500 });
     }
 
     //console.log(data.documents);
-    return NextResponse.json(data.documents, {status: 201});
+    return NextResponse.json(data.documents, { status: 201 });
   } catch (error) {
-    return NextResponse.json(error.message, {status: 500});
+    return NextResponse.json(error.message, { status: 500 });
   }
 }
