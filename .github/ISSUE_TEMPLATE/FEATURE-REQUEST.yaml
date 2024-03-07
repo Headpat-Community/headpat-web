@@ -50,5 +50,5 @@ body:
     attributes:
       label: "Did you check for other issues?"
       options:
-        - label: "I checked and didn't find similar issues"
+      - label: "I checked and didn't find similar issues"
         required: true
