@@ -1,16 +1,16 @@
-import Client from './page.client'
+import Client from "./page.client";
 
 export const metadata = {
-  title: 'Headpat Clicker',
-  description: 'Headpat clicker für Headpawties!',
-}
+  title: "Headpat Clicker",
+  description: "Headpat clicker für Headpawties!",
+};
 
-export const runtime = 'edge'
+export const runtime = "edge";
 
-export default function Pat () {
+export default function Pat() {
   return (
     <>
-      <Client/>
+      <Client />
     </>
-  )
+  );
 }

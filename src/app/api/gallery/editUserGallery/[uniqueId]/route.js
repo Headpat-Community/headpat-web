@@ -7,7 +7,7 @@ export async function PATCH(request) {
   try {
     const headersList = headers();
     const cookieHeader = headersList.get("cookie");
-    
+
     // Assume the last segment of the URL is the gallery ID
     const uniqueId = request.url.split("/").pop();
 

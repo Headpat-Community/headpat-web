@@ -21,16 +21,16 @@ export async function POST() {
         body: JSON.stringify({
           url: `${process.env.NEXT_PUBLIC_DOMAIN}/i/verify-email`,
         }),
-      }
+      },
     );
 
     if (!sendEmailResponse.ok) {
       console.log(
-        sendEmailResponse.status + " " + sendEmailResponse.statusText
+        sendEmailResponse.status + " " + sendEmailResponse.statusText,
       );
       return NextResponse.json(
         { message: "Failed to send verification email" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 

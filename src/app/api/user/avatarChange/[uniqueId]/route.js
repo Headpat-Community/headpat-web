@@ -24,7 +24,7 @@ export async function POST(request) {
           "X-Appwrite-Response-Format": "1.4.0",
           Cookie: cookieHeader,
         },
-      }
+      },
     );
 
     const avatarData = await avatarResponse.json();
@@ -72,7 +72,7 @@ export async function POST(request) {
           Cookie: cookieHeader,
         },
         body: requestData,
-      }
+      },
     );
 
     const imageData = await uploadImage.json();
@@ -95,7 +95,7 @@ export async function POST(request) {
             userId: uniqueId,
           },
         }),
-      }
+      },
     );
 
     // PATCH the userdata with the new avatar id
@@ -114,7 +114,7 @@ export async function POST(request) {
             avatarId: imageData.$id,
           },
         }),
-      }
+      },
     );
 
     if (!response.ok) {

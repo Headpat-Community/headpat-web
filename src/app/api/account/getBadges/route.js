@@ -6,7 +6,7 @@ export async function GET(request) {
   try {
     // Extract query parameters from the incoming request
     const queryParams = new URLSearchParams(
-      request.url.split("?")[1]
+      request.url.split("?")[1],
     ).toString();
 
     // Construct the URL for the external fetch

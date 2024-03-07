@@ -1,125 +1,125 @@
-'use client'
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import Loading from '../../../loading'
-import { ErrorMessage, SuccessMessage } from '../../../../components/alerts'
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Loading from "../../../loading";
+import { ErrorMessage, SuccessMessage } from "../../../../components/alerts";
 import {
   editUserData,
   getUserSelf,
-} from '../../../../utils/actions/user-actions'
+} from "../../../../utils/actions/user-actions";
 
 export default function AccountPage({ userId }) {
-  const [selectedFile, setSelectedFile] = useState(null)
-  const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(null)
-  const [isUploading, setIsUploading] = useState(false)
-  const [isLoading, setIsLoading] = useState(true) // Added loading state
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Added loading state
   const [userData, setUserData] = useState({
-    status: '',
-    bio: '',
-    displayname: '',
-    pronouns: '',
-    birthday: '',
-    location: '',
-    avatar: '',
-  })
+    status: "",
+    bio: "",
+    displayname: "",
+    pronouns: "",
+    birthday: "",
+    location: "",
+    avatar: "",
+  });
 
   const getAvatarImageUrl = (galleryId) => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`
-  }
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`;
+  };
 
   useEffect(() => {
-    const fetchData = async() => {
-      setIsLoading(true)
+    const fetchData = async () => {
+      setIsLoading(true);
       try {
         const userDataResponse = await fetch(`/api/user/getUserDataSelf`, {
-          method: 'GET',
-        })
+          method: "GET",
+        });
 
-        const userDataResponseData = await userDataResponse.json()
+        const userDataResponseData = await userDataResponse.json();
         //console.log(userDataResponseData.data.attributes);
         setUserData({
-          status: userDataResponseData.documents[0].status || '',
-          bio: userDataResponseData.documents[0].bio || '',
-          displayname: userDataResponseData.documents[0].displayname || '',
-          birthday: userDataResponseData.documents[0].birthday || '',
-          pronouns: userDataResponseData.documents[0].pronouns || '',
-          location: userDataResponseData.documents[0].location || '',
+          status: userDataResponseData.documents[0].status || "",
+          bio: userDataResponseData.documents[0].bio || "",
+          displayname: userDataResponseData.documents[0].displayname || "",
+          birthday: userDataResponseData.documents[0].birthday || "",
+          pronouns: userDataResponseData.documents[0].pronouns || "",
+          location: userDataResponseData.documents[0].location || "",
           avatar:
             getAvatarImageUrl(userDataResponseData.documents[0].avatarId) ||
-            '/logos/logo.webp', // Set the avatar value or a placeholder image
-        })
-        setIsLoading(false)
+            "/logos/logo.webp", // Set the avatar value or a placeholder image
+        });
+        setIsLoading(false);
       } catch (error) {
-        console.error(error)
-        setIsLoading(false)
+        console.error(error);
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   const handleAvatarChange = (event) => {
-    const selectedFile = event.target.files[0]
+    const selectedFile = event.target.files[0];
     if (selectedFile.size > 2 * 1024 * 1024) {
-      setError('Dateigröße darf nur bis 2MB groß sein.')
+      setError("Dateigröße darf nur bis 2MB groß sein.");
       setTimeout(() => {
-        setError(null)
-      }, 5000)
-      return
+        setError(null);
+      }, 5000);
+      return;
     }
-    const fileReader = new FileReader()
-    fileReader.readAsDataURL(selectedFile)
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(selectedFile);
     fileReader.onload = (event) => {
-      const imgElement = document.getElementById('avatar-image')
-      imgElement.src = event.target.result
-      const img = new Image()
-      img.src = event.target.result
+      const imgElement = document.getElementById("avatar-image");
+      imgElement.src = event.target.result;
+      const img = new Image();
+      img.src = event.target.result;
       img.onload = () => {
         if (img.width <= 1024 && img.height <= 1024) {
-          setSelectedFile(selectedFile)
+          setSelectedFile(selectedFile);
         } else {
-          setError('Bild darf nur bis 1024x1024 pixel groß sein.')
+          setError("Bild darf nur bis 1024x1024 pixel groß sein.");
           setTimeout(() => {
-            setError(null)
-          }, 5000)
+            setError(null);
+          }, 5000);
         }
-      }
-    }
-  }
+      };
+    };
+  };
 
-  const handleSubmitAvatar = async(event) => {
-    event.preventDefault()
+  const handleSubmitAvatar = async (event) => {
+    event.preventDefault();
 
-    const formData = new FormData()
-    formData.append('file', selectedFile)
-    formData.append('fileId', 'unique()')
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    formData.append("fileId", "unique()");
 
     try {
       // Year-Month-Day (YYYY-MM-DD)
 
-      setIsUploading(true) // Set isUploading to true before making the API call
+      setIsUploading(true); // Set isUploading to true before making the API call
 
       const response = await fetch(`/api/user/avatarChange/${userId}`, {
-        method: 'POST',
+        method: "POST",
         body: formData,
-      })
+      });
 
       //const responseData = await response.json();
       if (response.ok) {
         //console.log("File uploaded successfully");
-        setIsUploading(false) // Set isUploading to false after the API call is complete
+        setIsUploading(false); // Set isUploading to false after the API call is complete
         // Reload the window
         //setSuccess("Gespeichert und hochgeladen!");
-        window.location.reload()
+        window.location.reload();
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
-  const handleSubmit = async(event) => {
-    event.preventDefault()
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     //const formData = new FormData();
     //formData.append("file", selectedFile);
@@ -127,49 +127,49 @@ export default function AccountPage({ userId }) {
     try {
       // Year-Month-Day (YYYY-MM-DD)
 
-      setIsUploading(true) // Set isUploading to true before making the API call
+      setIsUploading(true); // Set isUploading to true before making the API call
 
       const body = {
         data: {
-          status: document.getElementById('status').value,
-          bio: document.getElementById('biostatus').value,
-          displayname: document.getElementById('displayname').value,
-          birthday: new Date(
-            document.getElementById('birthday').value).toISOString().
-            split('T')[0],
-          pronouns: document.getElementById('pronouns').value,
-          location: document.getElementById('location').value,
+          status: document.getElementById("status").value,
+          bio: document.getElementById("biostatus").value,
+          displayname: document.getElementById("displayname").value,
+          birthday: new Date(document.getElementById("birthday").value)
+            .toISOString()
+            .split("T")[0],
+          pronouns: document.getElementById("pronouns").value,
+          location: document.getElementById("location").value,
         },
-      }
+      };
 
-      const responseData = await editUserData(userId, body)
+      const responseData = await editUserData(userId, body);
       if (responseData) {
         //console.log("File uploaded successfully");
-        setIsUploading(false) // Set isUploading to false after the API call is complete
-        setUserData(responseData) // Set the userData state with the response data
+        setIsUploading(false); // Set isUploading to false after the API call is complete
+        setUserData(responseData); // Set the userData state with the response data
         //setSuccess("Gespeichert!");
         // Reload the window
-        window.location.reload()
+        window.location.reload();
       }
     } catch (error) {
-      console.error(error)
-      setError('Ein Fehler ist aufgetreten.' + error)
+      console.error(error);
+      setError("Ein Fehler ist aufgetreten." + error);
       setTimeout(() => {
-        setError(null)
-      }, 5000)
+        setError(null);
+      }, 5000);
     }
-  }
+  };
 
   const secondaryNavigation = [
-    { name: 'Account', href: '/account', current: false },
-    { name: 'Frontpage', href: '/account/frontpage', current: true },
-    { name: 'Socials', href: '/account/socials', current: false },
-  ]
+    { name: "Account", href: "/account", current: false },
+    { name: "Frontpage", href: "/account/frontpage", current: true },
+    { name: "Socials", href: "/account/socials", current: false },
+  ];
 
   return (
     <>
-      {success && <SuccessMessage attentionSuccess={success}/>}
-      {error && <ErrorMessage attentionError={error}/>}
+      {success && <SuccessMessage attentionSuccess={success} />}
+      {error && <ErrorMessage attentionError={error} />}
       <header className="border-b dark:border-white/5 border-black/5">
         {/* Secondary navigation */}
         <nav className="flex overflow-x-auto py-4">
@@ -181,7 +181,7 @@ export default function AccountPage({ userId }) {
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className={item.current ? 'text-indigo-400' : ''}
+                  className={item.current ? "text-indigo-400" : ""}
                 >
                   {item.name}
                 </Link>
@@ -191,11 +191,10 @@ export default function AccountPage({ userId }) {
         </nav>
       </header>
       {isLoading ? (
-        <Loading/>
+        <Loading />
       ) : (
         <div className="divide-y dark:divide-white/5 divide-black/5">
-          <div
-            className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+          <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
             <div>
               <h2 className="text-base font-semibold leading-7">
                 Frontpage Einstellungen
@@ -206,12 +205,11 @@ export default function AccountPage({ userId }) {
             </div>
 
             <form onSubmit={handleSubmit} className="md:col-span-2">
-              <div
-                className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
                 <div className="col-span-full flex items-center gap-x-8">
                   <img
                     id="avatar-image"
-                    src={userData.avatar || '/logos/logo.webp'}
+                    src={userData.avatar || "/logos/logo.webp"}
                     alt=""
                     className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
                   />
@@ -243,8 +241,7 @@ export default function AccountPage({ userId }) {
                 </div>
               </div>
 
-              <div
-                className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6 mt-12">
+              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6 mt-12">
                 <div className="col-span-full">
                   <label
                     htmlFor="displayname"
@@ -258,28 +255,23 @@ export default function AccountPage({ userId }) {
                       name="displayname"
                       type="text"
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                      value={userData.displayname ||
-                        ''} // Set the value from state, or an empty string if it's undefined
+                      value={userData.displayname || ""} // Set the value from state, or an empty string if it's undefined
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
                           setUserData({
                             ...userData,
                             displayname: e.target.value,
-                          })
+                          });
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
-                    <div
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                       <span className="select-none">
-                        {userData.displayname ?
-                          userData.displayname.length :
-                          0}{' '}
+                        {userData.displayname ? userData.displayname.length : 0}{" "}
                         {/* Check if userData.displayname is defined before accessing its length property */}
                       </span>
-                      <span
-                        className="text-gray-400 select-none">/{32}</span>
+                      <span className="text-gray-400 select-none">/{32}</span>
                     </div>
                   </div>
                 </div>
@@ -300,19 +292,16 @@ export default function AccountPage({ userId }) {
                       value={userData.status} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 24) {
-                          setUserData(
-                            { ...userData, status: e.target.value })
+                          setUserData({ ...userData, status: e.target.value });
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 24
                       maxLength={24} // Limit the maximum number of characters to 24
                     />
-                    <div
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                       <span className="select-none">
-                        {userData.status ? userData.status.length : 0}{' '}
+                        {userData.status ? userData.status.length : 0}{" "}
                       </span>
-                      <span
-                        className="text-gray-400 select-none">/{24}</span>
+                      <span className="text-gray-400 select-none">/{24}</span>
                     </div>
                   </div>
                 </div>
@@ -336,18 +325,16 @@ export default function AccountPage({ userId }) {
                           setUserData({
                             ...userData,
                             pronouns: e.target.value,
-                          })
+                          });
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 16
                       maxLength={16} // Limit the maximum number of characters to 16
                     />
-                    <div
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                       <span className="select-none">
-                        {userData.pronouns ? userData.pronouns.length : 0}{' '}
+                        {userData.pronouns ? userData.pronouns.length : 0}{" "}
                       </span>
-                      <span
-                        className="text-gray-400 select-none">/{16}</span>
+                      <span className="text-gray-400 select-none">/{16}</span>
                     </div>
                   </div>
                 </div>
@@ -367,25 +354,22 @@ export default function AccountPage({ userId }) {
                       className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                       value={
                         userData.birthday
-                          ?
-                          new Date(userData.birthday).toISOString().
-                            split('T')[0]
-                          :
-                          ''
+                          ? new Date(userData.birthday)
+                              .toISOString()
+                              .split("T")[0]
+                          : ""
                       } // Set the value from state in the correct format
                       onChange={(e) => {
-                        setUserData(
-                          { ...userData, birthday: e.target.value })
+                        setUserData({ ...userData, birthday: e.target.value });
                       }} // Update state when the input changes
                     />
-                    <div
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                       <span
                         aria-disabled
                         className="text-gray-400 select-none mr-6"
                       >
                         DD/MM/YYYY
-                      </span>{' '}
+                      </span>{" "}
                     </div>
                   </div>
                 </div>
@@ -409,18 +393,16 @@ export default function AccountPage({ userId }) {
                           setUserData({
                             ...userData,
                             location: e.target.value,
-                          })
+                          });
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 16
                       maxLength={256} // Limit the maximum number of characters to 16
                     />
-                    <div
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                       <span className="select-none">
-                        {userData.location ? userData.location.length : 0}{' '}
+                        {userData.location ? userData.location.length : 0}{" "}
                       </span>
-                      <span
-                        className="text-gray-400 select-none">/{256}</span>
+                      <span className="text-gray-400 select-none">/{256}</span>
                     </div>
                   </div>
                 </div>
@@ -440,18 +422,16 @@ export default function AccountPage({ userId }) {
                       value={userData.bio} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 2048) {
-                          setUserData({ ...userData, bio: e.target.value })
+                          setUserData({ ...userData, bio: e.target.value });
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 256
                       maxLength={2048} // Limit the maximum number of characters to 256
                     />
-                    <div
-                      className="absolute inset-y-0 right-0 pr-4 pb-2 flex items-end text-sm leading-5 pointer-events-none">
+                    <div className="absolute inset-y-0 right-0 pr-4 pb-2 flex items-end text-sm leading-5 pointer-events-none">
                       <span className="select-none">
-                        {userData.bio ? userData.bio.length : 0}{' '}
+                        {userData.bio ? userData.bio.length : 0}{" "}
                       </span>
-                      <span
-                        className="text-gray-400 select-none">/{2048}</span>
+                      <span className="text-gray-400 select-none">/{2048}</span>
                     </div>
                   </div>
                 </div>
@@ -470,5 +450,5 @@ export default function AccountPage({ userId }) {
         </div>
       )}
     </>
-  )
+  );
 }

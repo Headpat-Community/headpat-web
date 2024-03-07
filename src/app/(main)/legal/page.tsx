@@ -1,13 +1,13 @@
-import { PaperClipIcon } from '@heroicons/react/20/solid'
-import Link from 'next/link'
+import { PaperClipIcon } from "@heroicons/react/20/solid";
+import Link from "next/link";
 
 export const metadata = {
-  title: 'Legal',
-}
+  title: "Legal",
+};
 
-export const runtime = 'edge'
+export const runtime = "edge";
 
-export default function LegalPage () {
+export default function LegalPage() {
   return (
     <>
       <div className="mx-auto max-w-7xl mt-8 mb-4">
@@ -21,15 +21,12 @@ export default function LegalPage () {
         </div>
         <div className="mt-6 border-t border-gray-100">
           <dl className="divide-y divide-gray-100">
-            <div
-              className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6">
-                About
-              </dt>
+            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt className="text-sm font-medium leading-6">About</dt>
               <dd className="mt-1 text-sm leading-6 dark:text-white/80 text-black/80 sm:col-span-2 sm:mt-0">
                 Here you can download all the legal documents that are related
                 to the use of our website or app. If you have any questions,
-                please contact us at{' '}
+                please contact us at{" "}
                 <Link
                   className="text-indigo-600 hover:text-indigo-500"
                   href="mailto:help@headpat.de"
@@ -39,11 +36,8 @@ export default function LegalPage () {
                 .
               </dd>
             </div>
-            <div
-              className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6">
-                Attachments
-              </dt>
+            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt className="text-sm font-medium leading-6">Attachments</dt>
               <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
                 <ul
                   role="list"
@@ -221,5 +215,5 @@ export default function LegalPage () {
         </div>
       </div>
     </>
-  )
+  );
 }

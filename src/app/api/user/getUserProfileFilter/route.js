@@ -24,14 +24,14 @@ export async function GET(request) {
     } catch (error) {
       return NextResponse.json(
         { error: "Error fetching data" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(
-        `Failed to fetch data. Status: ${response.status}. Message: ${errorText}`
+        `Failed to fetch data. Status: ${response.status}. Message: ${errorText}`,
       );
     }
 
@@ -40,7 +40,7 @@ export async function GET(request) {
   } catch (error) {
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

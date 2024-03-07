@@ -1,4 +1,4 @@
-export function ErrorMessage({ attentionError }) {
+export function ErrorMessage({ attentionError }: { attentionError: string }) {
   return (
     <>
       <div className="fixed inset-x-0 bottom-0 z-40">
@@ -20,7 +20,11 @@ export function ErrorMessage({ attentionError }) {
   );
 }
 
-export function SuccessMessage({ attentionSuccess }) {
+export function SuccessMessage({
+  attentionSuccess,
+}: {
+  attentionSuccess: string;
+}) {
   return (
     <>
       <div className="fixed inset-x-0 bottom-0 z-50">

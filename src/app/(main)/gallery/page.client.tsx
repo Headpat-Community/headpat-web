@@ -1,49 +1,49 @@
-'use client'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { getGallery } from '../../../utils/actions/gallery-actions'
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { getGallery } from "../../../utils/actions/gallery-actions";
 
 export default function FetchGallery({ enableNsfw }) {
-  const [gallery, setGallery] = useState([])
-  const [error, setError] = useState(null)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
+  const [gallery, setGallery] = useState([]);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const getGalleryImageUrl = (galleryId) => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&quality=100&height=500&operation=fit`
-  }
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&quality=100&height=500&operation=fit`;
+  };
 
   useEffect(() => {
-    const fetchGalleryData = async() => {
-      const filters = !enableNsfw ? `&queries[]=equal("nsfw",false)` : ``
-      const pageSize = 500 // Number of items per page
-      const offset = (currentPage - 1) * pageSize // Calculate offset based on current page
-      const apiUrl = `${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`
+    const fetchGalleryData = async () => {
+      const filters = !enableNsfw ? `&queries[]=equal("nsfw",false)` : ``;
+      const pageSize = 500; // Number of items per page
+      const offset = (currentPage - 1) * pageSize; // Calculate offset based on current page
+      const apiUrl = `${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`;
 
       try {
-        const data = await getGallery(apiUrl)
+        const data = await getGallery(apiUrl);
 
-        setGallery(data.documents)
-        setTotalPages(data.total / pageSize)
+        setGallery(data.documents);
+        setTotalPages(data.total / pageSize);
       } catch (err) {
-        setError(err)
+        setError(err);
       }
-    }
+    };
 
-    fetchGalleryData()
-  }, [currentPage, enableNsfw])
+    fetchGalleryData();
+  }, [currentPage, enableNsfw]);
 
   const handlePageChange = (page) => {
-    setCurrentPage(page)
-    window.history.pushState({ page }, `Page ${page}`, `?page=${page}`)
-  }
+    setCurrentPage(page);
+    window.history.pushState({ page }, `Page ${page}`, `?page=${page}`);
+  };
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const page = parseInt(urlParams.get('page')) || 1
-    setCurrentPage(page)
-  }, [])
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = parseInt(urlParams.get("page")) || 1;
+    setCurrentPage(page);
+  }, []);
 
   return (
     <div>
@@ -68,12 +68,11 @@ export default function FetchGallery({ enableNsfw }) {
               {item && (
                 <div
                   className={`rounded-lg overflow-hidden h-64 ${
-                    item.nsfw && !enableNsfw ? 'relative' : ''
+                    item.nsfw && !enableNsfw ? "relative" : ""
                   }`}
                 >
                   {item.nsfw && !enableNsfw && (
-                    <div
-                      className="absolute inset-0 bg-black opacity-50"></div>
+                    <div className="absolute inset-0 bg-black opacity-50"></div>
                   )}
                   <Link href={`/gallery/${item.$id}`}>
                     <Image
@@ -92,5 +91,5 @@ export default function FetchGallery({ enableNsfw }) {
         </ul>
       </div>
     </div>
-  )
+  );
 }

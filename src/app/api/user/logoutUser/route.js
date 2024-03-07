@@ -17,7 +17,7 @@ export async function POST() {
     cookies().set(
       `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
       "",
-      { ...cookieOptions, expires: new Date(0) }
+      { ...cookieOptions, expires: new Date(0) },
     );
     cookies().set(`logged_in`, "", { ...cookieOptions, expires: new Date(0) });
 
@@ -25,7 +25,7 @@ export async function POST() {
   } catch (error) {
     return NextResponse.json(
       { error: "Unexpected error occurred" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
