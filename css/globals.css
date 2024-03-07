@@ -2,28 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
-.blur {
-  backdrop-filter: blur(10px);
-}
+@layer base {
+    :root {
+        --background: 202 49% 99%;
+        --foreground: 202 61% 5%;
+        --muted: 204.71 23.94% 86.08%;
+        --muted-foreground: 202 7% 38%;
+        --popover: 200 60% 99.02%;
+        --popover-foreground: 202 61% 5%;
+        --card: 192 45.45% 97.84%;
+        --card-foreground: 202 61% 4%;
+        --border: 202 5% 94%;
+        --input: 202 0% 0%;
+        --primary: 207.34 100% 33.14%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 202 13% 88%;
+        --secondary-foreground: 202 13% 28%;
+        --accent: 0 0% 83.14%;
+        --accent-foreground: 202 13% 28%;
+        --destructive: 4.08 87.65% 39.35%;
+        --destructive-foreground: 4 0% 100%;
+        --ring: 202 100% 44%;
+        --radius: 0.5rem;
+    }
 
-.imgsinglegallery {
-  --s: 50px; /* the size on the corner */
-  --t: 5px; /* the thickness of the border */
-  --g: 10px; /* the gap between the border and image */
-
-  padding: calc(var(--g) + var(--t));
-  outline: var(--t) solid #b38184; /* the color here */
-  outline-offset: calc(-1 * var(--t));
-  mask: none;
-  -webkit-mask: conic-gradient(at var(--s) var(--s), #0000 75%, #000 0) 0 0 /
-      calc(100% - var(--s)) calc(100% - var(--s)),
-    linear-gradient(#000 0 0) content-box;
-}
-
-.dropzone {
-  border: 2px dashed #ccc;
-  padding: 20px;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    .dark {
+        --background: 217.36 48.05% 4.16%;
+        --foreground: 202 26% 100%;
+        --muted: 204.71 11.76% 22.02%;
+        --muted-foreground: 201.18 0% 70%;
+        --popover: 202 48% 3%;
+        --popover-foreground: 202 26% 100%;
+        --card: 212.83 48% 4%;
+        --card-foreground: 0 0% 100%;
+        --border: 200 0% 40.77%;
+        --input: 202 0% 48.46%;
+        --primary: 207.34 100% 33.14%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 198.46 16.05% 15.88%;
+        --secondary-foreground: 202 16% 76%;
+        --accent: 202 3.17% 11.18%;
+        --accent-foreground: 202 16% 76%;
+        --destructive: 4.08 87.65% 38.53%;
+        --destructive-foreground: 0 0% 100%;
+        --ring: 201.96 100% 43.92%;
+    }
 }
