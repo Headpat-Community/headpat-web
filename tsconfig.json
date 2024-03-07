@@ -3,7 +3,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "components/*": ["./src/components/*"],
-      "utils/*": ["./src/utils/*"],
+      "utils/*": ["./src/utils/*"]
     },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -19,10 +19,10 @@
     "jsx": "preserve",
     "plugins": [
       {
-        "name": "next",
-      },
-    ],
+        "name": "next"
+      }
+    ]
   },
   "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules"]
 }

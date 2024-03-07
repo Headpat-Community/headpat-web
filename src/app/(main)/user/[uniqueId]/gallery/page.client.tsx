@@ -111,14 +111,14 @@ export default function FetchGallery() {
           >
             <div className="absolute left-16 top-full -mt-16 transform-gpu opacity-50 blur-3xl xl:left-1/2 xl:-ml-80">
               <div
-                className="aspect-[1154/678] w-[72.125rem] bg-gradient-to-br dark:from-[#FF80B5] dark:to-[#9089FC] from-[#007f4a] to-[#6f7603]"
+                className="aspect-[1154/678] w-[72.125rem] bg-gradient-to-br from-[#007f4a] to-[#6f7603] dark:from-[#FF80B5] dark:to-[#9089FC]"
                 style={{
                   clipPath:
                     "polygon(100% 38.5%, 82.6% 100%, 60.2% 37.7%, 52.4% 32.1%, 47.5% 41.8%, 45.2% 65.6%, 27.5% 23.4%, 0.1% 35.3%, 17.9% 0%, 27.7% 23.4%, 76.2% 2.5%, 74.2% 56%, 100% 38.5%)",
                 }}
               />
             </div>
-            <div className="absolute inset-x-0 bottom-0 h-px dark:bg-white/95 bg-black/95" />
+            <div className="absolute inset-x-0 bottom-0 h-px bg-black/95 dark:bg-white/95" />
           </div>
 
           <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -126,7 +126,7 @@ export default function FetchGallery() {
               <div className="flex items-center gap-x-6">
                 <Link
                   href={"."}
-                  className="hidden text-sm font-semibold leading-6 text-white sm:block bg-indigo-600 p-2 pt-1 pb-1 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="hidden rounded-md bg-indigo-600 p-2 pb-1 pt-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:block"
                 >
                   Go back
                 </Link>
@@ -136,7 +136,7 @@ export default function FetchGallery() {
                       <Image
                         src={getAvatarImageUrl(userData.avatarId)}
                         alt=""
-                        className="h-16 w-16 flex-none rounded-full ring-1 dark:ring-white/10 ring-black/10"
+                        className="h-16 w-16 flex-none rounded-full ring-1 ring-black/10 dark:ring-white/10"
                         width={64}
                         height={64}
                       />
@@ -144,7 +144,7 @@ export default function FetchGallery() {
                       <Image
                         src="/logos/logo-512.webp"
                         alt=""
-                        className="h-16 w-16 flex-none rounded-full ring-1 dark:ring-white/10 ring-black/10"
+                        className="h-16 w-16 flex-none rounded-full ring-1 ring-black/10 dark:ring-white/10"
                         width={64}
                         height={64}
                       />
@@ -166,7 +166,7 @@ export default function FetchGallery() {
                   >
                     <FontAwesomeIcon
                       icon={faTelegram}
-                      className="hover:text-indigo-500 text-2xl"
+                      className="text-2xl hover:text-indigo-500"
                     />
                   </Link>
                 )}
@@ -178,7 +178,7 @@ export default function FetchGallery() {
                   >
                     <FontAwesomeIcon
                       icon={faDiscord}
-                      className="hover:text-indigo-500 text-2xl"
+                      className="text-2xl hover:text-indigo-500"
                     />
                   </Link>
                 )}
@@ -190,7 +190,7 @@ export default function FetchGallery() {
                   >
                     <FontAwesomeIcon
                       icon={faXTwitter}
-                      className="hover:text-indigo-500 text-2xl"
+                      className="text-2xl hover:text-indigo-500"
                     />
                   </Link>
                 )}
@@ -202,7 +202,7 @@ export default function FetchGallery() {
                   >
                     <FontAwesomeIcon
                       icon={faTwitch}
-                      className="hover:text-indigo-500 text-2xl"
+                      className="text-2xl hover:text-indigo-500"
                     />
                   </Link>
                 )}
@@ -215,7 +215,7 @@ export default function FetchGallery() {
                     <svg
                       version="1.1"
                       xmlns="http://www.w3.org/2000/svg"
-                      className="w-8 h-8 dark:fill-white fill-black hover:fill-indigo-500 dark:hover:fill-indigo-500"
+                      className="h-8 w-8 fill-black hover:fill-indigo-500 dark:fill-white dark:hover:fill-indigo-500"
                       viewBox="0 0 220 200"
                     >
                       <path
@@ -292,7 +292,7 @@ export default function FetchGallery() {
                 )}
                 <button
                   type="button"
-                  className="hidden text-sm font-semibold leading-6 text-white sm:block bg-indigo-600 p-2 pt-1 pb-1 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="hidden rounded-md bg-indigo-600 p-2 pb-1 pt-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:block"
                   onClick={() =>
                     navigator.clipboard.writeText(window.location.href)
                   }
@@ -354,13 +354,13 @@ export default function FetchGallery() {
 
         <ul
           role="list"
-          className="p-8 flex flex-wrap gap-4 justify-center items-center"
+          className="flex flex-wrap items-center justify-center gap-4 p-8"
         >
           {gallery.map((item) => (
             <div key={item.$id}>
               {item && (
                 <div
-                  className={`rounded-lg overflow-hidden h-64 ${
+                  className={`h-64 overflow-hidden rounded-lg ${
                     item.nsfw && !enableNsfw ? "relative" : ""
                   }`}
                 >
@@ -371,7 +371,7 @@ export default function FetchGallery() {
                     <Image
                       src={getGalleryImageUrl(item.gallery_id)}
                       alt={item.imgalt}
-                      className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
+                      className={`h-full max-h-[600px] w-full max-w-[600px] object-cover`}
                       width={600}
                       height={600}
                     />

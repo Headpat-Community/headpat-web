@@ -38,7 +38,7 @@ const social = [
 
 export default function NotFoundComponent() {
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
+    <div className="flex h-screen flex-col items-center justify-center">
       <main className="mx-auto w-full max-w-7xl px-6 pb-8 pt-10 sm:pb-12 lg:px-8">
         <Image
           className="mx-auto h-36 w-auto sm:h-72"

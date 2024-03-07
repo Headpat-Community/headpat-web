@@ -43,7 +43,7 @@ export default function Footer() {
 
   return (
     <footer>
-      <div className="mx-auto max-w-7xl overflow-hidden px-6 pt-20 pb-8 sm:pt-24 sm:pb-12 lg:px-8">
+      <div className="mx-auto max-w-7xl overflow-hidden px-6 pb-8 pt-20 sm:pb-12 sm:pt-24 lg:px-8">
         <nav
           className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12"
           aria-label="Footer"
@@ -52,7 +52,7 @@ export default function Footer() {
             <div key={item.name} className="pb-6">
               <Link
                 href={item.href}
-                className="text-sm leading-6 dark:text-gray-400 dark:hover:text-gray-500 text-gray-600 hover:text-gray-900"
+                className="text-sm leading-6 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-500"
               >
                 {item.name}
               </Link>
@@ -64,7 +64,7 @@ export default function Footer() {
             <Link
               key={item.name}
               href={item.href}
-              className="dark:text-gray-400 dark:hover:text-gray-500 text-gray-600 hover:text-gray-900"
+              className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-500"
               target={"_blank"}
             >
               <span className="sr-only">{item.name}</span>

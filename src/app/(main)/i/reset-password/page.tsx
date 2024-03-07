@@ -60,8 +60,8 @@ const ResetPassword = () => {
   return (
     <>
       {error && <ErrorMessage attentionError={error} />}
-      <div className="flex lg:pt-[200px] justify-center items-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col justify-center">
+      <div className="flex items-center justify-center px-6 py-12 lg:px-8 lg:pt-[200px]">
+        <div className="flex flex-col justify-center sm:mx-auto sm:w-full sm:max-w-sm">
           <Image
             className="mx-auto h-24 w-auto"
             src="/logos/Headpat_new_logo.webp"

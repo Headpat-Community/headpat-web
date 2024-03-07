@@ -86,8 +86,8 @@ export default function Example() {
               </div>
             </div>
 
-            <div className="lg:col-span-5 p-4 border rounded">
-              <div className="lg:col-span-5 lg:col-start-8 border-b pb-4">
+            <div className="rounded border p-4 lg:col-span-5">
+              <div className="border-b pb-4 lg:col-span-5 lg:col-start-8">
                 <div className="flex justify-between">
                   <h1 className="text-xl font-medium text-white">
                     {product.name}
@@ -160,7 +160,7 @@ export default function Example() {
                                   checked
                                     ? "border-transparent bg-indigo-600 text-white hover:bg-indigo-700"
                                     : "border-gray-200 bg-white text-gray-900 hover:bg-gray-50",
-                                  "flex items-center justify-center rounded-md border py-3 px-3 text-sm font-medium uppercase sm:flex-1",
+                                  "flex items-center justify-center rounded-md border px-3 py-3 text-sm font-medium uppercase sm:flex-1",
                                 )
                               }
                             >

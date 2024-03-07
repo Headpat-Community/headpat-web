@@ -163,18 +163,18 @@ export default function PageClient() {
         <img
           src="/images/badgefront.webp"
           alt="Badge Preview"
-          className="mx-auto h-full w-full object-contain object-center max-h-[300px] rounded"
+          className="mx-auto h-full max-h-[300px] w-full rounded object-contain object-center"
         />
       </div>
       <form onSubmit={handleSubmit}>
-        <main className="lg:min-h-full mx-auto flex justify-center">
+        <main className="mx-auto flex justify-center lg:min-h-full">
           <div>
             <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8 lg:py-32 xl:gap-x-24">
               <div className="lg:col-start-1">
                 <h1 className="text-sm font-medium text-indigo-600">
                   Badge Request
                 </h1>
-                <p className="mt-2 text-3xl font-bold tracking-tight dark:text-white text-black sm:text-4xl">
+                <p className="mt-2 text-3xl font-bold tracking-tight text-black dark:text-white sm:text-4xl">
                   Danke für deine Überlegung!
                 </p>
                 <p className="mt-2 text-base text-gray-500">
@@ -184,7 +184,7 @@ export default function PageClient() {
                 </p>
                 <ul
                   role="list"
-                  className="mt-6 divide-y dark:border-gray-200 border-gray-500 border-t text-sm font-medium text-gray-500"
+                  className="mt-6 divide-y border-t border-gray-500 text-sm font-medium text-gray-500 dark:border-gray-200"
                 >
                   <li key="Badge" className="flex space-x-6 py-6">
                     <div className="text-center">
@@ -206,7 +206,7 @@ export default function PageClient() {
                         <div className="mt-4 flex text-sm leading-6 text-gray-400">
                           <label
                             htmlFor="file-upload"
-                            className="relative cursor-pointer rounded-md bg-blurple font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:bg-blurple/80"
+                            className="bg-blurple hover:bg-blurple/80 relative cursor-pointer rounded-md font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900"
                           >
                             <span className="p-4">Upload a file</span>
                             <input
@@ -223,16 +223,16 @@ export default function PageClient() {
                         </div>
                       </label>
                     </div>
-                    <div className="mt-1 align-middle text-center">
+                    <div className="mt-1 text-center align-middle">
                       <p className="text-red-500">
                         PNG, JPEG, SVG, TIFF, ICO, DVU, WEBP
                       </p>
-                      <p className="text-red-500 pt-2">Max. 512x512px, 1MB</p>
+                      <p className="pt-2 text-red-500">Max. 512x512px, 1MB</p>
                     </div>
                   </li>
                 </ul>
 
-                <dl className="space-y-6 border-t dark:border-gray-200 border-gray-500 pt-6 text-sm font-medium dark:text-white text-black">
+                <dl className="space-y-6 border-t border-gray-500 pt-6 text-sm font-medium text-black dark:border-gray-200 dark:text-white">
                   <div className="flex justify-between">
                     <dt>Name</dt>
                     <input
@@ -240,7 +240,7 @@ export default function PageClient() {
                       name="displayname"
                       id="displayname"
                       ref={displaynameRef}
-                      className="text-black rounded"
+                      className="rounded text-black"
                       required
                     />
                   </div>
@@ -252,7 +252,7 @@ export default function PageClient() {
                       name="nickname"
                       id="nickname"
                       ref={nicknameRef}
-                      className="text-black rounded"
+                      className="rounded text-black"
                     />
                   </div>
 
@@ -263,7 +263,7 @@ export default function PageClient() {
                       name="pronouns"
                       id="pronouns"
                       ref={pronounsRef}
-                      className="text-black rounded"
+                      className="rounded text-black"
                     />
                   </div>
 
@@ -274,7 +274,7 @@ export default function PageClient() {
                       name="species"
                       id="species"
                       ref={speciesRef}
-                      className="text-black rounded"
+                      className="rounded text-black"
                     />
                   </div>
                 </dl>
@@ -287,8 +287,8 @@ export default function PageClient() {
                   Wie möchtest du deinen Badge erhalten?
                 </p>
 
-                <div className="sm:col-span-3 mb-4 mt-6">
-                  <label className="block text-xl font-medium leading-6 dark:text-white/80 text-black/80">
+                <div className="mb-4 mt-6 sm:col-span-3">
+                  <label className="block text-xl font-medium leading-6 text-black/80 dark:text-white/80">
                     Bei Eurofurence abholen?
                   </label>
                   <div className="mt-2">
@@ -296,14 +296,14 @@ export default function PageClient() {
                       type="checkbox"
                       name="deliver_at_eurofurence"
                       id="deliver_at_eurofurence"
-                      className="h-4 w-4 rounded dark:border-gray-300 border-gray-600 text-indigo-600 focus:ring-transparent"
+                      className="h-4 w-4 rounded border-gray-600 text-indigo-600 focus:ring-transparent dark:border-gray-300"
                       checked={deliverAtEurofurence}
                       onChange={handleCheckboxChange}
                     />
                   </div>
                 </div>
 
-                <dl className="space-y-6 border-t dark:border-gray-200 border-gray-500 pt-6 text-sm font-medium dark:text-white text-black">
+                <dl className="space-y-6 border-t border-gray-500 pt-6 text-sm font-medium text-black dark:border-gray-200 dark:text-white">
                   {!deliverAtEurofurence && (
                     <>
                       <div className="flex justify-between">
@@ -313,7 +313,7 @@ export default function PageClient() {
                           name="displayname"
                           id="displayname"
                           ref={displaynameRef}
-                          className="text-black rounded"
+                          className="rounded text-black"
                           required
                         />
                       </div>
@@ -325,7 +325,7 @@ export default function PageClient() {
                           name="address"
                           id="address"
                           ref={addressRef}
-                          className="text-black rounded"
+                          className="rounded text-black"
                         />
                       </div>
 
@@ -336,7 +336,7 @@ export default function PageClient() {
                           name="city"
                           id="city"
                           ref={cityRef}
-                          className="text-black rounded"
+                          className="rounded text-black"
                         />
                       </div>
 
@@ -347,14 +347,14 @@ export default function PageClient() {
                           name="postalcode"
                           id="postalcode"
                           ref={postalcodeRef}
-                          className="text-black rounded"
+                          className="rounded text-black"
                         />
                       </div>
 
                       <div className="flex justify-between">
                         <label
                           htmlFor="country-select"
-                          className="dark:text-white text-black rounded"
+                          className="rounded text-black dark:text-white"
                         >
                           Land/Country
                         </label>
@@ -362,7 +362,7 @@ export default function PageClient() {
                           name="country"
                           id="country"
                           ref={countryRef}
-                          className="text-black appearance-none rounded"
+                          className="appearance-none rounded text-black"
                         >
                           <option
                             value="Germany"
@@ -392,7 +392,7 @@ export default function PageClient() {
                           name="state"
                           id="state"
                           ref={stateRef}
-                          className="text-black rounded"
+                          className="rounded text-black"
                         />
                       </div>
                     </>
@@ -402,7 +402,7 @@ export default function PageClient() {
                 <div className="mt-6 flex items-center justify-end gap-x-6">
                   <button
                     type="button"
-                    className="text-sm font-semibold leading-6 dark:text-white text-black"
+                    className="text-sm font-semibold leading-6 text-black dark:text-white"
                   >
                     Abbrechen
                   </button>

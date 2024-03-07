@@ -54,8 +54,8 @@ const ForgotPassword = () => {
     <>
       {success && <SuccessMessage attentionSuccess={success} />}
       {error && <ErrorMessage attentionError={error} />}
-      <div className="flex lg:pt-[200px] justify-center items-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col justify-center">
+      <div className="flex items-center justify-center px-6 py-12 lg:px-8 lg:pt-[200px]">
+        <div className="flex flex-col justify-center sm:mx-auto sm:w-full sm:max-w-sm">
           <Image
             className="mx-auto h-24 w-auto"
             src="/logos/Headpat_new_logo.webp"
@@ -82,7 +82,7 @@ const ForgotPassword = () => {
                   type="email"
                   autoComplete="email"
                   required
-                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />

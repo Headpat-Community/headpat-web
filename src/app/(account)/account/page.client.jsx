@@ -196,12 +196,12 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
     <>
       {success && <SuccessMessage attentionSuccess={success} />}
       {error && <ErrorMessage attentionError={error} />}
-      <header className="border-b dark:border-white/5 border-black/5">
+      <header className="border-b border-black/5 dark:border-white/5">
         {/* Secondary navigation */}
         <nav className="flex overflow-x-auto py-4">
           <ul
             role="list"
-            className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 dark:text-gray-400 text-gray-900 sm:px-6 lg:px-8"
+            className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-900 dark:text-gray-400 sm:px-6 lg:px-8"
           >
             {secondaryNavigation.map((item) => (
               <li key={item.name}>
@@ -216,7 +216,7 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
           </ul>
         </nav>
       </header>
-      <div className="divide-y dark:divide-white/5 divide-black/5">
+      <div className="divide-y divide-black/5 dark:divide-white/5">
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
           <div>
             <h2 className="text-base font-semibold leading-7">Change Email</h2>
@@ -241,7 +241,7 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
                     type="email"
                     required
                     placeholder={userMe ? userMe.email : ""}
-                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -253,7 +253,7 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
                   Current Password
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md bg-white/5 ring-1 ring-inset dark:ring-white/10 ring-black/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                  <div className="flex rounded-md bg-white/5 ring-1 ring-inset ring-black/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 dark:ring-white/10">
                     <input
                       type="password"
                       name="email_password"
@@ -297,7 +297,7 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
                   URL
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md bg-white/5 ring-1 ring-inset dark:ring-white/10 ring-black/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                  <div className="flex rounded-md bg-white/5 ring-1 ring-inset ring-black/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 dark:ring-white/10">
                     <span className="flex select-none items-center pl-3 text-gray-400 sm:text-sm">
                       https://headpat.de/user/
                     </span>
@@ -328,7 +328,7 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
 
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
           <div>
-            <h2 className="text-base font-semibold leading-">
+            <h2 className="leading- text-base font-semibold">
               Change password
             </h2>
             <p className="mt-1 text-sm leading-6 text-gray-400">
@@ -341,7 +341,7 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
               <div className="col-span-full">
                 <span
                   htmlFor="current-password"
-                  className="block text-sm font-medium mb-2"
+                  className="mb-2 block text-sm font-medium"
                 >
                   Current password
                 </span>
@@ -351,13 +351,13 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
                   id="currentpassword"
                   autoComplete="current-password"
                   required
-                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                 />
               </div>
               <div className="col-span-full">
                 <span
                   htmlFor="new-password"
-                  className="block text-sm font-medium mb-2"
+                  className="mb-2 block text-sm font-medium"
                 >
                   New password
                 </span>
@@ -367,7 +367,7 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
                   id="newpassword"
                   autoComplete="new-password"
                   required
-                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                 />
               </div>
               <div className="col-span-full">

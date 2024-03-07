@@ -40,18 +40,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 export default function HeaderClient({ children }) {
   return (
     <>
-      <nav className="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
-        <div className="flex flex-wrap justify-between items-center">
-          <div className="flex justify-start items-center">
+      <nav className="fixed left-0 right-0 top-0 z-50 border-b border-gray-200 bg-white px-4 py-2.5 dark:border-gray-700 dark:bg-gray-800">
+        <div className="flex flex-wrap items-center justify-between">
+          <div className="flex items-center justify-start">
             <button
               data-drawer-target="drawer-navigation"
               data-drawer-toggle="drawer-navigation"
               aria-controls="drawer-navigation"
-              className="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer md:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              className="mr-2 cursor-pointer rounded-lg p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700 dark:focus:ring-gray-700 md:hidden"
             >
               <svg
                 aria-hidden="true"
-                className="w-6 h-6"
+                className="h-6 w-6"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +64,7 @@ export default function HeaderClient({ children }) {
               </svg>
               <svg
                 aria-hidden="true"
-                className="hidden w-6 h-6"
+                className="hidden h-6 w-6"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +77,7 @@ export default function HeaderClient({ children }) {
               </svg>
               <span className="sr-only">Toggle sidebar</span>
             </button>
-            <Link href="/" className="flex items-center justify-between mr-4">
+            <Link href="/" className="mr-4 flex items-center justify-between">
               <Image
                 src="/logos/Headpat_new_logo.webp"
                 className="mr-3 h-8"
@@ -85,7 +85,7 @@ export default function HeaderClient({ children }) {
                 width={32}
                 height={32}
               />
-              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+              <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
                 Headpat
               </span>
             </Link>
@@ -94,9 +94,9 @@ export default function HeaderClient({ children }) {
                 Search
               </label>
               <div className="relative md:w-64">
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <svg
-                    className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                    className="h-5 w-5 text-gray-500 dark:text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@ export default function HeaderClient({ children }) {
                   type="text"
                   name="email"
                   id="topbar-search"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  className="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                   placeholder="Search"
                 />
               </div>
@@ -123,12 +123,12 @@ export default function HeaderClient({ children }) {
               type="button"
               data-drawer-toggle="drawer-navigation"
               aria-controls="drawer-navigation"
-              className="p-2 mr-1 text-gray-500 rounded-lg md:hidden hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+              className="mr-1 rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:ring-4 focus:ring-gray-300 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-600 md:hidden"
             >
               <span className="sr-only">Toggle search</span>
               <svg
                 aria-hidden="true"
-                className="w-6 h-6"
+                className="h-6 w-6"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -144,13 +144,13 @@ export default function HeaderClient({ children }) {
             <button
               type="button"
               data-dropdown-toggle="notification-dropdown"
-              className="p-2 mr-1 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+              className="mr-1 rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:ring-4 focus:ring-gray-300 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-600"
             >
               <span className="sr-only">View notifications</span>
 
               <svg
                 aria-hidden="true"
-                className="w-6 h-6"
+                className="h-6 w-6"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -160,27 +160,27 @@ export default function HeaderClient({ children }) {
             </button>
 
             <div
-              className="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg dark:divide-gray-600 dark:bg-gray-700"
+              className="z-50 my-4 hidden max-w-sm list-none divide-y divide-gray-100 overflow-hidden rounded bg-white text-base shadow-lg dark:divide-gray-600 dark:bg-gray-700"
               id="notification-dropdown"
             >
-              <div className="block py-2 px-4 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-600 dark:text-gray-300">
+              <div className="block bg-gray-50 px-4 py-2 text-center text-base font-medium text-gray-700 dark:bg-gray-600 dark:text-gray-300">
                 Notifications
               </div>
               <div>
                 <a
                   href="#"
-                  className="flex py-3 px-4 border-b hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600"
+                  className="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
                 >
                   <div className="flex-shrink-0">
                     <img
-                      className="w-11 h-11 rounded-full"
+                      className="h-11 w-11 rounded-full"
                       src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png"
                       alt="Bonnie Green avatar"
                     />
-                    <div className="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 rounded-full border border-white bg-primary-700 dark:border-gray-700">
+                    <div className="bg-primary-700 absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white dark:border-gray-700">
                       <svg
                         aria-hidden="true"
-                        className="w-3 h-3 text-white"
+                        className="h-3 w-3 text-white"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg"
@@ -190,8 +190,8 @@ export default function HeaderClient({ children }) {
                       </svg>
                     </div>
                   </div>
-                  <div className="pl-3 w-full">
-                    <div className="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
+                  <div className="w-full pl-3">
+                    <div className="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
                       New message from
                       <span className="font-semibold text-gray-900 dark:text-white">
                         Bonnie Green
@@ -199,7 +199,7 @@ export default function HeaderClient({ children }) {
                       : &quot;Hey, what&apos;s up? All set for the
                       presentation?&quot;
                     </div>
-                    <div className="text-xs font-medium text-primary-600 dark:text-primary-500">
+                    <div className="text-primary-600 dark:text-primary-500 text-xs font-medium">
                       a few moments ago
                     </div>
                   </div>
@@ -207,12 +207,12 @@ export default function HeaderClient({ children }) {
               </div>
               <a
                 href="#"
-                className="block py-2 text-md font-medium text-center text-gray-900 bg-gray-50 hover:bg-gray-100 dark:bg-gray-600 dark:text-white dark:hover:underline"
+                className="text-md block bg-gray-50 py-2 text-center font-medium text-gray-900 hover:bg-gray-100 dark:bg-gray-600 dark:text-white dark:hover:underline"
               >
                 <div className="inline-flex items-center">
                   <svg
                     aria-hidden="true"
-                    className="mr-2 w-4 h-4 text-gray-500 dark:text-gray-400"
+                    className="mr-2 h-4 w-4 text-gray-500 dark:text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -320,12 +320,12 @@ export default function HeaderClient({ children }) {
             <button
               type="button"
               data-dropdown-toggle="apps-dropdown"
-              className="p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+              className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:ring-4 focus:ring-gray-300 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-600"
             >
               <span className="sr-only">View notifications</span>
 
               <svg
-                className="w-6 h-6"
+                className="h-6 w-6"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -335,20 +335,20 @@ export default function HeaderClient({ children }) {
             </button>
 
             <div
-              className="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg dark:bg-gray-700 dark:divide-gray-600"
+              className="z-50 my-4 hidden max-w-sm list-none divide-y divide-gray-100 overflow-hidden rounded bg-white text-base shadow-lg dark:divide-gray-600 dark:bg-gray-700"
               id="apps-dropdown"
             >
-              <div className="block py-2 px-4 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-600 dark:text-gray-300">
+              <div className="block bg-gray-50 px-4 py-2 text-center text-base font-medium text-gray-700 dark:bg-gray-600 dark:text-gray-300">
                 Apps
               </div>
               <div className="grid grid-cols-3 gap-4 p-4">
                 <a
                   href="#"
-                  className="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group"
+                  className="group block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
                 >
                   <svg
                     aria-hidden="true"
-                    className="mx-auto mb-1 w-7 h-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
+                    className="mx-auto mb-1 h-7 w-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -365,11 +365,11 @@ export default function HeaderClient({ children }) {
                 </a>
                 <a
                   href="#"
-                  className="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group"
+                  className="group block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
                 >
                   <svg
                     aria-hidden="true"
-                    className="mx-auto mb-1 w-7 h-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
+                    className="mx-auto mb-1 h-7 w-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -382,11 +382,11 @@ export default function HeaderClient({ children }) {
                 </a>
                 <a
                   href="#"
-                  className="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group"
+                  className="group block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
                 >
                   <svg
                     aria-hidden="true"
-                    className="mx-auto mb-1 w-7 h-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
+                    className="mx-auto mb-1 h-7 w-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -403,11 +403,11 @@ export default function HeaderClient({ children }) {
                 </a>
                 <a
                   href="#"
-                  className="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group"
+                  className="group block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
                 >
                   <svg
                     aria-hidden="true"
-                    className="mx-auto mb-1 w-7 h-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
+                    className="mx-auto mb-1 h-7 w-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -424,11 +424,11 @@ export default function HeaderClient({ children }) {
                 </a>
                 <a
                   href="#"
-                  className="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group"
+                  className="group block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
                 >
                   <svg
                     aria-hidden="true"
-                    className="mx-auto mb-1 w-7 h-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
+                    className="mx-auto mb-1 h-7 w-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -445,11 +445,11 @@ export default function HeaderClient({ children }) {
                 </a>
                 <a
                   href="#"
-                  className="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group"
+                  className="group block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
                 >
                   <svg
                     aria-hidden="true"
-                    className="mx-auto mb-1 w-7 h-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
+                    className="mx-auto mb-1 h-7 w-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -467,11 +467,11 @@ export default function HeaderClient({ children }) {
                 </a>
                 <a
                   href="#"
-                  className="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group"
+                  className="group block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
                 >
                   <svg
                     aria-hidden="true"
-                    className="mx-auto mb-1 w-7 h-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
+                    className="mx-auto mb-1 h-7 w-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -489,11 +489,11 @@ export default function HeaderClient({ children }) {
                 </a>
                 <a
                   href="#"
-                  className="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group"
+                  className="group block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
                 >
                   <svg
                     aria-hidden="true"
-                    className="mx-auto mb-1 w-7 h-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
+                    className="mx-auto mb-1 h-7 w-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -510,11 +510,11 @@ export default function HeaderClient({ children }) {
                 </a>
                 <a
                   href="#"
-                  className="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group"
+                  className="group block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
                 >
                   <svg
                     aria-hidden="true"
-                    className="mx-auto mb-1 w-7 h-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
+                    className="mx-auto mb-1 h-7 w-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -545,19 +545,19 @@ export default function HeaderClient({ children }) {
       </nav>
 
       <aside
-        className="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        className="fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full border-r border-gray-200 bg-white pt-14 transition-transform dark:border-gray-700 dark:bg-gray-800 md:translate-x-0"
         aria-label="Sidenav"
         id="drawer-navigation"
       >
-        <div className="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
-          <form action="#" method="GET" className="md:hidden mb-2">
+        <div className="h-full overflow-y-auto bg-white px-3 py-5 dark:bg-gray-800">
+          <form action="#" method="GET" className="mb-2 md:hidden">
             <label htmlFor="sidebar-search" className="sr-only">
               Search
             </label>
             <div className="relative">
-              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <svg
-                  className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                  className="h-5 w-5 text-gray-500 dark:text-gray-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -573,7 +573,7 @@ export default function HeaderClient({ children }) {
                 type="text"
                 name="search"
                 id="sidebar-search"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                className="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                 placeholder="Search"
               />
             </div>
@@ -582,11 +582,11 @@ export default function HeaderClient({ children }) {
             <li>
               <a
                 href="#"
-                className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="group flex items-center rounded-lg p-2 text-base font-medium text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
               >
                 <svg
                   aria-hidden="true"
-                  className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  className="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -605,15 +605,15 @@ export default function HeaderClient({ children }) {
               </Alert>
             </li>
           </ul>
-          <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
+          <ul className="mt-5 space-y-2 border-t border-gray-200 pt-5 dark:border-gray-700">
             <li>
               <a
                 href="#"
-                className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                className="group flex items-center rounded-lg p-2 text-base font-medium text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
               >
                 <svg
                   aria-hidden="true"
-                  className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  className="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -631,11 +631,11 @@ export default function HeaderClient({ children }) {
             <li>
               <a
                 href="#"
-                className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                className="group flex items-center rounded-lg p-2 text-base font-medium text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
               >
                 <svg
                   aria-hidden="true"
-                  className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  className="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -648,11 +648,11 @@ export default function HeaderClient({ children }) {
             <li>
               <a
                 href="#"
-                className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                className="group flex items-center rounded-lg p-2 text-base font-medium text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
               >
                 <svg
                   aria-hidden="true"
-                  className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  className="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -668,14 +668,14 @@ export default function HeaderClient({ children }) {
             </li>
           </ul>
         </div>
-        <div className="hidden absolute bottom-0 left-0 justify-center p-4 space-x-4 w-full lg:flex bg-white dark:bg-gray-800 z-20">
+        <div className="absolute bottom-0 left-0 z-20 hidden w-full justify-center space-x-4 bg-white p-4 dark:bg-gray-800 lg:flex">
           <a
             href="#"
-            className="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+            className="inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
           >
             <svg
               aria-hidden="true"
-              className="w-6 h-6"
+              className="h-6 w-6"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -686,11 +686,11 @@ export default function HeaderClient({ children }) {
           <a
             href="#"
             data-tooltip-target="tooltip-settings"
-            className="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer dark:text-gray-400 dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600"
+            className="inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
           >
             <svg
               aria-hidden="true"
-              className="w-6 h-6"
+              className="h-6 w-6"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -705,7 +705,7 @@ export default function HeaderClient({ children }) {
           <div
             id="tooltip-settings"
             role="tooltip"
-            className="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip"
+            className="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300"
           >
             Settings page
             <div className="tooltip-arrow"></div>
@@ -713,11 +713,11 @@ export default function HeaderClient({ children }) {
           <button
             type="button"
             data-dropdown-toggle="language-dropdown"
-            className="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer dark:hover:text-white dark:text-gray-400 hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600"
+            className="inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
           >
             <svg
               aria-hidden="true"
-              className="h-5 w-5 rounded-full mt-0.5"
+              className="mt-0.5 h-5 w-5 rounded-full"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 3900 3900"
             >
@@ -755,20 +755,20 @@ export default function HeaderClient({ children }) {
           </button>
 
           <div
-            className="hidden z-50 my-4 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700"
+            className="z-50 my-4 hidden list-none divide-y divide-gray-100 rounded bg-white text-base shadow dark:bg-gray-700"
             id="language-dropdown"
           >
             <ul className="py-1" role="none">
               <li>
                 <a
                   href="#"
-                  className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:text-white dark:text-gray-300 dark:hover:bg-gray-600"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                   role="menuitem"
                 >
                   <div className="inline-flex items-center">
                     <svg
                       aria-hidden="true"
-                      className="h-3.5 w-3.5 rounded-full mr-2"
+                      className="mr-2 h-3.5 w-3.5 rounded-full"
                       xmlns="http://www.w3.org/2000/svg"
                       id="flag-icon-css-us"
                       viewBox="0 0 512 512"
@@ -805,13 +805,13 @@ export default function HeaderClient({ children }) {
               <li>
                 <a
                   href="#"
-                  className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-600"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                   role="menuitem"
                 >
                   <div className="inline-flex items-center">
                     <svg
                       aria-hidden="true"
-                      className="h-3.5 w-3.5 rounded-full mr-2"
+                      className="mr-2 h-3.5 w-3.5 rounded-full"
                       xmlns="http://www.w3.org/2000/svg"
                       id="flag-icon-css-de"
                       viewBox="0 0 512 512"
@@ -827,13 +827,13 @@ export default function HeaderClient({ children }) {
               <li>
                 <a
                   href="#"
-                  className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-600"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                   role="menuitem"
                 >
                   <div className="inline-flex items-center">
                     <svg
                       aria-hidden="true"
-                      className="h-3.5 w-3.5 rounded-full mr-2"
+                      className="mr-2 h-3.5 w-3.5 rounded-full"
                       xmlns="http://www.w3.org/2000/svg"
                       id="flag-icon-css-it"
                       viewBox="0 0 512 512"
@@ -851,13 +851,13 @@ export default function HeaderClient({ children }) {
               <li>
                 <a
                   href="#"
-                  className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:text-white dark:text-gray-300 dark:hover:bg-gray-600"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                   role="menuitem"
                 >
                   <div className="inline-flex items-center">
                     <svg
                       aria-hidden="true"
-                      className="h-3.5 w-3.5 rounded-full mr-2"
+                      className="mr-2 h-3.5 w-3.5 rounded-full"
                       xmlns="http://www.w3.org/2000/svg"
                       id="flag-icon-css-cn"
                       viewBox="0 0 512 512"
@@ -910,7 +910,7 @@ export default function HeaderClient({ children }) {
         </div>
       </aside>
 
-      <div className="p-8 mt-10 sm:ml-64">{children}</div>
+      <div className="mt-10 p-8 sm:ml-64">{children}</div>
     </>
   );
 }

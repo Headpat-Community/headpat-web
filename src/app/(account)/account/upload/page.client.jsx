@@ -138,7 +138,7 @@ export default function UploadPage() {
         <div className="space-y-12">
           <div className="border-b border-white/10 pb-12">
             <h2 className="text-base font-semibold leading-7">Image Upload</h2>
-            <p className="mt-1 text-sm leading-6 dark:text-gray-400 text-gray-900">
+            <p className="mt-1 text-sm leading-6 text-gray-900 dark:text-gray-400">
               Diese Informationen werden öffentlich angezeigt. Sei also
               vorsichtig, was du teilst.
             </p>
@@ -151,7 +151,7 @@ export default function UploadPage() {
                 >
                   Cover photo
                 </label>
-                <div className="mt-2 flex justify-center rounded-lg border border-dashed dark:border-white/25 border-black/25 px-6 py-10">
+                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-black/25 px-6 py-10 dark:border-white/25">
                   <div className="text-center">
                     <label
                       htmlFor="file-upload"
@@ -161,7 +161,7 @@ export default function UploadPage() {
                     >
                       <img
                         id="selected-image"
-                        className="mx-auto h-96 min-w-full object-cover rounded-md"
+                        className="mx-auto h-96 min-w-full rounded-md object-cover"
                         alt="Placeholder Image"
                         src="/images/placeholder-image-color.webp"
                         onDrop={handleDrop}
@@ -197,7 +197,7 @@ export default function UploadPage() {
 
           <div className="border-b border-white/10 pb-12">
             <h2 className="text-base font-semibold leading-7">Informationen</h2>
-            <p className="mt-1 text-sm leading-6 dark:text-gray-400 text-gray-900">
+            <p className="mt-1 text-sm leading-6 text-gray-900 dark:text-gray-400">
               Alles mit ein asterisk (<span className="text-red-500">*</span>)
               ist nötig.
             </p>
@@ -213,7 +213,7 @@ export default function UploadPage() {
                     name="imagename"
                     id="imagename"
                     required
-                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -227,7 +227,7 @@ export default function UploadPage() {
                     type="text"
                     name="imgalt"
                     id="imgalt"
-                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -241,7 +241,7 @@ export default function UploadPage() {
                     type="checkbox"
                     name="nsfw"
                     id="nsfw"
-                    className="h-4 w-4 rounded dark:border-gray-300 border-gray-800 text-indigo-600 focus:ring-transparent"
+                    className="h-4 w-4 rounded border-gray-800 text-indigo-600 focus:ring-transparent dark:border-gray-300"
                   />
                 </div>
               </div>
@@ -253,11 +253,11 @@ export default function UploadPage() {
                 >
                   Description
                 </label>
-                <div className="mt-2 relative">
+                <div className="relative mt-2">
                   <textarea
                     id="longtext"
                     name="longtext"
-                    className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 h-72"
+                    className="block h-72 w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>

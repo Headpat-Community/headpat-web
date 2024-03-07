@@ -108,10 +108,9 @@ export default function UserProfile() {
   const dateObject = new Date(rawBirthday);
 
   // Format the date as "DD-MM-YYYY"
-  const formattedBirthday = `${dateObject
-    .getDate()
-    .toString()
-    .padStart(2, "0")}.${(dateObject.getMonth() + 1)
+  const formattedBirthday = `${dateObject.getDate().toString().padStart(2, "0")}.${(
+    dateObject.getMonth() + 1
+  )
     .toString()
     .padStart(2, "0")}.${dateObject.getFullYear()}`;
 
@@ -165,7 +164,7 @@ export default function UserProfile() {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <div className="pointer-events-auto w-full max-w-sm rounded-lg shadow-lg ring-1 dark:bg-black bg-white dark:ring-black ring-white ring-opacity-5 border dark:border-white border-black">
+              <div className="pointer-events-auto w-full max-w-sm rounded-lg border border-black bg-white shadow-lg ring-1 ring-white ring-opacity-5 dark:border-white dark:bg-black dark:ring-black">
                 <div className="p-4">
                   <div className="flex items-start">
                     <div className="flex-shrink-0 pt-0.5">
@@ -194,7 +193,7 @@ export default function UserProfile() {
                       <p className="text-sm font-medium">
                         {userData?.displayname}
                       </p>
-                      <p className="mt-1 text-sm dark:text-gray-300 text-gray-800">
+                      <p className="mt-1 text-sm text-gray-800 dark:text-gray-300">
                         It&apos;s their birthday today!
                       </p>
                     </div>
@@ -225,14 +224,14 @@ export default function UserProfile() {
               >
                 <div className="absolute left-16 top-full -mt-16 transform-gpu opacity-50 blur-3xl xl:left-1/2 xl:-ml-80">
                   <div
-                    className="aspect-[1154/678] w-[72.125rem] bg-gradient-to-br dark:from-[#FF80B5] dark:to-[#9089FC] from-[#007f4a] to-[#6f7603]"
+                    className="aspect-[1154/678] w-[72.125rem] bg-gradient-to-br from-[#007f4a] to-[#6f7603] dark:from-[#FF80B5] dark:to-[#9089FC]"
                     style={{
                       clipPath:
                         "polygon(100% 38.5%, 82.6% 100%, 60.2% 37.7%, 52.4% 32.1%, 47.5% 41.8%, 45.2% 65.6%, 27.5% 23.4%, 0.1% 35.3%, 17.9% 0%, 27.7% 23.4%, 76.2% 2.5%, 74.2% 56%, 100% 38.5%)",
                     }}
                   />
                 </div>
-                <div className="absolute inset-x-0 bottom-0 h-px dark:bg-white/95 bg-black/95" />
+                <div className="absolute inset-x-0 bottom-0 h-px bg-black/95 dark:bg-white/95" />
               </div>
 
               <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -247,7 +246,7 @@ export default function UserProfile() {
                               "/logos/logo-512.webp"
                             }
                             alt=""
-                            className="h-16 w-16 flex-none rounded-full ring-1 dark:ring-white/10 ring-black/10"
+                            className="h-16 w-16 flex-none rounded-full ring-1 ring-black/10 dark:ring-white/10"
                             width={64}
                             height={64}
                           />
@@ -255,7 +254,7 @@ export default function UserProfile() {
                           <Image
                             src="/logos/logo-512.webp"
                             alt=""
-                            className="h-16 w-16 flex-none rounded-full ring-1 dark:ring-white/10 ring-black/10"
+                            className="h-16 w-16 flex-none rounded-full ring-1 ring-black/10 dark:ring-white/10"
                             width={64}
                             height={64}
                           />
@@ -277,7 +276,7 @@ export default function UserProfile() {
                       >
                         <FontAwesomeIcon
                           icon={faTelegram}
-                          className="hover:text-indigo-500 text-2xl"
+                          className="text-2xl hover:text-indigo-500"
                         />
                       </Link>
                     )}
@@ -289,7 +288,7 @@ export default function UserProfile() {
                       >
                         <FontAwesomeIcon
                           icon={faDiscord}
-                          className="hover:text-indigo-500 text-2xl"
+                          className="text-2xl hover:text-indigo-500"
                         />
                       </Link>
                     )}
@@ -301,7 +300,7 @@ export default function UserProfile() {
                       >
                         <FontAwesomeIcon
                           icon={faXTwitter}
-                          className="hover:text-indigo-500 text-2xl"
+                          className="text-2xl hover:text-indigo-500"
                         />
                       </Link>
                     )}
@@ -313,7 +312,7 @@ export default function UserProfile() {
                       >
                         <FontAwesomeIcon
                           icon={faTwitch}
-                          className="hover:text-indigo-500 text-2xl"
+                          className="text-2xl hover:text-indigo-500"
                         />
                       </Link>
                     )}
@@ -326,7 +325,7 @@ export default function UserProfile() {
                         <svg
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
-                          className="w-8 h-8 dark:fill-white fill-black hover:fill-indigo-500 dark:hover:fill-indigo-500"
+                          className="h-8 w-8 fill-black hover:fill-indigo-500 dark:fill-white dark:hover:fill-indigo-500"
                           viewBox="0 0 220 200"
                         >
                           <path
@@ -403,13 +402,13 @@ export default function UserProfile() {
                     )}
                     <Link
                       href={`/user/${userData?.profileurl}/gallery`}
-                      className="hidden text-sm font-semibold leading-6 text-white sm:block bg-indigo-600 p-2 pt-1 pb-1 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="hidden rounded-md bg-indigo-600 p-2 pb-1 pt-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:block"
                     >
                       Gallery
                     </Link>
                     <button
                       type="button"
-                      className="hidden text-sm font-semibold leading-6 text-white sm:block bg-indigo-600 p-2 pt-1 pb-1 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="hidden rounded-md bg-indigo-600 p-2 pb-1 pt-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:block"
                       onClick={() =>
                         navigator.clipboard.writeText(window.location.href)
                       }
@@ -478,13 +477,13 @@ export default function UserProfile() {
                 {/* Summary */}
                 <div className="lg:col-start-3 lg:row-end-1">
                   <h2 className="sr-only">Summary</h2>
-                  <div className="rounded-lg border shadow-sm ring-1 dark:ring-white/20 ring-black/20">
+                  <div className="rounded-lg border shadow-sm ring-1 ring-black/20 dark:ring-white/20">
                     <dl className="flex flex-wrap">
                       <div className="mt-6 flex w-full flex-none gap-x-4 px-6">
                         <dt className="flex-none">
                           <span className="sr-only">User</span>
                           <UserCircleIcon
-                            className="h-6 w-5 dark:text-gray-400 text-gray-900"
+                            className="h-6 w-5 text-gray-900 dark:text-gray-400"
                             aria-hidden="true"
                           />
                         </dt>
@@ -493,12 +492,12 @@ export default function UserProfile() {
                         </dd>
                       </div>
                       <div
-                        className={`mt-4 mb-4 flex w-full flex-none gap-x-4 px-6`}
+                        className={`mb-4 mt-4 flex w-full flex-none gap-x-4 px-6`}
                       >
                         <dt className="flex-none">
                           <span className="sr-only">Status</span>
                           <PencilSquareIcon
-                            className="h-6 w-5 dark:text-gray-400 text-gray-900"
+                            className="h-6 w-5 text-gray-900 dark:text-gray-400"
                             aria-hidden="true"
                           />
                         </dt>
@@ -515,7 +514,7 @@ export default function UserProfile() {
                           <dt className="flex-none">
                             <span className="sr-only">Pronouns</span>
                             <FontAwesomeIcon
-                              className="h-6 w-5 dark:text-gray-400 text-gray-900"
+                              className="h-6 w-5 text-gray-900 dark:text-gray-400"
                               icon={faPersonHalfDress}
                             />
                           </dt>
@@ -526,14 +525,14 @@ export default function UserProfile() {
                       )}
                       {formattedBirthday !== "31.01.1900" && (
                         <div
-                          className={`mt-4 flex w-full flex-none gap-x-4 px-6 mb-4 ${
+                          className={`mb-4 mt-4 flex w-full flex-none gap-x-4 px-6 ${
                             userData?.location === "" ? "mb-6" : ""
                           }`}
                         >
                           <dt className="flex-none">
                             <span className="sr-only">Birthday</span>
                             <CalendarDaysIcon
-                              className="h-6 w-5 dark:text-gray-400 text-gray-900"
+                              className="h-6 w-5 text-gray-900 dark:text-gray-400"
                               aria-hidden="true"
                             />
                           </dt>
@@ -547,12 +546,12 @@ export default function UserProfile() {
                       {userData?.location !== null &&
                         userData?.location !== "" && (
                           <div
-                            className={`flex w-full flex-none gap-x-4 px-6 mb-4`}
+                            className={`mb-4 flex w-full flex-none gap-x-4 px-6`}
                           >
                             <dt className="flex-none">
                               <span className="sr-only">Location</span>
                               <FontAwesomeIcon
-                                className="h-6 w-5 dark:text-gray-400 text-gray-900"
+                                className="h-6 w-5 text-gray-900 dark:text-gray-400"
                                 icon={faFlag}
                               />
                             </dt>
@@ -566,14 +565,14 @@ export default function UserProfile() {
                 </div>
 
                 {/* Biography */}
-                <div className="-mx-4 px-4 py-8 shadow-sm ring-1 dark:ring-white/95 ring-black/95 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pb-20 xl:pt-16">
-                  <h2 className="text-2xl font-semibold leading-6 border-b dark:border-white border-black pb-2">
+                <div className="-mx-4 px-4 py-8 shadow-sm ring-1 ring-black/95 dark:ring-white/95 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pb-20 xl:pt-16">
+                  <h2 className="border-b border-black pb-2 text-2xl font-semibold leading-6 dark:border-white">
                     Biografie
                   </h2>
                   <dl className="mt-6 grid grid-cols-1 text-sm leading-6 sm:grid-cols-2">
                     <div className="flex">
                       <div
-                        className="font-medium dark:text-gray-300 text-gray-800"
+                        className="font-medium text-gray-800 dark:text-gray-300"
                         style={{ whiteSpace: "pre-line" }}
                       >
                         {userData?.bio}
@@ -599,35 +598,35 @@ export default function UserProfile() {
                             "absolute left-0 top-0 flex w-6 justify-center",
                           )}
                         >
-                          <div className="w-px dark:bg-gray-200 bg-gray-700" />
+                          <div className="w-px bg-gray-700 dark:bg-gray-200" />
                         </div>
                         {activityItem.type === "commented" && (
                           <>
                             <Image
                               src={activityItem.person.imageUrl}
                               alt=""
-                              className="relative mt-3 h-6 w-6 flex-none rounded-full dark:bg-gray-50 bg-gray-950"
+                              className="relative mt-3 h-6 w-6 flex-none rounded-full bg-gray-950 dark:bg-gray-50"
                               width={24}
                               height={24}
                             />
-                            <div className="flex-auto rounded-md p-3 ring-1 ring-inset dark:ring-gray-200 ring-gray-700">
+                            <div className="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-700 dark:ring-gray-200">
                               <div className="flex justify-between gap-x-4">
                                 <div className="py-0.5 text-xs leading-5">
                                   <span className="font-medium">
                                     {activityItem.person.name}
                                   </span>{" "}
-                                  <span className="dark:text-gray-300 text-gray-800">
+                                  <span className="text-gray-800 dark:text-gray-300">
                                     commented
                                   </span>
                                 </div>
                                 <time
                                   dateTime={activityItem.dateTime}
-                                  className="flex-none py-0.5 text-xs leading-5 dark:text-gray-500 text-gray-900"
+                                  className="flex-none py-0.5 text-xs leading-5 text-gray-900 dark:text-gray-500"
                                 >
                                   {activityItem.date}
                                 </time>
                               </div>
-                              <p className="text-sm leading-6 dark:text-gray-500 text-gray-900">
+                              <p className="text-sm leading-6 text-gray-900 dark:text-gray-500">
                                 {activityItem.comment}
                               </p>
                             </div>
@@ -647,7 +646,7 @@ export default function UserProfile() {
                       height={24}
                     />
                     <form action="#" className="relative flex-auto">
-                      <div className="overflow-hidden rounded-lg pb-12 shadow-sm ring-1 ring-inset dark:ring-gray-300 ring-gray-800 focus-within:ring-2 focus-within:ring-indigo-600">
+                      <div className="overflow-hidden rounded-lg pb-12 shadow-sm ring-1 ring-inset ring-gray-800 focus-within:ring-2 focus-within:ring-indigo-600 dark:ring-gray-300">
                         <label htmlFor="comment" className="sr-only">
                           Add your comment
                         </label>
@@ -655,7 +654,7 @@ export default function UserProfile() {
                           rows={2}
                           name="comment"
                           id="comment"
-                          className="block w-full resize-none border-0 bg-transparent py-1.5 dark:placeholder:text-gray-400 placeholder:text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+                          className="block w-full resize-none border-0 bg-transparent py-1.5 placeholder:text-gray-900 focus:ring-0 dark:placeholder:text-gray-400 sm:text-sm sm:leading-6"
                           placeholder="Add your comment..."
                           defaultValue={""}
                         />
@@ -671,7 +670,7 @@ export default function UserProfile() {
                                     Your mood
                                   </Listbox.Label>
                                   <div className="relative">
-                                    <Listbox.Button className="relative -m-2.5 flex h-10 w-10 items-center justify-center rounded-full dark:text-gray-400 text-gray-900 hover:text-gray-500">
+                                    <Listbox.Button className="relative -m-2.5 flex h-10 w-10 items-center justify-center rounded-full text-gray-900 hover:text-gray-500 dark:text-gray-400">
                                       <span className="flex items-center justify-center">
                                         {selected.value === null ? (
                                           <span>
@@ -719,7 +718,7 @@ export default function UserProfile() {
                                               classNames(
                                                 active
                                                   ? "bg-indigo-600"
-                                                  : "dark:bg-white bg-black",
+                                                  : "bg-black dark:bg-white",
                                                 "relative cursor-default select-none px-3 py-2",
                                               )
                                             }
@@ -740,7 +739,7 @@ export default function UserProfile() {
                                                   aria-hidden="true"
                                                 />
                                               </div>
-                                              <span className="ml-3 block truncate font-medium dark:text-black text-white">
+                                              <span className="ml-3 block truncate font-medium text-white dark:text-black">
                                                 {mood.name}
                                               </span>
                                             </div>

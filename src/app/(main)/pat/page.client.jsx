@@ -106,13 +106,13 @@ export default function PatClient() {
     <div className="flex min-h-full flex-col">
       <div className="mx-auto flex w-full max-w-7xl items-start gap-x-8 px-4 py-10 sm:px-6 lg:px-8">
         <aside className="sticky top-8 hidden w-44 shrink-0 lg:block">
-          <div className="overflow-hidden rounded-lg px-4 py-5 shadow sm:p-6 border">
+          <div className="overflow-hidden rounded-lg border px-4 py-5 shadow sm:p-6">
             <dt className="truncate text-sm font-medium">Total Count:</dt>
             <dd className="mt-1 text-3xl font-semibold tracking-tight">
               {totalCount}
             </dd>
           </div>
-          <div className="overflow-hidden rounded-lg px-4 py-5 shadow sm:p-6 mt-6 border">
+          <div className="mt-6 overflow-hidden rounded-lg border px-4 py-5 shadow sm:p-6">
             <dt className="truncate text-sm font-medium">Dein Pat Count:</dt>
             <dd className="mt-1 text-3xl font-semibold tracking-tight">
               {patCount}
@@ -124,7 +124,7 @@ export default function PatClient() {
           <img
             src="/images/Headpat_paw_4.0.1.png"
             alt="pat"
-            className="relative w-[80%] top-96 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-80 transition active:scale-75 transition-transform"
+            className="relative left-1/2 top-96 w-[80%] -translate-x-1/2 -translate-y-1/2 transform opacity-80 transition transition-transform active:scale-75"
             onMouseDown={(e) => e.preventDefault()}
             onClick={handlePatClick}
           />

@@ -37,7 +37,7 @@ export default function MobileNav(): React.JSX.Element {
             <h1 className={"border-b pb-2"}>Pages</h1>
             <div
               className={
-                "mt-2 flex flex-col justify-center items-center text-center gap-4"
+                "mt-2 flex flex-col items-center justify-center gap-4 text-center"
               }
             >
               <Link href={"/"}>

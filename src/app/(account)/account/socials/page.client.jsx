@@ -101,12 +101,12 @@ export default function AccountPage() {
     <>
       {success && <SuccessMessage attentionSuccess={success} />}
       {error && <ErrorMessage attentionError={error} />}
-      <header className="border-b dark:border-white/5 border-black/5">
+      <header className="border-b border-black/5 dark:border-white/5">
         {/* Secondary navigation */}
         <nav className="flex overflow-x-auto py-4">
           <ul
             role="list"
-            className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 dark:text-gray-400 text-gray-900 sm:px-6 lg:px-8"
+            className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-900 dark:text-gray-400 sm:px-6 lg:px-8"
           >
             {secondaryNavigation.map((item) => (
               <li key={item.name}>
@@ -124,7 +124,7 @@ export default function AccountPage() {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="divide-y dark:divide-white/5 divide-black/5">
+        <div className="divide-y divide-black/5 dark:divide-white/5">
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
             <div>
               <h2 className="text-base font-semibold leading-7">Socials</h2>
@@ -143,12 +143,12 @@ export default function AccountPage() {
                   >
                     Discord ID (196742608846979072 z.B.)
                   </label>
-                  <div className="mt-2 relative">
+                  <div className="relative mt-2">
                     <input
                       type="text"
                       name="discordname"
                       id="discordname"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.discordname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -160,12 +160,12 @@ export default function AccountPage() {
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                       <span className="select-none">
                         {userData.discordname ? userData.discordname.length : 0}{" "}
                         {/* Check if userData.discordname is defined before accessing its length property */}
                       </span>
-                      <span className="text-gray-400 select-none">/{32}</span>
+                      <span className="select-none text-gray-400">/{32}</span>
                     </div>
                   </div>
                 </div>
@@ -177,12 +177,12 @@ export default function AccountPage() {
                   >
                     Telegram Name
                   </label>
-                  <div className="mt-2 relative">
+                  <div className="relative mt-2">
                     <input
                       type="text"
                       name="telegramname"
                       id="telegramname"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.telegramname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -194,14 +194,14 @@ export default function AccountPage() {
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                       <span className="select-none">
                         {userData.telegramname
                           ? userData.telegramname.length
                           : 0}{" "}
                         {/* Check if userData.telegramname is defined before accessing its length property */}
                       </span>
-                      <span className="text-gray-400 select-none">/{32}</span>
+                      <span className="select-none text-gray-400">/{32}</span>
                     </div>
                   </div>
                 </div>
@@ -213,12 +213,12 @@ export default function AccountPage() {
                   >
                     Furaffinity Name
                   </label>
-                  <div className="mt-2 relative">
+                  <div className="relative mt-2">
                     <input
                       type="text"
                       name="furaffinityname"
                       id="furaffinityname"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.furaffinityname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -230,14 +230,14 @@ export default function AccountPage() {
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                       <span className="select-none">
                         {userData.furaffinityname
                           ? userData.furaffinityname.length
                           : 0}{" "}
                         {/* Check if userData.furaffinityname is defined before accessing its length property */}
                       </span>
-                      <span className="text-gray-400 select-none">/{32}</span>
+                      <span className="select-none text-gray-400">/{32}</span>
                     </div>
                   </div>
                 </div>
@@ -249,12 +249,12 @@ export default function AccountPage() {
                   >
                     X / Twitter Name
                   </label>
-                  <div className="mt-2 relative">
+                  <div className="relative mt-2">
                     <input
                       type="text"
                       name="X_name"
                       id="X_name"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.X_name} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -266,12 +266,12 @@ export default function AccountPage() {
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                       <span className="select-none">
                         {userData.X_name ? userData.X_name.length : 0}{" "}
                         {/* Check if userData.X_name is defined before accessing its length property */}
                       </span>
-                      <span className="text-gray-400 select-none">/{32}</span>
+                      <span className="select-none text-gray-400">/{32}</span>
                     </div>
                   </div>
                 </div>
@@ -283,12 +283,12 @@ export default function AccountPage() {
                   >
                     Twitch
                   </label>
-                  <div className="mt-2 relative">
+                  <div className="relative mt-2">
                     <input
                       type="text"
                       name="twitchname"
                       id="twitchname"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset dark:ring-white/10 ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.twitchname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -300,12 +300,12 @@ export default function AccountPage() {
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                       <span className="select-none">
                         {userData.twitchname ? userData.twitchname.length : 0}{" "}
                         {/* Check if userData.twitchname is defined before accessing its length property */}
                       </span>
-                      <span className="text-gray-400 select-none">/{32}</span>
+                      <span className="select-none text-gray-400">/{32}</span>
                     </div>
                   </div>
                 </div>

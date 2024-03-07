@@ -27,12 +27,12 @@ export default async function Page({
     <>
       <div>
         <div className="px-4 sm:px-0">
-          <h3 className="text-base font-semibold leading-7 text- justify-center text-center mt-4">
+          <h3 className="text- mt-4 justify-center text-center text-base font-semibold leading-7">
             Announcement Information
           </h3>
         </div>
-        <div className="mt-6 max-w-4xl mx-auto">
-          <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0 mb-8">
+        <div className="mx-auto mt-6 max-w-4xl">
+          <dd className="mb-8 mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
             <Link
               href="."
               className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
@@ -40,17 +40,17 @@ export default async function Page({
               &larr; Go back
             </Link>
           </dd>
-          <dl className="divide-y dark:divide-white/40 divide-black/40">
+          <dl className="divide-y divide-black/40 dark:divide-white/40">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm font-medium leading-6">Author</dt>
-              <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0 flex items-center">
+              <dd className="mt-1 flex items-center text-sm leading-6 sm:col-span-2 sm:mt-0">
                 <Link
-                  className="text-indigo-500 hover:text-indigo-400 flex items-center"
+                  className="flex items-center text-indigo-500 hover:text-indigo-400"
                   href={`/user/${announcementData?.userData?.profileUrl}`}
                   passHref
                 >
                   <img
-                    className="h-12 w-12 flex-none rounded-full mr-4"
+                    className="mr-4 h-12 w-12 flex-none rounded-full"
                     src={getAvatarImageUrl(
                       announcementData?.userData?.avatarId,
                     )}
@@ -87,7 +87,7 @@ export default async function Page({
                     <div className="flex-none rounded-full bg-emerald-500/20 p-1">
                       <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                     </div>
-                    <p className="text-xs leading-5 dark:text-white/80 text-black/80">
+                    <p className="text-xs leading-5 text-black/80 dark:text-white/80">
                       Aktiv
                     </p>
                   </div>
@@ -96,7 +96,7 @@ export default async function Page({
                     <div className="flex-none rounded-full bg-red-500/20 p-1">
                       <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
                     </div>
-                    <p className="text-xs leading-5 dark:text-white/80 text-black/80">
+                    <p className="text-xs leading-5 text-black/80 dark:text-white/80">
                       Inaktiv
                     </p>
                   </div>
@@ -105,7 +105,7 @@ export default async function Page({
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm font-medium leading-6">Description</dt>
-              <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0 mb-4">
+              <dd className="mb-4 mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
                 {announcementData?.description || "Unknown"}
               </dd>
             </div>

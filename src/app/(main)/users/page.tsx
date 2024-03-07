@@ -8,10 +8,10 @@ export default async function Users() {
   const users: UserDataDocumentsType[] = await getUsers();
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 mb-8">
+    <div className="mb-8 px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-base font-semibold leading-6 mt-4">Users</h1>
+          <h1 className="mt-4 text-base font-semibold leading-6">Users</h1>
           <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
             Hier könnt ihr alle User sehen, die sich auf der Seite registriert
             haben.

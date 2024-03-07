@@ -10,7 +10,7 @@ export default async function AnnouncementNotification() {
   return (
     <>
       {announcementData && (
-        <div className="relative isolate flex flex-col items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1 z-10">
+        <div className="relative isolate z-10 flex flex-col items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
           <div
             className="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
             aria-hidden="true"

@@ -62,12 +62,12 @@ export default function FetchGallery({ enableNsfw }) {
         ))}
       </div>*/}
       <div>
-        <ul className="p-8 flex flex-wrap gap-4 justify-center items-center">
+        <ul className="flex flex-wrap items-center justify-center gap-4 p-8">
           {gallery.map((item) => (
             <div key={item.$id}>
               {item && (
                 <div
-                  className={`rounded-lg overflow-hidden h-64 ${
+                  className={`h-64 overflow-hidden rounded-lg ${
                     item.nsfw && !enableNsfw ? "relative" : ""
                   }`}
                 >
@@ -78,7 +78,7 @@ export default function FetchGallery({ enableNsfw }) {
                     <Image
                       src={getGalleryImageUrl(item.gallery_id)}
                       alt={item.imgalt}
-                      className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
+                      className={`h-full max-h-[600px] w-full max-w-[600px] object-cover`}
                       width={600}
                       height={600}
                       loading="lazy" // Add this attribute for lazy loading

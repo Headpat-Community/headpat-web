@@ -17,7 +17,7 @@ export default function FetchGallery({ gallery, userData, userSelf }) {
   // The rest of the component remains unchanged with conditional rendering based on the data's availability.
   return (
     <div>
-      <div className="p-8 flex flex-wrap gap-4 justify-center items-center">
+      <div className="flex flex-wrap items-center justify-center gap-4 p-8">
         <div>
           {(() => {
             return (
@@ -25,10 +25,10 @@ export default function FetchGallery({ gallery, userData, userSelf }) {
                 {isNsfwImage ? (
                   <></>
                 ) : (
-                  <div className="mr-4 sm:mt-4 mb-4 md:mb-0 flex">
+                  <div className="mb-4 mr-4 flex sm:mt-4 md:mb-0">
                     <Link
                       href="."
-                      className="rounded-md bg-indigo-500 px-3 py-2 mb-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                      className="mb-4 rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                     >
                       &larr; Go back
                     </Link>
@@ -43,7 +43,7 @@ export default function FetchGallery({ gallery, userData, userSelf }) {
                         // Handle overlay click if needed (e.g., close the error message)
                       }}
                     ></div>
-                    <div className="bg-white p-4 rounded-lg shadow-lg text-xl text-black relative z-10">
+                    <div className="relative z-10 rounded-lg bg-white p-4 text-xl text-black shadow-lg">
                       Du hast NSFW deaktiviert oder du bist nicht eingeloggt,
                       daher kannst du dieses Bild nicht sehen.
                       <br />
@@ -58,19 +58,19 @@ export default function FetchGallery({ gallery, userData, userSelf }) {
                     <img
                       src={url}
                       alt={name || "Headpat Community Image"}
-                      className={`rounded-lg object-contain imgsinglegallery mx-auto h-[400px] sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px] w-auto max-w-full`}
+                      className={`imgsinglegallery mx-auto h-[400px] w-auto max-w-full rounded-lg object-contain sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`}
                     />
                     <div className="ml-4">
                       <div className="mt-4">
-                        <dl className="divide-y dark:divide-white/10 divide-black/10">
+                        <dl className="divide-y divide-black/10 dark:divide-white/10">
                           <div className="ml-4">
-                            <div className="px-4 sm:px-0 mt-4">
+                            <div className="mt-4 px-4 sm:px-0">
                               <h3 className="text-base font-semibold leading-7">
                                 Bild Informationen
                               </h3>
                             </div>
-                            <div className="mt-4 border-t dark:border-white/10 border-black/10">
-                              <dl className="divide-y dark:divide-white/10 divide-black/10">
+                            <div className="mt-4 border-t border-black/10 dark:border-white/10">
+                              <dl className="divide-y divide-black/10 dark:divide-white/10">
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                   <dt className="text-sm font-medium leading-6">
                                     Titel
@@ -136,7 +136,7 @@ export default function FetchGallery({ gallery, userData, userSelf }) {
                                   <dt className="text-sm font-medium leading-6">
                                     Beschreibung
                                   </dt>
-                                  <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0 max-w-full break-words">
+                                  <dd className="mt-1 max-w-full break-words text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
                                     {longtext || "No description provided."}
                                   </dd>
                                 </div>

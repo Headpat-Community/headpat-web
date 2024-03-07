@@ -58,7 +58,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
       <div>
         {isLoading ? (
           error ? (
-            <p className="text-center text-red-500 font-bold my-8">Error!</p>
+            <p className="my-8 text-center font-bold text-red-500">Error!</p>
           ) : (
             <Loading />
           )
@@ -66,13 +66,13 @@ export default function FetchGallery({ enableNsfw, userId }) {
           <>
             <ul
               role="list"
-              className="p-8 flex flex-wrap gap-4 justify-center items-center"
+              className="flex flex-wrap items-center justify-center gap-4 p-8"
             >
               {gallery.map((item) => (
                 <div key={item.$id}>
                   {item && (
                     <div
-                      className={`rounded-lg overflow-hidden h-64 ${
+                      className={`h-64 overflow-hidden rounded-lg ${
                         item.nsfw && !enableNsfw ? "relative" : ""
                       }`}
                     >
@@ -83,7 +83,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
                         <Image
                           src={getGalleryImageUrl(item.gallery_id)}
                           alt={item.imgalt}
-                          className={`object-cover h-full w-full max-h-[600px] max-w-[600px]`}
+                          className={`h-full max-h-[600px] w-full max-w-[600px] object-cover`}
                           width={600}
                           height={600}
                           loading="lazy" // Add this attribute for lazy loading
@@ -99,11 +99,11 @@ export default function FetchGallery({ enableNsfw, userId }) {
         )}
       </div>
       {/* Pagination buttons */}
-      <div className="flex justify-center items-center my-4">
+      <div className="my-4 flex items-center justify-center">
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
-            className={`mx-2 px-4 py-2 rounded-lg ${
+            className={`mx-2 rounded-lg px-4 py-2 ${
               page === currentPage ? "bg-blue-500 text-white" : "bg-gray-200"
             }`}
             onClick={() => handlePageChange(page)}

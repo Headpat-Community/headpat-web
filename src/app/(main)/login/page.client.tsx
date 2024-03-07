@@ -80,7 +80,7 @@ export default function Login() {
         <div className="line" />
       </div>
       <div className="flex min-h-full flex-1">
-        <div className="mx-auto p-8 mt-14 min-w-1/3 dark:bg-[#04050a]/85 rounded-2xl z-10 ring-1 dark:ring-white ring-black">
+        <div className="z-10 mx-auto mt-14 min-w-1/3 rounded-2xl p-8 ring-1 ring-black dark:bg-[#04050a]/85 dark:ring-white">
           <div>
             <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
               Welcome to Headpat!
@@ -117,7 +117,7 @@ export default function Login() {
                         required
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset text-black dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:ring-gray-300 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
@@ -139,7 +139,7 @@ export default function Login() {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset text-black dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:ring-gray-300 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -160,7 +160,7 @@ export default function Login() {
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset text-black dark:ring-gray-300 ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:ring-gray-300 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -206,7 +206,7 @@ export default function Login() {
                   <div className="w-full border-t border-gray-200" />
                 </div>
                 <div className="relative flex justify-center text-sm font-medium leading-6">
-                  <span className="bg-white px-6 text-gray-900 rounded-xl">
+                  <span className="rounded-xl bg-white px-6 text-gray-900">
                     Or continue with
                   </span>
                 </div>
@@ -215,7 +215,7 @@ export default function Login() {
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <button
                   onClick={() => handleOAuth2Login("discord")}
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-[#5865F2] border dark:border-white/20 border-black/20 px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0]"
+                  className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#5865F2] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20"
                 >
                   <svg
                     className="h-5 w-5"
@@ -232,7 +232,7 @@ export default function Login() {
 
                 <button
                   onClick={() => handleOAuth2Login("github")}
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-[#24292F] border dark:border-white/20 border-black/20 px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
+                  className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20"
                 >
                   <svg
                     className="h-5 w-5"
@@ -253,7 +253,7 @@ export default function Login() {
 
                 <button
                   onClick={() => handleOAuth2Login("apple")}
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-[#000000] border dark:border-white/20 border-black/20 px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
+                  className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#000000] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20"
                 >
                   <svg
                     className="h-5 w-5"
@@ -268,7 +268,7 @@ export default function Login() {
 
                 <button
                   onClick={() => handleOAuth2Login("google")}
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-[#131314] border dark:border-white/20 border-black/20 px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
+                  className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#131314] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20"
                 >
                   <svg
                     height="24"
@@ -302,7 +302,7 @@ export default function Login() {
 
                 <button
                   onClick={() => handleOAuth2Login("spotify")}
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-[#1DB954] border dark:border-white/20 border-black/20 px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
+                  className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#1DB954] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20"
                 >
                   <svg
                     height="24"

@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function PageClient() {
   return (
     <>
-      <div className="isolate opacity-1 transform-none"></div>
+      <div className="isolate transform-none opacity-1"></div>
     </>
   );
 }

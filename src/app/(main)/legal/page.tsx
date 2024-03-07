@@ -10,7 +10,7 @@ export const runtime = "edge";
 export default function LegalPage() {
   return (
     <>
-      <div className="mx-auto max-w-7xl mt-8 mb-4">
+      <div className="mx-auto mb-4 mt-8 max-w-7xl">
         <div className="px-4 sm:px-0">
           <h3 className="text-base font-semibold leading-7">
             Legal Information
@@ -23,7 +23,7 @@ export default function LegalPage() {
           <dl className="divide-y divide-gray-100">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm font-medium leading-6">About</dt>
-              <dd className="mt-1 text-sm leading-6 dark:text-white/80 text-black/80 sm:col-span-2 sm:mt-0">
+              <dd className="mt-1 text-sm leading-6 text-black/80 dark:text-white/80 sm:col-span-2 sm:mt-0">
                 Here you can download all the legal documents that are related
                 to the use of our website or app. If you have any questions,
                 please contact us at{" "}
@@ -41,7 +41,7 @@ export default function LegalPage() {
               <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
                 <ul
                   role="list"
-                  className="divide-y divide-gray-100 rounded-md border dark:border-gray-200 border-gray-700"
+                  className="divide-y divide-gray-100 rounded-md border border-gray-700 dark:border-gray-200"
                 >
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">

@@ -57,7 +57,7 @@ export default async function Header() {
 
                   {/* Desktop menu and search (lg+) */}
                   <div className="flex flex-1 items-center justify-center lg:justify-end">
-                    <div className={"lg:hidden mr-2"}>
+                    <div className={"mr-2 lg:hidden"}>
                       <MobileNav />
                     </div>
 
