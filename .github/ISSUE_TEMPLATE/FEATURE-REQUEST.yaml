@@ -45,7 +45,7 @@ body:
       placeholder: Identify any unresolved issues.
     validations:
       required: false
-  - type: checkbox
+  - type: checkboxes
     id: havechecked
     attributes:
       label: "I checked and didn't find similar issues"
