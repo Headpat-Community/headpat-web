@@ -5,15 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7e350a3-07ba-40db-8b8b-c535ca8dac13" name="Changes" comment="disable strict">
-      <change afterPath="$PROJECT_DIR$/public/badge/ticket.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/(account)/account/idcard/page.client.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/(account)/account/idcard/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/actions/user-actions.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/css/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(account)/account/badge/page.client.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/account/badge/page.client.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(account)/account/badge/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(account)/account/badge/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/actions/user-actions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/actions/user-actions.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prettier.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/users/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/users/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/actions/user-actions.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,32 +64,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "code.cleanup.on.save": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "appwrite",
-    "ignore.virus.scanning.warn.message": "true",
-    "javascript.nodejs.core.library.configured.version": "20.9.0",
-    "javascript.nodejs.core.library.typings.version": "20.9.5",
-    "last_opened_file_path": "D:/git/headpat/headpat.de/src/app/(account)/account",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "D:\\git\\headpat\\headpat.de\\node_modules\\prettier",
-    "rearrange.code.on.save": "true",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "D:\\git\\headpat\\headpat.de\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;code.cleanup.on.save&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;appwrite&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.9.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.9.5&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/git/headpat/headpat.de/src/app/(account)/account&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\git\\headpat\\headpat.de\\node_modules\\prettier&quot;,
+    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.HTML&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\git\\headpat\\headpat.de\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -106,9 +106,11 @@
       <recent name="D:\git\headpat\headpat.de\src\components" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\git\headpat\headpat.de\src\app\(main)\users" />
+      <recent name="D:\git\headpat\headpat.de\src\utils" />
+      <recent name="D:\git\headpat\headpat.de\src\utils\actions" />
       <recent name="D:\git\headpat\headpat.de\src\components\ui" />
       <recent name="D:\git\headpat\headpat.de\src\components\ui\custom" />
-      <recent name="D:\git\headpat\headpat.de\src\app\(account)" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -132,6 +134,7 @@
       <workItem from="1709669387737" duration="7936000" />
       <workItem from="1709751629246" duration="11000" />
       <workItem from="1709751650057" duration="8131000" />
+      <workItem from="1709827474634" duration="132000" />
     </task>
     <task id="LOCAL-00001" summary="feat: server actions">
       <option name="closed" value="true" />
