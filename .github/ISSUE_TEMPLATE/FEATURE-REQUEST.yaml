@@ -48,7 +48,7 @@ body:
   - type: checkboxes
     id: havechecked
     attributes:
-      label: "I checked and didn't find similar issues"
+      label: "Did you check for other issues?"
       options:
       - label: "I checked and didn't find similar issues"
     validations:
