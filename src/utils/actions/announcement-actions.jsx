@@ -1,11 +1,11 @@
 "use server";
-import { headers } from "next/headers";
+import { headers } from 'next/headers'
 
 export async function getAnnouncements() {
   const headersList = headers();
   const cookieHeader = headersList.get("cookie");
 
-  return await fetch(
+  const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/announcements/documents`,
     {
       method: "GET",
@@ -18,8 +18,15 @@ export async function getAnnouncements() {
       next: {
         revalidate: 5,
       },
-    },
-  ).then((response) => response.json());
+    }
+  );
+
+  try {
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to parse JSON:', error);
+    return [];
+  }
 }
 
 export async function getAnnouncement(announcementId) {

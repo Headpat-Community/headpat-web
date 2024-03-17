@@ -3,9 +3,14 @@ import { AnnouncementDataType, AnnouncementDocumentsType } from "utils/types";
 import { getAnnouncements } from "utils/actions/announcement-actions";
 
 export default async function AnnouncementNotification() {
-  let announcementTotalData: AnnouncementDataType = await getAnnouncements();
-  const announcementData: AnnouncementDocumentsType =
-    announcementTotalData.documents[0];
+let announcementTotalData: AnnouncementDataType = await getAnnouncements();
+let announcementData: AnnouncementDocumentsType | undefined;
+
+if (announcementTotalData && announcementTotalData.documents) {
+  announcementData = announcementTotalData.documents[0];
+}
+
+// rest of your code
 
   return (
     <>
