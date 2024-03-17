@@ -42,5 +42,5 @@ next-env.d.ts
 # Cloudflare Wrangler
 .wrangler
 
-# Sentry
+# Sentry Config File
 .sentryclirc
