@@ -1,7 +1,12 @@
 import Client from './page.client'
-import { getUserData, getUserSelf } from 'utils/actions/user-actions'
+import {
+  getUserData,
+  getUserDataSelf,
+  getUserSelf,
+} from 'utils/actions/user-actions'
 import { getGallery } from 'utils/actions/gallery-actions'
 import { notFound } from 'next/navigation'
+import { GalleryDocumentsType, GalleryType } from 'utils/types'
 
 export const runtime = 'edge'
 
@@ -12,13 +17,16 @@ export const metadata = {
 }
 
 export default async function Gallery({ params: { galleryId } }) {
-  const userSelf = await getUserSelf()
+  const userSelf = await getUserDataSelf()
+  const enableNsfw = userSelf?.enablensfw || false
 
-  const gallery = await getGallery(`queries[]=equal("$id","${galleryId}")`)
+  const gallery: GalleryType = await getGallery(
+    `queries[]=equal("$id","${galleryId}")`
+  )
   if (!gallery.documents) {
     return notFound()
   }
-  const galleryData = gallery.documents[0]
+  const galleryData: GalleryDocumentsType = gallery.documents[0]
 
   const userId = galleryData?.userId
   const userData = await getUserData(`queries[]=equal("$id","${userId}")`)
@@ -32,7 +40,7 @@ export default async function Gallery({ params: { galleryId } }) {
       <Client
         userData={userData[0]}
         gallery={galleryData}
-        userSelf={userSelf}
+        enableNsfw={enableNsfw}
       />
     </div>
   )

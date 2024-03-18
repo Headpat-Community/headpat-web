@@ -1,15 +1,23 @@
 import Link from 'next/link'
+import { GalleryDocumentsType, UserDataType } from 'utils/types'
+import { Button } from 'components/ui/button'
 
-export default function FetchGallery({ gallery, userData, userSelf }) {
-  const enableNsfw = userSelf?.enablensfw
-
+export default function FetchGallery({
+  gallery,
+  userData,
+  enableNsfw,
+}: {
+  gallery: GalleryDocumentsType
+  userData: UserDataType
+  enableNsfw: boolean
+}) {
   const getGalleryImageUrl = (galleryId: string) => {
     return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
   }
 
   const url = getGalleryImageUrl(gallery?.gallery_id)
   const name = gallery?.name
-  const longtext = gallery?.longtext
+  const longtext = gallery?.longText
   const nsfw = gallery?.nsfw
 
   const isNsfwImage = nsfw && !enableNsfw
@@ -44,12 +52,12 @@ export default function FetchGallery({ gallery, userData, userSelf }) {
                       }}
                     ></div>
                     <div className="relative z-10 rounded-lg bg-white p-4 text-xl text-black shadow-lg">
-                      You disabled NSFW or you are not logged in, so you can't
-                      see this image.
+                      You disabled NSFW or you are not logged in, so you
+                      can&apos;t see this image.
                       <br />
                       <br />
-                      <Link className="text-indigo-600" href="">
-                        Back to gallery
+                      <Link href=".">
+                        <Button>Back to gallery</Button>
                       </Link>
                     </div>
                   </div>
