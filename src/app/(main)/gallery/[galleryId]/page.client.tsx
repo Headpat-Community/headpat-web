@@ -15,7 +15,7 @@ export default function FetchGallery({
     return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
   }
 
-  const url = getGalleryImageUrl(gallery?.gallery_id)
+  const url = getGalleryImageUrl(gallery?.galleryId)
   const name = gallery?.name
   const longtext = gallery?.longText
   const nsfw = gallery?.nsfw
