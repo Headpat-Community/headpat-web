@@ -1,6 +1,6 @@
 // Import necessary modules and components
-import Header from "../../components/header/header-server";
-import Footer from "../../components/footer";
+import Header from '../../components/header/header-server'
+import Footer from '../../components/footer'
 
 export default function LocaleLayout({ children }) {
   return (
@@ -9,5 +9,5 @@ export default function LocaleLayout({ children }) {
       {children}
       <Footer />
     </div>
-  );
+  )
 }

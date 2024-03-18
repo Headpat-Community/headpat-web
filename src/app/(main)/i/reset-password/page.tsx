@@ -1,61 +1,61 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { ErrorMessage } from "components/alerts";
-import { resetPassword } from "utils/actions/user-actions";
+'use client'
+import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { ErrorMessage } from 'components/alerts'
+import { resetPassword } from 'utils/actions/user-actions'
 
-export const runtime = "edge";
+export const runtime = 'edge'
 
 const ResetPassword = () => {
-  const [code, setCode] = useState("");
-  const [userId, setUserId] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  const [code, setCode] = useState('')
+  const [userId, setUserId] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const userIdParam = urlParams.get("userId");
-    const codeParam = urlParams.get("secret");
+    const urlParams = new URLSearchParams(window.location.search)
+    const userIdParam = urlParams.get('userId')
+    const codeParam = urlParams.get('secret')
     if (userIdParam) {
-      setUserId(userIdParam);
+      setUserId(userIdParam)
     }
     if (codeParam) {
-      setCode(codeParam);
+      setCode(codeParam)
     }
-  }, []);
+  }, [])
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     const body = JSON.stringify({
       userId: userId,
       secret: code,
       password: password,
       passwordAgain: confirmPassword,
-    });
+    })
 
-    const response = await resetPassword(body);
+    const response = await resetPassword(body)
     if (response === 400) {
       setError(
-        `Incorrect credentials or already made account! We tried everything, It's just not possible.`,
-      );
+        `Incorrect credentials or already made account! We tried everything, It's just not possible.`
+      )
       setTimeout(() => {
-        setError("");
-      }, 5000);
+        setError('')
+      }, 5000)
     } else if (response === 429) {
-      setError("Too many requests!");
+      setError('Too many requests!')
       setTimeout(() => {
-        setError("");
-      }, 5000);
+        setError('')
+      }, 5000)
     } else if (response === 500) {
-      setError("Server error!");
+      setError('Server error!')
       setTimeout(() => {
-        setError("");
-      }, 5000);
+        setError('')
+      }, 5000)
     }
-  };
+  }
 
   return (
     <>
@@ -184,7 +184,7 @@ const ResetPassword = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ResetPassword;
+export default ResetPassword

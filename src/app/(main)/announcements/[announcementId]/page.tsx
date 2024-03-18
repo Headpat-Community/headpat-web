@@ -1,28 +1,28 @@
-import Link from "next/link";
-import { getAnnouncement } from "utils/actions/announcement-actions";
-import { AnnouncementDocumentsType } from "utils/types";
+import Link from 'next/link'
+import { getAnnouncement } from 'utils/actions/announcement-actions'
+import { AnnouncementDocumentsType } from 'utils/types'
 
-export const runtime = "edge";
+export const runtime = 'edge'
 
 export const metadata = {
-  title: "Announcements",
-};
+  title: 'Announcements',
+}
 
 const getAvatarImageUrl = (galleryId: string) => {
   if (!galleryId) {
-    return "/logos/Headpat_new_logo.webp";
+    return '/logos/Headpat_new_logo.webp'
   }
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`;
-};
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`
+}
 
 export default async function Page({
   params: { announcementId },
 }: {
-  params: { announcementId: string };
+  params: { announcementId: string }
 }) {
   const announcementData: AnnouncementDocumentsType =
-    await getAnnouncement(announcementId);
-  console.log(announcementData);
+    await getAnnouncement(announcementId)
+
   return (
     <>
       <div>
@@ -52,29 +52,29 @@ export default async function Page({
                   <img
                     className="mr-4 h-12 w-12 flex-none rounded-full"
                     src={getAvatarImageUrl(
-                      announcementData?.userData?.avatarId,
+                      announcementData?.userData?.avatarId
                     )}
                     alt=""
                     width={48}
                     height={48}
                   />
                   {announcementData?.userData?.displayName ||
-                    "Unbekannter Benutzer"}
+                    'Unbekannter Benutzer'}
                 </Link>
               </dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm font-medium leading-6">Title</dt>
               <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
-                <strong>{announcementData?.title || "Unknown"}</strong>{" "}
+                <strong>{announcementData?.title || 'Unknown'}</strong>{' '}
                 <svg
                   viewBox="0 0 2 2"
                   className="mx-2 inline h-0.5 w-0.5 fill-current"
                   aria-hidden="true"
                 >
                   <circle cx={1} cy={1} r={1} />
-                </svg>{" "}
-                {announcementData?.sideText || "Unknown"}
+                </svg>{' '}
+                {announcementData?.sideText || 'Unknown'}
               </dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -106,12 +106,12 @@ export default async function Page({
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm font-medium leading-6">Description</dt>
               <dd className="mb-4 mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
-                {announcementData?.description || "Unknown"}
+                {announcementData?.description || 'Unknown'}
               </dd>
             </div>
           </dl>
         </div>
       </div>
     </>
-  );
+  )
 }

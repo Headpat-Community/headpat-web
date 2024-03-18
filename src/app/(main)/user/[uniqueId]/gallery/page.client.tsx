@@ -1,95 +1,95 @@
-"use client";
-import { Fragment, useEffect, useState } from "react";
-import Link from "next/link";
-import { Menu, Transition } from "@headlessui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+'use client'
+import { Fragment, useEffect, useState } from 'react'
+import Link from 'next/link'
+import { Menu, Transition } from '@headlessui/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faDiscord,
   faTelegram,
   faTwitch,
   faXTwitter,
-} from "@fortawesome/free-brands-svg-icons";
-import Image from "next/image";
+} from '@fortawesome/free-brands-svg-icons'
+import Image from 'next/image'
 
 export default function FetchGallery() {
-  const [gallery, setGallery] = useState([]);
-  const [userId, setUserId] = useState(null);
-  const [enableNsfw, setEnableNsfw] = useState(false);
-  const [userData, setUserData] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [gallery, setGallery] = useState([])
+  const [userId, setUserId] = useState(null)
+  const [enableNsfw, setEnableNsfw] = useState(false)
+  const [userData, setUserData] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
   //const [totalPages, setTotalPages] = useState(1)
 
   const username =
-    typeof window !== "undefined" ? window.location.pathname.split("/")[2] : "";
+    typeof window !== 'undefined' ? window.location.pathname.split('/')[2] : ''
 
   const getGalleryImageUrl = (galleryId: string) => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`;
-  };
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`
+  }
 
   const getAvatarImageUrl = (galleryId: string) => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`;
-  };
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`
+  }
 
   useEffect(() => {
     fetch(
       `/api/user/getUserProfileFilter?queries[]=equal("profileurl","${username}")`,
       {
-        method: "GET",
-      },
+        method: 'GET',
+      }
     )
       .then((response) => response.json())
       .then((data) => {
-        setUserData(data.documents[0]); // Access the first (and only) object in the array
-        setUserId(data.documents[0].$id);
+        setUserData(data.documents[0]) // Access the first (and only) object in the array
+        setUserId(data.documents[0].$id)
       })
       .catch((error) => {
-        console.error(error);
-      });
-  }, [username]);
+        console.error(error)
+      })
+  }, [username])
 
   useEffect(() => {
-    if (!userId) return; // Wait for userId to be available
+    if (!userId) return // Wait for userId to be available
 
     const fetchUserData = async () => {
       try {
         const response = await fetch(`/api/user/getUserDataSelf`, {
-          method: "GET",
-        });
+          method: 'GET',
+        })
 
-        const data = await response.json();
-        setEnableNsfw(data[0].enablensfw);
+        const data = await response.json()
+        setEnableNsfw(data[0].enablensfw)
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
-    };
+    }
 
-    fetchUserData();
-  }, [userId]);
+    fetchUserData()
+  }, [userId])
 
   useEffect(() => {
-    if (!userId) return; // Wait for userId to be available
+    if (!userId) return // Wait for userId to be available
 
     const filters = !enableNsfw
       ? `queries[]=equal("userId","${userId}")&queries[]=equal("nsfw",false)`
-      : `queries[]=equal("userId","${userId}")`;
+      : `queries[]=equal("userId","${userId}")`
 
-    const pageSize = 500; // Number of items per page
-    const offset = (currentPage - 1) * pageSize; // Calculate offset based on current page
-    const apiUrl = `/api/gallery/getUserGallery?${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`;
+    const pageSize = 500 // Number of items per page
+    const offset = (currentPage - 1) * pageSize // Calculate offset based on current page
+    const apiUrl = `/api/gallery/getUserGallery?${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`
 
     fetch(apiUrl, {
-      method: "GET",
+      method: 'GET',
     })
       .then((response) => response.json())
       .then((data) => {
         //setGallery(data.data.reverse());
-        setGallery(data.documents);
+        setGallery(data.documents)
         //setTotalPages(data.total / pageSize)
       })
       .catch((error) => {
-        console.error(error);
-      });
-  }, [userId, enableNsfw, currentPage]);
+        console.error(error)
+      })
+  }, [userId, enableNsfw, currentPage])
 
   /*
     const handlePageChange = (page) => {
@@ -98,7 +98,7 @@ export default function FetchGallery() {
     }*/
 
   function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
+    return classes.filter(Boolean).join(' ')
   }
 
   return (
@@ -114,7 +114,7 @@ export default function FetchGallery() {
                 className="aspect-[1154/678] w-[72.125rem] bg-gradient-to-br from-[#007f4a] to-[#6f7603] dark:from-[#FF80B5] dark:to-[#9089FC]"
                 style={{
                   clipPath:
-                    "polygon(100% 38.5%, 82.6% 100%, 60.2% 37.7%, 52.4% 32.1%, 47.5% 41.8%, 45.2% 65.6%, 27.5% 23.4%, 0.1% 35.3%, 17.9% 0%, 27.7% 23.4%, 76.2% 2.5%, 74.2% 56%, 100% 38.5%)",
+                    'polygon(100% 38.5%, 82.6% 100%, 60.2% 37.7%, 52.4% 32.1%, 47.5% 41.8%, 45.2% 65.6%, 27.5% 23.4%, 0.1% 35.3%, 17.9% 0%, 27.7% 23.4%, 76.2% 2.5%, 74.2% 56%, 100% 38.5%)',
                 }}
               />
             </div>
@@ -125,7 +125,7 @@ export default function FetchGallery() {
             <div className="mx-auto flex max-w-2xl items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
               <div className="flex items-center gap-x-6">
                 <Link
-                  href={"."}
+                  href={'.'}
                   className="hidden rounded-md bg-indigo-600 p-2 pb-1 pt-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:block"
                 >
                   Go back
@@ -321,8 +321,8 @@ export default function FetchGallery() {
                             <Link
                               href={`/user/${username}/gallery`}
                               className={classNames(
-                                active ? "bg-gray-50" : "",
-                                "block w-full px-3 py-1 text-left text-sm leading-6 text-black",
+                                active ? 'bg-gray-50' : '',
+                                'block w-full px-3 py-1 text-left text-sm leading-6 text-black'
                               )}
                             >
                               Gallery
@@ -330,12 +330,12 @@ export default function FetchGallery() {
                             <button
                               type="button"
                               className={classNames(
-                                active ? "bg-gray-50" : "",
-                                "block w-full px-3 py-1 text-left text-sm leading-6 text-black",
+                                active ? 'bg-gray-50' : '',
+                                'block w-full px-3 py-1 text-left text-sm leading-6 text-black'
                               )}
                               onClick={() =>
                                 navigator.clipboard.writeText(
-                                  window.location.href,
+                                  window.location.href
                                 )
                               }
                             >
@@ -361,7 +361,7 @@ export default function FetchGallery() {
               {item && (
                 <div
                   className={`h-64 overflow-hidden rounded-lg ${
-                    item.nsfw && !enableNsfw ? "relative" : ""
+                    item.nsfw && !enableNsfw ? 'relative' : ''
                   }`}
                 >
                   {item.nsfw && !enableNsfw && (
@@ -384,5 +384,5 @@ export default function FetchGallery() {
         </ul>
       </div>
     </>
-  );
+  )
 }

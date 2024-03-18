@@ -1,75 +1,75 @@
-"use client";
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { ErrorMessage } from "components/alerts";
-import { account, functions } from "../../appwrite";
-import { ExecutionMethod, ID } from "appwrite";
+'use client'
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { ErrorMessage } from 'components/alerts'
+import { account, functions } from '../../appwrite'
+import { ExecutionMethod, ID } from 'appwrite'
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isRegistering, setIsRegistering] = useState(false);
+  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [isRegistering, setIsRegistering] = useState(false)
 
   const handleEmailLogin = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
-      let response;
+      let response
       if (isRegistering) {
-        response = await account.create(ID.unique(), email, password, username);
+        response = await account.create(ID.unique(), email, password, username)
       } else {
-        response = await account.createEmailPasswordSession(email, password);
+        response = await account.createEmailPasswordSession(email, password)
       }
       if (response) {
-        window.location.href = "/account";
+        window.location.href = '/account'
       }
     } catch (error) {
       if (error.code === 400) {
-        setError("Invalid email provided.");
+        setError('Invalid email provided.')
       } else if (error.code === 401) {
-        setError("Email or password is incorrect.");
+        setError('Email or password is incorrect.')
       } else if (error.code === 409) {
-        setError("Email already in use.");
+        setError('Email already in use.')
       } else if (error.code === 429) {
-        setError("Too many requests. Please try again later.");
+        setError('Too many requests. Please try again later.')
       }
       setTimeout(() => {
-        setError("");
-      }, 5000);
+        setError('')
+      }, 5000)
     }
-  };
+  }
 
   const handleSession = async () => {
-    const response = await account.getSession("current");
+    const response = await account.getSession('current')
     if (response) {
-      window.location.href = "/account";
+      window.location.href = '/account'
     }
-  };
+  }
 
   const handleOAuth2Login = async (provider) => {
     account.createOAuth2Session(
       provider,
       `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
-      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`,
-    );
-  };
+      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
+    )
+  }
 
   useEffect(() => {
     //handleSession()
-  }, []);
+  }, [])
 
   const handleFunction = async () => {
     const response = await functions.createExecution(
-      "65e2126d9e431eb3c473",
-      "",
+      '65e2126d9e431eb3c473',
+      '',
       false,
-      "/getUserSelf",
-      ExecutionMethod.GET,
-    );
-    return response.responseBody;
-  };
+      '/getUserSelf',
+      ExecutionMethod.GET
+    )
+    return response.responseBody
+  }
 
   return (
     <>
@@ -86,7 +86,7 @@ export default function Login() {
               Welcome to Headpat!
             </h2>
             <p className="mt-2 text-sm leading-6 text-gray-500">
-              {isRegistering ? "Already registered?" : "Not yet registered?"}{" "}
+              {isRegistering ? 'Already registered?' : 'Not yet registered?'}{' '}
               <Link
                 href="#"
                 onClick={() => setIsRegistering(!isRegistering)}
@@ -182,7 +182,7 @@ export default function Login() {
                     onClick={handleEmailLogin}
                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                    {!isRegistering ? "Sign in" : "Register"}
+                    {!isRegistering ? 'Sign in' : 'Register'}
                   </button>
                 </div>
                 <div>
@@ -214,7 +214,7 @@ export default function Login() {
 
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <button
-                  onClick={() => handleOAuth2Login("discord")}
+                  onClick={() => handleOAuth2Login('discord')}
                   className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#5865F2] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20"
                 >
                   <svg
@@ -231,7 +231,7 @@ export default function Login() {
                 </button>
 
                 <button
-                  onClick={() => handleOAuth2Login("github")}
+                  onClick={() => handleOAuth2Login('github')}
                   className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20"
                 >
                   <svg
@@ -252,7 +252,7 @@ export default function Login() {
                 </button>
 
                 <button
-                  onClick={() => handleOAuth2Login("apple")}
+                  onClick={() => handleOAuth2Login('apple')}
                   className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#000000] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20"
                 >
                   <svg
@@ -267,7 +267,7 @@ export default function Login() {
                 </button>
 
                 <button
-                  onClick={() => handleOAuth2Login("google")}
+                  onClick={() => handleOAuth2Login('google')}
                   className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#131314] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20"
                 >
                   <svg
@@ -301,7 +301,7 @@ export default function Login() {
                 </button>
 
                 <button
-                  onClick={() => handleOAuth2Login("spotify")}
+                  onClick={() => handleOAuth2Login('spotify')}
                   className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#1DB954] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20"
                 >
                   <svg
@@ -336,5 +336,5 @@ export default function Login() {
         </div>
       </div>
     </>
-  );
+  )
 }

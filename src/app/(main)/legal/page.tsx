@@ -1,11 +1,11 @@
-import { PaperClipIcon } from "@heroicons/react/20/solid";
-import Link from "next/link";
+import { PaperClipIcon } from '@heroicons/react/20/solid'
+import Link from 'next/link'
 
 export const metadata = {
-  title: "Legal",
-};
+  title: 'Legal',
+}
 
-export const runtime = "edge";
+export const runtime = 'edge'
 
 export default function LegalPage() {
   return (
@@ -26,7 +26,7 @@ export default function LegalPage() {
               <dd className="mt-1 text-sm leading-6 text-black/80 dark:text-white/80 sm:col-span-2 sm:mt-0">
                 Here you can download all the legal documents that are related
                 to the use of our website or app. If you have any questions,
-                please contact us at{" "}
+                please contact us at{' '}
                 <Link
                   className="text-indigo-600 hover:text-indigo-500"
                   href="mailto:help@headpat.de"
@@ -215,5 +215,5 @@ export default function LegalPage() {
         </div>
       </div>
     </>
-  );
+  )
 }

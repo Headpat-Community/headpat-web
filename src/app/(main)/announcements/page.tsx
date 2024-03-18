@@ -1,26 +1,26 @@
-import { getAnnouncements } from "../../../utils/actions/announcement-actions";
-import Image from "next/image";
-import Link from "next/link";
-import { ChevronRightIcon } from "@heroicons/react/20/solid";
-import { AnnouncementDataType, AnnouncementDocumentsType } from "utils/types";
+import { getAnnouncements } from '../../../utils/actions/announcement-actions'
+import Image from 'next/image'
+import Link from 'next/link'
+import { ChevronRightIcon } from '@heroicons/react/20/solid'
+import { AnnouncementDataType, AnnouncementDocumentsType } from 'utils/types'
 
-export const runtime = "edge";
+export const runtime = 'edge'
 
 export const metadata = {
-  title: "Announcements",
-};
+  title: 'Announcements',
+}
 
 const getAvatarImageUrl = (galleryId: string) => {
   if (!galleryId) {
-    return "/logos/Headpat_new_logo.webp";
+    return '/logos/Headpat_new_logo.webp'
   }
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`;
-};
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`
+}
 
 export default async function AnnouncementsPage() {
-  const announcementDataTotal: AnnouncementDataType = await getAnnouncements();
+  const announcementDataTotal: AnnouncementDataType = await getAnnouncements()
   const announcementData: AnnouncementDocumentsType[] =
-    announcementDataTotal.documents;
+    announcementDataTotal.documents
   return (
     <>
       <h1 className="mt-4 text-center text-4xl">Announcements</h1>
@@ -60,14 +60,14 @@ export default async function AnnouncementsPage() {
                     {announcement.validUntil ? (
                       <>
                         <p className="mt-1 text-xs leading-5 text-black/80 dark:text-white/80">
-                          Valid until{" "}
+                          Valid until{' '}
                           <time
                             dateTime={new Date(
-                              announcement.validUntil,
+                              announcement.validUntil
                             ).toISOString()}
                           >
                             {new Date(
-                              announcement.validUntil,
+                              announcement.validUntil
                             ).toLocaleDateString()}
                           </time>
                         </p>
@@ -99,9 +99,9 @@ export default async function AnnouncementsPage() {
                   />
                 </div>
               </li>
-            );
+            )
           })}
       </ul>
     </>
-  );
+  )
 }

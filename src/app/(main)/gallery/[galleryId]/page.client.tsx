@@ -1,18 +1,18 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 export default function FetchGallery({ gallery, userData, userSelf }) {
-  const enableNsfw = userSelf?.enablensfw;
+  const enableNsfw = userSelf?.enablensfw
 
   const getGalleryImageUrl = (galleryId: string) => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`;
-  };
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
+  }
 
-  const url = getGalleryImageUrl(gallery?.gallery_id);
-  const name = gallery?.name;
-  const longtext = gallery?.longtext;
-  const nsfw = gallery?.nsfw;
+  const url = getGalleryImageUrl(gallery?.gallery_id)
+  const name = gallery?.name
+  const longtext = gallery?.longtext
+  const nsfw = gallery?.nsfw
 
-  const isNsfwImage = nsfw && !enableNsfw;
+  const isNsfwImage = nsfw && !enableNsfw
 
   // The rest of the component remains unchanged with conditional rendering based on the data's availability.
   return (
@@ -44,12 +44,12 @@ export default function FetchGallery({ gallery, userData, userSelf }) {
                       }}
                     ></div>
                     <div className="relative z-10 rounded-lg bg-white p-4 text-xl text-black shadow-lg">
-                      Du hast NSFW deaktiviert oder du bist nicht eingeloggt,
-                      daher kannst du dieses Bild nicht sehen.
+                      You disabled NSFW or you are not logged in, so you can't
+                      see this image.
                       <br />
                       <br />
                       <Link className="text-indigo-600" href="">
-                        Zurück zur Galerie
+                        Back to gallery
                       </Link>
                     </div>
                   </div>
@@ -57,7 +57,7 @@ export default function FetchGallery({ gallery, userData, userSelf }) {
                   <>
                     <img
                       src={url}
-                      alt={name || "Headpat Community Image"}
+                      alt={name || 'Headpat Community Image'}
                       className={`imgsinglegallery mx-auto h-[400px] w-auto max-w-full rounded-lg object-contain sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`}
                     />
                     <div className="ml-4">
@@ -66,61 +66,61 @@ export default function FetchGallery({ gallery, userData, userSelf }) {
                           <div className="ml-4">
                             <div className="mt-4 px-4 sm:px-0">
                               <h3 className="text-base font-semibold leading-7">
-                                Bild Informationen
+                                Image information
                               </h3>
                             </div>
                             <div className="mt-4 border-t border-black/10 dark:border-white/10">
                               <dl className="divide-y divide-black/10 dark:divide-white/10">
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                   <dt className="text-sm font-medium leading-6">
-                                    Titel
+                                    Title
                                   </dt>
                                   <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                    {name || "No title provided."}
+                                    {name || 'No title provided.'}
                                   </dd>
                                 </div>
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                   <dt className="text-sm font-medium leading-6">
-                                    Benutzer:
+                                    User:
                                   </dt>
                                   <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
                                     <Link
-                                      href={`/user/${userData.profileurl}`}
+                                      href={`/user/${userData[0].profileUrl}`}
                                       className="text-indigo-500 hover:text-indigo-400"
                                     >
-                                      {userData.displayname}
+                                      {userData[0].displayname}
                                     </Link>
                                   </dd>
                                 </div>
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                   <dt className="text-sm font-medium leading-6">
-                                    Erstellt am
+                                    Created at
                                   </dt>
                                   <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
                                     {new Date(
-                                      userData.$createdAt,
-                                    ).toLocaleString("en-GB", {
-                                      day: "2-digit",
-                                      month: "2-digit",
-                                      year: "numeric",
-                                      hour: "2-digit",
-                                      minute: "2-digit",
+                                      userData[0].$createdAt
+                                    ).toLocaleString('en-GB', {
+                                      day: '2-digit',
+                                      month: '2-digit',
+                                      year: 'numeric',
+                                      hour: '2-digit',
+                                      minute: '2-digit',
                                     })}
                                   </dd>
                                 </div>
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                   <dt className="text-sm font-medium leading-6">
-                                    Letzte Änderung
+                                    Last changed
                                   </dt>
                                   <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
                                     {new Date(
-                                      userData.$updatedAt,
-                                    ).toLocaleString("en-GB", {
-                                      day: "2-digit",
-                                      month: "2-digit",
-                                      year: "numeric",
-                                      hour: "2-digit",
-                                      minute: "2-digit",
+                                      userData[0].$updatedAt
+                                    ).toLocaleString('en-GB', {
+                                      day: '2-digit',
+                                      month: '2-digit',
+                                      year: 'numeric',
+                                      hour: '2-digit',
+                                      minute: '2-digit',
                                     })}
                                   </dd>
                                 </div>
@@ -129,15 +129,15 @@ export default function FetchGallery({ gallery, userData, userSelf }) {
                                     NSFW
                                   </dt>
                                   <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                    {nsfw ? "Yes" : "No"}
+                                    {nsfw ? 'Yes' : 'No'}
                                   </dd>
                                 </div>
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                   <dt className="text-sm font-medium leading-6">
-                                    Beschreibung
+                                    Description
                                   </dt>
                                   <dd className="mt-1 max-w-full break-words text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                    {longtext || "No description provided."}
+                                    {longtext || 'No description provided.'}
                                   </dd>
                                 </div>
                               </dl>
@@ -149,10 +149,10 @@ export default function FetchGallery({ gallery, userData, userSelf }) {
                   </>
                 )}
               </div>
-            );
+            )
           })()}
         </div>
       </div>
     </div>
-  );
+  )
 }

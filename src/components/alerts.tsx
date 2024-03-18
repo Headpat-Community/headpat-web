@@ -17,13 +17,13 @@ export function ErrorMessage({ attentionError }: { attentionError: string }) {
         </div>
       </div>
     </>
-  );
+  )
 }
 
 export function SuccessMessage({
   attentionSuccess,
 }: {
-  attentionSuccess: string;
+  attentionSuccess: string
 }) {
   return (
     <>
@@ -43,5 +43,5 @@ export function SuccessMessage({
         </div>
       </div>
     </>
-  );
+  )
 }

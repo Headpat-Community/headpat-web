@@ -1,14 +1,14 @@
-"use client";
-import * as React from "react";
+'use client'
+import * as React from 'react'
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "../ui/navigation-menu";
-import Link from "next/link";
+} from '../ui/navigation-menu'
+import Link from 'next/link'
 
 export function NavigationMenuExport() {
   return (
@@ -36,12 +36,12 @@ export function NavigationMenuExport() {
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
-  );
+  )
 }
 
 const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
+  React.ElementRef<'a'>,
+  React.ComponentPropsWithoutRef<'a'>
 >(({ className, title, children, ...props }, ref) => {
   return (
     <li>
@@ -50,8 +50,8 @@ const ListItem = React.forwardRef<
           //ref={ref}
           href={props.href}
           className={cn(
-            "block rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground",
-            className,
+            'block rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground',
+            className
           )}
           {...props}
         >
@@ -62,6 +62,6 @@ const ListItem = React.forwardRef<
         </Link>
       </NavigationMenuLink>
     </li>
-  );
-});
-ListItem.displayName = "ListItem";
+  )
+})
+ListItem.displayName = 'ListItem'

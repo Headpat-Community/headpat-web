@@ -1,11 +1,11 @@
-import Link from "next/link";
-import { getUsers } from "utils/actions/user-actions";
-import { UserDataDocumentsType } from "utils/types";
+import Link from 'next/link'
+import { getUsers } from 'utils/actions/user-actions'
+import { UserDataDocumentsType } from 'utils/types'
 
-export const runtime = "edge";
+export const runtime = 'edge'
 
 export default async function Users() {
-  const users: UserDataDocumentsType[] = await getUsers();
+  const users: UserDataDocumentsType[] = await getUsers()
 
   return (
     <div className="mb-8 px-4 sm:px-6 lg:px-8">
@@ -59,13 +59,13 @@ export default async function Users() {
                 {users.map((user) => (
                   <tr key={user.$id}>
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-6">
-                      {user.displayName || "Keine Angabe"}
+                      {user.displayName || 'Keine Angabe'}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">
-                      {user.status || "Keine Angabe"}
+                      {user.status || 'Keine Angabe'}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">
-                      {user.pronouns || "Keine Angabe"}
+                      {user.pronouns || 'Keine Angabe'}
                     </td>
                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                       <Link
@@ -84,5 +84,5 @@ export default async function Users() {
         </div>
       </div>
     </div>
-  );
+  )
 }

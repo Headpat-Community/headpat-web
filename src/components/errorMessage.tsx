@@ -1,7 +1,7 @@
 export default function ErrorMessage({
   attentionError,
 }: {
-  attentionError: string;
+  attentionError: string
 }) {
   return (
     <>
@@ -21,5 +21,5 @@ export default function ErrorMessage({
         </div>
       </div>
     </>
-  );
+  )
 }

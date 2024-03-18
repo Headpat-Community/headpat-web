@@ -1,27 +1,27 @@
-"use client";
-import { useState } from "react";
-import { RadioGroup } from "@headlessui/react";
+'use client'
+import { useState } from 'react'
+import { RadioGroup } from '@headlessui/react'
 import {
   CurrencyDollarIcon,
   GlobeAmericasIcon,
-} from "@heroicons/react/24/outline";
+} from '@heroicons/react/24/outline'
 
 const product = {
-  name: "Basic Tee",
-  price: "€50000",
+  name: 'Basic Tee',
+  price: '€50000',
   sizes: [
-    { name: "XS", inStock: true },
-    { name: "S", inStock: true },
-    { name: "M", inStock: true },
-    { name: "L", inStock: false },
-    { name: "L", inStock: true },
-    { name: "XL", inStock: true },
-    { name: "2XL", inStock: true },
+    { name: 'XS', inStock: true },
+    { name: 'S', inStock: true },
+    { name: 'M', inStock: true },
+    { name: 'L', inStock: false },
+    { name: 'L', inStock: true },
+    { name: 'XL', inStock: true },
+    { name: '2XL', inStock: true },
   ],
   images: [
     {
       id: 1,
-      imageSrc: "/images/404.webp",
+      imageSrc: '/images/404.webp',
       imageAlt: "Back of women's Basic Tee in black.",
       primary: true,
     },
@@ -32,33 +32,33 @@ const product = {
     <p>Looking to stock your closet? The Basic tee also comes in a 3-pack or 5-pack at a bundle discount.</p>
   `,
   details: [
-    "Only the best materials",
-    "Ethically and locally made",
-    "Pre-washed and pre-shrunk",
-    "Machine wash cold with similar colors",
+    'Only the best materials',
+    'Ethically and locally made',
+    'Pre-washed and pre-shrunk',
+    'Machine wash cold with similar colors',
   ],
-};
+}
 const policies = [
   {
-    name: "Limited Delivery",
+    name: 'Limited Delivery',
     icon: GlobeAmericasIcon,
-    description: "Germany, Austria, Switzerland",
+    description: 'Germany, Austria, Switzerland',
   },
   {
-    name: "Special Delivery",
+    name: 'Special Delivery',
     icon: CurrencyDollarIcon,
-    description: "Get the badge delivered at the next Eurofurence",
+    description: 'Get the badge delivered at the next Eurofurence',
   },
-];
+]
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ')
 }
 
-export const runtime = "edge";
+export const runtime = 'edge'
 
 export default function Example() {
-  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null)
 
   return (
     <>
@@ -77,9 +77,9 @@ export default function Example() {
                     alt={image.imageAlt}
                     className={classNames(
                       image.primary
-                        ? "lg:col-span-2 lg:row-span-2"
-                        : "hidden lg:block",
-                      "rounded-lg",
+                        ? 'lg:col-span-2 lg:row-span-2'
+                        : 'hidden lg:block',
+                      'rounded-lg'
                     )}
                   />
                 ))}
@@ -153,14 +153,14 @@ export default function Example() {
                               value={size}
                               className={({ active, checked }) =>
                                 classNames(
-                                  "cursor-pointer focus:outline-none",
+                                  'cursor-pointer focus:outline-none',
                                   active
-                                    ? "ring-2 ring-indigo-500 ring-offset-2"
-                                    : "",
+                                    ? 'ring-2 ring-indigo-500 ring-offset-2'
+                                    : '',
                                   checked
-                                    ? "border-transparent bg-indigo-600 text-white hover:bg-indigo-700"
-                                    : "border-gray-200 bg-white text-gray-900 hover:bg-gray-50",
-                                  "flex items-center justify-center rounded-md border px-3 py-3 text-sm font-medium uppercase sm:flex-1",
+                                    ? 'border-transparent bg-indigo-600 text-white hover:bg-indigo-700'
+                                    : 'border-gray-200 bg-white text-gray-900 hover:bg-gray-50',
+                                  'flex items-center justify-center rounded-md border px-3 py-3 text-sm font-medium uppercase sm:flex-1'
                                 )
                               }
                             >
@@ -215,5 +215,5 @@ export default function Example() {
         </main>
       </div>
     </>
-  );
+  )
 }

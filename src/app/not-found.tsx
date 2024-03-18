@@ -1,44 +1,44 @@
-import { ChevronRightIcon } from "@heroicons/react/20/solid";
-import { PhotoIcon, HomeIcon } from "@heroicons/react/24/solid";
+import { ChevronRightIcon } from '@heroicons/react/20/solid'
+import { PhotoIcon, HomeIcon } from '@heroicons/react/24/solid'
 import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
-} from "@fortawesome/react-fontawesome";
-import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
-import Link from "next/link";
-import Image from "next/image";
-import { JSX } from "react";
+} from '@fortawesome/react-fontawesome'
+import { faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons'
+import Link from 'next/link'
+import Image from 'next/image'
+import { JSX } from 'react'
 
 const links = [
   {
-    name: "Home",
-    href: "/",
-    description: "Die Homepage.",
+    name: 'Home',
+    href: '/',
+    description: 'Die Homepage.',
     icon: HomeIcon,
   },
   {
-    name: "Gallery",
-    href: "/gallery",
-    description: "Alle Fotos die hochgeladen wurden von der Community.",
+    name: 'Gallery',
+    href: '/gallery',
+    description: 'Alle Fotos die hochgeladen wurden von der Community.',
     icon: PhotoIcon,
   },
-];
+]
 const social = [
   {
-    name: "Discord",
-    href: "https://discord.gg/headpat",
+    name: 'Discord',
+    href: 'https://discord.gg/headpat',
     icon: (props: any) => (
       <FontAwesomeIcon icon={faDiscord} className="h-6 w-6" {...props} />
     ),
   },
   {
-    name: "GitHub",
-    href: "https://github.com/Headpat-Community/headpat.de",
+    name: 'GitHub',
+    href: 'https://github.com/Headpat-Community/headpat.de',
     icon: (props: any) => (
       <FontAwesomeIcon icon={faGithub} className="h-6 w-6" {...props} />
     ),
   },
-];
+]
 
 export default function NotFoundComponent() {
   return (
@@ -129,5 +129,5 @@ export default function NotFoundComponent() {
         </div>
       </footer>
     </div>
-  );
+  )
 }

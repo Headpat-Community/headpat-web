@@ -1,101 +1,101 @@
-"use client";
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import Loading from "@/app/loading";
-import { ErrorMessage, SuccessMessage } from "@/components/alerts";
+'use client'
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import Loading from '@/app/loading'
+import { ErrorMessage, SuccessMessage } from '@/components/alerts'
 
 export default function AccountPage() {
-  const [isUploading, setIsUploading] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isUploading, setIsUploading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [userData, setUserData] = useState({
-    discordname: "",
-    telegramname: "",
-    furaffinityname: "",
-    X_name: "",
-    twitchname: "",
-  });
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+    discordname: '',
+    telegramname: '',
+    furaffinityname: '',
+    X_name: '',
+    twitchname: '',
+  })
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
+      setIsLoading(true)
       try {
         const userDataResponse = await fetch(`/api/user/getUserDataSelf`, {
-          method: "GET",
-        });
+          method: 'GET',
+        })
 
-        const userDataResponseData = await userDataResponse.json();
-        const userData = userDataResponseData.documents[0];
+        const userDataResponseData = await userDataResponse.json()
+        const userData = userDataResponseData.documents[0]
 
         setUserData({
-          discordname: userData.discordname || "",
-          telegramname: userData.telegramname || "",
-          furaffinityname: userData.furaffinityname || "",
-          X_name: userData.X_name || "",
-          twitchname: userData.twitchname || "",
-        });
-        setIsLoading(false);
+          discordname: userData.discordname || '',
+          telegramname: userData.telegramname || '',
+          furaffinityname: userData.furaffinityname || '',
+          X_name: userData.X_name || '',
+          twitchname: userData.twitchname || '',
+        })
+        setIsLoading(false)
       } catch (error) {
-        console.error(error);
-        setError("Fehler beim Laden der Daten. Bitte neu laden.");
+        console.error(error)
+        setError('Fehler beim Laden der Daten. Bitte neu laden.')
         setTimeout(() => {
-          setError(null);
-        }, 5000);
-        setIsLoading(false);
+          setError(null)
+        }, 5000)
+        setIsLoading(false)
       }
-    };
+    }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
-      const userResponse = await fetch("/api/user/getUserSelf", {
-        method: "GET",
-      });
+      const userResponse = await fetch('/api/user/getUserSelf', {
+        method: 'GET',
+      })
 
-      const userResponseData = await userResponse.json();
-      const userId = userResponseData[0].$id;
+      const userResponseData = await userResponse.json()
+      const userId = userResponseData[0].$id
 
-      setIsUploading(true);
+      setIsUploading(true)
 
       const response = await fetch(`/api/user/editUserData/${userId}`, {
-        method: "PATCH",
+        method: 'PATCH',
         body: JSON.stringify({
           data: {
-            discordname: document.getElementById("discordname").value,
-            telegramname: document.getElementById("telegramname").value,
-            furaffinityname: document.getElementById("furaffinityname").value,
-            X_name: document.getElementById("X_name").value,
-            twitchname: document.getElementById("twitchname").value,
+            discordname: document.getElementById('discordname').value,
+            telegramname: document.getElementById('telegramname').value,
+            furaffinityname: document.getElementById('furaffinityname').value,
+            X_name: document.getElementById('X_name').value,
+            twitchname: document.getElementById('twitchname').value,
           },
         }),
-      });
+      })
 
-      const responseData = await response.json();
+      const responseData = await response.json()
       if (response.ok) {
-        setIsUploading(false);
-        setSuccess("Gespeichert!");
+        setIsUploading(false)
+        setSuccess('Gespeichert!')
       } else {
-        setIsUploading(false);
-        setError("Failed to upload Data");
-        console.error("Failed to upload Data:", responseData);
+        setIsUploading(false)
+        setError('Failed to upload Data')
+        console.error('Failed to upload Data:', responseData)
       }
     } catch (error) {
-      setIsUploading(false);
-      setError("Failed to upload Data");
-      console.error(error);
+      setIsUploading(false)
+      setError('Failed to upload Data')
+      console.error(error)
     }
-  };
+  }
 
   const secondaryNavigation = [
-    { name: "Account", href: "/account", current: false },
-    { name: "Frontpage", href: "/account/frontpage", current: false },
-    { name: "Socials", href: "/account/socials", current: true },
-  ];
+    { name: 'Account', href: '/account', current: false },
+    { name: 'Frontpage', href: '/account/frontpage', current: false },
+    { name: 'Socials', href: '/account/socials', current: true },
+  ]
 
   return (
     <>
@@ -112,7 +112,7 @@ export default function AccountPage() {
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className={item.current ? "text-indigo-400" : ""}
+                  className={item.current ? 'text-indigo-400' : ''}
                 >
                   {item.name}
                 </Link>
@@ -155,14 +155,14 @@ export default function AccountPage() {
                           setUserData({
                             ...userData,
                             discordname: e.target.value,
-                          });
+                          })
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                       <span className="select-none">
-                        {userData.discordname ? userData.discordname.length : 0}{" "}
+                        {userData.discordname ? userData.discordname.length : 0}{' '}
                         {/* Check if userData.discordname is defined before accessing its length property */}
                       </span>
                       <span className="select-none text-gray-400">/{32}</span>
@@ -189,7 +189,7 @@ export default function AccountPage() {
                           setUserData({
                             ...userData,
                             telegramname: e.target.value,
-                          });
+                          })
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
@@ -198,7 +198,7 @@ export default function AccountPage() {
                       <span className="select-none">
                         {userData.telegramname
                           ? userData.telegramname.length
-                          : 0}{" "}
+                          : 0}{' '}
                         {/* Check if userData.telegramname is defined before accessing its length property */}
                       </span>
                       <span className="select-none text-gray-400">/{32}</span>
@@ -225,7 +225,7 @@ export default function AccountPage() {
                           setUserData({
                             ...userData,
                             furaffinityname: e.target.value,
-                          });
+                          })
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
@@ -234,7 +234,7 @@ export default function AccountPage() {
                       <span className="select-none">
                         {userData.furaffinityname
                           ? userData.furaffinityname.length
-                          : 0}{" "}
+                          : 0}{' '}
                         {/* Check if userData.furaffinityname is defined before accessing its length property */}
                       </span>
                       <span className="select-none text-gray-400">/{32}</span>
@@ -261,14 +261,14 @@ export default function AccountPage() {
                           setUserData({
                             ...userData,
                             X_name: e.target.value,
-                          });
+                          })
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                       <span className="select-none">
-                        {userData.X_name ? userData.X_name.length : 0}{" "}
+                        {userData.X_name ? userData.X_name.length : 0}{' '}
                         {/* Check if userData.X_name is defined before accessing its length property */}
                       </span>
                       <span className="select-none text-gray-400">/{32}</span>
@@ -295,14 +295,14 @@ export default function AccountPage() {
                           setUserData({
                             ...userData,
                             twitchname: e.target.value,
-                          });
+                          })
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 32
                       maxLength={32} // Limit the maximum number of characters to 32
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                       <span className="select-none">
-                        {userData.twitchname ? userData.twitchname.length : 0}{" "}
+                        {userData.twitchname ? userData.twitchname.length : 0}{' '}
                         {/* Check if userData.twitchname is defined before accessing its length property */}
                       </span>
                       <span className="select-none text-gray-400">/{32}</span>
@@ -324,5 +324,5 @@ export default function AccountPage() {
         </div>
       )}
     </>
-  );
+  )
 }

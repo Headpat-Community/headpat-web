@@ -1,10 +1,10 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 export const metadata = {
-  title: "Impressum",
-};
+  title: 'Impressum',
+}
 
-export const runtime = "edge";
+export const runtime = 'edge'
 
 export default function Loading() {
   return (
@@ -34,7 +34,7 @@ export default function Loading() {
           </h1>
           <p>
             The European Comission provides a platform for online dispute
-            resolution, available here:{" "}
+            resolution, available here:{' '}
             <Link
               className="text-indigo-600 hover:text-indigo-500"
               href="https://ec.europa.eu/consumers/odr/"
@@ -49,5 +49,5 @@ export default function Loading() {
         </div>
       </div>
     </>
-  );
+  )
 }

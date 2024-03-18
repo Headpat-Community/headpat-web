@@ -1,54 +1,54 @@
-"use client";
-import React, { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { ErrorMessage, SuccessMessage } from "components/alerts";
+'use client'
+import React, { useState } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { ErrorMessage, SuccessMessage } from 'components/alerts'
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [email, setEmail] = useState('')
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      const response = await fetch("/api/user/forgotPassword", {
-        method: "POST",
+      const response = await fetch('/api/user/forgotPassword', {
+        method: 'POST',
         body: JSON.stringify({
           email: email,
           url: `${process.env.NEXT_PUBLIC_DOMAIN}/i/reset-password`,
         }),
-      });
+      })
       //console.log("User authenticated successfully");
       if (response.status === 400) {
-        setError(`E-Mail inkorrekt!`);
+        setError(`E-Mail inkorrekt!`)
         setTimeout(() => {
-          setError(null);
-        }, 5000);
+          setError(null)
+        }, 5000)
       } else if (response.status === 429) {
-        setError("Zu viele Anfragen! Bitte versuche es später erneut.");
+        setError('Zu viele Anfragen! Bitte versuche es später erneut.')
         setTimeout(() => {
-          setError(null);
-        }, 5000);
+          setError(null)
+        }, 5000)
       } else if (response.status === 500) {
-        setError("Server Fehler! Bitte versuche es später erneut.");
+        setError('Server Fehler! Bitte versuche es später erneut.')
         setTimeout(() => {
-          setError(null);
-        }, 5000);
+          setError(null)
+        }, 5000)
       } else if (response.status === 200) {
-        setSuccess("E-Mail gesendet! Bitte überprüfe deinen Posteingang.");
+        setSuccess('E-Mail gesendet! Bitte überprüfe deinen Posteingang.')
         setTimeout(() => {
-          setSuccess(null);
-        }, 10000);
+          setSuccess(null)
+        }, 10000)
       }
     } catch (error) {
       //console.log(error);
-      setError("E-Mail inkorrekt!");
+      setError('E-Mail inkorrekt!')
       setTimeout(() => {
-        setError(null);
-      }, 10000);
+        setError(null)
+      }, 10000)
     }
-  };
+  }
 
   return (
     <>
@@ -111,7 +111,7 @@ const ForgotPassword = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ForgotPassword;
+export default ForgotPassword

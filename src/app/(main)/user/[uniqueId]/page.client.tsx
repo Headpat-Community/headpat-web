@@ -1,7 +1,7 @@
-"use client";
-import { useEffect, useState, Fragment } from "react";
-import { Listbox, Menu, Transition } from "@headlessui/react";
-import Link from "next/link";
+'use client'
+import { useEffect, useState, Fragment } from 'react'
+import { Listbox, Menu, Transition } from '@headlessui/react'
+import Link from 'next/link'
 import {
   CalendarDaysIcon,
   EllipsisVerticalIcon,
@@ -14,136 +14,136 @@ import {
   PencilSquareIcon,
   XMarkIcon as XMarkIconMini,
   XMarkIcon,
-} from "@heroicons/react/20/solid";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFlag, faPersonHalfDress } from "@fortawesome/free-solid-svg-icons";
+} from '@heroicons/react/20/solid'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFlag, faPersonHalfDress } from '@fortawesome/free-solid-svg-icons'
 import {
   faTelegram,
   faDiscord,
   faXTwitter,
   faTwitch,
-} from "@fortawesome/free-brands-svg-icons";
-import ErrorPage from "components/404";
-import Image from "next/image";
-import Loading from "@/app/loading";
-import { useParams } from "next/navigation";
+} from '@fortawesome/free-brands-svg-icons'
+import ErrorPage from 'components/404'
+import Image from 'next/image'
+import Loading from '@/app/loading'
+import { useParams } from 'next/navigation'
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ')
 }
 
 const activity = [
   {
     id: 1,
-    type: "commented",
+    type: 'commented',
     person: {
-      name: "fafa",
-      imageUrl: "/logos/logo.webp",
+      name: 'fafa',
+      imageUrl: '/logos/logo.webp',
     },
-    comment: "Irgendwann könnt ihr hier auch comments schreiben! :3",
-    date: "soon",
-    dateTime: "2023-01-23T15:56",
+    comment: 'Irgendwann könnt ihr hier auch comments schreiben! :3',
+    date: 'soon',
+    dateTime: '2023-01-23T15:56',
   },
-];
+]
 const moods = [
   {
-    name: "Excited",
-    value: "excited",
+    name: 'Excited',
+    value: 'excited',
     icon: FireIcon,
-    iconColor: "text-white",
-    bgColor: "bg-red-500",
+    iconColor: 'text-white',
+    bgColor: 'bg-red-500',
   },
   {
-    name: "Loved",
-    value: "loved",
+    name: 'Loved',
+    value: 'loved',
     icon: HeartIcon,
-    iconColor: "text-white",
-    bgColor: "bg-pink-400",
+    iconColor: 'text-white',
+    bgColor: 'bg-pink-400',
   },
   {
-    name: "Happy",
-    value: "happy",
+    name: 'Happy',
+    value: 'happy',
     icon: FaceSmileIcon,
-    iconColor: "text-white",
-    bgColor: "bg-green-400",
+    iconColor: 'text-white',
+    bgColor: 'bg-green-400',
   },
   {
-    name: "Sad",
-    value: "sad",
+    name: 'Sad',
+    value: 'sad',
     icon: FaceFrownIcon,
-    iconColor: "text-white",
-    bgColor: "bg-yellow-400",
+    iconColor: 'text-white',
+    bgColor: 'bg-yellow-400',
   },
   {
-    name: "Thumbsy",
-    value: "thumbsy",
+    name: 'Thumbsy',
+    value: 'thumbsy',
     icon: HandThumbUpIcon,
-    iconColor: "text-white",
-    bgColor: "bg-blue-500",
+    iconColor: 'text-white',
+    bgColor: 'bg-blue-500',
   },
   {
-    name: "I feel nothing",
+    name: 'I feel nothing',
     value: null,
     icon: XMarkIconMini,
-    iconColor: "text-gray-400",
-    bgColor: "bg-transparent",
+    iconColor: 'text-gray-400',
+    bgColor: 'bg-transparent',
   },
-];
+]
 
 export default function UserProfile() {
-  const [userData, setUserData] = useState(null);
-  const [selected, setSelected] = useState(moods[5]);
-  const [hasError, setHasError] = useState(false); // Add this state
-  const [isBirthdayToday, setIsBirthdayToday] = useState(false);
-  const params = useParams();
-  const username = params.uniqueId;
+  const [userData, setUserData] = useState(null)
+  const [selected, setSelected] = useState(moods[5])
+  const [hasError, setHasError] = useState(false) // Add this state
+  const [isBirthdayToday, setIsBirthdayToday] = useState(false)
+  const params = useParams()
+  const username = params.uniqueId
 
   const getAvatarImageUrl = (galleryId) => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`;
-  };
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`
+  }
 
-  const rawBirthday = userData?.birthday; // ISO date string
+  const rawBirthday = userData?.birthday // ISO date string
 
   // Parse the ISO date string to a Date object
-  const dateObject = new Date(rawBirthday);
+  const dateObject = new Date(rawBirthday)
 
   // Format the date as "DD-MM-YYYY"
-  const formattedBirthday = `${dateObject.getDate().toString().padStart(2, "0")}.${(
+  const formattedBirthday = `${dateObject.getDate().toString().padStart(2, '0')}.${(
     dateObject.getMonth() + 1
   )
     .toString()
-    .padStart(2, "0")}.${dateObject.getFullYear()}`;
+    .padStart(2, '0')}.${dateObject.getFullYear()}`
 
   // Check if the formatted birthday is equal to today's date
-  const today = new Date();
-  const formattedToday = `${today.getDate().toString().padStart(2, "0")}.${(
+  const today = new Date()
+  const formattedToday = `${today.getDate().toString().padStart(2, '0')}.${(
     today.getMonth() + 1
   )
     .toString()
-    .padStart(2, "0")}.${today.getFullYear()}`;
+    .padStart(2, '0')}.${today.getFullYear()}`
 
   useEffect(() => {
-    if (formattedBirthday !== "31.01.1900") {
-      setIsBirthdayToday(formattedBirthday === formattedToday);
+    if (formattedBirthday !== '31.01.1900') {
+      setIsBirthdayToday(formattedBirthday === formattedToday)
     }
-  }, [formattedBirthday, formattedToday]);
+  }, [formattedBirthday, formattedToday])
 
   useEffect(() => {
     fetch(
       `/api/user/getUserProfileFilter?queries[]=equal("profileurl","${username}")`,
       {
-        method: "GET",
-      },
+        method: 'GET',
+      }
     )
       .then((response) => response.json())
       .then((data) => {
-        setUserData(data.documents[0]);
+        setUserData(data.documents[0])
       })
       .catch((error) => {
-        console.error("API error:", error);
-        setHasError(true);
-      });
-  }, [username]);
+        console.error('API error:', error)
+        setHasError(true)
+      })
+  }, [username])
 
   return (
     <>
@@ -172,7 +172,7 @@ export default function UserProfile() {
                         <Image
                           src={
                             getAvatarImageUrl(userData.avatarId) ||
-                            "/logos/logo-512.webp"
+                            '/logos/logo-512.webp'
                           }
                           alt=""
                           className="rounded-full object-contain"
@@ -202,7 +202,7 @@ export default function UserProfile() {
                         type="button"
                         className="inline-flex rounded-md text-gray-400 hover:text-gray-500 focus:ring-transparent"
                         onClick={() => {
-                          setIsBirthdayToday(false);
+                          setIsBirthdayToday(false)
                         }}
                       >
                         <span className="sr-only">Close</span>
@@ -227,7 +227,7 @@ export default function UserProfile() {
                     className="aspect-[1154/678] w-[72.125rem] bg-gradient-to-br from-[#007f4a] to-[#6f7603] dark:from-[#FF80B5] dark:to-[#9089FC]"
                     style={{
                       clipPath:
-                        "polygon(100% 38.5%, 82.6% 100%, 60.2% 37.7%, 52.4% 32.1%, 47.5% 41.8%, 45.2% 65.6%, 27.5% 23.4%, 0.1% 35.3%, 17.9% 0%, 27.7% 23.4%, 76.2% 2.5%, 74.2% 56%, 100% 38.5%)",
+                        'polygon(100% 38.5%, 82.6% 100%, 60.2% 37.7%, 52.4% 32.1%, 47.5% 41.8%, 45.2% 65.6%, 27.5% 23.4%, 0.1% 35.3%, 17.9% 0%, 27.7% 23.4%, 76.2% 2.5%, 74.2% 56%, 100% 38.5%)',
                     }}
                   />
                 </div>
@@ -243,7 +243,7 @@ export default function UserProfile() {
                           <Image
                             src={
                               getAvatarImageUrl(userData.avatarId) ||
-                              "/logos/logo-512.webp"
+                              '/logos/logo-512.webp'
                             }
                             alt=""
                             className="h-16 w-16 flex-none rounded-full ring-1 ring-black/10 dark:ring-white/10"
@@ -441,8 +441,8 @@ export default function UserProfile() {
                                 <Link
                                   href={`/user/${username}/gallery`}
                                   className={classNames(
-                                    active ? "bg-gray-50" : "",
-                                    "block w-full px-3 py-1 text-left text-sm leading-6 text-black",
+                                    active ? 'bg-gray-50' : '',
+                                    'block w-full px-3 py-1 text-left text-sm leading-6 text-black'
                                   )}
                                 >
                                   Gallery
@@ -450,12 +450,12 @@ export default function UserProfile() {
                                 <button
                                   type="button"
                                   className={classNames(
-                                    active ? "bg-gray-50" : "",
-                                    "block w-full px-3 py-1 text-left text-sm leading-6 text-black",
+                                    active ? 'bg-gray-50' : '',
+                                    'block w-full px-3 py-1 text-left text-sm leading-6 text-black'
                                   )}
                                   onClick={() =>
                                     navigator.clipboard.writeText(
-                                      window.location.href,
+                                      window.location.href
                                     )
                                   }
                                 >
@@ -505,10 +505,10 @@ export default function UserProfile() {
                           {userData?.status}
                         </dd>
                       </div>
-                      {userData?.pronouns !== "" && (
+                      {userData?.pronouns !== '' && (
                         <div
                           className={`flex w-full flex-none gap-x-4 px-6 ${
-                            formattedBirthday === "31.01.1900" ? " mb-4" : ""
+                            formattedBirthday === '31.01.1900' ? ' mb-4' : ''
                           }`}
                         >
                           <dt className="flex-none">
@@ -523,10 +523,10 @@ export default function UserProfile() {
                           </dd>
                         </div>
                       )}
-                      {formattedBirthday !== "31.01.1900" && (
+                      {formattedBirthday !== '31.01.1900' && (
                         <div
                           className={`mb-4 mt-4 flex w-full flex-none gap-x-4 px-6 ${
-                            userData?.location === "" ? "mb-6" : ""
+                            userData?.location === '' ? 'mb-6' : ''
                           }`}
                         >
                           <dt className="flex-none">
@@ -544,7 +544,7 @@ export default function UserProfile() {
                         </div>
                       )}
                       {userData?.location !== null &&
-                        userData?.location !== "" && (
+                        userData?.location !== '' && (
                           <div
                             className={`mb-4 flex w-full flex-none gap-x-4 px-6`}
                           >
@@ -573,7 +573,7 @@ export default function UserProfile() {
                     <div className="flex">
                       <div
                         className="font-medium text-gray-800 dark:text-gray-300"
-                        style={{ whiteSpace: "pre-line" }}
+                        style={{ whiteSpace: 'pre-line' }}
                       >
                         {userData?.bio}
                       </div>
@@ -593,14 +593,14 @@ export default function UserProfile() {
                         <div
                           className={classNames(
                             activityItemIdx === activity.length - 1
-                              ? "h-6"
-                              : "-bottom-6",
-                            "absolute left-0 top-0 flex w-6 justify-center",
+                              ? 'h-6'
+                              : '-bottom-6',
+                            'absolute left-0 top-0 flex w-6 justify-center'
                           )}
                         >
                           <div className="w-px bg-gray-700 dark:bg-gray-200" />
                         </div>
-                        {activityItem.type === "commented" && (
+                        {activityItem.type === 'commented' && (
                           <>
                             <Image
                               src={activityItem.person.imageUrl}
@@ -614,7 +614,7 @@ export default function UserProfile() {
                                 <div className="py-0.5 text-xs leading-5">
                                   <span className="font-medium">
                                     {activityItem.person.name}
-                                  </span>{" "}
+                                  </span>{' '}
                                   <span className="text-gray-800 dark:text-gray-300">
                                     commented
                                   </span>
@@ -656,7 +656,7 @@ export default function UserProfile() {
                           id="comment"
                           className="block w-full resize-none border-0 bg-transparent py-1.5 placeholder:text-gray-900 focus:ring-0 dark:placeholder:text-gray-400 sm:text-sm sm:leading-6"
                           placeholder="Add your comment..."
-                          defaultValue={""}
+                          defaultValue={''}
                         />
                       </div>
 
@@ -687,7 +687,7 @@ export default function UserProfile() {
                                             <span
                                               className={classNames(
                                                 selected.bgColor,
-                                                "flex h-8 w-8 items-center justify-center rounded-full",
+                                                'flex h-8 w-8 items-center justify-center rounded-full'
                                               )}
                                             >
                                               <selected.icon
@@ -717,9 +717,9 @@ export default function UserProfile() {
                                             className={({ active }) =>
                                               classNames(
                                                 active
-                                                  ? "bg-indigo-600"
-                                                  : "bg-black dark:bg-white",
-                                                "relative cursor-default select-none px-3 py-2",
+                                                  ? 'bg-indigo-600'
+                                                  : 'bg-black dark:bg-white',
+                                                'relative cursor-default select-none px-3 py-2'
                                               )
                                             }
                                             value={mood}
@@ -728,13 +728,13 @@ export default function UserProfile() {
                                               <div
                                                 className={classNames(
                                                   mood.bgColor,
-                                                  "flex h-8 w-8 items-center justify-center rounded-full",
+                                                  'flex h-8 w-8 items-center justify-center rounded-full'
                                                 )}
                                               >
                                                 <mood.icon
                                                   className={classNames(
                                                     mood.iconColor,
-                                                    "h-5 w-5 flex-shrink-0",
+                                                    'h-5 w-5 flex-shrink-0'
                                                   )}
                                                   aria-hidden="true"
                                                 />
@@ -774,5 +774,5 @@ export default function UserProfile() {
         )}
       </main>
     </>
-  );
+  )
 }

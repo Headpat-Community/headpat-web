@@ -1,41 +1,41 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import { ErrorMessage } from "components/alerts";
-import { emailVerification } from "utils/actions/user-actions";
+'use client'
+import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { ErrorMessage } from 'components/alerts'
+import { emailVerification } from 'utils/actions/user-actions'
 
-export const runtime = "edge";
+export const runtime = 'edge'
 
 const ResetPassword = () => {
-  const [code, setCode] = useState("");
-  const [userId, setUserId] = useState("");
-  const [error, setError] = useState("");
+  const [code, setCode] = useState('')
+  const [userId, setUserId] = useState('')
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const userIdParam = urlParams.get("userId");
-    const codeParam = urlParams.get("secret");
+    const urlParams = new URLSearchParams(window.location.search)
+    const userIdParam = urlParams.get('userId')
+    const codeParam = urlParams.get('secret')
     if (userIdParam) {
-      setUserId(userIdParam);
+      setUserId(userIdParam)
     }
     if (codeParam) {
-      setCode(codeParam);
+      setCode(codeParam)
     }
-  }, []);
+  }, [])
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     const body = {
       userId: userId,
       secret: code,
-    };
-
-    const response = await emailVerification(body);
-    if (!response) {
-      setError("Fehler, bitte versuche es später erneut oder kontaktiere uns.");
     }
-  };
+
+    const response = await emailVerification(body)
+    if (!response) {
+      setError('Fehler, bitte versuche es später erneut oder kontaktiere uns.')
+    }
+  }
 
   return (
     <>
@@ -109,7 +109,7 @@ const ResetPassword = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ResetPassword;
+export default ResetPassword

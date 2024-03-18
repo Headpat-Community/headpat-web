@@ -1,26 +1,30 @@
-import Client from "./page.client";
-import { getUserData, getUserSelf } from "utils/actions/user-actions";
-import { getGallery } from "utils/actions/gallery-actions";
-import { notFound } from "next/navigation";
+import Client from './page.client'
+import { getUserData, getUserSelf } from 'utils/actions/user-actions'
+import { getGallery } from 'utils/actions/gallery-actions'
+import { notFound } from 'next/navigation'
 
-export const runtime = "edge";
+export const runtime = 'edge'
 
 export const metadata = {
-  title: "Gallerie",
+  title: 'Gallerie',
   description:
-    "Die Gallerie seite von Headpat Community. Hier könnt ihr alle Bilder sehen die von der Community hochgeladen wurden.",
-};
+    'Die Gallerie seite von Headpat Community. Hier könnt ihr alle Bilder sehen die von der Community hochgeladen wurden.',
+}
 
 export default async function Gallery({ params: { galleryId } }) {
-  const userSelf = await getUserSelf();
-  const gallery = await getGallery(`queries[]=equal("$id","${galleryId}")`);
-  const galleryData = gallery.documents[0];
-  const userId = galleryData?.userId;
-  const userDataUrl = `queries[]=equal("$id","${userId}")`;
-  const userData = await getUserData(userDataUrl);
+  const userSelf = await getUserSelf()
+
+  const gallery = await getGallery(`queries[]=equal("$id","${galleryId}")`)
+  if (!gallery.documents) {
+    return notFound()
+  }
+  const galleryData = gallery.documents[0]
+
+  const userId = galleryData?.userId
+  const userData = await getUserData(`queries[]=equal("$id","${userId}")`)
 
   if (!userId) {
-    return notFound();
+    return notFound()
   }
 
   return (
@@ -31,5 +35,5 @@ export default async function Gallery({ params: { galleryId } }) {
         userSelf={userSelf}
       />
     </div>
-  );
+  )
 }

@@ -1,40 +1,51 @@
-import { getAccount } from "@/utils/actions/user-actions";
-import AnnouncementNotification from "components/announcementNotification";
-import { BellIcon } from "lucide-react";
-import Sidebar from "./sidebar";
-import { ThemeToggle } from "components/ThemeToggle";
-import { Avatar, AvatarFallback, AvatarImage } from "components/ui/avatar";
-import { Button } from "components/ui/button";
+import { getAccount, getUserDataSelf } from '@/utils/actions/user-actions'
+import AnnouncementNotification from 'components/announcementNotification'
+import Sidebar from './sidebar'
+import { ThemeToggle } from 'components/ThemeToggle'
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar'
+import { UserAccountType, UserDataType } from 'utils/types'
+import { Separator } from 'components/ui/separator'
 
 export default async function Header({ children }) {
-  const jwtBool: boolean = await getAccount();
+  const accountData: UserAccountType = await getAccount()
+  let userData: UserDataType = await getUserDataSelf()
+
+  // TODO: Remove this when SDK is fixed
+  if (userData) {
+    userData = undefined
+  }
+
+  const getAvatarImageUrl = (galleryId: string) => {
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`
+  }
 
   return (
-    <div>
+    <main>
       <AnnouncementNotification />
-      <header className="shrink-0 bg-gray-900">
+      <header className="shrink-0">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <img
-            className="h-8 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-            alt="Your Company"
+            className="h-10 w-auto"
+            src="/logos/Headpat_new_logo.webp"
+            alt="Headpat Logo"
           />
-          <div className="flex items-center gap-x-8">
-            <Button variant={"ghost"} size={"icon"}>
-              <span className="sr-only">View notifications</span>
-              <BellIcon className="h-6 w-6" aria-hidden="true" />
-            </Button>
+          <div className="flex items-center gap-x-4">
             <ThemeToggle />
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your profile</span>
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </a>
+            <span className="sr-only">Your profile</span>
+            <Avatar>
+              <AvatarImage
+                src={
+                  getAvatarImageUrl(userData?.documents[0]?.avatarId) ||
+                  '/logos/Headpat_new_logo.webp'
+                }
+              />
+              <AvatarFallback>HP</AvatarFallback>
+            </Avatar>
           </div>
         </div>
       </header>
+
+      <Separator className={'bg-gray-200'} />
 
       <div className="mx-auto w-full max-w-screen-2xl grow lg:flex xl:px-2">
         <div className="flex-1 flex">
@@ -49,6 +60,6 @@ export default async function Header({ children }) {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </main>
+  )
 }

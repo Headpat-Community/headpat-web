@@ -1,16 +1,18 @@
-import AnnouncementNotification from "../announcementNotification";
-import { getAccount } from "utils/actions/user-actions";
-import Link from "next/link";
-import Image from "next/image";
-import { NavigationMenuExport } from "components/header/nav";
-import { ThemeToggle } from "components/ThemeToggle";
-import { Button } from "components/ui/button";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { ArrowRightIcon } from "lucide-react";
-import MobileNav from "components/header/mobile-nav";
+import AnnouncementNotification from '../announcementNotification'
+import { getAccount } from 'utils/actions/user-actions'
+import Link from 'next/link'
+import Image from 'next/image'
+import { NavigationMenuExport } from 'components/header/nav'
+import { ThemeToggle } from 'components/ThemeToggle'
+import { Button } from 'components/ui/button'
+import { ArrowRightIcon } from 'lucide-react'
+import MobileNav from 'components/header/mobile-nav'
 
 export default async function Header() {
-  const jwtBool = await getAccount();
+  const accountData = await getAccount()
+  const jwtBool = !accountData
+
+  console.log(jwtBool)
 
   return (
     <div>
@@ -57,7 +59,7 @@ export default async function Header() {
 
                   {/* Desktop menu and search (lg+) */}
                   <div className="flex flex-1 items-center justify-center lg:justify-end">
-                    <div className={"mr-2 lg:hidden"}>
+                    <div className={'mr-2 lg:hidden'}>
                       <MobileNav />
                     </div>
 
@@ -80,21 +82,21 @@ export default async function Header() {
                     */}
                     {jwtBool ? (
                       <>
-                        <div className="ml-2 flex items-center space-x-6">
-                          <Link href={"/i/logout"}>
-                            <Button variant={"outline"}>Sign out</Button>
+                        <div className="ml-2 flex items-center space-x-2">
+                          <Link href={'/logout'}>
+                            <Button variant={'ghost'}>Sign out</Button>
                           </Link>
-                          <Link href={"/account"}>
-                            <Button variant={"outline"}>
+                          <Link href={'/account'}>
+                            <Button variant={'ghost'}>
                               Account <span aria-hidden="true">&rarr;</span>
                             </Button>
                           </Link>
                         </div>
                       </>
                     ) : (
-                      <Link href={"/login"} className="ml-2">
-                        <Button variant={"outline"}>
-                          Sign in <ArrowRightIcon className={"h-4"} />
+                      <Link href={'/login'} className="ml-2">
+                        <Button variant={'outline'}>
+                          Sign in <ArrowRightIcon className={'h-4'} />
                         </Button>
                       </Link>
                     )}
@@ -106,5 +108,5 @@ export default async function Header() {
         </nav>
       </header>
     </div>
-  );
+  )
 }

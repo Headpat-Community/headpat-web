@@ -1,112 +1,112 @@
-"use client";
-import { useCallback, useState, useRef } from "react";
-import { ErrorMessage, SuccessMessage } from "@/components/alerts";
+'use client'
+import { useCallback, useState, useRef } from 'react'
+import { ErrorMessage, SuccessMessage } from '@/components/alerts'
 
 export default function PageClient() {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [deliverAtEurofurence, setDeliverAtEurofurence] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
-  const displaynameRef = useRef("");
-  const nicknameRef = useRef("");
-  const pronounsRef = useRef("");
-  const speciesRef = useRef("");
-  const addressRef = useRef("");
-  const cityRef = useRef("");
-  const countryRef = useRef("");
-  const stateRef = useRef("");
-  const postalcodeRef = useRef("");
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const [deliverAtEurofurence, setDeliverAtEurofurence] = useState(false)
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
+  const displaynameRef = useRef('')
+  const nicknameRef = useRef('')
+  const pronounsRef = useRef('')
+  const speciesRef = useRef('')
+  const addressRef = useRef('')
+  const cityRef = useRef('')
+  const countryRef = useRef('')
+  const stateRef = useRef('')
+  const postalcodeRef = useRef('')
 
   const handleCheckboxChange = useCallback((event) => {
-    setDeliverAtEurofurence(event.target.checked);
-  }, []);
+    setDeliverAtEurofurence(event.target.checked)
+  }, [])
 
   const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
+    const selectedFile = event.target.files[0]
     const validImageTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/svg+xml",
-      "image/tiff",
-      "image/x-icon",
-      "image/vnd.djvu",
-    ];
+      'image/jpeg',
+      'image/png',
+      'image/svg+xml',
+      'image/tiff',
+      'image/x-icon',
+      'image/vnd.djvu',
+    ]
     if (!validImageTypes.includes(selectedFile.type)) {
       setError(
-        "Please select a valid image file type (JPEG, PNG, SVG, TIFF, ICO, DVU).",
-      );
+        'Please select a valid image file type (JPEG, PNG, SVG, TIFF, ICO, DVU).'
+      )
       setTimeout(() => {
-        setError(null);
-      }, 5000);
-      return;
+        setError(null)
+      }, 5000)
+      return
     }
     if (selectedFile.size > 1 * 1024 * 1024) {
-      setError("File size must be less than 1 MB.");
+      setError('File size must be less than 1 MB.')
       setTimeout(() => {
-        setError(null);
-      }, 5000);
-      return;
+        setError(null)
+      }, 5000)
+      return
     }
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(selectedFile);
+    const fileReader = new FileReader()
+    fileReader.readAsDataURL(selectedFile)
     fileReader.onload = (event) => {
-      const imgElement = document.getElementById("selected-image");
-      imgElement.src = event.target.result;
-      const img = new Image();
-      img.src = event.target.result;
+      const imgElement = document.getElementById('selected-image')
+      imgElement.src = event.target.result
+      const img = new Image()
+      img.src = event.target.result
       img.onload = () => {
         if (img.width >= 128 && img.height >= 128) {
-          setSelectedFile(selectedFile);
+          setSelectedFile(selectedFile)
         } else {
-          setError("Image resolution must be at least 128x128 pixels.");
+          setError('Image resolution must be at least 128x128 pixels.')
           setTimeout(() => {
-            setError(null);
-          }, 5000);
+            setError(null)
+          }, 5000)
         }
-      };
-    };
-  };
+      }
+    }
+  }
 
   const handleDrop = useCallback((event) => {
-    event.preventDefault();
-    const droppedFile = event.dataTransfer.files[0];
-    handleFileChange({ target: { files: [droppedFile] } });
-  }, []);
+    event.preventDefault()
+    const droppedFile = event.dataTransfer.files[0]
+    handleFileChange({ target: { files: [droppedFile] } })
+  }, [])
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    formData.append("fileId", "unique()");
+    const formData = new FormData()
+    formData.append('file', selectedFile)
+    formData.append('fileId', 'unique()')
 
     try {
-      const userResponse = await fetch("/api/user/getUserSelf", {
-        method: "GET",
-      });
+      const userResponse = await fetch('/api/user/getUserSelf', {
+        method: 'GET',
+      })
 
-      const userResponseData = await userResponse.json();
-      const userId = userResponseData.id;
+      const userResponseData = await userResponse.json()
+      const userId = userResponseData.id
 
       const badgeResponse = await fetch(
         `/api/account/getBadges?queries[]=equal("$id","${userId}")`,
         {
-          method: "GET",
-        },
-      );
+          method: 'GET',
+        }
+      )
 
-      const badgeData = await badgeResponse.json();
+      const badgeData = await badgeResponse.json()
 
       if (badgeData.files && badgeData.files.length > 0) {
         const userDecision = window.confirm(
-          "You've already submitted before. Do you want to continue?",
-        );
-        if (!userDecision) return; // If user clicks "No", then return and don't proceed
+          "You've already submitted before. Do you want to continue?"
+        )
+        if (!userDecision) return // If user clicks "No", then return and don't proceed
       }
 
       formData.append(
-        "data",
+        'data',
         JSON.stringify({
           data: {
             user_id: userId,
@@ -121,38 +121,38 @@ export default function PageClient() {
             postalcode: postalcodeRef.current?.value,
             deliver_at_eurofurence: deliver_at_eurofurence.checked,
           },
-        }),
-      );
+        })
+      )
 
-      setIsUploading(true);
+      setIsUploading(true)
 
-      const response = await fetch("/api/account/createBadge", {
-        method: "POST",
+      const response = await fetch('/api/account/createBadge', {
+        method: 'POST',
         body: formData,
-      });
+      })
 
-      const responseData = await response.json();
-      setIsUploading(false);
+      const responseData = await response.json()
+      setIsUploading(false)
 
       if (response.ok) {
-        setSuccess("Danke für deine Anfrage!");
+        setSuccess('Danke für deine Anfrage!')
         setTimeout(() => {
-          window.location.reload();
-        }, 3000);
+          window.location.reload()
+        }, 3000)
       } else {
         setError(
-          "Anfrage fehlgeschlagen, bitte versuche es erneut oder kontaktiere uns. Fehler: " +
-            responseData.message,
-        );
+          'Anfrage fehlgeschlagen, bitte versuche es erneut oder kontaktiere uns. Fehler: ' +
+            responseData.message
+        )
         setTimeout(() => {
-          setError(null);
-        }, 5000);
-        console.error("Failed to upload file:", responseData);
+          setError(null)
+        }, 5000)
+        console.error('Failed to upload file:', responseData)
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   return (
     <>
@@ -412,7 +412,7 @@ export default function PageClient() {
                     className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                     disabled={isUploading} // Disable the button if isUploading is true
                   >
-                    {isUploading ? "Uploading..." : "Anfragen"}{" "}
+                    {isUploading ? 'Uploading...' : 'Anfragen'}{' '}
                     {/* Show different text based on the upload state */}
                   </button>
                 </div>
@@ -422,5 +422,5 @@ export default function PageClient() {
         </main>
       </form>
     </>
-  );
+  )
 }

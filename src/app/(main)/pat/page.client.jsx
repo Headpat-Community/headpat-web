@@ -1,73 +1,73 @@
-"use client";
-import React, { useState, useCallback, useEffect } from "react";
-import { client } from "../../appwrite";
-import { createPatData } from "./page.api";
+'use client'
+import React, { useState, useCallback, useEffect } from 'react'
+import { client } from '../../appwrite'
+import { createPatData } from './page.api'
 
 export default function PatClient() {
-  const [userId, setUserId] = useState(null);
-  const [patCount, setPatCount] = useState(0);
-  const [totalCount, setTotalCount] = useState(0);
+  const [userId, setUserId] = useState(null)
+  const [patCount, setPatCount] = useState(0)
+  const [totalCount, setTotalCount] = useState(0)
 
   useEffect(() => {
     // Fetch user ID
     fetch(`/api/user/getUserSelf`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         // Add any additional headers if needed
       },
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          throw new Error(`HTTP error! Status: ${response.status}`)
         }
-        return response.json();
+        return response.json()
       })
       .then((data) => {
-        setUserId(data[0]?.$id);
+        setUserId(data[0]?.$id)
       })
       .catch((error) => {
-        console.error("GET request error:", error);
-      });
-  }, []);
+        console.error('GET request error:', error)
+      })
+  }, [])
 
   // Create a WebSocket connection
-  let socket;
+  let socket
 
   function connect() {
     socket = new WebSocket(
-      `wss://api.headpat.de/v1/realtime?project=6557c1a8b6c2739b3ecf&channels[]=databases.65527f2aafa5338cdb57.collections.655caf2e7a6d01e18184.documents`,
-    );
+      `wss://api.headpat.de/v1/realtime?project=6557c1a8b6c2739b3ecf&channels[]=databases.65527f2aafa5338cdb57.collections.655caf2e7a6d01e18184.documents`
+    )
 
     // Listen for messages
-    socket.addEventListener("message", (event) => {
+    socket.addEventListener('message', (event) => {
       // Parse JSON data
-      const data = JSON.parse(event.data);
+      const data = JSON.parse(event.data)
       //console.log("Message from server: ", data);
-    });
+    })
 
     // Connection closed
-    socket.addEventListener("close", (event) => {
-      setTimeout(connect, 1000); // try to reconnect after a second
-    });
+    socket.addEventListener('close', (event) => {
+      setTimeout(connect, 1000) // try to reconnect after a second
+    })
 
     // Connection error
-    socket.addEventListener("error", (event) => {
+    socket.addEventListener('error', (event) => {
       //console.log("WebSocket error: ", event);
-    });
+    })
   }
 
   //connect();
 
   useEffect(() => {
     const patchInterval = setInterval(() => {
-      const apiUrl = `/api/fun/pats/update/${userId}`;
+      const apiUrl = `/api/fun/pats/update/${userId}`
       // Replace "your-collection-id" with the actual ID of the collection
 
       fetch(apiUrl, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           // Add any additional headers if needed
         },
         body: JSON.stringify({
@@ -78,27 +78,27 @@ export default function PatClient() {
       })
         .then((response) => {
           if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`HTTP error! Status: ${response.status}`)
           }
-          return response.json();
+          return response.json()
         })
         .then((data) => {
           //console.log("PATCH request success:", data);
         })
         .catch((error) => {
-          console.error("PATCH request error:", error);
-        });
-    }, 10000);
+          console.error('PATCH request error:', error)
+        })
+    }, 10000)
 
     return () => {
-      clearInterval(patchInterval);
-    };
-  }, [userId, patCount]);
+      clearInterval(patchInterval)
+    }
+  }, [userId, patCount])
 
   const handlePatClick = () => {
     // Increase the pat count by 1 when the button is clicked
-    setPatCount((prevCount) => prevCount + 1);
-  };
+    setPatCount((prevCount) => prevCount + 1)
+  }
 
   //console.log(patCount);
 
@@ -135,5 +135,5 @@ export default function PatClient() {
         </aside>
       </div>
     </div>
-  );
+  )
 }

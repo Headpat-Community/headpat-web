@@ -1,15 +1,15 @@
-import Client from "./page.client";
+import Client from './page.client'
 
-export const runtime = "edge";
+export const runtime = 'edge'
 
 export const metadata = {
-  title: "Passwort vergessen?",
-};
+  title: 'Passwort vergessen?',
+}
 
 export default function Page() {
   return (
     <>
       <Client />
     </>
-  );
+  )
 }

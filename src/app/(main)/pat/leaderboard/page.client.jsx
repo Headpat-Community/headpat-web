@@ -1,64 +1,64 @@
-"use client";
-import { useEffect, useState } from "react";
+'use client'
+import { useEffect, useState } from 'react'
 
 export default function PatLeaderBoardClient({ usersData }) {
-  const [userData, setUserData] = useState([]);
-  const [patsLeaderboard, setPatsLeaderboard] = useState([]);
+  const [userData, setUserData] = useState([])
+  const [patsLeaderboard, setPatsLeaderboard] = useState([])
 
   const getAvatarImageUrl = (galleryId) => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`;
-  };
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`
+  }
 
   const fetchData = async () => {
     try {
       const response = await fetch(`/api/fun/pats`, {
-        method: "GET",
-      });
+        method: 'GET',
+      })
 
-      const responseData = await response.json();
+      const responseData = await response.json()
 
       if (!Array.isArray(responseData)) {
-        console.error("Invalid data format received from the API");
-        return;
+        console.error('Invalid data format received from the API')
+        return
       }
 
-      const patsData = [];
+      const patsData = []
 
       for (const item of responseData) {
-        const userId = item.$id;
+        const userId = item.$id
         const userResponse = await fetch(`/api/user/getUserProfileFilter`, {
-          method: "GET",
-        });
-        const userData = await userResponse.json();
+          method: 'GET',
+        })
+        const userData = await userResponse.json()
 
-        const displayName = userData.documents[0].displayname || "Unknown User";
+        const displayName = userData.documents[0].displayname || 'Unknown User'
 
         patsData.push({
           id: userId,
           amount: item.amount,
           displayname: displayName,
-          modifiedAt: new Date(item.$updatedAt).toLocaleDateString("en-GB", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
+          modifiedAt: new Date(item.$updatedAt).toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
           }),
           avatarId: userData.documents[0].avatarId,
-        });
+        })
       }
 
-      const sortedData = patsData.sort((a, b) => b.amount - a.amount);
+      const sortedData = patsData.sort((a, b) => b.amount - a.amount)
 
-      setPatsLeaderboard(sortedData);
+      setPatsLeaderboard(sortedData)
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -119,5 +119,5 @@ export default function PatLeaderBoardClient({ usersData }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

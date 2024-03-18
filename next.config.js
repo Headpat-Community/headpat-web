@@ -10,33 +10,40 @@ const nextConfig = {
   },
   images: {
     deviceSizes: [320, 420, 768, 1024, 1200],
-    loader: "default",
+    loader: 'default',
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "*.headpat.de",
+        protocol: 'https',
+        hostname: '*.headpat.de',
       },
       {
-        protocol: "https",
-        hostname: "*.headpat-de.pages.dev",
+        protocol: 'https',
+        hostname: '*.headpat-de.pages.dev',
       },
       {
-        protocol: "https",
-        hostname: "api.fayevr.dev",
+        protocol: 'https',
+        hostname: 'api.fayevr.dev',
       },
       {
-        protocol: "https",
-        hostname: "placekitten.com",
+        protocol: 'https',
+        hostname: 'placekitten.com',
       },
     ],
   },
-};
-module.exports = nextConfig;
-
+  async rewrites() {
+    return [
+      {
+        source: '/account',
+        destination: '/account/profile',
+      },
+    ]
+  },
+}
+module.exports = nextConfig
 
 // Injected content via Sentry wizard below
 
-const { withSentryConfig } = require("@sentry/nextjs");
+const { withSentryConfig } = require('@sentry/nextjs')
 
 module.exports = withSentryConfig(
   module.exports,
@@ -46,9 +53,9 @@ module.exports = withSentryConfig(
 
     // Suppresses source map uploading logs during build
     silent: true,
-    org: "headpat",
-    project: "javascript-nextjs",
-    url: "https://sentry.fayevr.dev/"
+    org: 'headpat',
+    project: 'javascript-nextjs',
+    url: 'https://sentry.fayevr.dev/',
   },
   {
     // For all available options, see:
@@ -63,7 +70,7 @@ module.exports = withSentryConfig(
     // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers. (increases server load)
     // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
     // side errors will fail.
-    tunnelRoute: "/monitoring",
+    tunnelRoute: '/monitoring',
 
     // Hides source maps from generated client bundles
     hideSourceMaps: true,
@@ -77,4 +84,4 @@ module.exports = withSentryConfig(
     // https://vercel.com/docs/cron-jobs
     automaticVercelMonitors: true,
   }
-);
+)

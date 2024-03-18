@@ -1,101 +1,101 @@
-"use client";
-import { useState, useCallback } from "react";
-import { ErrorMessage, SuccessMessage } from "@/components/alerts";
-import { getUserSelf } from "../../../../utils/actions/user-actions";
+'use client'
+import { useState, useCallback } from 'react'
+import { ErrorMessage, SuccessMessage } from '@/components/alerts'
+import { getUserSelf } from '../../../../utils/actions/user-actions'
 
 export default function UploadPage() {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
 
   const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
+    const selectedFile = event.target.files[0]
     const validImageTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/gif",
-      "image/svg+xml",
-      "image/tiff",
-      "image/x-icon",
-      "image/vnd.djvu",
-    ];
+      'image/jpeg',
+      'image/png',
+      'image/gif',
+      'image/svg+xml',
+      'image/tiff',
+      'image/x-icon',
+      'image/vnd.djvu',
+    ]
 
     if (!validImageTypes.includes(selectedFile.type)) {
       displayError(
-        "Please select a valid image file type (JPEG, PNG, GIF, SVG, TIFF, ICO, DVU).",
-      );
-      return;
+        'Please select a valid image file type (JPEG, PNG, GIF, SVG, TIFF, ICO, DVU).'
+      )
+      return
     }
 
     if (selectedFile.size > 16 * 1024 * 1024) {
-      displayError("File size must be less than 16 MB.");
-      return;
+      displayError('File size must be less than 16 MB.')
+      return
     }
 
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(selectedFile);
+    const fileReader = new FileReader()
+    fileReader.readAsDataURL(selectedFile)
     fileReader.onload = (event) => {
-      const img = new Image();
-      img.src = event.target.result;
+      const img = new Image()
+      img.src = event.target.result
       img.onload = () => {
         if (img.width >= 128 && img.height >= 128) {
-          setSelectedFile(selectedFile);
+          setSelectedFile(selectedFile)
         } else {
-          displayError("Image resolution must be at least 128x128 pixels.");
+          displayError('Image resolution must be at least 128x128 pixels.')
         }
-      };
-      document.getElementById("selected-image").src = event.target.result;
-    };
-  };
+      }
+      document.getElementById('selected-image').src = event.target.result
+    }
+  }
 
   const displayError = (message) => {
-    setError(message);
+    setError(message)
     setTimeout(() => {
-      setError(null);
-    }, 5000);
-  };
+      setError(null)
+    }, 5000)
+  }
 
   const handleDrop = useCallback((event) => {
-    event.preventDefault();
-    const droppedFile = event.dataTransfer.files[0];
-    handleFileChange({ target: { files: [droppedFile] } });
-  }, []);
+    event.preventDefault()
+    const droppedFile = event.dataTransfer.files[0]
+    handleFileChange({ target: { files: [droppedFile] } })
+  }, [])
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    const formData = new FormData();
+    const formData = new FormData()
 
     if (!selectedFile) {
-      setError("Bitte wähle ein Bild aus.");
+      setError('Bitte wähle ein Bild aus.')
       setTimeout(() => {
-        setError(null);
-      }, 5000);
-      return;
+        setError(null)
+      }, 5000)
+      return
     }
 
-    formData.append("fileId", "unique()");
-    formData.append("file", selectedFile);
+    formData.append('fileId', 'unique()')
+    formData.append('file', selectedFile)
 
     try {
-      const userResponseData = await getUserSelf();
-      const userId = userResponseData.$id;
+      const userResponseData = await getUserSelf()
+      const userId = userResponseData.$id
 
-      setIsUploading(true); // Set isUploading to true before making the API call
+      setIsUploading(true) // Set isUploading to true before making the API call
 
-      const response = await fetch("/api/gallery/uploadImage", {
-        method: "POST",
+      const response = await fetch('/api/gallery/uploadImage', {
+        method: 'POST',
         body: formData,
-      });
+      })
 
-      const responseData = await response.json();
+      const responseData = await response.json()
 
       if (response.status === 201) {
         const editImage = await fetch(
           `/api/gallery/editUserGallery/${responseData.$id}`,
           {
-            method: "PATCH",
+            method: 'PATCH',
             body: JSON.stringify({
               data: {
                 name: imagename.value,
@@ -105,30 +105,30 @@ export default function UploadPage() {
                 userId: userId,
               },
             }),
-          },
-        );
+          }
+        )
 
-        const editImageData = await editImage.json();
+        const editImageData = await editImage.json()
         if (editImage.status === 200) {
-          setSuccess("Gespeichert und hochgeladen! Einen moment bitte...");
+          setSuccess('Gespeichert und hochgeladen! Einen moment bitte...')
           setTimeout(() => {
-            window.location.reload();
-          }, 3000);
+            window.location.reload()
+          }, 3000)
         } else {
-          console.error("Failed to edit image:", editImageData);
+          console.error('Failed to edit image:', editImageData)
         }
       } else {
-        setError("Fehler beim hochladen. Bitte versuche es erneut.");
+        setError('Fehler beim hochladen. Bitte versuche es erneut.')
         setTimeout(() => {
-          setError(null);
-        }, 5000);
-        console.error("Failed to upload file:", responseData);
-        setIsUploading(false);
+          setError(null)
+        }, 5000)
+        console.error('Failed to upload file:', responseData)
+        setIsUploading(false)
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   return (
     <>
@@ -275,11 +275,11 @@ export default function UploadPage() {
             className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
             disabled={isUploading} // Disable the button if isUploading is true
           >
-            {isUploading ? "Uploading..." : "Save"}{" "}
+            {isUploading ? 'Uploading...' : 'Save'}{' '}
             {/* Show different text based on the upload state */}
           </button>
         </div>
       </form>
     </>
-  );
+  )
 }

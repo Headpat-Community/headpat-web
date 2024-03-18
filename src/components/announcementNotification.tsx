@@ -1,16 +1,16 @@
-import Link from "next/link";
-import { AnnouncementDataType, AnnouncementDocumentsType } from "utils/types";
-import { getAnnouncements } from "utils/actions/announcement-actions";
+import Link from 'next/link'
+import { AnnouncementDataType, AnnouncementDocumentsType } from 'utils/types'
+import { getAnnouncements } from 'utils/actions/announcement-actions'
 
 export default async function AnnouncementNotification() {
-let announcementTotalData: AnnouncementDataType = await getAnnouncements();
-let announcementData: AnnouncementDocumentsType | undefined;
+  let announcementTotalData: AnnouncementDataType = await getAnnouncements()
+  let announcementData: AnnouncementDocumentsType | undefined
 
-if (announcementTotalData && announcementTotalData.documents) {
-  announcementData = announcementTotalData.documents[0];
-}
+  if (announcementTotalData && announcementTotalData.documents) {
+    announcementData = announcementTotalData.documents[0]
+  }
 
-// rest of your code
+  // rest of your code
 
   return (
     <>
@@ -24,7 +24,7 @@ if (announcementTotalData && announcementTotalData.documents) {
               className="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
               style={{
                 clipPath:
-                  "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)",
+                  'polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)',
               }}
             />
           </div>
@@ -36,7 +36,7 @@ if (announcementTotalData && announcementTotalData.documents) {
               className="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
               style={{
                 clipPath:
-                  "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)",
+                  'polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)',
               }}
             />
           </div>
@@ -64,5 +64,5 @@ if (announcementTotalData && announcementTotalData.documents) {
         </div>
       )}
     </>
-  );
+  )
 }

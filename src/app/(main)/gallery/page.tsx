@@ -1,21 +1,21 @@
-import Client from "./page.client";
-import { getUserSelf } from "../../../utils/actions/user-actions";
+import Client from './page.client'
+import { getUserSelf } from '../../../utils/actions/user-actions'
 
 export const metadata = {
-  title: "Gallerie",
+  title: 'Gallerie',
   description:
-    "Die Gallerie seite von Headpat Community. Hier könnt ihr alle Bilder sehen die von der Community hochgeladen wurden.",
-};
+    'Die Gallerie seite von Headpat Community. Hier könnt ihr alle Bilder sehen die von der Community hochgeladen wurden.',
+}
 
-export const runtime = "edge";
+export const runtime = 'edge'
 
 export default async function Gallery() {
-  const userSelf = await getUserSelf();
-  let enableNsfw = userSelf?.enablensfw;
+  const userSelf = await getUserSelf()
+  let enableNsfw = userSelf?.enablensfw
 
   return (
     <div>
       <Client enableNsfw={enableNsfw || false} />
     </div>
-  );
+  )
 }

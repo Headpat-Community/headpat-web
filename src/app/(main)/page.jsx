@@ -1,9 +1,9 @@
-import { ChevronRightIcon } from "@heroicons/react/20/solid";
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "../../components/ui/button";
+import { ChevronRightIcon } from '@heroicons/react/20/solid'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Button } from '../../components/ui/button'
 
-export const runtime = "edge";
+export const runtime = 'edge'
 
 export default function Home() {
   return (
@@ -92,10 +92,10 @@ export default function Home() {
                 VR-Map, Online- und Offline-Events und vieles mehr!
               </p>
               <div className="mt-10 flex items-center gap-x-6">
-                <Link href={"/gallery"}>
+                <Link href={'/gallery'}>
                   <Button>Gallery</Button>
                 </Link>
-                <Link href={"/pawcraft"}>
+                <Link href={'/pawcraft'}>
                   <Button>Pawcraft</Button>
                 </Link>
               </div>
@@ -139,5 +139,5 @@ export default function Home() {
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -1,18 +1,18 @@
-"use client";
-import { useState } from "react";
-import Link from "next/link";
-import { ErrorMessage, SuccessMessage } from "../../../../../components/alerts";
+'use client'
+import { useState } from 'react'
+import Link from 'next/link'
+import { ErrorMessage, SuccessMessage } from '../../../../../components/alerts'
 import {
   getGallery,
   deleteGalleryImage,
   deleteGalleryDocument,
-} from "../../../../../utils/actions/gallery-actions";
+} from '../../../../../utils/actions/gallery-actions'
 
 export default function FetchGallery({ singleGallery }) {
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
   const [userData, setUserData] = useState({
     name: singleGallery.name,
     imgalt: singleGallery.imgalt,
@@ -20,85 +20,85 @@ export default function FetchGallery({ singleGallery }) {
     createdAt: singleGallery.$createdAt,
     modifiedAt: singleGallery.$updatedAt,
     longtext: singleGallery.longtext,
-  });
+  })
 
   const getGalleryImageUrl = (galleryId) => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`;
-  };
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
+  }
 
   const deleteImage = async () => {
     try {
       // Get the ID from the URL
-      const pathParts = window.location.pathname.split("/");
-      const uniqueId = pathParts[3];
-      setIsDeleting(true);
+      const pathParts = window.location.pathname.split('/')
+      const uniqueId = pathParts[3]
+      setIsDeleting(true)
 
-      const data = await getGallery(`queries[]=equal("$id","${uniqueId}")`);
+      const data = await getGallery(`queries[]=equal("$id","${uniqueId}")`)
 
       // Get the image ID from the userData state
-      const documentId = data.documents[0].$id;
-      const imageId = data.documents[0].gallery_id;
+      const documentId = data.documents[0].$id
+      const imageId = data.documents[0].gallery_id
 
-      await deleteGalleryImage(imageId);
-      await deleteGalleryDocument(documentId);
+      await deleteGalleryImage(imageId)
+      await deleteGalleryDocument(documentId)
 
       if (!deleteGalleryImage || !deleteGalleryDocument) {
-        setError("Fehler beim Löschen des Bildes!");
+        setError('Fehler beim Löschen des Bildes!')
       }
 
-      setSuccess("Bild erfolgreich gelöscht! Kehre dich zur Galerie zurück...");
+      setSuccess('Bild erfolgreich gelöscht! Kehre dich zur Galerie zurück...')
       // Redirect to the gallery list page
       setTimeout(() => {
-        window.location.href = ".";
-      }, 3000);
+        window.location.href = '.'
+      }, 3000)
     } catch (error) {
-      setError(error.message);
+      setError(error.message)
       setTimeout(() => {
-        setError(null);
-      }, 5000);
-      setIsDeleting(false);
+        setError(null)
+      }, 5000)
+      setIsDeleting(false)
     }
-  };
+  }
 
   const updateImage = async () => {
-    setIsUploading(true);
+    setIsUploading(true)
 
     try {
       // Get the ID from the URL
-      const pathParts = window.location.pathname.split("/");
-      const uniqueId = pathParts[3];
+      const pathParts = window.location.pathname.split('/')
+      const uniqueId = pathParts[3]
 
       // Create the form data
       const data = {
-        name: document.getElementById("imagename").value,
-        imgalt: document.getElementById("imgalt").value,
-        longtext: document.getElementById("longtext").value,
-        nsfw: document.getElementById("nsfw").checked,
-      };
+        name: document.getElementById('imagename').value,
+        imgalt: document.getElementById('imgalt').value,
+        longtext: document.getElementById('longtext').value,
+        nsfw: document.getElementById('nsfw').checked,
+      }
 
       // Make the PUT request
       const response = await fetch(`/api/gallery/editUserGallery/${uniqueId}`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ data: data }), // Nest the requestBody inside a "data" key
-      });
+      })
 
       // Handle response and update state accordingly
     } catch (error) {
-      setError(error);
+      setError(error)
       setTimeout(() => {
-        setError(null);
-      }, 5000);
+        setError(null)
+      }, 5000)
     } finally {
-      setSuccess("Bild erfolgreich aktualisiert!");
+      setSuccess('Bild erfolgreich aktualisiert!')
       setTimeout(() => {
-        setSuccess(null);
-      }, 5000);
-      setIsUploading(false);
+        setSuccess(null)
+      }, 5000)
+      setIsUploading(false)
     }
-  };
+  }
 
   return (
     <>
@@ -107,14 +107,14 @@ export default function FetchGallery({ singleGallery }) {
       <div className="flex flex-wrap items-center justify-center gap-4 p-8">
         <div>
           {(() => {
-            const name = singleGallery?.data?.attributes?.name;
+            const name = singleGallery?.data?.attributes?.name
 
             return (
               <div className="flex flex-wrap items-start">
                 <div className="mx-auto flex">
                   <img
                     src={getGalleryImageUrl(singleGallery.gallery_id)}
-                    alt={name || "Headpat Community Image"}
+                    alt={name || 'Headpat Community Image'}
                     className={`imgsinglegallery h-[400px] rounded-lg object-contain sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`}
                   />
                 </div>
@@ -182,14 +182,14 @@ export default function FetchGallery({ singleGallery }) {
                           className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-black shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:text-white dark:ring-white/10 sm:text-sm sm:leading-6"
                         >
                           {new Date(userData.createdAt).toLocaleString(
-                            "en-GB",
+                            'en-GB',
                             {
-                              day: "2-digit",
-                              month: "2-digit",
-                              year: "numeric",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            },
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            }
                           )}
                         </span>
                       </div>
@@ -205,14 +205,14 @@ export default function FetchGallery({ singleGallery }) {
                           className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-black shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:text-white dark:ring-white/10 sm:text-sm sm:leading-6"
                         >
                           {new Date(userData.modifiedAt).toLocaleString(
-                            "en-GB",
+                            'en-GB',
                             {
-                              day: "2-digit",
-                              month: "2-digit",
-                              year: "numeric",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            },
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            }
                           )}
                         </span>
                       </div>
@@ -248,7 +248,7 @@ export default function FetchGallery({ singleGallery }) {
                           id="longtext"
                           name="longtext"
                           className="block h-72 w-full rounded-md border-0 bg-white/5 py-1.5 text-black shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:text-white dark:ring-white/10 sm:text-sm sm:leading-6"
-                          value={userData.longtext || ""}
+                          value={userData.longtext || ''}
                           maxLength={256}
                           onChange={(e) =>
                             setUserData({
@@ -275,7 +275,7 @@ export default function FetchGallery({ singleGallery }) {
                       disabled={isUploading || isDeleting} // Disable the button if isUploading is true
                       onClick={updateImage} // Call the deleteImage function on click
                     >
-                      {isUploading ? "Uploading..." : "Save"}{" "}
+                      {isUploading ? 'Uploading...' : 'Save'}{' '}
                       {/* Show different text based on the upload state */}
                     </button>
                     <button
@@ -285,16 +285,16 @@ export default function FetchGallery({ singleGallery }) {
                       disabled={isDeleting || isUploading} // Disable the button if isUploading is true
                       onClick={deleteImage} // Call the deleteImage function on click
                     >
-                      {isDeleting ? "Deleting..." : "Delete"}{" "}
+                      {isDeleting ? 'Deleting...' : 'Delete'}{' '}
                       {/* Show different text based on the upload state */}
                     </button>
                   </div>
                 </div>
               </div>
-            );
+            )
           })()}
         </div>
       </div>
     </>
-  );
+  )
 }

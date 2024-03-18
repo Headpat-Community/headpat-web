@@ -1,196 +1,192 @@
-"use client";
-import { useState } from "react";
-import Link from "next/link";
-import { ErrorMessage, SuccessMessage } from "components/alerts";
+'use client'
+import { useState } from 'react'
+import Link from 'next/link'
+import { ErrorMessage, SuccessMessage } from 'components/alerts'
 import {
   editUserData,
   editUserEmail,
   editUserPassword,
   handleNsfwChange,
-} from "../../../utils/actions/user-actions";
+} from 'utils/actions/user-actions'
 
 export default function AccountPage({ userDataSelf, userSelf, userId }) {
-  const [userData, setUserData] = useState(userDataSelf || []);
-  const [userMe, setUserMe] = useState(userSelf || { enablensfw: false });
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [userData, setUserData] = useState(userDataSelf || [])
+  const [userMe, setUserMe] = useState(userSelf || { enablensfw: false })
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
 
   const handleEmailChange = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
-      const email = document.getElementById("email").value;
-      const email_password = document.getElementById("email_password").value;
+      const email = document.getElementById('email').value
+      const email_password = document.getElementById('email_password').value
 
       // Check if profileUrl has at least 4 characters
       if (email_password.length < 8) {
-        setError("Please enter a valid password.");
+        setError('Please enter a valid password.')
         setTimeout(() => {
-          setError(null);
-        }, 5000);
-        return;
+          setError(null)
+        }, 5000)
+        return
       }
 
       const body = {
         email: email,
         password: email_password,
-      };
+      }
 
-      const responseData = await editUserEmail(body);
-      console.log(responseData);
+      const responseData = await editUserEmail(body)
+
       if (responseData === 401) {
-        setError("Passwort ist inkorrekt.");
+        setError('Passwort ist inkorrekt.')
         setTimeout(() => {
-          setError(null);
-        }, 5000);
+          setError(null)
+        }, 5000)
       }
       if (responseData === 409) {
-        setError("Es existiert bereits ein Account mit dieser E-Mail-Adresse.");
+        setError('Es existiert bereits ein Account mit dieser E-Mail-Adresse.')
         setTimeout(() => {
-          setError(null);
-        }, 5000);
+          setError(null)
+        }, 5000)
       }
       if (responseData.$id) {
-        setSuccess("E-Mail-Adresse erfolgreich geändert.");
+        setSuccess('E-Mail-Adresse erfolgreich geändert.')
         setTimeout(() => {
-          setSuccess(null);
-        }, 5000);
-        event.target.reset();
+          setSuccess(null)
+        }, 5000)
+        event.target.reset()
       } else {
-        setError(
-          "Ein Fehler ist aufgetreten. Bitte versuche es später erneut.",
-        );
+        setError('Ein Fehler ist aufgetreten. Bitte versuche es später erneut.')
         setTimeout(() => {
-          setError(null);
-        }, 5000);
+          setError(null)
+        }, 5000)
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const handlePasswordReset = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    const currentPassword = event.target.currentpassword.value;
-    const newPassword = event.target.newpassword.value;
+    const currentPassword = event.target.currentpassword.value
+    const newPassword = event.target.newpassword.value
 
     // Check if profileUrl has at least 4 characters
     if (newPassword.length < 8) {
-      setError("Passwort muss mindestens 8 Zeichen lang sein.");
+      setError('Passwort muss mindestens 8 Zeichen lang sein.')
       setTimeout(() => {
-        setError(null);
-      }, 5000);
-      return;
+        setError(null)
+      }, 5000)
+      return
     }
 
     try {
       const body = {
         password: newPassword,
         oldPassword: currentPassword,
-      };
+      }
 
-      const response = await editUserPassword(body);
+      const response = await editUserPassword(body)
 
       if (response === 400) {
-        const data = await response.json();
-        setError(data.error.message);
+        const data = await response.json()
+        setError(data.error.message)
         setTimeout(() => {
-          setError(null);
-        }, 5000);
+          setError(null)
+        }, 5000)
       } else if (response) {
-        setSuccess("Passwort erfolgreich geändert.");
+        setSuccess('Passwort erfolgreich geändert.')
         setTimeout(() => {
-          setSuccess(null);
-        }, 5000);
-        event.target.reset();
+          setSuccess(null)
+        }, 5000)
+        event.target.reset()
       } else {
-        setError("Password reset failed");
+        setError('Password reset failed')
         setTimeout(() => {
-          setError(null);
-        }, 5000);
+          setError(null)
+        }, 5000)
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const secondaryNavigation = [
-    { name: "Account", href: "/account", current: true },
-    { name: "Frontpage", href: "/account/frontpage", current: false },
-    { name: "Socials", href: "/account/socials", current: false },
-  ];
+    { name: 'Account', href: '/account', current: true },
+    { name: 'Frontpage', href: '/account/frontpage', current: false },
+    { name: 'Socials', href: '/account/socials', current: false },
+  ]
 
   const handleNsfw = async (event) => {
-    const isChecked = event.target.checked;
+    const isChecked = event.target.checked
 
     try {
-      const body = { data: { enablensfw: isChecked } };
-      const putResponse = await handleNsfwChange(userId, body);
+      const body = { data: { enablensfw: isChecked } }
+      const putResponse = await handleNsfwChange(userId, body)
 
       if (putResponse) {
-        setSuccess("NSFW erfolgreich geändert.");
+        setSuccess('NSFW erfolgreich geändert.')
         setUserMe((prevUserData) => ({
           ...prevUserData,
           enablensfw: isChecked,
-        }));
+        }))
       } else {
-        setError("Failed to update NSFW");
+        setError('Failed to update NSFW')
       }
 
       setTimeout(() => {
-        setSuccess(null);
-        setError(null);
-      }, 5000);
+        setSuccess(null)
+        setError(null)
+      }, 5000)
     } catch (error) {
-      console.error(error.message);
+      console.error(error.message)
     }
-  };
+  }
 
   const handleProfileUrlChange = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
-      const profileUrl = document.getElementById("profileurl").value;
+      const profileUrl = document.getElementById('profileurl').value
 
       // Check if profileUrl has at least 4 characters
       if (profileUrl.length < 3) {
-        setError("Profile URL must be at least 3 characters long.");
+        setError('Profile URL must be at least 3 characters long.')
         setTimeout(() => {
-          setError(null);
-        }, 5000);
-        return;
+          setError(null)
+        }, 5000)
+        return
       }
 
       const body = {
         data: {
-          profileurl: profileUrl,
+          profileUrl: profileUrl,
         },
-      };
+      }
 
-      const responseData = await editUserData(userId, body);
+      const responseData = await editUserData(userId, body)
 
       if (responseData.$id) {
-        setSuccess("Profil URL erfolgreich geändert.");
+        setSuccess('Profil URL erfolgreich geändert.')
         setTimeout(() => {
-          setSuccess(null);
-        }, 5000);
+          setSuccess(null)
+        }, 5000)
 
-        setUserData(responseData); // Set the userData state with the response data
-        event.target.reset(); // Reset the form
+        setUserData(responseData) // Set the userData state with the response data
+        event.target.reset() // Reset the form
         //window.location.reload();
       } else {
-        setError(
-          "Ein Fehler ist aufgetreten. Bitte versuche es später erneut.",
-        );
+        setError('Ein Fehler ist aufgetreten. Bitte versuche es später erneut.')
         setTimeout(() => {
-          setError(null);
-        }, 5000);
+          setError(null)
+        }, 5000)
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   return (
     <>
@@ -207,7 +203,7 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className={item.current ? "text-indigo-400" : ""}
+                  className={item.current ? 'text-indigo-400' : ''}
                 >
                   {item.name}
                 </Link>
@@ -240,7 +236,7 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
                     name="email"
                     type="email"
                     required
-                    placeholder={userMe ? userMe.email : ""}
+                    placeholder={userMe ? userMe.email : ''}
                     className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -306,7 +302,7 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
                       name="profileurl"
                       id="profileurl"
                       required
-                      placeholder={userData ? userData.profileurl : ""}
+                      placeholder={userData ? userData.profileurl : ''}
                       className="flex-1 border-0 bg-transparent py-1.5 pl-1 focus:ring-0 sm:text-sm sm:leading-6"
                       minLength="4"
                     />
@@ -412,5 +408,5 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -1,15 +1,15 @@
-import Client from "./page.client";
+import Client from './page.client'
 
 export const metadata = {
-  title: "Upload",
-};
+  title: 'Upload',
+}
 
-export const runtime = "edge";
+export const runtime = 'edge'
 
 export default function UploadPage() {
   return (
     <>
       <Client />
     </>
-  );
+  )
 }
