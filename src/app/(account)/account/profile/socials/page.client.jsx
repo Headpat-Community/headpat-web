@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Loading from '@/app/loading'
 import { ErrorMessage, SuccessMessage } from '@/components/alerts'
+import { Label } from '../../../../../components/ui/label'
+import { Input } from '../../../../../components/ui/input'
+import { Button } from '../../../../../components/ui/button'
 
 export default function AccountPage() {
   const [isUploading, setIsUploading] = useState(false)
@@ -93,8 +96,8 @@ export default function AccountPage() {
 
   const secondaryNavigation = [
     { name: 'Account', href: '/account', current: false },
-    { name: 'Frontpage', href: '/account/frontpage', current: false },
-    { name: 'Socials', href: '/account/socials', current: true },
+    { name: 'Frontpage', href: '/account/profile/frontpage', current: false },
+    { name: 'Socials', href: '/account/profile/socials', current: true },
   ]
 
   return (
@@ -137,18 +140,14 @@ export default function AccountPage() {
             <form onSubmit={handleSubmit} className="md:col-span-2">
               <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
                 <div className="sm:col-span-6">
-                  <label
-                    htmlFor="discordname"
-                    className="block text-sm font-medium leading-6"
-                  >
+                  <Label htmlFor="discordname">
                     Discord ID (196742608846979072 z.B.)
-                  </label>
+                  </Label>
                   <div className="relative mt-2">
-                    <input
+                    <Input
                       type="text"
                       name="discordname"
                       id="discordname"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.discordname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -171,18 +170,17 @@ export default function AccountPage() {
                 </div>
 
                 <div className="sm:col-span-6">
-                  <label
+                  <Label
                     htmlFor="telegramname"
                     className="block text-sm font-medium leading-6"
                   >
                     Telegram Name
-                  </label>
+                  </Label>
                   <div className="relative mt-2">
-                    <input
+                    <Input
                       type="text"
                       name="telegramname"
                       id="telegramname"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.telegramname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -207,18 +205,12 @@ export default function AccountPage() {
                 </div>
 
                 <div className="sm:col-span-6">
-                  <label
-                    htmlFor="furaffinityname"
-                    className="block text-sm font-medium leading-6"
-                  >
-                    Furaffinity Name
-                  </label>
+                  <Label htmlFor="furaffinityname">Furaffinity Name</Label>
                   <div className="relative mt-2">
-                    <input
+                    <Input
                       type="text"
                       name="furaffinityname"
                       id="furaffinityname"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.furaffinityname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -243,18 +235,17 @@ export default function AccountPage() {
                 </div>
 
                 <div className="sm:col-span-6">
-                  <label
+                  <Label
                     htmlFor="X_name"
                     className="block text-sm font-medium leading-6"
                   >
                     X / Twitter Name
-                  </label>
+                  </Label>
                   <div className="relative mt-2">
-                    <input
+                    <Input
                       type="text"
                       name="X_name"
                       id="X_name"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.X_name} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -277,18 +268,12 @@ export default function AccountPage() {
                 </div>
 
                 <div className="sm:col-span-6">
-                  <label
-                    htmlFor="twitchname"
-                    className="block text-sm font-medium leading-6"
-                  >
-                    Twitch
-                  </label>
+                  <Label htmlFor="twitchname">Twitch</Label>
                   <div className="relative mt-2">
-                    <input
+                    <Input
                       type="text"
                       name="twitchname"
                       id="twitchname"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.twitchname} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -312,12 +297,7 @@ export default function AccountPage() {
               </div>
 
               <div className="mt-8 flex">
-                <button
-                  type="submit"
-                  className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                >
-                  Save
-                </button>
+                <Button type="submit">Save</Button>
               </div>
             </form>
           </div>

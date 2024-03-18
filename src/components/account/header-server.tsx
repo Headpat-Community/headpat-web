@@ -5,6 +5,7 @@ import { ThemeToggle } from 'components/ThemeToggle'
 import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar'
 import { UserAccountType, UserDataType } from 'utils/types'
 import { Separator } from 'components/ui/separator'
+import Link from 'next/link'
 
 export default async function Header({ children }) {
   const accountData: UserAccountType = await getAccount()
@@ -24,11 +25,16 @@ export default async function Header({ children }) {
       <AnnouncementNotification />
       <header className="shrink-0">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <img
-            className="h-10 w-auto"
-            src="/logos/Headpat_new_logo.webp"
-            alt="Headpat Logo"
-          />
+          <Link href={'/'}>
+            <img
+              className="h-10 w-auto"
+              src="/logos/Headpat_new_logo.webp"
+              alt="Headpat Logo"
+            />
+          </Link>
+          <Link href={'/'}>
+            <h3>Home</h3>
+          </Link>
           <div className="flex items-center gap-x-4">
             <ThemeToggle />
             <span className="sr-only">Your profile</span>

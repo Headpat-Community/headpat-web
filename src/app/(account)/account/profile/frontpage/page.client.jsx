@@ -7,6 +7,10 @@ import {
   editUserData,
   getUserSelf,
 } from '../../../../../utils/actions/user-actions'
+import { Input } from '../../../../../components/ui/input'
+import { Button } from '../../../../../components/ui/button'
+import { Label } from '../../../../../components/ui/label'
+import { Textarea } from '../../../../../components/ui/textarea'
 
 export default function AccountPage({ userId }) {
   const [selectedFile, setSelectedFile] = useState(null)
@@ -162,8 +166,8 @@ export default function AccountPage({ userId }) {
 
   const secondaryNavigation = [
     { name: 'Account', href: '/account', current: false },
-    { name: 'Frontpage', href: '/account/frontpage', current: true },
-    { name: 'Socials', href: '/account/socials', current: false },
+    { name: 'Frontpage', href: '/account/profile/frontpage', current: true },
+    { name: 'Socials', href: '/account/profile/socials', current: false },
   ]
 
   return (
@@ -197,10 +201,10 @@ export default function AccountPage({ userId }) {
           <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
             <div>
               <h2 className="text-base font-semibold leading-7">
-                Frontpage Einstellungen
+                Frontpage Settings
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-900 dark:text-gray-400">
-                Hier kannst du deine Biografie, Profilbild etc. verwalten.
+                Here you can change your public profile settings.
               </p>
             </div>
 
@@ -214,7 +218,7 @@ export default function AccountPage({ userId }) {
                     className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
                   />
                   <div>
-                    <input
+                    <Input
                       accept="image/*"
                       className="rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-black/10 hover:bg-white/20 dark:ring-white/10"
                       id="avatar-upload"
@@ -223,18 +227,18 @@ export default function AccountPage({ userId }) {
                       onChange={handleAvatarChange}
                     />
                     <div className="flex items-center justify-between">
-                      <p className="mt-2 text-xs leading-5 text-gray-900 dark:text-gray-400">
+                      <p className="text-xs text-gray-900 dark:text-gray-400">
                         JPG, GIF or PNG. 2MB max.
                       </p>
-                      <button
+                      <Button
                         type="submit"
                         onClick={handleSubmitAvatar}
-                        className="mt-2 rounded bg-indigo-500 px-4 py-2 font-bold text-white hover:bg-indigo-700"
+                        className={'mt-2'}
                       >
                         Submit
-                      </button>
+                      </Button>
                     </div>
-                    <p className="mt-2 text-xs leading-5 text-gray-900 dark:text-gray-400">
+                    <p className="text-xs text-gray-900 dark:text-gray-400">
                       1024x1024 max. resolution
                     </p>
                   </div>
@@ -243,18 +247,12 @@ export default function AccountPage({ userId }) {
 
               <div className="mt-12 grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6">
                 <div className="col-span-full">
-                  <label
-                    htmlFor="displayname"
-                    className="block text-sm font-medium leading-6"
-                  >
-                    Display Name
-                  </label>
+                  <Label htmlFor="displayname">Display Name</Label>
                   <div className="relative mt-2">
-                    <input
+                    <Input
                       id="displayname"
                       name="displayname"
                       type="text"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.displayname || ''} // Set the value from state, or an empty string if it's undefined
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
@@ -277,18 +275,12 @@ export default function AccountPage({ userId }) {
                 </div>
 
                 <div className="col-span-full">
-                  <label
-                    htmlFor="status"
-                    className="block text-sm font-medium leading-6"
-                  >
-                    Status
-                  </label>
+                  <Label htmlFor="status">Status</Label>
                   <div className="relative mt-2">
-                    <input
+                    <Input
                       id="status"
                       name="status"
                       type="text"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.status} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 24) {
@@ -307,18 +299,12 @@ export default function AccountPage({ userId }) {
                 </div>
 
                 <div className="col-span-full">
-                  <label
-                    htmlFor="pronouns"
-                    className="block text-sm font-medium leading-6"
-                  >
-                    Pronouns
-                  </label>
+                  <Label htmlFor="pronouns">Pronouns</Label>
                   <div className="relative mt-2">
-                    <input
+                    <Input
                       id="pronouns"
                       name="pronouns"
                       type="text"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.pronouns} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 16) {
@@ -340,18 +326,12 @@ export default function AccountPage({ userId }) {
                 </div>
 
                 <div className="col-span-full">
-                  <label
-                    htmlFor="birthday"
-                    className="block text-sm font-medium leading-6"
-                  >
-                    Birthday
-                  </label>
+                  <Label htmlFor="birthday">Birthday</Label>
                   <div className="relative mt-2">
-                    <input
+                    <Input
                       id="birthday"
                       name="birthday"
                       type="date"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={
                         userData.birthday
                           ? new Date(userData.birthday)
@@ -375,18 +355,12 @@ export default function AccountPage({ userId }) {
                 </div>
 
                 <div className="col-span-full">
-                  <label
-                    htmlFor="location"
-                    className="block text-sm font-medium leading-6"
-                  >
-                    Location
-                  </label>
+                  <Label htmlFor="location">Location</Label>
                   <div className="relative mt-2">
-                    <input
+                    <Input
                       id="location"
                       name="location"
                       type="text"
-                      className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.location} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 256) {
@@ -408,17 +382,16 @@ export default function AccountPage({ userId }) {
                 </div>
 
                 <div className="col-span-full">
-                  <label
+                  <Label
                     htmlFor="biostatus"
                     className="block text-sm font-medium leading-6"
                   >
                     Bio
-                  </label>
+                  </Label>
                   <div className="relative mt-2">
-                    <textarea
+                    <Textarea
                       id="biostatus"
                       name="biostatus"
-                      className="block h-72 w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                       value={userData.bio} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 2048) {
@@ -438,12 +411,7 @@ export default function AccountPage({ userId }) {
               </div>
 
               <div className="mt-8 flex">
-                <button
-                  type="submit"
-                  className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                >
-                  Save
-                </button>
+                <Button type="submit">Save</Button>
               </div>
             </form>
           </div>

@@ -25,7 +25,7 @@ export default async function Header() {
               {/* Mobile Logo */}
               <div className="flex flex-1 items-center justify-center border-b border-gray-200 pb-2 pt-2 lg:hidden">
                 <Link href="/">
-                  <span className="sr-only">DutchBoxx Golfkarton</span>
+                  <span className="sr-only">Headpat Community</span>
                   <Image
                     className="h-8 w-auto"
                     src="/logos/Headpat_new_logo.webp"
@@ -41,7 +41,7 @@ export default async function Header() {
                   {/* Logo (lg+) */}
                   <div className="hidden lg:flex lg:flex-1 lg:items-center">
                     <Link href="/">
-                      <span className="sr-only">DutchBoxx Golfkarton</span>
+                      <span className="sr-only">Headpat Community</span>
                       <Image
                         className="h-12 w-auto"
                         src="/logos/Headpat_new_logo.webp"

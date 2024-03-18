@@ -1,7 +1,7 @@
 'use client'
 import { useState, useCallback } from 'react'
 import { ErrorMessage, SuccessMessage } from '@/components/alerts'
-import { getUserSelf } from '../../../../utils/actions/user-actions'
+import { getUserSelf } from '../../../../../utils/actions/user-actions'
 
 export default function UploadPage() {
   const [selectedFile, setSelectedFile] = useState(null)
