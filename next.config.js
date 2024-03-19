@@ -33,6 +33,10 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+        source: '/register',
+        destination: '/login',
+      },
+      {
         source: '/account',
         destination: '/account/profile',
       },

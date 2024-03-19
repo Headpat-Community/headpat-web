@@ -1,42 +1,32 @@
-import { ChevronRightIcon } from '@heroicons/react/20/solid'
-import { PhotoIcon, HomeIcon } from '@heroicons/react/24/solid'
-import {
-  FontAwesomeIcon,
-  FontAwesomeIconProps,
-} from '@fortawesome/react-fontawesome'
-import { faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons'
 import Link from 'next/link'
 import Image from 'next/image'
-import { JSX } from 'react'
+import { SiGithub, SiDiscord } from '@icons-pack/react-simple-icons'
+import { ChevronRight, Home, ImageIcon } from 'lucide-react'
 
 const links = [
   {
     name: 'Home',
     href: '/',
     description: 'Die Homepage.',
-    icon: HomeIcon,
+    icon: Home,
   },
   {
     name: 'Gallery',
     href: '/gallery',
     description: 'Alle Fotos die hochgeladen wurden von der Community.',
-    icon: PhotoIcon,
+    icon: ImageIcon,
   },
 ]
 const social = [
   {
     name: 'Discord',
     href: 'https://discord.gg/headpat',
-    icon: (props: any) => (
-      <FontAwesomeIcon icon={faDiscord} className="h-6 w-6" {...props} />
-    ),
+    icon: (props: any) => <SiGithub className="h-6 w-6" {...props} />,
   },
   {
     name: 'GitHub',
     href: 'https://github.com/Headpat-Community/headpat.de',
-    icon: (props: any) => (
-      <FontAwesomeIcon icon={faGithub} className="h-6 w-6" {...props} />
-    ),
+    icon: (props: any) => <SiDiscord className="h-6 w-6" {...props} />,
   },
 ]
 
@@ -89,7 +79,7 @@ export default function NotFoundComponent() {
                   </p>
                 </div>
                 <div className="flex-none self-center">
-                  <ChevronRightIcon
+                  <ChevronRight
                     className="h-5 w-5 text-gray-400"
                     aria-hidden="true"
                   />

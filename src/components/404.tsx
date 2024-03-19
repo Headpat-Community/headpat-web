@@ -1,21 +1,20 @@
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import { PhotoIcon, HomeIcon } from '@heroicons/react/24/solid'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons'
 import Link from 'next/link'
 import Image from 'next/image'
+import { SiDiscord, SiGithub } from '@icons-pack/react-simple-icons'
 
 const links = [
   {
     name: 'Home',
     href: '/',
-    description: 'Die Homepage.',
+    description: 'Can we call this Home?',
     icon: HomeIcon,
   },
   {
-    name: 'Gallerie',
+    name: 'Gallery',
     href: '/gallery',
-    description: 'Alle Fotos die hochgeladen wurden von der Community.',
+    description: 'Gallery images posted by the loving Community.',
     icon: PhotoIcon,
   },
 ]
@@ -23,16 +22,12 @@ const social = [
   {
     name: 'Discord',
     href: 'https://discord.gg/headpat',
-    icon: (props) => (
-      <FontAwesomeIcon icon={faDiscord} className="h-6 w-6" {...props} />
-    ),
+    icon: (props) => <SiDiscord className="h-6 w-6" {...props} />,
   },
   {
     name: 'GitHub',
     href: 'https://github.com/Headpat-Community/headpat.de',
-    icon: (props) => (
-      <FontAwesomeIcon icon={faGithub} className="h-6 w-6" {...props} />
-    ),
+    icon: (props) => <SiGithub className="h-6 w-6" {...props} />,
   },
 ]
 

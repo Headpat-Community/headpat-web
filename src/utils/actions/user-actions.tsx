@@ -66,7 +66,7 @@ export async function getUserData(query = '') {
   )
 
   if (!response.ok) {
-    return false
+    return response.status + ' ' + response.statusText
   }
 
   const data = await response.json()

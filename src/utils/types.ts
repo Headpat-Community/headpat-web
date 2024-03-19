@@ -42,7 +42,7 @@ export interface UserDataType {
  */
 export interface UserDataDocumentsType extends MainTypes {
   status: string | null
-  birthday: Date | null
+  birthday: string | null
   profileUrl: string
   pronouns: string | null
   discordname: string | null
