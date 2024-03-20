@@ -53,7 +53,7 @@ export default function Footer() {
               <Link
                 href={item.href}
                 className="text-sm leading-6 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-500"
-                target={item.name === 'Discord' ? '_blank' : undefined}
+                target={item.name === 'Discord' ? '_blank' : '_self'}
               >
                 {item.name}
               </Link>
