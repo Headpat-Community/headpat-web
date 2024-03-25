@@ -241,7 +241,7 @@ export default function AccountPage() {
                         if (e.target.value.length <= 32) {
                           setUserData({
                             ...userData,
-                            displayname: e.target.value,
+                            displayName: e.target.value,
                           })
                         }
                       }} // Update state when the input changes, only if the length is less than or equal to 32
@@ -249,8 +249,8 @@ export default function AccountPage() {
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                       <span className="select-none">
-                        {userData?.displayname
-                          ? userData.displayname.length
+                        {userData?.displayName
+                          ? userData.displayName.length
                           : 0}{' '}
                         {/* Check if userData.displayname is defined before accessing its length property */}
                       </span>

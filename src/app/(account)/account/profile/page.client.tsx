@@ -6,13 +6,24 @@ import { Input } from 'components/ui/input'
 import { Button } from 'components/ui/button'
 import { Label } from 'components/ui/label'
 import { Checkbox } from 'components/ui/checkbox'
-import { account, databases } from '@/app/appwrite'
-import { Models } from 'appwrite'
+import { account, avatars, databases } from '@/app/appwrite'
+import { AuthenticatorType, Models } from 'appwrite'
 import { useGetUser } from 'utils/getUserData'
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from 'components/ui/alert-dialog'
+import MfaAlert from 'components/account/profile/mfaAlert'
 
 export default function AccountPage() {
-  const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(null)
+  const [error, setError] = useState<string>(null)
+  const [success, setSuccess] = useState<string>(null)
   const { userMe, setUserMe, userData, setUserData } = useGetUser()
 
   const handleEmailChange = async (event: { preventDefault: () => void }) => {
@@ -192,10 +203,6 @@ export default function AccountPage() {
     }
   }
 
-  const handleMFA = async (event: any) => {
-    // Soon
-  }
-
   return (
     <>
       {success && <SuccessMessage attentionSuccess={success} />}
@@ -367,18 +374,11 @@ export default function AccountPage() {
             </p>
           </div>
 
-          <form className="md:col-span-2" onSubmit={handleMFA}>
-            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-              <div className="col-span-full">
-                <h1>Soon!</h1>
-              </div>
-              <div className="col-span-full">
-                <Button type="submit" variant={'outline'}>
-                  Save
-                </Button>
-              </div>
+          <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+            <div className="col-span-full">
+              <MfaAlert />
             </div>
-          </form>
+          </div>
         </div>
 
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
