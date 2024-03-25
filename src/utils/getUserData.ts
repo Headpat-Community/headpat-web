@@ -26,7 +26,7 @@ export const useGetUser = () => {
 
       promise.then(
         function (response) {
-          const userData = response.documents as UserDataDocumentsType
+          const userData = response as UserDataDocumentsType
           setUserData(userData)
         },
         function (error) {

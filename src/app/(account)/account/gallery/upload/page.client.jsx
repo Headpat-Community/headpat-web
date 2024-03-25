@@ -1,5 +1,5 @@
 'use client'
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { ErrorMessage, SuccessMessage } from '@/components/alerts'
 import { getUserSelf } from '../../../../../utils/actions/user-actions'
 
@@ -9,8 +9,9 @@ export default function UploadPage() {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
 
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0]
+  const handleDrop = useCallback((event) => {
+    event.preventDefault()
+    const selectedFile = event.dataTransfer.files[0]
     const validImageTypes = [
       'image/jpeg',
       'image/png',
@@ -47,7 +48,7 @@ export default function UploadPage() {
       }
       document.getElementById('selected-image').src = event.target.result
     }
-  }
+  })
 
   const displayError = (message) => {
     setError(message)
@@ -55,12 +56,6 @@ export default function UploadPage() {
       setError(null)
     }, 5000)
   }
-
-  const handleDrop = useCallback((event) => {
-    event.preventDefault()
-    const droppedFile = event.dataTransfer.files[0]
-    handleFileChange({ target: { files: [droppedFile] } })
-  }, [])
 
   const handleSubmit = async (event) => {
     event.preventDefault()

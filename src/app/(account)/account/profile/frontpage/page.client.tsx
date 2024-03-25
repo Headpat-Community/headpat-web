@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Loading from '../../../../loading'
 import { ErrorMessage, SuccessMessage } from '@/components/alerts'
@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { storage } from '@/app/appwrite'
+import { databases, storage } from '@/app/appwrite'
 import { useGetUser } from '@/utils/getUserData'
 
 export default function AccountPage() {
@@ -16,8 +16,8 @@ export default function AccountPage() {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
   const [isUploading, setIsUploading] = useState(false)
-  const [isLoading, setIsLoading] = useState(true) // Added loading state
-  const { userMe, setUserMe, userData, setUserData } = useGetUser()
+  const [isLoading, setIsLoading] = useState(false) // Added loading state
+  const { userMe, userData, setUserData } = useGetUser()
 
   const getAvatarImageUrl = (galleryId: string) => {
     if (!galleryId) return
@@ -92,22 +92,20 @@ export default function AccountPage() {
     }
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
 
-    //const formData = new FormData();
-    //formData.append("file", selectedFile);
-
     try {
-      // Year-Month-Day (YYYY-MM-DD)
+      setIsUploading(true)
 
-      setIsUploading(true) // Set isUploading to true before making the API call
-
-      const body = {
-        data: {
+      const promise = databases.updateDocument(
+        'hp_db',
+        'userdata',
+        userMe?.$id,
+        {
           status: (document.getElementById('status') as HTMLInputElement).value,
           bio: (document.getElementById('biostatus') as HTMLInputElement).value,
-          displayname: (
+          displayName: (
             document.getElementById('displayname') as HTMLInputElement
           ).value,
           birthday: new Date(
@@ -119,24 +117,30 @@ export default function AccountPage() {
             .value,
           location: (document.getElementById('location') as HTMLInputElement)
             .value,
-        },
-      }
+        }
+      )
 
-      const responseData = await editUserData(userMe.$id, body)
-      if (responseData) {
-        //console.log("File uploaded successfully");
-        setIsUploading(false) // Set isUploading to false after the API call is complete
-        setUserData(responseData) // Set the userData state with the response data
-        //setSuccess("Gespeichert!");
-        // Reload the window
-        window.location.reload()
-      }
-    } catch (error) {
-      console.error(error)
-      setError('Ein Fehler ist aufgetreten.' + error)
+      promise.then(
+        function (response) {
+          console.log(response) // Success
+          setIsUploading(false)
+          setSuccess('Saved!')
+        },
+        function (error) {
+          console.log(error) // Failure
+          setIsUploading(false)
+          setError('Failed to upload Data')
+        }
+      )
+
       setTimeout(() => {
         setError(null)
+        setSuccess(null)
       }, 5000)
+    } catch (error) {
+      setIsUploading(false)
+      setError('Failed to upload Data')
+      console.error(error)
     }
   }
 
@@ -190,7 +194,8 @@ export default function AccountPage() {
                   <img
                     id="avatar-image"
                     src={
-                      getAvatarImageUrl(userData.avatarId) || '/logos/logo.webp'
+                      getAvatarImageUrl(userData?.avatarId) ||
+                      '/logos/logo.webp'
                     }
                     alt="Avatar"
                     className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
@@ -231,7 +236,7 @@ export default function AccountPage() {
                       id="displayname"
                       name="displayname"
                       type="text"
-                      value={userData.displayname || ''} // Set the value from state, or an empty string if it's undefined
+                      value={userData?.displayName || ''} // Set the value from state, or an empty string if it's undefined
                       onChange={(e) => {
                         if (e.target.value.length <= 32) {
                           setUserData({
@@ -244,7 +249,9 @@ export default function AccountPage() {
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                       <span className="select-none">
-                        {userData.displayname ? userData.displayname.length : 0}{' '}
+                        {userData?.displayname
+                          ? userData.displayname.length
+                          : 0}{' '}
                         {/* Check if userData.displayname is defined before accessing its length property */}
                       </span>
                       <span className="select-none text-gray-400">/{32}</span>
@@ -259,7 +266,7 @@ export default function AccountPage() {
                       id="status"
                       name="status"
                       type="text"
-                      value={userData.status} // Set the value from state
+                      value={userData?.status} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 24) {
                           setUserData({ ...userData, status: e.target.value })
@@ -269,7 +276,7 @@ export default function AccountPage() {
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                       <span className="select-none">
-                        {userData.status ? userData.status.length : 0}{' '}
+                        {userData?.status ? userData.status.length : 0}{' '}
                       </span>
                       <span className="select-none text-gray-400">/{24}</span>
                     </div>
@@ -283,7 +290,7 @@ export default function AccountPage() {
                       id="pronouns"
                       name="pronouns"
                       type="text"
-                      value={userData.pronouns} // Set the value from state
+                      value={userData?.pronouns} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 16) {
                           setUserData({
@@ -296,7 +303,7 @@ export default function AccountPage() {
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                       <span className="select-none">
-                        {userData.pronouns ? userData.pronouns.length : 0}{' '}
+                        {userData?.pronouns ? userData.pronouns.length : 0}{' '}
                       </span>
                       <span className="select-none text-gray-400">/{16}</span>
                     </div>
@@ -311,7 +318,7 @@ export default function AccountPage() {
                       name="birthday"
                       type="date"
                       value={
-                        userData.birthday
+                        userData?.birthday
                           ? new Date(userData.birthday)
                               .toISOString()
                               .split('T')[0]
@@ -339,7 +346,7 @@ export default function AccountPage() {
                       id="location"
                       name="location"
                       type="text"
-                      value={userData.location} // Set the value from state
+                      value={userData?.location} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 256) {
                           setUserData({
@@ -352,7 +359,7 @@ export default function AccountPage() {
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                       <span className="select-none">
-                        {userData.location ? userData.location.length : 0}{' '}
+                        {userData?.location ? userData.location.length : 0}{' '}
                       </span>
                       <span className="select-none text-gray-400">/{256}</span>
                     </div>
@@ -370,7 +377,7 @@ export default function AccountPage() {
                     <Textarea
                       id="biostatus"
                       name="biostatus"
-                      value={userData.bio} // Set the value from state
+                      value={userData?.bio} // Set the value from state
                       onChange={(e) => {
                         if (e.target.value.length <= 2048) {
                           setUserData({ ...userData, bio: e.target.value })
@@ -380,7 +387,7 @@ export default function AccountPage() {
                     />
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-end pb-2 pr-4 text-sm leading-5">
                       <span className="select-none">
-                        {userData.bio ? userData.bio.length : 0}{' '}
+                        {userData?.bio ? userData.bio.length : 0}{' '}
                       </span>
                       <span className="select-none text-gray-400">/{2048}</span>
                     </div>

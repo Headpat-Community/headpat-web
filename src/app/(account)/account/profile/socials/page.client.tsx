@@ -13,7 +13,7 @@ export default function AccountPage() {
 
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
-  const { userMe, setUserMe, userData, setUserData } = useGetUser()
+  const { userMe, userData, setUserData } = useGetUser()
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
