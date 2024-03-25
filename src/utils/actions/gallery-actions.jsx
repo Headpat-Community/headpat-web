@@ -6,7 +6,7 @@ export async function getGallery(query = '') {
   const cookieHeader = headersList.get('cookie')
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_web/collections/gallery-images/documents?${query}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/gallery-images/documents?${query}`,
     {
       method: 'GET',
       headers: {
@@ -30,7 +30,7 @@ export async function getSingleGallery(galleryId) {
   const cookieHeader = headersList.get('cookie')
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_web/collections/gallery-images/documents/${galleryId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/gallery-images/documents/${galleryId}`,
     {
       method: 'GET',
       headers: {
@@ -74,7 +74,7 @@ export async function deleteGalleryDocument(documentId) {
   const cookieHeader = headersList.get('cookie')
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_web/collections/gallery-images/documents/${documentId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/gallery-images/documents/${documentId}`,
     {
       method: 'DELETE',
       headers: {

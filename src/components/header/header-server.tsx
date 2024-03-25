@@ -11,7 +11,7 @@ import MobileNav from 'components/header/mobile-nav'
 export default async function Header() {
   const accountData = await getAccount()
   const jwtBool = !accountData
-  
+
   return (
     <div>
       <AnnouncementNotification />

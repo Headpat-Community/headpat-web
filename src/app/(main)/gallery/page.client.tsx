@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { getGallery } from 'utils/actions/gallery-actions'
 import { GalleryType } from 'utils/types'
+import { databases, Query, storage } from '@/app/appwrite'
 
 export default function FetchGallery({ enableNsfw }) {
   const [gallery, setGallery] = useState([])
@@ -12,21 +13,44 @@ export default function FetchGallery({ enableNsfw }) {
   const [totalPages, setTotalPages] = useState(1)
 
   const getGalleryImageUrl = (galleryId: string) => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&quality=100&height=500&operation=fit`
+    if (!galleryId) return
+    const imageId = storage.getFilePreview(
+      '655ca6663497d9472539',
+      `${galleryId}`,
+      undefined,
+      500,
+      undefined,
+      100
+    )
+    return imageId.href
   }
 
   useEffect(() => {
     const fetchGalleryData = async () => {
-      const filters = !enableNsfw ? `&queries[]=equal("nsfw",false)` : ``
       const pageSize = 500 // Number of items per page
       const offset = (currentPage - 1) * pageSize // Calculate offset based on current page
-      const apiUrl = `${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`
+      //const filters = !enableNsfw ? `&queries[]=equal("nsfw",false)` : ``
+
+      const filters = !enableNsfw
+        ? [
+            Query.equal('nsfw', false),
+            Query.limit(pageSize),
+            Query.offset(offset),
+          ]
+        : [Query.limit(pageSize), Query.offset(offset)]
+
+      //const apiUrl = `${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`
+      const gallery = await databases.listDocuments(
+        'hp_db',
+        'gallery-images',
+        filters
+      )
 
       try {
-        const data: GalleryType = await getGallery(apiUrl)
+        //const data: GalleryType = await getGallery(apiUrl)
 
-        setGallery(data.documents)
-        setTotalPages(data.total / pageSize)
+        setGallery(gallery.documents)
+        setTotalPages(gallery.total / pageSize)
       } catch (err) {
         setError(err)
       }

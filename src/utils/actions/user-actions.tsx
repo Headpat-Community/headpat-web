@@ -104,7 +104,7 @@ export async function getUserDataById(userId: string) {
   const cookieHeader = headersList.get('cookie')
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/655ad3d280feee3296b5/documents/${userId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/userdata/documents/${userId}`,
     {
       method: 'GET',
       headers: {

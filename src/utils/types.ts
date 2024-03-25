@@ -16,16 +16,16 @@ interface MainTypes {
 export interface UserAccountType {
   $id: string
   name: string
-  registration: Date
+  registration: string
   status: boolean
   labels: string[]
-  passwordUpdate: Date
+  passwordUpdate: string
   email: string
   phone: string
   emailVerification: boolean
   phoneVerification: boolean
-  prefs: Record<string, unknown>
-  accessedAt: Date
+  //prefs: Array<string, unknown>
+  accessedAt: string
 }
 
 /**

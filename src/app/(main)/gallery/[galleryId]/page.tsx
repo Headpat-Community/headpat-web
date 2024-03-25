@@ -1,9 +1,5 @@
 import Client from './page.client'
-import {
-  getUserData,
-  getUserDataSelf,
-  getUserSelf,
-} from 'utils/actions/user-actions'
+import { getUserData, getUserDataSelf } from 'utils/actions/user-actions'
 import { getGallery } from 'utils/actions/gallery-actions'
 import { notFound } from 'next/navigation'
 import { GalleryDocumentsType, GalleryType } from 'utils/types'

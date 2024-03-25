@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Loading from '../../../loading'
-import { ErrorMessage, SuccessMessage } from '../../../../components/alerts'
-import { getGallery } from '../../../../utils/actions/gallery-actions'
+import { ErrorMessage, SuccessMessage } from 'components/alerts'
+import { databases, storage, Query } from '@/app/appwrite'
 
 export default function FetchGallery({ enableNsfw, userId }) {
   const [gallery, setGallery] = useState([])
@@ -14,8 +14,10 @@ export default function FetchGallery({ enableNsfw, userId }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
 
-  const getGalleryImageUrl = (galleryId) => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`
+  const getGalleryImageUrl = (galleryId: string) => {
+    if (!galleryId) return
+    const imageId = storage.getFileView('655ca6663497d9472539', `${galleryId}`)
+    return imageId.href
   }
 
   useEffect(() => {
@@ -26,18 +28,30 @@ export default function FetchGallery({ enableNsfw, userId }) {
 
   useEffect(() => {
     const fetchGalleryData = async () => {
-      const filters = !enableNsfw
-        ? `queries[]=equal("userId","${userId}")&queries[]=equal("nsfw",false)`
-        : `queries[]=equal("userId","${userId}")`
-
       const pageSize = 5 // Number of items per page
       const offset = (currentPage - 1) * pageSize // Calculate offset based on current page
-      const apiUrl = `${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`
+      //const apiUrl = `${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`
+
+      const filters = !enableNsfw
+        ? [
+            Query.equal('userId', userId),
+            Query.equal('nsfw', false),
+            Query.limit(pageSize),
+            Query.offset(offset),
+          ]
+        : [Query.equal('userId', userId)]
 
       setIsLoading(true)
 
-      const gallery = await getGallery(apiUrl)
-      setGallery(gallery.documents)
+      const gallery = await databases.listDocuments(
+        'hp_db',
+        'gallery-images',
+        filters
+      )
+      console.log(gallery)
+
+      //const gallery = await getGallery(apiUrl)
+      setGallery(gallery.documents || [])
       setTotalPages(gallery.total / pageSize)
       setIsLoading(false)
     }
@@ -81,8 +95,8 @@ export default function FetchGallery({ enableNsfw, userId }) {
                       )}
                       <Link href={`/account/gallery/${item.$id}`}>
                         <Image
-                          src={getGalleryImageUrl(item.gallery_id)}
-                          alt={item.imgalt}
+                          src={getGalleryImageUrl(item.galleryId)}
+                          alt={item.imgAlt || 'Gallery image'}
                           className={`h-full max-h-[600px] w-full max-w-[600px] object-cover`}
                           width={600}
                           height={600}

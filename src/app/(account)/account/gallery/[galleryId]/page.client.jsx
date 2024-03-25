@@ -7,6 +7,10 @@ import {
   deleteGalleryImage,
   deleteGalleryDocument,
 } from '../../../../../utils/actions/gallery-actions'
+import { Input } from '../../../../../components/ui/input'
+import { Textarea } from '../../../../../components/ui/textarea'
+import { Button } from '../../../../../components/ui/button'
+import { Label } from '../../../../../components/ui/label'
 
 export default function FetchGallery({ singleGallery }) {
   const [error, setError] = useState(null)
@@ -130,16 +134,15 @@ export default function FetchGallery({ singleGallery }) {
 
                   <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div className="sm:col-span-3">
-                      <label className="block text-sm font-medium leading-6 text-black dark:text-white">
+                      <Label htmlFor="imagename">
                         Name <span className="text-red-500">*</span>
-                      </label>
+                      </Label>
                       <div className="mt-2">
-                        <input
+                        <Input
                           type="text"
                           name="imagename"
                           id="imagename"
                           required
-                          className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-black shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:text-white dark:ring-white/10 sm:text-sm sm:leading-6"
                           value={userData.name}
                           onChange={(e) =>
                             setUserData({
@@ -152,15 +155,14 @@ export default function FetchGallery({ singleGallery }) {
                     </div>
 
                     <div className="sm:col-span-3">
-                      <label className="block text-sm font-medium leading-6 text-black dark:text-white">
+                      <Label htmlFor="imgalt">
                         Alternative Informationen (SEO)
-                      </label>
+                      </Label>
                       <div className="mt-2">
-                        <input
+                        <Input
                           type="text"
                           name="imgalt"
                           id="imgalt"
-                          className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-black shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:text-white dark:ring-white/10 sm:text-sm sm:leading-6"
                           value={userData.imgalt} // Use userData.imgalt
                           onChange={(e) =>
                             setUserData({
@@ -173,14 +175,9 @@ export default function FetchGallery({ singleGallery }) {
                     </div>
 
                     <div className="sm:col-span-3">
-                      <label className="block text-sm font-medium leading-6 text-black dark:text-white">
-                        Erstellt am
-                      </label>
+                      <Label htmlFor="createdAt">Erstellt am</Label>
                       <div className="mt-2">
-                        <span
-                          type="text"
-                          className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-black shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:text-white dark:ring-white/10 sm:text-sm sm:leading-6"
-                        >
+                        <span className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-black shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:text-white dark:ring-white/10 sm:text-sm sm:leading-6">
                           {new Date(userData.createdAt).toLocaleString(
                             'en-GB',
                             {
@@ -196,9 +193,7 @@ export default function FetchGallery({ singleGallery }) {
                     </div>
 
                     <div className="sm:col-span-3">
-                      <label className="block text-sm font-medium leading-6 text-black dark:text-white">
-                        Letztes Update
-                      </label>
+                      <Label htmlFor="modifiedAt">Letztes Update</Label>
                       <div className="mt-2">
                         <span
                           type="text"
@@ -219,9 +214,7 @@ export default function FetchGallery({ singleGallery }) {
                     </div>
 
                     <div className="sm:col-span-6">
-                      <label className="block text-sm font-medium leading-6 text-black dark:text-white">
-                        NSFW
-                      </label>
+                      <Label htmlFor="nsfw">NSFW</Label>
                       <div className="mt-2">
                         <input
                           type="checkbox"
@@ -240,14 +233,11 @@ export default function FetchGallery({ singleGallery }) {
                     </div>
 
                     <div className="col-span-full">
-                      <label className="block text-sm font-medium leading-6 text-black dark:text-white">
-                        Beschreibung
-                      </label>
+                      <Label htmlFor="longtext">Beschreibung</Label>
                       <div className="relative mt-2">
-                        <textarea
+                        <Textarea
                           id="longtext"
                           name="longtext"
-                          className="block h-72 w-full rounded-md border-0 bg-white/5 py-1.5 text-black shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:text-white dark:ring-white/10 sm:text-sm sm:leading-6"
                           value={userData.longtext || ''}
                           maxLength={256}
                           onChange={(e) =>
@@ -268,26 +258,24 @@ export default function FetchGallery({ singleGallery }) {
                     >
                       Cancel
                     </Link>
-                    <button
+                    <Button
                       type="submit"
                       value="Submit"
-                      className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                       disabled={isUploading || isDeleting} // Disable the button if isUploading is true
                       onClick={updateImage} // Call the deleteImage function on click
                     >
                       {isUploading ? 'Uploading...' : 'Save'}{' '}
                       {/* Show different text based on the upload state */}
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       type="submit"
                       value="Submit"
-                      className="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500"
                       disabled={isDeleting || isUploading} // Disable the button if isUploading is true
                       onClick={deleteImage} // Call the deleteImage function on click
                     >
                       {isDeleting ? 'Deleting...' : 'Delete'}{' '}
                       {/* Show different text based on the upload state */}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

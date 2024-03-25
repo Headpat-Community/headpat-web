@@ -1,77 +1,78 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ErrorMessage, SuccessMessage } from 'components/alerts'
-import {
-  editUserData,
-  editUserEmail,
-  editUserPassword,
-  handleNsfwChange,
-} from 'utils/actions/user-actions'
 import { Input } from 'components/ui/input'
 import { Button } from 'components/ui/button'
 import { Label } from 'components/ui/label'
 import { Checkbox } from 'components/ui/checkbox'
+import { account, databases } from '@/app/appwrite'
 
-export default function AccountPage({ userDataSelf, userSelf, userId }) {
-  const [userData, setUserData] = useState(userDataSelf || [])
-  const [userMe, setUserMe] = useState(userSelf || { enablensfw: false })
+export default function AccountPage() {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
 
-  const handleEmailChange = async (event) => {
+  const [userMe, setUserMe] = useState(null)
+  const [userData, setUserData] = useState(null)
+
+  useEffect(() => {
+    account.get().then((response) => setUserMe(response))
+  }, [])
+
+  useEffect(() => {
+    if (userMe?.$id) {
+      databases
+        .getDocument('hp_db', 'userdata', userMe?.$id)
+        .then((response) => setUserData(response || []))
+    }
+  }, [userMe])
+
+  const handleEmailChange = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
 
     try {
-      const email = document.getElementById('email').value
-      const email_password = document.getElementById('email_password').value
+      const email = (document.getElementById('email') as HTMLInputElement).value
+      const email_password = (
+        document.getElementById('email_password') as HTMLInputElement
+      ).value
 
       // Check if profileUrl has at least 4 characters
-      if (email_password.length < 8) {
-        setError('Please enter a valid password.')
+      if (email_password.length < 8 || email_password.length > 256) {
+        setError('Please enter a valid password with at least 8 characters.')
         setTimeout(() => {
           setError(null)
         }, 5000)
         return
       }
 
-      const body = {
-        email: email,
-        password: email_password,
-      }
+      const promise = account.updateEmail(email, email_password)
 
-      const responseData = await editUserEmail(body)
-
-      if (responseData === 401) {
-        setError('Passwort ist inkorrekt.')
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
-      }
-      if (responseData === 409) {
-        setError('Es existiert bereits ein Account mit dieser E-Mail-Adresse.')
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
-      }
-      if (responseData.$id) {
-        setSuccess('E-Mail-Adresse erfolgreich geändert.')
-        setTimeout(() => {
-          setSuccess(null)
-        }, 5000)
-        event.target.reset()
-      } else {
-        setError('Ein Fehler ist aufgetreten. Bitte versuche es später erneut.')
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
-      }
+      promise.then(
+        function () {
+          setSuccess('E-Mail updated successfully.')
+        },
+        function (error) {
+          console.log(error?.code) // Failure
+          if (error.code === 401) {
+            setError('Password is incorrect.')
+            setTimeout(() => {
+              setError(null)
+            }, 5000)
+          }
+          if (error.code === 409) {
+            setError('Account already exists with this email.')
+            setTimeout(() => {
+              setError(null)
+            }, 5000)
+          }
+        }
+      )
     } catch (error) {
       console.error(error)
     }
   }
 
-  const handlePasswordReset = async (event) => {
+  const handlePasswordReset = async (event: any) => {
     event.preventDefault()
 
     const currentPassword = event.target.currentpassword.value
@@ -87,31 +88,36 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
     }
 
     try {
-      const body = {
-        password: newPassword,
-        oldPassword: currentPassword,
-      }
+      const promise = account.updatePassword(newPassword, currentPassword)
 
-      const response = await editUserPassword(body)
-
-      if (response === 400) {
-        const data = await response.json()
-        setError(data.error.message)
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
-      } else if (response) {
-        setSuccess('Passwort erfolgreich geändert.')
-        setTimeout(() => {
-          setSuccess(null)
-        }, 5000)
-        event.target.reset()
-      } else {
-        setError('Password reset failed')
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
-      }
+      promise.then(
+        function (response) {
+          setSuccess('Passwort erfolgreich geändert.')
+          setTimeout(() => {
+            setSuccess(null)
+          }, 5000)
+          event.target.reset()
+        },
+        function (error) {
+          console.log(error) // Failure
+          if (error.code === 400) {
+            setError(error.message)
+            setTimeout(() => {
+              setError(null)
+            }, 5000)
+          } else if (error.code === 401) {
+            setError("Password doesn't match.")
+            setTimeout(() => {
+              setError(null)
+            }, 5000)
+          } else {
+            setError(error.message)
+            setTimeout(() => {
+              setError(null)
+            }, 5000)
+          }
+        }
+      )
     } catch (error) {
       console.error(error)
     }
@@ -123,22 +129,24 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
     { name: 'Socials', href: '/account/profile/socials', current: false },
   ]
 
-  const handleNsfw = async (event) => {
-    const isChecked = event.target.checked
-
+  const handleNsfw = async (checked: boolean) => {
     try {
-      const body = { data: { enablensfw: isChecked } }
-      const putResponse = await handleNsfwChange(userId, body)
+      const putResponse = account.updatePrefs({ nsfw: checked })
 
-      if (putResponse) {
-        setSuccess('NSFW erfolgreich geändert.')
-        setUserMe((prevUserData) => ({
-          ...prevUserData,
-          enablensfw: isChecked,
-        }))
-      } else {
-        setError('Failed to update NSFW')
-      }
+      putResponse.then(
+        function (response: any) {
+          console.log(response) // Success
+          setSuccess('NSFW updated successfully.')
+          setUserMe((prevUserData: any) => ({
+            ...prevUserData,
+            prefs: { nsfw: checked },
+          }))
+        },
+        function (error: any) {
+          console.log(error) // Failure
+          setError('Failed to update NSFW. Please try again.')
+        }
+      )
 
       setTimeout(() => {
         setSuccess(null)
@@ -149,47 +157,56 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
     }
   }
 
-  const handleProfileUrlChange = async (event) => {
+  const handleProfileUrlChange = async (event: any) => {
     event.preventDefault()
 
     try {
-      const profileUrl = document.getElementById('profileurl').value
+      const profileUrl = (
+        document.getElementById('profileurl') as HTMLInputElement
+      ).value
 
       // Check if profileUrl has at least 4 characters
       if (profileUrl.length < 3) {
-        setError('Profile URL must be at least 3 characters long.')
+        setError('Profile URL must be at least 4 characters long.')
         setTimeout(() => {
           setError(null)
         }, 5000)
         return
       }
 
-      const body = {
-        data: {
+      const promise = databases.updateDocument(
+        'hp_db',
+        'userdata',
+        userMe?.$id,
+        {
           profileUrl: profileUrl,
+        }
+      )
+
+      promise.then(
+        function (response) {
+          console.log(response) // Success
+          setSuccess('Profile URL updated successfully.')
+          setTimeout(() => {
+            setSuccess(null)
+          }, 5000)
+          event.target.reset() // Reset the form
         },
-      }
-
-      const responseData = await editUserData(userId, body)
-
-      if (responseData.$id) {
-        setSuccess('Profil URL erfolgreich geändert.')
-        setTimeout(() => {
-          setSuccess(null)
-        }, 5000)
-
-        setUserData(responseData) // Set the userData state with the response data
-        event.target.reset() // Reset the form
-        //window.location.reload();
-      } else {
-        setError('Ein Fehler ist aufgetreten. Bitte versuche es später erneut.')
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
-      }
+        function (error) {
+          console.log(error) // Failure
+          setError('An error occurred. Please try again later.')
+          setTimeout(() => {
+            setError(null)
+          }, 5000)
+        }
+      )
     } catch (error) {
       console.error(error)
     }
+  }
+
+  const handleMFA = async (event: any) => {
+    // Soon
   }
 
   return (
@@ -221,7 +238,7 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
           <div>
             <h2 className="text-base font-semibold leading-7">Change Email</h2>
             <p className="mt-1 text-sm leading-6 text-gray-400">
-              Ändere deine E-Mail-Adresse.
+              Change your email address.
             </p>
           </div>
 
@@ -236,6 +253,7 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
                     type="email"
                     required
                     placeholder={userMe ? userMe.email : ''}
+                    autoComplete={'email'}
                   />
                 </div>
               </div>
@@ -267,8 +285,8 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
           <div>
             <h2 className="text-base font-semibold leading-7">Profile URL</h2>
             <p className="mt-1 text-sm leading-6 text-gray-400">
-              Dein Profil-URL ist der Link, den du mit anderen teilen kannst, um
-              dein Profil zu zeigen.
+              Your Profile URL is the link that you can share with others to
+              showcase your profile.
             </p>
           </div>
 
@@ -286,9 +304,9 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
                       name="profileurl"
                       id="profileurl"
                       required
-                      placeholder={userData ? userData.profileurl : ''}
-                      className="border-0 pl-0 align-middle bg-transparent ml-1"
-                      minLength="4"
+                      placeholder={userData ? userData.profileUrl : ''}
+                      className="border-0 pl-0 align-middle bg-transparent ml-1 focus:ring-0 focus:outline-none focus:border-0 focus-visible:ring-0 focus-visible:outline-none focus-visible:border-0 focus-visible:ring-offset-0"
+                      minLength={4}
                     />
                   </div>
                 </div>
@@ -316,12 +334,12 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
           <form className="md:col-span-2" onSubmit={handlePasswordReset}>
             <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
               <div className="col-span-full">
-                <span
+                <Label
                   htmlFor="current-password"
                   className="mb-2 block text-sm font-medium"
                 >
                   Current password
-                </span>
+                </Label>
                 <Input
                   type="password"
                   name="currentpassword" // Updated name
@@ -331,12 +349,12 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
                 />
               </div>
               <div className="col-span-full">
-                <span
+                <Label
                   htmlFor="new-password"
                   className="mb-2 block text-sm font-medium"
                 >
                   New password
-                </span>
+                </Label>
                 <Input
                   type="password"
                   name="newpassword" // Updated name
@@ -344,6 +362,28 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
                   autoComplete="new-password"
                   required
                 />
+              </div>
+              <div className="col-span-full">
+                <Button type="submit" variant={'outline'}>
+                  Save
+                </Button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+          <div>
+            <h2 className="leading- text-base font-semibold">2FA / MFA</h2>
+            <p className="mt-1 text-sm leading-6 text-gray-400">
+              Two-Factor-Authentication / Multi-Factor-Authentication
+            </p>
+          </div>
+
+          <form className="md:col-span-2" onSubmit={handleMFA}>
+            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+              <div className="col-span-full">
+                <h1>Soon!</h1>
               </div>
               <div className="col-span-full">
                 <Button type="submit" variant={'outline'}>
@@ -373,9 +413,8 @@ export default function AccountPage({ userDataSelf, userSelf, userId }) {
                   id="nsfwtoggle"
                   aria-describedby="nsfwtoggle"
                   name="nsfwtoggle"
-                  type="checkbox"
-                  checked={userMe?.enablensfw}
-                  onChange={handleNsfw}
+                  checked={userMe?.prefs?.nsfw}
+                  onCheckedChange={handleNsfw}
                 />
               </div>
             </div>

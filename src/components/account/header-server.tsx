@@ -17,6 +17,9 @@ export default async function Header({ children }) {
   }
 
   const getAvatarImageUrl = (galleryId: string) => {
+    if (!galleryId) {
+      return
+    }
     return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`
   }
 
@@ -40,10 +43,7 @@ export default async function Header({ children }) {
             <span className="sr-only">Your profile</span>
             <Avatar>
               <AvatarImage
-                src={
-                  getAvatarImageUrl(userData?.documents[0]?.avatarId) ||
-                  '/logos/Headpat_new_logo.webp'
-                }
+                src={getAvatarImageUrl(userData?.documents[0]?.avatarId)}
               />
               <AvatarFallback>HP</AvatarFallback>
             </Avatar>
