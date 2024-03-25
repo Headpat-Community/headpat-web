@@ -10,6 +10,8 @@ export const metadata = {
     'Die Gallerie seite von Headpat Community. Hier könnt ihr alle Bilder sehen die von der Community hochgeladen wurden.',
 }
 
+export const runtime = 'edge'
+
 export default async function Gallery({ params: { galleryId } }) {
   const userSelf = await getUserDataSelf()
   const enableNsfw = userSelf?.enablensfw || false
