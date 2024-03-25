@@ -130,7 +130,11 @@ export default function AccountPage() {
 
   const handleNsfw = async (checked: boolean) => {
     try {
-      const putResponse = account.updatePrefs({ nsfw: checked })
+      const prefs = userMe.prefs
+      const putResponse = account.updatePrefs({
+        ...prefs,
+        nsfw: checked,
+      })
 
       putResponse.then(
         function (response: any) {
@@ -138,7 +142,10 @@ export default function AccountPage() {
           setSuccess('NSFW updated successfully.')
           setUserMe((prevUserData: any) => ({
             ...prevUserData,
-            prefs: { nsfw: checked },
+            prefs: {
+              ...prevUserData.prefs,
+              nsfw: checked,
+            },
           }))
         },
         function (error: any) {
@@ -400,7 +407,7 @@ export default function AccountPage() {
                   id="nsfwtoggle"
                   aria-describedby="nsfwtoggle"
                   name="nsfwtoggle"
-                  checked={userMe?.prefs?.nsfw}
+                  checked={userMe ? userMe.prefs.nsfw : false}
                   onCheckedChange={handleNsfw}
                 />
               </div>

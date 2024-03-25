@@ -34,7 +34,10 @@ export interface UserDataType {
  * @see UserDataType
  */
 export interface UserDataDocumentsType extends Models.Document {
+  avatarId: string | null
   status: string | null
+  displayName: string
+  bio: string | null
   birthday: string | null
   profileUrl: string
   pronouns: string | null
@@ -45,9 +48,34 @@ export interface UserDataDocumentsType extends Models.Document {
   twitchname: string | null
   pats: number | 0
   location: string | null
-  displayName: string
-  avatarId: string | null
-  bio: string | null
+  hideLocation: boolean
+  hideBirthday: boolean
+  hidePats: boolean
+}
+
+/**
+ * This data is returned from the API by calling the userAvatars function.
+ * @see UserAvatarsDocumentType
+ * @interface
+ * @since 2.0.0
+ */
+export interface UserAvatarsType {
+  total: number
+  documents: UserAvatarsDocumentType[]
+}
+
+/**
+ * This data is returned from the API within the `documents` array.
+ * @see UserAvatarsType
+ * @interface
+ * @since 2.0.0
+ */
+export interface UserAvatarsDocumentType extends Models.Document {
+  galleryId: string
+  imgAlt: string
+  mimeType: string
+  userId: string
+  sizeOriginal: number
 }
 
 /**

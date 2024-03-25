@@ -1,22 +1,21 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
-import Loading from '../../../../loading'
 import { ErrorMessage, SuccessMessage } from '@/components/alerts'
-import { editUserData } from '@/utils/actions/user-actions'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { databases, storage } from '@/app/appwrite'
+import { databases, ID, Query, storage } from '@/app/appwrite'
 import { useGetUser } from '@/utils/getUserData'
+import { Checkbox } from 'components/ui/checkbox'
+import { UserAvatarsDocumentType, UserAvatarsType } from 'utils/types'
 
 export default function AccountPage() {
   const [selectedFile, setSelectedFile] = useState(null)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
   const [isUploading, setIsUploading] = useState(false)
-  const [isLoading, setIsLoading] = useState(false) // Added loading state
   const { userMe, userData, setUserData } = useGetUser()
 
   const getAvatarImageUrl = (galleryId: string) => {
@@ -31,8 +30,8 @@ export default function AccountPage() {
 
   const handleAvatarChange = (event) => {
     const selectedFile = event.target.files[0]
-    if (selectedFile.size > 2 * 1024 * 1024) {
-      setError('Dateigröße darf nur bis 2MB groß sein.')
+    if (selectedFile.size > 1024 * 1024) {
+      setError('Dateigröße darf nur bis 1MB groß sein.')
       setTimeout(() => {
         setError(null)
       }, 5000)
@@ -49,14 +48,7 @@ export default function AccountPage() {
         const img = new Image()
         img.src = event.target.result
         img.onload = () => {
-          if (img.width <= 1024 && img.height <= 1024) {
-            setSelectedFile(selectedFile)
-          } else {
-            setError('Bild darf nur bis 1024x1024 pixel groß sein.')
-            setTimeout(() => {
-              setError(null)
-            }, 5000)
-          }
+          setSelectedFile(selectedFile)
         }
       }
     }
@@ -65,28 +57,36 @@ export default function AccountPage() {
   const handleSubmitAvatar = async (event) => {
     event.preventDefault()
 
-    const formData = new FormData()
-    formData.append('file', selectedFile)
-    formData.append('fileId', 'unique()')
-
     try {
       // Year-Month-Day (YYYY-MM-DD)
 
       setIsUploading(true) // Set isUploading to true before making the API call
 
-      const response = await fetch(`/api/user/avatarChange/${userMe.$id}`, {
-        method: 'POST',
-        body: formData,
+      // Get the user's avatar document
+      const avatarDocument: UserAvatarsDocumentType =
+        await databases.getDocument('hp_db', 'userdata', userMe.$id)
+      // If the user already has an avatar, delete it
+      if (avatarDocument.galleryId) {
+        // Delete the old avatar
+        await storage.deleteFile(
+          '655842922bac16a94a25',
+          avatarDocument.galleryId
+        )
+      }
+
+      // Upload the new avatar
+      const fileData = await storage.createFile(
+        '655842922bac16a94a25',
+        ID.unique(),
+        (document.getElementById('avatar-upload') as HTMLInputElement).files[0]
+      )
+
+      // Update the user's avatarId
+      await databases.updateDocument('hp_db', 'userdata', userMe.$id, {
+        avatarId: fileData.$id,
       })
 
-      //const responseData = await response.json();
-      if (response.ok) {
-        //console.log("File uploaded successfully");
-        setIsUploading(false) // Set isUploading to false after the API call is complete
-        // Reload the window
-        //setSuccess("Gespeichert und hochgeladen!");
-        window.location.reload()
-      }
+      setIsUploading(false) // Set isUploading to false after the API call is complete
     } catch (error) {
       console.error(error)
     }
@@ -121,8 +121,7 @@ export default function AccountPage() {
       )
 
       promise.then(
-        function (response) {
-          console.log(response) // Success
+        function () {
           setIsUploading(false)
           setSuccess('Saved!')
         },
@@ -174,234 +173,234 @@ export default function AccountPage() {
           </ul>
         </nav>
       </header>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <div className="divide-y divide-black/5 dark:divide-white/5">
-          <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-            <div>
-              <h2 className="text-base font-semibold leading-7">
-                Frontpage Settings
-              </h2>
-              <p className="mt-1 text-sm leading-6 text-gray-900 dark:text-gray-400">
-                Here you can change your public profile settings.
-              </p>
+      <div className="divide-y divide-black/5 dark:divide-white/5">
+        <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+          <div>
+            <h2 className="text-base font-semibold leading-7">
+              Frontpage Settings
+            </h2>
+            <p className="mt-1 text-sm leading-6 text-gray-900 dark:text-gray-400">
+              Here you can change your public profile settings.
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="md:col-span-2">
+            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+              <div className="col-span-full flex items-center gap-x-8">
+                <img
+                  id="avatar-image"
+                  src={
+                    getAvatarImageUrl(userData?.avatarId) || '/logos/logo.webp'
+                  }
+                  alt="Avatar"
+                  className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
+                />
+                <div>
+                  <Input
+                    accept="image/*"
+                    className="rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-black/10 hover:bg-white/20 dark:ring-white/10"
+                    id="avatar-upload"
+                    name="avatar-upload"
+                    type="file"
+                    onChange={handleAvatarChange}
+                  />
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-gray-900 dark:text-gray-400">
+                      JPG, GIF or PNG. 2MB max.
+                    </p>
+                    <Button
+                      type="submit"
+                      onClick={handleSubmitAvatar}
+                      className={'mt-2'}
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                  <p className="text-xs text-gray-900 dark:text-gray-400">
+                    1024x1024 max. resolution
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="md:col-span-2">
-              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-                <div className="col-span-full flex items-center gap-x-8">
-                  <img
-                    id="avatar-image"
-                    src={
-                      getAvatarImageUrl(userData?.avatarId) ||
-                      '/logos/logo.webp'
-                    }
-                    alt="Avatar"
-                    className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
+            <div className="mt-12 grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6">
+              <div className="col-span-full">
+                <Label htmlFor="displayname">Display Name</Label>
+                <div className="mt-2">
+                  <Checkbox id="public_birthday" name="public_birthday" />
+                </div>
+              </div>
+
+              <div className="col-span-full">
+                <Label htmlFor="displayname">Display Name</Label>
+                <div className="relative mt-2">
+                  <Input
+                    id="displayname"
+                    name="displayname"
+                    type="text"
+                    value={userData ? userData.displayName : ''}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 32) {
+                        setUserData({
+                          ...userData,
+                          displayName: e.target.value,
+                        })
+                      }
+                    }} // Update state when the input changes, only if the length is less than or equal to 32
+                    maxLength={32} // Limit the maximum number of characters to 32
                   />
-                  <div>
-                    <Input
-                      accept="image/*"
-                      className="rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-black/10 hover:bg-white/20 dark:ring-white/10"
-                      id="avatar-upload"
-                      name="avatar-upload"
-                      type="file"
-                      onChange={handleAvatarChange}
-                    />
-                    <div className="flex items-center justify-between">
-                      <p className="text-xs text-gray-900 dark:text-gray-400">
-                        JPG, GIF or PNG. 2MB max.
-                      </p>
-                      <Button
-                        type="submit"
-                        onClick={handleSubmitAvatar}
-                        className={'mt-2'}
-                      >
-                        Submit
-                      </Button>
-                    </div>
-                    <p className="text-xs text-gray-900 dark:text-gray-400">
-                      1024x1024 max. resolution
-                    </p>
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                    <span className="select-none">
+                      {userData ? userData.displayName.length : 0}
+                      {/* Check if userData.displayname is defined before accessing its length property */}
+                    </span>
+                    <span className="select-none text-gray-400">/{32}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-12 grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6">
-                <div className="col-span-full">
-                  <Label htmlFor="displayname">Display Name</Label>
-                  <div className="relative mt-2">
-                    <Input
-                      id="displayname"
-                      name="displayname"
-                      type="text"
-                      value={userData?.displayName || ''} // Set the value from state, or an empty string if it's undefined
-                      onChange={(e) => {
-                        if (e.target.value.length <= 32) {
-                          setUserData({
-                            ...userData,
-                            displayName: e.target.value,
-                          })
-                        }
-                      }} // Update state when the input changes, only if the length is less than or equal to 32
-                      maxLength={32} // Limit the maximum number of characters to 32
-                    />
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
-                      <span className="select-none">
-                        {userData?.displayName
-                          ? userData.displayName.length
-                          : 0}{' '}
-                        {/* Check if userData.displayname is defined before accessing its length property */}
-                      </span>
-                      <span className="select-none text-gray-400">/{32}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-span-full">
-                  <Label htmlFor="status">Status</Label>
-                  <div className="relative mt-2">
-                    <Input
-                      id="status"
-                      name="status"
-                      type="text"
-                      value={userData?.status} // Set the value from state
-                      onChange={(e) => {
-                        if (e.target.value.length <= 24) {
-                          setUserData({ ...userData, status: e.target.value })
-                        }
-                      }} // Update state when the input changes, only if the length is less than or equal to 24
-                      maxLength={24} // Limit the maximum number of characters to 24
-                    />
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
-                      <span className="select-none">
-                        {userData?.status ? userData.status.length : 0}{' '}
-                      </span>
-                      <span className="select-none text-gray-400">/{24}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-span-full">
-                  <Label htmlFor="pronouns">Pronouns</Label>
-                  <div className="relative mt-2">
-                    <Input
-                      id="pronouns"
-                      name="pronouns"
-                      type="text"
-                      value={userData?.pronouns} // Set the value from state
-                      onChange={(e) => {
-                        if (e.target.value.length <= 16) {
-                          setUserData({
-                            ...userData,
-                            pronouns: e.target.value,
-                          })
-                        }
-                      }} // Update state when the input changes, only if the length is less than or equal to 16
-                      maxLength={16} // Limit the maximum number of characters to 16
-                    />
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
-                      <span className="select-none">
-                        {userData?.pronouns ? userData.pronouns.length : 0}{' '}
-                      </span>
-                      <span className="select-none text-gray-400">/{16}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-span-full">
-                  <Label htmlFor="birthday">Birthday</Label>
-                  <div className="relative mt-2">
-                    <Input
-                      id="birthday"
-                      name="birthday"
-                      type="date"
-                      value={
-                        userData?.birthday
-                          ? new Date(userData.birthday)
-                              .toISOString()
-                              .split('T')[0]
-                          : ''
-                      } // Set the value from state in the correct format
-                      onChange={(e) => {
-                        setUserData({ ...userData, birthday: e.target.value })
-                      }} // Update state when the input changes
-                    />
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
-                      <span
-                        aria-disabled
-                        className="mr-6 select-none text-gray-400"
-                      >
-                        DD/MM/YYYY
-                      </span>{' '}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-span-full">
-                  <Label htmlFor="location">Location</Label>
-                  <div className="relative mt-2">
-                    <Input
-                      id="location"
-                      name="location"
-                      type="text"
-                      value={userData?.location} // Set the value from state
-                      onChange={(e) => {
-                        if (e.target.value.length <= 256) {
-                          setUserData({
-                            ...userData,
-                            location: e.target.value,
-                          })
-                        }
-                      }} // Update state when the input changes, only if the length is less than or equal to 16
-                      maxLength={256} // Limit the maximum number of characters to 16
-                    />
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
-                      <span className="select-none">
-                        {userData?.location ? userData.location.length : 0}{' '}
-                      </span>
-                      <span className="select-none text-gray-400">/{256}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-span-full">
-                  <Label
-                    htmlFor="biostatus"
-                    className="block text-sm font-medium leading-6"
-                  >
-                    Bio
-                  </Label>
-                  <div className="relative mt-2">
-                    <Textarea
-                      id="biostatus"
-                      name="biostatus"
-                      value={userData?.bio} // Set the value from state
-                      onChange={(e) => {
-                        if (e.target.value.length <= 2048) {
-                          setUserData({ ...userData, bio: e.target.value })
-                        }
-                      }} // Update state when the input changes, only if the length is less than or equal to 256
-                      maxLength={2048} // Limit the maximum number of characters to 256
-                    />
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-end pb-2 pr-4 text-sm leading-5">
-                      <span className="select-none">
-                        {userData?.bio ? userData.bio.length : 0}{' '}
-                      </span>
-                      <span className="select-none text-gray-400">/{2048}</span>
-                    </div>
+              <div className="col-span-full">
+                <Label htmlFor="status">Status</Label>
+                <div className="relative mt-2">
+                  <Input
+                    id="status"
+                    name="status"
+                    type="text"
+                    value={userData ? userData.status : ''}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 24) {
+                        setUserData({ ...userData, status: e.target.value })
+                      }
+                    }}
+                    maxLength={24}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                    <span className="select-none">
+                      {userData ? userData.status.length : 0}
+                    </span>
+                    <span className="select-none text-gray-400">/{24}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-8 flex">
-                <Button type="submit">Save</Button>
+              <div className="col-span-full">
+                <Label htmlFor="pronouns">Pronouns</Label>
+                <div className="relative mt-2">
+                  <Input
+                    id="pronouns"
+                    name="pronouns"
+                    type="text"
+                    value={userData ? userData.pronouns : ''}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 16) {
+                        setUserData({
+                          ...userData,
+                          pronouns: e.target.value,
+                        })
+                      }
+                    }}
+                    maxLength={16}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                    <span className="select-none">
+                      {userData ? userData.pronouns.length : 0}
+                    </span>
+                    <span className="select-none text-gray-400">/{16}</span>
+                  </div>
+                </div>
               </div>
-            </form>
-          </div>
+
+              <div className="col-span-full">
+                <Label htmlFor="birthday">Birthday</Label>
+                <div className="relative mt-2">
+                  <Input
+                    id="birthday"
+                    name="birthday"
+                    type="date"
+                    value={
+                      userData
+                        ? new Date(userData.birthday)
+                            .toISOString()
+                            .split('T')[0]
+                        : ''
+                    } // Set the value from state in the correct format
+                    onChange={(e) => {
+                      setUserData({ ...userData, birthday: e.target.value })
+                    }} // Update state when the input changes
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                    <span
+                      aria-disabled
+                      className="mr-6 select-none text-gray-400"
+                    >
+                      DD/MM/YYYY
+                    </span>{' '}
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-span-full">
+                <Label htmlFor="location">Location</Label>
+                <div className="relative mt-2">
+                  <Input
+                    id="location"
+                    name="location"
+                    type="text"
+                    value={userData ? userData.location : ''} // Set the value from state
+                    onChange={(e) => {
+                      if (e.target.value.length <= 256) {
+                        setUserData({
+                          ...userData,
+                          location: e.target.value,
+                        })
+                      }
+                    }} // Update state when the input changes, only if the length is less than or equal to 16
+                    maxLength={256} // Limit the maximum number of characters to 16
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                    <span className="select-none">
+                      {userData ? userData.location.length : 0}
+                    </span>
+                    <span className="select-none text-gray-400">/{256}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-span-full">
+                <Label
+                  htmlFor="biostatus"
+                  className="block text-sm font-medium leading-6"
+                >
+                  Bio
+                </Label>
+                <div className="relative mt-2">
+                  <Textarea
+                    id="biostatus"
+                    name="biostatus"
+                    value={userData ? userData.bio : ''} // Set the value from state
+                    onChange={(e) => {
+                      if (e.target.value.length <= 2048) {
+                        setUserData({ ...userData, bio: e.target.value })
+                      }
+                    }} // Update state when the input changes, only if the length is less than or equal to 256
+                    maxLength={2048} // Limit the maximum number of characters to 256
+                  />
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-end pb-2 pr-4 text-sm leading-5">
+                    <span className="select-none">
+                      {userData ? userData.bio.length : 0}
+                    </span>
+                    <span className="select-none text-gray-400">/{2048}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 flex">
+              <Button type="submit">Save</Button>
+            </div>
+          </form>
         </div>
-      )}
+      </div>
     </>
   )
 }

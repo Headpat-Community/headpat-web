@@ -101,8 +101,8 @@ export default function AccountPage() {
           <div>
             <h2 className="text-base font-semibold leading-7">Socials</h2>
             <p className="mt-1 text-sm leading-6 text-gray-400">
-              Hier kannst du deine Links zu deinen Social Media Accounts
-              eintragen.
+              Here you can add your Social Media Accounts to your public
+              profile.
             </p>
           </div>
 
@@ -110,14 +110,14 @@ export default function AccountPage() {
             <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
               <div className="sm:col-span-6">
                 <Label htmlFor="discordname">
-                  Discord ID (196742608846979072 z.B.)
+                  Discord ID (196742608846979072)
                 </Label>
                 <div className="relative mt-2">
                   <Input
                     type="text"
                     name="discordname"
                     id="discordname"
-                    value={userData?.discordname || ''} // Set the value from state
+                    value={userData ? userData.discordname : ''} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
@@ -130,7 +130,7 @@ export default function AccountPage() {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData?.discordname ? userData?.discordname.length : 0}{' '}
+                      {userData ? userData?.discordname.length : 0}
                       {/* Check if userData.discordname is defined before accessing its length property */}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>
@@ -150,7 +150,7 @@ export default function AccountPage() {
                     type="text"
                     name="telegramname"
                     id="telegramname"
-                    value={userData?.telegramname || ''} // Set the value from state
+                    value={userData ? userData.telegramname : ''} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
@@ -163,9 +163,7 @@ export default function AccountPage() {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData?.telegramname
-                        ? userData?.telegramname.length
-                        : 0}{' '}
+                      {userData ? userData?.telegramname.length : 0}
                       {/* Check if userData.telegramname is defined before accessing its length property */}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>
@@ -180,7 +178,7 @@ export default function AccountPage() {
                     type="text"
                     name="furaffinityname"
                     id="furaffinityname"
-                    value={userData?.furaffinityname || ''} // Set the value from state
+                    value={userData ? userData.furaffinityname : ''} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
@@ -193,9 +191,7 @@ export default function AccountPage() {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData?.furaffinityname
-                        ? userData?.furaffinityname.length
-                        : 0}{' '}
+                      {userData ? userData?.furaffinityname.length : 0}
                       {/* Check if userData.furaffinityname is defined before accessing its length property */}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>
@@ -215,7 +211,7 @@ export default function AccountPage() {
                     type="text"
                     name="X_name"
                     id="X_name"
-                    value={userData?.X_name || ''} // Set the value from state
+                    value={userData ? userData.X_name : ''} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
@@ -228,7 +224,7 @@ export default function AccountPage() {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData?.X_name ? userData?.X_name.length : 0}{' '}
+                      {userData ? userData?.X_name.length : 0}
                       {/* Check if userData.X_name is defined before accessing its length property */}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>
@@ -243,7 +239,7 @@ export default function AccountPage() {
                     type="text"
                     name="twitchname"
                     id="twitchname"
-                    value={userData?.twitchname || ''} // Set the value from state
+                    value={userData ? userData.twitchname : ''} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
@@ -256,7 +252,7 @@ export default function AccountPage() {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData?.twitchname ? userData?.twitchname.length : 0}{' '}
+                      {userData ? userData.twitchname.length : 0}
                       {/* Check if userData.twitchname is defined before accessing its length property */}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>

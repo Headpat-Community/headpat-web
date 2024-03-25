@@ -15,7 +15,7 @@ export async function POST(request) {
 
     // See if user has an avatar already
     const avatarResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655f6354b7c3fff1d687/documents?queries[]=equal("userId","${uniqueId}")`,
+      `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/user-avatars/documents?queries[]=equal("userId","${uniqueId}")`,
       {
         method: 'GET',
         headers: {
@@ -29,7 +29,7 @@ export async function POST(request) {
 
     const avatarData = await avatarResponse.json()
     const avatarDocumentId = avatarData?.documents[0]?.$id
-    const avatarGalleryId = avatarData?.documents[0]?.gallery_id
+    const avatarGalleryId = avatarData?.documents[0]?.galleryId
     // If user has an avatar, delete it
 
     if (avatarData.documents.length !== 0) {
@@ -47,7 +47,7 @@ export async function POST(request) {
 
       //const deleteData = await deleteResponse.json();
 
-      const deleteDocURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655f6354b7c3fff1d687/documents/${avatarDocumentId}`
+      const deleteDocURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/user-avatars/documents/${avatarDocumentId}`
 
       const deleteDocResponse = await fetch(deleteDocURL, {
         method: 'DELETE',
@@ -78,7 +78,7 @@ export async function POST(request) {
     const imageData = await uploadImage.json()
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/655f6354b7c3fff1d687/documents`,
+      `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/user-avatars/documents`,
       {
         method: 'POST',
         headers: {
@@ -100,7 +100,7 @@ export async function POST(request) {
 
     // PATCH the userdata with the new avatar id
     const patchResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/65527f2aafa5338cdb57/collections/65564fa28d1942747a72/documents/${uniqueId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/v1/databases/hp_db/collections/userdata/documents/${uniqueId}`,
       {
         method: 'PATCH',
         headers: {
