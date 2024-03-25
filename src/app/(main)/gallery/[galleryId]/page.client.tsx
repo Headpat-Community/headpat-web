@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { GalleryDocumentsType, UserDataType } from 'utils/types'
 import { Button } from 'components/ui/button'
+import { storage } from '@/app/appwrite'
 
 export default function FetchGallery({
   gallery,
@@ -12,7 +13,9 @@ export default function FetchGallery({
   enableNsfw: boolean
 }) {
   const getGalleryImageUrl = (galleryId: string) => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
+    if (!galleryId) return
+    const imageId = storage.getFileView('655ca6663497d9472539', `${galleryId}`)
+    return imageId.href
   }
 
   const url = getGalleryImageUrl(gallery?.galleryId)
@@ -66,7 +69,7 @@ export default function FetchGallery({
                     <img
                       src={url}
                       alt={name || 'Headpat Community Image'}
-                      className={`imgsinglegallery mx-auto h-[400px] w-auto max-w-full rounded-lg object-contain sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`}
+                      className={`imgsinglegallery mx-auto h-[400px] w-auto max-w-full rounded-lg object-contain`}
                     />
                     <div className="ml-4">
                       <div className="mt-4">
@@ -96,7 +99,7 @@ export default function FetchGallery({
                                       href={`/user/${userData[0].profileUrl}`}
                                       className="text-indigo-500 hover:text-indigo-400"
                                     >
-                                      {userData[0].displayname}
+                                      {userData[0].displayName}
                                     </Link>
                                   </dd>
                                 </div>
@@ -147,6 +150,11 @@ export default function FetchGallery({
                                   <dd className="mt-1 max-w-full break-words text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
                                     {longtext || 'No description provided.'}
                                   </dd>
+                                </div>
+                                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                  <Link href={url}>
+                                    <Button>See full image</Button>
+                                  </Link>
                                 </div>
                               </dl>
                             </div>

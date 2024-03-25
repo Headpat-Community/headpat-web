@@ -4,8 +4,6 @@ import { getGallery } from 'utils/actions/gallery-actions'
 import { notFound } from 'next/navigation'
 import { GalleryDocumentsType, GalleryType } from 'utils/types'
 
-export const runtime = 'edge'
-
 export const metadata = {
   title: 'Gallerie',
   description:
@@ -34,7 +32,7 @@ export default async function Gallery({ params: { galleryId } }) {
   return (
     <div>
       <Client
-        userData={userData[0]}
+        userData={userData}
         gallery={galleryData}
         enableNsfw={enableNsfw}
       />
