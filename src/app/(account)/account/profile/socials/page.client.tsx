@@ -1,43 +1,19 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { ErrorMessage, SuccessMessage } from '@/components/alerts'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { account, databases } from '@/app/appwrite'
-import { UserAccountType, UserDataDocumentsType } from '@/utils/types'
-import { Models } from 'appwrite'
+import { databases } from '@/app/appwrite'
+import { useGetUser } from '@/utils/getUserData'
 
 export default function AccountPage() {
   const [isUploading, setIsUploading] = useState(false)
 
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
-
-  const [userMe, setUserMe] = useState<Models.User<Models.Preferences> | null>(
-    null
-  )
-  const [userData, setUserData] = useState<Models.Document | null>(null)
-
-  useEffect(() => {
-    if (userMe?.$id) {
-      const promise = databases.getDocument('hp_db', 'userdata', userMe?.$id)
-
-      promise.then(
-        function (response) {
-          setUserData(response)
-        },
-        function (error) {
-          console.log(error) // Failure
-        }
-      )
-    }
-  }, [userMe])
-
-  useEffect(() => {
-    account.get().then((response) => setUserMe(response))
-  }, [])
+  const { userMe, setUserMe, userData, setUserData } = useGetUser()
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()

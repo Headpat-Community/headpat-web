@@ -1,3 +1,5 @@
+import { Models } from 'appwrite'
+
 /**
  * This data is needed in all documents endpoints.
  */
@@ -13,19 +15,10 @@ interface MainTypes {
 /**
  * This data is returned from the API by calling their own account data.
  */
-export interface UserAccountType {
-  $id: string
-  name: string
-  registration: string
-  status: boolean
-  labels: string[]
-  passwordUpdate: string
-  email: string
-  phone: string
-  emailVerification: boolean
-  phoneVerification: boolean
-  prefs: string[]
-  accessedAt: string
+export interface UserAccountType extends Models.User<Models.Preferences> {
+  prefs: {
+    nsfw: boolean
+  }
 }
 
 /**
@@ -40,7 +33,7 @@ export interface UserDataType {
  * This data is returned from the API by calling the userData function.
  * @see UserDataType
  */
-export interface UserDataDocumentsType extends MainTypes {
+export interface UserDataDocumentsType extends Models.Document {
   status: string | null
   birthday: string | null
   profileUrl: string
@@ -64,7 +57,7 @@ export interface UserDataDocumentsType extends MainTypes {
  * @interface
  * @since 2.0.0
  */
-export interface AnnouncementDocumentsType extends MainTypes {
+export interface AnnouncementDocumentsType extends Models.Document {
   title: string | null
   sideText: string | null
   description: string
@@ -98,7 +91,7 @@ export interface GalleryType {
  * @interface
  * @since 2.0.0
  */
-export interface GalleryDocumentsType extends MainTypes {
+export interface GalleryDocumentsType extends Models.Document {
   galleryId: string
   name: string
   mimeType: string

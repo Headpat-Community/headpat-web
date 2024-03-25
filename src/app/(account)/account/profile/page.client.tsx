@@ -8,34 +8,12 @@ import { Label } from 'components/ui/label'
 import { Checkbox } from 'components/ui/checkbox'
 import { account, databases } from '@/app/appwrite'
 import { Models } from 'appwrite'
+import { useGetUser } from 'utils/getUserData'
 
 export default function AccountPage() {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
-
-  const [userMe, setUserMe] = useState<Models.User<Models.Preferences> | null>(
-    null
-  )
-  const [userData, setUserData] = useState<Models.Document | null>(null)
-
-  useEffect(() => {
-    account.get().then((response) => setUserMe(response))
-  }, [])
-
-  useEffect(() => {
-    if (userMe?.$id) {
-      const promise = databases.getDocument('hp_db', 'userdata', userMe?.$id)
-
-      promise.then(
-        function (response) {
-          setUserData(response)
-        },
-        function (error) {
-          console.log(error) // Failure
-        }
-      )
-    }
-  }, [userMe])
+  const { userMe, setUserMe, userData, setUserData } = useGetUser()
 
   const handleEmailChange = async (event: { preventDefault: () => void }) => {
     event.preventDefault()

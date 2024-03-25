@@ -1,64 +1,33 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Loading from '../../../../loading'
-import { ErrorMessage, SuccessMessage } from 'components/alerts'
-import { editUserData } from 'utils/actions/user-actions'
-import { Input } from 'components/ui/input'
-import { Button } from 'components/ui/button'
-import { Label } from 'components/ui/label'
-import { Textarea } from 'components/ui/textarea'
+import { ErrorMessage, SuccessMessage } from '@/components/alerts'
+import { editUserData } from '@/utils/actions/user-actions'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { storage } from '@/app/appwrite'
+import { useGetUser } from '@/utils/getUserData'
 
-export default function AccountPage({ userId }) {
+export default function AccountPage() {
   const [selectedFile, setSelectedFile] = useState(null)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
   const [isUploading, setIsUploading] = useState(false)
   const [isLoading, setIsLoading] = useState(true) // Added loading state
-  const [userData, setUserData] = useState({
-    status: '',
-    bio: '',
-    displayname: '',
-    pronouns: '',
-    birthday: '',
-    location: '',
-    avatar: '',
-  })
+  const { userMe, setUserMe, userData, setUserData } = useGetUser()
 
-  const getAvatarImageUrl = (galleryId) => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`
+  const getAvatarImageUrl = (galleryId: string) => {
+    if (!galleryId) return
+    const imageId = storage.getFilePreview(
+      '655842922bac16a94a25',
+      `${galleryId}`,
+      400
+    )
+    return imageId.href
   }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true)
-      try {
-        const userDataResponse = await fetch(`/api/user/getUserDataSelf`, {
-          method: 'GET',
-        })
-
-        const userDataResponseData = await userDataResponse.json()
-        //console.log(userDataResponseData.data.attributes);
-        setUserData({
-          status: userDataResponseData.documents[0].status || '',
-          bio: userDataResponseData.documents[0].bio || '',
-          displayname: userDataResponseData.documents[0].displayname || '',
-          birthday: userDataResponseData.documents[0].birthday || '',
-          pronouns: userDataResponseData.documents[0].pronouns || '',
-          location: userDataResponseData.documents[0].location || '',
-          avatar:
-            getAvatarImageUrl(userDataResponseData.documents[0].avatarId) ||
-            '/logos/logo.webp', // Set the avatar value or a placeholder image
-        })
-        setIsLoading(false)
-      } catch (error) {
-        console.error(error)
-        setIsLoading(false)
-      }
-    }
-
-    fetchData()
-  }, [])
 
   const handleAvatarChange = (event) => {
     const selectedFile = event.target.files[0]
@@ -72,18 +41,22 @@ export default function AccountPage({ userId }) {
     const fileReader = new FileReader()
     fileReader.readAsDataURL(selectedFile)
     fileReader.onload = (event) => {
-      const imgElement = document.getElementById('avatar-image')
-      imgElement.src = event.target.result
-      const img = new Image()
-      img.src = event.target.result
-      img.onload = () => {
-        if (img.width <= 1024 && img.height <= 1024) {
-          setSelectedFile(selectedFile)
-        } else {
-          setError('Bild darf nur bis 1024x1024 pixel groß sein.')
-          setTimeout(() => {
-            setError(null)
-          }, 5000)
+      const imgElement = document.getElementById(
+        'avatar-image'
+      ) as HTMLImageElement
+      if (typeof event.target.result === 'string') {
+        imgElement.src = event.target.result
+        const img = new Image()
+        img.src = event.target.result
+        img.onload = () => {
+          if (img.width <= 1024 && img.height <= 1024) {
+            setSelectedFile(selectedFile)
+          } else {
+            setError('Bild darf nur bis 1024x1024 pixel groß sein.')
+            setTimeout(() => {
+              setError(null)
+            }, 5000)
+          }
         }
       }
     }
@@ -101,7 +74,7 @@ export default function AccountPage({ userId }) {
 
       setIsUploading(true) // Set isUploading to true before making the API call
 
-      const response = await fetch(`/api/user/avatarChange/${userId}`, {
+      const response = await fetch(`/api/user/avatarChange/${userMe.$id}`, {
         method: 'POST',
         body: formData,
       })
@@ -149,7 +122,7 @@ export default function AccountPage({ userId }) {
         },
       }
 
-      const responseData = await editUserData(userId, body)
+      const responseData = await editUserData(userMe.$id, body)
       if (responseData) {
         //console.log("File uploaded successfully");
         setIsUploading(false) // Set isUploading to false after the API call is complete
@@ -216,8 +189,10 @@ export default function AccountPage({ userId }) {
                 <div className="col-span-full flex items-center gap-x-8">
                   <img
                     id="avatar-image"
-                    src={userData.avatar || '/logos/logo.webp'}
-                    alt=""
+                    src={
+                      getAvatarImageUrl(userData.avatarId) || '/logos/logo.webp'
+                    }
+                    alt="Avatar"
                     className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
                   />
                   <div>
