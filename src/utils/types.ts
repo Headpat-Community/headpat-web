@@ -3,8 +3,8 @@
  */
 interface MainTypes {
   $id: string
-  $createdAt: Date
-  $updatedAt: Date
+  $createdAt: string
+  $updatedAt: string
   $permissions: string[]
   $databaseId: string
   $collectionId: string
@@ -24,7 +24,7 @@ export interface UserAccountType {
   phone: string
   emailVerification: boolean
   phoneVerification: boolean
-  //prefs: Array<string, unknown>
+  prefs: string[]
   accessedAt: string
 }
 

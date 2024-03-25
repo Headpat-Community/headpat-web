@@ -7,13 +7,16 @@ import { Button } from 'components/ui/button'
 import { Label } from 'components/ui/label'
 import { Checkbox } from 'components/ui/checkbox'
 import { account, databases } from '@/app/appwrite'
+import { Models } from 'appwrite'
 
 export default function AccountPage() {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
 
-  const [userMe, setUserMe] = useState(null)
-  const [userData, setUserData] = useState(null)
+  const [userMe, setUserMe] = useState<Models.User<Models.Preferences> | null>(
+    null
+  )
+  const [userData, setUserData] = useState<Models.Document | null>(null)
 
   useEffect(() => {
     account.get().then((response) => setUserMe(response))
@@ -21,9 +24,16 @@ export default function AccountPage() {
 
   useEffect(() => {
     if (userMe?.$id) {
-      databases
-        .getDocument('hp_db', 'userdata', userMe?.$id)
-        .then((response) => setUserData(response || []))
+      const promise = databases.getDocument('hp_db', 'userdata', userMe?.$id)
+
+      promise.then(
+        function (response) {
+          setUserData(response)
+        },
+        function (error) {
+          console.log(error) // Failure
+        }
+      )
     }
   }, [userMe])
 
@@ -187,19 +197,18 @@ export default function AccountPage() {
         function (response) {
           console.log(response) // Success
           setSuccess('Profile URL updated successfully.')
-          setTimeout(() => {
-            setSuccess(null)
-          }, 5000)
           event.target.reset() // Reset the form
         },
         function (error) {
           console.log(error) // Failure
           setError('An error occurred. Please try again later.')
-          setTimeout(() => {
-            setError(null)
-          }, 5000)
         }
       )
+
+      setTimeout(() => {
+        setError(null)
+        setSuccess(null)
+      }, 5000)
     } catch (error) {
       console.error(error)
     }

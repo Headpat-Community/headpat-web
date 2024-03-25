@@ -2,15 +2,12 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Loading from '../../../../loading'
-import { ErrorMessage, SuccessMessage } from '../../../../../components/alerts'
-import {
-  editUserData,
-  getUserSelf,
-} from '../../../../../utils/actions/user-actions'
-import { Input } from '../../../../../components/ui/input'
-import { Button } from '../../../../../components/ui/button'
-import { Label } from '../../../../../components/ui/label'
-import { Textarea } from '../../../../../components/ui/textarea'
+import { ErrorMessage, SuccessMessage } from 'components/alerts'
+import { editUserData } from 'utils/actions/user-actions'
+import { Input } from 'components/ui/input'
+import { Button } from 'components/ui/button'
+import { Label } from 'components/ui/label'
+import { Textarea } from 'components/ui/textarea'
 
 export default function AccountPage({ userId }) {
   const [selectedFile, setSelectedFile] = useState(null)
@@ -135,14 +132,20 @@ export default function AccountPage({ userId }) {
 
       const body = {
         data: {
-          status: document.getElementById('status').value,
-          bio: document.getElementById('biostatus').value,
-          displayname: document.getElementById('displayname').value,
-          birthday: new Date(document.getElementById('birthday').value)
+          status: (document.getElementById('status') as HTMLInputElement).value,
+          bio: (document.getElementById('biostatus') as HTMLInputElement).value,
+          displayname: (
+            document.getElementById('displayname') as HTMLInputElement
+          ).value,
+          birthday: new Date(
+            (document.getElementById('birthday') as HTMLInputElement).value
+          )
             .toISOString()
             .split('T')[0],
-          pronouns: document.getElementById('pronouns').value,
-          location: document.getElementById('location').value,
+          pronouns: (document.getElementById('pronouns') as HTMLInputElement)
+            .value,
+          location: (document.getElementById('location') as HTMLInputElement)
+            .value,
         },
       }
 
