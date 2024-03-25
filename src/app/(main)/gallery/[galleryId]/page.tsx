@@ -14,7 +14,7 @@ export const runtime = 'edge'
 
 export default async function Gallery({ params: { galleryId } }) {
   const userSelf = await getUserDataSelf()
-  const enableNsfw = userSelf?.enablensfw || false
+  const enableNsfw = userSelf?.enableNsfw || false
 
   const gallery: GalleryType = await getGallery(
     `queries[]=equal("$id","${galleryId}")`
