@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ErrorMessage } from 'components/alerts'
-import { resetPassword } from 'utils/actions/user-actions'
+import { ErrorMessage } from '@/components/alerts'
+import { resetPassword } from '@/utils/actions/user-actions'
 
 export const runtime = 'edge'
 

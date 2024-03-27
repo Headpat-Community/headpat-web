@@ -16,10 +16,10 @@ import {
 } from 'lucide-react'
 import Loading from '@/app/loading'
 import { CopyUrl } from './page.client'
-import { Button } from 'components/ui/button'
+import { Button } from '@/components/ui/button'
 import { notFound } from 'next/navigation'
-import { getUserData } from 'utils/actions/user-actions'
-import { UserDataDocumentsType } from 'utils/types'
+import { getUserData } from '@/utils/actions/user-actions'
+import { UserDataDocumentsType } from '@/utils/types'
 
 export const runtime = 'edge'
 
@@ -104,7 +104,11 @@ export default async function UserProfile({ params: { profileUrl } }) {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <SiTelegram className="text-2xl hover:text-indigo-500" />
+                        <SiTelegram
+                          className="text-2xl hover:text-indigo-500"
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                        />
                       </Link>
                     )}
                     {userData?.discordname && (
@@ -113,7 +117,11 @@ export default async function UserProfile({ params: { profileUrl } }) {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <SiDiscord className="text-2xl hover:text-indigo-500" />
+                        <SiDiscord
+                          className="text-2xl hover:text-indigo-500"
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                        />
                       </Link>
                     )}
                     {userData?.X_name && (
@@ -122,7 +130,11 @@ export default async function UserProfile({ params: { profileUrl } }) {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <SiX className="text-2xl hover:text-indigo-500" />
+                        <SiX
+                          className="text-2xl hover:text-indigo-500"
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                        />
                       </Link>
                     )}
                     {userData?.twitchname && (
@@ -131,7 +143,11 @@ export default async function UserProfile({ params: { profileUrl } }) {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <SiTwitch className="text-2xl hover:text-indigo-500" />
+                        <SiTwitch
+                          className="text-2xl hover:text-indigo-500"
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                        />
                       </Link>
                     )}
                     {userData?.furaffinityname && (
@@ -140,7 +156,11 @@ export default async function UserProfile({ params: { profileUrl } }) {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <SiFuraffinity className="text-2xl hover:text-indigo-500" />
+                        <SiFuraffinity
+                          className="text-2xl hover:text-indigo-500"
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                        />
                       </Link>
                     )}
                     <Link

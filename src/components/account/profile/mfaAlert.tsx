@@ -17,8 +17,9 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from '@/components/ui/input-otp'
-import { Toaster } from 'components/ui/toaster'
+import { Toaster } from '@/components/ui/toaster'
 import { useToast } from '@/components/ui/use-toast'
+import * as Sentry from '@sentry/nextjs'
 
 export default function MfaAlert() {
   const [open, setOpen] = useState<boolean>(false)
@@ -35,6 +36,7 @@ export default function MfaAlert() {
         setMfaList(mfaList)
       } catch (error) {
         console.error(error)
+        Sentry.captureException(error)
       }
     }
 

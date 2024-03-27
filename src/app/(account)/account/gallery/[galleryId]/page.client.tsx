@@ -1,18 +1,22 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { ErrorMessage, SuccessMessage } from '../../../../../components/alerts'
+import { ErrorMessage, SuccessMessage } from '@/components/alerts'
 import {
-  getGallery,
   deleteGalleryImage,
   deleteGalleryDocument,
-} from '../../../../../utils/actions/gallery-actions'
-import { Input } from '../../../../../components/ui/input'
-import { Textarea } from '../../../../../components/ui/textarea'
-import { Button } from '../../../../../components/ui/button'
-import { Label } from '../../../../../components/ui/label'
+} from '@/utils/actions/gallery-actions'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { databases, Query, storage } from '@/app/appwrite'
+import { GalleryType } from '@/utils/types'
+import { useToast } from '@/components/ui/use-toast'
+import * as Sentry from '@sentry/nextjs'
 
 export default function FetchGallery({ singleGallery }) {
+  const { toast } = useToast()
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
   const [isUploading, setIsUploading] = useState(false)
@@ -26,7 +30,7 @@ export default function FetchGallery({ singleGallery }) {
     longtext: singleGallery.longtext,
   })
 
-  const getGalleryImageUrl = (galleryId) => {
+  const getGalleryImageUrl = (galleryId: string) => {
     return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
   }
 
@@ -37,18 +41,39 @@ export default function FetchGallery({ singleGallery }) {
       const uniqueId = pathParts[3]
       setIsDeleting(true)
 
-      const data = await getGallery(`queries[]=equal("$id","${uniqueId}")`)
+      const data = databases.listDocuments('hp_web', 'gallery-images1', [
+        Query.equal('$id', uniqueId),
+      ])
 
-      // Get the image ID from the userData state
-      const documentId = data.documents[0].$id
-      const imageId = data.documents[0].gallery_id
+      data.then(
+        function (response: GalleryType) {
+          console.log(response) // Success
+          const documentId = response.documents[0].$id
+          const imageId = response.documents[0].galleryId
 
-      await deleteGalleryImage(imageId)
-      await deleteGalleryDocument(documentId)
+          storage.deleteFile('655ca6663497d9472539', imageId)
+          databases.deleteDocument('hp_web', 'gallery-images', documentId)
 
-      if (!deleteGalleryImage || !deleteGalleryDocument) {
-        setError('Fehler beim Löschen des Bildes!')
-      }
+          if (!deleteGalleryImage || !deleteGalleryDocument) {
+            setError('Fehler beim Löschen des Bildes!')
+            toast({
+              title: 'Error',
+              description: 'Something went wrong.',
+              variant: 'destructive',
+              security: 'true',
+            })
+          }
+        },
+        function (error) {
+          Sentry.captureException(error)
+          toast({
+            title: 'Error',
+            description: "Something went wrong, but don't worry, we are on it!",
+            variant: 'destructive',
+            security: 'true',
+          })
+        }
+      )
 
       setSuccess('Bild erfolgreich gelöscht! Kehre dich zur Galerie zurück...')
       // Redirect to the gallery list page
@@ -74,21 +99,21 @@ export default function FetchGallery({ singleGallery }) {
 
       // Create the form data
       const data = {
-        name: document.getElementById('imagename').value,
-        imgalt: document.getElementById('imgalt').value,
-        longtext: document.getElementById('longtext').value,
-        nsfw: document.getElementById('nsfw').checked,
+        name: (document.getElementById('imagename') as HTMLInputElement).value,
+        imgalt: (document.getElementById('imgalt') as HTMLInputElement).value,
+        longtext: (document.getElementById('longtext') as HTMLInputElement)
+          .value,
+        nsfw: (document.getElementById('nsfw') as HTMLInputElement).checked,
       }
 
       // Make the PUT request
-      const response = await fetch(`/api/gallery/editUserGallery/${uniqueId}`, {
+      await fetch(`/api/gallery/editUserGallery/${uniqueId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ data: data }), // Nest the requestBody inside a "data" key
       })
-
       // Handle response and update state accordingly
     } catch (error) {
       setError(error)
@@ -195,10 +220,7 @@ export default function FetchGallery({ singleGallery }) {
                     <div className="sm:col-span-3">
                       <Label htmlFor="modifiedAt">Letztes Update</Label>
                       <div className="mt-2">
-                        <span
-                          type="text"
-                          className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-black shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:text-white dark:ring-white/10 sm:text-sm sm:leading-6"
-                        >
+                        <span className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-black shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:text-white dark:ring-white/10 sm:text-sm sm:leading-6">
                           {new Date(userData.modifiedAt).toLocaleString(
                             'en-GB',
                             {

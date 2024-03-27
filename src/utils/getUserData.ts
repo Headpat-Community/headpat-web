@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { account, databases } from '@/app/appwrite'
-import { UserAccountType, UserDataDocumentsType } from 'utils/types'
+import { UserAccountType, UserDataDocumentsType } from '@/utils/types'
 
 export const useGetUser = () => {
   const [userMe, setUserMe] = useState<UserAccountType | null>(null)

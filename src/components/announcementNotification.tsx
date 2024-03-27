@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { AnnouncementDataType, AnnouncementDocumentsType } from 'utils/types'
-import { getAnnouncements } from 'utils/actions/announcement-actions'
+import { AnnouncementDataType, AnnouncementDocumentsType } from '@/utils/types'
+import { getAnnouncements } from '@/utils/actions/announcement-actions'
 
 export default async function AnnouncementNotification() {
   let announcementTotalData: AnnouncementDataType = await getAnnouncements()

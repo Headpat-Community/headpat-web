@@ -1,8 +1,8 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { ErrorMessage } from 'components/alerts'
-import { emailVerification } from 'utils/actions/user-actions'
+import { ErrorMessage } from '@/components/alerts'
+import { emailVerification } from '@/utils/actions/user-actions'
 
 export const runtime = 'edge'
 

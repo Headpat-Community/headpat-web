@@ -1,6 +1,6 @@
 import Client from './page.client'
-import { getUserSelf } from '../../../../../utils/actions/user-actions'
-import { getSingleGallery } from '../../../../../utils/actions/gallery-actions'
+import { getUserSelf } from '@/utils/actions/user-actions'
+import { getSingleGallery } from '@/utils/actions/gallery-actions'
 import { notFound } from 'next/navigation'
 
 export const runtime = 'edge'

@@ -2,8 +2,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { getGallery } from 'utils/actions/gallery-actions'
-import { GalleryType } from 'utils/types'
+import { getGallery } from '@/utils/actions/gallery-actions'
+import { GalleryType } from '@/utils/types'
 import { databases, Query, storage } from '@/app/appwrite'
 
 export default function FetchGallery({ enableNsfw }) {

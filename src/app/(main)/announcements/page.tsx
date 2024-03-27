@@ -1,8 +1,8 @@
-import { getAnnouncements } from '../../../utils/actions/announcement-actions'
+import { getAnnouncements } from '@/utils/actions/announcement-actions'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
-import { AnnouncementDataType, AnnouncementDocumentsType } from 'utils/types'
+import { AnnouncementDataType, AnnouncementDocumentsType } from '@/utils/types'
 
 export const runtime = 'edge'
 

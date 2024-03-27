@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { getUsers } from 'utils/actions/user-actions'
-import { UserDataDocumentsType } from 'utils/types'
+import { getUsers } from '@/utils/actions/user-actions'
+import { UserDataDocumentsType } from '@/utils/types'
 import {
   Table,
   TableBody,
@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Button } from 'components/ui/button'
+import { Button } from '@/components/ui/button'
 
 export const runtime = 'edge'
 

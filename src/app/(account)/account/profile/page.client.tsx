@@ -1,14 +1,14 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ErrorMessage, SuccessMessage } from 'components/alerts'
-import { Input } from 'components/ui/input'
-import { Button } from 'components/ui/button'
-import { Label } from 'components/ui/label'
-import { Checkbox } from 'components/ui/checkbox'
+import { ErrorMessage, SuccessMessage } from '@/components/alerts'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { Checkbox } from '@/components/ui/checkbox'
 import { account, avatars, databases } from '@/app/appwrite'
 import { AuthenticatorType, Models } from 'appwrite'
-import { useGetUser } from 'utils/getUserData'
+import { useGetUser } from '@/utils/getUserData'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -18,8 +18,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from 'components/ui/alert-dialog'
-import MfaAlert from 'components/account/profile/mfaAlert'
+} from '@/components/ui/alert-dialog'
+import MfaAlert from '@/components/account/profile/mfaAlert'
 
 export default function AccountPage() {
   const [error, setError] = useState<string>(null)

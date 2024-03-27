@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Loading from '../../../loading'
-import { ErrorMessage, SuccessMessage } from 'components/alerts'
+import { ErrorMessage, SuccessMessage } from '@/components/alerts'
 import { databases, storage, Query } from '@/app/appwrite'
 
 export default function FetchGallery({ enableNsfw, userId }) {

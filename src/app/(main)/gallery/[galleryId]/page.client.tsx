@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { GalleryDocumentsType, UserDataType } from 'utils/types'
-import { Button } from 'components/ui/button'
+import { GalleryDocumentsType, UserDataType } from '@/utils/types'
+import { Button } from '@/components/ui/button'
 import { storage } from '@/app/appwrite'
 
 export default function FetchGallery({

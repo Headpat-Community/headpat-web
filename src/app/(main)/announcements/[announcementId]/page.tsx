@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { getAnnouncement } from 'utils/actions/announcement-actions'
-import { AnnouncementDocumentsType } from 'utils/types'
+import { getAnnouncement } from '@/utils/actions/announcement-actions'
+import { AnnouncementDocumentsType } from '@/utils/types'
 
 export const runtime = 'edge'
 

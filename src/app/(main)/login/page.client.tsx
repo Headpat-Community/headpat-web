@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ErrorMessage } from 'components/alerts'
+import { ErrorMessage } from '@/components/alerts'
 import { account, functions } from '../../appwrite'
 import { ExecutionMethod, ID } from 'appwrite'
 

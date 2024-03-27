@@ -1,12 +1,12 @@
 import AnnouncementNotification from '../announcementNotification'
-import { getAccount } from 'utils/actions/user-actions'
+import { getAccount } from '@/utils/actions/user-actions'
 import Link from 'next/link'
 import Image from 'next/image'
-import { NavigationMenuExport } from 'components/header/nav'
-import { ThemeToggle } from 'components/ThemeToggle'
-import { Button } from 'components/ui/button'
+import { NavigationMenuExport } from '@/components/header/nav'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import { Button } from '@/components/ui/button'
 import { ArrowRightIcon } from 'lucide-react'
-import MobileNav from 'components/header/mobile-nav'
+import MobileNav from '@/components/header/mobile-nav'
 
 export default async function Header() {
   const accountData = await getAccount()

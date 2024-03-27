@@ -1,8 +1,8 @@
 import Client from './page.client'
-import { getUserData, getUserDataSelf } from 'utils/actions/user-actions'
-import { getGallery } from 'utils/actions/gallery-actions'
+import { getUserData, getUserDataSelf } from '@/utils/actions/user-actions'
+import { getGallery } from '@/utils/actions/gallery-actions'
 import { notFound } from 'next/navigation'
-import { GalleryDocumentsType, GalleryType } from 'utils/types'
+import { GalleryDocumentsType, GalleryType } from '@/utils/types'
 
 export const metadata = {
   title: 'Gallerie',

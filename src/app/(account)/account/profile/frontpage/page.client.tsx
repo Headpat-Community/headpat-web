@@ -8,8 +8,8 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { databases, ID, Query, storage } from '@/app/appwrite'
 import { useGetUser } from '@/utils/getUserData'
-import { Checkbox } from 'components/ui/checkbox'
-import { UserAvatarsDocumentType, UserAvatarsType } from 'utils/types'
+import { Checkbox } from '@/components/ui/checkbox'
+import { UserAvatarsDocumentType, UserAvatarsType } from '@/utils/types'
 
 export default function AccountPage() {
   const [selectedFile, setSelectedFile] = useState(null)

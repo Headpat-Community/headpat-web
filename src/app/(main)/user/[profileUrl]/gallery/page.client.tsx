@@ -164,7 +164,11 @@ export default function FetchGallery() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <SiTelegram className="text-2xl hover:text-indigo-500" />
+                    <SiTelegram
+                      className="text-2xl hover:text-indigo-500"
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                    />
                   </Link>
                 )}
                 {userData?.discordname && (
@@ -173,7 +177,11 @@ export default function FetchGallery() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <SiDiscord className="text-2xl hover:text-indigo-500" />
+                    <SiDiscord
+                      className="text-2xl hover:text-indigo-500"
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                    />
                   </Link>
                 )}
                 {userData?.X_name && (
@@ -182,7 +190,11 @@ export default function FetchGallery() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <SiX className="text-2xl hover:text-indigo-500" />
+                    <SiX
+                      className="text-2xl hover:text-indigo-500"
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                    />
                   </Link>
                 )}
                 {userData?.twitchname && (
@@ -191,7 +203,11 @@ export default function FetchGallery() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <SiTwitch className="text-2xl hover:text-indigo-500" />
+                    <SiTwitch
+                      className="text-2xl hover:text-indigo-500"
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                    />
                   </Link>
                 )}
                 {userData?.furaffinityname && (
@@ -200,7 +216,11 @@ export default function FetchGallery() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <SiFuraffinity className="text-2xl hover:text-indigo-500" />
+                    <SiFuraffinity
+                      className="text-2xl hover:text-indigo-500"
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                    />
                   </Link>
                 )}
                 <button

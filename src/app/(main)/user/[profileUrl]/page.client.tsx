@@ -1,7 +1,9 @@
 'use client'
 import { Button } from '@/components/ui/button'
+import { useToast } from '@/components/ui/use-toast'
 
 export function CopyUrl() {
+  const toast = useToast()
   return (
     <>
       <Button

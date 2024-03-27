@@ -1,10 +1,10 @@
 import { getAccount, getUserDataSelf } from '@/utils/actions/user-actions'
-import AnnouncementNotification from 'components/announcementNotification'
+import AnnouncementNotification from '@/components/announcementNotification'
 import Sidebar from './sidebar'
-import { ThemeToggle } from 'components/ThemeToggle'
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar'
-import { UserAccountType, UserDataType } from 'utils/types'
-import { Separator } from 'components/ui/separator'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAccountType, UserDataType } from '@/utils/types'
+import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
 
 export default async function Header({ children }) {
