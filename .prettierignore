@@ -2,3 +2,5 @@ src/components/ui
 .github
 .next
 node_modules
+.dockerignore
+Dockerfile

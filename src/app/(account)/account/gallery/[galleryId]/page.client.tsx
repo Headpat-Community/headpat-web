@@ -14,20 +14,22 @@ import { databases, Query, storage } from '@/app/appwrite'
 import { GalleryType } from '@/utils/types'
 import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
+import { useRouter } from 'next/navigation'
 
 export default function FetchGallery({ singleGallery }) {
   const { toast } = useToast()
+  const router = useRouter()
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
   const [isUploading, setIsUploading] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [userData, setUserData] = useState({
     name: singleGallery.name,
-    imgalt: singleGallery.imgalt,
+    imgAlt: singleGallery.imgAlt,
     nsfw: singleGallery.nsfw,
     createdAt: singleGallery.$createdAt,
     modifiedAt: singleGallery.$updatedAt,
-    longtext: singleGallery.longtext,
+    longText: singleGallery.longText,
   })
 
   const getGalleryImageUrl = (galleryId: string) => {
@@ -41,30 +43,30 @@ export default function FetchGallery({ singleGallery }) {
       const uniqueId = pathParts[3]
       setIsDeleting(true)
 
-      const data = databases.listDocuments('hp_web', 'gallery-images1', [
-        Query.equal('$id', uniqueId),
-      ])
+      const listDataResponse = databases.listDocuments(
+        'hp_db',
+        'gallery-images',
+        [Query.equal('$id', uniqueId)]
+      )
 
-      data.then(
+      listDataResponse.then(
         function (response: GalleryType) {
-          console.log(response) // Success
           const documentId = response.documents[0].$id
           const imageId = response.documents[0].galleryId
 
           storage.deleteFile('655ca6663497d9472539', imageId)
-          databases.deleteDocument('hp_web', 'gallery-images', documentId)
+          databases.deleteDocument('hp_db', 'gallery-images', documentId)
 
-          if (!deleteGalleryImage || !deleteGalleryDocument) {
-            setError('Fehler beim Löschen des Bildes!')
-            toast({
-              title: 'Error',
-              description: 'Something went wrong.',
-              variant: 'destructive',
-              security: 'true',
-            })
-          }
+          toast({
+            title: 'Success',
+            description: 'Image successfully deleted! Sending you back...',
+          })
+          setTimeout(() => {
+            router.push('/account/gallery')
+          }, 5000)
         },
         function (error) {
+          console.error(error)
           Sentry.captureException(error)
           toast({
             title: 'Error',
@@ -72,19 +74,16 @@ export default function FetchGallery({ singleGallery }) {
             variant: 'destructive',
             security: 'true',
           })
+          setIsDeleting(false)
         }
       )
-
-      setSuccess('Bild erfolgreich gelöscht! Kehre dich zur Galerie zurück...')
-      // Redirect to the gallery list page
-      setTimeout(() => {
-        window.location.href = '.'
-      }, 3000)
     } catch (error) {
-      setError(error.message)
-      setTimeout(() => {
-        setError(null)
-      }, 5000)
+      toast({
+        title: 'Error',
+        description: "You encountered an error. But don't worry, we're on it.",
+        variant: 'destructive',
+      })
+      Sentry.captureException(error)
       setIsDeleting(false)
     }
   }
@@ -130,181 +129,153 @@ export default function FetchGallery({ singleGallery }) {
   }
 
   return (
-    <>
-      {success && <SuccessMessage attentionSuccess={success} />}
-      {error && <ErrorMessage attentionError={error} />}
-      <div className="flex flex-wrap items-center justify-center gap-4 p-8">
-        <div>
-          {(() => {
-            const name = singleGallery?.data?.attributes?.name
+    <div className="flex-wrap items-center justify-center gap-4 p-8">
+      <div className="mx-auto flex">
+        <img
+          src={getGalleryImageUrl(singleGallery.galleryId)}
+          alt={singleGallery.imgAlt || 'Headpat Community Image'}
+          className={`imgsinglegallery max-h-[1000px] object-contain rounded-lg`}
+        />
+      </div>
 
-            return (
-              <div className="flex flex-wrap items-start">
-                <div className="mx-auto flex">
-                  <img
-                    src={getGalleryImageUrl(singleGallery.gallery_id)}
-                    alt={name || 'Headpat Community Image'}
-                    className={`imgsinglegallery h-[400px] rounded-lg object-contain sm:h-[400px] md:h-[500px] lg:h-[800px] xl:h-[1000px]`}
-                  />
-                </div>
+      <div className="mt-2 mb-12">
+        <h2 className="text-base font-semibold leading-7 text-white">
+          Information
+        </h2>
+        <p className="text-sm leading-6 text-gray-400">
+          Everything with a asterisk (<span className="text-red-500">*</span>)
+          is required.
+        </p>
 
-                <div className="ml-8 mt-2 pb-12">
-                  <h2 className="text-base font-semibold leading-7 text-white">
-                    Informationen
-                  </h2>
-                  <p className="mt-1 text-sm leading-6 text-gray-400">
-                    Alles mit ein asterisk (
-                    <span className="text-red-500">*</span>) ist nötig.
-                  </p>
+        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          <div className="sm:col-span-3">
+            <Label htmlFor="imagename">
+              Name <span className="text-red-500">*</span>
+            </Label>
+            <div className="mt-2">
+              <Input
+                type="text"
+                name="imagename"
+                id="imagename"
+                required
+                value={userData.name}
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    name: e.target.value,
+                  })
+                }
+              />
+            </div>
+          </div>
 
-                  <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <div className="sm:col-span-3">
-                      <Label htmlFor="imagename">
-                        Name <span className="text-red-500">*</span>
-                      </Label>
-                      <div className="mt-2">
-                        <Input
-                          type="text"
-                          name="imagename"
-                          id="imagename"
-                          required
-                          value={userData.name}
-                          onChange={(e) =>
-                            setUserData({
-                              ...userData,
-                              name: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                    </div>
+          <div className="sm:col-span-3">
+            <Label htmlFor="imgalt">Alternative info (SEO)</Label>
+            <div className="mt-2">
+              <Input
+                type="text"
+                name="imgalt"
+                id="imgalt"
+                value={userData.imgAlt}
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    imgAlt: e.target.value,
+                  })
+                }
+              />
+            </div>
+          </div>
 
-                    <div className="sm:col-span-3">
-                      <Label htmlFor="imgalt">
-                        Alternative Informationen (SEO)
-                      </Label>
-                      <div className="mt-2">
-                        <Input
-                          type="text"
-                          name="imgalt"
-                          id="imgalt"
-                          value={userData.imgalt} // Use userData.imgalt
-                          onChange={(e) =>
-                            setUserData({
-                              ...userData,
-                              imgalt: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                    </div>
+          <div className="sm:col-span-3">
+            <Label htmlFor="createdAt">Created at</Label>
+            <div className="mt-2">
+              <Input
+                type={'date'}
+                value={new Date(userData.createdAt).toISOString().split('T')[0]}
+                disabled
+              />
+            </div>
+          </div>
 
-                    <div className="sm:col-span-3">
-                      <Label htmlFor="createdAt">Erstellt am</Label>
-                      <div className="mt-2">
-                        <span className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-black shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:text-white dark:ring-white/10 sm:text-sm sm:leading-6">
-                          {new Date(userData.createdAt).toLocaleString(
-                            'en-GB',
-                            {
-                              day: '2-digit',
-                              month: '2-digit',
-                              year: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit',
-                            }
-                          )}
-                        </span>
-                      </div>
-                    </div>
+          <div className="sm:col-span-3">
+            <Label htmlFor="modifiedAt">Last updated</Label>
+            <div className="mt-2">
+              <Input
+                type={'date'}
+                value={
+                  new Date(userData.modifiedAt).toISOString().split('T')[0]
+                }
+                disabled
+              />
+            </div>
+          </div>
 
-                    <div className="sm:col-span-3">
-                      <Label htmlFor="modifiedAt">Letztes Update</Label>
-                      <div className="mt-2">
-                        <span className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-black shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:text-white dark:ring-white/10 sm:text-sm sm:leading-6">
-                          {new Date(userData.modifiedAt).toLocaleString(
-                            'en-GB',
-                            {
-                              day: '2-digit',
-                              month: '2-digit',
-                              year: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit',
-                            }
-                          )}
-                        </span>
-                      </div>
-                    </div>
+          <div className="sm:col-span-6">
+            <Label htmlFor="nsfw">NSFW</Label>
+            <div className="mt-2">
+              <input
+                type="checkbox"
+                name="nsfw"
+                id="nsfw"
+                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                checked={userData.nsfw} // Use userData.nsfw
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    nsfw: e.target.checked, // Set nsfw to true or false
+                  })
+                }
+              />
+            </div>
+          </div>
 
-                    <div className="sm:col-span-6">
-                      <Label htmlFor="nsfw">NSFW</Label>
-                      <div className="mt-2">
-                        <input
-                          type="checkbox"
-                          name="nsfw"
-                          id="nsfw"
-                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                          checked={userData.nsfw} // Use userData.nsfw
-                          onChange={(e) =>
-                            setUserData({
-                              ...userData,
-                              nsfw: e.target.checked, // Set nsfw to true or false
-                            })
-                          }
-                        />
-                      </div>
-                    </div>
+          <div className="col-span-full">
+            <Label htmlFor="longtext">Beschreibung</Label>
+            <div className="relative mt-2">
+              <Textarea
+                id="longtext"
+                name="longtext"
+                value={userData.longText || ''}
+                maxLength={256}
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    longText: e.target.value,
+                  })
+                }
+              />
+            </div>
+          </div>
+        </div>
 
-                    <div className="col-span-full">
-                      <Label htmlFor="longtext">Beschreibung</Label>
-                      <div className="relative mt-2">
-                        <Textarea
-                          id="longtext"
-                          name="longtext"
-                          value={userData.longtext || ''}
-                          maxLength={256}
-                          onChange={(e) =>
-                            setUserData({
-                              ...userData,
-                              longtext: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <Link
-                      href={`/account/gallery`}
-                      className="text-sm font-semibold leading-6 text-white"
-                    >
-                      Cancel
-                    </Link>
-                    <Button
-                      type="submit"
-                      value="Submit"
-                      disabled={isUploading || isDeleting} // Disable the button if isUploading is true
-                      onClick={updateImage} // Call the deleteImage function on click
-                    >
-                      {isUploading ? 'Uploading...' : 'Save'}{' '}
-                      {/* Show different text based on the upload state */}
-                    </Button>
-                    <Button
-                      type="submit"
-                      value="Submit"
-                      disabled={isDeleting || isUploading} // Disable the button if isUploading is true
-                      onClick={deleteImage} // Call the deleteImage function on click
-                    >
-                      {isDeleting ? 'Deleting...' : 'Delete'}{' '}
-                      {/* Show different text based on the upload state */}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )
-          })()}
+        <div className="mt-6 flex items-center justify-end gap-x-6">
+          <Link
+            href={`/account/gallery`}
+            className="text-sm font-semibold leading-6 text-white"
+          >
+            Cancel
+          </Link>
+          <Button
+            type="submit"
+            value="Submit"
+            disabled={isUploading || isDeleting} // Disable the button if isUploading is true
+            onClick={updateImage} // Call the deleteImage function on click
+          >
+            {isUploading ? 'Uploading...' : 'Save'}{' '}
+            {/* Show different text based on the upload state */}
+          </Button>
+          <Button
+            type="submit"
+            value="Submit"
+            disabled={isDeleting || isUploading} // Disable the button if isUploading is true
+            onClick={deleteImage} // Call the deleteImage function on click
+          >
+            {isDeleting ? 'Deleting...' : 'Delete'}{' '}
+            {/* Show different text based on the upload state */}
+          </Button>
         </div>
       </div>
-    </>
+    </div>
   )
 }

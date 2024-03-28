@@ -6,10 +6,10 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { databases, ID, Query, storage } from '@/app/appwrite'
+import { databases, ID, storage } from '@/app/appwrite'
 import { useGetUser } from '@/utils/getUserData'
 import { Checkbox } from '@/components/ui/checkbox'
-import { UserAvatarsDocumentType, UserAvatarsType } from '@/utils/types'
+import { UserAvatarsDocumentType } from '@/utils/types'
 
 export default function AccountPage() {
   const [selectedFile, setSelectedFile] = useState(null)
@@ -47,9 +47,9 @@ export default function AccountPage() {
         imgElement.src = event.target.result
         const img = new Image()
         img.src = event.target.result
-        img.onload = () => {
-          setSelectedFile(selectedFile)
-        }
+        //img.onload = () => {
+        //  setSelectedFile(selectedFile)
+        //}
       }
     }
   }
@@ -75,16 +75,23 @@ export default function AccountPage() {
       }
 
       // Upload the new avatar
-      const fileData = await storage.createFile(
+      const fileData = storage.createFile(
         '655842922bac16a94a25',
         ID.unique(),
         (document.getElementById('avatar-upload') as HTMLInputElement).files[0]
       )
 
-      // Update the user's avatarId
-      await databases.updateDocument('hp_db', 'userdata', userMe.$id, {
-        avatarId: fileData.$id,
-      })
+      fileData.then(
+        function (response) {
+          // Update the user's avatarId
+          databases.updateDocument('hp_db', 'userdata', userMe.$id, {
+            avatarId: response.$id,
+          })
+        },
+        function (error) {
+          console.log(error) // Failure
+        }
+      )
 
       setIsUploading(false) // Set isUploading to false after the API call is complete
     } catch (error) {

@@ -5,6 +5,8 @@ import Image from 'next/image'
 import Loading from '../../../loading'
 import { ErrorMessage, SuccessMessage } from '@/components/alerts'
 import { databases, storage, Query } from '@/app/appwrite'
+import { useToast } from '@/components/ui/use-toast'
+import * as Sentry from '@sentry/nextjs'
 
 export default function FetchGallery({ enableNsfw, userId }) {
   const [gallery, setGallery] = useState([])
@@ -13,6 +15,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
   const [success, setSuccess] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+  const { toast } = useToast()
 
   const getGalleryImageUrl = (galleryId: string) => {
     if (!galleryId) return
@@ -56,7 +59,14 @@ export default function FetchGallery({ enableNsfw, userId }) {
       setIsLoading(false)
     }
 
-    fetchGalleryData()
+    fetchGalleryData().catch((error) => {
+      toast({
+        title: 'Error',
+        description: "You encountered an error. But don't worry, we're on it.",
+        variant: 'destructive',
+      })
+      Sentry.captureException(error)
+    })
   }, [userId, enableNsfw, currentPage])
 
   const handlePageChange = (page) => {
@@ -86,7 +96,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
                 <div key={item.$id}>
                   {item && (
                     <div
-                      className={`h-64 overflow-hidden rounded-lg ${
+                      className={`overflow-hidden ${
                         item.nsfw && !enableNsfw ? 'relative' : ''
                       }`}
                     >
@@ -97,7 +107,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
                         <Image
                           src={getGalleryImageUrl(item.galleryId)}
                           alt={item.imgAlt || 'Gallery image'}
-                          className={`h-full max-h-[600px] w-full max-w-[600px] object-cover`}
+                          className={`imgsinglegallery h-full max-h-64 w-full max-w-[600px] object-contain rounded-lg`}
                           width={600}
                           height={600}
                           loading="lazy" // Add this attribute for lazy loading

@@ -2,15 +2,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { getGallery } from '@/utils/actions/gallery-actions'
-import { GalleryType } from '@/utils/types'
 import { databases, Query, storage } from '@/app/appwrite'
+import * as Sentry from '@sentry/nextjs'
+import { useToast } from '@/components/ui/use-toast'
 
 export default function FetchGallery({ enableNsfw }) {
   const [gallery, setGallery] = useState([])
   const [error, setError] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+  const { toast } = useToast()
 
   const getGalleryImageUrl = (galleryId: string) => {
     if (!galleryId) return
@@ -56,7 +57,14 @@ export default function FetchGallery({ enableNsfw }) {
       }
     }
 
-    fetchGalleryData()
+    fetchGalleryData().catch((error) => {
+      toast({
+        title: 'Error',
+        description: "You encountered an error. But don't worry, we're on it.",
+        variant: 'destructive',
+      })
+      Sentry.captureException(error)
+    })
   }, [currentPage, enableNsfw])
 
   return (

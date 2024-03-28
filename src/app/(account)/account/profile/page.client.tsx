@@ -1,30 +1,19 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { ErrorMessage, SuccessMessage } from '@/components/alerts'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
-import { account, avatars, databases } from '@/app/appwrite'
-import { AuthenticatorType, Models } from 'appwrite'
+import { account, databases } from '@/app/appwrite'
 import { useGetUser } from '@/utils/getUserData'
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
 import MfaAlert from '@/components/account/profile/mfaAlert'
 
 export default function AccountPage() {
   const [error, setError] = useState<string>(null)
   const [success, setSuccess] = useState<string>(null)
-  const { userMe, setUserMe, userData, setUserData } = useGetUser()
+  const { userMe, setUserMe, userData } = useGetUser()
 
   const handleEmailChange = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
@@ -71,15 +60,23 @@ export default function AccountPage() {
     }
   }
 
-  const handlePasswordReset = async (event: any) => {
+  const handlePasswordReset = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault()
 
-    const currentPassword = event.target.currentpassword.value
-    const newPassword = event.target.newpassword.value
+    const target = event.target as typeof event.target & {
+      currentpassword: { value: string }
+      newpassword: { value: string }
+      reset: () => void
+    }
+
+    const currentPassword = target.currentpassword.value
+    const newPassword = target.newpassword.value
 
     // Check if profileUrl has at least 4 characters
     if (newPassword.length < 8) {
-      setError('Passwort muss mindestens 8 Zeichen lang sein.')
+      setError('Password must be at least 8 characters long.')
       setTimeout(() => {
         setError(null)
       }, 5000)
@@ -90,12 +87,12 @@ export default function AccountPage() {
       const promise = account.updatePassword(newPassword, currentPassword)
 
       promise.then(
-        function (response) {
+        function () {
           setSuccess('Passwort erfolgreich geändert.')
           setTimeout(() => {
             setSuccess(null)
           }, 5000)
-          event.target.reset()
+          target.reset()
         },
         function (error) {
           console.log(error) // Failure
@@ -121,12 +118,6 @@ export default function AccountPage() {
       console.error(error)
     }
   }
-
-  const secondaryNavigation = [
-    { name: 'Account', href: '/account', current: true },
-    { name: 'Frontpage', href: '/account/profile/frontpage', current: false },
-    { name: 'Socials', href: '/account/profile/socials', current: false },
-  ]
 
   const handleNsfw = async (checked: boolean) => {
     try {
@@ -209,6 +200,12 @@ export default function AccountPage() {
       console.error(error)
     }
   }
+
+  const secondaryNavigation = [
+    { name: 'Account', href: '/account', current: true },
+    { name: 'Frontpage', href: '/account/profile/frontpage', current: false },
+    { name: 'Socials', href: '/account/profile/socials', current: false },
+  ]
 
   return (
     <>

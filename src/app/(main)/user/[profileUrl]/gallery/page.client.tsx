@@ -10,6 +10,8 @@ import {
   SiTwitch,
   SiX,
 } from '@icons-pack/react-simple-icons'
+import * as Sentry from '@sentry/nextjs'
+import { useToast } from '@/components/ui/use-toast'
 
 export default function FetchGallery() {
   const [gallery, setGallery] = useState([])
@@ -18,6 +20,7 @@ export default function FetchGallery() {
   const [userData, setUserData] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   //const [totalPages, setTotalPages] = useState(1)
+  const { toast } = useToast()
 
   const username =
     typeof window !== 'undefined' ? window.location.pathname.split('/')[2] : ''
@@ -63,7 +66,14 @@ export default function FetchGallery() {
       }
     }
 
-    fetchUserData()
+    fetchUserData().catch((error) => {
+      toast({
+        title: 'Error',
+        description: "You encountered an error. But don't worry, we're on it.",
+        variant: 'destructive',
+      })
+      Sentry.captureException(error)
+    })
   }, [userId])
 
   useEffect(() => {

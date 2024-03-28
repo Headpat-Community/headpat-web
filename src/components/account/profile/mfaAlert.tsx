@@ -17,7 +17,6 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from '@/components/ui/input-otp'
-import { Toaster } from '@/components/ui/toaster'
 import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
 
@@ -40,7 +39,14 @@ export default function MfaAlert() {
       }
     }
 
-    getMfaList()
+    getMfaList().catch((error) => {
+      toast({
+        title: 'Error',
+        description: "You encountered an error. But don't worry, we're on it.",
+        variant: 'destructive',
+      })
+      Sentry.captureException(error)
+    })
   }, [])
 
   const handleMfaAdd = async (mfaMode: string) => {
@@ -103,7 +109,6 @@ export default function MfaAlert() {
 
   return (
     <>
-      <Toaster />
       <AlertDialog open={open}>
         <AlertDialogTrigger asChild>
           <Button
@@ -159,7 +164,15 @@ export default function MfaAlert() {
                     maxLength={6}
                     onComplete={(result) => {
                       console.log(result)
-                      handleMfaVerify(result)
+                      handleMfaVerify(result).catch((error) => {
+                        toast({
+                          title: 'Error',
+                          description:
+                            "You encountered an error. But don't worry, we're on it.",
+                          variant: 'destructive',
+                        })
+                        Sentry.captureException(error)
+                      })
                     }}
                   >
                     <InputOTPGroup>
