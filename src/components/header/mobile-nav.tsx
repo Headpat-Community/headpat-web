@@ -43,20 +43,16 @@ export default function MobileNav(): React.JSX.Element {
               <Link href={'/'}>
                 <Button className={'w-96'}>Home</Button>
               </Link>
+              {/*
               <Link href={'/'}>
                 <Button className={'w-96'}>Pawcraft</Button>
               </Link>
+              */}
               <Link href={'/'}>
                 <Button className={'w-96'}>Community</Button>
               </Link>
               <Link href={'/'}>
                 <Button className={'w-96'}>Users</Button>
-              </Link>
-              <Link href={'/'}>
-                <Button className={'w-96'}>About</Button>
-              </Link>
-              <Link href={'/'}>
-                <Button className={'w-96'}>Contact</Button>
               </Link>
             </div>
           </div>

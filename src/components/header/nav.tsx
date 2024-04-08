@@ -24,11 +24,13 @@ export function NavigationMenuExport() {
             <ListItem href="/gallery" title="Gallery" />
           </ul>
         </NavigationMenuItem>
+        {/*
         <NavigationMenuItem>
           <ul>
             <ListItem href="/pawcraft" title="Pawcraft" />
           </ul>
         </NavigationMenuItem>
+        */}
         <NavigationMenuItem>
           <ul>
             <ListItem href="/users" title="Users" />

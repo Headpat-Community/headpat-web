@@ -99,8 +99,8 @@ export default function FetchGallery({ singleGallery }) {
       // Create the form data
       const data = {
         name: (document.getElementById('imagename') as HTMLInputElement).value,
-        imgalt: (document.getElementById('imgalt') as HTMLInputElement).value,
-        longtext: (document.getElementById('longtext') as HTMLInputElement)
+        imgAlt: (document.getElementById('imgalt') as HTMLInputElement).value,
+        longText: (document.getElementById('longtext') as HTMLInputElement)
           .value,
         nsfw: (document.getElementById('nsfw') as HTMLInputElement).checked,
       }
