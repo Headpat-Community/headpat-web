@@ -43,10 +43,10 @@ export default function FetchGallery({ enableNsfw, userId }) {
             Query.offset(offset),
           ]
         : [
-          Query.equal('userId', userId),
-          Query.limit(pageSize),
-          Query.offset(offset)
-        ]
+            Query.equal('userId', userId),
+            Query.limit(pageSize),
+            Query.offset(offset),
+          ]
 
       setIsLoading(true)
 

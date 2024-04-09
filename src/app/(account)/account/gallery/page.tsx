@@ -1,7 +1,6 @@
 import Client from './page.client'
 import { getUserSelf } from '@/utils/actions/user-actions'
 
-
 export const metadata = {
   title: 'Account Gallery',
 }
