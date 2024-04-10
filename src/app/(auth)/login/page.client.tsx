@@ -2,8 +2,8 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ErrorMessage } from '@/components/alerts'
-import { account, functions } from '../../appwrite'
-import { ExecutionMethod, ID } from 'appwrite'
+import { account } from '../../appwrite-client'
+import { ID } from 'appwrite'
 import {
   SiGithub,
   SiDiscord,
@@ -48,18 +48,6 @@ export default function Login() {
         setError('')
       }, 5000)
     }
-  }
-
-  const handleSession = async () => {
-    const response = account.getSession('current')
-    response.then(
-      function (response) {
-        console.log(response) // Success
-      },
-      function (error) {
-        console.log(error) // Failure
-      }
-    )
   }
 
   const handleOAuth2Login = async (provider) => {

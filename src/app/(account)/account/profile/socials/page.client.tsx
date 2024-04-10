@@ -5,7 +5,7 @@ import { ErrorMessage, SuccessMessage } from '@/components/alerts'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { databases } from '@/app/appwrite'
+import { databases } from '@/app/appwrite-client'
 import { useGetUser } from '@/utils/getUserData'
 
 export default function AccountPage() {

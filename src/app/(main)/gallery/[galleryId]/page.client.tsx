@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { GalleryDocumentsType, UserDataType } from '@/utils/types'
 import { Button } from '@/components/ui/button'
-import { storage } from '@/app/appwrite'
+import { storage } from '@/app/appwrite-client'
 
 export default function FetchGallery({
   gallery,

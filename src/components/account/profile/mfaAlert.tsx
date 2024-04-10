@@ -8,7 +8,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { account, avatars } from '@/app/appwrite'
+import { account, avatars } from '@/app/appwrite-client'
 import { AuthenticatorType, Models } from 'appwrite'
 import { useMemo, useState } from 'react'
 import {

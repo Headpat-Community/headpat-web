@@ -30,10 +30,20 @@ export function NavigationMenuExport() {
             <ListItem href="/pawcraft" title="Pawcraft" />
           </ul>
         </NavigationMenuItem>
+        <NavigationMenuItem>
+          <ul>
+            <ListItem href="/community" title="Community" />
+          </ul>
+        </NavigationMenuItem>
         */}
         <NavigationMenuItem>
           <ul>
             <ListItem href="/users" title="Users" />
+          </ul>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <ul>
+            <ListItem href="/events" title="Events" />
           </ul>
         </NavigationMenuItem>
       </NavigationMenuList>

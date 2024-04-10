@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Loading from '../../../loading'
 import { ErrorMessage, SuccessMessage } from '@/components/alerts'
-import { databases, storage, Query } from '@/app/appwrite'
+import { databases, storage, Query } from '@/app/appwrite-client'
 import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
 

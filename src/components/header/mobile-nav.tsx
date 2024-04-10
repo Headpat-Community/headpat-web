@@ -43,6 +43,9 @@ export default function MobileNav(): React.JSX.Element {
               <Link href={'/'}>
                 <Button className={'w-96'}>Home</Button>
               </Link>
+              <Link href={'/'}>
+                <Button className={'w-96'}>Gallery</Button>
+              </Link>
               {/*
               <Link href={'/'}>
                 <Button className={'w-96'}>Pawcraft</Button>
@@ -53,6 +56,9 @@ export default function MobileNav(): React.JSX.Element {
               </Link>
               <Link href={'/'}>
                 <Button className={'w-96'}>Users</Button>
+              </Link>
+              <Link href={'/'}>
+                <Button className={'w-96'}>Events</Button>
               </Link>
             </div>
           </div>

@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { account, databases } from '@/app/appwrite'
+import { account, databases } from '@/app/appwrite-client'
 import { UserAccountType, UserDataDocumentsType } from '@/utils/types'
 
 export const useGetUser = () => {

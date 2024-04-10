@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
-import { account, databases } from '@/app/appwrite'
+import { account, databases } from '@/app/appwrite-client'
 import { useGetUser } from '@/utils/getUserData'
 import MfaAlert from '@/components/account/profile/mfaAlert'
 

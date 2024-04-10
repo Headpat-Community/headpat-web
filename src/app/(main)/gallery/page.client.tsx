@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { databases, Query, storage } from '@/app/appwrite'
+import { databases, Query, storage } from '@/app/appwrite-client'
 import * as Sentry from '@sentry/nextjs'
 import { useToast } from '@/components/ui/use-toast'
 
