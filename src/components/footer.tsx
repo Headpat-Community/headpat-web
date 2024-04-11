@@ -1,18 +1,19 @@
 import Link from 'next/link'
 import { JSX, SVGProps } from 'react'
+import { Separator } from '@/components/ui/separator'
 
 export default function Footer() {
   const navigation = {
     main: [
       { name: 'Legal', href: '/legal' },
       { name: 'Discord', href: 'https://discord.gg/headpat' },
-      { name: 'Pawcraft', href: '/pawcraft' },
       { name: 'Users', href: '/users' },
+      { name: 'Events', href: '/events' },
     ],
     social: [
       {
         name: 'GitHub',
-        href: 'https://github.com/Headpat-Community/headpat.de',
+        href: 'https://github.com/Headpat-Community',
         icon: (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => (
           <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
             <path
@@ -60,7 +61,8 @@ export default function Footer() {
             </div>
           ))}
         </nav>
-        <div className="mt-10 flex justify-center space-x-10">
+        <Separator className={'w-32 mx-auto my-5'} />
+        <div className="flex justify-center space-x-10">
           {navigation.social.map((item) => (
             <Link
               key={item.name}
@@ -73,7 +75,8 @@ export default function Footer() {
             </Link>
           ))}
         </div>
-        <p className="mt-10 text-center text-xs leading-5 text-gray-500">
+        <Separator className={'w-32 mx-auto my-5'} />
+        <p className="text-center text-xs leading-5 text-gray-500">
           &copy; {new Date().getFullYear()} Headpat.
         </p>
       </div>

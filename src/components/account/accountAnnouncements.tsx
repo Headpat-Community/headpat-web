@@ -1,0 +1,44 @@
+import Link from 'next/link'
+import { AnnouncementDataType, AnnouncementDocumentsType } from '@/utils/types'
+import { getAnnouncements } from '@/utils/actions/announcement-actions'
+
+export default async function AccountAnnouncements() {
+  let announcementTotalData: AnnouncementDataType = await getAnnouncements()
+  let announcementData: AnnouncementDocumentsType | undefined
+
+  if (announcementTotalData && announcementTotalData.documents) {
+    announcementData = announcementTotalData.documents[0]
+  }
+
+  return (
+    <>
+      {announcementData?.validUntil &&
+        new Date(announcementData?.validUntil) >= new Date() && (
+          <div className="relative isolate flex flex-col items-center gap-x-6 overflow-hidden px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <span>Announcement:</span>
+              <p className="text-sm leading-6">
+                <strong className="font-semibold">
+                  {announcementData.title}
+                </strong>
+                <svg
+                  viewBox="0 0 2 2"
+                  className="mx-2 inline h-0.5 w-0.5 fill-current"
+                  aria-hidden="true"
+                >
+                  <circle cx={1} cy={1} r={1} />
+                </svg>
+                {announcementData.sideText}
+              </p>
+              <Link
+                href={`/announcements/${announcementData.$id}`}
+                className="flex-none rounded-full bg-primary px-3.5 py-1 text-primary-foreground text-sm font-semibold shadow-sm hover:bg-primary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/80"
+              >
+                More info <span aria-hidden="true">&rarr;</span>
+              </Link>
+            </div>
+          </div>
+        )}
+    </>
+  )
+}

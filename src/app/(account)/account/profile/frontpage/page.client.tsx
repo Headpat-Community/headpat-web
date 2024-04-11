@@ -1,103 +1,21 @@
 'use client'
-import { useState } from 'react'
 import Link from 'next/link'
-import { ErrorMessage, SuccessMessage } from '@/components/alerts'
+import * as Sentry from '@sentry/nextjs'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { databases, ID, storage } from '@/app/appwrite-client'
+import { databases } from '@/app/appwrite-client'
 import { useGetUser } from '@/utils/getUserData'
 import { Checkbox } from '@/components/ui/checkbox'
-import { UserAvatarsDocumentType } from '@/utils/types'
+import { useToast } from '@/components/ui/use-toast'
+import { useState } from 'react'
+import UploadAvatar from '@/app/(account)/account/profile/frontpage/uploadAvatar'
 
 export default function AccountPage() {
-  const [selectedFile, setSelectedFile] = useState(null)
-  const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(null)
-  const [isUploading, setIsUploading] = useState(false)
   const { userMe, userData, setUserData } = useGetUser()
-
-  const getAvatarImageUrl = (galleryId: string) => {
-    if (!galleryId) return
-    const imageId = storage.getFilePreview(
-      '655842922bac16a94a25',
-      `${galleryId}`,
-      400
-    )
-    return imageId.href
-  }
-
-  const handleAvatarChange = (event) => {
-    const selectedFile = event.target.files[0]
-    if (selectedFile.size > 1024 * 1024) {
-      setError('Dateigröße darf nur bis 1MB groß sein.')
-      setTimeout(() => {
-        setError(null)
-      }, 5000)
-      return
-    }
-    const fileReader = new FileReader()
-    fileReader.readAsDataURL(selectedFile)
-    fileReader.onload = (event) => {
-      const imgElement = document.getElementById(
-        'avatar-image'
-      ) as HTMLImageElement
-      if (typeof event.target.result === 'string') {
-        imgElement.src = event.target.result
-        const img = new Image()
-        img.src = event.target.result
-        //img.onload = () => {
-        //  setSelectedFile(selectedFile)
-        //}
-      }
-    }
-  }
-
-  const handleSubmitAvatar = async (event) => {
-    event.preventDefault()
-
-    try {
-      // Year-Month-Day (YYYY-MM-DD)
-
-      setIsUploading(true) // Set isUploading to true before making the API call
-
-      // Get the user's avatar document
-      const avatarDocument: UserAvatarsDocumentType =
-        await databases.getDocument('hp_db', 'userdata', userMe.$id)
-      // If the user already has an avatar, delete it
-      if (avatarDocument.galleryId) {
-        // Delete the old avatar
-        await storage.deleteFile(
-          '655842922bac16a94a25',
-          avatarDocument.galleryId
-        )
-      }
-
-      // Upload the new avatar
-      const fileData = storage.createFile(
-        '655842922bac16a94a25',
-        ID.unique(),
-        (document.getElementById('avatar-upload') as HTMLInputElement).files[0]
-      )
-
-      fileData.then(
-        function (response) {
-          // Update the user's avatarId
-          databases.updateDocument('hp_db', 'userdata', userMe.$id, {
-            avatarId: response.$id,
-          })
-        },
-        function (error) {
-          console.log(error) // Failure
-        }
-      )
-
-      setIsUploading(false) // Set isUploading to false after the API call is complete
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  const [isUploading, setIsUploading] = useState(false)
+  const { toast } = useToast()
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
@@ -130,23 +48,30 @@ export default function AccountPage() {
       promise.then(
         function () {
           setIsUploading(false)
-          setSuccess('Saved!')
+          toast({
+            title: 'Data uploaded',
+            description: 'Your data has been uploaded successfully.',
+          })
         },
         function (error) {
           console.log(error) // Failure
           setIsUploading(false)
-          setError('Failed to upload Data')
+          toast({
+            title: 'Error',
+            description: 'Failed to upload data.',
+            variant: 'destructive',
+          })
         }
       )
-
-      setTimeout(() => {
-        setError(null)
-        setSuccess(null)
-      }, 5000)
     } catch (error) {
       setIsUploading(false)
-      setError('Failed to upload Data')
       console.error(error)
+      Sentry.captureException(error)
+      toast({
+        title: 'Error',
+        description: 'Failed to upload data.',
+        variant: 'destructive',
+      })
     }
   }
 
@@ -158,8 +83,6 @@ export default function AccountPage() {
 
   return (
     <>
-      {success && <SuccessMessage attentionSuccess={success} />}
-      {error && <ErrorMessage attentionError={error} />}
       <header className="border-b border-black/5 dark:border-white/5">
         {/* Secondary navigation */}
         <nav className="flex overflow-x-auto py-4">
@@ -192,43 +115,12 @@ export default function AccountPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="md:col-span-2">
-            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-              <div className="col-span-full flex items-center gap-x-8">
-                <img
-                  id="avatar-image"
-                  src={
-                    getAvatarImageUrl(userData?.avatarId) || '/logos/logo.webp'
-                  }
-                  alt="Avatar"
-                  className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
-                />
-                <div>
-                  <Input
-                    accept="image/*"
-                    className="rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-black/10 hover:bg-white/20 dark:ring-white/10"
-                    id="avatar-upload"
-                    name="avatar-upload"
-                    type="file"
-                    onChange={handleAvatarChange}
-                  />
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs text-gray-900 dark:text-gray-400">
-                      JPG, GIF or PNG. 2MB max.
-                    </p>
-                    <Button
-                      type="submit"
-                      onClick={handleSubmitAvatar}
-                      className={'mt-2'}
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                  <p className="text-xs text-gray-900 dark:text-gray-400">
-                    1024x1024 max. resolution
-                  </p>
-                </div>
-              </div>
-            </div>
+            <UploadAvatar
+              isUploading={isUploading}
+              setIsUploading={setIsUploading}
+              userMe={userMe}
+              userData={userData}
+            />
 
             <div className="mt-12 grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6">
               <div className="col-span-full">
@@ -325,15 +217,15 @@ export default function AccountPage() {
                     name="birthday"
                     type="date"
                     value={
-                      userData
+                      userData && !isNaN(Date.parse(userData.birthday))
                         ? new Date(userData.birthday)
                             .toISOString()
                             .split('T')[0]
                         : ''
-                    } // Set the value from state in the correct format
+                    }
                     onChange={(e) => {
                       setUserData({ ...userData, birthday: e.target.value })
-                    }} // Update state when the input changes
+                    }}
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span

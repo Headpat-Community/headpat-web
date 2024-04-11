@@ -5,7 +5,6 @@ import {
   LineChart,
   Menu,
   Package,
-  Search,
   ShoppingCart,
   Users,
 } from 'lucide-react'
@@ -19,24 +18,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { ThemeToggle } from '@/components/ThemeToggle'
-import AnnouncementNotification from '@/components/announcementNotification'
 import Image from 'next/image'
+import AccountAnnouncements from '@/components/account/accountAnnouncements'
 //import ChangeLanguage from '@/components/system/changeLanguage'
-//import { getTeams, getUser } from '@/utils/server-api/account/user'
 
 export default async function Dashboard({ children }) {
-  //const userData = await getUser()
-  //if (userData.code === 401) {
-  //  redirect('/login')
-  //}
-  //const teamData = await getTeams()
-  //if (teamData.total === 0) {
-  //  console.log('No teams found')
-  //}
-
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
@@ -120,8 +108,8 @@ export default async function Dashboard({ children }) {
         </div>
       </div>
       <div className="flex flex-col">
-        <AnnouncementNotification />
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 sticky top-0">
+          <AccountAnnouncements />
           <Sheet>
             <SheetTrigger asChild>
               <Button
