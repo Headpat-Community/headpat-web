@@ -9,6 +9,8 @@ interface EventsType extends Models.Document {
   description: string
 }
 
+export const runtime = 'edge'
+
 export default async function Page() {
   const response = await databases.listDocuments('hp_db', 'events')
   const events = response.documents

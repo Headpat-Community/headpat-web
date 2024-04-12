@@ -9,7 +9,7 @@ import {
   Messaging,
   Locale,
   Avatars,
-} from 'node-appwrite'
+} from 'luke-node-appwrite-edge'
 
 export const client = new Client()
   .setEndpoint(`${process.env.NEXT_PUBLIC_API_URL}/v1`)

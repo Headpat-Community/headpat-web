@@ -1,9 +1,8 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { ErrorMessage } from '@/components/alerts'
-import { account } from '../../appwrite-client'
-import { ID } from 'appwrite'
+import { account, ID } from '@/app/appwrite-client'
 import {
   SiGithub,
   SiDiscord,
@@ -13,54 +12,110 @@ import {
   SiMicrosoft,
   SiTwitch,
 } from '@icons-pack/react-simple-icons'
+import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
+import {
+  signInWithApple,
+  signInWithDiscord,
+  signInWithGithub,
+  signInWithGoogle,
+  signInWithMicrosoft,
+  signInWithSpotify,
+  signInWithTwitch,
+} from '@/utils/actions/oauth-actions'
+import { useToast } from '@/components/ui/use-toast'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Checkbox } from '@/components/ui/checkbox'
 
 export default function Login() {
-  const [email, setEmail] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [data, setData] = useState({
+    email: '',
+    password: '',
+    username: '',
+  })
   const [error, setError] = useState('')
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
+  const router = useRouter()
+  const { toast } = useToast()
 
-  const handleEmailLogin = async (e) => {
+  const handleEmailLogin = async (e: any) => {
     e.preventDefault()
 
-    try {
-      let response
-      if (isRegistering) {
-        response = await account.create(ID.unique(), email, password, username)
-      } else {
-        response = await account.createEmailPasswordSession(email, password)
+    if (isRegistering) {
+      const response = account.create(
+        ID.unique(),
+        data.email,
+        data.password,
+        data.username
+      )
+
+      response.then(
+        function (response) {
+          router.push('/account')
+        },
+        function (error) {
+          if (error.code === 400) {
+            toast({
+              title: 'Error',
+              description: 'Invalid E-Mail provided.',
+              variant: 'destructive',
+            })
+          } else if (error.code === 401) {
+            toast({
+              title: 'Error',
+              description: 'E-Mail or Password incorrect.',
+              variant: 'destructive',
+            })
+          } else if (error.code === 409) {
+            toast({
+              title: 'Error',
+              description: 'E-Mail already in use.',
+              variant: 'destructive',
+            })
+          } else if (error.code === 429) {
+            toast({
+              title: 'Error',
+              description: 'Too many requests, please try again later.',
+              variant: 'destructive',
+            })
+          }
+        }
+      )
+    } else {
+      const response = await fetch('/api/user/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        console.log(data)
+        if (data.error.type == 'user_invalid_credentials') {
+          toast({
+            title: 'Error',
+            description: 'E-Mail or Password incorrect.',
+            variant: 'destructive',
+          })
+        } else if (data.error.type == 'user_blocked') {
+          toast({
+            title: 'Error',
+            description: 'User is blocked.',
+            variant: 'destructive',
+          })
+        }
       }
-      if (response) {
-        window.location.href = '/account'
-      }
-    } catch (error) {
-      if (error.code === 400) {
-        setError('Invalid email provided.')
-      } else if (error.code === 401) {
-        setError('Email or password is incorrect.')
-      } else if (error.code === 409) {
-        setError('Email already in use.')
-      } else if (error.code === 429) {
-        setError('Too many requests. Please try again later.')
-      }
-      setTimeout(() => {
-        setError('')
-      }, 5000)
+
+      //router.push('/account')
     }
   }
-
-  const handleOAuth2Login = async (provider) => {
-    account.createOAuth2Session(
-      provider,
-      `${process.env.NEXT_PUBLIC_DOMAIN}/account`,
-      `${process.env.NEXT_PUBLIC_DOMAIN}/login?failure=true`
-    )
-  }
-
-  useEffect(() => {
-    //handleSession()
-  }, [])
 
   return (
     <>
@@ -70,9 +125,13 @@ export default function Login() {
         <div className="line" />
         <div className="line" />
       </div>
-      <div className="flex min-h-full flex-1">
-        <div className="z-10 mx-auto mt-14 min-w-1/3 rounded-2xl p-8 ring-1 ring-black dark:bg-[#04050a]/85 dark:ring-white">
-          <div>
+      <Button className={'m-8 absolute z-10'} onClick={() => router.push('/')}>
+        Home
+      </Button>
+      <div className="flex flex-1 justify-center items-center absolute inset-0">
+        {/* Add justify-center and items-center here */}
+        <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:bg-[#04050a]/85 dark:ring-white">
+          <div className={'text-center'}>
             <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
               Welcome to Headpat!
             </h2>
@@ -90,91 +149,86 @@ export default function Login() {
 
           <div className="mt-10">
             <div>
-              <form action="#" method="POST" className="space-y-6">
-                {isRegistering && (
-                  <div>
-                    <label
-                      htmlFor="username"
-                      className="block text-sm font-medium leading-6"
-                    >
-                      Username
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="username"
-                        name="username"
-                        type="text"
-                        autoComplete="username"
+              <form
+                action="#"
+                method="POST"
+                className="space-y-6"
+                onSubmit={handleEmailLogin}
+              >
+                <div key="1" className="mx-auto max-w-4xl p-6 space-y-6">
+                  <div className="space-y-4">
+                    {isRegistering && (
+                      <>
+                        <div className="space-y-2">
+                          <Label className="flex items-center" htmlFor="email">
+                            Username
+                            <span className="ml-1 text-red-500">*</span>
+                          </Label>
+                          <Input
+                            id="username"
+                            required
+                            type="username"
+                            onChange={(e) =>
+                              setData({ ...data, username: e.target.value })
+                            }
+                          />
+                        </div>
+                      </>
+                    )}
+                    <div className="space-y-2">
+                      <Label className="flex items-center" htmlFor="email">
+                        Email
+                        <span className="ml-1 text-red-500">*</span>
+                      </Label>
+                      <Input
+                        id="email"
+                        placeholder="j@example.com"
                         required
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:ring-gray-300 sm:text-sm sm:leading-6"
+                        type="email"
+                        onChange={(e) =>
+                          setData({ ...data, email: e.target.value })
+                        }
                       />
                     </div>
+                    <div className="space-y-2">
+                      <Label className="flex items-center" htmlFor="password">
+                        Password
+                        <span className="ml-1 text-red-500">*</span>
+                      </Label>
+                      <Input
+                        id="password"
+                        required
+                        type="password"
+                        onChange={(e) =>
+                          setData({ ...data, password: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center">
+                        <div className="space-y-2">
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="terms"
+                              onCheckedChange={() =>
+                                setAcceptedTerms(!acceptedTerms)
+                              }
+                            />
+                            <Label className="leading-none" htmlFor="terms">
+                              I agree to the{' '}
+                              <Link className="underline" href="#">
+                                terms and conditions
+                              </Link>
+                              <span className="ml-1 text-red-500">*</span>
+                            </Label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <Button disabled={!acceptedTerms} className="w-full">
+                      {isRegistering ? 'Register' : 'Login'}
+                    </Button>
                   </div>
-                )}
-
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium leading-6"
-                  >
-                    Email address
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      autoComplete="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:ring-gray-300 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium leading-6"
-                  >
-                    Password
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      id="password"
-                      name="password"
-                      type="password"
-                      autoComplete="current-password"
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:ring-gray-300 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="text-sm leading-6">
-                    <Link
-                      href="/forgot-password"
-                      className="font-semibold text-indigo-600 hover:text-indigo-500"
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
-                </div>
-
-                <div>
-                  <button
-                    type="submit"
-                    onClick={handleEmailLogin}
-                    className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    {!isRegistering ? 'Sign in' : 'Register'}
-                  </button>
                 </div>
               </form>
             </div>
@@ -195,74 +249,69 @@ export default function Login() {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-4">
-                <button
-                  onClick={() => handleOAuth2Login('discord')}
-                  className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#5865F2] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20"
-                >
-                  <SiDiscord className={'h-5'} />
-                  <span className="text-sm font-semibold leading-6">
-                    Discord
-                  </span>
-                </button>
+                <form action={signInWithDiscord}>
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#5865F2] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20">
+                    <SiDiscord className={'h-5'} />
+                    <span className="text-sm font-semibold leading-6">
+                      Discord
+                    </span>
+                  </button>
+                </form>
 
-                <button
-                  onClick={() => handleOAuth2Login('github')}
-                  className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20"
-                >
-                  <SiGithub className={'h-5'} />
-                  <span className="text-sm font-semibold leading-6">
-                    GitHub
-                  </span>
-                </button>
+                <form action={signInWithGithub}>
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                    <SiGithub className={'h-5'} />
+                    <span className="text-sm font-semibold leading-6">
+                      GitHub
+                    </span>
+                  </button>
+                </form>
 
-                <button
-                  onClick={() => handleOAuth2Login('apple')}
-                  className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#000000] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20"
-                >
-                  <SiApple className={'h-5'} />
-                  <span className="text-sm font-semibold leading-6">Apple</span>
-                </button>
+                <form action={signInWithApple}>
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#000000] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                    <SiApple className={'h-5'} />
+                    <span className="text-sm font-semibold leading-6">
+                      Apple
+                    </span>
+                  </button>
+                </form>
 
-                <button
-                  onClick={() => handleOAuth2Login('google')}
-                  className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#131314] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20"
-                >
-                  <SiGoogle className={'h-4'} />
+                <form action={signInWithGoogle}>
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#131314] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                    <SiGoogle className={'h-4'} />
 
-                  <span className="text-sm font-semibold leading-6">
-                    Google
-                  </span>
-                </button>
+                    <span className="text-sm font-semibold leading-6">
+                      Google
+                    </span>
+                  </button>
+                </form>
 
-                <button
-                  onClick={() => handleOAuth2Login('spotify')}
-                  className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#1DB954] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20"
-                >
-                  <SiSpotify className={'h-5'} />
-                  <span className="text-sm font-semibold leading-6">
-                    Spotify
-                  </span>
-                </button>
+                <form action={signInWithSpotify}>
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#1DB954] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                    <SiSpotify className={'h-5'} />
+                    <span className="text-sm font-semibold leading-6">
+                      Spotify
+                    </span>
+                  </button>
+                </form>
 
-                <button
-                  onClick={() => handleOAuth2Login('microsoft')}
-                  className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#01A6F0] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20"
-                >
-                  <SiMicrosoft className={'h-5'} />
-                  <span className="text-sm font-semibold leading-6">
-                    Microsoft
-                  </span>
-                </button>
+                <form action={signInWithMicrosoft}>
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#01A6F0] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                    <SiMicrosoft className={'h-5'} />
+                    <span className="text-sm font-semibold leading-6">
+                      Microsoft
+                    </span>
+                  </button>
+                </form>
 
-                <button
-                  onClick={() => handleOAuth2Login('twitch')}
-                  className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#6441A5] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20"
-                >
-                  <SiTwitch className={'h-5'} />
-                  <span className="text-sm font-semibold leading-6">
-                    Twitch
-                  </span>
-                </button>
+                <form action={signInWithTwitch}>
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#6441A5] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                    <SiTwitch className={'h-5'} />
+                    <span className="text-sm font-semibold leading-6">
+                      Twitch
+                    </span>
+                  </button>
+                </form>
               </div>
             </div>
           </div>

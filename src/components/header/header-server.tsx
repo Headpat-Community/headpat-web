@@ -7,10 +7,26 @@ import { ThemeToggle } from '@/components/ThemeToggle'
 import { Button } from '@/components/ui/button'
 import { ArrowRightIcon } from 'lucide-react'
 import MobileNav from '@/components/header/mobile-nav'
+import { headers } from 'next/headers'
 
 export default async function Header() {
-  const accountData = await getAccount()
-  const jwtBool = !accountData
+  const headersList = headers()
+  const cookieHeader = headersList.get('cookie')
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_DOMAIN}/api/user/account`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Cookie: cookieHeader,
+      },
+    }
+  )
+
+  const userData = await response.json()
+
+  let jwtBool: boolean
+  jwtBool = userData.code !== 401
 
   return (
     <div>

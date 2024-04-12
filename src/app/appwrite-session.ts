@@ -8,14 +8,16 @@ import {
   Messaging,
   Locale,
   Avatars,
-} from 'node-appwrite'
+} from 'luke-node-appwrite-edge'
 
 const createSessionClient = async (request: any) => {
   const client = new Client()
     .setEndpoint(`${process.env.NEXT_PUBLIC_API_URL}/v1`)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
 
-  const session = request.cookies.get('session_mgmt')
+  const session = request.cookies.get(
+    `session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
+  )
 
   if (session) {
     client.setSession(session.value)

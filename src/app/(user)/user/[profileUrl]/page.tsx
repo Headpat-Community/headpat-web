@@ -139,9 +139,9 @@ export default async function UserProfile({ params: { profileUrl } }) {
               </div>
             </div>
             {/* Right */}
-            <div className={'border col-span-2 '}>
-              <div className={'p-8 rounded-xl'}>
-                <span className={'justify-center flex'}>Profile info</span>
+            <div className={'col-span-2 '}>
+              <div className={'rounded-xl'}>
+                <span className={'justify-center flex mb-4'}>Profile info</span>
                 <div className={'grid grid-cols-2 border mx-auto rounded p-4'}>
                   <div className={'col-span-2'}>{userData.displayName}</div>
                   <Separator />

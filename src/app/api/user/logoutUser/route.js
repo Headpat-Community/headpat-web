@@ -1,34 +1,32 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { createSessionClient } from '../../../appwrite-session'
 
 export const runtime = 'edge'
 
-export async function POST() {
+export async function POST(request) {
+  const { account } = await createSessionClient(request)
+
   try {
-    // Correct syntax for deleting a cookie
-    const cookieOptions = {
-      path: '/',
-      domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
-      secure: true,
-      httpOnly: true,
-    }
+    await account.deleteSession('current')
 
     // Delete the specified cookie
+    cookies().delete(`session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`)
+
     cookies().set(
       `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
       '',
       {
-        ...cookieOptions,
+        path: '/',
+        domain: process.env.NEXT_PUBLIC_API_URL,
+        secure: true,
+        httpOnly: true,
         expires: new Date(0),
       }
     )
-    cookies().set(`logged_in`, '', { ...cookieOptions, expires: new Date(0) })
 
-    return NextResponse.json({ status: 201 })
+    return NextResponse.json({ status: 204 })
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Unexpected error occurred' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: error.message }, { status: error.code })
   }
 }
