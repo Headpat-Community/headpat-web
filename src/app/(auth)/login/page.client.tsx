@@ -113,7 +113,7 @@ export default function Login() {
         }
       }
 
-      //router.push('/account')
+      router.push('/account')
     }
   }
 

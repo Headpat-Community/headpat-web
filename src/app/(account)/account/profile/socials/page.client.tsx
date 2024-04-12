@@ -130,7 +130,7 @@ export default function AccountPage() {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData ? userData?.discordname.length : 0}
+                      {userData ? userData?.discordname?.length : 0}
                       {/* Check if userData.discordname is defined before accessing its length property */}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>
@@ -163,7 +163,7 @@ export default function AccountPage() {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData ? userData?.telegramname.length : 0}
+                      {userData ? userData?.telegramname?.length : 0}
                       {/* Check if userData.telegramname is defined before accessing its length property */}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>
@@ -191,7 +191,7 @@ export default function AccountPage() {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData ? userData?.furaffinityname.length : 0}
+                      {userData ? userData?.furaffinityname?.length : 0}
                       {/* Check if userData.furaffinityname is defined before accessing its length property */}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>
@@ -224,7 +224,7 @@ export default function AccountPage() {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData ? userData?.X_name.length : 0}
+                      {userData ? userData?.X_name?.length : 0}
                       {/* Check if userData.X_name is defined before accessing its length property */}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>
@@ -252,7 +252,7 @@ export default function AccountPage() {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData ? userData.twitchname.length : 0}
+                      {userData ? userData.twitchname?.length : 0}
                       {/* Check if userData.twitchname is defined before accessing its length property */}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>
