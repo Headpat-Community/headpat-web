@@ -7,9 +7,9 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
 export const metadata = {
-  title: 'Gallerie',
+  title: 'Gallery',
   description:
-    'Die Gallerie seite von Headpat Community. Hier könnt ihr alle Bilder sehen die von der Community hochgeladen wurden.',
+    'This is the gallery page. You can see the image and its information here.',
 }
 
 export const runtime = 'edge'

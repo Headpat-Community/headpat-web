@@ -1,3 +1,4 @@
+'use client'
 import { storage } from '@/app/appwrite-client'
 
 export default function FetchGallery({ name, gallery }) {
