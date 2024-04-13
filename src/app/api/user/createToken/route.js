@@ -1,17 +1,11 @@
-import sdk from 'node-appwrite'
 import { cookies } from 'next/headers'
+import { createAdminClient } from '../../../appwrite-session'
 
 export const runtime = 'edge'
 
 export async function POST(request) {
   const { userId } = await request.json()
-
-  const client = new sdk.Client()
-    .setEndpoint(`${process.env.NEXT_PUBLIC_API_URL}/v1`) // Your API Endpoint
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID) // Your project ID
-    .setKey(process.env.APPWRITE_API_KEY) // Your secret API key
-
-  const users = new sdk.Users(client)
+  const { users } = await createAdminClient()
 
   const result = await users.createToken(
     userId, // userId
