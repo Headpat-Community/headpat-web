@@ -11,7 +11,6 @@ export async function getUsers() {
         'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
         'X-Appwrite-Response-Format': '1.4.0',
       },
-      cache: 'no-cache',
     }
   )
 
