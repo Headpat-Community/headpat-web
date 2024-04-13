@@ -1,7 +1,7 @@
-import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '../../components/ui/button'
+import { ChevronRight } from 'lucide-react'
 
 export const runtime = 'edge'
 
@@ -70,7 +70,7 @@ export default function Home() {
                     <span className="text-black dark:text-white">
                       Klick hier um beizutreten
                     </span>
-                    <ChevronRightIcon
+                    <ChevronRight
                       className="-mr-2 h-5 w-5 text-black dark:text-white"
                       aria-hidden="true"
                     />

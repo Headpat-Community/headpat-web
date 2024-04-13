@@ -1,5 +1,5 @@
-import { PaperClipIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
+import { Paperclip } from 'lucide-react'
 
 export const metadata = {
   title: 'Legal',
@@ -45,7 +45,7 @@ export default function LegalPage() {
                 >
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">
-                      <PaperClipIcon
+                      <Paperclip
                         className="h-5 w-5 flex-shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
@@ -66,7 +66,7 @@ export default function LegalPage() {
                   </li>
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">
-                      <PaperClipIcon
+                      <Paperclip
                         className="h-5 w-5 flex-shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
@@ -90,7 +90,7 @@ export default function LegalPage() {
                   </li>
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">
-                      <PaperClipIcon
+                      <Paperclip
                         className="h-5 w-5 flex-shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
@@ -114,7 +114,7 @@ export default function LegalPage() {
                   </li>
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">
-                      <PaperClipIcon
+                      <Paperclip
                         className="h-5 w-5 flex-shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
@@ -138,7 +138,7 @@ export default function LegalPage() {
                   </li>
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">
-                      <PaperClipIcon
+                      <Paperclip
                         className="h-5 w-5 flex-shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
@@ -186,7 +186,7 @@ export default function LegalPage() {
                   </li>*/}
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">
-                      <PaperClipIcon
+                      <Paperclip
                         className="h-5 w-5 flex-shrink-0 text-gray-400"
                         aria-hidden="true"
                       />

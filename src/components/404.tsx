@@ -1,8 +1,7 @@
-import { ChevronRightIcon } from '@heroicons/react/20/solid'
-import { PhotoIcon, HomeIcon } from '@heroicons/react/24/solid'
 import Link from 'next/link'
 import Image from 'next/image'
 import { SiDiscord, SiGithub } from '@icons-pack/react-simple-icons'
+import { ChevronRight, HomeIcon, ImageIcon } from 'lucide-react'
 
 const links = [
   {
@@ -15,7 +14,7 @@ const links = [
     name: 'Gallery',
     href: '/gallery',
     description: 'Gallery images posted by the loving Community.',
-    icon: PhotoIcon,
+    icon: ImageIcon,
   },
 ]
 const social = [
@@ -80,7 +79,7 @@ export default function NotFoundComponent() {
                   </p>
                 </div>
                 <div className="flex-none self-center">
-                  <ChevronRightIcon
+                  <ChevronRight
                     className="h-5 w-5 text-gray-400"
                     aria-hidden="true"
                   />

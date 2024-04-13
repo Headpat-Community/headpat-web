@@ -1,8 +1,8 @@
 import { getAnnouncements } from '@/utils/actions/announcement-actions'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import { AnnouncementDataType, AnnouncementDocumentsType } from '@/utils/types'
+import { ChevronRight } from 'lucide-react'
 
 export const runtime = 'edge'
 
@@ -93,7 +93,7 @@ export default async function AnnouncementsPage() {
                       </>
                     ) : null}
                   </div>
-                  <ChevronRightIcon
+                  <ChevronRight
                     className="h-5 w-5 flex-none text-gray-400"
                     aria-hidden="true"
                   />
