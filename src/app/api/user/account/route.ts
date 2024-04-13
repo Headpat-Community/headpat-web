@@ -1,5 +1,7 @@
 import { createSessionClient } from '@/app/appwrite-session'
 
+export const runtime = 'edge'
+
 export async function GET(request: Request) {
   if (
     request.headers

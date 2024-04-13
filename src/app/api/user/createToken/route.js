@@ -1,6 +1,8 @@
 import sdk from 'node-appwrite'
 import { cookies } from 'next/headers'
 
+export const runtime = 'edge'
+
 export async function POST(request) {
   const { userId } = await request.json()
 

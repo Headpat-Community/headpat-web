@@ -2,6 +2,8 @@ import { createAdminClient } from '../../../appwrite-session'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
+export const runtime = 'edge'
+
 export async function POST(request) {
   const { account } = await createAdminClient()
   // if POST is not json, return 400
@@ -15,7 +17,7 @@ export async function POST(request) {
 
   try {
     const session = await account.createEmailPasswordSession(email, password)
-    
+
     cookies().set(
       `session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
       session.secret,
