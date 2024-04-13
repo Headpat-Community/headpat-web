@@ -47,7 +47,7 @@ export default function MfaAlert() {
       })
       Sentry.captureException(error)
     })
-  }, [])
+  }, [toast])
 
   const handleMfaAdd = async (mfaMode: string) => {
     if (mfaMode === 'totp') {

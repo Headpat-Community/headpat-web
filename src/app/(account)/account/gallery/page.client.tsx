@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Loading from '../../../loading'
@@ -71,9 +71,9 @@ export default function FetchGallery({ enableNsfw, userId }) {
       })
       Sentry.captureException(error)
     })
-  }, [userId, enableNsfw, currentPage])
+  }, [userId, enableNsfw, toast, currentPage])
 
-  const handlePageChange = (page) => {
+  const handlePageChange = (page: SetStateAction<number>) => {
     setCurrentPage(page)
     window.history.pushState({ page }, `Page ${page}`, `?page=${page}`)
   }

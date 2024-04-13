@@ -26,4 +26,9 @@ export const messaging: Messaging = new Messaging(client)
 export const locale: Locale = new Locale(client)
 export const avatars: Avatars = new Avatars(client)
 
-export { ExecutionMethod, ID, Query } from 'luke-node-appwrite-edge'
+export {
+  ExecutionMethod,
+  ID,
+  Query,
+  AppwriteException,
+} from 'luke-node-appwrite-edge'

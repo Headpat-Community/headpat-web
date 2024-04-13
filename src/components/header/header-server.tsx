@@ -20,13 +20,13 @@ export default async function Header() {
         'Content-Type': 'application/json',
         Cookie: cookieHeader,
       },
+      cache: 'no-store',
     }
   )
 
   const userData = await response.json()
 
-  let jwtBool: boolean
-  jwtBool = userData.code !== 401
+  const jwtBool: boolean = userData.code !== 401
 
   return (
     <div>

@@ -91,7 +91,7 @@ export async function getUserDataSelf() {
       'X-Appwrite-Response-Format': '1.4.0',
       Cookie: cookieHeader,
     },
-    cache: 'no-cache',
+    cache: 'no-store',
   })
 
   if (!getUserData.ok) {

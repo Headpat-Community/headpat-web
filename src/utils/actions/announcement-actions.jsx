@@ -43,7 +43,7 @@ export async function getAnnouncement(announcementId) {
         'X-Appwrite-Response-Format': '1.4.0',
         Cookie: cookieHeader,
       },
-      cache: 'no-cache',
+      cache: 'no-store',
     }
   ).then((response) => response.json())
 

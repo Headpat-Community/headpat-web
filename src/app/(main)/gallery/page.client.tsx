@@ -65,7 +65,7 @@ export default function FetchGallery({ enableNsfw }) {
       })
       Sentry.captureException(error)
     })
-  }, [currentPage, enableNsfw])
+  }, [currentPage, enableNsfw, toast])
 
   return (
     <div>
