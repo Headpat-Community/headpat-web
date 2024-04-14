@@ -1,7 +1,6 @@
-import { databases } from '@/app/appwrite-server'
 import type { Models } from 'luke-node-appwrite-edge'
 import { Separator } from '@/components/ui/separator'
-import { createAdminClient } from '@/app/appwrite-session'
+import { headers } from 'next/headers'
 
 interface EventsType extends Models.Document {
   title: string
@@ -13,10 +12,18 @@ interface EventsType extends Models.Document {
 export const runtime = 'edge'
 
 export default async function Page() {
-  const { databases } = await createAdminClient()
+  const headersList = headers()
+  const cookieHeader = headersList.get('cookie')
+  const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/events`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Cookie: cookieHeader,
+    },
+  })
 
-  const result = await databases.listDocuments('hp_db', 'events')
-  const events = result.documents
+  const userData = await response.json()
+  const events = userData.databases.documents
 
   return (
     <div className={'mx-auto max-w-7xl'}>

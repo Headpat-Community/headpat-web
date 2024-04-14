@@ -11,7 +11,7 @@ export const runtime = 'edge'
 
 export default async function Gallery() {
   const userSelf = await getUserSelf()
-  let enableNsfw = userSelf?.enablensfw
+  let enableNsfw = userSelf?.enableNsfw
 
   return (
     <div>
