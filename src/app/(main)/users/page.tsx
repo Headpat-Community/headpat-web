@@ -1,6 +1,4 @@
 import Link from 'next/link'
-import { getUsers } from '@/utils/actions/user-actions'
-import { UserDataDocumentsType } from '@/utils/types'
 import {
   Table,
   TableBody,
@@ -11,11 +9,15 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
+import { createAdminClient } from '@/app/appwrite-session'
 
 export const runtime = 'edge'
 
 export default async function Users() {
-  const users: UserDataDocumentsType[] = await getUsers()
+  const { databases } = await createAdminClient()
+
+  const usersData = await databases.listDocuments('hp_db', 'userdata')
+  const users = usersData.documents
 
   return (
     <div className="mb-8 px-4 sm:px-6 lg:px-8">

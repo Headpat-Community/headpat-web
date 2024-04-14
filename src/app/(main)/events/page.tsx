@@ -1,6 +1,7 @@
 import { databases } from '@/app/appwrite-server'
 import type { Models } from 'luke-node-appwrite-edge'
 import { Separator } from '@/components/ui/separator'
+import { createAdminClient } from '@/app/appwrite-session'
 
 interface EventsType extends Models.Document {
   title: string
@@ -12,8 +13,10 @@ interface EventsType extends Models.Document {
 export const runtime = 'edge'
 
 export default async function Page() {
-  const response = await databases.listDocuments('hp_db', 'events')
-  const events = response.documents
+  const { databases } = await createAdminClient()
+
+  const result = await databases.listDocuments('hp_db', 'events')
+  const events = result.documents
 
   return (
     <div className={'mx-auto max-w-7xl'}>
