@@ -20,7 +20,6 @@ export default async function Header() {
         'Content-Type': 'application/json',
         Cookie: cookieHeader,
       },
-      cache: 'no-store',
     }
   )
 

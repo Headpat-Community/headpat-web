@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   poweredByHeader: false,
   compiler: {
     styledComponents: true,
@@ -47,7 +47,6 @@ module.exports = nextConfig
 
 // Injected content via Sentry wizard below
 
-/*
 const { withSentryConfig } = require('@sentry/nextjs')
 
 module.exports = withSentryConfig(
@@ -90,4 +89,3 @@ module.exports = withSentryConfig(
     automaticVercelMonitors: false,
   }
 )
- */
