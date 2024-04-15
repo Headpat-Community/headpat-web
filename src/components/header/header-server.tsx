@@ -24,7 +24,6 @@ export default async function Header() {
   )
 
   const userData = await response.json()
-
   const jwtBool: boolean = userData.code !== 401
 
   return (
