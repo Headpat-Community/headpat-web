@@ -61,7 +61,7 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.1",
     "input-otp": "^1.2.4",
-    "lucide-react": "^0.367.0",
+    "lucide-react": "^0.368.0",
     "luke-node-appwrite-edge": "0.0.37",
     "next": "^14.2.1",
     "next-themes": "^0.3.0",
