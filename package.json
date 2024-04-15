@@ -89,6 +89,6 @@
   },
   "devDependencies": {
     "@types/node": "20.12.7",
-    "@types/react": "18.2.77"
+    "@types/react": "18.2.78"
   }
 }
