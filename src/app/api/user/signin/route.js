@@ -40,7 +40,7 @@ export async function POST(request) {
         sameSite: 'none',
         maxAge: new Date(session.expire),
         path: '/',
-        domain: '.api.headpat.de',
+        domain: 'api.headpat.de',
       }
     )
 
