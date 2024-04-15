@@ -16,7 +16,7 @@ const createSessionClient = async (request: any) => {
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
 
   const session = request.cookies.get(
-    `session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
+    `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
   )
 
   if (session) {
