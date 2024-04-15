@@ -27,6 +27,7 @@ export async function POST(request) {
         sameSite: 'strict',
         maxAge: new Date(session.expire),
         path: '/',
+        domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
       }
     )
 
@@ -39,7 +40,7 @@ export async function POST(request) {
         sameSite: 'none',
         maxAge: new Date(session.expire),
         path: '/',
-        domain: process.env.NEXT_PUBLIC_API_URL,
+        domain: '.api.headpat.de',
       }
     )
 
