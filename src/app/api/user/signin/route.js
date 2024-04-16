@@ -31,21 +31,6 @@ export async function POST(request) {
       }
     )
 
-    /*
-    cookies().set(
-      `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
-      session.secret,
-      {
-        httpOnly: false,
-        secure: true,
-        sameSite: 'none',
-        maxAge: new Date(session.expire),
-        path: '/',
-        domain: 'api.headpat.de',
-      }
-    )
-     */
-
     return NextResponse.json({}, { status: 200 })
   } catch (error) {
     return NextResponse.json({ error: error }, { status: error.code })

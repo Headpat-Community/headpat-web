@@ -3,67 +3,66 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --ring: 240 5.9% 10%;
-    --radius: 0.5rem;
-  }
+    :root {
+        --background: 0 0% 98.04%;
+        --foreground: 241.2 89.29% 10.98%;
+        --muted: 0 0% 89.8%;
+        --muted-foreground: 0 0% 45.1%;
+        --popover: 0 0% 98.04%;
+        --popover-foreground: 241.17 88.03% 22.94%;
+        --card: 240 4.76% 95.88%;
+        --card-foreground: 241.2 89.29% 10.98%;
+        --border: 240 5.88% 90%;
+        --input: 240 4.88% 83.92%;
+        --primary: 241.3 87.62% 58.82%;
+        --primary-foreground: 240 100% 99.02%;
+        --secondary: 240 5.88% 90%;
+        --secondary-foreground: 240.86 87.5% 47.06%;
+        --accent: 241.15 87.64% 34.9%;
+        --accent-foreground: 240 84.62% 94.9%;
+        --destructive: 0 72.22% 50.59%;
+        --destructive-foreground: 0 85.71% 97.25%;
+        --ring: 50 0% 0%;
+        --radius: 0.5rem;
+    }
 
-  .dark {
-    --background: 230 43% 3%;
-    --foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --ring: 240 4.9% 83.9%;
-  }
+    .dark {
+        --background: 257.14 46.67% 2.94%;
+        --foreground: 240 4.76% 95.88%;
+        --muted: 240 3.7% 15.88%;
+        --muted-foreground: 240 5.03% 64.9%;
+        --popover: 243 33% 11%;
+        --popover-foreground: 0 0% 100%;
+        --card: 243 33% 12%;
+        --card-foreground: 240 84.62% 94.9%;
+        --border: 243 23% 19%;
+        --input: 243 23% 22%;
+        --primary: 241.3 87.62% 64%;
+        --primary-foreground: 240 100% 99.02%;
+        --secondary: 240 3.7% 15.88%;
+        --secondary-foreground: 241.3 87.62% 78%;
+        --accent: 243 33% 29%;
+        --accent-foreground: 242 33% 89%;
+        --destructive: 2 78.82% 38.71%;
+        --destructive-foreground: 0 0% 100%;
+        --ring: 50 0% 93.08%;
+    }
 }
 
 .blur {
-  backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
 }
 
 .imgsinglegallery {
-  --s: 50px; /* the size on the corner */
-  --t: 5px; /* the thickness of the border */
-  --g: 10px; /* the gap between the border and image */
+    --s: 50px; /* the size on the corner */
+    --t: 5px; /* the thickness of the border */
+    --g: 10px; /* the gap between the border and image */
 
-  padding: calc(var(--g) + var(--t));
-  outline: var(--t) solid #b38184; /* the color here */
-  outline-offset: calc(-1 * var(--t));
-  mask: none;
-  -webkit-mask:
-    conic-gradient(at var(--s) var(--s), #0000 75%, #000 0) 0 0 /
+    padding: calc(var(--g) + var(--t));
+    outline: var(--t) solid #b38184; /* the color here */
+    outline-offset: calc(-1 * var(--t));
+    mask: none;
+    -webkit-mask: conic-gradient(at var(--s) var(--s), #0000 75%, #000 0) 0 0 /
       calc(100% - var(--s)) calc(100% - var(--s)),
     linear-gradient(#000 0 0) content-box;
 }

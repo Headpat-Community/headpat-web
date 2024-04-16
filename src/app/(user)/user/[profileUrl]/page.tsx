@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { getUserData } from '@/utils/actions/user-actions'
-import { UserDataDocumentsType } from '@/utils/types'
+import { UserDataType } from '@/utils/types'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { ChevronRight } from 'lucide-react'
 import {
@@ -14,6 +13,16 @@ import {
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { Separator } from '@/components/ui/separator'
+import { createAdminClient } from '@/app/appwrite-session'
+import { Query } from '@/app/appwrite-server'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 export const runtime = 'edge'
 
@@ -23,6 +32,8 @@ export const metadata = {
 }
 
 export default async function UserProfile({ params: { profileUrl } }) {
+  const { databases, storage } = await createAdminClient()
+
   const getAvatarImageUrl = (galleryId: string) => {
     if (!galleryId) {
       return '/images/404.webp'
@@ -30,10 +41,12 @@ export default async function UserProfile({ params: { profileUrl } }) {
     return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
   }
 
-  const userDataResponse = await getUserData(
-    `queries[]=equal("profileUrl","${profileUrl}")`
+  const userDataResponse: UserDataType = await databases.listDocuments(
+    'hp_db',
+    'userdata',
+    [Query.equal('profileUrl', profileUrl)]
   )
-  const userData: UserDataDocumentsType = userDataResponse[0]
+  const userData = userDataResponse.documents[0]
 
   const formatDate = (date: Date) =>
     date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')
@@ -139,20 +152,30 @@ export default async function UserProfile({ params: { profileUrl } }) {
               </div>
             </div>
             {/* Right */}
-            <div className={'col-span-2 '}>
-              <div className={'rounded-xl'}>
-                <span className={'justify-center flex mb-4'}>Profile info</span>
+            <Card className={'col-span-2'}>
+              <CardHeader>
+                <CardTitle>User Profile</CardTitle>
+                <CardDescription>Information about me</CardDescription>
+              </CardHeader>
+              <CardContent>
                 <div className={'grid grid-cols-2 border mx-auto rounded p-4'}>
                   <div className={'col-span-2'}>{userData.displayName}</div>
                   <Separator />
                   <div className={'col-span-2'}>{userData.status}</div>
                   <Separator />
                   <div className={'col-span-2'}>{userData.pronouns}</div>
-                  <Separator />
-                  <div className={'col-span-2'}>{userData.status}</div>
+                  {birthday !== '01/01/1900' && (
+                    <>
+                      <Separator />
+                      <div className={'col-span-2'}>{birthday}</div>
+                    </>
+                  )}
                 </div>
-              </div>
-            </div>
+              </CardContent>
+              <CardFooter>
+                <p>Card Footer</p>
+              </CardFooter>
+            </Card>
           </div>
         </>
       )}
