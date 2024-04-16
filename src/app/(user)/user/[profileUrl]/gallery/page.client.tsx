@@ -26,7 +26,7 @@ export default function FetchGallery() {
     typeof window !== 'undefined' ? window.location.pathname.split('/')[2] : ''
 
   const getGalleryImageUrl = (galleryId: string) => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/gallery/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=400`
   }
 
   const getAvatarImageUrl = (galleryId: string) => {

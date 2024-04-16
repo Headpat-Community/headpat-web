@@ -97,7 +97,6 @@ export default function Login() {
 
       if (!response.ok) {
         const data = await response.json()
-        console.log(data)
         if (data.error.type == 'user_invalid_credentials') {
           toast({
             title: 'Error',

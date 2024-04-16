@@ -16,7 +16,7 @@ export default function FetchGallery({ enableNsfw }) {
   const getGalleryImageUrl = (galleryId: string) => {
     if (!galleryId) return
     const imageId = storage.getFilePreview(
-      '655ca6663497d9472539',
+      'gallery',
       `${galleryId}`,
       undefined,
       500,

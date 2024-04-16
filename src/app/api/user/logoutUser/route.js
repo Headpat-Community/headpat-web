@@ -11,19 +11,7 @@ export async function POST(request) {
     await account.deleteSession('current')
 
     // Delete the specified cookie
-    cookies().delete(`session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`)
-
-    cookies().set(
-      `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
-      '',
-      {
-        path: '/',
-        domain: process.env.NEXT_PUBLIC_API_URL,
-        secure: true,
-        httpOnly: true,
-        expires: new Date(0),
-      }
-    )
+    cookies().delete(`a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`)
 
     return NextResponse.json({ status: 204 })
   } catch (error) {

@@ -19,7 +19,7 @@ export async function POST(request) {
     const session = await account.createEmailPasswordSession(email, password)
 
     cookies().set(
-      `session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+      `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
       session.secret,
       {
         httpOnly: true,
@@ -27,19 +27,7 @@ export async function POST(request) {
         sameSite: 'strict',
         maxAge: new Date(session.expire),
         path: '/',
-      }
-    )
-
-    cookies().set(
-      `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
-      session.secret,
-      {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none',
-        maxAge: new Date(session.expire),
-        path: '/',
-        domain: process.env.NEXT_PUBLIC_API_URL,
+        domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
       }
     )
 

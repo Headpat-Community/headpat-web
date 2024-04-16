@@ -12,7 +12,7 @@ export async function POST(request) {
     const requestData = await request.arrayBuffer()
 
     // Construct the URL for the external fetch
-    const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/6561407c0697498ea08d/files`
+    const fetchURL = `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/badges/files`
 
     const uploadImage = await fetch(fetchURL, {
       method: 'POST',

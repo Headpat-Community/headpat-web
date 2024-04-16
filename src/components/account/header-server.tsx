@@ -2,10 +2,10 @@ import Link from 'next/link'
 import {
   CircleUser,
   Home,
+  LayoutDashboard,
   LineChart,
   Menu,
   Package,
-  ShoppingCart,
   Users,
 } from 'lucide-react'
 
@@ -60,7 +60,7 @@ export default async function Dashboard({ children }) {
                 href={'/account'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
-                <ShoppingCart className="h-4 w-4" />
+                <LayoutDashboard className="h-4 w-4" />
                 Dashboard
                 {/*
                 <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
@@ -108,7 +108,7 @@ export default async function Dashboard({ children }) {
         </div>
       </div>
       <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 sticky top-0">
+        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 sticky top-0 z-10">
           <AccountAnnouncements />
           <Sheet>
             <SheetTrigger asChild>
@@ -147,7 +147,7 @@ export default async function Dashboard({ children }) {
                   href="#"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
                 >
-                  <ShoppingCart className="h-5 w-5" />
+                  <LayoutDashboard className="h-5 w-5" />
                   Dashboard
                   {/*
                   <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
@@ -220,10 +220,10 @@ export default async function Dashboard({ children }) {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <Link href={'/mgmt-console/console'}>
+              <Link href={'/account'}>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
               </Link>
-              <Link href={'/mgmt-console/support'}>
+              <Link href={'/account/support'}>
                 <DropdownMenuItem>Support</DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator />

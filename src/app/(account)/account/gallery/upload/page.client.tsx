@@ -59,11 +59,7 @@ export default function UploadPage() {
     try {
       setIsUploading(true) // Set isUploading to true before making the API call
 
-      const fileData = storage.createFile(
-        '655ca6663497d9472539',
-        ID.unique(),
-        selectedFile
-      )
+      const fileData = storage.createFile('gallery', ID.unique(), selectedFile)
 
       fileData.then(
         function (fileDataResponse) {
@@ -97,7 +93,7 @@ export default function UploadPage() {
             },
             function (error) {
               console.log(error) // Failure
-              storage.deleteFile('655ca6663497d9472539', fileDataResponse.$id)
+              storage.deleteFile('gallery', fileDataResponse.$id)
               Sentry.captureException(error)
               toast({
                 title: 'Error',

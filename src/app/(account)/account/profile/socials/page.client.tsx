@@ -44,7 +44,6 @@ export default function AccountPage() {
 
       promise.then(
         function (response) {
-          console.log(response) // Success
           setIsUploading(false)
           setSuccess('Saved!')
         },

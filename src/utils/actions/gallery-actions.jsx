@@ -36,7 +36,7 @@ export async function getSingleGallery(galleryId) {
       headers: {
         'Content-Type': 'application/json',
         'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
-        'X-Appwrite-Response-Format': '1.4.0',
+        'X-Appwrite-Response-Format': '1.5.0',
         Cookie: cookieHeader,
       },
     }
@@ -54,7 +54,7 @@ export async function deleteGalleryImage(imageId) {
   const cookieHeader = headersList.get('cookie')
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${imageId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/gallery/files/${imageId}`,
     {
       method: 'DELETE',
       headers: {

@@ -1,18 +1,6 @@
 import { Models } from 'appwrite'
 
 /**
- * This data is needed in all documents endpoints.
- */
-interface MainTypes {
-  $id: string
-  $createdAt: string
-  $updatedAt: string
-  $permissions: string[]
-  $databaseId: string
-  $collectionId: string
-}
-
-/**
  * This data is returned from the API by calling their own account data.
  */
 export interface UserAccountType extends Models.User<Models.Preferences> {

@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { getUserData } from '@/utils/actions/user-actions'
-import { UserDataDocumentsType } from '@/utils/types'
+import { UserDataType } from '@/utils/types'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { ChevronRight } from 'lucide-react'
 import {
@@ -14,6 +13,15 @@ import {
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { Separator } from '@/components/ui/separator'
+import { createAdminClient } from '@/app/appwrite-session'
+import { Query } from '@/app/appwrite-server'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 export const runtime = 'edge'
 
@@ -23,17 +31,21 @@ export const metadata = {
 }
 
 export default async function UserProfile({ params: { profileUrl } }) {
-  const getAvatarImageUrl = (galleryId: string) => {
+  const { databases, storage } = await createAdminClient()
+
+  const getAvatarImageUrl = async (galleryId: string) => {
     if (!galleryId) {
       return '/images/404.webp'
     }
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
   }
 
-  const userDataResponse = await getUserData(
-    `queries[]=equal("profileUrl","${profileUrl}")`
+  const userDataResponse: UserDataType = await databases.listDocuments(
+    'hp_db',
+    'userdata',
+    [Query.equal('profileUrl', profileUrl)]
   )
-  const userData: UserDataDocumentsType = userDataResponse[0]
+  const userData = userDataResponse.documents[0]
 
   const formatDate = (date: Date) =>
     date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')
@@ -81,7 +93,7 @@ export default async function UserProfile({ params: { profileUrl } }) {
             >
               <AspectRatio ratio={2 / 2}>
                 <Image
-                  src={getAvatarImageUrl(userData.avatarId)}
+                  src={await getAvatarImageUrl(userData.avatarId)}
                   alt={'User Avatar'}
                   className={'object-contain rounded-t-xl'}
                   fill={true}
@@ -133,26 +145,53 @@ export default async function UserProfile({ params: { profileUrl } }) {
               </ul>
             </div>
             {/* Center */}
-            <div className={'border col-span-2 p-8 rounded-xl'}>
-              <div className={'flex items-center'}>
+            <div
+              className={'border border-ring col-span-2 p-8 rounded-xl mt-4'}
+            >
+              <div className={'flex flex-wrap items-center'}>
                 <p>{userData.bio}</p>
               </div>
             </div>
             {/* Right */}
-            <div className={'col-span-2 '}>
-              <div className={'rounded-xl'}>
-                <span className={'justify-center flex mb-4'}>Profile info</span>
-                <div className={'grid grid-cols-2 border mx-auto rounded p-4'}>
-                  <div className={'col-span-2'}>{userData.displayName}</div>
-                  <Separator />
-                  <div className={'col-span-2'}>{userData.status}</div>
-                  <Separator />
-                  <div className={'col-span-2'}>{userData.pronouns}</div>
-                  <Separator />
-                  <div className={'col-span-2'}>{userData.status}</div>
+            <Card className={'col-span-2 border-none'}>
+              <CardHeader>
+                <CardTitle>User Profile</CardTitle>
+                <CardDescription>Information about me</CardDescription>
+              </CardHeader>
+              <Separator className={'mb-6'} />
+              <CardContent>
+                <div className={'grid grid-cols-2 mx-auto gap-4'}>
+                  <div className={'col-span-1'}>Name</div>
+                  <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
+                    {userData.displayName}
+                  </div>
+                  {userData.pronouns && (
+                    <>
+                      <div className={'col-span-1'}>Pronouns</div>
+                      <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
+                        {userData.pronouns}
+                      </div>
+                    </>
+                  )}
+                  {birthday !== '01/01/1900' && (
+                    <>
+                      <div className={'col-span-1'}>Birthday</div>
+                      <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
+                        {birthday}
+                      </div>
+                    </>
+                  )}
+                  {userData.status && (
+                    <>
+                      <div className={'col-span-2'}>Status</div>
+                      <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-2 flex-wrap">
+                        {userData.status}
+                      </div>
+                    </>
+                  )}
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </>
       )}
@@ -173,7 +212,7 @@ const ListSocialItem = ({ IconComponent, userData, link }) => (
             <IconComponent />
           </div>
           <h2 className="min-w-0 text-sm font-semibold leading-6 truncate">
-            <span className="truncate">{userData}</span>
+            <span>{userData}</span>
           </h2>
         </div>
       </div>

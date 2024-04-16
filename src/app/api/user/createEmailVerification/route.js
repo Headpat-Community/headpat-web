@@ -25,7 +25,6 @@ export async function POST() {
     )
 
     if (!sendEmailResponse.ok) {
-      console.log(sendEmailResponse.status + ' ' + sendEmailResponse.statusText)
       return NextResponse.json(
         { message: 'Failed to send verification email' },
         { status: 500 }

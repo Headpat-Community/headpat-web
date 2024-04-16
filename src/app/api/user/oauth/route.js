@@ -12,7 +12,7 @@ export async function GET(request) {
   const session = await account.createSession(userId, secret)
 
   cookies().set(
-    `session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+    `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
     session.secret,
     {
       httpOnly: true,
@@ -20,19 +20,7 @@ export async function GET(request) {
       sameSite: 'strict',
       maxAge: new Date(session.expire),
       path: '/',
-    }
-  )
-
-  cookies().set(
-    `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
-    session.secret,
-    {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      maxAge: new Date(session.expire),
-      path: '/',
-      domain: process.env.NEXT_PUBLIC_API_URL,
+      domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
     }
   )
 
