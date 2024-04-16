@@ -9,18 +9,20 @@ import {
   Locale,
   Avatars,
 } from 'luke-node-appwrite-edge'
+import { headers } from 'next/headers'
 
-const createSessionServerClient = async (request: any) => {
+const createSessionServerClient = async () => {
+  const headersList = headers()
+  const cookieHeader = headersList.get('cookie')
+  const cookies = cookieHeader ? cookieHeader.split('; ') : []
+  const sessionCookie = cookies.find((cookie) => cookie.startsWith('a_session'))
+
   const client = new Client()
     .setEndpoint(`${process.env.NEXT_PUBLIC_API_URL}/v1`)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
 
-  const session = request.cookies.get(
-    `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
-  )
-
-  if (session) {
-    client.setSession(session.value)
+  if (sessionCookie) {
+    client.setSession(sessionCookie.split('=')[1])
   }
 
   return {
@@ -126,4 +128,4 @@ const createAdminClient = async () => {
   }
 }
 
-export { createSessionClient, createAdminClient }
+export { createSessionClient, createAdminClient, createSessionServerClient }

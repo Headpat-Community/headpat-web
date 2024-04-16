@@ -25,15 +25,15 @@ export async function POST() {
     )
 
     if (!sendEmailResponse.ok) {
-      return NextResponse.json(
-        { message: 'Failed to send verification email' },
-        { status: 500 }
-      )
+      return NextResponse.json({
+        message: 'Failed to send verification email',
+        status: 500,
+      })
     }
 
-    const data = await response.json()
-    return NextResponse.json(data, { status: 201 })
+    const data = await sendEmailResponse.json()
+    return NextResponse.json({ data, status: 201 })
   } catch (error) {
-    return NextResponse.json(error.message, { status: 500 })
+    return NextResponse.json({ error: error.message, status: 500 })
   }
 }

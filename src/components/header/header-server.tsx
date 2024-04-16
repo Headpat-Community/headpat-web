@@ -1,5 +1,4 @@
 import AnnouncementNotification from '../announcementNotification'
-import { getAccount } from '@/utils/actions/user-actions'
 import Link from 'next/link'
 import Image from 'next/image'
 import { NavigationMenuExport } from '@/components/header/nav'

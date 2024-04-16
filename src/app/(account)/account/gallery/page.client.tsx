@@ -11,8 +11,6 @@ import * as Sentry from '@sentry/nextjs'
 export default function FetchGallery({ enableNsfw, userId }) {
   const [gallery, setGallery] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const { toast } = useToast()
@@ -80,15 +78,9 @@ export default function FetchGallery({ enableNsfw, userId }) {
   // The rest of the component remains unchanged with conditional rendering based on the data's availability.
   return (
     <>
-      {success && <SuccessMessage attentionSuccess={success} />}
-      {error && <ErrorMessage attentionError={error} />}
       <div>
         {isLoading ? (
-          error ? (
-            <p className="my-8 text-center font-bold text-red-500">Error!</p>
-          ) : (
-            <Loading />
-          )
+          <Loading />
         ) : (
           <>
             <ul

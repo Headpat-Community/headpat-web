@@ -8,7 +8,6 @@ import { useToast } from '@/components/ui/use-toast'
 
 export default function FetchGallery({ enableNsfw }) {
   const [gallery, setGallery] = useState([])
-  const [error, setError] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const { toast } = useToast()
@@ -52,8 +51,13 @@ export default function FetchGallery({ enableNsfw }) {
 
         setGallery(gallery.documents)
         setTotalPages(gallery.total / pageSize)
-      } catch (err) {
-        setError(err)
+      } catch (error) {
+        toast({
+          title: 'Error',
+          description: error,
+          variant: 'destructive',
+        })
+        Sentry.captureException(error)
       }
     }
 

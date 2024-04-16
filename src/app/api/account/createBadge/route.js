@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { headers, cookies } from 'next/headers'
+import { headers } from 'next/headers'
 
 export const runtime = 'edge'
 
@@ -27,13 +27,12 @@ export async function POST(request) {
     })
 
     if (!uploadImage.ok) {
-      console.log(uploadImage)
-      throw new Error('Failed to update data')
+      console.error(uploadImage)
     }
 
-    const data = await uploadImage.json()
+    //const data = await uploadImage.json()
     return NextResponse.json({ status: 200 })
   } catch (error) {
-    return NextResponse.json(error.message, { status: 500 })
+    return NextResponse.json({ error: error.message, status: 500 })
   }
 }

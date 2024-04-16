@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { account, databases } from '@/app/appwrite-client'
 import { UserAccountType, UserDataDocumentsType } from '@/utils/types'
 
@@ -7,7 +7,7 @@ export const useGetUser = () => {
   const [userMe, setUserMe] = useState<UserAccountType | null>(null)
   const [userData, setUserData] = useState<UserDataDocumentsType | null>(null)
 
-  useEffect(() => {
+  useMemo(() => {
     const promise = account.get()
 
     promise.then(
@@ -20,7 +20,7 @@ export const useGetUser = () => {
     )
   }, [])
 
-  useEffect(() => {
+  useMemo(() => {
     if (userMe?.$id) {
       const promise = databases.getDocument('hp_db', 'userdata', userMe?.$id)
 

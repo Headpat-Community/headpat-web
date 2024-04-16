@@ -10,7 +10,6 @@ import { GalleryType } from '@/utils/types'
 import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
 import { useRouter } from 'next/navigation'
-import { createAdminClient } from '@/app/appwrite-session'
 
 export default function FetchGallery({ singleGallery }) {
   const { toast } = useToast()

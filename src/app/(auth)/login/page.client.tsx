@@ -34,7 +34,6 @@ export default function Login() {
     password: '',
     username: '',
   })
-  const [error, setError] = useState('')
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
   const router = useRouter()
@@ -52,7 +51,7 @@ export default function Login() {
       )
 
       response.then(
-        function (response) {
+        function () {
           router.push('/account')
         },
         function (error) {
@@ -118,7 +117,6 @@ export default function Login() {
 
   return (
     <>
-      {error && <ErrorMessage attentionError={error} />}
       <div className="lines">
         <div className="line" />
         <div className="line" />
