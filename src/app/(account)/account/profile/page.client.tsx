@@ -1,7 +1,6 @@
 'use client'
-import { useState } from 'react'
+import React from 'react'
 import Link from 'next/link'
-import { ErrorMessage, SuccessMessage } from '@/components/alerts'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -9,10 +8,12 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { account, databases } from '@/app/appwrite-client'
 import { useGetUser } from '@/utils/getUserData'
 import MfaAlert from '@/components/account/profile/mfaAlert'
+import { useRouter } from 'next/navigation'
+import { useToast } from '@/components/ui/use-toast'
 
 export default function AccountPage() {
-  const [error, setError] = useState<string>(null)
-  const [success, setSuccess] = useState<string>(null)
+  const router = useRouter()
+  const { toast } = useToast()
   const { userMe, setUserMe, userData } = useGetUser()
 
   const handleEmailChange = async (event: { preventDefault: () => void }) => {
@@ -26,10 +27,12 @@ export default function AccountPage() {
 
       // Check if profileUrl has at least 4 characters
       if (email_password.length < 8 || email_password.length > 256) {
-        setError('Please enter a valid password with at least 8 characters.')
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
+        toast({
+          title: 'Error',
+          description:
+            'Please enter a valid password with at least 8 characters.',
+          variant: 'destructive',
+        })
         return
       }
 
@@ -37,21 +40,26 @@ export default function AccountPage() {
 
       promise.then(
         function () {
-          setSuccess('E-Mail updated successfully.')
+          toast({
+            title: 'Success!',
+            description: 'E-Mail updated successfully.',
+          })
         },
         function (error) {
           console.log(error?.code) // Failure
           if (error.code === 401) {
-            setError('Password is incorrect.')
-            setTimeout(() => {
-              setError(null)
-            }, 5000)
+            toast({
+              title: 'Error',
+              description: "Password doesn't match.",
+              variant: 'destructive',
+            })
           }
           if (error.code === 409) {
-            setError('Account already exists with this email.')
-            setTimeout(() => {
-              setError(null)
-            }, 5000)
+            toast({
+              title: 'Error',
+              description: 'Account already exists with this email.',
+              variant: 'destructive',
+            })
           }
         }
       )
@@ -76,10 +84,11 @@ export default function AccountPage() {
 
     // Check if profileUrl has at least 4 characters
     if (newPassword.length < 8) {
-      setError('Password must be at least 8 characters long.')
-      setTimeout(() => {
-        setError(null)
-      }, 5000)
+      toast({
+        title: 'Error',
+        description: 'Password must be at least 8 characters long.',
+        variant: 'destructive',
+      })
       return
     }
 
@@ -88,29 +97,32 @@ export default function AccountPage() {
 
       promise.then(
         function () {
-          setSuccess('Passwort erfolgreich geändert.')
-          setTimeout(() => {
-            setSuccess(null)
-          }, 5000)
+          toast({
+            title: 'Success!',
+            description: 'Password updated successfully.',
+          })
           target.reset()
         },
         function (error) {
           console.log(error) // Failure
           if (error.code === 400) {
-            setError(error.message)
-            setTimeout(() => {
-              setError(null)
-            }, 5000)
+            toast({
+              title: 'Error',
+              description: error.message,
+              variant: 'destructive',
+            })
           } else if (error.code === 401) {
-            setError("Password doesn't match.")
-            setTimeout(() => {
-              setError(null)
-            }, 5000)
+            toast({
+              title: 'Error',
+              description: "Password doesn't match.",
+              variant: 'destructive',
+            })
           } else {
-            setError(error.message)
-            setTimeout(() => {
-              setError(null)
-            }, 5000)
+            toast({
+              title: 'Error',
+              description: error.message,
+              variant: 'destructive',
+            })
           }
         }
       )
@@ -128,9 +140,11 @@ export default function AccountPage() {
       })
 
       putResponse.then(
-        function (response: any) {
-          console.log(response) // Success
-          setSuccess('NSFW updated successfully.')
+        function () {
+          toast({
+            title: 'Success!',
+            description: 'NSFW updated successfully.',
+          })
           setUserMe((prevUserData: any) => ({
             ...prevUserData,
             prefs: {
@@ -138,17 +152,17 @@ export default function AccountPage() {
               nsfw: checked,
             },
           }))
+          router.refresh()
         },
         function (error: any) {
           console.log(error) // Failure
-          setError('Failed to update NSFW. Please try again.')
+          toast({
+            title: 'Error',
+            description: 'Failed to update NSFW. Please try again.',
+            variant: 'destructive',
+          })
         }
       )
-
-      setTimeout(() => {
-        setSuccess(null)
-        setError(null)
-      }, 5000)
     } catch (error) {
       console.error(error.message)
     }
@@ -164,10 +178,11 @@ export default function AccountPage() {
 
       // Check if profileUrl has at least 4 characters
       if (profileUrl.length < 3) {
-        setError('Profile URL must be at least 4 characters long.')
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
+        toast({
+          title: 'Error',
+          description: 'Profile URL must be at least 4 characters long.',
+          variant: 'destructive',
+        })
         return
       }
 
@@ -182,20 +197,21 @@ export default function AccountPage() {
 
       promise.then(
         function (response) {
-          console.log(response) // Success
-          setSuccess('Profile URL updated successfully.')
+          toast({
+            title: 'Success!',
+            description: 'Profile URL updated successfully.',
+          })
           event.target.reset() // Reset the form
         },
         function (error) {
           console.log(error) // Failure
-          setError('An error occurred. Please try again later.')
+          toast({
+            title: 'Error',
+            description: 'Failed to update Profile URL. Please try again.',
+            variant: 'destructive',
+          })
         }
       )
-
-      setTimeout(() => {
-        setError(null)
-        setSuccess(null)
-      }, 5000)
     } catch (error) {
       console.error(error)
     }
@@ -209,8 +225,6 @@ export default function AccountPage() {
 
   return (
     <>
-      {success && <SuccessMessage attentionSuccess={success} />}
-      {error && <ErrorMessage attentionError={error} />}
       <header className="border-b border-black/5 dark:border-white/5">
         {/* Secondary navigation */}
         <nav className="flex overflow-x-auto py-4">
@@ -325,7 +339,7 @@ export default function AccountPage() {
               Change password
             </h2>
             <p className="mt-1 text-sm leading-6 text-gray-400">
-              Ändere dein Passwort.
+              Change your password.
             </p>
           </div>
 

@@ -108,7 +108,7 @@ export default async function Dashboard({ children }) {
         </div>
       </div>
       <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 sticky top-0">
+        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 sticky top-0 z-10">
           <AccountAnnouncements />
           <Sheet>
             <SheetTrigger asChild>

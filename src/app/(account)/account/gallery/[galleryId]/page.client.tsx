@@ -1,11 +1,6 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { ErrorMessage, SuccessMessage } from '@/components/alerts'
-import {
-  deleteGalleryImage,
-  deleteGalleryDocument,
-} from '@/utils/actions/gallery-actions'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
@@ -15,12 +10,11 @@ import { GalleryType } from '@/utils/types'
 import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
 import { useRouter } from 'next/navigation'
+import { createAdminClient } from '@/app/appwrite-session'
 
 export default function FetchGallery({ singleGallery }) {
   const { toast } = useToast()
   const router = useRouter()
-  const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(null)
   const [isUploading, setIsUploading] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [userData, setUserData] = useState({
@@ -33,7 +27,8 @@ export default function FetchGallery({ singleGallery }) {
   })
 
   const getGalleryImageUrl = (galleryId: string) => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
+    if (!galleryId) return
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/gallery/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
   }
 
   const deleteImage = async () => {
@@ -54,7 +49,7 @@ export default function FetchGallery({ singleGallery }) {
           const documentId = response.documents[0].$id
           const imageId = response.documents[0].galleryId
 
-          storage.deleteFile('655ca6663497d9472539', imageId)
+          storage.deleteFile('gallery', imageId)
           databases.deleteDocument('hp_db', 'gallery-images', documentId)
 
           toast({
@@ -105,25 +100,27 @@ export default function FetchGallery({ singleGallery }) {
         nsfw: (document.getElementById('nsfw') as HTMLInputElement).checked,
       }
 
-      // Make the PUT request
-      await fetch(`/api/gallery/editUserGallery/${uniqueId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: data }), // Nest the requestBody inside a "data" key
+      // Make the PATCH request
+      await databases.updateDocument('hp_db', 'gallery-images', uniqueId, {
+        name: data.name,
+        imgAlt: data.imgAlt,
+        longText: data.longText,
+        nsfw: data.nsfw,
       })
+
       // Handle response and update state accordingly
     } catch (error) {
-      setError(error)
-      setTimeout(() => {
-        setError(null)
-      }, 5000)
+      toast({
+        title: 'Error',
+        description: "Something went wrong, but don't worry, we are on it!",
+        variant: 'destructive',
+      })
+      setIsUploading(false)
     } finally {
-      setSuccess('Bild erfolgreich aktualisiert!')
-      setTimeout(() => {
-        setSuccess(null)
-      }, 5000)
+      toast({
+        title: 'Image updated',
+        description: 'Your image info has been updated successfully!',
+      })
       setIsUploading(false)
     }
   }

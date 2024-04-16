@@ -19,7 +19,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
 
   const getGalleryImageUrl = (galleryId: string) => {
     if (!galleryId) return
-    const imageId = storage.getFileView('655ca6663497d9472539', `${galleryId}`)
+    const imageId = storage.getFileView('gallery', `${galleryId}`)
     return imageId.href
   }
 
@@ -55,7 +55,6 @@ export default function FetchGallery({ enableNsfw, userId }) {
         'gallery-images',
         filters
       )
-      console.log(gallery)
 
       //const gallery = await getGallery(apiUrl)
       setGallery(gallery.documents || [])

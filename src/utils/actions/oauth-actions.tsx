@@ -9,7 +9,6 @@ export async function signInWithGithub() {
   const { account } = await createAdminClient()
 
   const origin = headers().get('origin')
-  console.log(origin)
 
   const redirectUrl = await account.createOAuth2Token(
     OAuthProvider.Github,
@@ -38,7 +37,6 @@ export async function signInWithDiscord() {
   const { account } = await createAdminClient()
 
   const origin = headers().get('origin')
-  console.log(origin)
 
   const redirectUrl = await account.createOAuth2Token(
     OAuthProvider.Discord,

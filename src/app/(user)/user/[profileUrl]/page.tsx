@@ -19,7 +19,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
@@ -34,11 +33,11 @@ export const metadata = {
 export default async function UserProfile({ params: { profileUrl } }) {
   const { databases, storage } = await createAdminClient()
 
-  const getAvatarImageUrl = (galleryId: string) => {
+  const getAvatarImageUrl = async (galleryId: string) => {
     if (!galleryId) {
       return '/images/404.webp'
     }
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
   }
 
   const userDataResponse: UserDataType = await databases.listDocuments(
@@ -94,7 +93,7 @@ export default async function UserProfile({ params: { profileUrl } }) {
             >
               <AspectRatio ratio={2 / 2}>
                 <Image
-                  src={getAvatarImageUrl(userData.avatarId)}
+                  src={await getAvatarImageUrl(userData.avatarId)}
                   alt={'User Avatar'}
                   className={'object-contain rounded-t-xl'}
                   fill={true}
@@ -146,35 +145,52 @@ export default async function UserProfile({ params: { profileUrl } }) {
               </ul>
             </div>
             {/* Center */}
-            <div className={'border col-span-2 p-8 rounded-xl'}>
-              <div className={'flex items-center'}>
+            <div
+              className={'border border-ring col-span-2 p-8 rounded-xl mt-4'}
+            >
+              <div className={'flex flex-wrap items-center'}>
                 <p>{userData.bio}</p>
               </div>
             </div>
             {/* Right */}
-            <Card className={'col-span-2'}>
+            <Card className={'col-span-2 border-none'}>
               <CardHeader>
                 <CardTitle>User Profile</CardTitle>
                 <CardDescription>Information about me</CardDescription>
               </CardHeader>
+              <Separator className={'mb-6'} />
               <CardContent>
-                <div className={'grid grid-cols-2 border mx-auto rounded p-4'}>
-                  <div className={'col-span-2'}>{userData.displayName}</div>
-                  <Separator />
-                  <div className={'col-span-2'}>{userData.status}</div>
-                  <Separator />
-                  <div className={'col-span-2'}>{userData.pronouns}</div>
+                <div className={'grid grid-cols-2 mx-auto gap-4'}>
+                  <div className={'col-span-1'}>Name</div>
+                  <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
+                    {userData.displayName}
+                  </div>
+                  {userData.pronouns && (
+                    <>
+                      <div className={'col-span-1'}>Pronouns</div>
+                      <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
+                        {userData.pronouns}
+                      </div>
+                    </>
+                  )}
                   {birthday !== '01/01/1900' && (
                     <>
-                      <Separator />
-                      <div className={'col-span-2'}>{birthday}</div>
+                      <div className={'col-span-1'}>Birthday</div>
+                      <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
+                        {birthday}
+                      </div>
+                    </>
+                  )}
+                  {userData.status && (
+                    <>
+                      <div className={'col-span-2'}>Status</div>
+                      <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-2 flex-wrap">
+                        {userData.status}
+                      </div>
                     </>
                   )}
                 </div>
               </CardContent>
-              <CardFooter>
-                <p>Card Footer</p>
-              </CardFooter>
             </Card>
           </div>
         </>
@@ -196,7 +212,7 @@ const ListSocialItem = ({ IconComponent, userData, link }) => (
             <IconComponent />
           </div>
           <h2 className="min-w-0 text-sm font-semibold leading-6 truncate">
-            <span className="truncate">{userData}</span>
+            <span>{userData}</span>
           </h2>
         </div>
       </div>

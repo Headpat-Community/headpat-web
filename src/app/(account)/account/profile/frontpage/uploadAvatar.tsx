@@ -16,11 +16,7 @@ export default function UploadAvatar({
 
   const getAvatarImageUrl = (galleryId: string) => {
     if (!galleryId) return
-    const imageId = storage.getFilePreview(
-      '655842922bac16a94a25',
-      `${galleryId}`,
-      400
-    )
+    const imageId = storage.getFileView('avatars', `${galleryId}`)
     return imageId.href
   }
 
@@ -29,7 +25,7 @@ export default function UploadAvatar({
     if (selectedFile.size > 1024 * 1024) {
       toast({
         title: 'Error',
-        description: 'Dateigröße darf nur bis 1MB groß sein.',
+        description: 'Image size exceeds 1MB. Please select a smaller image.',
         variant: 'destructive',
       })
       return
@@ -66,15 +62,12 @@ export default function UploadAvatar({
       if (avatarDocument.galleryId) {
         // Delete the old avatar
         console.log('deleting')
-        await storage.deleteFile(
-          '655842922bac16a94a25',
-          avatarDocument.galleryId
-        )
+        await storage.deleteFile('avatars', avatarDocument.galleryId)
       }
 
       // Upload the new avatar
       const fileData = storage.createFile(
-        '655842922bac16a94a25',
+        'avatars',
         ID.unique(),
         (document.getElementById('avatar-upload') as HTMLInputElement).files[0]
       )

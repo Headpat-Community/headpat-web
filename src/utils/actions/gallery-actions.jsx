@@ -54,7 +54,7 @@ export async function deleteGalleryImage(imageId) {
   const cookieHeader = headersList.get('cookie')
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655ca6663497d9472539/files/${imageId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/gallery/files/${imageId}`,
     {
       method: 'DELETE',
       headers: {
