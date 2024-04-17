@@ -66,6 +66,8 @@ const config = {
         '5xl': '64rem',
         '6xl': '72rem',
         '7xl': '80rem',
+        '8xl': '88rem',
+        '9xl': '96rem',
       },
       maxWidth: {
         0: '0',
@@ -81,6 +83,8 @@ const config = {
         '5xl': '64rem',
         '6xl': '72rem',
         '7xl': '80rem',
+        '8xl': '88rem',
+        '9xl': '96rem',
       },
       opacity: {
         1: '0.01',

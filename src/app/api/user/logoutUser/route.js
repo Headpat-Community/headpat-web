@@ -20,7 +20,7 @@ export async function POST(request) {
         expires: new Date(0),
       }
     )
-    
+
     await account.deleteSession('current')
 
     return NextResponse.json({ status: 204 })

@@ -1,6 +1,14 @@
 import type { Models } from 'luke-node-appwrite-edge'
 import { Separator } from '@/components/ui/separator'
 import { createAdminClient } from '@/app/appwrite-session'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 interface EventsType extends Models.Document {
   title: string
@@ -18,41 +26,29 @@ export default async function Page() {
   const events = result.documents
 
   return (
-    <div className={'mx-auto max-w-7xl'}>
-      <div className="flex flex-col w-full gap-4">
-        <div className="flex flex-col gap-1 text-center py-12">
-          <h1 className="text-2xl font-bold">Upcoming Events</h1>
-          <p className="text-gray-500 dark:text-gray-400">
-            Here&apos;s a list of all the upcoming events.
-          </p>
-        </div>
-        <div className="rounded-lg overflow-hidden border">
-          <div className="grid grid-cols-1 gap-4 p-4 md:p-6">
-            {events.map((event: EventsType, index: number) => (
-              <div key={event.$id}>
-                <div className="flex flex-col gap-1">
-                  <h2 className="text-xl font-bold">{event.title}</h2>
-                  <time className="text-sm font-medium" dateTime={event.date}>
-                    {new Date(event.date).toLocaleString('en-GB', {
-                      year: 'numeric',
-                      month: '2-digit',
-                      day: '2-digit',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </time>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {event.location}
-                  </p>
-                  <p className="text-sm leading-6">{event.description}</p>
-                </div>
-                {index < events.length - 1 && (
-                  <Separator className={'my-2 mt-5'} />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+    <div className="mb-8 mt-16 px-4 sm:px-6 lg:px-8">
+      <div className="sm:grid grid-cols-3 sm:items-center justify-center mb-8 mt-8 mx-auto max-w-7xl gap-8 text-center">
+        {events.map((event: EventsType, index: number) => (
+          <Card key={event.$id} className="w-[350px]">
+            <CardHeader>
+              <CardTitle>{event.title}</CardTitle>
+              <CardDescription>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {event.location}
+                </p>
+                <time className="text-sm font-medium" dateTime={event.date}>
+                  {new Date(event.date).toLocaleString('en-GB', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </time>
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        ))}
       </div>
     </div>
   )

@@ -45,7 +45,7 @@ export default async function UserProfile({ params: { profileUrl } }) {
     if (!galleryId) {
       return '/images/404.webp'
     }
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/banners/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/banners/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&output=webp`
   }
 
   const userDataResponse: UserDataType = await databases.listDocuments(
@@ -75,20 +75,21 @@ export default async function UserProfile({ params: { profileUrl } }) {
   console.log(await getAvatarImageUrl(userData.avatarId))
 
   return (
-    <main>
+    <main className={'max-w-7xl mx-auto'}>
       {userData && ( // Check if userData exists
         <>
           {/* Header */}
           <header className={'p-0 lg:p-8'}>
-            <AspectRatio ratio={30 / 4}>
+            <div className={'w-[1200px] h-[250px]'}>
               <Image
                 src={await getBannerImageUrl(userData.profileBannerId)}
                 alt={'User Banner'}
-                className={'rounded-md object-cover'}
-                fill={true}
+                className={'rounded-md object-contain'}
+                width={1200}
+                height={250}
                 priority={true}
               />
-            </AspectRatio>
+            </div>
           </header>
 
           {/* Grid */}
