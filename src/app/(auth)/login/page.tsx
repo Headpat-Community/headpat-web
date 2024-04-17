@@ -2,8 +2,8 @@ import Client from './page.client'
 
 export const metadata = {
   title: 'Login',
-  description: 'Hier kannst du dich anmelden für die Headpat Community',
-  keywords: 'login, account, sign in, anmelden',
+  description: 'Login or Register to your account.',
+  keywords: 'login, account, sign in, register',
 }
 
 export const runtime = 'edge'
