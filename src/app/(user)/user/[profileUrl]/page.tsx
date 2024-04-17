@@ -22,6 +22,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { CopyUrl } from '@/app/(user)/user/[profileUrl]/page.client'
 
 export const runtime = 'edge'
 
@@ -38,6 +39,13 @@ export default async function UserProfile({ params: { profileUrl } }) {
       return '/images/404.webp'
     }
     return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
+  }
+
+  const getBannerImageUrl = async (galleryId: string) => {
+    if (!galleryId) {
+      return '/images/404.webp'
+    }
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/banners/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
   }
 
   const userDataResponse: UserDataType = await databases.listDocuments(
@@ -72,7 +80,7 @@ export default async function UserProfile({ params: { profileUrl } }) {
           <header className={'p-0 lg:p-8'}>
             <AspectRatio ratio={30 / 4}>
               <Image
-                src={'/images/faye_butt.png'}
+                src={await getBannerImageUrl(userData.profileBannerId)}
                 alt={'User Banner'}
                 className={'rounded-md object-cover'}
                 fill={true}
@@ -111,7 +119,7 @@ export default async function UserProfile({ params: { profileUrl } }) {
                   <ListSocialItem
                     IconComponent={SiDiscord}
                     userData={userData.discordname}
-                    link={`https://discord.com/users/${userData.discordname}`}
+                    link={'#'}
                   />
                 )}
                 {userData.telegramname && (
@@ -155,7 +163,10 @@ export default async function UserProfile({ params: { profileUrl } }) {
             {/* Right */}
             <Card className={'col-span-2 border-none'}>
               <CardHeader>
-                <CardTitle>User Profile</CardTitle>
+                <div className={'grid grid-cols-2'}>
+                  <CardTitle className={'col-span-1'}>User Profile</CardTitle>
+                  <CopyUrl />
+                </div>
                 <CardDescription>Information about me</CardDescription>
               </CardHeader>
               <Separator className={'mb-6'} />

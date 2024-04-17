@@ -1,10 +1,10 @@
 import Client from './page.client'
-import { getUserData, getUserDataSelf } from '@/utils/actions/user-actions'
-import { getGallery } from '@/utils/actions/gallery-actions'
 import { notFound } from 'next/navigation'
-import { GalleryDocumentsType, GalleryType } from '@/utils/types'
+import { GalleryDocumentsType, GalleryType, UserDataType } from '@/utils/types'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { createSessionServerClient } from '@/app/appwrite-session'
+import { Query } from '@/app/appwrite-server'
 
 export const metadata = {
   title: 'Gallery',
@@ -15,19 +15,29 @@ export const metadata = {
 export const runtime = 'edge'
 
 export default async function Gallery({ params: { galleryId } }) {
-  const userSelf = await getUserDataSelf()
-  const enableNsfw = userSelf?.enableNsfw || false
+  const { account, databases } = await createSessionServerClient()
+  const userSelf = await account.get()
+  const enableNsfw = userSelf.prefs.nsfw || false
 
-  const gallery: GalleryType = await getGallery(
-    `queries[]=equal("$id","${galleryId}")`
+  const gallery: GalleryType = await databases.listDocuments(
+    'hp_db',
+    'gallery-images',
+    [Query.equal('$id', galleryId)]
   )
+
   if (!gallery.documents) {
     return notFound()
   }
   const galleryData: GalleryDocumentsType = gallery.documents[0]
 
   const userId = galleryData?.userId
-  const userData = await getUserData(`queries[]=equal("$id","${userId}")`)
+  //const userData = await getUserData(`queries[]=equal("$id","${userId}")`)
+  const userDataResponse: UserDataType = await databases.listDocuments(
+    'hp_db',
+    'userdata',
+    [Query.equal('$id', userId)]
+  )
+  const userData = userDataResponse.documents[0]
 
   if (!userId) {
     return notFound()
@@ -107,10 +117,10 @@ export default async function Gallery({ params: { galleryId } }) {
                                   </dt>
                                   <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
                                     <Link
-                                      href={`/user/${userData[0].profileUrl}`}
+                                      href={`/user/${userData.profileUrl}`}
                                       className="text-indigo-500 hover:text-indigo-400"
                                     >
-                                      {userData[0].displayName}
+                                      {userData.displayName}
                                     </Link>
                                   </dd>
                                 </div>
@@ -120,7 +130,7 @@ export default async function Gallery({ params: { galleryId } }) {
                                   </dt>
                                   <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
                                     {new Date(
-                                      userData[0].$createdAt
+                                      userData.$createdAt
                                     ).toLocaleString('en-GB', {
                                       day: '2-digit',
                                       month: '2-digit',
@@ -136,7 +146,7 @@ export default async function Gallery({ params: { galleryId } }) {
                                   </dt>
                                   <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
                                     {new Date(
-                                      userData[0].$updatedAt
+                                      userData.$updatedAt
                                     ).toLocaleString('en-GB', {
                                       day: '2-digit',
                                       month: '2-digit',

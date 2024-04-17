@@ -12,6 +12,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { useState } from 'react'
 import UploadAvatar from '@/app/(account)/account/profile/frontpage/uploadAvatar'
 import { CheckedState } from '@radix-ui/react-menu'
+import UploadBanner from '@/app/(account)/account/profile/frontpage/uploadBanner'
 
 export default function AccountPage() {
   const { userMe, userData, setUserData } = useGetUser()
@@ -129,6 +130,13 @@ export default function AccountPage() {
 
           <form onSubmit={handleSubmit} className="md:col-span-2">
             <UploadAvatar
+              isUploading={isUploading}
+              setIsUploading={setIsUploading}
+              userMe={userMe}
+              userData={userData}
+            />
+            <div className={'my-4'} />
+            <UploadBanner
               isUploading={isUploading}
               setIsUploading={setIsUploading}
               userMe={userMe}

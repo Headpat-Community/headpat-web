@@ -5,7 +5,7 @@ export function CopyUrl() {
   return (
     <>
       <Button
-        className="hidden sm:block"
+        className=""
         onClick={() => navigator.clipboard.writeText(window.location.href)}
       >
         Copy URL

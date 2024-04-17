@@ -161,7 +161,7 @@ export default function UploadAvatar({
           />
           <div className="flex items-center justify-between">
             <p className="text-xs text-gray-900 dark:text-gray-400">
-              JPG, GIF or PNG. 1MB max.
+              JPG, PNG, GIF or WebP. 1MB max.
             </p>
             <Button
               type="submit"

@@ -23,6 +23,7 @@ export interface UserDataType {
  */
 export interface UserDataDocumentsType extends Models.Document {
   avatarId: string | null
+  profileBannerId: string | null
   status: string | null
   displayName: string
   bio: string | null

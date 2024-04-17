@@ -1,13 +1,17 @@
 import Link from 'next/link'
 import { AnnouncementDataType, AnnouncementDocumentsType } from '@/utils/types'
 import { getAnnouncements } from '@/utils/actions/announcement-actions'
+import { createAdminClient } from '@/app/appwrite-session'
+import { notFound } from 'next/navigation'
 
 export default async function AnnouncementNotification() {
-  let announcementTotalData: AnnouncementDataType = await getAnnouncements()
-  let announcementData: AnnouncementDocumentsType | undefined
+  const { databases } = await createAdminClient()
+  const announcementDataResponse: AnnouncementDataType =
+    await databases.listDocuments('hp_db', 'announcements')
+  const announcementData = announcementDataResponse.documents[0]
 
-  if (announcementTotalData && announcementTotalData.documents) {
-    announcementData = announcementTotalData.documents[0]
+  if (!announcementData) {
+    return notFound()
   }
 
   return (

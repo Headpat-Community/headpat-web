@@ -111,9 +111,7 @@ export default function AccountPage() {
           <form onSubmit={handleSubmit} className="md:col-span-2">
             <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
               <div className="sm:col-span-6">
-                <Label htmlFor="discordname">
-                  Discord ID (196742608846979072)
-                </Label>
+                <Label htmlFor="discordname">Discord Name</Label>
                 <div className="relative mt-2">
                   <Input
                     type="text"

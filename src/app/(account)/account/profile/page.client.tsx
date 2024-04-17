@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -10,11 +10,12 @@ import { useGetUser } from '@/utils/getUserData'
 import MfaAlert from '@/components/account/profile/mfaAlert'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
+import * as Sentry from '@sentry/nextjs'
 
 export default function AccountPage() {
   const router = useRouter()
   const { toast } = useToast()
-  const { userMe, setUserMe, userData } = useGetUser()
+  const { userMe, setUserMe, userData, setUserData } = useGetUser()
 
   const handleEmailChange = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
@@ -65,6 +66,12 @@ export default function AccountPage() {
       )
     } catch (error) {
       console.error(error)
+      toast({
+        title: 'Error',
+        description: error,
+        variant: 'destructive',
+      })
+      Sentry.captureException(error)
     }
   }
 
@@ -128,6 +135,12 @@ export default function AccountPage() {
       )
     } catch (error) {
       console.error(error)
+      toast({
+        title: 'Error',
+        description: error,
+        variant: 'destructive',
+      })
+      Sentry.captureException(error)
     }
   }
 
@@ -165,6 +178,12 @@ export default function AccountPage() {
       )
     } catch (error) {
       console.error(error.message)
+      toast({
+        title: 'Error',
+        description: error.message,
+        variant: 'destructive',
+      })
+      Sentry.captureException(error)
     }
   }
 
@@ -214,6 +233,12 @@ export default function AccountPage() {
       )
     } catch (error) {
       console.error(error)
+      toast({
+        title: 'Error',
+        description: error,
+        variant: 'destructive',
+      })
+      Sentry.captureException(error)
     }
   }
 
@@ -264,6 +289,14 @@ export default function AccountPage() {
                     name="email"
                     type="email"
                     required
+                    onChange={() => {
+                      setUserMe((prevUserData: any) => ({
+                        ...prevUserData,
+                        email: (
+                          document.getElementById('email') as HTMLInputElement
+                        ).value,
+                      }))
+                    }}
                     placeholder={userMe ? userMe.email : ''}
                     autoComplete={'email'}
                   />
@@ -316,6 +349,16 @@ export default function AccountPage() {
                       name="profileurl"
                       id="profileurl"
                       required
+                      onChange={() => {
+                        setUserData((prevUserData: any) => ({
+                          ...prevUserData,
+                          profileUrl: (
+                            document.getElementById(
+                              'profileurl'
+                            ) as HTMLInputElement
+                          ).value,
+                        }))
+                      }}
                       placeholder={userData ? userData.profileUrl : ''}
                       className="border-0 pl-0 align-middle bg-transparent ml-1 focus:ring-0 focus:outline-none focus:border-0 focus-visible:ring-0 focus-visible:outline-none focus-visible:border-0 focus-visible:ring-offset-0"
                       minLength={4}

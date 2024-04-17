@@ -1,26 +1,21 @@
-import { getAnnouncements } from '@/utils/actions/announcement-actions'
-import Image from 'next/image'
 import Link from 'next/link'
-import { AnnouncementDataType, AnnouncementDocumentsType } from '@/utils/types'
-import { ChevronRight } from 'lucide-react'
+import { AnnouncementDataType } from '@/utils/types'
+import { ChevronRight, MegaphoneIcon } from 'lucide-react'
+import { createAdminClient } from '@/app/appwrite-session'
 
 export const runtime = 'edge'
 
 export const metadata = {
   title: 'Announcements',
-}
-
-const getAvatarImageUrl = (galleryId: string) => {
-  if (!galleryId) {
-    return '/logos/Headpat_new_logo.webp'
-  }
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`
+  description: 'View the latest Community Announcements from Headpat.',
 }
 
 export default async function AnnouncementsPage() {
-  const announcementDataTotal: AnnouncementDataType = await getAnnouncements()
-  const announcementData: AnnouncementDocumentsType[] =
-    announcementDataTotal.documents
+  const { databases } = await createAdminClient()
+  const announcementDataResponse: AnnouncementDataType =
+    await databases.listDocuments('hp_db', 'announcements')
+  const announcementData = announcementDataResponse.documents
+
   return (
     <>
       <h1 className="mt-4 text-center text-4xl">Announcements</h1>
@@ -36,13 +31,7 @@ export default async function AnnouncementsPage() {
                 className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50/90 dark:hover:bg-gray-50/10 sm:px-6"
               >
                 <div className="flex min-w-0 gap-x-4">
-                  <Image
-                    className="h-12 w-12 flex-none rounded-full"
-                    src={getAvatarImageUrl(announcement?.userData?.avatarId)}
-                    alt=""
-                    width={48}
-                    height={48}
-                  />
+                  <MegaphoneIcon className={'h-12'} />
                   <div className="min-w-0 flex-auto">
                     <p className="text-sm font-semibold leading-6">
                       <Link href={`/announcements/${announcement.$id}`}>
@@ -77,7 +66,7 @@ export default async function AnnouncementsPage() {
                               <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                             </div>
                             <p className="text-xs leading-5 text-black/80 dark:text-white/80">
-                              Aktiv
+                              Active
                             </p>
                           </div>
                         ) : (
@@ -86,7 +75,7 @@ export default async function AnnouncementsPage() {
                               <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
                             </div>
                             <p className="text-xs leading-5 text-black/80 dark:text-white/80">
-                              Inaktiv
+                              Inactive
                             </p>
                           </div>
                         )}

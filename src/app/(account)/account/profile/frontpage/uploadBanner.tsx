@@ -6,7 +6,7 @@ import * as Sentry from '@sentry/nextjs'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
-export default function UploadAvatar({
+export default function UploadBanner({
   isUploading,
   setIsUploading,
   userMe,
@@ -14,22 +14,18 @@ export default function UploadAvatar({
 }) {
   const { toast } = useToast()
 
-  const getAvatarImageUrl = (galleryId: string) => {
-    if (!galleryId) return
-    const imageId = storage.getFilePreview(
-      '655842922bac16a94a25',
-      `${galleryId}`,
-      400
-    )
+  const getBannerImageUrl = (profileBannerId: string) => {
+    if (!profileBannerId) return
+    const imageId = storage.getFileView('banners', `${profileBannerId}`)
     return imageId.href
   }
 
-  const handleAvatarChange = (event: any) => {
+  const handleBannerChange = (event: any) => {
     const selectedFile = event.target.files[0]
-    if (selectedFile.size > 1024 * 1024) {
+    if (selectedFile.size > 5 * 1024 * 1024) {
       toast({
         title: 'Error',
-        description: 'Dateigröße darf nur bis 1MB groß sein.',
+        description: 'Image size exceeds 5MB. Please select a smaller image.',
         variant: 'destructive',
       })
       return
@@ -38,7 +34,7 @@ export default function UploadAvatar({
     fileReader.readAsDataURL(selectedFile)
     fileReader.onload = (event) => {
       const imgElement = document.getElementById(
-        'avatar-image'
+        'banner-image'
       ) as HTMLImageElement
       if (typeof event.target.result === 'string') {
         imgElement.src = event.target.result
@@ -51,7 +47,7 @@ export default function UploadAvatar({
     }
   }
 
-  const handleSubmitAvatar = async (event: any) => {
+  const handleSubmitBanner = async (event: any) => {
     event.preventDefault()
 
     try {
@@ -59,36 +55,33 @@ export default function UploadAvatar({
 
       setIsUploading(true) // Set isUploading to true before making the API call
 
-      // Get the user's avatar document
-      const avatarDocument: UserAvatarsDocumentType =
+      // Get the user's banner document
+      const bannerDocument: UserAvatarsDocumentType =
         await databases.getDocument('hp_db', 'userdata', userMe.$id)
-      // If the user already has an avatar, delete it
-      if (avatarDocument.galleryId) {
-        // Delete the old avatar
+      // If the user already has an banner, delete it
+      if (bannerDocument.profileBannerId) {
+        // Delete the old banner
         console.log('deleting')
-        await storage.deleteFile(
-          '655842922bac16a94a25',
-          avatarDocument.galleryId
-        )
+        await storage.deleteFile('banners', bannerDocument.profileBannerId)
       }
 
-      // Upload the new avatar
+      // Upload the new banner
       const fileData = storage.createFile(
-        '655842922bac16a94a25',
+        'banners',
         ID.unique(),
-        (document.getElementById('avatar-upload') as HTMLInputElement).files[0]
+        (document.getElementById('banner-upload') as HTMLInputElement).files[0]
       )
 
       fileData.then(
         function (response) {
-          // Update the user's avatarId
+          // Update the user's bannerId
           databases.updateDocument('hp_db', 'userdata', userMe.$id, {
-            avatarId: response.$id,
+            profileBannerId: response.$id,
           })
 
           toast({
-            title: 'Avatar uploaded',
-            description: 'Your avatar has been uploaded successfully.',
+            title: 'Banner uploaded',
+            description: 'Your banner has been uploaded successfully.',
           })
         },
         function (error) {
@@ -127,7 +120,7 @@ export default function UploadAvatar({
           } else {
             toast({
               title: 'Error',
-              description: 'Failed to upload avatar.',
+              description: 'Failed to upload banner.',
               variant: 'destructive',
             })
             Sentry.captureException(error)
@@ -142,7 +135,7 @@ export default function UploadAvatar({
       Sentry.captureException(error)
       toast({
         title: 'Error',
-        description: 'Failed to upload avatar.',
+        description: 'Failed to upload banner.',
         variant: 'destructive',
       })
     }
@@ -152,27 +145,29 @@ export default function UploadAvatar({
     <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
       <div className="col-span-full flex items-center gap-x-8">
         <img
-          id="avatar-image"
-          src={getAvatarImageUrl(userData?.avatarId) || '/logos/logo.webp'}
-          alt="Avatar"
+          id="banner-image"
+          src={
+            getBannerImageUrl(userData?.profileBannerId) || '/logos/logo.webp'
+          }
+          alt="Banner"
           className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
         />
         <div>
           <Input
             accept="image/*"
             className="rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-black/10 hover:bg-white/20 dark:ring-white/10"
-            id="avatar-upload"
-            name="avatar-upload"
+            id="banner-upload"
+            name="banner-upload"
             type="file"
-            onChange={handleAvatarChange}
+            onChange={handleBannerChange}
           />
           <div className="flex items-center justify-between">
             <p className="text-xs text-gray-900 dark:text-gray-400">
-              JPG, GIF or PNG. 1MB max.
+              JPG, PNG or WebP. 5MB max.
             </p>
             <Button
               type="submit"
-              onClick={handleSubmitAvatar}
+              onClick={handleSubmitBanner}
               disabled={isUploading}
               className={'mt-2'}
             >

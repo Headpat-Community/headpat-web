@@ -2,9 +2,9 @@ import Client from './page.client'
 import { headers } from 'next/headers'
 
 export const metadata = {
-  title: 'Gallerie',
+  title: 'Gallery',
   description:
-    'Die Gallerie seite von Headpat Community. Hier könnt ihr alle Bilder sehen die von der Community hochgeladen wurden.',
+    'The gallery page is where you can see all the images that have been uploaded to the site.',
 }
 
 export const runtime = 'edge'
@@ -24,7 +24,7 @@ export default async function Gallery() {
   )
 
   const userData = await response.json()
-  const enableNsfw = userData?.prefs?.enableNsfw
+  const enableNsfw = userData?.prefs?.nsfw
 
   return (
     <div>

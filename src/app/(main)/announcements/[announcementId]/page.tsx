@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { getAnnouncement } from '@/utils/actions/announcement-actions'
 import { AnnouncementDocumentsType } from '@/utils/types'
+import { createAdminClient } from '@/app/appwrite-session'
 
 export const runtime = 'edge'
 
@@ -12,7 +12,7 @@ const getAvatarImageUrl = (galleryId: string) => {
   if (!galleryId) {
     return '/logos/Headpat_new_logo.webp'
   }
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/655842922bac16a94a25/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`
 }
 
 export default async function Page({
@@ -20,8 +20,10 @@ export default async function Page({
 }: {
   params: { announcementId: string }
 }) {
+  const { databases } = await createAdminClient()
+
   const announcementData: AnnouncementDocumentsType =
-    await getAnnouncement(announcementId)
+    await databases.getDocument('hp_db', 'announcements', announcementId)
 
   return (
     <>
