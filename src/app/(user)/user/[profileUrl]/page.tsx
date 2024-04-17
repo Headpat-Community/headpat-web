@@ -72,6 +72,8 @@ export default async function UserProfile({ params: { profileUrl } }) {
   // mobile 30/6
   // pc 30/3
 
+  console.log(await getAvatarImageUrl(userData.avatarId))
+
   return (
     <main>
       {userData && ( // Check if userData exists
@@ -106,6 +108,7 @@ export default async function UserProfile({ params: { profileUrl } }) {
                   className={'object-contain rounded-t-xl'}
                   fill={true}
                   priority={true}
+                  unoptimized
                 />
                 {isBirthday && (
                   <Badge className="relative ml-auto flex shrink-0 items-center justify-center rounded-none rounded-t-xl">

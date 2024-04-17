@@ -9,8 +9,8 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { account, avatars } from '@/app/appwrite-client'
-import { AuthenticatorType, Models } from 'appwrite'
-import { useMemo, useState } from 'react'
+import { AuthenticatorType } from 'appwrite'
+import { useState } from 'react'
 import {
   InputOTP,
   InputOTPGroup,
@@ -19,35 +19,15 @@ import {
 } from '@/components/ui/input-otp'
 import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
+import { useRouter } from 'next/navigation'
 
-export default function MfaAlert() {
+export default function MfaAlert({ mfaList }) {
   const [open, setOpen] = useState<boolean>(false)
-  const [mfaList, setMfaList] = useState<Models.MfaFactors>(null)
-  const [mfaMode, setMfaMode] = useState<string>(null)
+  const [mfaMode, setMfaMode] = useState<string>('')
+  const [recoveryCodes, setRecoveryCodes] = useState<string[]>([])
   const [qrCodeImage, setQrCodeImage] = useState<string>('')
+  const router = useRouter()
   const { toast } = useToast()
-
-  useMemo(() => {
-    const getMfaList = async () => {
-      try {
-        const mfaList = await account.listMfaFactors()
-        console.log(mfaList)
-        setMfaList(mfaList)
-      } catch (error) {
-        console.error(error)
-        Sentry.captureException(error)
-      }
-    }
-
-    getMfaList().catch((error) => {
-      toast({
-        title: 'Error',
-        description: "You encountered an error. But don't worry, we're on it.",
-        variant: 'destructive',
-      })
-      Sentry.captureException(error)
-    })
-  }, [toast])
 
   const handleMfaAdd = async (mfaMode: string) => {
     if (mfaMode === 'totp') {
@@ -56,11 +36,9 @@ export default function MfaAlert() {
       )
       const qrCodeImage = avatars.getQR(mfaRequestResult.uri)
       setQrCodeImage(qrCodeImage.href)
-    } else if (mfaMode === 'phone') {
-      await account.createMfaAuthenticator(AuthenticatorType.Totp)
     }
 
-    setMfaMode(mfaMode)
+    setMfaMode('totpEnable')
   }
 
   const handleMfaDelete = async (code: string) => {
@@ -74,9 +52,17 @@ export default function MfaAlert() {
           title: '2FA disabled',
           description: 'You have successfully disabled 2FA.',
         })
+        setOpen(false)
+        router.refresh()
       }
     } catch (error) {
       console.error(error)
+      toast({
+        title: 'Error',
+        description: "You encountered an error. But don't worry, we're on it.",
+        variant: 'destructive',
+      })
+      Sentry.captureException(error)
     }
   }
 
@@ -92,8 +78,10 @@ export default function MfaAlert() {
           title: '2FA enabled',
           description: 'You have successfully enabled 2FA.',
         })
+        router.refresh()
       }
 
+      setMfaMode('totpFinished')
       setOpen(false)
     } catch (error) {
       if (error.code === 401) {
@@ -103,6 +91,10 @@ export default function MfaAlert() {
         })
       }
     }
+  }
+
+  if (!mfaList) {
+    return
   }
 
   return (
@@ -117,86 +109,144 @@ export default function MfaAlert() {
             Click to manage 2FA
           </Button>
         </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              You are about to enable 2FA, great!
-            </AlertDialogTitle>
-            <p className={'text-sm text-muted-foreground'}>
-              {mfaMode === 'totp'
-                ? 'Please scan the QR code with your authenticator app and enter the code to enable 2FA.'
-                : 'To enable 2FA, please select one of the following options.'}
-            </p>
-            <div className={'flex flex-col'}>
-              {mfaList?.totp === false && !mfaMode && (
-                <Button
-                  className={'mt-4'}
-                  onClick={async () => {
-                    await handleMfaAdd('totp')
-                  }}
-                >
-                  Enable OTP
-                </Button>
-              )}
-              {mfaList?.phone === false && !mfaMode && (
-                <Button
-                  className={'mt-4'}
-                  onClick={async () => {
-                    await handleMfaAdd('phone')
-                  }}
-                >
-                  Enable Phone
-                </Button>
-              )}
-            </div>
-            <div>
-              {mfaMode === 'totp' && (
-                <>
-                  <img
-                    src={qrCodeImage}
-                    className={'h-64 w-auto mb-4'}
-                    alt="QR Code"
-                  />
-
-                  <InputOTP
-                    maxLength={6}
-                    onComplete={(result) => {
-                      console.log(result)
-                      handleMfaVerify(result).catch((error) => {
-                        toast({
-                          title: 'Error',
-                          description:
-                            "You encountered an error. But don't worry, we're on it.",
-                          variant: 'destructive',
-                        })
-                        Sentry.captureException(error)
-                      })
+        {mfaList.totp === false ? (
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                You are about to enable 2FA, great!
+              </AlertDialogTitle>
+              <p className={'text-sm text-muted-foreground'}>
+                {mfaMode === 'totpEnable'
+                  ? 'Please scan the QR code with your authenticator app and enter the code to enable 2FA.'
+                  : 'To enable 2FA, please select one of the following options.'}
+              </p>
+              <div className={'flex flex-col'}>
+                {!mfaMode && (
+                  <Button
+                    className={'mt-4'}
+                    onClick={async () => {
+                      await handleMfaAdd('totp')
                     }}
                   >
-                    <InputOTPGroup>
-                      <InputOTPSlot index={0} />
-                      <InputOTPSlot index={1} />
-                      <InputOTPSlot index={2} />
-                    </InputOTPGroup>
-                    <InputOTPSeparator />
-                    <InputOTPGroup>
-                      <InputOTPSlot index={3} />
-                      <InputOTPSlot index={4} />
-                      <InputOTPSlot index={5} />
-                    </InputOTPGroup>
-                  </InputOTP>
-                </>
-              )}
-            </div>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel asChild>
-              <Button variant={'outline'} onClick={() => setOpen(false)}>
-                Close
-              </Button>
-            </AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
+                    Enable 2FA
+                  </Button>
+                )}
+              </div>
+              <div>
+                {mfaMode === 'totpEnable' && (
+                  <>
+                    <img
+                      src={qrCodeImage}
+                      className={'h-64 w-auto mb-4'}
+                      alt="QR Code"
+                    />
+
+                    <InputOTP
+                      maxLength={6}
+                      onComplete={(result) => {
+                        handleMfaVerify(result).catch((error) => {
+                          toast({
+                            title: 'Error',
+                            description:
+                              "You encountered an error. But don't worry, we're on it.",
+                            variant: 'destructive',
+                          })
+                          Sentry.captureException(error)
+                        })
+                      }}
+                    >
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                      </InputOTPGroup>
+                      <InputOTPSeparator />
+                      <InputOTPGroup>
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </>
+                )}
+                {mfaMode === 'totpFinished' && (
+                  <p className={'text-sm text-muted-foreground'}>
+                    2FA has been enabled. Would you like to show your recovery
+                    codes?
+                  </p>
+                )}
+              </div>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel asChild>
+                <Button variant={'outline'} onClick={() => setOpen(false)}>
+                  Close
+                </Button>
+              </AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        ) : (
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                It looks like you have 2FA enabled.
+              </AlertDialogTitle>
+              <p className={'text-sm text-muted-foreground'}>
+                Thank you for keeping your account secure. If you would like to
+                disable 2FA, please click the button below.
+              </p>
+              <div className={'flex flex-col'}>
+                {!mfaMode && (
+                  <Button
+                    className={'mt-4'}
+                    onClick={() => setMfaMode('totpDisable')}
+                  >
+                    Disable 2FA
+                  </Button>
+                )}
+              </div>
+              <div>
+                {mfaMode === 'totpDisable' && (
+                  <>
+                    <InputOTP
+                      maxLength={6}
+                      onComplete={(result) => {
+                        handleMfaDelete(result).catch((error) => {
+                          toast({
+                            title: 'Error',
+                            description:
+                              "You encountered an error. But don't worry, we're on it.",
+                            variant: 'destructive',
+                          })
+                          Sentry.captureException(error)
+                        })
+                      }}
+                    >
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                      </InputOTPGroup>
+                      <InputOTPSeparator />
+                      <InputOTPGroup>
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </>
+                )}
+              </div>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel asChild>
+                <Button variant={'outline'} onClick={() => setOpen(false)}>
+                  Close
+                </Button>
+              </AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        )}
       </AlertDialog>
     </>
   )

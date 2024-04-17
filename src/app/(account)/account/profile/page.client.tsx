@@ -11,8 +11,14 @@ import MfaAlert from '@/components/account/profile/mfaAlert'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
+import { Models } from 'luke-node-appwrite-edge'
+import MfaRecoveryCodes from '@/components/account/profile/mfaRecoveryCodes'
 
-export default function AccountPage() {
+export default function AccountPage({
+  mfaList,
+}: {
+  mfaList: Models.MfaFactors
+}) {
   const router = useRouter()
   const { toast } = useToast()
   const { userMe, setUserMe, userData, setUserData } = useGetUser()
@@ -436,8 +442,9 @@ export default function AccountPage() {
           </div>
 
           <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-            <div className="col-span-full">
-              <MfaAlert />
+            <div className="col-span-fullf flex gap-4">
+              <MfaAlert mfaList={mfaList} />
+              {mfaList.totp && <MfaRecoveryCodes />}
             </div>
           </div>
         </div>
