@@ -8,10 +8,20 @@ export async function POST(request) {
   const { account } = await createSessionClient(request)
 
   try {
-    await account.deleteSession('current')
-
     // Delete the specified cookie
-    cookies().delete(`a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`)
+    cookies().set(
+      `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+      '',
+      {
+        path: '/',
+        domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
+        secure: true,
+        httpOnly: true,
+        expires: new Date(0),
+      }
+    )
+    
+    await account.deleteSession('current')
 
     return NextResponse.json({ status: 204 })
   } catch (error) {
