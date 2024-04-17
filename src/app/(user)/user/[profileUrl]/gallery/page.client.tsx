@@ -74,7 +74,7 @@ export default function FetchGallery() {
       })
       Sentry.captureException(error)
     })
-  }, [userId])
+  }, [userId, toast])
 
   useEffect(() => {
     if (!userId) return // Wait for userId to be available

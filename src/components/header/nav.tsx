@@ -54,12 +54,11 @@ export function NavigationMenuExport() {
 const ListItem = React.forwardRef<
   React.ElementRef<'a'>,
   React.ComponentPropsWithoutRef<'a'>
->(({ className, title, children, ...props }, ref) => {
+>(({ className, title, children, ...props }) => {
   return (
     <li>
       <NavigationMenuLink asChild>
         <Link
-          //ref={ref}
           href={props.href}
           className={cn(
             'block rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground',

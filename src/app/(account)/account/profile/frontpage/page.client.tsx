@@ -11,10 +11,13 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { useToast } from '@/components/ui/use-toast'
 import { useState } from 'react'
 import UploadAvatar from '@/app/(account)/account/profile/frontpage/uploadAvatar'
+import { CheckedState } from '@radix-ui/react-menu'
 
 export default function AccountPage() {
   const { userMe, userData, setUserData } = useGetUser()
-  const [isUploading, setIsUploading] = useState(false)
+  const [isUploading, setIsUploading] = useState<boolean>(false)
+  const [hiddenBirthday, setHiddenBirthday] = useState<boolean>(false)
+  const [hiddenPronouns, setHiddenPronouns] = useState<boolean>(false)
   const { toast } = useToast()
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
@@ -81,6 +84,16 @@ export default function AccountPage() {
     { name: 'Socials', href: '/account/profile/socials', current: false },
   ]
 
+  const hideBirthday = async (event: CheckedState) => {
+    if (event) {
+      await databases.updateDocument('hp_db', 'userdata', userMe.$id, {
+        birthday: '1900-01-01T00:00:00',
+      })
+
+      setHiddenBirthday(true)
+    }
+  }
+
   return (
     <>
       <header className="border-b border-black/5 dark:border-white/5">
@@ -123,10 +136,27 @@ export default function AccountPage() {
             />
 
             <div className="mt-12 grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6">
-              <div className="col-span-full">
-                <Label htmlFor="displayname">Display Name</Label>
-                <div className="mt-2">
-                  <Checkbox id="public_birthday" name="public_birthday" />
+              <div className={'col-span-full grid grid-cols-2'}>
+                <div className="col-span-1">
+                  <Label htmlFor="hide_birthday">Hide Birthday?</Label>
+                  <div className="mt-2">
+                    <Checkbox
+                      id="hide_birthday"
+                      name="hide_birthday"
+                      onCheckedChange={(e) => hideBirthday(e)}
+                      disabled={hiddenBirthday}
+                    />
+                  </div>
+                  <Label htmlFor="hide_location">Hide Location?</Label>
+                  <div className="mt-2">
+                    <Checkbox id="hide_location" name="hide_location" />
+                  </div>
+                </div>
+                <div className="col-span-1">
+                  <Label htmlFor="hide_pronouns">Hide Pronouns?</Label>
+                  <div className="mt-2">
+                    <Checkbox id="hide_pronouns" name="hide_pronouns" />
+                  </div>
                 </div>
               </div>
 
@@ -150,7 +180,7 @@ export default function AccountPage() {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData ? userData.displayName.length : 0}
+                      {userData ? userData.displayName?.length : 0}
                       {/* Check if userData.displayname is defined before accessing its length property */}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>
@@ -175,7 +205,7 @@ export default function AccountPage() {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData ? userData.status.length : 0}
+                      {userData ? userData.status?.length : 0}
                     </span>
                     <span className="select-none text-gray-400">/{24}</span>
                   </div>
@@ -258,7 +288,7 @@ export default function AccountPage() {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData ? userData.location.length : 0}
+                      {userData ? userData.location?.length : 0}
                     </span>
                     <span className="select-none text-gray-400">/{256}</span>
                   </div>
@@ -286,7 +316,7 @@ export default function AccountPage() {
                   />
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-end pb-2 pr-4 text-sm leading-5">
                     <span className="select-none">
-                      {userData ? userData.bio.length : 0}
+                      {userData ? userData.bio?.length : 0}
                     </span>
                     <span className="select-none text-gray-400">/{2048}</span>
                   </div>

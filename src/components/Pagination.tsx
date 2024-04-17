@@ -49,7 +49,7 @@ export default function PaginationComponent({
             </PaginationItem>
           )}
           {pageNumbers.length > 5 && currentPage > 2 && <PaginationEllipsis />}
-          {pageNumbers.map((page, index) => {
+          {pageNumbers.map((page) => {
             if (
               page === currentPage - 1 ||
               page === currentPage ||

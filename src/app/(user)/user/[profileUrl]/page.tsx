@@ -31,7 +31,7 @@ export const metadata = {
 }
 
 export default async function UserProfile({ params: { profileUrl } }) {
-  const { databases, storage } = await createAdminClient()
+  const { databases } = await createAdminClient()
 
   const getAvatarImageUrl = async (galleryId: string) => {
     if (!galleryId) {

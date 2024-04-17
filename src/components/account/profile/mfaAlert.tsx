@@ -57,9 +57,7 @@ export default function MfaAlert() {
       const qrCodeImage = avatars.getQR(mfaRequestResult.uri)
       setQrCodeImage(qrCodeImage.href)
     } else if (mfaMode === 'phone') {
-      const mfaRequestResult = await account.createMfaAuthenticator(
-        AuthenticatorType.Totp
-      )
+      await account.createMfaAuthenticator(AuthenticatorType.Totp)
     }
 
     setMfaMode(mfaMode)

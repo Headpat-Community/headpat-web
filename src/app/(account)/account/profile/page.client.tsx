@@ -196,7 +196,7 @@ export default function AccountPage() {
       )
 
       promise.then(
-        function (response) {
+        function () {
           toast({
             title: 'Success!',
             description: 'Profile URL updated successfully.',

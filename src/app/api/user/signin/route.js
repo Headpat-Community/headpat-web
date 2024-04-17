@@ -8,10 +8,10 @@ export async function POST(request) {
   const { account } = await createAdminClient()
   // if POST is not json, return 400
   if (request.headers.get('content-type') !== 'application/json') {
-    return NextResponse.json({ error: 'Invalid content type' }, { status: 400 })
+    return NextResponse.json({ error: 'Invalid content type', status: 400 })
   }
   if (!request.body) {
-    return NextResponse.json({ error: 'No body provided' }, { status: 400 })
+    return NextResponse.json({ error: 'No body provided', status: 400 })
   }
   const { email, password } = await request.json()
 
@@ -31,8 +31,8 @@ export async function POST(request) {
       }
     )
 
-    return NextResponse.json({}, { status: 200 })
+    return NextResponse.json({ status: 200 })
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: error.code })
+    return NextResponse.json({ error: error, status: error.code })
   }
 }

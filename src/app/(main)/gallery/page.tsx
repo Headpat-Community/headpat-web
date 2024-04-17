@@ -1,5 +1,4 @@
 import Client from './page.client'
-import { getUserSelf } from '@/utils/actions/user-actions'
 import { headers } from 'next/headers'
 
 export const metadata = {

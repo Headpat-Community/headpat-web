@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server'
+import { headers } from 'next/headers'
 
 export const runtime = 'edge'
 
 export async function GET(request) {
+  const headersList = headers()
+  const cookieHeader = headersList.get('cookie')
+
   try {
     // Extract query parameters from the incoming request
     const queryParams = new URLSearchParams(
@@ -23,12 +27,12 @@ export async function GET(request) {
     })
 
     if (!response.ok) {
-      throw new Error('Failed to fetch data')
+      console.error(response)
     }
 
     const data = await response.json()
-    return NextResponse.json(data, { status: 200 })
+    return NextResponse.json(data)
   } catch (error) {
-    return NextResponse.json(error.message, { status: 500 })
+    return NextResponse.json({ error: error.message, status: 500 })
   }
 }

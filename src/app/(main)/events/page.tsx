@@ -1,4 +1,3 @@
-import { databases } from '@/app/appwrite-server'
 import type { Models } from 'luke-node-appwrite-edge'
 import { Separator } from '@/components/ui/separator'
 import { createAdminClient } from '@/app/appwrite-session'

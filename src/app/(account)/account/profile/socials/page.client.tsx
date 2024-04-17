@@ -7,12 +7,11 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { databases } from '@/app/appwrite-client'
 import { useGetUser } from '@/utils/getUserData'
+import { useToast } from '@/components/ui/use-toast'
 
 export default function AccountPage() {
+  const { toast } = useToast()
   const [isUploading, setIsUploading] = useState(false)
-
-  const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(null)
   const { userMe, userData, setUserData } = useGetUser()
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
@@ -43,25 +42,31 @@ export default function AccountPage() {
       )
 
       promise.then(
-        function (response) {
+        function () {
           setIsUploading(false)
-          setSuccess('Saved!')
+          toast({
+            title: 'Succees!',
+            description: 'Data has been saved.',
+          })
         },
         function (error) {
           console.log(error) // Failure
+          toast({
+            title: 'Error',
+            description: 'Failed to upload Data',
+            variant: 'destructive',
+          })
           setIsUploading(false)
-          setError('Failed to upload Data')
         }
       )
-
-      setTimeout(() => {
-        setError(null)
-        setSuccess(null)
-      }, 5000)
     } catch (error) {
       setIsUploading(false)
-      setError('Failed to upload Data')
       console.error(error)
+      toast({
+        title: 'Error',
+        description: 'Failed to upload Data',
+        variant: 'destructive',
+      })
     }
   }
 
@@ -73,8 +78,6 @@ export default function AccountPage() {
 
   return (
     <>
-      {success && <SuccessMessage attentionSuccess={success} />}
-      {error && <ErrorMessage attentionError={error} />}
       <header className="border-b border-black/5 dark:border-white/5">
         {/* Secondary navigation */}
         <nav className="flex overflow-x-auto py-4">
@@ -261,7 +264,9 @@ export default function AccountPage() {
             </div>
 
             <div className="mt-8 flex">
-              <Button type="submit">Save</Button>
+              <Button disabled={isUploading} type="submit">
+                Save
+              </Button>
             </div>
           </form>
         </div>
