@@ -37,7 +37,7 @@ export default async function Header() {
                   <Image
                     className="h-8 w-auto"
                     src="/logos/Headpat_new_logo.webp"
-                    alt="DutchBoxx Logo"
+                    alt="Headpat Logo"
                     width={200}
                     height={50}
                   />
@@ -53,7 +53,7 @@ export default async function Header() {
                       <Image
                         className="h-12 w-auto"
                         src="/logos/Headpat_new_logo.webp"
-                        alt="DutchBoxx Logo"
+                        alt="Headpat Logo"
                         width={200}
                         height={50}
                       />

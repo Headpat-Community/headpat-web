@@ -45,7 +45,7 @@ export default async function UserProfile({ params: { profileUrl } }) {
     if (!galleryId) {
       return '/images/404.webp'
     }
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/banners/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&output=webp`
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/banners/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=1200&height=250&output=webp`
   }
 
   const userDataResponse: UserDataType = await databases.listDocuments(
@@ -80,11 +80,14 @@ export default async function UserProfile({ params: { profileUrl } }) {
         <>
           {/* Header */}
           <header className={'p-0 lg:p-8'}>
-            <div className={'w-[1200px] h-[250px]'}>
+            <div>
               <Image
                 src={await getBannerImageUrl(userData.profileBannerId)}
                 alt={'User Banner'}
-                className={'rounded-md object-contain'}
+                className={
+                  'rounded-md object-cover max-w-[1200px] max-h-[250px] px-8 lg:px-0 mt-8 lg:mt-0'
+                }
+                layout="responsive"
                 width={1200}
                 height={250}
                 priority={true}
@@ -95,12 +98,14 @@ export default async function UserProfile({ params: { profileUrl } }) {
           {/* Grid */}
           <div
             className={
-              'grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-3 lg:grid-cols-5 xl:gap-x-10 pr-8 pl-8'
+              'grid grid-cols-1 gap-x-8 gap-y-8 lg:grid-cols-3 xl:gap-x-10 pr-8 pl-8 md:grid-cols-2'
             }
           >
             {/* Left */}
             <div
-              className={'col-span-1 lg:mt-0 mt-4 rounded-t-xl rounded-b-xl'}
+              className={
+                'col-span-3 lg:col-span-1 lg:mt-0 mt-4 rounded-t-xl rounded-b-xl md:col-span-1'
+              }
             >
               <AspectRatio ratio={2 / 2}>
                 <Image
@@ -158,14 +163,18 @@ export default async function UserProfile({ params: { profileUrl } }) {
             </div>
             {/* Center */}
             <div
-              className={'border border-ring col-span-2 p-8 rounded-xl mt-4'}
+              className={
+                'border border-ring col-span-2 p-8 rounded-xl mt-4 md:col-span-1'
+              }
             >
               <div className={'flex flex-wrap items-center'}>
                 <p>{userData.bio}</p>
               </div>
             </div>
             {/* Right */}
-            <Card className={'col-span-2 border-none'}>
+            <Card
+              className={'col-span-3 border-none lg:col-span-1 md:col-span-2'}
+            >
               <CardHeader>
                 <div className={'grid grid-cols-2'}>
                   <CardTitle className={'col-span-1'}>User Profile</CardTitle>
