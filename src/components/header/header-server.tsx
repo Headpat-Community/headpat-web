@@ -7,23 +7,20 @@ import { Button } from '@/components/ui/button'
 import { ArrowRightIcon } from 'lucide-react'
 import MobileNav from '@/components/header/mobile-nav'
 import { headers } from 'next/headers'
+import { createSessionServerClient } from '@/app/appwrite-session'
 
 export default async function Header() {
-  const headersList = headers()
-  const cookieHeader = headersList.get('cookie')
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_DOMAIN}/api/user/account`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Cookie: cookieHeader,
-      },
-    }
-  )
+  const { account } = await createSessionServerClient()
+  let jwtBool: boolean = false
 
-  const userData = await response.json()
-  const jwtBool: boolean = userData.code !== 401
+  try {
+    const response = await account.get()
+    if (response.$id) {
+      jwtBool = true
+    }
+  } catch (error) {
+    jwtBool = false
+  }
 
   return (
     <div>
