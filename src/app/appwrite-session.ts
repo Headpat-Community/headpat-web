@@ -8,7 +8,7 @@ import {
   Messaging,
   Locale,
   Avatars,
-} from 'luke-node-appwrite-edge'
+} from 'node-appwrite'
 import { headers } from 'next/headers'
 
 const createSessionServerClient = async () => {

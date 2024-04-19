@@ -1,8 +1,6 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { ErrorMessage } from '@/components/alerts'
-import { account, ID } from '@/app/appwrite-client'
 import {
   SiGithub,
   SiDiscord,
@@ -27,6 +25,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
+import { createUser } from '@/utils/actions/login-actions'
 
 export default function Login() {
   const [data, setData] = useState({
@@ -43,45 +42,41 @@ export default function Login() {
     e.preventDefault()
 
     if (isRegistering) {
-      const response = account.create(
-        ID.unique(),
-        data.email,
-        data.password,
-        data.username
-      )
+      const body = {
+        email: data.email,
+        password: data.password,
+        username: data.username,
+      }
 
-      response.then(
-        function () {
-          router.push('/account')
-        },
-        function (error) {
-          if (error.code === 400) {
-            toast({
-              title: 'Error',
-              description: 'Invalid E-Mail provided.',
-              variant: 'destructive',
-            })
-          } else if (error.code === 401) {
-            toast({
-              title: 'Error',
-              description: 'E-Mail or Password incorrect.',
-              variant: 'destructive',
-            })
-          } else if (error.code === 409) {
-            toast({
-              title: 'Error',
-              description: 'E-Mail already in use.',
-              variant: 'destructive',
-            })
-          } else if (error.code === 429) {
-            toast({
-              title: 'Error',
-              description: 'Too many requests, please try again later.',
-              variant: 'destructive',
-            })
-          }
-        }
-      )
+      const response = await createUser(body)
+
+      if (response.code === 400) {
+        toast({
+          title: 'Error',
+          description: 'Invalid E-Mail or password provided.',
+          variant: 'destructive',
+        })
+      } else if (response.code === 401) {
+        toast({
+          title: 'Error',
+          description: 'E-Mail or Password incorrect.',
+          variant: 'destructive',
+        })
+      } else if (response.code === 409) {
+        toast({
+          title: 'Error',
+          description: 'E-Mail already in use.',
+          variant: 'destructive',
+        })
+      } else if (response.code === 429) {
+        toast({
+          title: 'Error',
+          description: 'Too many requests, please try again later.',
+          variant: 'destructive',
+        })
+      }
+
+      router.push('/account')
     } else {
       const response = await fetch('/api/user/signin', {
         method: 'POST',
@@ -93,6 +88,7 @@ export default function Login() {
           password: data.password,
         }),
       })
+      console.log(response)
 
       if (!response.ok) {
         const data = await response.json()
@@ -196,6 +192,7 @@ export default function Login() {
                         id="password"
                         required
                         type="password"
+                        minLength={8}
                         onChange={(e) =>
                           setData({ ...data, password: e.target.value })
                         }
@@ -207,6 +204,7 @@ export default function Login() {
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id="terms"
+                              required
                               onCheckedChange={() =>
                                 setAcceptedTerms(!acceptedTerms)
                               }

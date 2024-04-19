@@ -3,7 +3,7 @@
 import { createAdminClient } from '@/app/appwrite-session'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
-import { OAuthProvider } from 'luke-node-appwrite-edge'
+import { OAuthProvider } from 'node-appwrite'
 
 export async function signInWithGithub() {
   const { account } = await createAdminClient()

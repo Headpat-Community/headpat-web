@@ -9,7 +9,7 @@ import {
   Messaging,
   Locale,
   Avatars,
-} from 'luke-node-appwrite-edge'
+} from 'node-appwrite'
 
 export const client = new Client()
   .setEndpoint(`${process.env.NEXT_PUBLIC_API_URL}/v1`)
@@ -26,9 +26,4 @@ export const messaging: Messaging = new Messaging(client)
 export const locale: Locale = new Locale(client)
 export const avatars: Avatars = new Avatars(client)
 
-export {
-  ExecutionMethod,
-  ID,
-  Query,
-  AppwriteException,
-} from 'luke-node-appwrite-edge'
+export { ExecutionMethod, ID, Query, AppwriteException } from 'node-appwrite'

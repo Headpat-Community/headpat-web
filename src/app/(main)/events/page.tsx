@@ -1,14 +1,5 @@
-import type { Models } from 'luke-node-appwrite-edge'
-import { Separator } from '@/components/ui/separator'
+import type { Models } from 'node-appwrite'
 import { createAdminClient } from '@/app/appwrite-session'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
 interface EventsType extends Models.Document {

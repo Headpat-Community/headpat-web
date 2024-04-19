@@ -1,18 +1,23 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
-import { account, databases } from '@/app/appwrite-client'
 import { useGetUser } from '@/utils/getUserData'
 import MfaAlert from '@/components/account/profile/mfaAlert'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
-import { Models } from 'luke-node-appwrite-edge'
+import { Models } from 'node-appwrite'
 import MfaRecoveryCodes from '@/components/account/profile/mfaRecoveryCodes'
+import {
+  changeEmail,
+  changePassword,
+  changePreferences,
+  changeProfileUrl,
+} from '@/utils/actions/account/account'
 
 export default function AccountPage({
   mfaList,
@@ -26,58 +31,43 @@ export default function AccountPage({
   const handleEmailChange = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
 
-    try {
-      const email = (document.getElementById('email') as HTMLInputElement).value
-      const email_password = (
-        document.getElementById('email_password') as HTMLInputElement
-      ).value
+    const email = (document.getElementById('email') as HTMLInputElement).value
+    const email_password = (
+      document.getElementById('email_password') as HTMLInputElement
+    ).value
 
-      // Check if profileUrl has at least 4 characters
-      if (email_password.length < 8 || email_password.length > 256) {
-        toast({
-          title: 'Error',
-          description:
-            'Please enter a valid password with at least 8 characters.',
-          variant: 'destructive',
-        })
-        return
-      }
-
-      const promise = account.updateEmail(email, email_password)
-
-      promise.then(
-        function () {
-          toast({
-            title: 'Success!',
-            description: 'E-Mail updated successfully.',
-          })
-        },
-        function (error) {
-          console.log(error?.code) // Failure
-          if (error.code === 401) {
-            toast({
-              title: 'Error',
-              description: "Password doesn't match.",
-              variant: 'destructive',
-            })
-          }
-          if (error.code === 409) {
-            toast({
-              title: 'Error',
-              description: 'Account already exists with this email.',
-              variant: 'destructive',
-            })
-          }
-        }
-      )
-    } catch (error) {
-      console.error(error)
+    // Check if profileUrl has at least 4 characters
+    if (email_password.length < 8 || email_password.length > 256) {
       toast({
         title: 'Error',
-        description: error,
+        description:
+          'Please enter a valid password with at least 8 characters.',
         variant: 'destructive',
       })
-      Sentry.captureException(error)
+      return
+    }
+
+    const data = await changeEmail(email, email_password)
+
+    if (data.type === 'user_invalid_credentials') {
+      toast({
+        title: 'Error',
+        description: "Password doesn't match.",
+        variant: 'destructive',
+      })
+    }
+    if (data.type === 'user_target_already_exists') {
+      toast({
+        title: 'Error',
+        description: 'Account already exists with this email.',
+        variant: 'destructive',
+      })
+    } else {
+      toast({
+        title: 'Success!',
+        description: 'E-Mail updated successfully.',
+      })
+      Sentry.captureException(data)
     }
   }
 
@@ -105,146 +95,102 @@ export default function AccountPage({
       return
     }
 
-    try {
-      const promise = account.updatePassword(newPassword, currentPassword)
+    const promise = await changePassword(newPassword, currentPassword)
 
-      promise.then(
-        function () {
-          toast({
-            title: 'Success!',
-            description: 'Password updated successfully.',
-          })
-          target.reset()
-        },
-        function (error) {
-          console.log(error) // Failure
-          if (error.code === 400) {
-            toast({
-              title: 'Error',
-              description: error.message,
-              variant: 'destructive',
-            })
-          } else if (error.code === 401) {
-            toast({
-              title: 'Error',
-              description: "Password doesn't match.",
-              variant: 'destructive',
-            })
-          } else {
-            toast({
-              title: 'Error',
-              description: error.message,
-              variant: 'destructive',
-            })
-          }
-        }
-      )
-    } catch (error) {
-      console.error(error)
+    if (promise.code === 400) {
       toast({
         title: 'Error',
-        description: error,
+        description: promise.message,
         variant: 'destructive',
       })
-      Sentry.captureException(error)
+    } else if (promise.code === 401) {
+      toast({
+        title: 'Error',
+        description: "Password doesn't match.",
+        variant: 'destructive',
+      })
+    } else {
+      toast({
+        title: 'Success!',
+        description: 'Password updated successfully.',
+      })
+      target.reset()
     }
   }
 
   const handleNsfw = async (checked: boolean) => {
-    try {
-      const prefs = userMe.prefs
-      const putResponse = account.updatePrefs({
-        ...prefs,
-        nsfw: checked,
-      })
+    const prefs = userMe.prefs
+    const body = {
+      ...prefs,
+      nsfw: checked,
+    }
+    const promise = await changePreferences(body)
 
-      putResponse.then(
-        function () {
-          toast({
-            title: 'Success!',
-            description: 'NSFW updated successfully.',
-          })
-          setUserMe((prevUserData: any) => ({
-            ...prevUserData,
-            prefs: {
-              ...prevUserData.prefs,
-              nsfw: checked,
-            },
-          }))
-          router.refresh()
-        },
-        function (error: any) {
-          console.log(error) // Failure
-          toast({
-            title: 'Error',
-            description: 'Failed to update NSFW. Please try again.',
-            variant: 'destructive',
-          })
-        }
-      )
-    } catch (error) {
-      console.error(error.message)
+    if (promise.error) {
       toast({
         title: 'Error',
-        description: error.message,
+        description: 'Failed to update NSFW. Please try again.',
         variant: 'destructive',
       })
-      Sentry.captureException(error)
+    } else {
+      toast({
+        title: 'Success!',
+        description: 'NSFW updated successfully.',
+      })
+      setUserMe((prevUserData: any) => ({
+        ...prevUserData,
+        prefs: {
+          ...prevUserData.prefs,
+          nsfw: checked,
+        },
+      }))
+      router.refresh()
     }
   }
 
   const handleProfileUrlChange = async (event: any) => {
     event.preventDefault()
 
-    try {
-      const profileUrl = (
-        document.getElementById('profileurl') as HTMLInputElement
-      ).value
+    const profileUrl = (
+      document.getElementById('profileurl') as HTMLInputElement
+    ).value
 
-      // Check if profileUrl has at least 4 characters
-      if (profileUrl.length < 3) {
-        toast({
-          title: 'Error',
-          description: 'Profile URL must be at least 4 characters long.',
-          variant: 'destructive',
-        })
-        return
-      }
-
-      const promise = databases.updateDocument(
-        'hp_db',
-        'userdata',
-        userMe?.$id,
-        {
-          profileUrl: profileUrl,
-        }
-      )
-
-      promise.then(
-        function () {
-          toast({
-            title: 'Success!',
-            description: 'Profile URL updated successfully.',
-          })
-          event.target.reset() // Reset the form
-        },
-        function (error) {
-          console.log(error) // Failure
-          toast({
-            title: 'Error',
-            description: 'Failed to update Profile URL. Please try again.',
-            variant: 'destructive',
-          })
-        }
-      )
-    } catch (error) {
-      console.error(error)
+    // Check if profileUrl has at least 4 characters
+    if (profileUrl.length < 3) {
       toast({
         title: 'Error',
-        description: error,
+        description: 'Profile URL must be at least 4 characters long.',
         variant: 'destructive',
       })
-      Sentry.captureException(error)
+      return
+    }
+
+    const promise = await changeProfileUrl(profileUrl)
+
+    if (promise.type === 'document_invalid_structure') {
+      toast({
+        title: 'Error',
+        description: 'Invalid structure.',
+        variant: 'destructive',
+      })
+    } else if (promise.type === 'document_missing_data') {
+      toast({
+        title: 'Error',
+        description: 'Missing data.',
+        variant: 'destructive',
+      })
+    } else if (promise.type === 'document_update_conflict') {
+      toast({
+        title: 'Error',
+        description: 'Cloud is newer than your local data. Please refresh.',
+        variant: 'destructive',
+      })
+    } else {
+      toast({
+        title: 'Success!',
+        description: 'Profile URL updated successfully.',
+      })
+      event.target.reset() // Reset the form
     }
   }
 
@@ -316,6 +262,7 @@ export default function AccountPage({
                       type="password"
                       name="email_password"
                       id="email_password"
+                      minLength={8}
                       required
                       autoComplete="current-password"
                     />
