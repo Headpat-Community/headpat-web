@@ -23,8 +23,6 @@ const createSessionServerClient = async () => {
 
   if (sessionCookie) {
     client.setSession(sessionCookie.split('=')[1])
-  } else {
-    throw new Error('No session cookie found')
   }
 
   return {
