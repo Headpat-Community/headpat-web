@@ -1,4 +1,4 @@
-import { AppwriteException, Models } from 'node-appwrite'
+import type { AppwriteException, Models } from 'node-appwrite'
 
 /**
  * This data is returned from the API by calling their own account data.

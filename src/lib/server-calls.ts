@@ -3,9 +3,7 @@ import type { UserAccountType, UserDataType } from '@/utils/types'
 
 export async function getAccount() {
   const { account } = await createSessionServerClient()
-  const accountData: UserAccountType = await account.get().catch((error) => {
-    return error
-  })
+  const accountData: UserAccountType = await account.get()
   return accountData
 }
 

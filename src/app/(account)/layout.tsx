@@ -1,11 +1,15 @@
 import Header from '@/components/account/header-server'
 import { getAccount } from '@/lib/server-calls'
 import { redirect } from 'next/navigation'
+import { AppwriteException } from 'node-appwrite'
 
 export default async function Layout({ children }) {
   const userAccountData = await getAccount()
 
-  if (userAccountData.type === 'general_unauthorized_scope') {
+  if (
+    !(userAccountData instanceof AppwriteException) ||
+    userAccountData.type === 'general_unauthorized_scope'
+  ) {
     redirect('/login')
   }
 
