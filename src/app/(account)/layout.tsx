@@ -1,15 +1,12 @@
 import Header from '@/components/account/header-server'
-import { getAccount } from '@/lib/server-calls'
+import { createSessionServerClient } from '@/app/appwrite-session'
 import { redirect } from 'next/navigation'
-import { AppwriteException } from 'node-appwrite'
 
 export default async function Layout({ children }) {
-  const userAccountData = await getAccount()
-
-  if (
-    !(userAccountData instanceof AppwriteException) ||
-    userAccountData.type === 'general_unauthorized_scope'
-  ) {
+  try {
+    const { account } = await createSessionServerClient()
+    await account.get()
+  } catch (error) {
     redirect('/login')
   }
 
