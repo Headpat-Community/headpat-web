@@ -6,7 +6,6 @@ import { ThemeToggle } from '@/components/ThemeToggle'
 import { Button } from '@/components/ui/button'
 import { ArrowRightIcon } from 'lucide-react'
 import MobileNav from '@/components/header/mobile-nav'
-import { headers } from 'next/headers'
 import { createSessionServerClient } from '@/app/appwrite-session'
 
 export default async function Header() {

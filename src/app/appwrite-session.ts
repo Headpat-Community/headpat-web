@@ -11,7 +11,7 @@ import {
 } from 'node-appwrite'
 import { headers } from 'next/headers'
 
-const createSessionServerClient = async () => {
+export async function createSessionServerClient() {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
   const cookies = cookieHeader ? cookieHeader.split('; ') : []
@@ -53,7 +53,7 @@ const createSessionServerClient = async () => {
   }
 }
 
-const createSessionClient = async (request: any) => {
+export async function createSessionClient(request: any) {
   const client = new Client()
     .setEndpoint(`${process.env.NEXT_PUBLIC_API_URL}/v1`)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
@@ -94,7 +94,7 @@ const createSessionClient = async (request: any) => {
   }
 }
 
-const createAdminClient = async () => {
+export async function createAdminClient() {
   const client = new Client()
     .setEndpoint(`${process.env.NEXT_PUBLIC_API_URL}/v1`)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
@@ -127,5 +127,3 @@ const createAdminClient = async () => {
     },
   }
 }
-
-export { createSessionClient, createAdminClient, createSessionServerClient }

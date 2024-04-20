@@ -1,6 +1,7 @@
 import Client from './page.client'
 import { headers } from 'next/headers'
 import { createSessionServerClient } from '@/app/appwrite-session'
+import { getLoggedInUser } from '@/lib/server-calls'
 
 export const metadata = {
   title: 'Gallery',
@@ -11,9 +12,7 @@ export const metadata = {
 export const runtime = 'edge'
 
 export default async function Gallery() {
-  const { account } = await createSessionServerClient()
-
-  const accountData = await account.get()
+  const accountData = await getLoggedInUser()
   const enableNsfw = accountData?.prefs?.nsfw
 
   return (
