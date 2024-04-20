@@ -1,71 +1,59 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { ErrorMessage, SuccessMessage } from '@/components/alerts'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { databases } from '@/app/appwrite-client'
 import { useGetUser } from '@/utils/getUserData'
 import { useToast } from '@/components/ui/use-toast'
+import { editSocials } from '@/utils/actions/account/socials'
+import * as Sentry from '@sentry/nextjs'
 
 export default function AccountPage() {
   const { toast } = useToast()
   const [isUploading, setIsUploading] = useState(false)
-  const { userMe, userData, setUserData } = useGetUser()
+  const { userData, setUserData } = useGetUser()
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
 
-    try {
-      setIsUploading(true)
+    setIsUploading(true)
 
-      const promise = databases.updateDocument(
-        'hp_db',
-        'userdata',
-        userMe?.$id,
-        {
-          discordname: (
-            document.getElementById('discordname') as HTMLInputElement
-          ).value,
-          telegramname: (
-            document.getElementById('telegramname') as HTMLInputElement
-          ).value,
-          furaffinityname: (
-            document.getElementById('furaffinityname') as HTMLInputElement
-          ).value,
-          X_name: (document.getElementById('X_name') as HTMLInputElement).value,
-          twitchname: (
-            document.getElementById('twitchname') as HTMLInputElement
-          ).value,
-        }
-      )
+    const discordname = (
+      document.getElementById('discordname') as HTMLInputElement
+    ).value
+    const telegramname = (
+      document.getElementById('telegramname') as HTMLInputElement
+    ).value
+    const furaffinityname = (
+      document.getElementById('furaffinityname') as HTMLInputElement
+    ).value
+    const X_name = (document.getElementById('X_name') as HTMLInputElement).value
+    const twitchname = (
+      document.getElementById('twitchname') as HTMLInputElement
+    ).value
 
-      promise.then(
-        function () {
-          setIsUploading(false)
-          toast({
-            title: 'Succees!',
-            description: 'Data has been saved.',
-          })
-        },
-        function (error) {
-          console.log(error) // Failure
-          toast({
-            title: 'Error',
-            description: 'Failed to upload Data',
-            variant: 'destructive',
-          })
-          setIsUploading(false)
-        }
-      )
-    } catch (error) {
-      setIsUploading(false)
-      console.error(error)
+    const promise = await editSocials(
+      discordname,
+      telegramname,
+      furaffinityname,
+      X_name,
+      twitchname
+    )
+
+    if (promise.error) {
       toast({
         title: 'Error',
-        description: 'Failed to upload Data',
+        description: 'Failed to upload Data.',
         variant: 'destructive',
+      })
+      Sentry.captureException(promise)
+      setIsUploading(false)
+    } else {
+      setIsUploading(false)
+      toast({
+        title: 'Succees!',
+        description: 'Data has been saved.',
       })
     }
   }
