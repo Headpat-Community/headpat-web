@@ -69,7 +69,7 @@ export default async function Users() {
                     <div className="space-y-1">
                       <h4 className="text-sm font-semibold">{`@${user.displayName}`}</h4>
                       <p className="text-sm flex-wrap">{user.status}</p>
-                      {!isBirthday && (
+                      {isBirthday && (
                         <div className="flex items-center pt-2">
                           <CakeIcon className="mr-2 h-4 w-4 opacity-70" />{' '}
                           <span className="text-xs text-muted-foreground">
