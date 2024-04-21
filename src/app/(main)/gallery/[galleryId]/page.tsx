@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { createSessionServerClient } from '@/app/appwrite-session'
 import { Query } from '@/app/appwrite-server'
+import { getLoggedInUser } from '@/lib/server-calls'
 
 export const metadata = {
   title: 'Gallery',
@@ -16,8 +17,8 @@ export const runtime = 'edge'
 
 export default async function Gallery({ params: { galleryId } }) {
   const { account, databases } = await createSessionServerClient()
-  const userSelf = await account.get()
-  const enableNsfw = userSelf.prefs.nsfw || false
+  const userSelf = await getLoggedInUser()
+  const enableNsfw = userSelf?.prefs?.nsfw || false
 
   const gallery: GalleryType = await databases.listDocuments(
     'hp_db',
