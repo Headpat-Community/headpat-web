@@ -15,8 +15,11 @@ export async function createSessionServerClient() {
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
   const cookies = cookieHeader ? cookieHeader.split('; ') : []
-  const sessionCookie = cookies.find((cookie) => cookie.startsWith('a_session'))
-
+  const sessionCookie = cookies.find((cookie) =>
+    cookie.startsWith(
+      `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
+    )
+  )
   const client = new Client()
     .setEndpoint(`${process.env.NEXT_PUBLIC_API_URL}/v1`)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
