@@ -1,11 +1,12 @@
 'use client'
-import { useCallback, useState, useRef } from 'react'
+import React, { useCallback, useState, useRef } from 'react'
 import { ErrorMessage, SuccessMessage } from '@/components/alerts'
 
 export default function PageClient() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [isUploading, setIsUploading] = useState<boolean>(false)
-  const [deliverAtEurofurence, setDeliverAtEurofurence] = useState<boolean>(false)
+  const [deliverAtEurofurence, setDeliverAtEurofurence] =
+    useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const displaynameRef = useRef<HTMLInputElement>(null)
@@ -14,13 +15,16 @@ export default function PageClient() {
   const speciesRef = useRef<HTMLInputElement>(null)
   const addressRef = useRef<HTMLInputElement>(null)
   const cityRef = useRef<HTMLInputElement>(null)
-  const countryRef = useRef<HTMLInputElement>(null)
+  const countryRef = useRef<HTMLSelectElement>(null)
   const stateRef = useRef<HTMLInputElement>(null)
   const postalcodeRef = useRef<HTMLInputElement>(null)
 
-  const handleCheckboxChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setDeliverAtEurofurence(event.target.checked)
-  }, [])
+  const handleCheckboxChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setDeliverAtEurofurence(event.target.checked)
+    },
+    []
+  )
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files ? event.target.files[0] : null
@@ -41,7 +45,7 @@ export default function PageClient() {
       }, 5000)
       return
     }
-    if (selectedFile && selectedFile.size > 1 * 1024 * 1024) {
+    if (selectedFile && selectedFile.size > 1024 * 1024) {
       setError('File size must be less than 1 MB.')
       setTimeout(() => {
         setError(null)
@@ -51,7 +55,9 @@ export default function PageClient() {
     const fileReader = new FileReader()
     fileReader.readAsDataURL(selectedFile)
     fileReader.onload = (event) => {
-      const imgElement = document.getElementById('selected-image') as HTMLImageElement
+      const imgElement = document.getElementById(
+        'selected-image'
+      ) as HTMLImageElement
       imgElement.src = event.target.result as string
       const img = new Image()
       img.src = event.target.result as string
@@ -68,10 +74,12 @@ export default function PageClient() {
     }
   }
 
-  const handleDrop = useCallback((event: React.DragEvent<HTMLLabelElement>) => {
+  const handleDrop = useCallback((event: React.DragEvent<HTMLElement>) => {
     event.preventDefault()
     const droppedFile = event.dataTransfer.files[0]
-    handleFileChange({ target: { files: [droppedFile] } } as React.ChangeEvent<HTMLInputElement>)
+    handleFileChange({
+      target: { files: [droppedFile] } as any,
+    } as React.ChangeEvent<HTMLInputElement>)
   }, [])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -119,7 +127,7 @@ export default function PageClient() {
             country: countryRef.current?.value,
             state: stateRef.current?.value,
             postalcode: postalcodeRef.current?.value,
-            deliver_at_eurofurence: deliverAtEurofurence.checked,
+            deliver_at_eurofurence: deliverAtEurofurence,
           },
         })
       )
