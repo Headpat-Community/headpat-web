@@ -3,27 +3,27 @@ import { useCallback, useState, useRef } from 'react'
 import { ErrorMessage, SuccessMessage } from '@/components/alerts'
 
 export default function PageClient() {
-  const [selectedFile, setSelectedFile] = useState(null)
-  const [isUploading, setIsUploading] = useState(false)
-  const [deliverAtEurofurence, setDeliverAtEurofurence] = useState(false)
-  const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(null)
-  const displaynameRef = useRef('')
-  const nicknameRef = useRef('')
-  const pronounsRef = useRef('')
-  const speciesRef = useRef('')
-  const addressRef = useRef('')
-  const cityRef = useRef('')
-  const countryRef = useRef('')
-  const stateRef = useRef('')
-  const postalcodeRef = useRef('')
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [isUploading, setIsUploading] = useState<boolean>(false)
+  const [deliverAtEurofurence, setDeliverAtEurofurence] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
+  const displaynameRef = useRef<HTMLInputElement>(null)
+  const nicknameRef = useRef<HTMLInputElement>(null)
+  const pronounsRef = useRef<HTMLInputElement>(null)
+  const speciesRef = useRef<HTMLInputElement>(null)
+  const addressRef = useRef<HTMLInputElement>(null)
+  const cityRef = useRef<HTMLInputElement>(null)
+  const countryRef = useRef<HTMLInputElement>(null)
+  const stateRef = useRef<HTMLInputElement>(null)
+  const postalcodeRef = useRef<HTMLInputElement>(null)
 
-  const handleCheckboxChange = useCallback((event) => {
+  const handleCheckboxChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setDeliverAtEurofurence(event.target.checked)
   }, [])
 
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0]
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files ? event.target.files[0] : null
     const validImageTypes = [
       'image/jpeg',
       'image/png',
@@ -32,7 +32,7 @@ export default function PageClient() {
       'image/x-icon',
       'image/vnd.djvu',
     ]
-    if (!validImageTypes.includes(selectedFile.type)) {
+    if (selectedFile && !validImageTypes.includes(selectedFile.type)) {
       setError(
         'Please select a valid image file type (JPEG, PNG, SVG, TIFF, ICO, DVU).'
       )
@@ -41,7 +41,7 @@ export default function PageClient() {
       }, 5000)
       return
     }
-    if (selectedFile.size > 1 * 1024 * 1024) {
+    if (selectedFile && selectedFile.size > 1 * 1024 * 1024) {
       setError('File size must be less than 1 MB.')
       setTimeout(() => {
         setError(null)
@@ -51,10 +51,10 @@ export default function PageClient() {
     const fileReader = new FileReader()
     fileReader.readAsDataURL(selectedFile)
     fileReader.onload = (event) => {
-      const imgElement = document.getElementById('selected-image')
-      imgElement.src = event.target.result
+      const imgElement = document.getElementById('selected-image') as HTMLImageElement
+      imgElement.src = event.target.result as string
       const img = new Image()
-      img.src = event.target.result
+      img.src = event.target.result as string
       img.onload = () => {
         if (img.width >= 128 && img.height >= 128) {
           setSelectedFile(selectedFile)
@@ -68,13 +68,13 @@ export default function PageClient() {
     }
   }
 
-  const handleDrop = useCallback((event) => {
+  const handleDrop = useCallback((event: React.DragEvent<HTMLLabelElement>) => {
     event.preventDefault()
     const droppedFile = event.dataTransfer.files[0]
-    handleFileChange({ target: { files: [droppedFile] } })
+    handleFileChange({ target: { files: [droppedFile] } } as React.ChangeEvent<HTMLInputElement>)
   }, [])
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const formData = new FormData()
@@ -119,7 +119,7 @@ export default function PageClient() {
             country: countryRef.current?.value,
             state: stateRef.current?.value,
             postalcode: postalcodeRef.current?.value,
-            deliver_at_eurofurence: deliver_at_eurofurence.checked,
+            deliver_at_eurofurence: deliverAtEurofurence.checked,
           },
         })
       )
