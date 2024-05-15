@@ -11,7 +11,6 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { useToast } from '@/components/ui/use-toast'
 import { useState } from 'react'
 import UploadAvatar from '@/app/(account)/account/profile/frontpage/uploadAvatar'
-import { CheckedState } from '@radix-ui/react-menu'
 import UploadBanner from '@/app/(account)/account/profile/frontpage/uploadBanner'
 
 export default function AccountPage() {
@@ -85,7 +84,7 @@ export default function AccountPage() {
     { name: 'Socials', href: '/account/profile/socials', current: false },
   ]
 
-  const hideBirthday = async (event: CheckedState) => {
+  const hideBirthday = async (event) => {
     if (event) {
       await databases.updateDocument('hp_db', 'userdata', userMe.$id, {
         birthday: '1900-01-01T00:00:00',
