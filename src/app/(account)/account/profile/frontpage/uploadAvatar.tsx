@@ -1,6 +1,6 @@
 'use client'
 import { useToast } from '@/components/ui/use-toast'
-import { UserAvatarsDocumentType, UserDataDocumentsType } from '@/utils/types'
+import { UserDataDocumentsType } from '@/utils/types'
 import { databases, ID, storage } from '@/app/appwrite-client'
 import * as Sentry from '@sentry/nextjs'
 import { Input } from '@/components/ui/input'
@@ -61,7 +61,7 @@ export default function UploadAvatar({
       // If the user already has an avatar, delete it
       if (avatarDocument.avatarId) {
         // Delete the old avatar
-        const data = await storage.deleteFile('avatars', avatarDocument.avatarId).catch((error) => {
+        await storage.deleteFile('avatars', avatarDocument.avatarId).catch((error) => {
           //console.error(error)
           Sentry.captureException('Failed to delete old avatar.', error)
         })

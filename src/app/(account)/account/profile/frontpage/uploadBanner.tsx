@@ -1,6 +1,6 @@
 'use client'
 import { useToast } from '@/components/ui/use-toast'
-import { UserAvatarsDocumentType } from '@/utils/types'
+import { UserAvatarsDocumentType, UserDataDocumentsType } from '@/utils/types'
 import { databases, ID, storage } from '@/app/appwrite-client'
 import * as Sentry from '@sentry/nextjs'
 import { Input } from '@/components/ui/input'
@@ -56,19 +56,21 @@ export default function UploadBanner({
       setIsUploading(true) // Set isUploading to true before making the API call
 
       // Get the user's banner document
-      const bannerDocument: UserAvatarsDocumentType =
+      const bannerDocument: UserDataDocumentsType =
         await databases.getDocument('hp_db', 'userdata', userMe.$id)
       // If the user already has an banner, delete it
       if (bannerDocument.profileBannerId) {
         // Delete the old banner
-        console.log('deleting')
-        await storage.deleteFile('banners', bannerDocument.profileBannerId)
+        await storage.deleteFile('banners', bannerDocument.profileBannerId).catch((error) => {
+          //console.error(error)
+          Sentry.captureException('Failed to delete old banner.', error)
+        })
       }
 
       // Upload the new banner
       const fileData = storage.createFile(
         'banners',
-        ID.unique(),
+        bannerDocument.$id,
         (document.getElementById('banner-upload') as HTMLInputElement).files[0]
       )
 
