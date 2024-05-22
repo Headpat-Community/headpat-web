@@ -1,6 +1,6 @@
 'use client'
 import { useToast } from '@/components/ui/use-toast'
-import { UserAvatarsDocumentType } from '@/utils/types'
+import { UserAvatarsDocumentType, UserDataDocumentsType } from '@/utils/types'
 import { databases, ID, storage } from '@/app/appwrite-client'
 import * as Sentry from '@sentry/nextjs'
 import { Input } from '@/components/ui/input'
@@ -56,19 +56,21 @@ export default function UploadAvatar({
       setIsUploading(true) // Set isUploading to true before making the API call
 
       // Get the user's avatar document
-      const avatarDocument: UserAvatarsDocumentType =
+      const avatarDocument: UserDataDocumentsType =
         await databases.getDocument('hp_db', 'userdata', userMe.$id)
       // If the user already has an avatar, delete it
-      if (avatarDocument.galleryId) {
+      if (avatarDocument.avatarId) {
         // Delete the old avatar
-        console.log('deleting')
-        await storage.deleteFile('avatars', avatarDocument.galleryId)
+        const data = await storage.deleteFile('avatars', avatarDocument.avatarId).catch((error) => {
+          //console.error(error)
+          Sentry.captureException('Failed to delete old avatar.', error)
+        })
       }
 
       // Upload the new avatar
       const fileData = storage.createFile(
         'avatars',
-        ID.unique(),
+        avatarDocument.$id,
         (document.getElementById('avatar-upload') as HTMLInputElement).files[0]
       )
 
