@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.headpat.app",
+      "sha256_cert_fingerprints": [
+        "7F:F9:2F:97:E2:56:8D:31:79:89:2A:B2:A4:BD:00:B7:A4:28:64:36:EE:BA:8E:0A:F8:C0:85:0C:41:F8:A3:21"
+      ]
+    }
+  }
+]
