@@ -88,7 +88,6 @@ export default function Login() {
           password: data.password,
         }),
       })
-      console.log(response)
 
       if (!response.ok) {
         const data = await response.json()
