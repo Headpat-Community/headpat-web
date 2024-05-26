@@ -6,7 +6,7 @@ export const metadata = {
 
 export const runtime = 'edge'
 
-export default function Loading() {
+export default function ImpressumPage() {
   return (
     <>
       <div className="px-6 py-32 lg:px-8">
