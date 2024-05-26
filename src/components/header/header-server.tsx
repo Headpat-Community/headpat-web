@@ -21,14 +21,14 @@ export default async function HeaderServer({ children }) {
     <>
       <div className={'min-h-full'}>
         <div className="md:hidden">
-          <MobileNav accountData={accountData}>{children}</MobileNav>
+          <MobileNav accountData={accountData || null}>{children}</MobileNav>
         </div>
         <div className="hidden flex-col md:flex">
           <SidebarResizable
             defaultLayout={defaultLayout}
             defaultCollapsed={defaultCollapsed}
             navCollapsedSize={navCollapsedSize}
-            accountData={accountData}
+            accountData={accountData || null}
           >
             {children}
           </SidebarResizable>
