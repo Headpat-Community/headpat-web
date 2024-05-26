@@ -10,7 +10,7 @@ export const metadata = {
 
 const getAvatarImageUrl = (galleryId: string) => {
   if (!galleryId) {
-    return '/logos/Headpat_new_logo.webp'
+    return '/logos/Headpat_Logo_web_1024x1024_240518-02.png'
   }
   return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`
 }

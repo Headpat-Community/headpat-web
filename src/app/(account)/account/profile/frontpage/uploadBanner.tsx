@@ -56,15 +56,20 @@ export default function UploadBanner({
       setIsUploading(true) // Set isUploading to true before making the API call
 
       // Get the user's banner document
-      const bannerDocument: UserDataDocumentsType =
-        await databases.getDocument('hp_db', 'userdata', userMe.$id)
+      const bannerDocument: UserDataDocumentsType = await databases.getDocument(
+        'hp_db',
+        'userdata',
+        userMe.$id
+      )
       // If the user already has an banner, delete it
       if (bannerDocument.profileBannerId) {
         // Delete the old banner
-        await storage.deleteFile('banners', bannerDocument.profileBannerId).catch((error) => {
-          //console.error(error)
-          Sentry.captureException('Failed to delete old banner.', error)
-        })
+        await storage
+          .deleteFile('banners', bannerDocument.profileBannerId)
+          .catch((error) => {
+            //console.error(error)
+            Sentry.captureException('Failed to delete old banner.', error)
+          })
       }
 
       // Upload the new banner
@@ -149,7 +154,8 @@ export default function UploadBanner({
         <img
           id="banner-image"
           src={
-            getBannerImageUrl(userData?.profileBannerId) || '/logos/logo.webp'
+            getBannerImageUrl(userData?.profileBannerId) ||
+            '/logos/Headpat_Logo_web_512x512_240518-03.png'
           }
           alt="Banner"
           className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"

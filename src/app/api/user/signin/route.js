@@ -24,7 +24,7 @@ export async function POST(request) {
       {
         httpOnly: true,
         secure: true,
-        sameSite: 'strict',
+        sameSite: 'Strict',
         maxAge: new Date(session.expire),
         path: '/',
         domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,

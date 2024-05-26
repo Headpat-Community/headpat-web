@@ -32,9 +32,9 @@ export default async function Dashboard({ children }) {
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href={'/'} className="flex items-center gap-2 font-semibold">
               <Image
-                src={'/logos/Headpat_new_logo.webp'}
+                src={'/logos/Headpat_Logo_web_1024x1024_240518-02.png'}
                 alt={'Headpat logo'}
-                className={'h-8 w-8'}
+                className={'h-8 w-8 rounded-full'}
                 width={24}
                 height={24}
               />
@@ -128,7 +128,7 @@ export default async function Dashboard({ children }) {
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <Image
-                    src={'/logos/Headpat_new_logo.webp'}
+                    src={'/logos/Headpat_Logo_web_1024x1024_240518-02.png'}
                     alt={'Headpat logo'}
                     className={'h-10 w-10'}
                     width={24}

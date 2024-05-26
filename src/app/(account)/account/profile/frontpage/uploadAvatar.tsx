@@ -56,15 +56,20 @@ export default function UploadAvatar({
       setIsUploading(true) // Set isUploading to true before making the API call
 
       // Get the user's avatar document
-      const avatarDocument: UserDataDocumentsType =
-        await databases.getDocument('hp_db', 'userdata', userMe.$id)
+      const avatarDocument: UserDataDocumentsType = await databases.getDocument(
+        'hp_db',
+        'userdata',
+        userMe.$id
+      )
       // If the user already has an avatar, delete it
       if (avatarDocument.avatarId) {
         // Delete the old avatar
-        await storage.deleteFile('avatars', avatarDocument.avatarId).catch((error) => {
-          //console.error(error)
-          Sentry.captureException('Failed to delete old avatar.', error)
-        })
+        await storage
+          .deleteFile('avatars', avatarDocument.avatarId)
+          .catch((error) => {
+            //console.error(error)
+            Sentry.captureException('Failed to delete old avatar.', error)
+          })
       }
 
       // Upload the new avatar
@@ -148,7 +153,10 @@ export default function UploadAvatar({
       <div className="col-span-full flex items-center gap-x-8">
         <img
           id="avatar-image"
-          src={getAvatarImageUrl(userData?.avatarId) || '/logos/logo.webp'}
+          src={
+            getAvatarImageUrl(userData?.avatarId) ||
+            '/logos/Headpat_Logo_web_512x512_240518-03.png'
+          }
           alt="Avatar"
           className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
         />

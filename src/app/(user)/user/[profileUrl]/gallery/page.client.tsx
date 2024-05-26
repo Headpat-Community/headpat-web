@@ -152,7 +152,7 @@ export default function FetchGallery() {
                       />
                     ) : (
                       <Image
-                        src="/logos/logo-512.webp"
+                        src="/logos/Headpat_Logo_web_512x512_240518-03.png"
                         alt=""
                         className="h-16 w-16 flex-none rounded-full ring-1 ring-black/10 dark:ring-white/10"
                         width={64}

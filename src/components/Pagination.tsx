@@ -1,3 +1,4 @@
+'use client'
 import {
   Pagination,
   PaginationContent,
@@ -22,6 +23,7 @@ export default function PaginationComponent({
     <div className="flex justify-center items-center my-4">
       <Pagination>
         <PaginationContent>
+          Page:
           {currentPage > 1 && (
             <PaginationItem>
               <PaginationLink

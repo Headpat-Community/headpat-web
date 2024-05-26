@@ -64,7 +64,7 @@ const ResetPassword = () => {
         <div className="flex flex-col justify-center sm:mx-auto sm:w-full sm:max-w-sm">
           <Image
             className="mx-auto h-24 w-auto"
-            src="/logos/Headpat_new_logo.webp"
+            src="/logos/Headpat_Logo_web_512x512_240518-03.png"
             alt="Headpat Logo"
             width={128}
             height={128}
