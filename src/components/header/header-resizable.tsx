@@ -100,7 +100,7 @@ export default function SidebarResizable({
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-          <ScrollArea className={'h-full'}>
+          <ScrollArea className={'h-full w-full'}>
             {children}
             <Footer />
           </ScrollArea>

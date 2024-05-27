@@ -69,11 +69,6 @@ export default async function UserProfile({ params: { profileUrl } }) {
     return notFound()
   }
 
-  // mobile 30/6
-  // pc 30/3
-
-  console.log(await getAvatarImageUrl(userData.avatarId))
-
   return (
     <main className={'max-w-7xl mx-auto'}>
       {userData && ( // Check if userData exists

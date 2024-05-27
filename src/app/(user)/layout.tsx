@@ -4,8 +4,7 @@ import Footer from '../../components/footer'
 export default function LocaleLayout({ children }) {
   return (
     <div>
-      <Header />
-      {children}
+      <Header>{children}</Header>
       <Footer />
     </div>
   )
