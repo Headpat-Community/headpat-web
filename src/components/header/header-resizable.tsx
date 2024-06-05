@@ -57,7 +57,7 @@ export default function SidebarResizable({
         >
           <div
             className={cn(
-              'flex flex-col h-full w-full',
+              'flex flex-col h-full w-full z-50',
               isCollapsed && 'items-center',
               'sticky top-0' // Make the header sticky
             )}
