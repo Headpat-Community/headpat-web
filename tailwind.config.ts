@@ -17,6 +17,12 @@ const config = {
       },
     },
     extend: {
+      screens: {
+        xs: '320px',
+        '3xl': '1600px',
+        '4xl': '1800px',
+        '5xl': '2000px',
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
+
+const createNextIntlPlugin = require('next-intl/plugin')
+
+const withNextIntl = createNextIntlPlugin()
+
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
@@ -43,7 +48,8 @@ const nextConfig = {
     ]
   },
 }
-module.exports = nextConfig
+
+module.exports = withNextIntl(nextConfig)
 
 // Injected content via Sentry wizard below
 

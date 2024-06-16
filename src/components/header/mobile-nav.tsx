@@ -16,22 +16,31 @@ import { Nav } from '@/components/header/header-nav'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tabs } from '@/components/ui/tabs'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function MobileNav({
+  lang,
   accountData,
   children,
 }): React.JSX.Element {
   const router = useRouter()
+  const [isOpen, setIsOpen] = React.useState(false)
 
   return (
     <>
       <header className={'border-b'}>
         <div className={'flex align-middle justify-between items-center px-2'}>
           <div className={'flex h-[52px] items-center ml-2'}>
-            <Triangle />
+            <Image
+              src={'/logos/Headpat_Logo_web_128x128_240518-05.png'}
+              width={32}
+              height={32}
+              alt={'Headpat logo'}
+              className={'rounded-full'}
+            />
             <span className={'ml-2'}>Headpat</span>
           </div>
-          <Sheet>
+          <Sheet onOpenChange={(open) => setIsOpen(open)} open={isOpen}>
             <SheetTrigger asChild>
               <Button variant="outline" size={'icon'}>
                 <MenuIcon />
@@ -58,17 +67,33 @@ export default function MobileNav({
                 >
                   <h1 className={'border-b pb-2'}>Pages</h1>
                   <div>
-                    <Nav isCollapsed={false} links={Nav1()} />
+                    <Nav
+                      isCollapsed={false}
+                      links={Nav1(lang, '')}
+                      setIsOpen={setIsOpen}
+                    />
                     <Separator />
-                    <Nav isCollapsed={false} links={Nav2(accountData)} />
+                    <Nav
+                      isCollapsed={false}
+                      links={Nav2(accountData, lang, '')}
+                      setIsOpen={setIsOpen}
+                    />
                     <Separator />
-                    <Nav isCollapsed={false} links={Nav3()} />
+                    <Nav
+                      isCollapsed={false}
+                      links={Nav3(lang, '')}
+                      setIsOpen={setIsOpen}
+                    />
                   </div>
                 </div>
               </ScrollArea>
               <div className={'mt-auto'}>
                 <Separator className={'mb-2'} />
-                <Nav isCollapsed={false} links={NavFooter(accountData)} />
+                <Nav
+                  isCollapsed={false}
+                  links={NavFooter(accountData, lang, '')}
+                  setIsOpen={setIsOpen}
+                />
               </div>
             </SheetContent>
           </Sheet>

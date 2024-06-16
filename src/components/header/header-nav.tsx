@@ -10,7 +10,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { usePathname } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 
 interface NavProps {
   isCollapsed: boolean
@@ -21,10 +21,12 @@ interface NavProps {
     variant: 'default' | 'ghost'
     href: string
   }[]
+  setIsOpen?: (isOpen: boolean) => void
 }
 
-export function Nav({ isCollapsed, links }: NavProps) {
+export function Nav({ isCollapsed, links, setIsOpen }: NavProps) {
   const currentPath = usePathname()
+  const params = useParams()
 
   return (
     <div
@@ -34,9 +36,10 @@ export function Nav({ isCollapsed, links }: NavProps) {
       <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
         {links.map((link, index) => {
           const isActive =
-            link.href === '/'
-              ? currentPath === link.href
+            link.title === 'Home'
+              ? currentPath === link.href.replace(/\/$/, '')
               : currentPath.startsWith(link.href)
+
           const variant = isActive ? 'default' : 'ghost'
 
           return isCollapsed ? (
@@ -44,6 +47,12 @@ export function Nav({ isCollapsed, links }: NavProps) {
               <TooltipTrigger asChild>
                 <Link
                   href={link.href}
+                  onClick={(e) => {
+                    if (window.innerWidth <= 768) {
+                      // 768px is a common breakpoint for mobile devices
+                      setIsOpen(false)
+                    }
+                  }}
                   className={cn(
                     buttonVariants({ variant, size: 'icon' }),
                     'h-9 w-9',
@@ -68,6 +77,12 @@ export function Nav({ isCollapsed, links }: NavProps) {
             <Link
               key={index}
               href={link.href}
+              onClick={(e) => {
+                if (window.innerWidth <= 768) {
+                  // 768px is a common breakpoint for mobile devices
+                  setIsOpen(false)
+                }
+              }}
               className={cn(
                 buttonVariants({ variant, size: 'sm' }),
                 variant === 'default' &&

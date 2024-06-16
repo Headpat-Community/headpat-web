@@ -12,59 +12,59 @@ import {
 } from 'lucide-react'
 import { UserAccountType } from '@/utils/types'
 
-export const Nav1 = () => [
+export const Nav1 = (lang: string, translations) => [
   {
     title: 'Home',
     label: '',
     icon: HomeIcon,
     variant: 'ghost' as const,
-    href: '/',
+    href: `/${lang}/`,
   },
   {
     title: 'Gallery',
     label: '',
     icon: LayoutPanelLeftIcon,
     variant: 'ghost' as const,
-    href: '/gallery',
+    href: `/${lang}/gallery`,
   },
   {
     title: 'Announcements',
     label: '',
     icon: MegaphoneIcon,
     variant: 'ghost' as const,
-    href: '/announcements',
+    href: `/${lang}/announcements`,
   },
   {
     title: 'Events',
     label: '',
     icon: CalendarIcon,
     variant: 'ghost' as const,
-    href: '/events',
+    href: `/${lang}/events`,
   },
   {
     title: 'Users',
     label: '',
     icon: UserSearchIcon,
     variant: 'ghost' as const,
-    href: '/users',
+    href: `/${lang}/users`,
   },
 ]
 
-export const Nav2 = (account: UserAccountType) => {
+export const Nav2 = (account: UserAccountType, lang: string, translations) => {
   return [
     {
       title: 'My Profile',
       label: '',
       icon: File,
       variant: 'ghost' as const,
-      href: account ? '/profile' : '/login',
+      href: account ? `/${lang}/profile` : `/${lang}/login`,
     },
     {
       title: 'Friends',
       label: '',
       icon: UsersIcon,
       variant: 'ghost' as const,
-      href: '#',
+      href: `/${lang}/friends`,
     },
     {
       title: 'Communities',
@@ -76,24 +76,28 @@ export const Nav2 = (account: UserAccountType) => {
   ]
 }
 
-export const Nav3 = () => [
+export const Nav3 = (lang: string, translations) => [
   {
     title: 'Legal',
     label: '',
     icon: FileCheckIcon,
     variant: 'ghost' as const,
-    href: '/legal',
+    href: `/${lang}/legal`,
   },
 ]
 
-export const NavFooter = (account: UserAccountType) => {
+export const NavFooter = (
+  account: UserAccountType,
+  lang: string,
+  translations
+) => {
   return [
     {
       title: account ? 'Account' : 'Login',
       label: '',
       icon: CircleUserIcon,
       variant: 'ghost' as const,
-      href: account ? '/account' : '/login',
+      href: account ? `/${lang}/account` : `/${lang}/login`,
     },
   ]
 }

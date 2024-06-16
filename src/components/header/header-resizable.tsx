@@ -16,6 +16,7 @@ import Image from 'next/image'
 import Footer from '@/components/footer'
 
 export default function SidebarResizable({
+  lang,
   defaultLayout = [265, 440, 655],
   defaultCollapsed = false,
   navCollapsedSize,
@@ -85,25 +86,28 @@ export default function SidebarResizable({
             <ScrollArea className={'h-full overflow-auto'}>
               {/* Make the children scrollable */}
               <div>
-                <Nav isCollapsed={isCollapsed} links={Nav1()} />
+                <Nav isCollapsed={isCollapsed} links={Nav1(lang, '')} />
                 <Separator />
-                <Nav isCollapsed={isCollapsed} links={Nav2(accountData)} />
+                <Nav
+                  isCollapsed={isCollapsed}
+                  links={Nav2(accountData, lang, '')}
+                />
                 <Separator />
-                <Nav isCollapsed={isCollapsed} links={Nav3()} />
+                <Nav isCollapsed={isCollapsed} links={Nav3(lang, '')} />
               </div>
             </ScrollArea>
             <div className={'mt-auto relative bottom-0 block'}>
               <Separator />
-              <Nav isCollapsed={isCollapsed} links={NavFooter(accountData)} />
+              <Nav
+                isCollapsed={isCollapsed}
+                links={NavFooter(accountData, lang, '')}
+              />
             </div>
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-          <ScrollArea className={'h-full w-full'}>
-            {children}
-            <Footer />
-          </ScrollArea>
+          <ScrollArea className={'h-full w-full'}>{children}</ScrollArea>
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>
