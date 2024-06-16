@@ -10,7 +10,7 @@ import {
   UserSearchIcon,
   UsersIcon,
 } from 'lucide-react'
-import { UserAccountType } from '@/utils/types'
+import { UserAccountType } from '@/utils/types/account'
 
 export const Nav1 = (lang: string, translations) => [
   {

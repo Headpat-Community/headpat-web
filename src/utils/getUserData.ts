@@ -1,7 +1,8 @@
 'use client'
 import { useState, useMemo } from 'react'
 import { account, databases } from '@/app/appwrite-client'
-import { UserAccountType, UserDataDocumentsType } from '@/utils/types'
+import { UserAccountType } from '@/utils/types/account'
+import { UserDataDocumentsType } from '@/utils/types/userData'
 
 export const useGetUser = () => {
   const [userMe, setUserMe] = useState<UserAccountType | null>(null)

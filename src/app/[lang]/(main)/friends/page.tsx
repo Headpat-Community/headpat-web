@@ -1,6 +1,5 @@
 import PageLayout from '@/components/pageLayout'
 import { createSessionServerClient } from '@/app/appwrite-session'
-import { UserDataDocumentsType } from '@/utils/types'
 import { Card } from '@/components/ui/card'
 import {
   HoverCard,
@@ -13,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { CakeIcon, CalendarDays } from 'lucide-react'
 import { getFriends } from '@/utils/server-api/friends/getFriends'
 import { getUser } from '@/utils/server-api/account/user'
+import { UserDataDocumentsType } from '@/utils/types/userData'
 
 export const runtime = 'edge'
 

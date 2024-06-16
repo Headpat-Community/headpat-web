@@ -8,7 +8,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '../ui/sheet'
-import { MenuIcon, Triangle } from 'lucide-react'
+import { MenuIcon } from 'lucide-react'
 import * as React from 'react'
 import { Separator } from '../ui/separator'
 import { Nav1, Nav2, Nav3, NavFooter } from '@/components/header/data'

@@ -13,7 +13,6 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Nav1, Nav2, Nav3, NavFooter } from '@/components/header/data'
 import { useState } from 'react'
 import Image from 'next/image'
-import Footer from '@/components/footer'
 
 export default function SidebarResizable({
   lang,

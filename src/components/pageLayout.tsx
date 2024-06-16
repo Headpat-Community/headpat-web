@@ -1,5 +1,4 @@
 import { ThemeToggle } from '@/components/ThemeToggle'
-import { TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Separator } from '@/components/ui/separator'
 import ChangeLanguage from '@/components/system/changeLanguage'
 

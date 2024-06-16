@@ -16,7 +16,7 @@ import {
   changePreferences,
   changeProfileUrl,
 } from '@/utils/actions/account/account'
-import { UserAccountType } from '@/utils/types'
+import { UserAccountType } from '@/utils/types/account'
 
 export default function GeneralAccountView({
   accountData,

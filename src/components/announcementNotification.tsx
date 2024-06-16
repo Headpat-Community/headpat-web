@@ -1,6 +1,5 @@
 import Link from 'next/link'
-import { AnnouncementDataType, AnnouncementDocumentsType } from '@/utils/types'
-import { getAnnouncements } from '@/utils/actions/announcement-actions'
+import { AnnouncementDataType } from '@/utils/types'
 import { createAdminClient } from '@/app/appwrite-session'
 import { notFound } from 'next/navigation'
 
