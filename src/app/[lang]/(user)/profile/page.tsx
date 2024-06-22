@@ -1,9 +1,15 @@
-import { redirect } from 'next/navigation'
 import { getUserData } from '@/utils/server-api/user/getUserData'
+import { redirect } from '@/navigation'
 
 export const runtime = 'edge'
 
 export default async function Profile({ params: { lang } }) {
   const user = await getUserData()
-  return redirect(`/${lang}/user/${user.profileUrl}`)
+  if (!user) {
+    return redirect('/login')
+  }
+  return redirect({
+    pathname: '/user/[profileUrl]',
+    params: { profileUrl: user.profileUrl },
+  })
 }
