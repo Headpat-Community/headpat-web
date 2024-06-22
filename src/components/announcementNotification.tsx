@@ -1,11 +1,11 @@
 import Link from 'next/link'
-import { AnnouncementDataType } from '@/utils/types'
 import { createAdminClient } from '@/app/appwrite-session'
 import { notFound } from 'next/navigation'
+import { Announcements } from '@/utils/types/models'
 
 export default async function AnnouncementNotification() {
   const { databases } = await createAdminClient()
-  const announcementDataResponse: AnnouncementDataType =
+  const announcementDataResponse: Announcements.AnnouncementDataType =
     await databases.listDocuments('hp_db', 'announcements')
   const announcementData = announcementDataResponse.documents[0]
 

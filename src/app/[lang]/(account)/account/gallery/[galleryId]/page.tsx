@@ -2,7 +2,7 @@ import Client from './page.client'
 import { notFound } from 'next/navigation'
 import { headers } from 'next/headers'
 import { createAdminClient } from '@/app/appwrite-session'
-import { GalleryDocumentsType } from '@/utils/types'
+import { Gallery } from '@/utils/types/models'
 
 export const runtime = 'edge'
 
@@ -31,11 +31,8 @@ export default async function AccountSingleGalleryPage({
   const userId = userData?.$id
 
   const { databases } = await createAdminClient()
-  const singleGallery: GalleryDocumentsType = await databases.getDocument(
-    'hp_db',
-    'gallery-images',
-    galleryId
-  )
+  const singleGallery: Gallery.GalleryDocumentsType =
+    await databases.getDocument('hp_db', 'gallery-images', galleryId)
 
   const galleryUserId = singleGallery?.userId
 

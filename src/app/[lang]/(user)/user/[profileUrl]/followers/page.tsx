@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import PageLayout from '@/components/pageLayout'
 import { createSessionServerClient } from '@/app/appwrite-session'
 import { Card } from '@/components/ui/card'
 import {
@@ -6,19 +6,46 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
+import Link from 'next/link'
+import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { CakeIcon, CalendarDays } from 'lucide-react'
-import Image from 'next/image'
-import PageLayout from '@/components/pageLayout'
+import { getUser } from '@/utils/server-api/account/user'
 import { UserData } from '@/utils/types/models'
+import { getFollowers } from '@/utils/server-api/followers/getFollowers'
 
 export const runtime = 'edge'
 
-export default async function Users() {
+export default async function FollowerPage() {
   const { databases } = await createSessionServerClient()
+  const accountData = await getUser()
+  const followers = await getFollowers(accountData.$id)
 
-  const usersData = await databases.listDocuments('hp_db', 'userdata')
-  const users = usersData.documents
+  // For each follower, look up their user data
+  const followerData = await Promise.all(
+    followers.documents.map(async (follower) => {
+      return await databases.getDocument(
+        'hp_db',
+        'userdata',
+        follower.followerId
+      )
+    })
+  )
+
+  if (!followerData) {
+    return (
+      <PageLayout title={'Friends'}>
+        <div className={'flex flex-1 justify-center items-center h-full'}>
+          <div className={'p-4 gap-6 text-center'}>
+            <h1 className={'text-2xl font-semibold'}>No followers found</h1>
+            <p className={'text-muted-foreground'}>
+              They don&apos;t have any followers yet.
+            </p>
+          </div>
+        </div>
+      </PageLayout>
+    )
+  }
 
   const formatDate = (date: Date) =>
     date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')
@@ -29,13 +56,13 @@ export default async function Users() {
   }
 
   return (
-    <PageLayout title={'Users'}>
+    <PageLayout title={'Followers'}>
       <div
         className={
           'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 3xl:grid-cols-8 5xl:grid-cols-10 gap-4 xl:gap-6 p-4 mx-auto'
         }
       >
-        {users.map((user: UserData.UserDataDocumentsType) => {
+        {followerData.map((user: UserData.UserDataDocumentsType) => {
           const today = formatDate(new Date())
           const birthday = user.birthday
             ? formatDate(new Date(user.birthday))
@@ -45,7 +72,7 @@ export default async function Users() {
 
           return (
             <Card className={'border-none h-40 w-40 mx-auto'} key={user.$id}>
-              <HoverCard openDelay={100} closeDelay={100}>
+              <HoverCard>
                 <HoverCardTrigger asChild>
                   <Link href={`/user/${user.profileUrl}`}>
                     {user.avatarId ? (
@@ -57,8 +84,8 @@ export default async function Users() {
                         height={1000}
                       />
                     ) : (
-                      <div className="h-full w-full bg-gray-200 rounded-md flex items-center justify-center">
-                        <p className="text-gray-400 text-center font-mono truncate px-2">
+                      <div className="h-full w-full bg-gray-200 rounded-md flex items-center justify-center text-wrap truncate">
+                        <p className="text-gray-400 text-center">
                           {user.displayName}
                         </p>
                       </div>

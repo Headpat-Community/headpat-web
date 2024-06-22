@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import { ThemeProvider } from './providers'
 import { Toaster } from '@/components/ui/toaster'
 import { Toaster as SonnerToaster } from '@/components/ui/sonner'
+import ContextMenuProvider from '@/components/system/contextMenu'
+import { cn } from '@/lib/utils'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -32,7 +34,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body
-        className={`${inter.className} flex min-h-full bg-white antialiased dark:bg-background`}
+        className={cn(
+          'flex min-h-screen bg-background antialiased',
+          inter.className
+        )}
       >
         <ThemeProvider
           attribute="class"
@@ -40,7 +45,9 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          <div className="w-full">{children}</div>
+          <ContextMenuProvider>
+            <div className="w-full">{children}</div>
+          </ContextMenuProvider>
         </ThemeProvider>
         <Toaster />
         <SonnerToaster />

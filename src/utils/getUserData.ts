@@ -1,19 +1,19 @@
 'use client'
 import { useState, useMemo } from 'react'
 import { account, databases } from '@/app/appwrite-client'
-import { UserAccountType } from '@/utils/types/account'
-import { UserDataDocumentsType } from '@/utils/types/userData'
+import { Account, UserData } from '@/utils/types/models'
 
 export const useGetUser = () => {
-  const [userMe, setUserMe] = useState<UserAccountType | null>(null)
-  const [userData, setUserData] = useState<UserDataDocumentsType | null>(null)
+  const [userMe, setUserMe] = useState<Account.AccountPrefs | null>(null)
+  const [userData, setUserData] =
+    useState<UserData.UserDataDocumentsType | null>(null)
 
   useMemo(() => {
     const promise = account.get()
 
     promise.then(
       function (response) {
-        setUserMe(response as UserAccountType) // Success
+        setUserMe(response as Account.AccountPrefs) // Success
       },
       function (error) {
         console.log(error) // Failure
@@ -27,7 +27,7 @@ export const useGetUser = () => {
 
       promise.then(
         function (response) {
-          const userData = response as UserDataDocumentsType
+          const userData = response as UserData.UserDataDocumentsType
           setUserData(userData)
         },
         function (error) {

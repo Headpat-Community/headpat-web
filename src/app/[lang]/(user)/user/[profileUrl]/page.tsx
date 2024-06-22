@@ -21,8 +21,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { CopyUrl } from './page.client'
-import { UserDataType } from '@/utils/types/userData'
+import { AddFollowerButton } from './page.client'
+import { cn } from '@/lib/utils'
+import { UserData } from '@/utils/types/models'
 
 export const runtime = 'edge'
 
@@ -43,12 +44,12 @@ export default async function UserProfile({ params: { profileUrl } }) {
 
   const getBannerImageUrl = async (galleryId: string) => {
     if (!galleryId) {
-      return '/images/404.webp'
+      return
     }
     return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/banners/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=1200&height=250&output=webp`
   }
 
-  const userDataResponse: UserDataType = await databases.listDocuments(
+  const userDataResponse: UserData.UserDataType = await databases.listDocuments(
     'hp_db',
     'userdata',
     [Query.equal('profileUrl', profileUrl)]
@@ -71,30 +72,33 @@ export default async function UserProfile({ params: { profileUrl } }) {
 
   return (
     <main className={'max-w-7xl mx-auto'}>
-      {userData && ( // Check if userData exists
+      {userData && (
         <>
           {/* Header */}
-          <header className={'p-0 lg:p-8'}>
-            <div>
-              <Image
-                src={await getBannerImageUrl(userData.profileBannerId)}
-                alt={'User Banner'}
-                className={
-                  'rounded-md object-cover max-w-[1200px] max-h-[250px] px-8 lg:px-0 mt-8 lg:mt-0'
-                }
-                layout="responsive"
-                width={1200}
-                height={250}
-                priority={true}
-              />
-            </div>
-          </header>
+          {userData.profileBannerId && (
+            <header className={'p-0 lg:p-8'}>
+              <div>
+                <Image
+                  src={await getBannerImageUrl(userData.profileBannerId)}
+                  alt={'User Banner'}
+                  className={
+                    'rounded-md object-cover max-w-[1200px] max-h-[250px] px-8 lg:px-0 mt-8 lg:mt-0'
+                  }
+                  layout="responsive"
+                  width={1200}
+                  height={250}
+                  priority={true}
+                />
+              </div>
+            </header>
+          )}
 
           {/* Grid */}
           <div
-            className={
-              'grid grid-cols-1 gap-x-8 gap-y-8 lg:grid-cols-3 xl:gap-x-10 pr-8 pl-8 md:grid-cols-2'
-            }
+            className={cn(
+              'grid grid-cols-1 gap-x-2 md:gap-x-4 lg:gap-x-8 gap-y-8 lg:grid-cols-3 xl:gap-x-10 pr-8 pl-8 md:grid-cols-2',
+              userData.profileBannerId ? 'mt-0' : 'mt-8'
+            )}
           >
             {/* Left */}
             <div
@@ -157,33 +161,24 @@ export default async function UserProfile({ params: { profileUrl } }) {
               </ul>
             </div>
             {/* Center */}
-            <div
-              className={
-                'border border-ring col-span-2 p-8 rounded-xl mt-4 md:col-span-1'
-              }
-            >
-              <div className={'flex flex-wrap items-center'}>
-                <p>{userData.bio}</p>
-              </div>
-            </div>
-            {/* Right */}
             <Card
-              className={'col-span-3 border-none lg:col-span-1 md:col-span-2'}
+              className={'col-span-3 border-none md:col-span-1 lg:col-span-2'}
             >
               <CardHeader>
                 <div className={'grid grid-cols-2'}>
-                  <CardTitle className={'col-span-1'}>User Profile</CardTitle>
-                  <CopyUrl />
+                  <CardTitle className={'col-span-1'}>
+                    {userData.displayName}
+                  </CardTitle>
+                  <AddFollowerButton
+                    displayName={userData.displayName}
+                    followerId={userData.$id}
+                  />
                 </div>
-                <CardDescription>Information about me</CardDescription>
+                <CardDescription>{userData.status}</CardDescription>
               </CardHeader>
               <Separator className={'mb-6'} />
               <CardContent>
                 <div className={'grid grid-cols-2 mx-auto gap-4'}>
-                  <div className={'col-span-1'}>Name</div>
-                  <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
-                    {userData.displayName}
-                  </div>
                   {userData.pronouns && (
                     <>
                       <div className={'col-span-1'}>Pronouns</div>
@@ -200,17 +195,16 @@ export default async function UserProfile({ params: { profileUrl } }) {
                       </div>
                     </>
                   )}
-                  {userData.status && (
-                    <>
-                      <div className={'col-span-2'}>Status</div>
-                      <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-2 flex-wrap">
-                        {userData.status}
-                      </div>
-                    </>
-                  )}
+                </div>
+                <div className={'border border-ring p-8 rounded-xl mt-8'}>
+                  <div className={'flex flex-wrap items-center'}>
+                    <p>{userData.bio || 'Nothing here yet!'}</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
+            {/* Right */}
+            {/* Gallery here */}
           </div>
         </>
       )}

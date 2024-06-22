@@ -10,7 +10,7 @@ import {
   UserSearchIcon,
   UsersIcon,
 } from 'lucide-react'
-import { UserAccountType } from '@/utils/types/account'
+import { Account } from '@/utils/types/models'
 
 export const Nav1 = (lang: string, translations) => [
   {
@@ -50,7 +50,11 @@ export const Nav1 = (lang: string, translations) => [
   },
 ]
 
-export const Nav2 = (account: UserAccountType, lang: string, translations) => {
+export const Nav2 = (
+  account: Account.AccountPrefs,
+  lang: string,
+  translations
+) => {
   return [
     {
       title: 'My Profile',
@@ -58,13 +62,6 @@ export const Nav2 = (account: UserAccountType, lang: string, translations) => {
       icon: File,
       variant: 'ghost' as const,
       href: account ? `/${lang}/profile` : `/${lang}/login`,
-    },
-    {
-      title: 'Friends',
-      label: '',
-      icon: UsersIcon,
-      variant: 'ghost' as const,
-      href: `/${lang}/friends`,
     },
     {
       title: 'Communities',
@@ -87,7 +84,7 @@ export const Nav3 = (lang: string, translations) => [
 ]
 
 export const NavFooter = (
-  account: UserAccountType,
+  account: Account.AccountPrefs,
   lang: string,
   translations
 ) => {

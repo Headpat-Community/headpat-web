@@ -1,15 +1,15 @@
 import { createSessionServerClient } from '@/app/appwrite-session'
-import { UserAccountType } from '@/utils/types/account'
 import { Models } from 'node-appwrite'
+import { Account } from '@/utils/types/models'
 
 /**
  * This function is used to get the user.
  * @example
  * const userData = await getUser()
  */
-export async function getUser(): Promise<UserAccountType> {
+export async function getUser(): Promise<Account.AccountPrefs> {
   const { account } = await createSessionServerClient()
-  const data: UserAccountType = await account.get().catch((error) => {
+  const data: Account.AccountPrefs = await account.get().catch((error) => {
     return error
   })
   return data

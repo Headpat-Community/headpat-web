@@ -1,7 +1,7 @@
 import Link from 'next/link'
-import { AnnouncementDataType } from '@/utils/types'
 import { ChevronRight, MegaphoneIcon } from 'lucide-react'
 import { createAdminClient } from '@/app/appwrite-session'
+import { Announcements } from '@/utils/types/models'
 
 export const runtime = 'edge'
 
@@ -12,7 +12,7 @@ export const metadata = {
 
 export default async function AnnouncementsPage() {
   const { databases } = await createAdminClient()
-  const announcementDataResponse: AnnouncementDataType =
+  const announcementDataResponse: Announcements.AnnouncementDataType =
     await databases.listDocuments('hp_db', 'announcements')
   const announcementData = announcementDataResponse.documents
 

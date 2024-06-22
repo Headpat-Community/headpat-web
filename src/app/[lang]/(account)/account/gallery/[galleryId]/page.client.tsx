@@ -6,10 +6,10 @@ import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { databases, Query, storage } from '@/app/appwrite-client'
-import { GalleryType } from '@/utils/types'
 import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
 import { useRouter } from 'next/navigation'
+import { Gallery } from '@/utils/types/models'
 
 export default function FetchGallery({ singleGallery }) {
   const { toast } = useToast()
@@ -44,7 +44,7 @@ export default function FetchGallery({ singleGallery }) {
       )
 
       listDataResponse.then(
-        function (response: GalleryType) {
+        function (response: Gallery.GalleryType) {
           const documentId = response.documents[0].$id
           const imageId = response.documents[0].galleryId
 

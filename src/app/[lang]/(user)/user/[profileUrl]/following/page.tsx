@@ -10,50 +10,36 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { CakeIcon, CalendarDays } from 'lucide-react'
-import { getFriends } from '@/utils/server-api/friends/getFriends'
 import { getUser } from '@/utils/server-api/account/user'
-import { UserDataDocumentsType } from '@/utils/types/userData'
+import { UserData } from '@/utils/types/models'
+import { getFollowing } from '@/utils/server-api/followers/getFollowing'
 
 export const runtime = 'edge'
 
-export default async function FriendsPage() {
+export default async function FollowingPage() {
   const { databases } = await createSessionServerClient()
-
   const accountData = await getUser()
+  const following = await getFollowing(accountData.$id)
 
-  if (accountData) {
-    return (
-      <PageLayout title={'Friends'}>
-        <div className={'flex flex-1 justify-center items-center h-full'}>
-          <div className={'p-4 gap-6 text-center'}>
-            <h1 className={'text-2xl font-semibold'}>Not logged in</h1>
-            <p className={'text-muted-foreground'}>
-              You must be logged in to view your friends.
-            </p>
-          </div>
-        </div>
-      </PageLayout>
-    )
-  }
-
-  const friends = await getFriends(accountData.$id)
-
-  // For each friend, look up their user data
-  const friendsData = await Promise.all(
-    friends.friends.map(async (friendId) => {
-      return await databases.getDocument('hp_db', 'userdata', friendId)
+  // For each follower, look up their user data
+  const followingData = await Promise.all(
+    following.documents.map(async (follower) => {
+      return await databases.getDocument(
+        'hp_db',
+        'userdata',
+        follower.followerId
+      )
     })
   )
 
-  if (!friendsData) {
+  if (!followingData) {
     return (
-      <PageLayout title={'Friends'}>
+      <PageLayout title={'Following'}>
         <div className={'flex flex-1 justify-center items-center h-full'}>
           <div className={'p-4 gap-6 text-center'}>
-            <h1 className={'text-2xl font-semibold'}>No friends found</h1>
+            <h1 className={'text-2xl font-semibold'}>Following nobody</h1>
             <p className={'text-muted-foreground'}>
-              You don&apos;t have any friends yet. Make some friends by
-              connecting with other users.
+              Seems kind of lonely in here...
             </p>
           </div>
         </div>
@@ -70,13 +56,13 @@ export default async function FriendsPage() {
   }
 
   return (
-    <PageLayout title={'Friends'}>
+    <PageLayout title={'Following'}>
       <div
         className={
           'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 3xl:grid-cols-8 5xl:grid-cols-10 gap-4 xl:gap-6 p-4 mx-auto'
         }
       >
-        {friendsData.map((user: UserDataDocumentsType) => {
+        {followingData.map((user: UserData.UserDataDocumentsType) => {
           const today = formatDate(new Date())
           const birthday = user.birthday
             ? formatDate(new Date(user.birthday))

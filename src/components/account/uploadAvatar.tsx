@@ -4,7 +4,7 @@ import { databases, storage } from '@/app/appwrite-client'
 import * as Sentry from '@sentry/nextjs'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { UserDataDocumentsType } from '@/utils/types/userData'
+import { UserData } from '@/utils/types/models'
 
 export default function UploadAvatar({
   isUploading,
@@ -56,11 +56,8 @@ export default function UploadAvatar({
       setIsUploading(true) // Set isUploading to true before making the API call
 
       // Get the user's avatar document
-      const avatarDocument: UserDataDocumentsType = await databases.getDocument(
-        'hp_db',
-        'userdata',
-        userMe.$id
-      )
+      const avatarDocument: UserData.UserDataDocumentsType =
+        await databases.getDocument('hp_db', 'userdata', userMe.$id)
       // If the user already has an avatar, delete it
       if (avatarDocument.avatarId) {
         // Delete the old avatar

@@ -17,14 +17,14 @@ import {
   changePreferences,
   changeProfileUrl,
 } from '@/utils/actions/account/account'
-import { UserAccountType } from '@/utils/types/account'
+import { Account } from '@/utils/types/models'
 
 export default function AccountPage({
   accountData,
   mfaList,
   userData,
 }: {
-  accountData: UserAccountType
+  accountData: Account.AccountPrefs
   mfaList: Models.MfaFactors
   userData: any
 }) {

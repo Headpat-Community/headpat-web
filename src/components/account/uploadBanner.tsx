@@ -4,7 +4,7 @@ import { databases, storage } from '@/app/appwrite-client'
 import * as Sentry from '@sentry/nextjs'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { UserDataDocumentsType } from '@/utils/types/userData'
+import { UserData } from '@/utils/types/models'
 
 export default function UploadBanner({
   isUploading,
@@ -56,11 +56,8 @@ export default function UploadBanner({
       setIsUploading(true) // Set isUploading to true before making the API call
 
       // Get the user's banner document
-      const bannerDocument: UserDataDocumentsType = await databases.getDocument(
-        'hp_db',
-        'userdata',
-        userMe.$id
-      )
+      const bannerDocument: UserData.UserDataDocumentsType =
+        await databases.getDocument('hp_db', 'userdata', userMe.$id)
       // If the user already has an banner, delete it
       if (bannerDocument.profileBannerId) {
         // Delete the old banner

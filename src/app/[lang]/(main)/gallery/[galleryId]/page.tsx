@@ -1,12 +1,11 @@
 import Client from './page.client'
 import { notFound } from 'next/navigation'
-import { GalleryDocumentsType, GalleryType } from '@/utils/types'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { createSessionServerClient } from '@/app/appwrite-session'
 import { Query } from '@/app/appwrite-server'
 import { getUser } from '@/utils/server-api/account/user'
-import { UserDataType } from '@/utils/types/userData'
+import { Gallery, UserData } from '@/utils/types/models'
 
 export const metadata = {
   title: 'Gallery',
@@ -16,12 +15,12 @@ export const metadata = {
 
 export const runtime = 'edge'
 
-export default async function Gallery({ params: { galleryId } }) {
+export default async function GalleryPage({ params: { galleryId } }) {
   const { account, databases } = await createSessionServerClient()
   const userSelf = await getUser()
   const enableNsfw = userSelf?.prefs?.nsfw || false
 
-  const gallery: GalleryType = await databases.listDocuments(
+  const gallery: Gallery.GalleryType = await databases.listDocuments(
     'hp_db',
     'gallery-images',
     [Query.equal('$id', galleryId)]
@@ -30,11 +29,11 @@ export default async function Gallery({ params: { galleryId } }) {
   if (!gallery.documents) {
     return notFound()
   }
-  const galleryData: GalleryDocumentsType = gallery.documents[0]
+  const galleryData: Gallery.GalleryDocumentsType = gallery.documents[0]
 
   const userId = galleryData?.userId
   //const userData = await getUserData(`queries[]=equal("$id","${userId}")`)
-  const userDataResponse: UserDataType = await databases.listDocuments(
+  const userDataResponse: UserData.UserDataType = await databases.listDocuments(
     'hp_db',
     'userdata',
     [Query.equal('$id', userId)]

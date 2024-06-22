@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { AnnouncementDocumentsType } from '@/utils/types'
 import { createAdminClient } from '@/app/appwrite-session'
+import { Announcements } from '@/utils/types/models'
 
 export const runtime = 'edge'
 
@@ -22,7 +22,7 @@ export default async function Page({
 }) {
   const { databases } = await createAdminClient()
 
-  const announcementData: AnnouncementDocumentsType =
+  const announcementData: Announcements.AnnouncementDocumentsType =
     await databases.getDocument('hp_db', 'announcements', announcementId)
 
   return (
