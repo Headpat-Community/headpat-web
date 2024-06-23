@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import {
   CircleUser,
   Home,
@@ -22,6 +21,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import Image from 'next/image'
 import AccountAnnouncements from '@/components/account/accountAnnouncements'
+import { Link } from '@/navigation'
 //import ChangeLanguage from '@/components/system/changeLanguage'
 
 export default async function Dashboard({ children }) {
@@ -97,7 +97,7 @@ export default async function Dashboard({ children }) {
                 <div className="h-[1px] w-1/2 bg-muted-foreground" />
               </div>
               <Link
-                href={'/account/communities'}
+                href={'/community'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <LineChart className="h-4 w-4" />
@@ -223,7 +223,7 @@ export default async function Dashboard({ children }) {
               <Link href={'/account'}>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
               </Link>
-              <Link href={'/account/support'}>
+              <Link href={'/support'}>
                 <DropdownMenuItem>Support</DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator />

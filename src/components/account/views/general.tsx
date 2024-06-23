@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import MfaAlert from '@/components/account/profile/mfaAlert'
-import { useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
 import { Models } from 'node-appwrite'
@@ -17,6 +16,7 @@ import {
   changeProfileUrl,
 } from '@/utils/actions/account/account'
 import { Account } from '@/utils/types/models'
+import { useRouter } from '@/navigation'
 
 export default function GeneralAccountView({
   accountData,

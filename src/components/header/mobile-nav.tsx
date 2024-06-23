@@ -15,11 +15,10 @@ import { Nav1, Nav2, Nav3, NavFooter } from '@/components/header/data'
 import { Nav } from '@/components/header/header-nav'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tabs } from '@/components/ui/tabs'
-import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { useRouter } from '@/navigation'
 
 export default function MobileNav({
-  lang,
   accountData,
   children,
 }): React.JSX.Element {
@@ -69,19 +68,19 @@ export default function MobileNav({
                   <div>
                     <Nav
                       isCollapsed={false}
-                      links={Nav1(lang, '')}
+                      links={Nav1('')}
                       setIsOpen={setIsOpen}
                     />
                     <Separator />
                     <Nav
                       isCollapsed={false}
-                      links={Nav2(accountData, lang, '')}
+                      links={Nav2(accountData, '')}
                       setIsOpen={setIsOpen}
                     />
                     <Separator />
                     <Nav
                       isCollapsed={false}
-                      links={Nav3(lang, '')}
+                      links={Nav3('')}
                       setIsOpen={setIsOpen}
                     />
                   </div>
@@ -91,7 +90,7 @@ export default function MobileNav({
                 <Separator className={'mb-2'} />
                 <Nav
                   isCollapsed={false}
-                  links={NavFooter(accountData, lang, '')}
+                  links={NavFooter(accountData, '')}
                   setIsOpen={setIsOpen}
                 />
               </div>

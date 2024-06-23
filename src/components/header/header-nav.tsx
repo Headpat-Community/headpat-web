@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { LucideIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -10,7 +9,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { useParams, usePathname } from 'next/navigation'
+import { Link, usePathname } from '@/navigation'
+import { useParams } from 'next/navigation'
 
 interface NavProps {
   isCollapsed: boolean
@@ -46,6 +46,7 @@ export function Nav({ isCollapsed, links, setIsOpen }: NavProps) {
             <Tooltip key={index} delayDuration={0}>
               <TooltipTrigger asChild>
                 <Link
+                  // @ts-ignore
                   href={link.href}
                   onClick={(e) => {
                     if (window.innerWidth <= 768) {
@@ -76,6 +77,7 @@ export function Nav({ isCollapsed, links, setIsOpen }: NavProps) {
           ) : (
             <Link
               key={index}
+              // @ts-ignore
               href={link.href}
               onClick={(e) => {
                 if (window.innerWidth <= 768) {

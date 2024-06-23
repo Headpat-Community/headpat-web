@@ -1,9 +1,9 @@
 'use server'
 
 import { createAdminClient } from '@/app/appwrite-session'
-import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { OAuthProvider } from 'node-appwrite'
+import { redirect } from '@/navigation'
 
 export async function signInWithGithub() {
   const { account } = await createAdminClient()
@@ -16,6 +16,7 @@ export async function signInWithGithub() {
     `${origin}/login?failure=true`
   )
 
+  // @ts-ignore
   return redirect(redirectUrl)
 }
 
@@ -29,7 +30,7 @@ export async function signInWithGoogle() {
     `${origin}/api/user/oauth`,
     `${origin}/login?failure=true`
   )
-
+  // @ts-ignore
   return redirect(redirectUrl)
 }
 
@@ -44,6 +45,7 @@ export async function signInWithDiscord() {
     `${origin}/login?failure=true`
   )
 
+  // @ts-ignore
   return redirect(redirectUrl)
 }
 
@@ -58,6 +60,7 @@ export async function signInWithSpotify() {
     `${origin}/login?failure=true`
   )
 
+  // @ts-ignore
   return redirect(redirectUrl)
 }
 
@@ -72,6 +75,7 @@ export async function signInWithTwitch() {
     `${origin}/login?failure=true`
   )
 
+  // @ts-ignore
   return redirect(redirectUrl)
 }
 
@@ -86,6 +90,7 @@ export async function signInWithMicrosoft() {
     `${origin}/login?failure=true`
   )
 
+  // @ts-ignore
   return redirect(redirectUrl)
 }
 
@@ -100,5 +105,6 @@ export async function signInWithApple() {
     `${origin}/login?failure=true`
   )
 
+  // @ts-ignore
   return redirect(redirectUrl)
 }

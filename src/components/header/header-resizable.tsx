@@ -15,7 +15,6 @@ import { useState } from 'react'
 import Image from 'next/image'
 
 export default function SidebarResizable({
-  lang,
   defaultLayout = [265, 440, 655],
   defaultCollapsed = false,
   navCollapsedSize,
@@ -85,21 +84,18 @@ export default function SidebarResizable({
             <ScrollArea className={'h-full overflow-auto'}>
               {/* Make the children scrollable */}
               <div>
-                <Nav isCollapsed={isCollapsed} links={Nav1(lang, '')} />
+                <Nav isCollapsed={isCollapsed} links={Nav1('')} />
                 <Separator />
-                <Nav
-                  isCollapsed={isCollapsed}
-                  links={Nav2(accountData, lang, '')}
-                />
+                <Nav isCollapsed={isCollapsed} links={Nav2(accountData, '')} />
                 <Separator />
-                <Nav isCollapsed={isCollapsed} links={Nav3(lang, '')} />
+                <Nav isCollapsed={isCollapsed} links={Nav3('')} />
               </div>
             </ScrollArea>
             <div className={'mt-auto relative bottom-0 block'}>
               <Separator />
               <Nav
                 isCollapsed={isCollapsed}
-                links={NavFooter(accountData, lang, '')}
+                links={NavFooter(accountData, '')}
               />
             </div>
           </div>

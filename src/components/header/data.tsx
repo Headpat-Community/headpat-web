@@ -8,93 +8,84 @@ import {
   LayoutPanelLeftIcon,
   MegaphoneIcon,
   UserSearchIcon,
-  UsersIcon,
 } from 'lucide-react'
 import { Account } from '@/utils/types/models'
 
-export const Nav1 = (lang: string, translations) => [
+export const Nav1 = (translations) => [
   {
     title: 'Home',
     label: '',
     icon: HomeIcon,
     variant: 'ghost' as const,
-    href: `/${lang}/`,
+    href: `/`,
   },
   {
     title: 'Gallery',
     label: '',
     icon: LayoutPanelLeftIcon,
     variant: 'ghost' as const,
-    href: `/${lang}/gallery`,
+    href: `/gallery`,
   },
   {
     title: 'Announcements',
     label: '',
     icon: MegaphoneIcon,
     variant: 'ghost' as const,
-    href: `/${lang}/announcements`,
+    href: `/announcements`,
   },
   {
     title: 'Events',
     label: '',
     icon: CalendarIcon,
     variant: 'ghost' as const,
-    href: `/${lang}/events`,
+    href: `/events`,
   },
   {
     title: 'Users',
     label: '',
     icon: UserSearchIcon,
     variant: 'ghost' as const,
-    href: `/${lang}/users`,
+    href: `/users`,
   },
 ]
 
-export const Nav2 = (
-  account: Account.AccountPrefs,
-  lang: string,
-  translations
-) => {
+export const Nav2 = (account: Account.AccountPrefs, translations) => {
   return [
     {
       title: 'My Profile',
       label: '',
       icon: File,
       variant: 'ghost' as const,
-      href: account ? `/${lang}/profile` : `/${lang}/login`,
+      href: account ? `/profile` : `/login`,
     },
     {
       title: 'Communities',
       label: '',
       icon: BoxesIcon,
       variant: 'ghost' as const,
-      href: '#',
+      href: '/community',
     },
   ]
 }
 
-export const Nav3 = (lang: string, translations) => [
+export const Nav3 = (translations) => [
   {
     title: 'Legal',
     label: '',
     icon: FileCheckIcon,
     variant: 'ghost' as const,
-    href: `/${lang}/legal`,
+    href: `/legal`,
   },
 ]
 
-export const NavFooter = (
-  account: Account.AccountPrefs,
-  lang: string,
-  translations
-) => {
+export const NavFooter = (account: Account.AccountPrefs, translations) => {
   return [
     {
       title: account ? 'Account' : 'Login',
       label: '',
       icon: CircleUserIcon,
       variant: 'ghost' as const,
-      href: account ? `/${lang}/account` : `/${lang}/login`,
+      href: account ? `/account` : `/login`,
     },
   ]
 }

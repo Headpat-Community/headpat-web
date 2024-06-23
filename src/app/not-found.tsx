@@ -1,7 +1,7 @@
-import Link from 'next/link'
 import Image from 'next/image'
 import { SiGithub, SiDiscord } from '@icons-pack/react-simple-icons'
 import { ChevronRight, Home, ImageIcon } from 'lucide-react'
+import { Link } from '@/navigation'
 
 const links = [
   {
@@ -69,6 +69,7 @@ export default function NotFoundComponent() {
                 </div>
                 <div className="flex-auto">
                   <h3 className="text-sm font-semibold leading-6 text-indigo-600">
+                    {/* @ts-ignore */}
                     <Link href={link.href}>
                       <span className="absolute inset-0" aria-hidden="true" />
                       {link.name}
@@ -108,6 +109,7 @@ export default function NotFoundComponent() {
             {social.map((item, itemIdx) => (
               <Link
                 key={itemIdx}
+                // @ts-ignore
                 href={item.href}
                 className="text-white hover:text-gray-500"
               >
