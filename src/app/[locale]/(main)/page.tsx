@@ -66,6 +66,7 @@ export default function Home() {
                       aria-hidden="true"
                     />
                     <Link
+                      // @ts-ignore
                       href="https://discord.gg/headpat"
                       className="flex items-center gap-x-1 text-white"
                       target="_blank"
