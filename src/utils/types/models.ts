@@ -117,3 +117,32 @@ export namespace Gallery {
     mimeType: string
   }
 }
+
+export namespace Interactive {
+  /**
+   * This data is returned from the API by calling the interactive endpoint.
+   * @see InteractiveDocumentsType
+   * @interface
+   * @since 2.0.0
+   */
+  export interface VotesAnswersType {
+    total: number
+    documents: VotesAnswersDocumentsType[]
+  }
+
+  /**
+   * This data is returned from the API within the `documents` array.
+   * @see InteractiveType
+   * @interface
+   * @since 2.0.0
+   */
+  export interface VotesAnswersDocumentsType extends Models.Document {
+    ipAddress: string | null
+    questionId: number
+    optionId: number
+  }
+
+  export interface VotesQuestionId extends Models.Document {
+    questionId: number
+  }
+}
