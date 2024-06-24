@@ -183,7 +183,7 @@ export default function UploadBanner({
               </Button>
             </div>
             <p className="text-xs text-gray-900 dark:text-gray-400">
-              1200x650 resolution recommended.
+              1200x250 resolution recommended.
             </p>
           </div>
         </div>
