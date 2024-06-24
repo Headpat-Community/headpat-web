@@ -2,6 +2,7 @@ import { createSessionServerClient } from '@/app/appwrite-session'
 import { Models } from 'node-appwrite'
 import { Account } from '@/utils/types/models'
 import { NextResponse } from 'next/server'
+import { unstable_noStore } from 'next/cache'
 
 /**
  * This function is used to get the user.
@@ -9,6 +10,7 @@ import { NextResponse } from 'next/server'
  * const userData = await getUser()
  */
 export async function getUser(): Promise<Account.AccountPrefs> {
+  unstable_noStore()
   const { account } = await createSessionServerClient()
   return await account.get().catch((error) => {
     return error
