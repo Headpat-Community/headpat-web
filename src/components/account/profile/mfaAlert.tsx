@@ -137,6 +137,7 @@ export default function MfaAlert({ mfaList }) {
               <div>
                 {mfaMode === 'totpEnable' && (
                   <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={qrCodeImage}
                       className={'h-64 w-auto mb-4'}

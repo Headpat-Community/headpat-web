@@ -56,6 +56,7 @@ export default async function Page({
                   }}
                   passHref
                 >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     className="mr-4 h-12 w-12 flex-none rounded-full"
                     src={getAvatarImageUrl(

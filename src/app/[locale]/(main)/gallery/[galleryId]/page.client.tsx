@@ -12,10 +12,13 @@ export default function FetchGallery({ name, gallery }) {
 
   // The rest of the component remains unchanged with conditional rendering based on the data's availability.
   return (
-    <img
-      src={url}
-      alt={name || 'Headpat Community Image'}
-      className={`imgsinglegallery mx-auto h-[400px] w-auto max-w-full rounded-lg object-contain`}
-    />
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={url}
+        alt={name || 'Headpat Community Image'}
+        className={`imgsinglegallery mx-auto h-[400px] w-auto max-w-full rounded-lg object-contain`}
+      />
+    </>
   )
 }

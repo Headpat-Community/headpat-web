@@ -160,6 +160,7 @@ export default function PageClient() {
       {error && <ErrorMessage attentionError={error} />}
       <div className="mx-auto my-8 max-w-7xl text-center">
         {/* TODO: Change image */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/badgefront.webp"
           alt="Badge Preview"
@@ -195,6 +196,7 @@ export default function PageClient() {
                         onDrop={handleDrop}
                         onDragOver={(event) => event.preventDefault()}
                       >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           id="selected-image"
                           className="h-32 w-32 rounded-md object-contain"

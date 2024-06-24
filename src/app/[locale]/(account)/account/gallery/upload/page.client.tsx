@@ -160,6 +160,7 @@ export default function UploadPage() {
                 >
                   <div className="text-center">
                     <Label className="rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         id="selected-image"
                         className="mx-auto h-96 min-w-full rounded-md object-contain cursor-pointer"

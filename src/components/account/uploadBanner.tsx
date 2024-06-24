@@ -150,6 +150,7 @@ export default function UploadBanner({
       <span>Banner image</span>
       <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
         <div className="col-span-full flex items-center gap-x-8">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             id="banner-image"
             src={

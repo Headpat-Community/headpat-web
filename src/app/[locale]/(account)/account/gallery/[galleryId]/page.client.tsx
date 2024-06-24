@@ -126,6 +126,7 @@ export default function FetchGallery({ singleGallery }) {
   return (
     <div className="flex-wrap items-center justify-center gap-4 p-8">
       <div className="mx-auto flex">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={getGalleryImageUrl(singleGallery.galleryId)}
           alt={singleGallery.imgAlt || 'Headpat Community Image'}
