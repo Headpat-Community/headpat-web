@@ -9,17 +9,21 @@ import {
 import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { CakeIcon, CalendarDays } from 'lucide-react'
-import { getUser } from '@/utils/server-api/account/user'
 import { UserData } from '@/utils/types/models'
 import { getFollowers } from '@/utils/server-api/followers/getFollowers'
 import { Link } from '@/navigation'
+import { getUserDataFromProfileUrl } from '@/utils/server-api/user/getUserData'
 
 export const runtime = 'edge'
 
-export default async function FollowerPage() {
+export default async function FollowerPage({
+  params: { locale, profileUrl },
+}: {
+  params: { locale: string; profileUrl: string }
+}) {
   const { databases } = await createSessionServerClient()
-  const accountData = await getUser()
-  const followers = await getFollowers(accountData.$id)
+  const userData = await getUserDataFromProfileUrl(profileUrl)
+  const followers = await getFollowers(userData.documents[0].$id)
 
   // For each follower, look up their user data
   const followerData = await Promise.all(

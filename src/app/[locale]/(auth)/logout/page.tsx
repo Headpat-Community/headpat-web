@@ -1,5 +1,5 @@
 'use client'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from '@/navigation'
 
 export const runtime = 'edge'
@@ -8,7 +8,7 @@ export default function LogoutPage() {
   const [error, setError] = useState(null)
   const router = useRouter()
 
-  useMemo(() => {
+  useEffect(() => {
     fetch(`/api/user/logoutUser`, {
       method: 'POST',
     })

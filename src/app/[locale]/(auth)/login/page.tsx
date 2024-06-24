@@ -12,7 +12,9 @@ export const runtime = 'edge'
 
 export default async function LoginPage() {
   const { account } = await createSessionServerClient()
-  const accountData = await account.get().catch(() => null)
+  const accountData = await account.get().catch((e) => {
+    if (e.type === 'user_more_factors_required') redirect('/login/mfa')
+  })
   if (accountData) redirect('/account')
 
   return (

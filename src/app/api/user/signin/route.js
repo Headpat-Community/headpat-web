@@ -31,7 +31,7 @@ export async function POST(request) {
       }
     )
 
-    return NextResponse.json({ status: 200 })
+    return NextResponse.json(session)
   } catch (error) {
     return NextResponse.json({ error: error, status: error.code })
   }

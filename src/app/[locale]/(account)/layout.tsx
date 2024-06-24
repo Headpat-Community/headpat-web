@@ -4,11 +4,13 @@ import { redirect } from '@/navigation'
 
 export default async function Layout({ children, params: { locale } }) {
   const accountData = await getUser()
-  if (accountData.code === 401) redirect('/login')
-
-  return (
-    <>
-      <Header locale={locale}>{children}</Header>
-    </>
-  )
+  if (accountData.code === 401) {
+    redirect('/login')
+  } else {
+    return (
+      <>
+        <Header locale={locale}>{children}</Header>
+      </>
+    )
+  }
 }

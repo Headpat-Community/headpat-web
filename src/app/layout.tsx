@@ -45,9 +45,7 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          <ContextMenuProvider>
-            <div className="w-full">{children}</div>
-          </ContextMenuProvider>
+          <div className="w-full">{children}</div>
         </ThemeProvider>
         <Toaster />
         <SonnerToaster />

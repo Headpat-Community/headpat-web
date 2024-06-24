@@ -14,7 +14,11 @@ import { Link } from '@/navigation'
 
 export const runtime = 'edge'
 
-export default async function Users() {
+export default async function Users({
+  params: { locale },
+}: {
+  params: { locale: string }
+}) {
   const { databases } = await createSessionServerClient()
 
   const usersData = await databases.listDocuments('hp_db', 'userdata')

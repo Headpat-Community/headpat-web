@@ -14,7 +14,11 @@ export const metadata = {
 
 export const runtime = 'edge'
 
-export default async function AccountSettings() {
+export default async function AccountSettings({
+  params: { locale },
+}: {
+  params: { locale: string }
+}) {
   const mfaList = await getMfaList()
   const accountData = await getUser()
   const userData = await getUserData()

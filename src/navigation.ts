@@ -19,6 +19,7 @@ export const pathnames = {
   '/legal/privacypolicy': '/legal/privacypolicy',
   '/legal/termsofservice': '/legal/termsofservice',
   '/login': '/login',
+  '/login/mfa': '/login/mfa',
   '/register': '/register',
   '/logout': '/logout',
   '/pawcraft': '/pawcraft',

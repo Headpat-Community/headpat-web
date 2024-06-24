@@ -25,6 +25,7 @@ import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { createUser } from '@/utils/actions/login-actions'
 import { Link, useRouter } from '@/navigation'
+import { client } from '@/app/appwrite'
 
 export default function Login() {
   const [data, setData] = useState({
@@ -77,7 +78,7 @@ export default function Login() {
 
       router.push('/account')
     } else {
-      const response = await fetch('/api/user/signin', {
+      const signIn = await fetch('/api/user/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -87,25 +88,24 @@ export default function Login() {
           password: data.password,
         }),
       })
-
-      if (!response.ok) {
-        const data = await response.json()
-        if (data.error.type == 'user_invalid_credentials') {
-          toast({
-            title: 'Error',
-            description: 'E-Mail or Password incorrect.',
-            variant: 'destructive',
-          })
-        } else if (data.error.type == 'user_blocked') {
-          toast({
-            title: 'Error',
-            description: 'User is blocked.',
-            variant: 'destructive',
-          })
-        }
+      const dataResponse = await signIn.json()
+      if (dataResponse.type == 'user_invalid_credentials') {
+        toast({
+          title: 'Error',
+          description: 'E-Mail or Password incorrect.',
+          variant: 'destructive',
+        })
+      } else if (dataResponse.type == 'user_blocked') {
+        toast({
+          title: 'Error',
+          description: 'User is blocked.',
+          variant: 'destructive',
+        })
       }
 
-      router.push('/account')
+      client.setSession(dataResponse.secret)
+
+      router.push('/login/mfa')
     }
   }
 

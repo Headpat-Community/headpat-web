@@ -1,6 +1,8 @@
 'use server'
 import { createSessionServerClient } from '@/app/appwrite-session'
-import { Models } from 'node-appwrite'
+import { AuthenticationFactor, Models } from 'node-appwrite'
+import { getMfaFactors } from '@/utils/server-api/account/user'
+import { AuthenticatorType } from 'appwrite'
 
 export async function changeEmail(email: string, password: string) {
   try {
@@ -43,4 +45,21 @@ export async function changeProfileUrl(profileUrl: string) {
   } catch (error) {
     return JSON.parse(JSON.stringify(error))
   }
+}
+
+export async function startMfaChallenge() {
+  const { account } = await createSessionServerClient()
+  const factors = await getMfaFactors()
+  if (factors.totp) {
+    return await account.createMfaChallenge(AuthenticationFactor.Totp)
+  } else {
+    return
+  }
+}
+
+export async function updateMfaChallenge(challengeId: string, otp: string) {
+  const { account } = await createSessionServerClient()
+  return await account.updateMfaChallenge(challengeId, otp).catch((error) => {
+    return JSON.parse(JSON.stringify(error))
+  })
 }

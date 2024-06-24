@@ -13,10 +13,9 @@ export async function getFollowers(
   userId: string
 ): Promise<Followers.FollowerType> {
   const { databases } = await createSessionServerClient()
-  const data: Followers.FollowerType = await databases
+  return await databases
     .listDocuments('hp_db', 'followers', [Query.equal('followerId', userId)])
     .catch((error) => {
       return error
     })
-  return data
 }

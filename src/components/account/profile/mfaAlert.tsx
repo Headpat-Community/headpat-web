@@ -52,6 +52,7 @@ export default function MfaAlert({ mfaList }) {
           title: '2FA disabled',
           description: 'You have successfully disabled 2FA.',
         })
+        await account.updateMFA(false)
         setOpen(false)
         router.refresh()
       }
@@ -78,6 +79,7 @@ export default function MfaAlert({ mfaList }) {
           title: '2FA enabled',
           description: 'You have successfully enabled 2FA.',
         })
+        await account.updateMFA(true)
         router.refresh()
       }
 

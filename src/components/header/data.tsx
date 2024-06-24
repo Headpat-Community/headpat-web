@@ -6,6 +6,7 @@ import {
   FileCheckIcon,
   HomeIcon,
   LayoutPanelLeftIcon,
+  LogOutIcon,
   MegaphoneIcon,
   UserSearchIcon,
 } from 'lucide-react'
@@ -79,7 +80,7 @@ export const Nav3 = (translations) => [
 ]
 
 export const NavFooter = (account: Account.AccountPrefs, translations) => {
-  return [
+  const navItems = [
     {
       title: account ? 'Account' : 'Login',
       label: '',
@@ -88,4 +89,16 @@ export const NavFooter = (account: Account.AccountPrefs, translations) => {
       href: account ? `/account` : `/login`,
     },
   ]
+
+  if (account) {
+    navItems.unshift({
+      title: 'Logout',
+      label: '',
+      icon: LogOutIcon,
+      variant: 'ghost' as const,
+      href: `/logout`,
+    })
+  }
+
+  return navItems
 }
