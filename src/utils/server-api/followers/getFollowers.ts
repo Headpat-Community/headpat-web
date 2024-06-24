@@ -1,6 +1,7 @@
 import { createSessionServerClient } from '@/app/appwrite-session'
 import { Followers } from '@/utils/types/models'
 import { Query } from 'node-appwrite'
+import { unstable_noStore } from 'next/cache'
 
 /**
  * This function is used to get the followers of a user.
@@ -12,6 +13,7 @@ import { Query } from 'node-appwrite'
 export async function getFollowers(
   userId: string
 ): Promise<Followers.FollowerType> {
+  unstable_noStore()
   const { databases } = await createSessionServerClient()
   return await databases
     .listDocuments('hp_db', 'followers', [Query.equal('followerId', userId)])

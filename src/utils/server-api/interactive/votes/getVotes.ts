@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/app/appwrite-session'
 import { Interactive } from '@/utils/types/models'
+import { unstable_noStore } from 'next/cache'
 
 /**
  * This function is used to get the answers of the votes of Lighthase's EF Panel.
@@ -8,6 +9,7 @@ import { Interactive } from '@/utils/types/models'
  * const votes = await getVotes()
  */
 export async function getVotes(): Promise<Interactive.VotesAnswersType> {
+  unstable_noStore()
   const { databases } = await createAdminClient()
   return await databases
     .listDocuments('interactive', 'answers')

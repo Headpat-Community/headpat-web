@@ -1,5 +1,6 @@
 'use server'
 import { headers } from 'next/headers'
+import { unstable_noStore } from 'next/cache'
 
 /**
  * This function is used to get the cookies from the request headers.
@@ -11,6 +12,7 @@ import { headers } from 'next/headers'
  * console.log(sessionCookie)
  */
 async function getSessionCookie() {
+  unstable_noStore()
   const headersList = headers()
   const cookieHeader = headersList.get('cookie')
   const cookies = cookieHeader ? cookieHeader.split('; ') : []

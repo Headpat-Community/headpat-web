@@ -36,7 +36,7 @@ export default async function FollowingPage({
     })
   )
 
-  if (!followingData) {
+  if (followingData.length === 0) {
     return (
       <PageLayout title={'Following'}>
         <div className={'flex flex-1 justify-center items-center h-full'}>
