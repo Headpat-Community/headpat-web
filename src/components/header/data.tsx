@@ -12,37 +12,37 @@ import {
 } from 'lucide-react'
 import { Account } from '@/utils/types/models'
 
-export const Nav1 = (translations) => [
+export const Nav1 = (translations: any) => [
   {
-    title: 'Home',
+    title: translations.home,
     label: '',
     icon: HomeIcon,
     variant: 'ghost' as const,
     href: `/`,
   },
   {
-    title: 'Gallery',
+    title: translations.gallery,
     label: '',
     icon: LayoutPanelLeftIcon,
     variant: 'ghost' as const,
     href: `/gallery`,
   },
   {
-    title: 'Announcements',
+    title: translations.announcements,
     label: '',
     icon: MegaphoneIcon,
     variant: 'ghost' as const,
     href: `/announcements`,
   },
   {
-    title: 'Events',
+    title: translations.events,
     label: '',
     icon: CalendarIcon,
     variant: 'ghost' as const,
     href: `/events`,
   },
   {
-    title: 'Users',
+    title: translations.users,
     label: '',
     icon: UserSearchIcon,
     variant: 'ghost' as const,
@@ -50,17 +50,17 @@ export const Nav1 = (translations) => [
   },
 ]
 
-export const Nav2 = (account: Account.AccountPrefs, translations) => {
+export const Nav2 = (account: Account.AccountPrefs, translations: any) => {
   return [
     {
-      title: 'My Profile',
+      title: translations.myprofile,
       label: '',
       icon: File,
       variant: 'ghost' as const,
       href: account ? `/profile` : `/login`,
     },
     {
-      title: 'Communities',
+      title: translations.communities,
       label: '',
       icon: BoxesIcon,
       variant: 'ghost' as const,
@@ -69,9 +69,9 @@ export const Nav2 = (account: Account.AccountPrefs, translations) => {
   ]
 }
 
-export const Nav3 = (translations) => [
+export const Nav3 = (translations: any) => [
   {
-    title: 'Legal',
+    title: translations.legal,
     label: '',
     icon: FileCheckIcon,
     variant: 'ghost' as const,
@@ -79,10 +79,10 @@ export const Nav3 = (translations) => [
   },
 ]
 
-export const NavFooter = (account: Account.AccountPrefs, translations) => {
+export const NavFooter = (account: Account.AccountPrefs, translations: any) => {
   const navItems = [
     {
-      title: account ? 'Account' : 'Login',
+      title: account ? translations.account : translations.login,
       label: '',
       icon: CircleUserIcon,
       variant: 'ghost' as const,
@@ -92,7 +92,7 @@ export const NavFooter = (account: Account.AccountPrefs, translations) => {
 
   if (account) {
     navItems.unshift({
-      title: 'Logout',
+      title: translations.logout,
       label: '',
       icon: LogOutIcon,
       variant: 'ghost' as const,

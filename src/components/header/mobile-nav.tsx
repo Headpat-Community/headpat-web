@@ -18,10 +18,7 @@ import { Tabs } from '@/components/ui/tabs'
 import Image from 'next/image'
 import { useRouter } from '@/navigation'
 
-export default function MobileNav({
-  accountData,
-  children,
-}): React.JSX.Element {
+export default function MobileNav({ accountData, translations, children }) {
   const router = useRouter()
   const [isOpen, setIsOpen] = React.useState(false)
 
@@ -68,19 +65,19 @@ export default function MobileNav({
                   <div>
                     <Nav
                       isCollapsed={false}
-                      links={Nav1('')}
+                      links={Nav1(translations)}
                       setIsOpen={setIsOpen}
                     />
                     <Separator />
                     <Nav
                       isCollapsed={false}
-                      links={Nav2(accountData, '')}
+                      links={Nav2(accountData, translations)}
                       setIsOpen={setIsOpen}
                     />
                     <Separator />
                     <Nav
                       isCollapsed={false}
-                      links={Nav3('')}
+                      links={Nav3(translations)}
                       setIsOpen={setIsOpen}
                     />
                   </div>
@@ -90,7 +87,7 @@ export default function MobileNav({
                 <Separator className={'mb-2'} />
                 <Nav
                   isCollapsed={false}
-                  links={NavFooter(accountData, '')}
+                  links={NavFooter(accountData, translations)}
                   setIsOpen={setIsOpen}
                 />
               </div>

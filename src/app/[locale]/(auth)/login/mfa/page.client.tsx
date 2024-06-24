@@ -35,7 +35,7 @@ export default function MfaPageClient() {
 
   const handleMfaVerify = async (otp: string) => {
     try {
-      const data = await updateMfaChallenge(challengeId, otp)
+      await updateMfaChallenge(challengeId, otp)
 
       router.push('/account')
     } catch (error) {

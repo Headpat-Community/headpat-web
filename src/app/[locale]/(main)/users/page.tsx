@@ -1,4 +1,3 @@
-import { createSessionServerClient } from '@/app/appwrite-session'
 import { Card } from '@/components/ui/card'
 import {
   HoverCard,
@@ -11,6 +10,7 @@ import Image from 'next/image'
 import PageLayout from '@/components/pageLayout'
 import { UserData } from '@/utils/types/models'
 import { Link } from '@/navigation'
+import { getUserDataList } from '@/utils/server-api/user/getUserData'
 
 export const runtime = 'edge'
 
@@ -19,10 +19,7 @@ export default async function Users({
 }: {
   params: { locale: string }
 }) {
-  const { databases } = await createSessionServerClient()
-
-  const usersData = await databases.listDocuments('hp_db', 'userdata')
-  const users = usersData.documents
+  const users = await getUserDataList()
 
   const formatDate = (date: Date) =>
     date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')
@@ -39,7 +36,7 @@ export default async function Users({
           'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 3xl:grid-cols-8 5xl:grid-cols-10 gap-4 xl:gap-6 p-4 mx-auto'
         }
       >
-        {users.map((user: UserData.UserDataDocumentsType) => {
+        {users.documents.map((user: UserData.UserDataDocumentsType) => {
           const today = formatDate(new Date())
           const birthday = user.birthday
             ? formatDate(new Date(user.birthday))

@@ -28,10 +28,21 @@ export async function getUserData(): Promise<UserData.UserDataDocumentsType> {
   const accountData = await account.get().catch((error) => {
     return error
   })
-  const data: UserData.UserDataDocumentsType = await databases
+  return await databases
     .getDocument('hp_db', 'userdata', `${accountData.$id}`)
     .catch((error) => {
       return error
     })
-  return data
+}
+
+/**
+ * This function is used to get the user data of all users.
+ * @example
+ * const userData = await getUserDataList()
+ */
+export async function getUserDataList(): Promise<UserData.UserDataType> {
+  const { databases } = await createSessionServerClient()
+  return await databases.listDocuments('hp_db', 'userdata').catch((error) => {
+    return error
+  })
 }

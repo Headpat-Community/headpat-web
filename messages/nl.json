@@ -1,1 +1,25 @@
-{}
+{
+  "PageNames": {
+    "home": "Startpagina",
+    "gallery": "Galerij",
+    "events": "Evenementen",
+    "announcements": "Aankondigingen",
+    "users": "Gebruikers",
+    "myprofile": "Mijn Profiel",
+    "communities": "Gemeenschappen",
+    "about": "Over ons",
+    "legal": "Juridisch",
+    "contact": "Contact",
+    "account": "Account",
+    "login": "Aanmelden",
+    "logout": "Afmelden"
+  },
+  "Header": {
+
+  },
+  "HomePage": {
+    "clickToJoin": "Klik hier om mee te doen!",
+    "description1": "De Headpat Community is een online gemeenschap voor sociale media. We bieden onze leden vrijwillig een platform om te verbinden, uit te wisselen en zich uit te drukken.",
+    "description2": "Dit omvat onze Discord-server, onze Telegram-groep, de Minecraft-server (Pawcraft), een online portfolio (headpat.de), een app, een planner voor sociale media-con, een VR-kaart, online en offline evenementen en nog veel meer!"
+  }
+}

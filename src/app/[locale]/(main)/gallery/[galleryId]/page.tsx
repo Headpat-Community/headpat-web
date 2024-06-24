@@ -16,7 +16,7 @@ export const metadata = {
 export const runtime = 'edge'
 
 export default async function GalleryPage({ params: { galleryId } }) {
-  const { account, databases } = await createSessionServerClient()
+  const { databases } = await createSessionServerClient()
   const userSelf = await getUser()
   const enableNsfw = userSelf?.prefs?.nsfw || false
 

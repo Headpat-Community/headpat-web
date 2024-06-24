@@ -24,7 +24,6 @@ import { useRouter } from '@/navigation'
 export default function MfaAlert({ mfaList }) {
   const [open, setOpen] = useState<boolean>(false)
   const [mfaMode, setMfaMode] = useState<string>('')
-  const [recoveryCodes, setRecoveryCodes] = useState<string[]>([])
   const [qrCodeImage, setQrCodeImage] = useState<string>('')
   const router = useRouter()
   const { toast } = useToast()

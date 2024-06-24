@@ -1,6 +1,5 @@
 import { getRequestConfig } from 'next-intl/server'
 import { IntlErrorCode } from 'next-intl'
-import { ID } from 'node-appwrite'
 import { notFound } from 'next/navigation'
 import { locales } from '@/navigation'
 

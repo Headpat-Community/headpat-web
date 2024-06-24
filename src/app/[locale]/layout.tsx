@@ -1,3 +1,3 @@
-export default async function LocaleLayout({ children, params: { locale } }) {
+export default async function LocaleLayout({ children }) {
   return children
 }

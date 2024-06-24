@@ -3,10 +3,18 @@ import { Button } from '@/components/ui/button'
 import { ChevronRight } from 'lucide-react'
 import PageLayout from '@/components/pageLayout'
 import { Link } from '@/navigation'
+import { getTranslations } from 'next-intl/server'
 
 export const runtime = 'edge'
 
-export default function Home() {
+export default async function Home({
+  params: { locale },
+}: {
+  params: { locale: string }
+}) {
+  const main = await getTranslations({ locale, namespace: 'HomePage' })
+  const pageNames = await getTranslations({ locale, namespace: 'PageNames' })
+
   return (
     <PageLayout title="Home">
       <div className="bg-transparent">
@@ -70,7 +78,7 @@ export default function Home() {
                   >
                     <span className="absolute inset-0 " aria-hidden="true" />
                     <span className="text-black dark:text-white">
-                      Klick hier um beizutreten
+                      {main('clickToJoin')}
                     </span>
                     <ChevronRight
                       className="-mr-2 h-5 w-5 text-black dark:text-white"
@@ -83,20 +91,14 @@ export default function Home() {
                 Headpat Community
               </h1>
               <p className="mt-6 text-lg leading-8 dark:text-white/80">
-                Die Headpat Community ist eine Online-Community für soziale
-                Medien. Wir bieten unseren Mitgliedern freiwillig eine Plattform
-                zum Verbinden, Austauschen und Ausdrücken an.
+                {main('description1')}
                 <br />
                 <br />
-                Dazu gehören unter anderem unser Discord-Server, unsere
-                Telegram-Gruppe, der Minecraft-Server (Pawcraft), ein
-                Online-Portfolio (headpat.de), eine App, ein
-                Social-Media-Con-Planer, eine VR-Map, Online- und Offline-Events
-                und vieles mehr!
+                {main('description2')}
               </p>
               <div className="mt-10 flex items-center gap-x-6">
                 <Link href={'/gallery'}>
-                  <Button>Gallery</Button>
+                  <Button>{pageNames('gallery')}</Button>
                 </Link>
                 <Link href={'/pawcraft'}>
                   <Button>Pawcraft</Button>

@@ -9,7 +9,7 @@ import { UserData } from '@/utils/types/models'
 export default function UploadAvatar({
   isUploading,
   setIsUploading,
-  userMe,
+  userId,
   userData,
 }) {
   const { toast } = useToast()
@@ -57,7 +57,7 @@ export default function UploadAvatar({
 
       // Get the user's avatar document
       const avatarDocument: UserData.UserDataDocumentsType =
-        await databases.getDocument('hp_db', 'userdata', userMe.$id)
+        await databases.getDocument('hp_db', 'userdata', userId)
       // If the user already has an avatar, delete it
       if (avatarDocument.avatarId) {
         // Delete the old avatar
@@ -79,7 +79,7 @@ export default function UploadAvatar({
       fileData.then(
         function (response) {
           // Update the user's avatarId
-          databases.updateDocument('hp_db', 'userdata', userMe.$id, {
+          databases.updateDocument('hp_db', 'userdata', userId, {
             avatarId: response.$id,
           })
 

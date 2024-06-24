@@ -3,7 +3,7 @@ import { redirect } from '@/navigation'
 
 export const runtime = 'edge'
 
-export default async function Profile({ params: { lang } }) {
+export default async function Profile() {
   const user = await getUserData()
   if (!user) {
     return redirect('/login')

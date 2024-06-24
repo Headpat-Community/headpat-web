@@ -1,1 +1,25 @@
-{}
+{
+  "PageNames": {
+    "home": "Home",
+    "gallery": "Gallery",
+    "events": "Events",
+    "announcements": "Announcements",
+    "users": "Users",
+    "myprofile": "My Profile",
+    "communities": "Communities",
+    "about": "About us",
+    "legal": "Legal",
+    "contact": "Contact",
+    "account": "Account",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "Header": {
+
+  },
+  "HomePage": {
+    "clickToJoin": "Click here to join!",
+    "description1": "The Headpat Community is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.",
+    "description2": "This includes our Discord server, our Telegram group, the Minecraft server (Pawcraft), an online portfolio (headpat.de), an app, a social media con planner, a VR map, online and offline events and much more!"
+  }
+}

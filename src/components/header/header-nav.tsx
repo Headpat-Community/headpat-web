@@ -26,7 +26,6 @@ interface NavProps {
 
 export function Nav({ isCollapsed, links, setIsOpen }: NavProps) {
   const currentPath = usePathname()
-  const params = useParams()
 
   return (
     <div
@@ -48,7 +47,7 @@ export function Nav({ isCollapsed, links, setIsOpen }: NavProps) {
                 <Link
                   // @ts-ignore
                   href={link.href}
-                  onClick={(e) => {
+                  onClick={() => {
                     if (window.innerWidth <= 768) {
                       // 768px is a common breakpoint for mobile devices
                       setIsOpen(false)
@@ -79,7 +78,7 @@ export function Nav({ isCollapsed, links, setIsOpen }: NavProps) {
               key={index}
               // @ts-ignore
               href={link.href}
-              onClick={(e) => {
+              onClick={() => {
                 if (window.innerWidth <= 768) {
                   // 768px is a common breakpoint for mobile devices
                   setIsOpen(false)

@@ -13,10 +13,7 @@ import UploadBanner from '@/components/account/uploadBanner'
 
 export default function FrontpageView({ accountData, userDataResponse }) {
   const [userData, setUserData] = useState(userDataResponse)
-  const [userMe, setUserMe] = useState(accountData)
   const [isUploading, setIsUploading] = useState<boolean>(false)
-  const [hiddenBirthday, setHiddenBirthday] = useState<boolean>(false)
-  const [hiddenPronouns, setHiddenPronouns] = useState<boolean>(false)
   const { toast } = useToast()
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
@@ -28,7 +25,7 @@ export default function FrontpageView({ accountData, userDataResponse }) {
       const promise = databases.updateDocument(
         'hp_db',
         'userdata',
-        userMe?.$id,
+        accountData.$id,
         {
           status: (document.getElementById('status') as HTMLInputElement).value,
           bio: (document.getElementById('biostatus') as HTMLInputElement).value,
@@ -77,14 +74,10 @@ export default function FrontpageView({ accountData, userDataResponse }) {
     }
   }
 
-  const hideBirthday = async (event) => {
-    if (event) {
-      await databases.updateDocument('hp_db', 'userdata', userMe.$id, {
-        birthday: '1900-01-01T00:00:00',
-      })
-
-      setHiddenBirthday(true)
-    }
+  const hideBirthday = async () => {
+    await databases.updateDocument('hp_db', 'userdata', accountData.$id, {
+      birthday: '1900-01-01T00:00:00',
+    })
   }
 
   return (
@@ -104,14 +97,14 @@ export default function FrontpageView({ accountData, userDataResponse }) {
             <UploadAvatar
               isUploading={isUploading}
               setIsUploading={setIsUploading}
-              userMe={userMe}
+              userId={accountData.$id}
               userData={userData}
             />
             <div className={'my-4'} />
             <UploadBanner
               isUploading={isUploading}
               setIsUploading={setIsUploading}
-              userMe={userMe}
+              userId={accountData.$id}
               userData={userData}
             />
 
@@ -123,8 +116,7 @@ export default function FrontpageView({ accountData, userDataResponse }) {
                     <Checkbox
                       id="hide_birthday"
                       name="hide_birthday"
-                      onCheckedChange={(e) => hideBirthday(e)}
-                      disabled={hiddenBirthday}
+                      onCheckedChange={hideBirthday}
                     />
                   </div>
                   <Label htmlFor="hide_location">Hide Location?</Label>

@@ -146,3 +146,34 @@ export namespace Interactive {
     questionId: number
   }
 }
+
+export namespace Events {
+  /**
+   * This data is returned from the API by calling the events endpoint.
+   * @see EventsDocumentsType
+   * @interface
+   * @since 2.0.0
+   */
+  export interface EventsType {
+    total: number
+    documents: EventsDocumentsType[]
+  }
+
+  /**
+   * This data is returned from the API within the `documents` array.
+   * @see EventsType
+   * @interface
+   * @since 2.0.0
+   */
+  export interface EventsDocumentsType extends Models.Document {
+    title: string
+    label: string
+    description: string
+    date: string
+    dateUntil: string
+    location: string
+    locationZoneMethod: 'polygon' | 'circle' | 'virtual'
+    coordinates: string[]
+    circleRadius: number
+  }
+}

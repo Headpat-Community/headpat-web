@@ -2,7 +2,6 @@
 import { createSessionServerClient } from '@/app/appwrite-session'
 import { AuthenticationFactor, Models } from 'node-appwrite'
 import { getMfaFactors } from '@/utils/server-api/account/user'
-import { AuthenticatorType } from 'appwrite'
 
 export async function changeEmail(email: string, password: string) {
   try {

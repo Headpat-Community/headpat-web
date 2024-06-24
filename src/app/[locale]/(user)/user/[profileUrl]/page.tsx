@@ -66,14 +66,14 @@ export default async function UserProfile({ params: { profileUrl } }) {
   const totalFollowing = following?.documents?.length
 
   const formatDate = (date: Date) =>
-    date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')
+    date.toLocaleDateString('en-GB').slice(0, 5).replace(/-/g, '.')
 
   const today = formatDate(new Date())
   const birthday = userData?.birthday
     ? formatDate(new Date(userData.birthday))
     : '01/01/1900'
 
-  const isBirthday = birthday !== '01/01/1900' && birthday === today
+  const isBirthday = birthday === today
 
   if (!userData) {
     return notFound()

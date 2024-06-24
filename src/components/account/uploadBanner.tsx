@@ -9,7 +9,7 @@ import { UserData } from '@/utils/types/models'
 export default function UploadBanner({
   isUploading,
   setIsUploading,
-  userMe,
+  userId,
   userData,
 }) {
   const { toast } = useToast()
@@ -57,7 +57,7 @@ export default function UploadBanner({
 
       // Get the user's banner document
       const bannerDocument: UserData.UserDataDocumentsType =
-        await databases.getDocument('hp_db', 'userdata', userMe.$id)
+        await databases.getDocument('hp_db', 'userdata', userId)
       // If the user already has an banner, delete it
       if (bannerDocument.profileBannerId) {
         // Delete the old banner
@@ -79,7 +79,7 @@ export default function UploadBanner({
       fileData.then(
         function (response) {
           // Update the user's bannerId
-          databases.updateDocument('hp_db', 'userdata', userMe.$id, {
+          databases.updateDocument('hp_db', 'userdata', userId, {
             profileBannerId: response.$id,
           })
 

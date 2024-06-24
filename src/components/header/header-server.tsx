@@ -3,7 +3,11 @@ import SidebarResizable from '@/components/header/header-resizable'
 import MobileNav from '@/components/header/mobile-nav'
 import { createSessionServerClient } from '@/app/appwrite-session'
 
-export default async function HeaderServer({ children, locale }) {
+export default async function HeaderServer({
+  children,
+  locale,
+  ...translations
+}) {
   const layout = cookies().get('react-resizable-panels:layout')
   const collapsed = cookies().get('react-resizable-panels:collapsed')
 
@@ -13,7 +17,7 @@ export default async function HeaderServer({ children, locale }) {
 
   const { account } = await createSessionServerClient()
 
-  const accountData = await account.get().catch((error) => {
+  const accountData = await account.get().catch(() => {
     return
   })
 
@@ -21,7 +25,12 @@ export default async function HeaderServer({ children, locale }) {
     <>
       <div className={'min-h-full'}>
         <div className="md:hidden">
-          <MobileNav accountData={accountData || null}>{children}</MobileNav>
+          <MobileNav
+            accountData={accountData || null}
+            translations={translations}
+          >
+            {children}
+          </MobileNav>
         </div>
         <div className="hidden flex-col md:flex">
           <SidebarResizable
@@ -29,6 +38,7 @@ export default async function HeaderServer({ children, locale }) {
             defaultCollapsed={defaultCollapsed}
             navCollapsedSize={navCollapsedSize}
             accountData={accountData || null}
+            translations={translations}
           >
             {children}
           </SidebarResizable>

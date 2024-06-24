@@ -155,9 +155,7 @@ export default function GeneralAccountView({
   const handleProfileUrlChange = async (event: any) => {
     event.preventDefault()
 
-    const profileUrl = (
-      document.getElementById('profileurl') as HTMLInputElement
-    ).value
+    const profileUrl = userDataState.profileUrl
 
     // Check if profileUrl has at least 4 characters
     if (profileUrl.length < 3) {
@@ -285,7 +283,9 @@ export default function GeneralAccountView({
                           profileUrl: e.target.value,
                         }))
                       }}
-                      placeholder={userData ? userData.profileUrl : ''}
+                      placeholder={
+                        userDataState ? userDataState.profileUrl : ''
+                      }
                       className="border-0 pl-0 align-middle bg-transparent ml-1 focus:ring-0 focus:outline-none focus:border-0 focus-visible:ring-0 focus-visible:outline-none focus-visible:border-0 focus-visible:ring-offset-0"
                       minLength={4}
                     />

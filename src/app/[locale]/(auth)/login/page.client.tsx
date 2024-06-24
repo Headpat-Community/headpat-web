@@ -25,7 +25,7 @@ import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { createUser } from '@/utils/actions/login-actions'
 import { Link, useRouter } from '@/navigation'
-import { client } from '@/app/appwrite'
+import { client } from '@/app/appwrite-client'
 
 export default function Login() {
   const [data, setData] = useState({

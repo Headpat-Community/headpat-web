@@ -19,6 +19,7 @@ export default function SidebarResizable({
   defaultCollapsed = false,
   navCollapsedSize,
   accountData,
+  translations,
   children,
 }) {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(defaultCollapsed)
@@ -84,18 +85,21 @@ export default function SidebarResizable({
             <ScrollArea className={'h-full overflow-auto'}>
               {/* Make the children scrollable */}
               <div>
-                <Nav isCollapsed={isCollapsed} links={Nav1('')} />
+                <Nav isCollapsed={isCollapsed} links={Nav1(translations)} />
                 <Separator />
-                <Nav isCollapsed={isCollapsed} links={Nav2(accountData, '')} />
+                <Nav
+                  isCollapsed={isCollapsed}
+                  links={Nav2(accountData, translations)}
+                />
                 <Separator />
-                <Nav isCollapsed={isCollapsed} links={Nav3('')} />
+                <Nav isCollapsed={isCollapsed} links={Nav3(translations)} />
               </div>
             </ScrollArea>
             <div className={'mt-auto relative bottom-0 block'}>
               <Separator />
               <Nav
                 isCollapsed={isCollapsed}
-                links={NavFooter(accountData, '')}
+                links={NavFooter(accountData, translations)}
               />
             </div>
           </div>

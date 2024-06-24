@@ -1,5 +1,5 @@
 'use client'
-import { client } from '@/app/appwrite'
+import { client } from '@/app/appwrite-client'
 import { createVote } from '@/utils/actions/interactive/createVote'
 import { useEffect, useState } from 'react'
 import { RealtimeResponseEvent } from 'appwrite'
@@ -113,8 +113,6 @@ export default function VotingClient({
   ]
 
   const handleVote = async (questionIndex, optionIndex) => {
-    const voteKey = `${questionIndex}-${optionIndex}`
-
     if (votedQuestions[questionIndex]) {
       alert('You have already voted on this question.')
       return
@@ -140,12 +138,8 @@ export default function VotingClient({
     setSelectedOptionIndex(optionIndex)
 
     // Then send the vote to the server
-    const vote = await createVote(selectedQuestionIndex, optionIndex)
+    await createVote(selectedQuestionIndex, optionIndex)
   }
-
-  console.log(selectedOptionIndex)
-
-  //console.log(votedQuestions)
 
   return (
     <section className="w-full py-12 md:py-24 lg:py-32">

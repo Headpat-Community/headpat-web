@@ -1,6 +1,8 @@
 import type { Models } from 'node-appwrite'
 import { createAdminClient } from '@/app/appwrite-session'
 import { Badge } from '@/components/ui/badge'
+import { getEvents } from '@/utils/server-api/events/getEvents'
+import { CalendarIcon, ClockIcon, MapPinIcon } from 'lucide-react'
 
 interface EventsType extends Models.Document {
   title: string
@@ -14,10 +16,8 @@ interface EventsType extends Models.Document {
 export const runtime = 'edge'
 
 export default async function Page() {
-  const { databases } = await createAdminClient()
-
-  const result = await databases.listDocuments('hp_db', 'events')
-  const events = result.documents
+  const events = await getEvents()
+  const eventsData = events.documents
 
   return (
     <section className="w-full py-12 md:py-24 lg:py-32">
@@ -31,7 +31,7 @@ export default async function Page() {
           </p>
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {events.map((event: EventsType, index: number) => (
+          {eventsData.map((event) => (
             <div key={event.$id} className="rounded-lg border p-4 shadow-sm">
               <div className="space-y-2">
                 <div className={'flex justify-between'}>
@@ -76,67 +76,5 @@ export default async function Page() {
         </div>
       </div>
     </section>
-  )
-}
-
-function CalendarIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-      <line x1="16" x2="16" y1="2" y2="6" />
-      <line x1="8" x2="8" y1="2" y2="6" />
-      <line x1="3" x2="21" y1="10" y2="10" />
-    </svg>
-  )
-}
-
-function ClockIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <polyline points="12 6 12 12 16 14" />
-    </svg>
-  )
-}
-
-function MapPinIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
   )
 }
