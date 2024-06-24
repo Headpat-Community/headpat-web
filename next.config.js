@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 const createNextIntlPlugin = require('next-intl/plugin')
-const withNextIntl = createNextIntlPlugin(
-  // This is the default (also the `src` folder is supported out of the box)
-  './src/i18n.ts'
-)
+const withNextIntl = createNextIntlPlugin()
 
 const nextConfig = {
   reactStrictMode: true,
