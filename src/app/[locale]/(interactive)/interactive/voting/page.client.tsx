@@ -4,6 +4,7 @@ import { createVote } from '@/utils/actions/interactive/createVote'
 import { useEffect, useState } from 'react'
 import { RealtimeResponseEvent } from 'appwrite'
 import { Interactive } from '@/utils/types/models'
+import { useToast } from '@/components/ui/use-toast'
 
 export default function VotingClient({
   questionId,
@@ -14,6 +15,7 @@ export default function VotingClient({
   votes: Interactive.VotesAnswersType
   forwardedFor: string
 }) {
+  const { toast } = useToast()
   const [votedQuestions, setVotedQuestions] = useState({})
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(questionId)
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null)
@@ -28,12 +30,16 @@ export default function VotingClient({
     setVotedQuestions(newVotedQuestions)
   }
 
-  console.log(votedQuestions)
-
   // Call this function when the component mounts
   useEffect(() => {
     loadVotedQuestions()
   }, [])
+
+  useEffect(() => {
+    if (votedQuestions[selectedQuestionIndex] !== undefined) {
+      setSelectedOptionIndex(votedQuestions[selectedQuestionIndex])
+    }
+  }, [selectedQuestionIndex, votedQuestions])
 
   useEffect(() => {
     if (votedQuestions[selectedQuestionIndex]) {
@@ -113,19 +119,28 @@ export default function VotingClient({
   ]
 
   const handleVote = async (questionIndex, optionIndex) => {
-    if (votedQuestions[questionIndex]) {
-      alert('You have already voted on this question.')
+    if (votedQuestions[questionIndex] !== undefined) {
+      toast({
+        title: 'You have already voted on this question.',
+        variant: 'destructive',
+      })
       return
     }
 
     // Check if the user has already voted on this question
-    const userHasVoted = votes.documents.some(
-      (vote) =>
-        vote.questionId === questionIndex && vote.ipAddress === forwardedFor
+    const userHasVoted = Object.keys(votedQuestions).includes(
+      questionIndex.toString()
     )
 
     if (userHasVoted) {
       alert('You have already voted on this question.')
+      return
+    }
+
+    const confirmation = window.confirm(
+      'Are you sure you want to cast your vote?'
+    )
+    if (!confirmation) {
       return
     }
 
