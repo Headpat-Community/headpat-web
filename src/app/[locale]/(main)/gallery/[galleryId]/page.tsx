@@ -1,4 +1,3 @@
-import Client from './page.client'
 import { notFound } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { createSessionServerClient } from '@/app/appwrite-session'
@@ -52,6 +51,11 @@ export default async function GalleryPage({ params: { galleryId } }) {
 
   const isNsfwImage = nsfw && !enableNsfw
 
+  const getGalleryUrl = (galleryId: string) => {
+    if (!galleryId) return
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/gallery/files/${galleryId}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
+  }
+
   return (
     <div>
       <div className="flex flex-wrap items-center justify-center gap-4 p-8">
@@ -92,7 +96,25 @@ export default async function GalleryPage({ params: { galleryId } }) {
                   </div>
                 ) : (
                   <>
-                    <Client name={name} gallery={gallery.documents[0]} />
+                    {galleryDocuments?.mimeType.includes('video') ? (
+                      <video
+                        controls
+                        loop
+                        className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
+                      >
+                        <source
+                          src={getGalleryUrl(galleryDocuments.galleryId)}
+                          type={galleryDocuments.mimeType}
+                        />
+                        Your browser does not support the video tag.
+                      </video>
+                    ) : (
+                      <img
+                        src={getGalleryUrl(galleryDocuments.galleryId)}
+                        alt={name || 'Headpat Community Image'}
+                        className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
+                      />
+                    )}
                     <div className="ml-4">
                       <div className="mt-4">
                         <dl className="divide-y divide-black/10 dark:divide-white/10">
@@ -120,7 +142,9 @@ export default async function GalleryPage({ params: { galleryId } }) {
                                     <Link
                                       href={{
                                         pathname: `/user/[profileUrl]`,
-                                        params: { profileUrl: userData.$id },
+                                        params: {
+                                          profileUrl: userData.profileUrl,
+                                        },
                                       }}
                                       className="text-indigo-500 hover:text-indigo-400"
                                     >

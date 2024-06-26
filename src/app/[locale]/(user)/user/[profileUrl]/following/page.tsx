@@ -76,7 +76,7 @@ export default async function FollowingPage({
 
           return (
             <Card className={'border-none h-40 w-40 mx-auto'} key={user.$id}>
-              <HoverCard>
+              <HoverCard openDelay={100} closeDelay={100}>
                 <HoverCardTrigger>
                   <div className={'h-full w-full'}>
                     <Link

@@ -5,9 +5,10 @@ import { databases, Query, storage } from '@/app/appwrite-client'
 import * as Sentry from '@sentry/nextjs'
 import { useToast } from '@/components/ui/use-toast'
 import { Link } from '@/navigation'
+import { Gallery } from '@/utils/types/models'
 
 export default function FetchGallery({ enableNsfw }) {
-  const [gallery, setGallery] = useState([])
+  const [gallery, setGallery] = useState<Gallery.GalleryDocumentsType[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const { toast } = useToast()
@@ -25,6 +26,12 @@ export default function FetchGallery({ enableNsfw }) {
     return imageId.href
   }
 
+  const getVideoUrl = async (galleryId: string) => {
+    if (!galleryId) return
+    const videoId = await storage.getFileView('gallery', `${galleryId}`)
+    return videoId.href
+  }
+
   useEffect(() => {
     const fetchGalleryData = async () => {
       const pageSize = 500 // Number of items per page
@@ -40,7 +47,7 @@ export default function FetchGallery({ enableNsfw }) {
         : [Query.limit(pageSize), Query.offset(offset)]
 
       //const apiUrl = `${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`
-      const gallery = await databases.listDocuments(
+      const gallery: Gallery.GalleryType = await databases.listDocuments(
         'hp_db',
         'gallery-images',
         filters
@@ -76,7 +83,7 @@ export default function FetchGallery({ enableNsfw }) {
       <div>
         <ul className="flex flex-wrap items-center justify-center gap-4 p-8">
           {gallery &&
-            gallery.map((item) => (
+            gallery.map(async (item) => (
               <div key={item.$id}>
                 {item && (
                   <div
@@ -93,13 +100,35 @@ export default function FetchGallery({ enableNsfw }) {
                         params: { galleryId: item.$id },
                       }}
                     >
+                      {item.mimeType.includes('video') && (
+                        <div className="relative h-full w-full">
+                          <video
+                            className="h-full w-full object-cover"
+                            controls
+                            autoPlay={false}
+                            loop={true}
+                            muted={true}
+                            draggable={false}
+                            playsInline={true}
+                          >
+                            <source
+                              src={await getVideoUrl(item.galleryId)}
+                              type="video/mp4"
+                            />
+                          </video>
+                        </div>
+                      )}
                       <Image
                         src={getGalleryImageUrl(item.galleryId)}
-                        alt={item.imgAlt || 'Gallery Image'}
+                        alt={item.name || 'Gallery Image'}
                         className={`h-full max-h-[600px] w-full max-w-[600px] object-cover`}
                         width={600}
                         height={600}
+                        draggable={false}
                         loading="lazy" // Add this attribute for lazy loading
+                        unoptimized={item.mimeType.includes(
+                          'image/svg' || 'image/gif' || 'video'
+                        )}
                       />
                     </Link>
                   </div>

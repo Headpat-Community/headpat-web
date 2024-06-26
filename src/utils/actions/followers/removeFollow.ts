@@ -1,11 +1,10 @@
 'use server'
 
 import { createSessionServerClient } from '@/app/appwrite-session'
-import { ID } from 'node-appwrite'
 import { getUser } from '@/utils/server-api/account/user'
 import { getIsFollowing } from '@/utils/server-api/followers/getFollowing'
 
-export async function addFollow(userId: string, followerId: string) {
+export async function removeFollow(followerId: string, userId: string) {
   try {
     const { databases } = await createSessionServerClient()
     const account = await getUser()
@@ -13,14 +12,15 @@ export async function addFollow(userId: string, followerId: string) {
       return { code: 409 }
     }
     const following = await getIsFollowing(userId, followerId)
-    if (following.documents.length > 0) {
-      return { code: 404 }
+    if (following.documents.length === 0) {
+      return { code: 403 }
     }
 
-    return await databases.createDocument('hp_db', 'followers', ID.unique(), {
-      userId: account.$id,
-      followerId: followerId,
-    })
+    return await databases.deleteDocument(
+      'hp_db',
+      'followers',
+      following.documents[0].$id
+    )
   } catch (error) {
     return JSON.parse(JSON.stringify(error))
   }

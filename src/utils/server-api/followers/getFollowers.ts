@@ -9,6 +9,7 @@ import { unstable_noStore } from 'next/cache'
  * @returns {Promise<Followers.FollowerDocumentsType>} The followers of the user.
  * @example
  * const followers = await getFollowers('user_id')
+ * userId:
  */
 export async function getFollowers(
   userId: string

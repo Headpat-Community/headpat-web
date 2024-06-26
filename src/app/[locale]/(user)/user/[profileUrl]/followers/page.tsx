@@ -28,11 +28,7 @@ export default async function FollowerPage({
   // For each follower, look up their user data
   const followerData = await Promise.all(
     followers.documents.map(async (follower) => {
-      return await databases.getDocument(
-        'hp_db',
-        'userdata',
-        follower.followerId
-      )
+      return await databases.getDocument('hp_db', 'userdata', follower.userId)
     })
   )
 
@@ -76,7 +72,7 @@ export default async function FollowerPage({
 
           return (
             <Card className={'border-none h-40 w-40 mx-auto'} key={user.$id}>
-              <HoverCard>
+              <HoverCard openDelay={100} closeDelay={100}>
                 <HoverCardTrigger>
                   <div className={'h-full w-full'}>
                     <Link

@@ -20,14 +20,18 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { AddFollowerButton } from './page.client'
+import { FollowerButton } from './page.client'
 import { cn } from '@/lib/utils'
 import { UserData } from '@/utils/types/models'
 import { getFollowers } from '@/utils/server-api/followers/getFollowers'
-import { getFollowing } from '@/utils/server-api/followers/getFollowing'
+import {
+  getFollowing,
+  getIsFollowing,
+} from '@/utils/server-api/followers/getFollowing'
 import { Link } from '@/navigation'
 import { Button } from '@/components/ui/button'
 import ContextMenuProfile from '@/components/user/contextMenuProfile'
+import { getUser } from '@/utils/server-api/account/user'
 
 export const runtime = 'edge'
 
@@ -38,6 +42,7 @@ export const metadata = {
 
 export default async function UserProfile({ params: { profileUrl } }) {
   const { databases } = await createSessionServerClient()
+  const account = await getUser()
 
   const getAvatarImageUrl = async (galleryId: string) => {
     if (!galleryId) {
@@ -61,14 +66,19 @@ export default async function UserProfile({ params: { profileUrl } }) {
   const userData = userDataResponse.documents[0]
   const followers = await getFollowers(userData.$id)
   const following = await getFollowing(userData.$id)
+  const isFollowingResponse = await getIsFollowing(account.$id, userData.$id)
+  const isFollowing = isFollowingResponse.documents.length > 0
 
   const totalFollowers = followers?.documents?.length
   const totalFollowing = following?.documents?.length
 
   const formatDate = (date: Date) =>
+    date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')
+
+  const formatDayMonth = (date: Date) =>
     date.toLocaleDateString('en-GB').slice(0, 5).replace(/-/g, '.')
 
-  const today = formatDate(new Date())
+  const today = formatDayMonth(new Date())
   const birthday = userData?.birthday
     ? formatDate(new Date(userData.birthday))
     : '01/01/1900'
@@ -178,9 +188,11 @@ export default async function UserProfile({ params: { profileUrl } }) {
                     <CardTitle className={'col-span-1'}>
                       {userData.displayName}
                     </CardTitle>
-                    <AddFollowerButton
+                    <FollowerButton
+                      userId={account.$id}
                       displayName={userData.displayName}
                       followerId={userData.$id}
+                      isFollowing={isFollowing}
                     />
                   </div>
                   <div className={'grid grid-cols-2'}>
