@@ -57,7 +57,6 @@ export default function MfaRecoveryCodes() {
 
       if (mfaVerifyResult) {
         const recoveryCodesResult = await account.updateMfaRecoveryCodes()
-        console.log(recoveryCodesResult)
         setRecoveryCodes(recoveryCodesResult.recoveryCodes)
         setMfaMode('hasRecoveryCodes')
       } else {

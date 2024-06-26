@@ -22,7 +22,6 @@ export default function MfaPageClient() {
   const createMfaCode = async () => {
     try {
       const data = await startMfaChallenge()
-      console.log(data)
       setChallengeId(data.$id)
     } catch (error) {
       console.log(error)

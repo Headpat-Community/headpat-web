@@ -109,6 +109,7 @@ export default async function GalleryPage({ params: { galleryId } }) {
                         Your browser does not support the video tag.
                       </video>
                     ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={getGalleryUrl(galleryDocuments.galleryId)}
                         alt={name || 'Headpat Community Image'}
@@ -202,12 +203,11 @@ export default async function GalleryPage({ params: { galleryId } }) {
                                 </div>
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                   <Link
-                                    href={{
-                                      pathname: `/gallery/[galleryId]`,
-                                      params: {
-                                        galleryId: galleryDocuments.$id,
-                                      },
-                                    }}
+                                    // @ts-ignore
+                                    href={getGalleryUrl(
+                                      galleryDocuments.galleryId
+                                    )}
+                                    target={'_blank'}
                                   >
                                     <Button>See full image</Button>
                                   </Link>
