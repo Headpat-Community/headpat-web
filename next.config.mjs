@@ -1,5 +1,4 @@
-/** @type {import('next').NextConfig} */
-const createNextIntlPlugin = require('next-intl/plugin')
+import createNextIntlPlugin from 'next-intl/plugin'
 const withNextIntl = createNextIntlPlugin()
 
 const nextConfig = {
@@ -47,7 +46,7 @@ const nextConfig = {
   },
 }
 
-module.exports = withNextIntl(nextConfig)
+export default withNextIntl(nextConfig)
 
 /*
 // Injected content via Sentry wizard below

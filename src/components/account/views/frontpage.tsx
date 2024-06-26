@@ -10,8 +10,15 @@ import { useToast } from '@/components/ui/use-toast'
 import { useState } from 'react'
 import UploadAvatar from '@/components/account/uploadAvatar'
 import UploadBanner from '@/components/account/uploadBanner'
+import { Account, UserData } from '@/utils/types/models'
 
-export default function FrontpageView({ accountData, userDataResponse }) {
+export default function FrontpageView({
+  accountData,
+  userDataResponse,
+}: {
+  accountData: Account.AccountPrefs
+  userDataResponse: UserData.UserDataDocumentsType
+}) {
   const [userData, setUserData] = useState(userDataResponse)
   const [isUploading, setIsUploading] = useState<boolean>(false)
   const { toast } = useToast()

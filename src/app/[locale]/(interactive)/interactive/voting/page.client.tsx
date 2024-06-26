@@ -33,6 +33,7 @@ export default function VotingClient({
   // Call this function when the component mounts
   useEffect(() => {
     loadVotedQuestions()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
