@@ -8,6 +8,9 @@ export async function removeFollow(userId: string, communityId: string) {
   try {
     const { databases } = await createSessionServerClient()
     const account = await getUser()
+    if (!account) {
+      return { code: 401 }
+    }
     const following = await getIsFollowingCommunity(userId, communityId)
     if (following.documents.length === 0) {
       return { code: 403 }

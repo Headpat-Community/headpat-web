@@ -16,7 +16,13 @@ export function FollowerButton({
 
   const handleFollow = async () => {
     const data = await addFollow(userId, communityId)
-    if (data.code === 404) {
+    if (data.code === 401) {
+      return toast({
+        title: 'Error',
+        description: 'You must be logged in to follow a community',
+        variant: 'destructive',
+      })
+    } else if (data.code === 404) {
       return toast({
         title: 'Error',
         description: 'You are already following this community',
@@ -33,7 +39,13 @@ export function FollowerButton({
 
   const handleUnfollow = async () => {
     const data = await removeFollow(userId, communityId)
-    if (data.code === 403) {
+    if (data.code === 401) {
+      return toast({
+        title: 'Error',
+        description: 'You must be logged in to unfollow a community',
+        variant: 'destructive',
+      })
+    } else if (data.code === 403) {
       return toast({
         title: 'Error',
         description: 'You are not following this user',

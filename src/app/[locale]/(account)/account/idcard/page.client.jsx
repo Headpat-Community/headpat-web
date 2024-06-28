@@ -126,6 +126,7 @@ export default function PageClient() {
 
       setIsUploading(true)
 
+      // @eslint-disable-next-line no-undef
       const response = await fetch('/api/account/createBadge', {
         method: 'POST',
         body: formData,
