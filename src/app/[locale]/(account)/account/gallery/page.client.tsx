@@ -105,7 +105,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
                       >
                         <Image
                           src={getGalleryImageUrl(item.galleryId)}
-                          alt={item.imgAlt || 'Gallery image'}
+                          alt={item.name}
                           className={`imgsinglegallery h-full max-h-64 w-full max-w-[600px] object-contain rounded-lg`}
                           width={600}
                           height={600}

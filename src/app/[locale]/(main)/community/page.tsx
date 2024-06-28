@@ -1,11 +1,6 @@
 import { getCommunities } from '@/utils/server-api/communities/getCommunity'
 import PageLayout from '@/components/pageLayout'
-import {
-  ChevronRight,
-  HeartHandshakeIcon,
-  MessageCircleIcon,
-  UserRoundIcon,
-} from 'lucide-react'
+import { ChevronRight, MessageCircleIcon, UserRoundIcon } from 'lucide-react'
 import { Link } from '@/navigation'
 import { getCommunityFollowers } from '@/utils/server-api/community-followers/getCommunityFollowers'
 import { getCommunityAvatarUrlPreview } from '@/components/getStorageItem'

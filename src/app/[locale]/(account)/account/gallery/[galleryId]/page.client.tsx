@@ -18,7 +18,6 @@ export default function FetchGallery({ singleGallery }) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [userData, setUserData] = useState({
     name: singleGallery.name,
-    imgAlt: singleGallery.imgAlt,
     nsfw: singleGallery.nsfw,
     createdAt: singleGallery.$createdAt,
     modifiedAt: singleGallery.$updatedAt,
@@ -97,7 +96,6 @@ export default function FetchGallery({ singleGallery }) {
       // Make the PATCH request
       await databases.updateDocument('hp_db', 'gallery-images', uniqueId, {
         name: data.name,
-        imgAlt: data.imgAlt,
         longText: data.longText,
         nsfw: data.nsfw,
       })
@@ -155,24 +153,6 @@ export default function FetchGallery({ singleGallery }) {
                   setUserData({
                     ...userData,
                     name: e.target.value,
-                  })
-                }
-              />
-            </div>
-          </div>
-
-          <div className="sm:col-span-3">
-            <Label htmlFor="imgalt">Alternative info (SEO)</Label>
-            <div className="mt-2">
-              <Input
-                type="text"
-                name="imgalt"
-                id="imgalt"
-                value={userData.imgAlt}
-                onChange={(e) =>
-                  setUserData({
-                    ...userData,
-                    imgAlt: e.target.value,
                   })
                 }
               />
