@@ -10,7 +10,11 @@ export namespace Account {
    * @see AccountType
    */
   export interface AccountPrefs extends AccountType {
+    /**
+     * The user's preferences.
+     */
     prefs: {
+      // The user's nsfw preference.
       nsfw: boolean
     }
   }
@@ -23,7 +27,13 @@ export namespace Followers {
   }
 
   export interface FollowerDocumentsType extends Models.Document {
+    /**
+     * The user ID of the user that is following.
+     */
     userId: string
+    /**
+     * The user ID of the user that is being followed.
+     */
     followerId: string
   }
 }
@@ -42,24 +52,63 @@ export namespace UserData {
    * @see UserDataType
    */
   export interface UserDataDocumentsType extends Models.Document {
+    /**
+     * The avatar ID of the user.
+     */
     avatarId: string | null
+    /**
+     * The banner ID of the user.
+     */
     profileBannerId: string | null
+    /**
+     * The user's status.
+     */
     status: string | null
+    /**
+     * The user's display name.
+     */
     displayName: string
+    /**
+     * The user's bio.
+     */
     bio: string | null
+    /**
+     * The user's birthday.
+     * @example '2000-01-01T00:00:00:000Z'
+     */
     birthday: string | null
+    /**
+     * The user's profile URL.
+     */
     profileUrl: string
+    /**
+     * The user's pronouns.
+     */
     pronouns: string | null
+    /**
+     * The user's discord username. (Not the ID)
+     */
     discordname: string | null
+    /**
+     * The user's telegram name.
+     */
     telegramname: string | null
+    /**
+     * The user's furaffinity name.
+     */
     furaffinityname: string | null
+    /**
+     * The user's x/twitter name.
+     */
     X_name: string | null
+    /**
+     * The user's twitch name.
+     */
     twitchname: string | null
-    pats: number | 0
+    /**
+     * The user's location.
+     */
     location: string | null
-    hideLocation: boolean
-    hideBirthday: boolean
-    hidePats: boolean
   }
 }
 
@@ -81,10 +130,25 @@ export namespace Announcements {
    * @since 2.0.0
    */
   export interface AnnouncementDocumentsType extends Models.Document {
+    /**
+     * The title of the announcement.
+     */
     title: string | null
+    /**
+     * The side text of the announcement.
+     */
     sideText: string | null
+    /**
+     * The description of the announcement.
+     */
     description: string
+    /**
+     * Until when the announcement is valid.
+     */
     validUntil: Date
+    /**
+     * The user data of the user that created the announcement.
+     */
     userData: UserData.UserDataDocumentsType
   }
 }
@@ -108,12 +172,33 @@ export namespace Gallery {
    * @since 2.0.0
    */
   export interface GalleryDocumentsType extends Models.Document {
+    /**
+     * The gallery ID.
+     */
     galleryId: string
+    /**
+     * The name of the gallery item.
+     */
     name: string
+    /**
+     * The user ID of the user that created the gallery.
+     */
     userId: string
+    /**
+     * The description of the gallery item.
+     */
     longText: string
+    /**
+     * If the gallery item is nsfw.
+     */
     nsfw: boolean
+    /**
+     * The tags of the gallery item.
+     */
     tags: string[]
+    /**
+     * The file extension/mimetype of the gallery item.
+     */
     mimeType: string
   }
 }
@@ -137,8 +222,17 @@ export namespace Interactive {
    * @since 2.0.0
    */
   export interface VotesAnswersDocumentsType extends Models.Document {
+    /**
+     * The IP address of the user that voted.
+     */
     ipAddress: string | null
+    /**
+     * The question ID of the question that was voted on.
+     */
     questionId: number
+    /**
+     * The answer ID of the answer that was voted on.
+     */
     optionId: number
   }
 
@@ -212,6 +306,51 @@ export namespace Events {
     /**
      * The community ID connected to the event.
      */
+    communityId: string
+  }
+}
+
+export namespace Community {
+  export interface CommunityType {
+    total: number
+    documents: CommunityDocumentsType[]
+  }
+
+  export interface CommunityDocumentsType extends Models.Document {
+    /**
+     * The name of the community.
+     */
+    name: string
+    /**
+     * The description of the community.
+     */
+    description: string
+    /**
+     * If the community is nsfw.
+     * @default false
+     */
+    nsfw: boolean
+    /**
+     * The tags of the community for searching.
+     */
+    tags: string[]
+    /**
+     * The banner ID of the community
+     */
+    bannerId: string
+    /**
+     * The avatar ID of the community.
+     */
+    avatarId: string
+  }
+
+  export interface CommunityFollowersType {
+    total: number
+    documents: CommunityFollowersDocuments[]
+  }
+
+  export interface CommunityFollowersDocuments extends Models.Document {
+    userId: string
     communityId: string
   }
 }
