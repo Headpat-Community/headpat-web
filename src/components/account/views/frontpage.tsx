@@ -81,12 +81,6 @@ export default function FrontpageView({
     }
   }
 
-  const hideBirthday = async () => {
-    await databases.updateDocument('hp_db', 'userdata', accountData.$id, {
-      birthday: '1900-01-01T00:00:00',
-    })
-  }
-
   return (
     <>
       <div className="divide-y divide-black/5 dark:divide-white/5">
@@ -116,29 +110,6 @@ export default function FrontpageView({
             />
 
             <div className="mt-12 grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6">
-              <div className={'col-span-full grid grid-cols-2'}>
-                <div className="col-span-1">
-                  <Label htmlFor="hide_birthday">Hide Birthday?</Label>
-                  <div className="mt-2">
-                    <Checkbox
-                      id="hide_birthday"
-                      name="hide_birthday"
-                      onCheckedChange={hideBirthday}
-                    />
-                  </div>
-                  <Label htmlFor="hide_location">Hide Location?</Label>
-                  <div className="mt-2">
-                    <Checkbox id="hide_location" name="hide_location" />
-                  </div>
-                </div>
-                <div className="col-span-1">
-                  <Label htmlFor="hide_pronouns">Hide Pronouns?</Label>
-                  <div className="mt-2">
-                    <Checkbox id="hide_pronouns" name="hide_pronouns" />
-                  </div>
-                </div>
-              </div>
-
               <div className="col-span-full">
                 <Label htmlFor="displayname">Display Name</Label>
                 <div className="relative mt-2">
