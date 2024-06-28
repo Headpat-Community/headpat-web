@@ -247,7 +247,13 @@ export default async function UserProfile({ params: { profileUrl } }) {
                   </div>
                   <div className={'border border-ring p-8 rounded-xl mt-8'}>
                     <div className={'flex flex-wrap items-center'}>
-                      <p>{userData.bio || 'Nothing here yet!'}</p>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            userData.bio.replace(/\n/g, '<br />') ||
+                            'Nothing here yet!',
+                        }}
+                      />{' '}
                     </div>
                   </div>
                 </CardContent>
