@@ -10,7 +10,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { Link, usePathname } from '@/navigation'
-import { useParams } from 'next/navigation'
 
 interface NavProps {
   isCollapsed: boolean

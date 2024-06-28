@@ -1,18 +1,7 @@
-import type { Models } from 'node-appwrite'
-import { createAdminClient } from '@/app/appwrite-session'
 import { Badge } from '@/components/ui/badge'
 import { getEvents } from '@/utils/server-api/events/getEvents'
 import { CalendarIcon, ClockIcon, MapPinIcon, UsersIcon } from 'lucide-react'
 import { Link } from '@/navigation'
-
-interface EventsType extends Models.Document {
-  title: string
-  label: string
-  date: string
-  dateUntil: string
-  location: string
-  description: string
-}
 
 export const runtime = 'edge'
 
