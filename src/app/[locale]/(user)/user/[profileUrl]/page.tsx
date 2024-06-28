@@ -36,6 +36,7 @@ import {
   getAvatarImageUrlView,
   getBannerImageUrlPreview,
 } from '@/components/getStorageItem'
+import DOMPurify from 'dompurify'
 
 export const runtime = 'edge'
 
@@ -78,6 +79,9 @@ export default async function UserProfile({ params: { profileUrl } }) {
   if (!userData) {
     return notFound()
   }
+
+  const sanitizedBio = DOMPurify.sanitize(userData.bio)
+  const bioWithLineBreaks = sanitizedBio.replace(/\n/g, '<br />')
 
   return (
     <ContextMenuProfile>
@@ -249,11 +253,9 @@ export default async function UserProfile({ params: { profileUrl } }) {
                     <div className={'flex flex-wrap items-center'}>
                       <div
                         dangerouslySetInnerHTML={{
-                          __html:
-                            userData.bio.replace(/\n/g, '<br />') ||
-                            'Nothing here yet!',
+                          __html: bioWithLineBreaks || 'Nothing here yet!',
                         }}
-                      />{' '}
+                      />
                     </div>
                   </div>
                 </CardContent>
