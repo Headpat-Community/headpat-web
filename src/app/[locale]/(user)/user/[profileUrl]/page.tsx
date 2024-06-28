@@ -36,7 +36,7 @@ import {
   getAvatarImageUrlView,
   getBannerImageUrlPreview,
 } from '@/components/getStorageItem'
-import DOMPurify from 'dompurify'
+import sanitizeHtml from 'sanitize-html'
 
 export const runtime = 'edge'
 
@@ -80,7 +80,7 @@ export default async function UserProfile({ params: { profileUrl } }) {
     return notFound()
   }
 
-  const sanitizedBio = DOMPurify.sanitize(userData.bio)
+  const sanitizedBio = sanitizeHtml(userData.bio)
   const bioWithLineBreaks = sanitizedBio.replace(/\n/g, '<br />')
 
   return (

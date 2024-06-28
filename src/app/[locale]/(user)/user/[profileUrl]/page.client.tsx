@@ -2,8 +2,9 @@
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
 import { addFollow } from '@/utils/actions/followers/addFollow'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { removeFollow } from '@/utils/actions/followers/removeFollow'
+import sanitizeHtml from 'sanitize-html'
 
 export function FollowerButton({
   displayName,
