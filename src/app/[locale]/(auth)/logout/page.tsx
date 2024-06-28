@@ -19,7 +19,7 @@ export default function LogoutPage() {
         return response.json() // we only get here if there is no error
       })
       .then(() => {
-        router.push('/')
+        window.location.href = '/'
       })
       .catch((err) => {
         setError(err)

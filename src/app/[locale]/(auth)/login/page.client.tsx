@@ -49,6 +49,7 @@ export default function Login() {
       }
 
       const response = await createUser(body)
+      console.log(response)
 
       if (response.code === 400) {
         toast({
