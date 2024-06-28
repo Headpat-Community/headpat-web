@@ -2,7 +2,8 @@ import type { Models } from 'node-appwrite'
 import { createAdminClient } from '@/app/appwrite-session'
 import { Badge } from '@/components/ui/badge'
 import { getEvents } from '@/utils/server-api/events/getEvents'
-import { CalendarIcon, ClockIcon, MapPinIcon } from 'lucide-react'
+import { CalendarIcon, ClockIcon, MapPinIcon, UsersIcon } from 'lucide-react'
+import { Link } from '@/navigation'
 
 interface EventsType extends Models.Document {
   title: string
@@ -35,7 +36,17 @@ export default async function Page() {
             <div key={event.$id} className="rounded-lg border p-4 shadow-sm">
               <div className="space-y-2">
                 <div className={'flex justify-between'}>
-                  <h3 className="text-lg font-semibold">{event.title}</h3>
+                  <Link
+                    href={{
+                      pathname: '/community/[communityId]/events/[eventId]',
+                      params: {
+                        communityId: event.communityId,
+                        eventId: event.$id,
+                      },
+                    }}
+                  >
+                    <h3 className="text-lg font-semibold">{event.title}</h3>
+                  </Link>
                   {event.label && (
                     <Badge className="flex-shrink-0 h-6 leading-6">
                       {event.label}
@@ -68,7 +79,16 @@ export default async function Page() {
                 </div>
                 <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                   <MapPinIcon className="h-4 w-4 flex-shrink-0" />
-                  <span>{event.location}</span>
+                  <span>
+                    {event.locationZoneMethod === 'polygon' ||
+                    event.locationZoneMethod === 'circle'
+                      ? 'Physical'
+                      : event.location}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                  <UsersIcon className="h-4 w-4 flex-shrink-0" />
+                  <span>{event.attendees.length}</span>
                 </div>
               </div>
             </div>

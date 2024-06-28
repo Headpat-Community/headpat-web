@@ -1,18 +1,12 @@
 import { createAdminClient } from '@/app/appwrite-session'
 import { Announcements } from '@/utils/types/models'
 import { Link } from '@/navigation'
+import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 
 export const runtime = 'edge'
 
 export const metadata = {
   title: 'Announcements',
-}
-
-const getAvatarImageUrl = (galleryId: string) => {
-  if (!galleryId) {
-    return '/logos/Headpat_Logo_web_1024x1024_240518-02.png'
-  }
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=100&output=webp&quality=75`
 }
 
 export default async function Page({
@@ -59,8 +53,9 @@ export default async function Page({
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     className="mr-4 h-12 w-12 flex-none rounded-full"
-                    src={getAvatarImageUrl(
-                      announcementData?.userData?.avatarId
+                    src={getAvatarImageUrlPreview(
+                      announcementData?.userData?.avatarId,
+                      'width=100&output=webp&quality=75'
                     )}
                     alt=""
                     width={48}

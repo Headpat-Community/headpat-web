@@ -89,18 +89,20 @@ export default function Login() {
         }),
       })
       const dataResponse = await signIn.json()
-      if (dataResponse.type == 'user_invalid_credentials') {
+      if (dataResponse?.error?.response?.type == 'user_invalid_credentials') {
         toast({
           title: 'Error',
           description: 'E-Mail or Password incorrect.',
           variant: 'destructive',
         })
-      } else if (dataResponse.type == 'user_blocked') {
+        return
+      } else if (dataResponse?.error?.response?.type == 'user_blocked') {
         toast({
           title: 'Error',
           description: 'User is blocked.',
           variant: 'destructive',
         })
+        return
       }
 
       client.setSession(dataResponse.secret)

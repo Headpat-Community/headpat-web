@@ -13,6 +13,9 @@ export const runtime = 'edge'
 
 export default async function Page() {
   const mfaNeeded = await mfaChallengeNeeded()
+  if (mfaNeeded.type === 'general_unauthorized_scope') {
+    return redirect('/login')
+  }
   if (mfaNeeded.$id) {
     return redirect('/account')
   }

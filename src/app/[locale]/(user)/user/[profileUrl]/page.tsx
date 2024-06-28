@@ -32,6 +32,10 @@ import { Link } from '@/navigation'
 import { Button } from '@/components/ui/button'
 import ContextMenuProfile from '@/components/user/contextMenuProfile'
 import { getUser } from '@/utils/server-api/account/user'
+import {
+  getAvatarImageUrlView,
+  getBannerImageUrlPreview,
+} from '@/components/getStorageItem'
 
 export const runtime = 'edge'
 
@@ -43,20 +47,6 @@ export const metadata = {
 export default async function UserProfile({ params: { profileUrl } }) {
   const { databases } = await createSessionServerClient()
   const account = await getUser()
-
-  const getAvatarImageUrl = async (galleryId: string) => {
-    if (!galleryId) {
-      return '/images/404.webp'
-    }
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
-  }
-
-  const getBannerImageUrl = async (galleryId: string) => {
-    if (!galleryId) {
-      return
-    }
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/banners/files/${galleryId}/preview?project=6557c1a8b6c2739b3ecf&width=1200&height=250&output=webp`
-  }
 
   const userDataResponse: UserData.UserDataType = await databases.listDocuments(
     'hp_db',
@@ -99,7 +89,10 @@ export default async function UserProfile({ params: { profileUrl } }) {
               <header className={'p-0 lg:p-8'}>
                 <div className={''}>
                   <Image
-                    src={await getBannerImageUrl(userData.profileBannerId)}
+                    src={getBannerImageUrlPreview(
+                      userData.profileBannerId,
+                      'width=1200&height=250&output=webp'
+                    )}
                     alt={'User Banner'}
                     className={
                       'rounded-md object-cover max-w-[1200px] max-h-[250px] px-8 lg:px-0 mt-8 lg:mt-0 w-full h-auto'
@@ -127,7 +120,7 @@ export default async function UserProfile({ params: { profileUrl } }) {
               >
                 <AspectRatio ratio={2 / 2}>
                   <Image
-                    src={await getAvatarImageUrl(userData.avatarId)}
+                    src={getAvatarImageUrlView(userData.avatarId)}
                     alt={'User Avatar'}
                     className={'object-contain rounded-t-xl'}
                     fill={true}

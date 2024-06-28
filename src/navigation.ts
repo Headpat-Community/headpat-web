@@ -13,6 +13,12 @@ export const pathnames = {
   '/gallery': '/gallery',
   '/gallery/[galleryId]': '/gallery/[galleryId]',
   '/community': '/community',
+  '/community/[communityId]': '/community/[communityId]',
+  '/community/[communityId]/events': '/community/[communityId]/events',
+  '/community/[communityId]/events/[eventId]':
+    '/community/[communityId]/events/[eventId]',
+  '/events': '/events',
+  '/events/[eventId]': '/events/[eventId]',
   '/support': '/support',
   '/legal': '/legal',
   '/legal/impressum': '/legal/impressum',

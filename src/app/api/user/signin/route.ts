@@ -1,4 +1,4 @@
-import { createAdminClient } from '../../../appwrite-session'
+import { createAdminClient } from '@/app/appwrite-session'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
@@ -24,8 +24,8 @@ export async function POST(request) {
       {
         httpOnly: true,
         secure: true,
-        sameSite: 'Strict',
-        maxAge: new Date(session.expire),
+        sameSite: 'strict',
+        expires: new Date(session.expire),
         path: '/',
         domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
       }

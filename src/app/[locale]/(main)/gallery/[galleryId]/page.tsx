@@ -5,6 +5,7 @@ import { Query } from '@/app/appwrite-server'
 import { getUser } from '@/utils/server-api/account/user'
 import { Gallery, UserData } from '@/utils/types/models'
 import { Link } from '@/navigation'
+import { getGalleryImageUrlView } from '@/components/getStorageItem'
 
 export const metadata = {
   title: 'Gallery',
@@ -50,11 +51,6 @@ export default async function GalleryPage({ params: { galleryId } }) {
   const nsfw = galleryDocuments?.nsfw
 
   const isNsfwImage = nsfw && !enableNsfw
-
-  const getGalleryUrl = (galleryId: string) => {
-    if (!galleryId) return
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/gallery/files/${galleryId}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
-  }
 
   return (
     <div>
@@ -103,7 +99,9 @@ export default async function GalleryPage({ params: { galleryId } }) {
                         className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
                       >
                         <source
-                          src={getGalleryUrl(galleryDocuments.galleryId)}
+                          src={getGalleryImageUrlView(
+                            galleryDocuments.galleryId
+                          )}
                           type={galleryDocuments.mimeType}
                         />
                         Your browser does not support the video tag.
@@ -111,7 +109,7 @@ export default async function GalleryPage({ params: { galleryId } }) {
                     ) : (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={getGalleryUrl(galleryDocuments.galleryId)}
+                        src={getGalleryImageUrlView(galleryDocuments.galleryId)}
                         alt={name || 'Headpat Community Image'}
                         className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
                       />
@@ -204,7 +202,7 @@ export default async function GalleryPage({ params: { galleryId } }) {
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                   <Link
                                     // @ts-ignore
-                                    href={getGalleryUrl(
+                                    href={getGalleryImageUrlView(
                                       galleryDocuments.galleryId
                                     )}
                                     target={'_blank'}

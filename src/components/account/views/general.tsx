@@ -17,6 +17,17 @@ import {
 } from '@/utils/actions/account/account'
 import { Account } from '@/utils/types/models'
 import { useRouter } from '@/navigation'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 
 export default function GeneralAccountView({
   accountData,
@@ -152,16 +163,14 @@ export default function GeneralAccountView({
     }
   }
 
-  const handleProfileUrlChange = async (event: any) => {
-    event.preventDefault()
-
+  const handleProfileUrlChange = async () => {
     const profileUrl = userDataState.profileUrl
 
     // Check if profileUrl has at least 4 characters
     if (profileUrl.length < 3) {
       toast({
         title: 'Error',
-        description: 'Profile URL must be at least 4 characters long.',
+        description: 'Profile URL must be at least 3 characters long.',
         variant: 'destructive',
       })
       return
@@ -192,7 +201,6 @@ export default function GeneralAccountView({
         title: 'Success!',
         description: 'Profile URL updated successfully.',
       })
-      event.target.reset() // Reset the form
     }
   }
 
@@ -263,43 +271,63 @@ export default function GeneralAccountView({
             </p>
           </div>
 
-          <form onSubmit={handleProfileUrlChange} className="md:col-span-2">
-            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-              <div className="col-span-full">
-                <Label htmlFor="username">URL</Label>
-                <div className="mt-2">
-                  <div className="flex rounded-md bg-background ring-1 ring-offset-background ring-inset focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-black/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 dark:ring-white/10">
-                    <span className="flex select-none items-center pl-3 text-gray-400 sm:text-sm">
-                      https://headpat.de/user/
-                    </span>
-                    <Input
-                      type="text"
-                      name="profileurl"
-                      id="profileurl"
-                      required
-                      onChange={(e) => {
-                        setUserDataState((prevUserData: any) => ({
-                          ...prevUserData,
-                          profileUrl: e.target.value,
-                        }))
-                      }}
-                      placeholder={
-                        userDataState ? userDataState.profileUrl : ''
-                      }
-                      className="border-0 pl-0 align-middle bg-transparent ml-1 focus:ring-0 focus:outline-none focus:border-0 focus-visible:ring-0 focus-visible:outline-none focus-visible:border-0 focus-visible:ring-offset-0"
-                      minLength={4}
-                    />
+          <AlertDialog>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will change your profile
+                  URL to the one you entered. We will not redirect the old URL
+                  to the new one.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleProfileUrlChange}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+            <div className="md:col-span-2">
+              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+                <div className="col-span-full">
+                  <Label htmlFor="username">URL</Label>
+                  <div className="mt-2">
+                    <div className="flex rounded-md bg-background ring-1 ring-offset-background ring-inset focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-black/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 dark:ring-white/10">
+                      <span className="flex select-none items-center pl-3 text-gray-400 sm:text-sm">
+                        headpat.de/user/
+                      </span>
+                      <Input
+                        type="text"
+                        name="profileurl"
+                        id="profileurl"
+                        required
+                        onChange={(e) => {
+                          setUserDataState((prevUserData: any) => ({
+                            ...prevUserData,
+                            profileUrl: e.target.value,
+                          }))
+                        }}
+                        placeholder={
+                          userDataState ? userDataState.profileUrl : ''
+                        }
+                        className="border-0 pl-0 align-middle bg-transparent ml-1 focus:ring-0 focus:outline-none focus:border-0 focus-visible:ring-0 focus-visible:outline-none focus-visible:border-0 focus-visible:ring-offset-0"
+                        minLength={3}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="mt-8 flex">
-              <Button type="submit" variant={'outline'}>
-                Save
-              </Button>
+              <div className="mt-8 flex">
+                <AlertDialogTrigger asChild>
+                  <Button type="button" variant={'outline'}>
+                    Save
+                  </Button>
+                </AlertDialogTrigger>
+              </div>
             </div>
-          </form>
+          </AlertDialog>
         </div>
 
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">

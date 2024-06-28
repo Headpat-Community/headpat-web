@@ -9,6 +9,7 @@ import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
 import { Gallery } from '@/utils/types/models'
 import { Link, useRouter } from '@/navigation'
+import { getGalleryImageUrlView } from '@/components/getStorageItem'
 
 export default function FetchGallery({ singleGallery }) {
   const { toast } = useToast()
@@ -23,11 +24,6 @@ export default function FetchGallery({ singleGallery }) {
     modifiedAt: singleGallery.$updatedAt,
     longText: singleGallery.longText,
   })
-
-  const getGalleryImageUrl = (galleryId: string) => {
-    if (!galleryId) return
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/gallery/files/${galleryId}/view?project=6557c1a8b6c2739b3ecf`
-  }
 
   const deleteImage = async () => {
     try {
@@ -128,7 +124,7 @@ export default function FetchGallery({ singleGallery }) {
       <div className="mx-auto flex">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={getGalleryImageUrl(singleGallery.galleryId)}
+          src={getGalleryImageUrlView(singleGallery.galleryId)}
           alt={singleGallery.imgAlt || 'Headpat Community Image'}
           className={`imgsinglegallery max-h-[1000px] object-contain rounded-lg`}
         />

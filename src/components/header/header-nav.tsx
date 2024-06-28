@@ -22,9 +22,10 @@ interface NavProps {
     href: string
   }[]
   setIsOpen?: any
+  translations: any
 }
 
-export function Nav({ isCollapsed, links, setIsOpen }: NavProps) {
+export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
   const currentPath = usePathname()
 
   return (
@@ -35,7 +36,7 @@ export function Nav({ isCollapsed, links, setIsOpen }: NavProps) {
       <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
         {links.map((link, index) => {
           const isActive =
-            link.title === 'Home'
+            link.title === translations.home
               ? currentPath === link.href.replace(/\/$/, '')
               : currentPath.startsWith(link.href)
 

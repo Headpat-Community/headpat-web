@@ -13,6 +13,7 @@ import { UserData } from '@/utils/types/models'
 import { getFollowing } from '@/utils/server-api/followers/getFollowing'
 import { Link } from '@/navigation'
 import { getUserDataFromProfileUrl } from '@/utils/server-api/user/getUserData'
+import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 
 export const runtime = 'edge'
 
@@ -54,11 +55,6 @@ export default async function FollowingPage({
   const formatDate = (date: Date) =>
     date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')
 
-  const getAvatarUrl = (avatarId: string) => {
-    if (!avatarId) return
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${avatarId}/preview?project=6557c1a8b6c2739b3ecf&width=250&height=250`
-  }
-
   return (
     <PageLayout title={'Following'}>
       <div
@@ -87,7 +83,12 @@ export default async function FollowingPage({
                     >
                       {user.avatarId ? (
                         <Image
-                          src={getAvatarUrl(user.avatarId) || null}
+                          src={
+                            getAvatarImageUrlPreview(
+                              user.avatarId,
+                              'width=250&height=250'
+                            ) || null
+                          }
                           alt={user.displayName}
                           className="object-cover rounded-md"
                           width={1000}
@@ -106,7 +107,14 @@ export default async function FollowingPage({
                 <HoverCardContent className="w-80">
                   <div className="flex space-x-4">
                     <Avatar>
-                      <AvatarImage src={getAvatarUrl(user.avatarId) || null} />
+                      <AvatarImage
+                        src={
+                          getAvatarImageUrlPreview(
+                            user.avatarId,
+                            'width=250&height=250'
+                          ) || null
+                        }
+                      />
                       <AvatarFallback>
                         {user.displayName.charAt(0).toUpperCase()}
                       </AvatarFallback>

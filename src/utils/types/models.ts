@@ -166,14 +166,52 @@ export namespace Events {
    * @since 2.0.0
    */
   export interface EventsDocumentsType extends Models.Document {
+    /**
+     * The title of the event.
+     */
     title: string
+    /**
+     * The community name connected to the event.
+     */
     label: string
+    /**
+     * The description of the event.
+     */
     description: string
+    /**
+     * The date the event starts.
+     */
     date: string
+    /**
+     * The date the event ends.
+     */
     dateUntil: string
+    /**
+     * The location of the event.
+     * Only if the locationZoneMethod is set to 'virtual'!
+     */
     location: string
+    /**
+     * The location zone method.
+     */
     locationZoneMethod: 'polygon' | 'circle' | 'virtual'
+    /**
+     * The location zone coordinates.
+     * Only if the locationZoneMethod is set to 'polygon' or 'circle'!
+     */
     coordinates: string[]
+    /**
+     * The location zone radius.
+     * Only if the locationZoneMethod is set to 'circle'!
+     */
     circleRadius: number
+    /**
+     * User IDs of attendees.
+     */
+    attendees: string[]
+    /**
+     * The community ID connected to the event.
+     */
+    communityId: string
   }
 }
