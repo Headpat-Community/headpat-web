@@ -57,7 +57,7 @@ export default async function UserProfile({ params: { profileUrl } }) {
   const followers = await getFollowers(userData.$id)
   const following = await getFollowing(userData.$id)
   const isFollowingResponse = await getIsFollowing(account.$id, userData.$id)
-  const isFollowing = isFollowingResponse.documents.length > 0
+  const isFollowing = isFollowingResponse?.documents?.length > 0 || false
 
   const totalFollowers = followers?.documents?.length
   const totalFollowing = following?.documents?.length
