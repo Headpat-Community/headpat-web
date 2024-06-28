@@ -9,6 +9,9 @@ export async function addFollow(userId: string, followerId: string) {
   try {
     const { databases } = await createSessionServerClient()
     const account = await getUser()
+    if (!account) {
+      return { code: 401 }
+    }
     if (account.$id === followerId) {
       return { code: 409 }
     }

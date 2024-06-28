@@ -16,7 +16,14 @@ export function FollowerButton({
 
   const handleFollow = async () => {
     const data = await addFollow(userId, followerId)
-    if (data.code === 409) {
+    console.log(data)
+    if (data.code === 401) {
+      return toast({
+        title: 'Error',
+        description: 'You must be logged in to follow users',
+        variant: 'destructive',
+      })
+    } else if (data.code === 409) {
       return toast({
         title: 'Error',
         description: 'You cannot follow yourself',
@@ -39,7 +46,13 @@ export function FollowerButton({
 
   const handleUnfollow = async () => {
     const data = await removeFollow(followerId, userId)
-    if (data.code === 409) {
+    if (data.code === 401) {
+      return toast({
+        title: 'Error',
+        description: 'You must be logged in to unfollow users',
+        variant: 'destructive',
+      })
+    } else if (data.code === 409) {
       return toast({
         title: 'Error',
         description: 'You cannot unfollow yourself',
