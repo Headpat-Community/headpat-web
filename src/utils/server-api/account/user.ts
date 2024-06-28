@@ -23,6 +23,7 @@ export async function getUser(): Promise<Account.AccountPrefs> {
  * const userData = await getUser()
  */
 export async function getMfaList(): Promise<Models.MfaFactors> {
+  unstable_noStore()
   const { account } = await createSessionServerClient()
   return await account.listMfaFactors().catch((error) => {
     return error
@@ -35,6 +36,7 @@ export async function getMfaList(): Promise<Models.MfaFactors> {
  * const userData = await getUser()
  */
 export async function getTeams(): Promise<Models.TeamList<Models.Preferences>> {
+  unstable_noStore()
   const { teams } = await createSessionServerClient()
   return await teams.list().catch((error) => {
     return error
@@ -67,6 +69,7 @@ export async function mfaChallengeNeeded() {
  * const mfaFactors = await getMfaFactors()
  */
 export async function getMfaFactors(): Promise<Models.MfaFactors> {
+  unstable_noStore()
   const { account } = await createSessionServerClient()
   return await account.listMfaFactors().catch((error) => {
     return error

@@ -16,16 +16,10 @@ export function FollowerButton({
 
   const handleFollow = async () => {
     const data = await addFollow(userId, communityId)
-    if (data.code === 409) {
+    if (data.code === 404) {
       return toast({
         title: 'Error',
-        description: 'You cannot follow yourself',
-        variant: 'destructive',
-      })
-    } else if (data.code === 404) {
-      return toast({
-        title: 'Error',
-        description: 'You are already following this user',
+        description: 'You are already following this community',
         variant: 'destructive',
       })
     } else {
@@ -39,13 +33,7 @@ export function FollowerButton({
 
   const handleUnfollow = async () => {
     const data = await removeFollow(userId, communityId)
-    if (data.code === 409) {
-      return toast({
-        title: 'Error',
-        description: 'You cannot unfollow yourself',
-        variant: 'destructive',
-      })
-    } else if (data.code === 403) {
+    if (data.code === 403) {
       return toast({
         title: 'Error',
         description: 'You are not following this user',

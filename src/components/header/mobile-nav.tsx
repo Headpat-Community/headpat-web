@@ -67,18 +67,21 @@ export default function MobileNav({ accountData, translations, children }) {
                       isCollapsed={false}
                       links={Nav1(translations)}
                       setIsOpen={setIsOpen}
+                      translations={translations}
                     />
                     <Separator />
                     <Nav
                       isCollapsed={false}
                       links={Nav2(accountData, translations)}
                       setIsOpen={setIsOpen}
+                      translations={translations}
                     />
                     <Separator />
                     <Nav
                       isCollapsed={false}
                       links={Nav3(translations)}
                       setIsOpen={setIsOpen}
+                      translations={translations}
                     />
                   </div>
                 </div>
@@ -89,6 +92,7 @@ export default function MobileNav({ accountData, translations, children }) {
                   isCollapsed={false}
                   links={NavFooter(accountData, translations)}
                   setIsOpen={setIsOpen}
+                  translations={translations}
                 />
               </div>
             </SheetContent>

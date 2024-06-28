@@ -76,8 +76,9 @@ export const getCommunityBannerUrlView = (galleryId: string) => {
 
 export const getCommunityBannerUrlPreview = (
   galleryId: string,
-  attributes: string
+  attributes: string,
+  defaultImage: string = '/logos/Headpat_Logo_web_1024x1024_240518-02.png'
 ) => {
-  if (!galleryId) return
+  if (!galleryId) return defaultImage
   return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/community-banners/files/${galleryId}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&${attributes}`
 }

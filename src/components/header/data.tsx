@@ -1,9 +1,9 @@
 import {
-  BoxesIcon,
   CalendarIcon,
   CircleUserIcon,
   File,
   FileCheckIcon,
+  HeartHandshakeIcon,
   HomeIcon,
   LayoutPanelLeftIcon,
   LogOutIcon,
@@ -62,7 +62,7 @@ export const Nav2 = (account: Account.AccountPrefs, translations: any) => {
     {
       title: translations.communities,
       label: '',
-      icon: BoxesIcon,
+      icon: HeartHandshakeIcon,
       variant: 'ghost' as const,
       href: '/community',
     },

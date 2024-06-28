@@ -20,6 +20,7 @@ import { Separator } from '@/components/ui/separator'
 import ContextMenuProfile from '@/components/user/contextMenuProfile'
 import { FollowerButton } from '@/app/[locale]/(main)/community/[communityId]/page.client'
 import { getUser } from '@/utils/server-api/account/user'
+import { getCommunityFollowers } from '@/utils/server-api/community-followers/getCommunityFollowers'
 
 export const runtime = 'edge'
 
@@ -50,7 +51,10 @@ export default async function Page({
   params: { communityId: string }
 }) {
   const community = await getCommunity(communityId)
+  const followers = await getCommunityFollowers(communityId)
   const user = await getUser()
+  const isFollowingResponse = await getCommunityFollowers(communityId)
+  const isFollowing = isFollowingResponse.documents.length > 0
 
   return (
     <PageLayout title={community.name || 'Community'}>
@@ -101,8 +105,6 @@ export default async function Page({
                     unoptimized
                   />
                 </AspectRatio>
-
-                <ul>a</ul>
               </div>
               {/* Center */}
               <Card
@@ -115,18 +117,10 @@ export default async function Page({
                     </CardTitle>
                     <FollowerButton
                       displayName={community.name}
-                      communityId={communityId}
                       userId={user.$id}
-                      isFollowing={false}
+                      communityId={communityId}
+                      isFollowing={isFollowing}
                     />
-                    {/*
-                      <FollowerButton
-                        userId={account.$id}
-                        displayName={userData.displayName}
-                        followerId={userData.$id}
-                        isFollowing={isFollowing}
-                      />
-                      */}
                   </div>
                   <div className={'grid grid-cols-2'}>
                     <CardDescription>STATUS HERE</CardDescription>
@@ -136,7 +130,7 @@ export default async function Page({
                       <Button variant={'link'} className={'p-0'}>
                         <p>
                           <span className={'font-bold text-foreground'}>
-                            followersHere
+                            {followers.documents.length}
                           </span>{' '}
                           Following
                         </p>
@@ -146,16 +140,6 @@ export default async function Page({
                 </CardHeader>
                 <Separator className={'mb-6'} />
                 <CardContent>
-                  <div className={'grid grid-cols-2 mx-auto gap-4'}>
-                    {community.description && (
-                      <>
-                        <div className={'col-span-1'}>test</div>
-                        <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
-                          test
-                        </div>
-                      </>
-                    )}
-                  </div>
                   <div className={'border border-ring p-8 rounded-xl mt-8'}>
                     <div className={'flex flex-wrap items-center'}>
                       <p>{community.description || 'Nothing here yet!'}</p>

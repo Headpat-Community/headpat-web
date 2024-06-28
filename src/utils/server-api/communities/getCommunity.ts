@@ -1,16 +1,24 @@
 import { Community } from '@/utils/types/models'
 import { createSessionServerClient } from '@/app/appwrite-session'
+import { Query } from 'node-appwrite'
 
 /**
  * This function is used to get a list of the communities
  * @example
  * const events = await getEvents()
  */
-export async function getCommunities(): Promise<Community.CommunityType> {
+export async function getCommunities(
+  offset: number
+): Promise<Community.CommunityType> {
   const { databases } = await createSessionServerClient()
-  return await databases.listDocuments('hp_db', 'community').catch((error) => {
-    return error
-  })
+  return await databases
+    .listDocuments('hp_db', 'community', [
+      Query.limit(10),
+      Query.offset(offset),
+    ])
+    .catch((error) => {
+      return error
+    })
 }
 
 /**

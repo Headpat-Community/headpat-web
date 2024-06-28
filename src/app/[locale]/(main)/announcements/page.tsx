@@ -2,6 +2,7 @@ import { ChevronRight, MegaphoneIcon } from 'lucide-react'
 import { createAdminClient } from '@/app/appwrite-session'
 import { Announcements } from '@/utils/types/models'
 import { Link } from '@/navigation'
+import PageLayout from '@/components/pageLayout'
 
 export const runtime = 'edge'
 
@@ -17,8 +18,7 @@ export default async function AnnouncementsPage() {
   const announcementData = announcementDataResponse.documents
 
   return (
-    <>
-      <h1 className="mt-4 text-center text-4xl">Announcements</h1>
+    <PageLayout title={'Announcements'}>
       <ul
         role="list"
         className="mx-auto mb-4 mt-8 max-w-4xl divide-y divide-gray-100 overflow-hidden shadow-sm ring-1 ring-black/95 dark:ring-white/95 sm:rounded-xl"
@@ -96,6 +96,6 @@ export default async function AnnouncementsPage() {
             )
           })}
       </ul>
-    </>
+    </PageLayout>
   )
 }
