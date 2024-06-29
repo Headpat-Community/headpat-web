@@ -61,10 +61,8 @@ export function FollowerButton({
   }
 
   return (
-    <>
-      <Button onClick={isFollowingState ? handleUnfollow : handleFollow}>
-        {isFollowingState ? 'Unfollow' : 'Follow'}
-      </Button>
-    </>
+    <Button onClick={isFollowingState ? handleUnfollow : handleFollow}>
+      {isFollowingState ? 'Unfollow' : 'Follow'}
+    </Button>
   )
 }

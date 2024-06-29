@@ -111,7 +111,9 @@ export default async function Page({
                 className={'col-span-3 border-none md:col-span-1 lg:col-span-2'}
               >
                 <CardHeader>
-                  <div className={'grid grid-cols-2'}>
+                  <div
+                    className={'grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-0'}
+                  >
                     <CardTitle className={'col-span-1'}>
                       {community.name}
                     </CardTitle>
@@ -123,7 +125,7 @@ export default async function Page({
                     />
                   </div>
                   <div className={'grid grid-cols-2'}>
-                    <CardDescription>STATUS HERE</CardDescription>
+                    <CardDescription>{community.status}</CardDescription>
                   </div>
                   <CardDescription className={'flex pt-4 gap-4'}>
                     <Link href={'#'}>
@@ -132,7 +134,7 @@ export default async function Page({
                           <span className={'font-bold text-foreground'}>
                             {followers.documents.length}
                           </span>{' '}
-                          Following
+                          Follower{followers.documents.length > 1 ? 's' : ''}
                         </p>
                       </Button>
                     </Link>{' '}
@@ -148,7 +150,7 @@ export default async function Page({
                 </CardContent>
               </Card>
               {/* Right */}
-              {/* Gallery here */}
+              {/* Posts here */}
             </div>
           </>
         </main>

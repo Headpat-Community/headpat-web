@@ -342,6 +342,10 @@ export namespace Community {
      * The avatar ID of the community.
      */
     avatarId: string
+    /**
+     * The status of the community.
+     */
+    status: string
   }
 
   export interface CommunityFollowersType {
