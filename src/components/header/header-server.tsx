@@ -3,6 +3,8 @@ import SidebarResizable from '@/components/header/header-resizable'
 import MobileNav from '@/components/header/mobile-nav'
 import { createSessionServerClient } from '@/app/appwrite-session'
 
+export const dynamic = 'force-dynamic'
+
 export default async function HeaderServer({
   children,
   locale,

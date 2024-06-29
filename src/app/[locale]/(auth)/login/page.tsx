@@ -15,7 +15,9 @@ export default async function LoginPage() {
   const accountData = await account.get().catch((e) => {
     if (e.type === 'user_more_factors_required') redirect('/login/mfa')
   })
-  if (accountData) redirect('/account')
+  if (accountData) {
+    redirect('/account')
+  }
 
   return (
     <>

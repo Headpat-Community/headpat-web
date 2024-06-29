@@ -1,3 +1,4 @@
+'use server'
 import { createSessionServerClient } from '@/app/appwrite-session'
 import { Models } from 'node-appwrite'
 import { Account } from '@/utils/types/models'

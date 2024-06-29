@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   SiGithub,
   SiDiscord,
@@ -57,27 +57,31 @@ export default function Login() {
           description: 'Invalid E-Mail or password provided.',
           variant: 'destructive',
         })
+        return
       } else if (response.code === 401) {
         toast({
           title: 'Error',
           description: 'E-Mail or Password incorrect.',
           variant: 'destructive',
         })
+        return
       } else if (response.code === 409) {
         toast({
           title: 'Error',
           description: 'E-Mail already in use.',
           variant: 'destructive',
         })
+        return
       } else if (response.code === 429) {
         toast({
           title: 'Error',
           description: 'Too many requests, please try again later.',
           variant: 'destructive',
         })
+        return
       }
 
-      router.push('/account')
+      window.location.href = '/account'
     } else {
       const signIn = await fetch('/api/user/signin', {
         method: 'POST',
@@ -108,17 +112,12 @@ export default function Login() {
 
       client.setSession(dataResponse.secret)
 
-      router.push('/login/mfa')
+      router.replace('/login/mfa')
     }
   }
 
   return (
     <>
-      <div className="lines">
-        <div className="line" />
-        <div className="line" />
-        <div className="line" />
-      </div>
       <Button className={'m-8 absolute z-10'} onClick={() => router.push('/')}>
         Home
       </Button>

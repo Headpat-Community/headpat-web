@@ -13,11 +13,27 @@ import {
 } from '@/utils/actions/account/account'
 import { useEffect, useState } from 'react'
 import { useRouter } from '@/navigation'
+import { mfaChallengeNeeded } from '@/utils/server-api/account/user'
 
 export default function MfaPageClient() {
   const { toast } = useToast()
   const router = useRouter()
   const [challengeId, setChallengeId] = useState('')
+  const [needsMfa, setNeedsMfa] = useState(false)
+
+  useEffect(() => {
+    const checkMfa = async () => {
+      const mfaNeeded = await mfaChallengeNeeded()
+      if (mfaNeeded.type === 'general_unauthorized_scope') {
+        window.location.href = '/login'
+      } else if (mfaNeeded.$id) {
+        window.location.href = '/account'
+      } else {
+        setNeedsMfa(true)
+      }
+    }
+    checkMfa().then()
+  })
 
   const createMfaCode = async () => {
     try {
@@ -36,7 +52,7 @@ export default function MfaPageClient() {
     try {
       await updateMfaChallenge(challengeId, otp)
 
-      router.push('/account')
+      router.replace('/account')
     } catch (error) {
       if (error.type === 'user_invalid_token') {
         toast({
@@ -45,6 +61,7 @@ export default function MfaPageClient() {
             "Incorrect code. Please try again. If you're having trouble, please contact support.",
           variant: 'destructive',
         })
+        return
       } else {
         toast({
           title: 'Error',
@@ -53,37 +70,73 @@ export default function MfaPageClient() {
           variant: 'destructive',
         })
         Sentry.captureException(error)
+        return
       }
     }
   }
 
-  return (
-    <InputOTP
-      maxLength={6}
-      onComplete={(result) => {
-        handleMfaVerify(result).catch((error) => {
-          console.log(error)
-          toast({
-            title: 'Error',
-            description:
-              "You encountered an error. But don't worry, we're on it.",
-            variant: 'destructive',
-          })
-          Sentry.captureException(error)
-        })
-      }}
-    >
-      <InputOTPGroup>
-        <InputOTPSlot index={0} />
-        <InputOTPSlot index={1} />
-        <InputOTPSlot index={2} />
-      </InputOTPGroup>
-      <InputOTPSeparator />
-      <InputOTPGroup>
-        <InputOTPSlot index={3} />
-        <InputOTPSlot index={4} />
-        <InputOTPSlot index={5} />
-      </InputOTPGroup>
-    </InputOTP>
-  )
+  if (!needsMfa) {
+    return (
+      <div className="flex flex-1 justify-center items-center absolute inset-0">
+        <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:bg-[#04050a]/85 dark:ring-white">
+          <div className="mt-10">
+            <div>
+              <div className={'text-center'}>
+                <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
+                  Loading...
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  } else {
+    return (
+      <div className="flex flex-1 justify-center items-center absolute inset-0">
+        {/* Add justify-center and items-center here */}
+        <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:bg-[#04050a]/85 dark:ring-white">
+          <div className="mt-10">
+            <div>
+              <div className={'text-center'}>
+                <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
+                  Please fill in your 2FA code
+                </h2>
+              </div>
+              <div key="1" className="mx-auto max-w-4xl p-6 space-y-6">
+                <InputOTP
+                  maxLength={6}
+                  onComplete={(result) => {
+                    handleMfaVerify(result).catch((error) => {
+                      console.log(error)
+                      toast({
+                        title: 'Error',
+                        description:
+                          "You encountered an error. But don't worry, we're on it.",
+                        variant: 'destructive',
+                      })
+                      Sentry.captureException(error)
+                      return
+                    })
+                  }}
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                  </InputOTPGroup>
+                  <InputOTPSeparator />
+                  <InputOTPGroup>
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 }

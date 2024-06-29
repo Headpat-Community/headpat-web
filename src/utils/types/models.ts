@@ -358,3 +358,29 @@ export namespace Community {
     communityId: string
   }
 }
+
+export namespace Notifications {
+  export interface NotificationsType {
+    total: number
+    documents: NotificationsDocumentsType[]
+  }
+
+  export interface NotificationsDocumentsType extends Models.Document {
+    /**
+     * The title of the notification.
+     */
+    message: string
+    /**
+     * The user ID of the user that received the notification.
+     */
+    userId: string
+    /**
+     * The description of the notification.
+     */
+    read: boolean
+    /**
+     * The date the notification was created.
+     */
+    type: 'newFollower'
+  }
+}
