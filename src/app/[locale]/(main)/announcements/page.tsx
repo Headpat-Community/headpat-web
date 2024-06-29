@@ -21,7 +21,7 @@ export default async function AnnouncementsPage() {
     <PageLayout title={'Announcements'}>
       <ul
         role="list"
-        className="mx-auto mb-4 mt-8 max-w-4xl divide-y divide-gray-100 overflow-hidden shadow-sm ring-1 ring-black/95 dark:ring-white/95 sm:rounded-xl"
+        className="mx-8 lg:mx-auto mb-4 mt-8 max-w-4xl divide-y divide-gray-100 overflow-hidden shadow-sm ring-1 ring-black/95 dark:ring-white/95 sm:rounded-xl"
       >
         {announcementData &&
           announcementData.map((announcement) => {

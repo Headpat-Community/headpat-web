@@ -1,5 +1,6 @@
 'use client'
 import {
+  BellIcon,
   CalendarIcon,
   CircleUserIcon,
   File,
@@ -34,6 +35,13 @@ export const Nav1 = (translations: any) => [
     icon: MegaphoneIcon,
     variant: 'ghost' as const,
     href: `/announcements`,
+  },
+  {
+    title: translations.notifications,
+    label: '',
+    icon: BellIcon,
+    variant: 'ghost' as const,
+    href: `/notifications`,
   },
   {
     title: translations.events,

@@ -5,13 +5,15 @@ import { getUserDataSingle } from '@/utils/server-api/user/getUserData'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 
+export const runtime = 'edge'
+
 export default async function Page() {
   const notifications = await getUserNotifications()
   return (
     <PageLayout title={'Notifications'}>
       <ul
         role="list"
-        className="mx-auto mb-4 mt-8 max-w-4xl divide-y divide-gray-100 overflow-hidden shadow-sm ring-1 ring-black/95 dark:ring-white/95 sm:rounded-xl"
+        className="mx-8 lg:mx-auto mb-4 mt-8 max-w-4xl divide-y divide-gray-100 overflow-hidden shadow-sm ring-1 ring-black/95 dark:ring-white/95 sm:rounded-xl"
       >
         {notifications &&
           notifications.documents.map(async (notification) => {
@@ -46,12 +48,6 @@ export default async function Page() {
                         {user.displayName} followed you! 🎉
                       </p>
                     </div>
-                  </div>
-                  <div className="flex shrink-0 items-center gap-x-4">
-                    <ChevronRight
-                      className="h-5 w-5 flex-none text-gray-400"
-                      aria-hidden="true"
-                    />
                   </div>
                 </li>
               )
