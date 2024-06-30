@@ -5,12 +5,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import { formatDate } from '@/components/calculateTimeLeft'
 import UserCard from '@/components/user/userCard'
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@/components/ui/hover-card'
-import { Button } from '@/components/ui/button'
 import { Link } from '@/navigation'
 
 export const runtime = 'edge'
