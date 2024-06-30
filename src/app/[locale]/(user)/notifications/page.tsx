@@ -11,6 +11,22 @@ export const runtime = 'edge'
 
 export default async function Page() {
   const notifications = await getUserNotifications()
+
+  if (notifications.documents.length === 0) {
+    return (
+      <PageLayout title={'Notifications'}>
+        <div className="mx-auto mb-4 mt-8 max-w-7xl">
+          <div className="px-4 sm:px-0">
+            <h3 className="text-base font-semibold leading-7">Notifications</h3>
+            <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
+              You have no notifications yet.
+            </p>
+          </div>
+        </div>
+      </PageLayout>
+    )
+  }
+
   return (
     <PageLayout title={'Notifications'}>
       <ul
