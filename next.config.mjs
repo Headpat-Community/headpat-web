@@ -4,6 +4,11 @@ const withNextIntl = createNextIntlPlugin()
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  experimental: {
+    staleTimes: {
+      dynamic: 0,
+    },
+  },
   compiler: {
     styledComponents: true,
     //removeConsole: {
