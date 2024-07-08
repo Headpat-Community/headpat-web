@@ -8,7 +8,8 @@ export async function removeFollow(followerId: string, userId: string) {
   try {
     const { databases } = await createSessionServerClient()
     const account = await getUser()
-    if (!account) {
+
+    if (!account.$id) {
       return { code: 401 }
     }
     if (account.$id === followerId) {
