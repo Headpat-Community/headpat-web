@@ -47,6 +47,10 @@ const nextConfig = {
         source: '/account',
         destination: '/account/profile',
       },
+      {
+        source: '/sitemap.xml',
+        destination: '/api/sitemap',
+      },
     ]
   },
 }
