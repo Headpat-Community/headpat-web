@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { UserData } from '@/utils/types/models'
 import { createSessionServerClient } from '@/app/appwrite-session'
-import { Query } from 'node-appwrite'
 
 export const runtime = 'edge'
 
