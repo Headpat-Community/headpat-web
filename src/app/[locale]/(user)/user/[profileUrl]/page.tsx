@@ -40,9 +40,32 @@ import sanitizeHtml from 'sanitize-html'
 
 export const runtime = 'edge'
 
-export const metadata = {
-  title: 'User Profile',
-  description: 'User Profile Description',
+export async function generateMetadata({
+  params: { profileUrl },
+}: {
+  params: { profileUrl: string }
+}) {
+  const { databases } = await createSessionServerClient()
+  const userDataResponse: UserData.UserDataType = await databases.listDocuments(
+    'hp_db',
+    'userdata',
+    [Query.equal('profileUrl', profileUrl)]
+  )
+  const userData = userDataResponse.documents[0]
+  const sanitizedBio = sanitizeHtml(userData.bio)
+
+  return {
+    title: userData.displayName || userData?.profileUrl,
+    description: sanitizedBio,
+    icons: {
+      icon: getAvatarImageUrlView(userData.avatarId),
+    },
+    openGraph: {
+      title: userData.displayName || userData?.profileUrl,
+      description: sanitizedBio,
+      images: getAvatarImageUrlView(userData.avatarId),
+    },
+  }
 }
 
 export default async function UserProfile({ params: { profileUrl } }) {
