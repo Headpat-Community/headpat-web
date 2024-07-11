@@ -1,3 +1,4 @@
+'use server'
 import { createAdminClient } from '@/app/appwrite-session'
 import { Interactive } from '@/utils/types/models'
 import { unstable_noStore } from 'next/cache'

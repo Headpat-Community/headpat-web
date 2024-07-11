@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { headers } from 'next/headers'
 import { createAdminClient } from '@/app/appwrite-session'
 import { Gallery } from '@/utils/types/models'
+import PageLayout from '@/components/pageLayout'
 
 export const runtime = 'edge'
 
@@ -45,5 +46,9 @@ export default async function AccountSingleGalleryPage({
 
   if (!singleGallery) return notFound()
 
-  return <Client singleGallery={singleGallery} />
+  return (
+    <PageLayout title={'Account Gallery'}>
+      <Client singleGallery={singleGallery} />
+    </PageLayout>
+  )
 }

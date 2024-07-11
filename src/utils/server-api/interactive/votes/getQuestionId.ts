@@ -12,7 +12,7 @@ export async function getQuestionId(): Promise<number> {
   unstable_noStore()
   const { databases } = await createAdminClient()
   const data: Interactive.VotesQuestionId = await databases
-    .getDocument('interactive', 'questions', 'main')
+    .getDocument('interactive', 'system', 'main')
     .catch((error) => {
       return error
     })

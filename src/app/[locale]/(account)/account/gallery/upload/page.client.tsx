@@ -68,10 +68,7 @@ export default function UploadPage() {
             'gallery-images',
             fileDataResponse.$id,
             {
-              name: (document.getElementById('imagename') as HTMLInputElement)
-                .value,
-              imgAlt: (document.getElementById('imgalt') as HTMLInputElement)
-                .value,
+              name: document.getElementById('imagename') as HTMLInputElement,
               longText: (
                 document.getElementById('longtext') as HTMLInputElement
               ).value,
@@ -205,13 +202,6 @@ export default function UploadPage() {
                 </Label>
                 <div className="mt-2">
                   <Input type="text" name="imagename" id="imagename" required />
-                </div>
-              </div>
-
-              <div className="sm:col-span-3">
-                <Label>Alternative Informationen (SEO)</Label>
-                <div className="mt-2">
-                  <Input type="text" name="imgalt" id="imgalt" />
                 </div>
               </div>
 

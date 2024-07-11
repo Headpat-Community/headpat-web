@@ -87,7 +87,6 @@ export default function FetchGallery({ singleGallery }) {
       // Create the form data
       const data = {
         name: (document.getElementById('imagename') as HTMLInputElement).value,
-        imgAlt: (document.getElementById('imgalt') as HTMLInputElement).value,
         longText: (document.getElementById('longtext') as HTMLInputElement)
           .value,
         nsfw: (document.getElementById('nsfw') as HTMLInputElement).checked,
@@ -123,7 +122,7 @@ export default function FetchGallery({ singleGallery }) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={getGalleryImageUrlView(singleGallery.galleryId)}
-          alt={singleGallery.imgAlt || 'Headpat Community Image'}
+          alt={singleGallery.name || 'Headpat Community Image'}
           className={`imgsinglegallery max-h-[1000px] object-contain rounded-lg`}
         />
       </div>
