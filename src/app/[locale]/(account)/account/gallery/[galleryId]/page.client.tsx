@@ -11,7 +11,7 @@ import { Gallery } from '@/utils/types/models'
 import { Link, useRouter } from '@/navigation'
 import { getGalleryImageUrlView } from '@/components/getStorageItem'
 
-export default function FetchGallery({ singleGallery }) {
+export default function FetchGallery({ singleGallery, galleryId }) {
   const { toast } = useToast()
   const router = useRouter()
   const [isUploading, setIsUploading] = useState(false)
@@ -27,20 +27,18 @@ export default function FetchGallery({ singleGallery }) {
   const deleteImage = async () => {
     try {
       // Get the ID from the URL
-      const pathParts = window.location.pathname.split('/')
-      const uniqueId = pathParts[3]
       setIsDeleting(true)
 
-      const listDataResponse = databases.listDocuments(
+      const listDataResponse = databases.getDocument(
         'hp_db',
         'gallery-images',
-        [Query.equal('$id', uniqueId)]
+        galleryId
       )
 
       listDataResponse.then(
-        function (response: Gallery.GalleryType) {
-          const documentId = response.documents[0].$id
-          const imageId = response.documents[0].galleryId
+        function (response: Gallery.GalleryDocumentsType) {
+          const documentId = response.$id
+          const imageId = response.galleryId
 
           storage.deleteFile('gallery', imageId)
           databases.deleteDocument('hp_db', 'gallery-images', documentId)

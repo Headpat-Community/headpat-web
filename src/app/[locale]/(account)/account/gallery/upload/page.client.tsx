@@ -68,12 +68,13 @@ export default function UploadPage() {
             'gallery-images',
             fileDataResponse.$id,
             {
-              name: document.getElementById('imagename') as HTMLInputElement,
+              name: (document.getElementById('imagename') as HTMLInputElement)
+                .value, // Extract the value
               longText: (
                 document.getElementById('longtext') as HTMLInputElement
-              ).value,
+              ).value, // Extract the value
               nsfw: (document.getElementById('nsfw') as HTMLInputElement)
-                .checked,
+                .checked, // Extract the checked state
               galleryId: fileDataResponse.$id,
               userId: userMe.$id,
             }

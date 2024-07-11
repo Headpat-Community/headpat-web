@@ -48,7 +48,7 @@ export default async function AccountSingleGalleryPage({
 
   return (
     <PageLayout title={'Account Gallery'}>
-      <Client singleGallery={singleGallery} />
+      <Client singleGallery={singleGallery} galleryId={galleryId} />
     </PageLayout>
   )
 }
