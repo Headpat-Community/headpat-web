@@ -213,8 +213,25 @@ export default async function GalleryPage({ params: { galleryId } }) {
                                     )}
                                     target={'_blank'}
                                   >
-                                    <Button>See full image</Button>
+                                    <Button variant={'outline'}>
+                                      See full image
+                                    </Button>
                                   </Link>
+                                  {userSelf?.$id === userId && (
+                                    <Link
+                                      href={{
+                                        pathname:
+                                          '/account/gallery/[galleryId]',
+                                        params: {
+                                          galleryId: galleryDocuments.$id,
+                                        },
+                                      }}
+                                    >
+                                      <Button variant={'outline'}>
+                                        Edit image
+                                      </Button>
+                                    </Link>
+                                  )}
                                 </div>
                               </dl>
                             </div>
