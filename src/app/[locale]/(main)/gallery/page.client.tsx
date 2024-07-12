@@ -26,9 +26,9 @@ export default function FetchGallery({ enableNsfw }) {
     return imageId.href
   }
 
-  const getVideoUrl = async (galleryId: string) => {
+  const getVideoUrl = (galleryId: string) => {
     if (!galleryId) return
-    const videoId = await storage.getFileView('gallery', `${galleryId}`)
+    const videoId = storage.getFileView('gallery', `${galleryId}`)
     return videoId.href
   }
 
@@ -83,7 +83,7 @@ export default function FetchGallery({ enableNsfw }) {
       <div>
         <ul className="flex flex-wrap items-center justify-center gap-4 p-8">
           {gallery &&
-            gallery.map(async (item) => (
+            gallery.map((item) => (
               <div key={item.$id}>
                 {item && (
                   <div
@@ -112,7 +112,7 @@ export default function FetchGallery({ enableNsfw }) {
                             playsInline={true}
                           >
                             <source
-                              src={await getVideoUrl(item.galleryId)}
+                              src={getVideoUrl(item.galleryId)}
                               type="video/mp4"
                             />
                           </video>
@@ -126,9 +126,11 @@ export default function FetchGallery({ enableNsfw }) {
                         height={600}
                         draggable={false}
                         loading="lazy" // Add this attribute for lazy loading
-                        unoptimized={item?.mimeType?.includes(
-                          'image/svg' || 'image/gif' || 'video'
-                        )}
+                        unoptimized={
+                          !item?.mimeType?.includes(
+                            'image/svg' || 'image/gif' || 'video'
+                          )
+                        }
                       />
                     </Link>
                   </div>
