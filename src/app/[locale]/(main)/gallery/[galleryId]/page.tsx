@@ -6,6 +6,7 @@ import { getUser } from '@/utils/server-api/account/user'
 import { Gallery, UserData } from '@/utils/types/models'
 import { Link } from '@/navigation'
 import { getGalleryImageUrlView } from '@/components/getStorageItem'
+import sanitizeHtml from 'sanitize-html'
 
 export const metadata = {
   title: 'Gallery',
@@ -46,11 +47,10 @@ export default async function GalleryPage({ params: { galleryId } }) {
 
   const galleryDocuments = gallery.documents[0]
 
-  const name = galleryDocuments?.name
-  const longtext = galleryDocuments?.longText
-  const nsfw = galleryDocuments?.nsfw
+  const isNsfwImage = galleryDocuments?.nsfw && !enableNsfw
 
-  const isNsfwImage = nsfw && !enableNsfw
+  const sanitizedBio = sanitizeHtml(galleryDocuments.longText)
+  const bioWithLineBreaks = sanitizedBio.replace(/\n/g, '<br />')
 
   return (
     <div>
@@ -92,17 +92,19 @@ export default async function GalleryPage({ params: { galleryId } }) {
                   </div>
                 ) : (
                   <>
-                    {galleryDocuments?.mimeType.includes('video') ? (
+                    {galleryDocuments?.mimeType?.includes('video') ? (
                       <video
                         controls
-                        loop
+                        controlsList="nodownload"
+                        loop={true}
+                        draggable={false}
                         className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
                       >
                         <source
                           src={getGalleryImageUrlView(
-                            galleryDocuments.galleryId
+                            galleryDocuments?.galleryId
                           )}
-                          type={galleryDocuments.mimeType}
+                          type={galleryDocuments?.mimeType}
                         />
                         Your browser does not support the video tag.
                       </video>
@@ -110,7 +112,9 @@ export default async function GalleryPage({ params: { galleryId } }) {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={getGalleryImageUrlView(galleryDocuments.galleryId)}
-                        alt={name || 'Headpat Community Image'}
+                        alt={
+                          galleryDocuments?.name || 'Headpat Community Image'
+                        }
                         className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
                       />
                     )}
@@ -130,7 +134,8 @@ export default async function GalleryPage({ params: { galleryId } }) {
                                     Title
                                   </dt>
                                   <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                    {name || 'No title provided.'}
+                                    {galleryDocuments.name ||
+                                      'No title provided.'}
                                   </dd>
                                 </div>
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -188,7 +193,7 @@ export default async function GalleryPage({ params: { galleryId } }) {
                                     NSFW
                                   </dt>
                                   <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                    {nsfw ? 'Yes' : 'No'}
+                                    {galleryDocuments?.nsfw ? 'Yes' : 'No'}
                                   </dd>
                                 </div>
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -196,7 +201,8 @@ export default async function GalleryPage({ params: { galleryId } }) {
                                     Description
                                   </dt>
                                   <dd className="mt-1 max-w-full break-words text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                    {longtext || 'No description provided.'}
+                                    {bioWithLineBreaks ||
+                                      'No description provided.'}
                                   </dd>
                                 </div>
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
