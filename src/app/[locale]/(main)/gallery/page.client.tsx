@@ -100,7 +100,7 @@ export default function FetchGallery({ enableNsfw }) {
                         params: { galleryId: item.$id },
                       }}
                     >
-                      {item.mimeType.includes('video') && (
+                      {item?.mimeType?.includes('video') && (
                         <div className="relative h-full w-full">
                           <video
                             className="h-full w-full object-cover"
@@ -126,7 +126,7 @@ export default function FetchGallery({ enableNsfw }) {
                         height={600}
                         draggable={false}
                         loading="lazy" // Add this attribute for lazy loading
-                        unoptimized={item.mimeType.includes(
+                        unoptimized={item?.mimeType?.includes(
                           'image/svg' || 'image/gif' || 'video'
                         )}
                       />
