@@ -15,6 +15,7 @@ export default function UploadPage() {
   const { userMe } = useGetUser()
   const { toast } = useToast()
   const router = useRouter()
+  const [selectedFileInput, setSelectedFileInput] = useState(null)
   const [selectedFile, setSelectedFile] = useState(null)
   const fileInputRef = useRef(null)
 
@@ -29,7 +30,8 @@ export default function UploadPage() {
         if (img) {
           console.log('File read successfully, updating image src.') // Debugging log
           img.src = e.target.result as string
-          setSelectedFile(e.target.result as string)
+          setSelectedFileInput(e.target.result as string)
+          setSelectedFile(file)
         } else {
           console.error('Failed to find the image element.') // Debugging log
         }
@@ -55,7 +57,8 @@ export default function UploadPage() {
         if (img) {
           console.log('File dropped successfully, updating image src.') // Debugging log
           img.src = e.target.result as string
-          setSelectedFile(e.target.result as string)
+          setSelectedFileInput(e.target.result as string)
+          setSelectedFile(file)
         } else {
           console.error('Failed to find the image element.') // Debugging log
         }
@@ -99,6 +102,7 @@ export default function UploadPage() {
               nsfw: (document.getElementById('nsfw') as HTMLInputElement)
                 .checked, // Extract the checked state
               galleryId: fileDataResponse.$id,
+              mimeType: fileDataResponse.mimeType,
               userId: userMe.$id,
             }
           )
@@ -187,8 +191,9 @@ export default function UploadPage() {
                         className="mx-auto h-96 min-w-full rounded-md object-contain cursor-pointer"
                         alt="Placeholder Image"
                         src={
-                          selectedFile || '/images/placeholder-image-color.webp'
-                        } // Fallback to a placeholder if selectedFile is null
+                          selectedFileInput ||
+                          '/images/placeholder-image-color.webp'
+                        } // Fallback to a placeholder if selectedFileInput is null
                       />
                     </Label>
                   </div>
