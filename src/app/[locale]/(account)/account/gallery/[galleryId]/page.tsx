@@ -4,6 +4,7 @@ import { headers } from 'next/headers'
 import { createAdminClient } from '@/app/appwrite-session'
 import { Gallery } from '@/utils/types/models'
 import PageLayout from '@/components/pageLayout'
+import { getUser } from '@/utils/server-api/account/user'
 
 export const runtime = 'edge'
 
@@ -14,37 +15,33 @@ export const metadata = {
 export default async function AccountSingleGalleryPage({
   params: { galleryId },
 }) {
-  const headersList = headers()
-  const cookieHeader = headersList.get('cookie')
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_DOMAIN}/api/user/account`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Cookie: cookieHeader,
-      },
-    }
-  )
-
-  const userData = await response.json()
-
+  const userData = await getUser()
   const userId = userData?.$id
 
   const { databases } = await createAdminClient()
-  const singleGallery: Gallery.GalleryDocumentsType =
-    await databases.getDocument('hp_db', 'gallery-images', galleryId)
 
-  const galleryUserId = singleGallery?.userId
+  let singleGallery: Gallery.GalleryDocumentsType
 
-  if (!galleryUserId) return notFound() // Wait for userId to be available
-  if (!userId) return notFound() // Wait for userId to be available
+  try {
+    singleGallery = await databases.getDocument(
+      'hp_db',
+      'gallery-images',
+      galleryId
+    )
 
-  if (userId !== galleryUserId) {
+    const galleryUserId = singleGallery?.userId
+
+    if (!galleryUserId) return notFound() // Wait for userId to be available
+    if (!userId) return notFound() // Wait for userId to be available
+
+    if (userId !== galleryUserId) {
+      return notFound()
+    }
+
+    if (!singleGallery) return notFound()
+  } catch (error) {
     return notFound()
   }
-
-  if (!singleGallery) return notFound()
 
   return (
     <PageLayout title={'Account Gallery'}>

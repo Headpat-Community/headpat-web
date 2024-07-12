@@ -10,14 +10,18 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Textarea } from '@/components/ui/textarea'
 import { useRouter } from '@/navigation'
 
-export default function UploadPage() {
+export default function UploadPage({ userId }: { userId: string }) {
   const [isUploading, setIsUploading] = useState(false)
-  const { userMe } = useGetUser()
   const { toast } = useToast()
   const router = useRouter()
   const [selectedFileInput, setSelectedFileInput] = useState(null)
   const [selectedFile, setSelectedFile] = useState(null)
   const fileInputRef = useRef(null)
+  const [data, setData] = useState({
+    name: '',
+    longText: '',
+    nsfw: false,
+  })
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files[0]
@@ -28,7 +32,7 @@ export default function UploadPage() {
           'selected-image'
         ) as HTMLImageElement
         if (img) {
-          console.log('File read successfully, updating image src.') // Debugging log
+          //console.log('File read successfully, updating image src.') // Debugging log
           img.src = e.target.result as string
           setSelectedFileInput(e.target.result as string)
           setSelectedFile(file)
@@ -55,7 +59,7 @@ export default function UploadPage() {
           'selected-image'
         ) as HTMLImageElement
         if (img) {
-          console.log('File dropped successfully, updating image src.') // Debugging log
+          //console.log('File dropped successfully, updating image src.') // Debugging log
           img.src = e.target.result as string
           setSelectedFileInput(e.target.result as string)
           setSelectedFile(file)
@@ -94,16 +98,12 @@ export default function UploadPage() {
             'gallery-images',
             fileDataResponse.$id,
             {
-              name: (document.getElementById('imagename') as HTMLInputElement)
-                .value, // Extract the value
-              longText: (
-                document.getElementById('longtext') as HTMLInputElement
-              ).value, // Extract the value
-              nsfw: (document.getElementById('nsfw') as HTMLInputElement)
-                .checked, // Extract the checked state
+              name: data.name,
+              longText: data.longText,
+              nsfw: data.nsfw,
               galleryId: fileDataResponse.$id,
               mimeType: fileDataResponse.mimeType,
-              userId: userMe.$id,
+              userId: userId,
             }
           )
 
@@ -232,21 +232,39 @@ export default function UploadPage() {
                   Name <span className="text-red-500">*</span>
                 </Label>
                 <div className="mt-2">
-                  <Input type="text" name="imagename" id="imagename" required />
+                  <Input
+                    type="text"
+                    name="imagename"
+                    id="imagename"
+                    required
+                    onChange={(e) => setData({ ...data, name: e.target.value })}
+                  />
                 </div>
               </div>
 
               <div className="sm:col-span-3">
                 <Label>NSFW</Label>
                 <div className="mt-2">
-                  <Checkbox name="nsfw" id="nsfw" />
+                  <Checkbox
+                    name="nsfw"
+                    id="nsfw"
+                    onCheckedChange={(checked) =>
+                      setData({ ...data, nsfw: checked === true })
+                    }
+                  />
                 </div>
               </div>
 
               <div className="col-span-full">
                 <Label htmlFor="biostatus">Description</Label>
                 <div className="relative mt-2">
-                  <Textarea id="longtext" name="longtext" />
+                  <Textarea
+                    id="longtext"
+                    name="longtext"
+                    onChange={(e) =>
+                      setData({ ...data, longText: e.target.value })
+                    }
+                  />
                 </div>
               </div>
             </div>

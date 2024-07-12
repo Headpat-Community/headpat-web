@@ -17,11 +17,11 @@ export default function FetchGallery({ singleGallery, galleryId }) {
   const [isUploading, setIsUploading] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [userData, setUserData] = useState({
-    name: singleGallery.name,
-    nsfw: singleGallery.nsfw,
-    createdAt: singleGallery.$createdAt,
-    modifiedAt: singleGallery.$updatedAt,
-    longText: singleGallery.longText,
+    name: singleGallery?.name,
+    nsfw: singleGallery?.nsfw,
+    createdAt: singleGallery?.$createdAt,
+    modifiedAt: singleGallery?.$updatedAt,
+    longText: singleGallery?.longText,
   })
 
   const deleteImage = async () => {
@@ -78,23 +78,11 @@ export default function FetchGallery({ singleGallery, galleryId }) {
     setIsUploading(true)
 
     try {
-      // Get the ID from the URL
-      const pathParts = window.location.pathname.split('/')
-      const uniqueId = pathParts[3]
-
-      // Create the form data
-      const data = {
-        name: (document.getElementById('imagename') as HTMLInputElement).value,
-        longText: (document.getElementById('longtext') as HTMLInputElement)
-          .value,
-        nsfw: (document.getElementById('nsfw') as HTMLInputElement).checked,
-      }
-
       // Make the PATCH request
-      await databases.updateDocument('hp_db', 'gallery-images', uniqueId, {
-        name: data.name,
-        longText: data.longText,
-        nsfw: data.nsfw,
+      await databases.updateDocument('hp_db', 'gallery-images', galleryId, {
+        name: userData.name,
+        longText: userData.longText,
+        nsfw: userData.nsfw,
       })
 
       // Handle response and update state accordingly
@@ -130,7 +118,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
           Information
         </h2>
         <p className="text-sm leading-6 text-gray-400">
-          Everything with a asterisk (<span className="text-red-500">*</span>)
+          Everything with an asterisk (<span className="text-red-500">*</span>)
           is required.
         </p>
 
@@ -142,7 +130,6 @@ export default function FetchGallery({ singleGallery, galleryId }) {
             <div className="mt-2">
               <Input
                 type="text"
-                name="imagename"
                 id="imagename"
                 required
                 value={userData.name}
