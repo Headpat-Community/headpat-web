@@ -105,6 +105,7 @@ export default function FetchGallery({ enableNsfw }) {
                           <video
                             className="h-full w-full object-cover"
                             controls
+                            controlsList="nodownload"
                             autoPlay={false}
                             loop={true}
                             muted={true}

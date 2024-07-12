@@ -11,6 +11,7 @@ export const pathnames = {
   '#': '#',
   '/': '/',
   '/gallery': '/gallery',
+  '/gallery/upload': '/gallery/upload',
   '/gallery/[galleryId]': '/gallery/[galleryId]',
   '/community': '/community',
   '/community/[communityId]': '/community/[communityId]',

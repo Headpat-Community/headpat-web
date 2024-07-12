@@ -49,7 +49,7 @@ export default async function GalleryPage({ params: { galleryId } }) {
 
   const isNsfwImage = galleryDocuments?.nsfw && !enableNsfw
 
-  const sanitizedBio = sanitizeHtml(galleryDocuments.longText)
+  const sanitizedBio = sanitizeHtml(galleryDocuments?.longText)
   const bioWithLineBreaks = sanitizedBio.replace(/\n/g, '<br />')
 
   return (
