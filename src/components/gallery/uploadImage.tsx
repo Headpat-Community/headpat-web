@@ -2,7 +2,6 @@
 import React, { useRef, useState } from 'react'
 import { useToast } from '@/components/ui/use-toast'
 import { databases, ID, storage } from '@/app/appwrite-client'
-import { useGetUser } from '@/utils/getUserData'
 import * as Sentry from '@sentry/nextjs'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'

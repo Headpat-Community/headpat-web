@@ -1,6 +1,5 @@
 import Client from './page.client'
 import { notFound } from 'next/navigation'
-import { headers } from 'next/headers'
 import { createAdminClient } from '@/app/appwrite-session'
 import { Gallery } from '@/utils/types/models'
 import PageLayout from '@/components/pageLayout'
