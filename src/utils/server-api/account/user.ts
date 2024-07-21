@@ -59,7 +59,7 @@ export async function mfaChallengeNeeded() {
         `${process.env.NEXT_PUBLIC_DOMAIN}/login/mfa`
       )
     } else {
-      return error
+      return JSON.parse(JSON.stringify(error))
     }
   }
 }
