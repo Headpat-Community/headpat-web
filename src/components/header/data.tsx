@@ -9,6 +9,7 @@ import {
   HomeIcon,
   LayoutPanelLeftIcon,
   LogOutIcon,
+  MapIcon,
   MegaphoneIcon,
   UserSearchIcon,
 } from 'lucide-react'
@@ -49,6 +50,13 @@ export const Nav1 = (translations: any) => [
     icon: CalendarIcon,
     variant: 'ghost' as const,
     href: `/events`,
+  },
+  {
+    title: translations.map,
+    label: '',
+    icon: MapIcon,
+    variant: 'ghost' as const,
+    href: `/map`,
   },
   {
     title: translations.users,

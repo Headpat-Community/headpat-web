@@ -112,6 +112,27 @@ export namespace UserData {
   }
 }
 
+export namespace Location {
+  /**
+   * This data is returned from the API by calling the location endpoint.
+   * @see LocationDocumentsType
+   */
+  export interface LocationType {
+    total: number
+    documents: LocationDocumentsType[]
+  }
+
+  /**
+   * This data is returned in the friends/map view.
+   * @see UserDataDocumentsType
+   */
+  export interface LocationDocumentsType extends Models.Document {
+    lat: number
+    long: number
+    userData: UserData.UserDataDocumentsType
+  }
+}
+
 export namespace Announcements {
   /**
    * This data is returned from the API by calling the getAnnouncements function.

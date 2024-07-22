@@ -11,6 +11,7 @@ export default async function LocaleLayout({ children, params: { locale } }) {
         home={pageNames('home')}
         gallery={pageNames('gallery')}
         events={pageNames('events')}
+        map={pageNames('map')}
         announcements={pageNames('announcements')}
         notifications={pageNames('notifications')}
         users={pageNames('users')}

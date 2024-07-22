@@ -18,6 +18,7 @@
     "singleQuote": true
   },
   "dependencies": {
+    "@googlemaps/markerclusterer": "^2.5.3",
     "@hookform/resolvers": "^3.9.0",
     "@icons-pack/react-simple-icons": "^9.6.0",
     "@radix-ui/react-accordion": "^1.2.0",
@@ -47,11 +48,11 @@
     "@radix-ui/react-toggle": "^1.1.0",
     "@radix-ui/react-toggle-group": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
-    "@react-google-maps/api": "^2.19.3",
     "@sentry/nextjs": "^8.15.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.13",
+    "@vis.gl/react-google-maps": "^1.1.0",
     "appwrite": "^15.0.0",
     "autoprefixer": "10.4.19",
     "class-variance-authority": "^0.7.0",
