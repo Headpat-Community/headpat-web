@@ -1,16 +1,24 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
 import { editSocials } from '@/utils/actions/account/socials'
 import * as Sentry from '@sentry/nextjs'
+import { getDocument } from '@/components/api/documents'
+import { UserData } from '@/utils/types/models'
 
-export default function SocialsView({ userDataResponse }) {
+export default function SocialsView({ accountData }) {
   const { toast } = useToast()
   const [isUploading, setIsUploading] = useState(false)
-  const [userData, setUserData] = useState(userDataResponse)
+  const [userData, setUserData] = useState(null)
+
+  useEffect(() => {
+    getDocument('userdata', accountData.$id).then(
+      (data: UserData.UserDataDocumentsType) => setUserData(data)
+    )
+  }, [accountData])
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()

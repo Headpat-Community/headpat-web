@@ -5,24 +5,28 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { databases } from '@/app/appwrite-client'
-import { useToast } from '@/components/ui/use-toast'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import UploadAvatar from '@/components/account/uploadAvatar'
 import UploadBanner from '@/components/account/uploadBanner'
 import { Account, UserData } from '@/utils/types/models'
 import { unstable_noStore } from 'next/cache'
+import { toast } from 'sonner'
+import { getDocument } from '@/components/api/documents'
 
 export default function FrontpageView({
   accountData,
-  userDataResponse,
 }: {
   accountData: Account.AccountPrefs
-  userDataResponse: UserData.UserDataDocumentsType
 }) {
   unstable_noStore()
-  const [userData, setUserData] = useState(userDataResponse)
+  const [userData, setUserData] = useState<UserData.UserDataDocumentsType>(null)
   const [isUploading, setIsUploading] = useState<boolean>(false)
-  const { toast } = useToast()
+
+  useEffect(() => {
+    getDocument('userdata', accountData.$id).then(
+      (data: UserData.UserDataDocumentsType) => setUserData(data)
+    )
+  }, [accountData])
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
@@ -55,30 +59,19 @@ export default function FrontpageView({
       promise.then(
         function () {
           setIsUploading(false)
-          toast({
-            title: 'Data uploaded',
-            description: 'Your data has been uploaded successfully.',
-          })
+          toast.success('Your data has been uploaded successfully.')
         },
         function (error) {
           console.log(error) // Failure
           setIsUploading(false)
-          toast({
-            title: 'Error',
-            description: 'Failed to upload data.',
-            variant: 'destructive',
-          })
+          toast.error('Failed to upload data.')
         }
       )
     } catch (error) {
       setIsUploading(false)
       console.error(error)
       Sentry.captureException(error)
-      toast({
-        title: 'Error',
-        description: 'Failed to upload data.',
-        variant: 'destructive',
-      })
+      toast.error('Failed to upload data.')
     }
   }
 
@@ -99,14 +92,14 @@ export default function FrontpageView({
             <UploadAvatar
               isUploading={isUploading}
               setIsUploading={setIsUploading}
-              userId={accountData.$id}
+              userId={accountData && accountData.$id}
               userData={userData}
             />
             <div className={'my-4'} />
             <UploadBanner
               isUploading={isUploading}
               setIsUploading={setIsUploading}
-              userId={accountData.$id}
+              userId={accountData && accountData.$id}
               userData={userData}
             />
 

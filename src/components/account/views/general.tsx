@@ -1,11 +1,10 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import MfaAlert from '@/components/account/profile/mfaAlert'
-import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
 import { Models } from 'node-appwrite'
 import MfaRecoveryCodes from '@/components/account/profile/mfaRecoveryCodes'
@@ -15,7 +14,7 @@ import {
   changePreferences,
   changeProfileUrl,
 } from '@/utils/actions/account/account'
-import { Account } from '@/utils/types/models'
+import { Account, UserData } from '@/utils/types/models'
 import { useRouter } from '@/navigation'
 import {
   AlertDialog,
@@ -28,20 +27,25 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { getDocument } from '@/components/api/documents'
+import { toast } from 'sonner'
 
 export default function GeneralAccountView({
   accountData,
   mfaList,
-  userData,
 }: {
   accountData: Account.AccountPrefs
   mfaList: Models.MfaFactors
-  userData: any
 }) {
   const [userMe, setUserMe] = useState(accountData)
-  const [userDataState, setUserDataState] = useState(userData)
+  const [userData, setUserData] = useState(null)
   const router = useRouter()
-  const { toast } = useToast()
+
+  useEffect(() => {
+    getDocument('userdata', accountData.$id).then(
+      (data: UserData.UserDataDocumentsType) => setUserData(data)
+    )
+  }, [accountData])
 
   const handleEmailChange = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
@@ -53,35 +57,19 @@ export default function GeneralAccountView({
 
     // Check if profileUrl has at least 4 characters
     if (email_password.length < 8 || email_password.length > 256) {
-      toast({
-        title: 'Error',
-        description:
-          'Please enter a valid password with at least 8 characters.',
-        variant: 'destructive',
-      })
+      toast.error('Please enter a valid password with at least 8 characters.')
       return
     }
 
     const data = await changeEmail(email, email_password)
 
     if (data.type === 'user_invalid_credentials') {
-      toast({
-        title: 'Error',
-        description: "Password doesn't match.",
-        variant: 'destructive',
-      })
+      toast.error("Password doesn't match.")
     }
     if (data.type === 'user_target_already_exists') {
-      toast({
-        title: 'Error',
-        description: 'Account already exists with this email.',
-        variant: 'destructive',
-      })
+      toast.error('Account already exists with this email.')
     } else {
-      toast({
-        title: 'Success!',
-        description: 'E-Mail updated successfully.',
-      })
+      toast.success('E-Mail updated successfully.')
       Sentry.captureException(data)
     }
   }
@@ -102,33 +90,18 @@ export default function GeneralAccountView({
 
     // Check if profileUrl has at least 4 characters
     if (newPassword.length < 8) {
-      toast({
-        title: 'Error',
-        description: 'Password must be at least 8 characters long.',
-        variant: 'destructive',
-      })
+      toast.error('Password must be at least 8 characters long.')
       return
     }
 
     const promise = await changePassword(newPassword, currentPassword)
 
     if (promise.code === 400) {
-      toast({
-        title: 'Error',
-        description: promise.message,
-        variant: 'destructive',
-      })
+      toast.error(promise.message)
     } else if (promise.code === 401) {
-      toast({
-        title: 'Error',
-        description: "Password doesn't match.",
-        variant: 'destructive',
-      })
+      toast.error("Password doesn't match.")
     } else {
-      toast({
-        title: 'Success!',
-        description: 'Password updated successfully.',
-      })
+      toast.error('Password updated successfully.')
       target.reset()
     }
   }
@@ -142,16 +115,9 @@ export default function GeneralAccountView({
     const promise = await changePreferences(body)
 
     if (promise.error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to update NSFW. Please try again.',
-        variant: 'destructive',
-      })
+      toast.error('Failed to update NSFW. Please try again.')
     } else {
-      toast({
-        title: 'Success!',
-        description: 'NSFW updated successfully.',
-      })
+      toast.success('NSFW updated successfully.')
       setUserMe((prevUserData: any) => ({
         ...prevUserData,
         prefs: {
@@ -164,43 +130,24 @@ export default function GeneralAccountView({
   }
 
   const handleProfileUrlChange = async () => {
-    const profileUrl = userDataState.profileUrl
+    const profileUrl = userData.profileUrl
 
     // Check if profileUrl has at least 4 characters
     if (profileUrl.length < 3) {
-      toast({
-        title: 'Error',
-        description: 'Profile URL must be at least 3 characters long.',
-        variant: 'destructive',
-      })
+      toast.error('Profile URL must be at least 3 characters long.')
       return
     }
 
     const promise = await changeProfileUrl(profileUrl)
 
     if (promise.type === 'document_invalid_structure') {
-      toast({
-        title: 'Error',
-        description: 'Invalid structure.',
-        variant: 'destructive',
-      })
+      toast.error('Invalid structure.')
     } else if (promise.type === 'document_missing_data') {
-      toast({
-        title: 'Error',
-        description: 'Missing data.',
-        variant: 'destructive',
-      })
+      toast.error('Missing data.')
     } else if (promise.type === 'document_update_conflict') {
-      toast({
-        title: 'Error',
-        description: 'Cloud is newer than your local data. Please refresh.',
-        variant: 'destructive',
-      })
+      toast('Cloud is newer than your local data. Please refresh.')
     } else {
-      toast({
-        title: 'Success!',
-        description: 'Profile URL updated successfully.',
-      })
+      toast.success('Profile URL updated successfully.')
     }
   }
 
@@ -303,14 +250,12 @@ export default function GeneralAccountView({
                         id="profileurl"
                         required
                         onChange={(e) => {
-                          setUserDataState((prevUserData: any) => ({
+                          setUserData((prevUserData: any) => ({
                             ...prevUserData,
                             profileUrl: e.target.value,
                           }))
                         }}
-                        placeholder={
-                          userDataState ? userDataState.profileUrl : ''
-                        }
+                        placeholder={userData ? userData.profileUrl : ''}
                         className="border-0 pl-0 align-middle bg-transparent ml-1 focus:ring-0 focus:outline-none focus:border-0 focus-visible:ring-0 focus-visible:outline-none focus-visible:border-0 focus-visible:ring-offset-0"
                         minLength={3}
                       />

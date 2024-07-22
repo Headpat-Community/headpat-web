@@ -5,8 +5,8 @@ export function getDocument(collectionId: string, documentId: string) {
   return databases.getDocument(`hp_db`, `${collectionId}`, `${documentId}`)
 }
 
-export function listDocuments(collectionId: string) {
-  return databases.listDocuments(`hp_db`, `${collectionId}`, [Query.limit(50)])
+export function listDocuments(collectionId: string, query?: any) {
+  return databases.listDocuments(`hp_db`, `${collectionId}`, query)
 }
 
 export function updateDocument(

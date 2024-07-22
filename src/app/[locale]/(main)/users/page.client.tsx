@@ -8,13 +8,14 @@ import Image from 'next/image'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import { useEffect, useState } from 'react'
 import { listDocuments } from '@/components/api/documents'
+import { Query } from '@/app/appwrite-client'
 
 export default function PageClient() {
   const [users, setUsers] = useState<UserData.UserDataType>(null)
 
   useEffect(() => {
-    listDocuments('userdata').then((data: UserData.UserDataType) =>
-      setUsers(data)
+    listDocuments('userdata', [Query.limit(200)]).then(
+      (data: UserData.UserDataType) => setUsers(data)
     )
   }, [])
 

@@ -1,7 +1,6 @@
 import { Suspense } from 'react'
 import Loading from '../../../loading'
 import { getMfaList, getUser } from '@/utils/server-api/account/user'
-import { getUserData } from '@/utils/server-api/user/getUserData'
 import PageLayout from '@/components/pageLayout'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import GeneralAccountView from '@/components/account/views/general'
@@ -21,7 +20,6 @@ export default async function AccountSettings({
 }) {
   const mfaList = await getMfaList()
   const accountData = await getUser()
-  const userData = await getUserData()
 
   return (
     <PageLayout title="Account Settings">
@@ -33,20 +31,13 @@ export default async function AccountSettings({
             <TabsTrigger value="socials">Socials</TabsTrigger>
           </TabsList>
           <TabsContent value="general">
-            <GeneralAccountView
-              accountData={accountData}
-              mfaList={mfaList}
-              userData={userData}
-            />
+            <GeneralAccountView accountData={accountData} mfaList={mfaList} />
           </TabsContent>
           <TabsContent value="frontpage">
-            <FrontpageView
-              accountData={accountData}
-              userDataResponse={userData}
-            />
+            <FrontpageView accountData={accountData} />
           </TabsContent>
           <TabsContent value="socials">
-            <SocialsView userDataResponse={userData} />
+            <SocialsView accountData={accountData} />
           </TabsContent>
         </Tabs>
       </Suspense>
