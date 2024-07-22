@@ -10,6 +10,7 @@ import { useState } from 'react'
 import UploadAvatar from '@/components/account/uploadAvatar'
 import UploadBanner from '@/components/account/uploadBanner'
 import { Account, UserData } from '@/utils/types/models'
+import { unstable_noStore } from 'next/cache'
 
 export default function FrontpageView({
   accountData,
@@ -18,6 +19,7 @@ export default function FrontpageView({
   accountData: Account.AccountPrefs
   userDataResponse: UserData.UserDataDocumentsType
 }) {
+  unstable_noStore()
   const [userData, setUserData] = useState(userDataResponse)
   const [isUploading, setIsUploading] = useState<boolean>(false)
   const { toast } = useToast()
