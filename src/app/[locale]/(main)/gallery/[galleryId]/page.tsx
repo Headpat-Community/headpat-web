@@ -50,6 +50,12 @@ export default async function GalleryPage({ params: { galleryId } }) {
 
   const isNsfwImage = galleryDocuments?.nsfw && !enableNsfw
 
+  if (isNsfwImage) {
+    if (!userSelf || !userSelf?.prefs?.nsfw) {
+      return notFound()
+    }
+  }
+
   const sanitizedBio = sanitizeHtml(galleryDocuments?.longText)
   const bioWithLineBreaks = sanitizedBio.replace(/\n/g, '<br />')
 

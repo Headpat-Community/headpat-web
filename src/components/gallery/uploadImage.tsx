@@ -1,6 +1,5 @@
 'use client'
 import React, { useRef, useState } from 'react'
-import { useToast } from '@/components/ui/use-toast'
 import { databases, ID, storage } from '@/app/appwrite-client'
 import * as Sentry from '@sentry/nextjs'
 import { Input } from '@/components/ui/input'
@@ -8,10 +7,10 @@ import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Textarea } from '@/components/ui/textarea'
 import { useRouter } from '@/navigation'
+import { toast } from 'sonner'
 
 export default function UploadPage({ userId }: { userId: string }) {
   const [isUploading, setIsUploading] = useState(false)
-  const { toast } = useToast()
   const router = useRouter()
   const [selectedFileInput, setSelectedFileInput] = useState(null)
   const [selectedFile, setSelectedFile] = useState(null)
@@ -22,9 +21,20 @@ export default function UploadPage({ userId }: { userId: string }) {
     nsfw: false,
   })
 
+  const maxSizeInBytes = 16 * 1024 * 1024 // 16 MB
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files[0]
-    if (file) {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0]
+
+      if (file.size > maxSizeInBytes) {
+        toast.error('File size exceeds the 16 MB limit.')
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '' // Reset the input field
+        }
+        return
+      }
+
       const reader = new FileReader()
       reader.onload = function (e) {
         const img = document.getElementById(
@@ -50,8 +60,17 @@ export default function UploadPage({ userId }: { userId: string }) {
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
-    const file = event.dataTransfer.files[0]
-    if (file) {
+    if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+      const file = event.dataTransfer.files[0]
+
+      if (file.size > maxSizeInBytes) {
+        toast.error('File size exceeds the 16 MB limit.')
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '' // Reset the input field
+        }
+        return
+      }
+
       const reader = new FileReader()
       reader.onload = function (e) {
         const img = document.getElementById(
@@ -108,13 +127,11 @@ export default function UploadPage({ userId }: { userId: string }) {
 
           postDocument.then(
             function () {
-              toast({
-                title: 'Success!',
-                description:
-                  "Thanks for sharing your image with us. It's now live!",
-              })
+              toast.success(
+                "Thanks for sharing your image with us. It's now live!"
+              )
               router.push({
-                pathname: `/account/gallery/[galleryId]`,
+                pathname: `/gallery/[galleryId]`,
                 params: { galleryId: fileDataResponse.$id },
               })
             },
@@ -122,12 +139,9 @@ export default function UploadPage({ userId }: { userId: string }) {
               console.log(error) // Failure
               storage.deleteFile('gallery', fileDataResponse.$id)
               Sentry.captureException(error)
-              toast({
-                title: 'Error',
-                description:
-                  "You encountered an error. But don't worry, we're on it.",
-                variant: 'destructive',
-              })
+              toast.error(
+                "You encountered an error. But don't worry, we're on it."
+              )
               setIsUploading(false)
             }
           )
@@ -135,23 +149,14 @@ export default function UploadPage({ userId }: { userId: string }) {
         function (error) {
           console.log(error) // Failure
           Sentry.captureException(error)
-          toast({
-            title: 'Error',
-            description:
-              "You encountered an error. But don't worry, we're on it.",
-            variant: 'destructive',
-          })
+          toast.error("You encountered an error. But don't worry, we're on it.")
           setIsUploading(false)
         }
       )
     } catch (error) {
       console.error(error)
       Sentry.captureException(error)
-      toast({
-        title: 'Error',
-        description: "You encountered an error. But don't worry, we're on it.",
-        variant: 'destructive',
-      })
+      toast.error("You encountered an error. But don't worry, we're on it.")
       setIsUploading(false)
     }
   }

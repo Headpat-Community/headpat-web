@@ -43,8 +43,13 @@ export default function FetchGallery({ enableNsfw }) {
             Query.equal('nsfw', false),
             Query.limit(pageSize),
             Query.offset(offset),
+            Query.orderDesc('$createdAt'),
           ]
-        : [Query.limit(pageSize), Query.offset(offset)]
+        : [
+            Query.limit(pageSize),
+            Query.offset(offset),
+            Query.orderDesc('$createdAt'),
+          ]
 
       //const apiUrl = `${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`
       const gallery: Gallery.GalleryType = await databases.listDocuments(
@@ -127,11 +132,9 @@ export default function FetchGallery({ enableNsfw }) {
                         height={600}
                         draggable={false}
                         loading="lazy" // Add this attribute for lazy loading
-                        unoptimized={
-                          !item?.mimeType?.includes(
-                            'image/svg' || 'image/gif' || 'video'
-                          )
-                        }
+                        unoptimized={item?.mimeType?.includes(
+                          'image/svg' || 'image/gif' || 'video'
+                        )}
                       />
                     </Link>
                   </div>
