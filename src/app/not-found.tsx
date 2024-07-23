@@ -1,5 +1,5 @@
 import { AccessibilityIcon } from 'lucide-react'
-import { Link } from '@/navigation'
+import Link from 'next/link'
 
 export default function NotFoundComponent() {
   return (
