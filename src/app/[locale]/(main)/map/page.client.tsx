@@ -180,8 +180,8 @@ export default function PageClient() {
           <DialogTitle>{currentEvent?.title}</DialogTitle>
           <DialogDescription>{currentEvent?.description}</DialogDescription>
           <DialogFooter>
-            <div>Until: {formatDate(new Date(currentEvent?.dateUntil))}</div>
             <div>Start: {formatDate(new Date(currentEvent?.date))}</div>
+            <div>Until: {formatDate(new Date(currentEvent?.dateUntil))}</div>
           </DialogFooter>
         </DialogContent>
       </Dialog>
