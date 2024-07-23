@@ -27,9 +27,10 @@ export default async function GalleryPage({ params: { galleryId } }) {
     [Query.equal('$id', galleryId)]
   )
 
-  if (!gallery.documents) {
+  if (gallery.documents.length === 0) {
     return notFound()
   }
+
   const galleryData: Gallery.GalleryDocumentsType = gallery.documents[0]
 
   const userId = galleryData?.userId
