@@ -250,7 +250,7 @@ export namespace Interactive {
     /**
      * The question ID of the question that was voted on.
      */
-    questionId: number
+    questionId: string
     /**
      * The answer ID of the answer that was voted on.
      */
@@ -268,7 +268,7 @@ export namespace Interactive {
   }
 
   export interface VotesSystem extends Models.Document {
-    questionId: number
+    questionId: string
     paused: boolean
   }
 }

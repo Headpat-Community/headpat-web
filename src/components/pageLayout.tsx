@@ -10,10 +10,10 @@ export default function PageLayout({
   return (
     <>
       <div className={'relative'}>
-        <div className="flex flex-col lg:flex-row items-center px-4 py-1.5 justify-between align-middle">
+        <div className="flex flex-row items-center px-4 py-1.5 justify-between align-middle">
           <h1 className="text-xl font-bold">{title || 'Undefined'}</h1>
           {middleComponent}
-          <div className={'align-middle flex gap-2 lg:mt-0 mt-4'}>
+          <div className={'align-middle gap-2 hidden md:flex'}>
             <ChangeLanguage />
             <ThemeToggle />
           </div>
