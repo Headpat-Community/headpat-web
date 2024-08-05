@@ -1,15 +1,25 @@
 import VotingClient from './page.client'
-import { getVotes } from '@/utils/server-api/interactive/votes/getVotes'
 import { headers } from 'next/headers'
-import { getQuestionId } from '@/utils/server-api/interactive/votes/getQuestionId'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { Separator } from '@/components/ui/separator'
+import { Interactive } from '@/utils/types/models'
+import { createAdminClient } from '@/app/appwrite-session'
+import { unstable_noStore } from 'next/cache'
 
 export const runtime = 'edge'
 
 export default async function VotingPage() {
-  const questionId = await getQuestionId()
-  const votes = await getVotes()
+  unstable_noStore()
+  const { databases } = await createAdminClient()
+  const voteSystem: Interactive.VotesSystem = await databases.getDocument(
+    'interactive',
+    'system',
+    'main'
+  )
+  const votes: Interactive.VotesAnswersType = await databases.listDocuments(
+    'interactive',
+    'answers'
+  )
   const forwardedFor = headers().get('x-forwarded-for')
 
   return (
@@ -24,7 +34,8 @@ export default async function VotingPage() {
         <Separator />
       </div>
       <VotingClient
-        questionId={questionId}
+        questionId={voteSystem.questionId}
+        paused={voteSystem.paused}
         votes={votes}
         forwardedFor={forwardedFor}
       />

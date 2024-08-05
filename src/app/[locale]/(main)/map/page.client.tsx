@@ -44,7 +44,7 @@ export default function PageClient() {
     try {
       const currentDate = new Date()
 
-      const data: Events.EventsType = await listDocuments('events', [
+      const data: Events.EventsType = await listDocuments('hp_db', 'events', [
         Query.orderAsc('date'),
         Query.greaterThanEqual('dateUntil', currentDate.toISOString()),
         Query.or([
@@ -66,12 +66,14 @@ export default function PageClient() {
       //  query = [Query.notEqual('$id', user?.current?.$id)]
       //}
       const data: Location.LocationType = await listDocuments(
+        'hp_db',
         'locations',
         query
       )
 
       const promises = data.documents.map(async (doc) => {
         const userData: UserData.UserDataDocumentsType = await getDocument(
+          'hp_db',
           'userdata',
           `${doc.$id}`
         )
@@ -113,6 +115,7 @@ export default function PageClient() {
           case 'create':
             // Fetch userData for the updated or created document
             const userData: UserData.UserDataDocumentsType = await getDocument(
+              'hp_db',
               'userdata',
               `${updatedDocument.$id}`
             )

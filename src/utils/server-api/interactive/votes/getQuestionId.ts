@@ -8,13 +8,12 @@ import { unstable_noStore } from 'next/cache'
  * @example
  * const questionId = await getQuestionId()
  */
-export async function getQuestionId(): Promise<number> {
+export async function getVotingSystem(): Promise<Interactive.VotesSystem> {
   unstable_noStore()
   const { databases } = await createAdminClient()
-  const data: Interactive.VotesQuestionId = await databases
+  return await databases
     .getDocument('interactive', 'system', 'main')
     .catch((error) => {
       return error
     })
-  return data.questionId
 }

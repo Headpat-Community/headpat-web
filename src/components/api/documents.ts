@@ -2,27 +2,53 @@
 import { databases } from '@/app/appwrite-client'
 import { Models } from 'node-appwrite'
 
+/**
+ * Get a document
+ * @param databaseId
+ * @param collectionId
+ * @param documentId
+ */
 export function getDocument<T extends Models.Document>(
+  databaseId: string,
   collectionId: string,
   documentId: string
 ): Promise<T> {
-  return databases.getDocument(`hp_db`, `${collectionId}`, `${documentId}`)
+  return databases.getDocument(
+    `${databaseId}`,
+    `${collectionId}`,
+    `${documentId}`
+  )
 }
 
+/**
+ * List documents in a collection
+ * @param databaseId
+ * @param collectionId
+ * @param query
+ */
 export function listDocuments<T extends Models.Document>(
+  databaseId: string,
   collectionId: string,
   query?: any
 ): Promise<Models.DocumentList<T>> {
-  return databases.listDocuments(`hp_db`, `${collectionId}`, query)
+  return databases.listDocuments(`${databaseId}`, `${collectionId}`, query)
 }
 
+/**
+ * Update a document
+ * @param databaseId
+ * @param collectionId
+ * @param documentId
+ * @param body
+ */
 export function updateDocument<T extends Models.Document>(
+  databaseId: string,
   collectionId: string,
   documentId: string,
   body: any
 ): Promise<T> {
   return databases.updateDocument(
-    `hp_db`,
+    `${databaseId}`,
     `${collectionId}, ${documentId}`,
     body
   )

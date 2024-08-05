@@ -10,6 +10,7 @@ import * as Sentry from '@sentry/nextjs'
 import { Gallery } from '@/utils/types/models'
 import { Link, useRouter } from '@/navigation'
 import { getGalleryImageUrlView } from '@/components/getStorageItem'
+import { getDocument } from '@/components/api/documents'
 
 export default function FetchGallery({ singleGallery, galleryId }) {
   const { toast } = useToast()
@@ -29,10 +30,10 @@ export default function FetchGallery({ singleGallery, galleryId }) {
       // Get the ID from the URL
       setIsDeleting(true)
 
-      const listDataResponse = databases.getDocument(
+      const listDataResponse = getDocument(
         'hp_db',
         'gallery-images',
-        galleryId
+        `${galleryId}`
       )
 
       listDataResponse.then(

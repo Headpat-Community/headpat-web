@@ -23,7 +23,7 @@ export default function FrontpageView({
   const [isUploading, setIsUploading] = useState<boolean>(false)
 
   useEffect(() => {
-    getDocument('userdata', accountData.$id).then(
+    getDocument('hp_db', 'userdata', accountData.$id).then(
       (data: UserData.UserDataDocumentsType) => setUserData(data)
     )
   }, [accountData])

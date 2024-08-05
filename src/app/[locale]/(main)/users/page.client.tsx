@@ -14,7 +14,7 @@ export default function PageClient() {
   const [users, setUsers] = useState<UserData.UserDataType>(null)
 
   useEffect(() => {
-    listDocuments('userdata', [Query.limit(200)]).then(
+    listDocuments('hp_db', 'userdata', [Query.limit(200)]).then(
       (data: UserData.UserDataType) => setUsers(data)
     )
   }, [])

@@ -257,8 +257,19 @@ export namespace Interactive {
     optionId: number
   }
 
-  export interface VotesQuestionId extends Models.Document {
+  export interface VotesQuestionsType {
+    total: number
+    documents: VotesQuestionsDocumentsType[]
+  }
+
+  export interface VotesQuestionsDocumentsType extends Models.Document {
+    questions: string[]
+    order: number
+  }
+
+  export interface VotesSystem extends Models.Document {
     questionId: number
+    paused: boolean
   }
 }
 
