@@ -89,7 +89,7 @@ function usePolyline(props: PolylineProps) {
     return () => {
       polyline.setMap(null)
     }
-  }, [map])
+  }, [map, polyline])
 
   // attach and re-attach event-handlers when any of the properties change
   useEffect(() => {

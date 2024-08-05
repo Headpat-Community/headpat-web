@@ -91,7 +91,7 @@ function usePolygon(props: PolygonProps) {
     return () => {
       polygon.setMap(null)
     }
-  }, [map])
+  }, [map, polygon])
 
   // attach and re-attach event-handlers when any of the properties change
   useEffect(() => {

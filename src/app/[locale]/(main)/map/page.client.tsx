@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AdvancedMarker, APIProvider, Map } from '@vis.gl/react-google-maps'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Events, Location, UserData } from '@/utils/types/models'
@@ -18,8 +18,6 @@ import { Polygon } from '@/components/map/polygon'
 import { Circle } from '@/components/map/circle'
 
 export default function PageClient() {
-  const [userLocation, setUserLocation] = useState(null)
-
   const [events, setEvents] = useState<Events.EventsType>(null)
   const [friendsLocations, setFriendsLocations] = useState(null)
   const [filters, setFilters] = useState({
@@ -100,7 +98,8 @@ export default function PageClient() {
       // Remove the event listener when the component is unmounted
       locationsSubscribed()
     }
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locationsSubscribed])
 
   function handleSubscribedEvents() {
     locationsSubscribed = client.subscribe(

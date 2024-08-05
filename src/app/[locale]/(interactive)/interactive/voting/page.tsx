@@ -1,9 +1,7 @@
-import PageLayout from '@/components/pageLayout'
 import VotingClient from './page.client'
 import { getVotes } from '@/utils/server-api/interactive/votes/getVotes'
 import { headers } from 'next/headers'
 import { getQuestionId } from '@/utils/server-api/interactive/votes/getQuestionId'
-import ChangeLanguage from '@/components/system/changeLanguage'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { Separator } from '@/components/ui/separator'
 

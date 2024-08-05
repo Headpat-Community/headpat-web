@@ -81,6 +81,7 @@ export default function VotingClient({
         subscribed()
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subscribed])
 
   function handleSubscribedEvents() {

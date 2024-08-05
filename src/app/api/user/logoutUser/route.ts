@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
-import { createSessionClient } from '../../../appwrite-session'
+import { createSessionClient } from '@/app/appwrite-session'
 
 export const runtime = 'edge'
 

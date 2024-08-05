@@ -1,5 +1,5 @@
 'use client'
-import { databases, Query } from '@/app/appwrite-client'
+import { databases } from '@/app/appwrite-client'
 import { Models } from 'node-appwrite'
 
 export function getDocument<T extends Models.Document>(
