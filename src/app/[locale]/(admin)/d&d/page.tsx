@@ -4,6 +4,8 @@ import PageLayout from '@/components/pageLayout'
 import { Separator } from '@/components/ui/separator'
 import { IntroductionClient } from '@/app/[locale]/(admin)/d&d/page.client'
 
+export const runtime = 'edge'
+
 export default async function Page() {
   const { account } = await createSessionServerClient()
 
