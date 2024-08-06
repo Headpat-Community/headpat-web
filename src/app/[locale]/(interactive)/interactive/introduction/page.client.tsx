@@ -14,7 +14,7 @@ export default function VotingClient({
   votes,
   forwardedFor,
 }: {
-  questionId: number
+  questionId: string
   paused: boolean
   votes: Interactive.VotesAnswersType
   forwardedFor: string
