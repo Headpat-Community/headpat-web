@@ -66,7 +66,7 @@ function useCircle(props: CircleProps) {
   useEffect(() => {
     if (radius === undefined || radius === null) return
     if (radius !== circle.getRadius()) circle.setRadius(radius)
-  }, [radius])
+  }, [circle, radius])
 
   const map = useContext(GoogleMapsContext)?.map
 

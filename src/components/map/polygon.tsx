@@ -128,7 +128,7 @@ function usePolygon(props: PolygonProps) {
 export const Polygon = forwardRef((props: PolygonProps, ref: PolygonRef) => {
   const polygon = usePolygon(props)
 
-  useImperativeHandle(ref, () => polygon, [])
+  useImperativeHandle(ref, () => polygon, [polygon])
 
   return null
 })

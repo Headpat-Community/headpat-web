@@ -126,7 +126,7 @@ function usePolyline(props: PolylineProps) {
 export const Polyline = forwardRef((props: PolylineProps, ref: PolylineRef) => {
   const polyline = usePolyline(props)
 
-  useImperativeHandle(ref, () => polyline, [])
+  useImperativeHandle(ref, () => polyline, [polyline])
 
   return null
 })

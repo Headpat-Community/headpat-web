@@ -203,12 +203,12 @@ export default function PageClient() {
                 position={{ lat: user.lat, lng: user.long }}
                 title={'AdvancedMarker with custom html content.'}
                 onClick={() => (
-                  setModalUserOpen(true),
                   setCurrentUser({
                     title: user.userData?.displayName,
                     status: user.userData?.status,
                     description: user.userData?.bio,
-                  })
+                  }),
+                  setModalUserOpen(true)
                 )}
               >
                 <Avatar>
@@ -232,13 +232,13 @@ export default function PageClient() {
                   strokeColor="rgba(255,0,0,0.5)" // optional, border color of the polygon
                   paths={coords}
                   onClick={() => (
-                    setModalEventOpen(true),
                     setCurrentEvent({
                       title: event.title,
                       description: event.description,
                       date: event.date,
                       dateUntil: event.dateUntil,
-                    })
+                    }),
+                    setModalEventOpen(true)
                   )}
                 />
               )
@@ -258,13 +258,13 @@ export default function PageClient() {
                   fillColor="rgba(100, 200, 200, 0.5)" // optional, fill color of the circle
                   strokeColor="rgba(255,0,0,0.5)" // optional, border color of the circle
                   onClick={() => (
-                    setModalEventOpen(true),
                     setCurrentEvent({
                       title: event.title,
                       description: event.description,
                       date: event.date,
                       dateUntil: event.dateUntil,
-                    })
+                    }),
+                    setModalEventOpen(true)
                   )}
                 />
               )
