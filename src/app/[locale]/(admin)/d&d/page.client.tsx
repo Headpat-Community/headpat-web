@@ -1,6 +1,7 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import {
+  nextIntroductionQuestion,
   pauseVoting,
   previousIntroductionQuestion,
   updateMainSystem,
@@ -23,12 +24,29 @@ export function IntroductionClient() {
 
   const previous = async () => {
     try {
-      await previousIntroductionQuestion()
-      toast.success('Frage zurückgesetzt')
+      const data = await previousIntroductionQuestion()
+      if (!data) {
+        toast.error('Sie sind bereits bei der ersten Frage')
+      } else {
+        toast.success('Frage zurückgesetzt')
+      }
     } catch (error) {
       toast.error(
         'Fehler beim Zurücksetzen der Frage. War sie schon auf dem ersten?'
       )
+    }
+  }
+
+  const next = async () => {
+    try {
+      const data = await nextIntroductionQuestion()
+      if (!data) {
+        toast.error('Sie sind bereits bei der letzten Frage')
+      } else {
+        toast.success('Frage weitergeschaltet')
+      }
+    } catch (error) {
+      toast.error('Fehler beim Weiterleiten der Frage')
     }
   }
 
@@ -41,7 +59,9 @@ export function IntroductionClient() {
         <Button title={'Pause'} variant={'destructive'} onClick={pause}>
           Pause
         </Button>
-        <Button title={'Next'}>Next</Button>
+        <Button title={'Next'} onClick={next}>
+          Next
+        </Button>
       </div>
     </>
   )

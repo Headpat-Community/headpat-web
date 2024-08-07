@@ -22,8 +22,22 @@ export async function pauseVoting(collectionId: string) {
 export async function previousIntroductionQuestion() {
   const { databases } = await createAdminClient()
   const data = await databases.getDocument('interactive', 'system', 'main')
+  if (data.questionId === 0) {
+    return false
+  }
   return await databases.updateDocument('interactive', 'system', 'main', {
     questionId: data.questionId - 1,
+  })
+}
+
+export async function nextIntroductionQuestion() {
+  const { databases } = await createAdminClient()
+  const data = await databases.getDocument('interactive', 'system', 'main')
+  if (data.questionId === 7) {
+    return false
+  }
+  return await databases.updateDocument('interactive', 'system', 'main', {
+    questionId: data.questionId + 1,
   })
 }
 
