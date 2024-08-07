@@ -2,7 +2,10 @@ import { createSessionServerClient } from '@/app/appwrite-session'
 import NoAccess from '@/components/static/noAccess'
 import PageLayout from '@/components/pageLayout'
 import { Separator } from '@/components/ui/separator'
-import { IntroductionClient } from '@/app/[locale]/(admin)/d&d/page.client'
+import {
+  IntroductionClient,
+  MainClient,
+} from '@/app/[locale]/(admin)/d&d/page.client'
 
 export const runtime = 'edge'
 
@@ -25,6 +28,15 @@ export default async function Page() {
         </p>
         <Separator className={'my-4'} />
         <IntroductionClient />
+      </div>
+      <div className={'p-4 mt-8'}>
+        <h1 className={'text-2xl'}>Main:</h1>
+        <p className={'text-muted-foreground'}>
+          This is the main panel for the D&D panel. Here you can manage the
+          selected questions and answers.
+        </p>
+        <Separator className={'my-4'} />
+        <MainClient />
       </div>
     </PageLayout>
   )

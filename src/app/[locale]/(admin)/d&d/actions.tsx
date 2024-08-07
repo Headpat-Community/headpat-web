@@ -26,3 +26,10 @@ export async function previousIntroductionQuestion() {
     questionId: data.questionId - 1,
   })
 }
+
+export async function updateMainSystem(name: string) {
+  const { databases } = await createAdminClient()
+  return await databases.updateDocument('interactive', 'system-main', 'main', {
+    questionId: name,
+  })
+}

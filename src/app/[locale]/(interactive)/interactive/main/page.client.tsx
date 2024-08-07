@@ -5,7 +5,8 @@ import { RealtimeResponseEvent } from 'appwrite'
 import { Interactive } from '@/utils/types/models'
 import { client, databases } from '@/app/appwrite-client'
 import { Separator } from '@/components/ui/separator'
-import { XSquareIcon } from 'lucide-react'
+import { XSquareIcon, CheckIcon } from 'lucide-react'
+import { chartConfig, DDChart } from './chart'
 
 export default function VotingClient({
   questionId,
@@ -123,19 +124,6 @@ export default function VotingClient({
     return <div>Loading....</div>
   }
 
-  if (isPaused) {
-    return (
-      <div className="flex flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-md text-center">
-          <XSquareIcon className="mx-auto h-12 w-12" />
-          <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Voting is paused!
-          </h1>
-        </div>
-      </div>
-    )
-  }
-
   function handleVote(questionId: string, optionIndex: number) {
     // Check if the user has already voted on this question
     if (votedQuestions[questionId] !== undefined) {
@@ -172,9 +160,44 @@ export default function VotingClient({
     })
   }
 
+  const totalVotes = Object.entries(voteCounts[selectedQuestionId] || {}).map(
+    ([optionIndex, voteCount]) => ({
+      browser: `option${optionIndex}`,
+      visitors: voteCount,
+      fill: chartConfig[`option${optionIndex}`]?.color || 'var(--color-other)',
+    })
+  )
+
+  // Find the option with the most votes
+  const maxVoteCount = Math.max(
+    0,
+    ...Object.values(voteCounts[selectedQuestionId] || {}).map((value) =>
+      Number(value)
+    )
+  )
+  const maxVoteOptionIndex =
+    maxVoteCount > 0
+      ? Object.keys(voteCounts[selectedQuestionId] || {}).find(
+          (key) => voteCounts[selectedQuestionId][key] === maxVoteCount
+        )
+      : null
+
   return (
     <section className="w-full py-4">
       <div className="container grid gap-8 px-4 md:px-6">
+        {isPaused && (
+          <>
+            <div className="flex flex-col items-center justify-center bg-background px-4 py-6 sm:px-6 lg:px-8">
+              <div className="mx-auto max-w-md text-center">
+                <XSquareIcon className="mx-auto h-12 w-12" />
+                <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                  Voting is paused!
+                </h1>
+              </div>
+            </div>
+            <DDChart data={totalVotes} />
+          </>
+        )}
         {questions
           .find((q) => q.$id === selectedQuestionId)
           ?.questions?.map((option, optionIndex) => {
@@ -189,6 +212,7 @@ export default function VotingClient({
                     ? 'bg-gray-500'
                     : ''
                 }
+                disabled={isPaused}
               >
                 <div className="rounded-lg border p-4 shadow-sm">
                   <div className="space-y-2">
@@ -199,6 +223,10 @@ export default function VotingClient({
                           __html: option || 'Nothing here yet!',
                         }}
                       />
+                      {isPaused &&
+                        optionIndex.toString() === maxVoteOptionIndex && (
+                          <CheckIcon className="h-6 w-6 text-green-500" />
+                        )}
                     </div>
                   </div>
                   <Separator className={'mt-4'} />
