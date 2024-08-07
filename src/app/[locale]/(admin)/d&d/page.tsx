@@ -13,7 +13,10 @@ export default async function Page() {
   const { account } = await createSessionServerClient()
 
   try {
-    await account.get()
+    const data = await account.get()
+    if (!data.labels.includes('admin')) {
+      return <NoAccess />
+    }
   } catch (error) {
     return <NoAccess />
   }
