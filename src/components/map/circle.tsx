@@ -84,7 +84,7 @@ function useCircle(props: CircleProps) {
     return () => {
       circle.setMap(null)
     }
-  }, [map])
+  }, [circle, map])
 
   // attach and re-attach event-handlers when any of the properties change
   useEffect(() => {
