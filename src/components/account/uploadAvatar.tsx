@@ -223,7 +223,7 @@ export default function UploadAvatar({
       <div className={'flex'}>
         <AlertDialog onOpenChange={(open) => setOpen(open)} open={open}>
           <AlertDialogContent className={'h-full lg:h-auto'}>
-            <ScrollArea className={'h-[700px] lg:h-[1000px]'}>
+            <ScrollArea className={'h-[400px] lg:h-[700px]'}>
               <AlertDialogHeader>
                 <AlertDialogTitle>
                   Welcome to the custom crop tool
@@ -255,21 +255,6 @@ export default function UploadAvatar({
                       onLoad={onImageLoad}
                     />
                   </ReactCrop>
-                )}
-                {!!completedCrop && (
-                  <>
-                    <div>
-                      <canvas
-                        ref={previewCanvasRef}
-                        style={{
-                          border: '1px solid black',
-                          objectFit: 'contain',
-                          width: completedCrop.width,
-                          height: completedCrop.height,
-                        }}
-                      />
-                    </div>
-                  </>
                 )}
               </div>
             </ScrollArea>
