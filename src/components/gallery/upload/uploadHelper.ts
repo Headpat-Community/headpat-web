@@ -22,7 +22,8 @@ export function centerAspectCrop(
 }
 
 export async function getCroppedImageBlob(
-  canvas: HTMLCanvasElement
+  canvas: HTMLCanvasElement,
+  type: string = 'image/png'
 ): Promise<Blob> {
   return new Promise((resolve, reject) => {
     canvas.toBlob(
@@ -33,13 +34,18 @@ export async function getCroppedImageBlob(
           reject(new Error('Canvas is empty'))
         }
       },
-      'image/png',
+      `${type}`,
       0.5
     )
   })
 }
 
-export async function createBlob(imgRef, previewCanvasRef, completedCrop) {
+export async function createBlob(
+  imgRef,
+  previewCanvasRef,
+  completedCrop,
+  type
+) {
   const image = imgRef.current
   const previewCanvas = previewCanvasRef.current
   if (!image || !previewCanvas || !completedCrop) {
@@ -70,5 +76,8 @@ export async function createBlob(imgRef, previewCanvasRef, completedCrop) {
     offscreen.height
   )
 
-  return await getCroppedImageBlob(offscreen as unknown as HTMLCanvasElement)
+  return await getCroppedImageBlob(
+    offscreen as unknown as HTMLCanvasElement,
+    type
+  )
 }

@@ -42,6 +42,8 @@ export default function UploadBanner({
   const imgRef = useRef<HTMLImageElement>(null)
   const [crop, setCrop] = useState<Crop>()
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
+  const [type, setType] = useState('image/png')
+  const [name, setName] = useState('')
   const [open, setOpen] = useState(false)
   const scale = 1
   const rotate = 0
@@ -66,6 +68,8 @@ export default function UploadBanner({
       reader.addEventListener('load', () =>
         setImgSrc(reader.result?.toString() || '')
       )
+      setType(file.type)
+      setName(file.name)
       reader.readAsDataURL(file)
     }
   }
@@ -78,11 +82,11 @@ export default function UploadBanner({
   }
 
   async function onUploadCropClick() {
-    const blob = await createBlob(imgRef, previewCanvasRef, completedCrop)
+    const blob = await createBlob(imgRef, previewCanvasRef, completedCrop, type)
 
     // Upload the blob to your server or storage service
     const formData = new FormData()
-    formData.append('file', blob, 'image.png')
+    formData.append('file', blob, name || 'Unnamed')
 
     try {
       const file = formData.get('file') as File
