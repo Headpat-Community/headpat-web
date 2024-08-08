@@ -25,13 +25,17 @@ export async function getCroppedImageBlob(
   canvas: HTMLCanvasElement
 ): Promise<Blob> {
   return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => {
-      if (blob) {
-        resolve(blob)
-      } else {
-        reject(new Error('Canvas is empty'))
-      }
-    }, 'image/png')
+    canvas.toBlob(
+      (blob) => {
+        if (blob) {
+          resolve(blob)
+        } else {
+          reject(new Error('Canvas is empty'))
+        }
+      },
+      'image/png',
+      0.5
+    )
   })
 }
 

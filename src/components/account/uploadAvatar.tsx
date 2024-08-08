@@ -29,6 +29,7 @@ import {
 } from '@/components/gallery/upload/uploadHelper'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { unstable_noStore } from 'next/cache'
+import { ID } from 'node-appwrite'
 
 export default function UploadAvatar({
   isUploading,
@@ -104,21 +105,16 @@ export default function UploadAvatar({
       }
 
       // Upload the new avatar
-      const fileData = storage.createFile(
-        'avatars',
-        `${avatarDocument.$id}`,
-        file
-      )
+      const fileData = storage.createFile('avatars', ID.unique(), file)
 
       fileData.then(
-        function (response) {
+        async function (response) {
           // Update the user's avatarId
-          databases.updateDocument('hp_db', 'userdata', userId, {
+          await databases.updateDocument('hp_db', 'userdata', userId, {
             avatarId: response.$id,
           })
 
           toast.success('Your avatar has been uploaded successfully.')
-          setImgSrc(getAvatarImageUrl(response.$id)) // Update the image source
         },
         function (error) {
           if (error.type === 'storage_file_empty') {
@@ -175,7 +171,7 @@ export default function UploadAvatar({
   const getAvatarImageUrl = (galleryId: string) => {
     if (!galleryId) return
     const imageId = storage.getFileView('avatars', `${galleryId}`)
-    return imageId.href
+    return `${imageId.href}`
   }
 
   return (
