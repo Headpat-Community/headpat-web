@@ -256,6 +256,19 @@ export default function UploadAvatar({
                     />
                   </ReactCrop>
                 )}
+                {!!completedCrop && (
+                  <div className={'hidden'}>
+                    <canvas
+                      ref={previewCanvasRef}
+                      style={{
+                        border: '1px solid black',
+                        objectFit: 'contain',
+                        width: completedCrop.width,
+                        height: completedCrop.height,
+                      }}
+                    />
+                  </div>
+                )}
               </div>
             </ScrollArea>
             <AlertDialogFooter>

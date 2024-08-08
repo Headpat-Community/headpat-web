@@ -251,6 +251,19 @@ export default function UploadBanner({
                 />
               </ReactCrop>
             )}
+            {!!completedCrop && (
+              <div className={'hidden'}>
+                <canvas
+                  ref={previewCanvasRef}
+                  style={{
+                    border: '1px solid black',
+                    objectFit: 'contain',
+                    width: completedCrop.width,
+                    height: completedCrop.height,
+                  }}
+                />
+              </div>
+            )}
             <AlertDialogFooter>
               <AlertDialogCancel
                 onClick={() => {
