@@ -192,7 +192,7 @@ export default function UploadAvatar({
             alt="Avatar"
             className="h-24 w-24 flex-none rounded-lg object-cover"
           />
-          <div>
+          <div className={'space-y-2'}>
             <Input
               ref={fileInputRef}
               accept="image/*"
@@ -204,14 +204,6 @@ export default function UploadAvatar({
               <p className="text-xs text-gray-900 dark:text-gray-400">
                 JPG, PNG or WebP. 1MB max.
               </p>
-              <Button
-                type="button"
-                onClick={onUploadCropClick}
-                disabled={isUploading}
-                className={'mt-2'}
-              >
-                Submit
-              </Button>
             </div>
             <p className="text-xs text-gray-900 dark:text-gray-400">
               512x512 resolution recommended.
