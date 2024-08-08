@@ -223,7 +223,7 @@ export default function UploadAvatar({
       <div className={'flex'}>
         <AlertDialog onOpenChange={(open) => setOpen(open)} open={open}>
           <AlertDialogContent className={'h-full lg:h-auto'}>
-            <ScrollArea className={'h-[400px] lg:h-[700px]'}>
+            <ScrollArea className={'h-[500px] lg:h-[700px]'}>
               <AlertDialogHeader>
                 <AlertDialogTitle>
                   Welcome to the custom crop tool
