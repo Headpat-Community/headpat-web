@@ -28,6 +28,7 @@ import {
   createBlob,
 } from '@/components/gallery/upload/uploadHelper'
 import { unstable_noStore } from 'next/cache'
+import { ID } from 'node-appwrite'
 
 export default function UploadBanner({
   isUploading,
@@ -107,11 +108,7 @@ export default function UploadBanner({
       }
 
       // Upload the new banner
-      const fileData = storage.createFile(
-        'banners',
-        `${bannerDocument.$id}`,
-        file
-      )
+      const fileData = storage.createFile('banners', ID.unique(), file)
 
       fileData.then(
         function (response) {
