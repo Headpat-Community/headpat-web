@@ -368,6 +368,45 @@ export default function GeneralAccountView({
             </div>
           </form>
         </div>
+
+        <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+          <div>
+            <h2 className="leading- text-base font-semibold">Delete Account</h2>
+            <p className="mt-1 text-sm leading-6 text-gray-400">
+              Warning: This action cannot be undone. This will permanently
+              delete all your data, including images, comments, and profile
+              information. You will not be able to recover your account.
+            </p>
+          </div>
+
+          <form className="md:col-span-2" onSubmit={handlePasswordReset}>
+            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+              <div className="col-span-full">
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button type={'button'} variant={'destructive'}>
+                      Delete Account
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      all your data, including images, comments, and profile
+                      information. You will not be able to recover your account.
+                    </AlertDialogDescription>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction>Delete Account</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </>
   )

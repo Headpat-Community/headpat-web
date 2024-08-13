@@ -1,5 +1,6 @@
 'use client'
 import {
+  BadgeHelpIcon,
   BellIcon,
   CalendarIcon,
   CircleUserIcon,
@@ -93,6 +94,13 @@ export const Nav3 = (translations: any) => [
     icon: FileCheckIcon,
     variant: 'ghost' as const,
     href: `/legal`,
+  },
+  {
+    title: 'Support',
+    label: '',
+    icon: BadgeHelpIcon,
+    variant: 'ghost' as const,
+    href: `/support`,
   },
 ]
 

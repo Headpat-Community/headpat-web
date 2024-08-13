@@ -51,9 +51,7 @@ export default function LegalPage() {
                         aria-hidden="true"
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                        <span className="truncate font-medium">
-                          Impressum.notapdf
-                        </span>
+                        <span className="truncate font-medium">Impressum</span>
                       </div>
                     </div>
                     <div className="ml-4 flex-shrink-0">
@@ -61,7 +59,7 @@ export default function LegalPage() {
                         href={'/legal/impressum'}
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
-                        Go to page
+                        View
                       </Link>
                     </div>
                   </li>
@@ -73,11 +71,9 @@ export default function LegalPage() {
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
                         <span className="truncate font-medium">
-                          termsofservice.pdf
+                          Terms of Service
                         </span>
-                        <span className="flex-shrink-0 text-gray-400">
-                          243 kb
-                        </span>
+                        <span className="flex-shrink-0 text-gray-400">PDF</span>
                       </div>
                     </div>
                     <div className="ml-4 flex-shrink-0">
@@ -86,7 +82,7 @@ export default function LegalPage() {
                         href={'/legal/termsofservice.pdf'}
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
-                        Download
+                        View
                       </Link>
                     </div>
                   </li>
@@ -98,20 +94,17 @@ export default function LegalPage() {
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
                         <span className="truncate font-medium">
-                          privacypolicy.pdf
-                        </span>
-                        <span className="flex-shrink-0 text-gray-400">
-                          265 kb
+                          Privacy Policy
                         </span>
                       </div>
                     </div>
                     <div className="ml-4 flex-shrink-0">
                       <Link
                         // @ts-ignore
-                        href={'/legal/privacypolicy.pdf'}
+                        href={'/legal/privacypolicy'}
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
-                        Download
+                        View
                       </Link>
                     </div>
                   </li>
@@ -122,12 +115,8 @@ export default function LegalPage() {
                         aria-hidden="true"
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                        <span className="truncate font-medium">
-                          disclaimer.pdf
-                        </span>
-                        <span className="flex-shrink-0 text-gray-400">
-                          40 kb
-                        </span>
+                        <span className="truncate font-medium">Disclaimer</span>
+                        <span className="flex-shrink-0 text-gray-400">PDF</span>
                       </div>
                     </div>
                     <div className="ml-4 flex-shrink-0">
@@ -136,7 +125,7 @@ export default function LegalPage() {
                         href={'/legal/disclaimer.pdf'}
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
-                        Download
+                        View
                       </Link>
                     </div>
                   </li>
@@ -148,11 +137,9 @@ export default function LegalPage() {
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
                         <span className="truncate font-medium">
-                          acceptableuse.pdf
+                          Acceptable Use
                         </span>
-                        <span className="flex-shrink-0 text-gray-400">
-                          99 kb
-                        </span>
+                        <span className="flex-shrink-0 text-gray-400">PDF</span>
                       </div>
                     </div>
                     <div className="ml-4 flex-shrink-0">
@@ -161,7 +148,7 @@ export default function LegalPage() {
                         href={'/legal/acceptableuse.pdf'}
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
-                        Download
+                        View
                       </Link>
                     </div>
                   </li>
@@ -173,10 +160,10 @@ export default function LegalPage() {
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
                         <span className="truncate font-medium">
-                          returnpolicy.pdf
+                          Return Policy
                         </span>
                         <span className="flex-shrink-0 text-gray-400">
-                          27 kb
+                          PDF
                         </span>
                       </div>
                     </div>
@@ -185,7 +172,7 @@ export default function LegalPage() {
                         href="/legal/returnpolicy.pdf"
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
-                        Download
+                        View
                       </Link>
                     </div>
                   </li>*/}
@@ -197,11 +184,9 @@ export default function LegalPage() {
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
                         <span className="truncate font-medium">
-                          shippingpolicy.pdf
+                          Shipping Policy
                         </span>
-                        <span className="flex-shrink-0 text-gray-400">
-                          27 kb
-                        </span>
+                        <span className="flex-shrink-0 text-gray-400">PDF</span>
                       </div>
                     </div>
                     <div className="ml-4 flex-shrink-0">
@@ -210,7 +195,7 @@ export default function LegalPage() {
                         href={'/legal/returnpolicy.pdf'}
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
-                        Download
+                        View
                       </Link>
                     </div>
                   </li>
