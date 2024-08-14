@@ -2,6 +2,7 @@
 import { createSessionServerClient } from '@/app/appwrite-session'
 import { AuthenticationFactor, ExecutionMethod, Models } from 'node-appwrite'
 import { getMfaFactors } from '@/utils/server-api/account/user'
+import { redirect } from '@/navigation'
 
 export async function changeEmail(email: string, password: string) {
   try {
@@ -65,20 +66,22 @@ export async function updateMfaChallenge(challengeId: string, otp: string) {
 
 export async function deleteAccount() {
   try {
+    console.log('deleteAccount 1')
     const { account, functions } = await createSessionServerClient()
-    const accountData = await account.get()
-    const data = {
-      userId: accountData.$id,
-    }
+    console.log('deleteAccount 2')
     await functions.createExecution(
       '65e2126d9e431eb3c473',
       '',
       true,
-      '/deleteAccount',
+      'deleteAccount',
       ExecutionMethod.POST
     )
-    return await account.deleteSessions()
+    console.log('deleteAccount 3')
+    await account.deleteSessions()
+    console.log('deleteAccount 4')
+    return redirect('/')
   } catch (error) {
+    console.log(error.status + ' ' + error.message)
     return JSON.parse(JSON.stringify(error))
   }
 }
