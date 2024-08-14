@@ -22,6 +22,7 @@ export const pathnames = {
   '/events/[eventId]': '/events/[eventId]',
   '/support': '/support',
   '/legal': '/legal',
+  '/support/': '/support/',
   '/legal/impressum': '/legal/impressum',
   '/legal/privacypolicy': '/legal/privacypolicy',
   '/legal/termsofservice': '/legal/termsofservice',
