@@ -66,19 +66,15 @@ export async function updateMfaChallenge(challengeId: string, otp: string) {
 
 export async function deleteAccount() {
   try {
-    console.log('deleteAccount 1')
     const { account, functions } = await createSessionServerClient()
-    console.log('deleteAccount 2')
     await functions.createExecution(
       '65e2126d9e431eb3c473',
       '',
       true,
-      'deleteAccount',
+      '/deleteAccount',
       ExecutionMethod.POST
     )
-    console.log('deleteAccount 3')
     await account.deleteSessions()
-    console.log('deleteAccount 4')
     return redirect('/')
   } catch (error) {
     console.log(error.status + ' ' + error.message)
