@@ -198,29 +198,34 @@ export default function Login() {
                         }
                       />
                     </div>
-                    <div className="space-y-2">
-                      <div className="flex items-center">
-                        <div className="space-y-2">
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="terms"
-                              required
-                              onCheckedChange={() =>
-                                setAcceptedTerms(!acceptedTerms)
-                              }
-                            />
-                            <Label className="leading-none" htmlFor="terms">
-                              I agree to the{' '}
-                              <Link className="underline" href="#">
-                                terms and conditions
-                              </Link>
-                              <span className="ml-1 text-red-500">*</span>
-                            </Label>
+                    {isRegistering && (
+                      <div className="space-y-2">
+                        <div className="flex items-center">
+                          <div className="space-y-2">
+                            <div className="flex items-center space-x-2">
+                              <Checkbox
+                                id="terms"
+                                required
+                                onCheckedChange={() =>
+                                  setAcceptedTerms(!acceptedTerms)
+                                }
+                              />
+                              <Label className="leading-none" htmlFor="terms">
+                                I agree to the{' '}
+                                <Link className="underline" href="#">
+                                  terms and conditions
+                                </Link>
+                                <span className="ml-1 text-red-500">*</span>
+                              </Label>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <Button disabled={!acceptedTerms} className="w-full">
+                    )}
+                    <Button
+                      disabled={isRegistering && !acceptedTerms}
+                      className="w-full"
+                    >
                       {isRegistering ? 'Register' : 'Login'}
                     </Button>
                   </div>

@@ -1,66 +1,52 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import {
-  nextIntroductionQuestion,
   pauseVoting,
-  previousIntroductionQuestion,
   updateMainSystem,
+  updateSystem,
 } from '@/app/[locale]/(admin)/d&d/actions'
 import { toast } from 'sonner'
 
 export function IntroductionClient() {
-  const pause = async () => {
+  const updateDocument = async (name: string) => {
     try {
-      const data = await pauseVoting('system')
-      if (data.paused) {
-        toast.success('Voten pausiert')
-      } else {
-        toast.success('Voten fortgesetzt')
-      }
+      await updateSystem(name)
+      toast.success(`Dokument ${name} aktualisiert`)
     } catch (error) {
-      toast.error('Fehler beim Pausieren des Votings')
-    }
-  }
-
-  const previous = async () => {
-    try {
-      const data = await previousIntroductionQuestion()
-      if (!data) {
-        toast.error('Sie sind bereits bei der ersten Frage')
-      } else {
-        toast.success('Frage zurückgesetzt')
-      }
-    } catch (error) {
-      toast.error(
-        'Fehler beim Zurücksetzen der Frage. War sie schon auf dem ersten?'
-      )
-    }
-  }
-
-  const next = async () => {
-    try {
-      const data = await nextIntroductionQuestion()
-      if (!data) {
-        toast.error('Sie sind bereits bei der letzten Frage')
-      } else {
-        toast.success('Frage weitergeschaltet')
-      }
-    } catch (error) {
-      toast.error('Fehler beim Weiterleiten der Frage')
+      toast.error('Fehler beim Aktualisieren')
     }
   }
 
   return (
     <>
-      <div className={'flex items-center justify-between'}>
-        <Button title={'Previous'} onClick={previous}>
-          Previous
-        </Button>
-        <Button title={'Pause'} variant={'destructive'} onClick={pause}>
+      <div className={'flex flex-col items-center space-y-6'}>
+        <div /> {/* This div is absolutely needed for padding lol */}
+        <Button variant={'destructive'} onClick={() => pauseVoting('system')}>
           Pause
         </Button>
-        <Button title={'Next'} onClick={next}>
-          Next
+        <Button onClick={() => updateDocument('66afd6270038b6fdd474')}>
+          1
+        </Button>
+        <Button onClick={() => updateDocument('66afec390030294adb8d')}>
+          2
+        </Button>
+        <Button onClick={() => updateDocument('66afec800031d08079e6')}>
+          3
+        </Button>
+        <Button onClick={() => updateDocument('66afecab0007938d9e70')}>
+          4
+        </Button>
+        <Button onClick={() => updateDocument('66afecc9001ce9ebe14c')}>
+          5
+        </Button>
+        <Button onClick={() => updateDocument('66afecf300078f65ef71')}>
+          6
+        </Button>
+        <Button onClick={() => updateDocument('66afed26002aa705859c')}>
+          7
+        </Button>
+        <Button onClick={() => updateDocument('66afed440007cf65ac46')}>
+          8
         </Button>
       </div>
     </>

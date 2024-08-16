@@ -5,8 +5,8 @@ import { RealtimeResponseEvent } from 'appwrite'
 import { Interactive } from '@/utils/types/models'
 import { client, databases } from '@/app/appwrite-client'
 import { Separator } from '@/components/ui/separator'
-import { Query } from 'node-appwrite'
-import { XSquareIcon } from 'lucide-react'
+import { XSquareIcon, CheckIcon } from 'lucide-react'
+import { chartConfig, DDChart } from '../main/chart'
 
 export default function VotingClient({
   questionId,
@@ -14,14 +14,14 @@ export default function VotingClient({
   votes,
   forwardedFor,
 }: {
-  questionId: string
+  questionId: string // Changed from number to string
   paused: boolean
   votes: Interactive.VotesAnswersType
   forwardedFor: string
 }) {
   const [votedQuestions, setVotedQuestions] = useState({})
   const [isPaused, setIsPaused] = useState(paused)
-  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(questionId)
+  const [selectedQuestionId, setSelectedQuestionId] = useState(questionId) // Changed from index to ID
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null)
   const [questions, setQuestions] = useState([])
   const [voteCounts, setVoteCounts] = useState({})
@@ -42,11 +42,11 @@ export default function VotingClient({
       'countedAnswers'
     )
     const newVoteCounts = response.documents.reduce((acc, doc) => {
-      const [questionIndex, optionIndex] = doc.$id.split('-').map(Number)
-      if (!acc[questionIndex]) {
-        acc[questionIndex] = {}
+      const [questionId, optionIndex] = doc.$id.split('_')
+      if (!acc[questionId]) {
+        acc[questionId] = {}
       }
-      acc[questionIndex][optionIndex] = doc.amount
+      acc[questionId][optionIndex] = doc.amount
       return acc
     }, {})
     setVoteCounts(newVoteCounts)
@@ -56,21 +56,19 @@ export default function VotingClient({
   useEffect(() => {
     loadVotedQuestions()
     loadVoteCounts().then()
-    databases
-      .listDocuments('interactive', 'questions', [Query.orderAsc('order')])
-      .then((response) => {
-        setQuestions(response.documents)
-      })
+    databases.listDocuments('interactive', 'questions').then((response) => {
+      setQuestions(response.documents)
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    if (votedQuestions[selectedQuestionIndex] !== undefined) {
-      setSelectedOptionIndex(votedQuestions[selectedQuestionIndex])
+    if (votedQuestions[selectedQuestionId] !== undefined) {
+      setSelectedOptionIndex(votedQuestions[selectedQuestionId])
     } else {
       setSelectedOptionIndex(null)
     }
-  }, [selectedQuestionIndex, votedQuestions])
+  }, [selectedQuestionId, votedQuestions])
 
   interface QuestionType extends RealtimeResponseEvent<any> {
     questionId: string
@@ -100,20 +98,18 @@ export default function VotingClient({
             'databases.interactive.collections.system.documents'
           )
         ) {
-          setSelectedQuestionIndex(response.payload.questionId)
+          setSelectedQuestionId(response.payload.questionId)
           setIsPaused(response.payload.paused)
         } else if (
           response.channels.includes(
             'databases.interactive.collections.countedAnswers.documents'
           )
         ) {
-          const [questionIndex, optionIndex] = response.payload.$id
-            .split('-')
-            .map(Number)
+          const [questionId, optionIndex] = response.payload.$id.split('_')
           setVoteCounts((prevState) => ({
             ...prevState,
-            [questionIndex]: {
-              ...prevState[questionIndex],
+            [questionId]: {
+              ...prevState[questionId],
               [optionIndex]: response.payload.amount,
             },
           }))
@@ -126,22 +122,9 @@ export default function VotingClient({
     return <div>Loading....</div>
   }
 
-  if (isPaused) {
-    return (
-      <div className="flex flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-md text-center">
-          <XSquareIcon className="mx-auto h-12 w-12" />
-          <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Voting is paused!
-          </h1>
-        </div>
-      </div>
-    )
-  }
-
-  function handleVote(questionIndex, optionIndex) {
+  function handleVote(questionId: string, optionIndex: number) {
     // Check if the user has already voted on this question
-    if (votedQuestions[questionIndex] !== undefined) {
+    if (votedQuestions[questionId] !== undefined) {
       alert('Du hast bereits abgestimmt für diese Frage!')
       return
     }
@@ -156,49 +139,78 @@ export default function VotingClient({
 
     // Update the state immediately
     setVotedQuestions((prevState) => {
-      return { ...prevState, [questionIndex]: optionIndex }
+      return { ...prevState, [questionId]: optionIndex }
     })
 
     // Update the selected option immediately
     setSelectedOptionIndex(optionIndex)
 
     // Then send the vote to the server
-    createVote(questionIndex, optionIndex).catch((error) => {
+    createVote(questionId, optionIndex).catch((error) => {
       console.error('Error creating vote:', error)
       // Revert the state if there was an error
       setVotedQuestions((prevState) => {
         const newState = { ...prevState }
-        delete newState[questionIndex]
+        delete newState[questionId]
         return newState
       })
       setSelectedOptionIndex(null)
     })
   }
 
+  const totalVotes = Object.entries(voteCounts[selectedQuestionId] || {}).map(
+    ([optionIndex, voteCount]) => ({
+      browser: `option${optionIndex}`,
+      visitors: voteCount,
+      fill: chartConfig[`option${optionIndex}`]?.color || 'var(--color-other)',
+    })
+  )
+
+  // Find the option with the most votes
+  const maxVoteCount = Math.max(
+    0,
+    ...Object.values(voteCounts[selectedQuestionId] || {}).map((value) =>
+      Number(value)
+    )
+  )
+  const maxVoteOptionIndex =
+    maxVoteCount > 0
+      ? Object.keys(voteCounts[selectedQuestionId] || {}).find(
+          (key) => voteCounts[selectedQuestionId][key] === maxVoteCount
+        )
+      : null
+
   return (
     <section className="w-full py-4">
       <div className="container grid gap-8 px-4 md:px-6">
-        {/*
-         {questions[selectedQuestionIndex]?.title && (
-         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-         {questions[selectedQuestionIndex]?.title}
-         </h2>
-         )}
-         */}
-        {questions[selectedQuestionIndex]?.questions?.map(
-          (option, optionIndex) => {
-            const voteCount =
-              voteCounts[selectedQuestionIndex]?.[optionIndex] || 0
+        {isPaused && (
+          <>
+            <div className="flex flex-col items-center justify-center bg-background px-4 py-6 sm:px-6 lg:px-8">
+              <div className="mx-auto max-w-md text-center">
+                <XSquareIcon className="mx-auto h-12 w-12" />
+                <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                  Voting is paused!
+                </h1>
+              </div>
+            </div>
+            <DDChart data={totalVotes} />
+          </>
+        )}
+        {questions
+          .find((q) => q.$id === selectedQuestionId)
+          ?.questions?.map((option, optionIndex) => {
+            const voteCount = voteCounts[selectedQuestionId]?.[optionIndex] || 0
             return (
               <button
                 key={option}
-                onClick={() => handleVote(selectedQuestionIndex, optionIndex)}
+                onClick={() => handleVote(selectedQuestionId, optionIndex)}
                 className={
                   selectedOptionIndex === optionIndex &&
-                  votedQuestions[selectedQuestionIndex] === optionIndex
+                  votedQuestions[selectedQuestionId] === optionIndex
                     ? 'bg-gray-500'
                     : ''
                 }
+                disabled={isPaused}
               >
                 <div className="rounded-lg border p-4 shadow-sm">
                   <div className="space-y-2">
@@ -209,6 +221,10 @@ export default function VotingClient({
                           __html: option || 'Nothing here yet!',
                         }}
                       />
+                      {isPaused &&
+                        optionIndex.toString() === maxVoteOptionIndex && (
+                          <CheckIcon className="h-6 w-6 text-green-500" />
+                        )}
                     </div>
                   </div>
                   <Separator className={'mt-4'} />
@@ -216,8 +232,7 @@ export default function VotingClient({
                 </div>
               </button>
             )
-          }
-        )}
+          })}
       </div>
     </section>
   )

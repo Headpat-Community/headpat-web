@@ -41,6 +41,13 @@ export async function nextIntroductionQuestion() {
   })
 }
 
+export async function updateSystem(name: string) {
+  const { databases } = await createAdminClient()
+  return await databases.updateDocument('interactive', 'system', 'main', {
+    questionId: name,
+  })
+}
+
 export async function updateMainSystem(name: string) {
   const { databases } = await createAdminClient()
   return await databases.updateDocument('interactive', 'system-main', 'main', {
