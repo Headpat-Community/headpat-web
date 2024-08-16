@@ -13,6 +13,7 @@ import {
   changePassword,
   changePreferences,
   changeProfileUrl,
+  deleteAccount,
 } from '@/utils/actions/account/account'
 import { Account, UserData } from '@/utils/types/models'
 import { useRouter } from '@/navigation'
@@ -148,6 +149,17 @@ export default function GeneralAccountView({
       toast('Cloud is newer than your local data. Please refresh.')
     } else {
       toast.success('Profile URL updated successfully.')
+    }
+  }
+
+  const deleteAccountButton = async () => {
+    try {
+      await deleteAccount()
+
+      toast.success('Account deleted successfully.')
+      router.push('/')
+    } catch (error) {
+      toast.error('Failed to delete account.')
     }
   }
 
@@ -399,7 +411,14 @@ export default function GeneralAccountView({
                     </AlertDialogDescription>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction>Delete Account</AlertDialogAction>
+                      <AlertDialogAction asChild>
+                        <Button
+                          variant={'destructive'}
+                          onClick={deleteAccountButton}
+                        >
+                          Delete Account
+                        </Button>
+                      </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>

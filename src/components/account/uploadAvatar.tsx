@@ -9,7 +9,6 @@ import 'react-image-crop/dist/ReactCrop.css'
 import { databases, storage } from '@/app/appwrite-client'
 import { toast } from 'sonner'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 
 import {
   AlertDialog,
