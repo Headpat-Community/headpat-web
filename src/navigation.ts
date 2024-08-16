@@ -15,6 +15,7 @@ export const pathnames = {
   '/gallery/[galleryId]': '/gallery/[galleryId]',
   '/community': '/community',
   '/community/[communityId]': '/community/[communityId]',
+  '/community/[communityId]/followers': '/community/[communityId]/followers',
   '/community/[communityId]/events': '/community/[communityId]/events',
   '/community/[communityId]/events/[eventId]':
     '/community/[communityId]/events/[eventId]',

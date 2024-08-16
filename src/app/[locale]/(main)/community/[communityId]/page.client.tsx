@@ -1,18 +1,42 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { addFollow } from '@/utils/actions/community/addFollow'
 import { removeFollow } from '@/utils/actions/community/removeFollow'
+import { getIsFollowingCommunity } from '@/utils/server-api/community-followers/getIsFollowingCommunity'
+import { getUser } from '@/utils/server-api/account/user'
+import { listDocuments } from '@/components/api/documents'
+import { Query } from 'node-appwrite'
+import { account } from '@/app/appwrite-client'
 
-export function FollowerButton({
-  displayName,
-  userId,
-  communityId,
-  isFollowing,
-}) {
+export function FollowerButton({ displayName, communityId }) {
   const { toast } = useToast()
-  const [isFollowingState, setIsFollowingState] = useState(isFollowing || false)
+  const [isFollowingState, setIsFollowingState] = useState(false)
+  const [userId, setUserId] = useState(null)
+
+  useEffect(() => {
+    const getUserId = async () => {
+      const data = await account.get()
+      setUserId(data.$id)
+    }
+    getUserId().then()
+  }, [])
+
+  useEffect(() => {
+    const isFollowing = async () => {
+      const data = await listDocuments(userId, communityId, [
+        Query.equal('userId', userId),
+        Query.equal('communityId', communityId),
+      ])
+      if (data.documents.length > 0) {
+        setIsFollowingState(true)
+      }
+    }
+    if (userId) {
+      isFollowing().then()
+    }
+  }, [communityId, userId])
 
   const handleFollow = async () => {
     const data = await addFollow(userId, communityId)

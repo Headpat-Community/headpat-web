@@ -162,7 +162,7 @@ export default function PageClient() {
   }
 
   return (
-    <div className={'h-screen w-full'}>
+    <div className={'h-[90vh] w-full'}>
       <Dialog
         open={modalUserOpen}
         onOpenChange={(open) => setModalUserOpen(open)}
