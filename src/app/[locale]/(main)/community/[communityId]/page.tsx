@@ -19,7 +19,6 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import ContextMenuProfile from '@/components/user/contextMenuProfile'
 import { FollowerButton } from '@/app/[locale]/(main)/community/[communityId]/page.client'
-import { getUser } from '@/utils/server-api/account/user'
 import { getCommunityFollowers } from '@/utils/server-api/community-followers/getCommunityFollowers'
 
 export const runtime = 'edge'
@@ -52,9 +51,6 @@ export default async function Page({
 }) {
   const community = await getCommunity(communityId)
   const followers = await getCommunityFollowers(communityId)
-  const user = await getUser()
-  const isFollowingResponse = await getCommunityFollowers(communityId)
-  const isFollowing = isFollowingResponse.documents.length > 0
 
   return (
     <PageLayout title={community.name || 'Community'}>
@@ -119,16 +115,19 @@ export default async function Page({
                     </CardTitle>
                     <FollowerButton
                       displayName={community.name}
-                      userId={user.$id}
                       communityId={communityId}
-                      isFollowing={isFollowing}
                     />
                   </div>
                   <div className={'grid grid-cols-2'}>
                     <CardDescription>{community.status}</CardDescription>
                   </div>
                   <CardDescription className={'flex pt-4 gap-4'}>
-                    <Link href={'#'}>
+                    <Link
+                      href={{
+                        pathname: '/community/[communityId]/followers',
+                        params: { communityId },
+                      }}
+                    >
                       <Button variant={'link'} className={'p-0'}>
                         <p>
                           <span className={'font-bold text-foreground'}>

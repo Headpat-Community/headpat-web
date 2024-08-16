@@ -56,6 +56,9 @@ export default function PageClient() {
                       className="object-cover rounded-md"
                       width={1000}
                       height={1000}
+                      draggable={false}
+                      loading="lazy"
+                      unoptimized={true}
                     />
                   ) : (
                     <div className="h-full w-full bg-gray-200 rounded-md flex items-center justify-center">

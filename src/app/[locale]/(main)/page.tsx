@@ -134,6 +134,7 @@ export default async function Home({
                   <Image
                     src="/images/phone.webp"
                     alt="Headpat Phone View"
+                    className={'rounded-[35px]'}
                     width={316}
                     height={684}
                   />
