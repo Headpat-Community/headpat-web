@@ -123,7 +123,9 @@ export default async function GalleryPage({ params: { galleryId } }) {
                       <img
                         src={getGalleryImageUrlPreview(
                           galleryDocuments.galleryId,
-                          'height=500&output=webp'
+                          galleryDocuments.mimeType.includes('gif')
+                            ? 'height=500&output=gif'
+                            : 'height=500&output=webp'
                         )}
                         alt={
                           galleryDocuments?.name || 'Headpat Community Image'
