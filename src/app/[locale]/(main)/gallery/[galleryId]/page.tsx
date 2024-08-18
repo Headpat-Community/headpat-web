@@ -5,7 +5,10 @@ import { Query } from '@/app/appwrite-server'
 import { getUser } from '@/utils/server-api/account/user'
 import { Gallery, UserData } from '@/utils/types/models'
 import { Link } from '@/navigation'
-import { getGalleryImageUrlView } from '@/components/getStorageItem'
+import {
+  getGalleryImageUrlPreview,
+  getGalleryImageUrlView,
+} from '@/components/getStorageItem'
 import sanitizeHtml from 'sanitize-html'
 
 export const metadata = {
@@ -118,7 +121,10 @@ export default async function GalleryPage({ params: { galleryId } }) {
                     ) : (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={getGalleryImageUrlView(galleryDocuments.galleryId)}
+                        src={getGalleryImageUrlPreview(
+                          galleryDocuments.galleryId,
+                          'height=500&output=webp'
+                        )}
                         alt={
                           galleryDocuments?.name || 'Headpat Community Image'
                         }
