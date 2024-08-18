@@ -14,7 +14,15 @@ export async function generateMetadata() {
       template: `%s - Headpat`,
     },
     description: 'Social network for headpawties',
-    keywords: ['headpat', 'community', 'social', 'network'],
+    keywords: [
+      'headpat',
+      'community',
+      'social',
+      'network',
+      'furry',
+      'fandom',
+      'headpawties',
+    ],
     icons: {
       icon: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
     },

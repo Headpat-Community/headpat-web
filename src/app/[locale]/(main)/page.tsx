@@ -111,7 +111,7 @@ export default async function Home({
                 role="img"
                 className="mx-auto w-[22.875rem] max-w-full drop-shadow-xl"
               >
-                <title>Headpat Phone Screenshot</title>
+                <title>Headpat App Screenshot</title>
                 <defs>
                   <clipPath id="2ade4387-9c63-4fc4-b754-10e687a0d332">
                     <rect width={316} height={684} rx={36} />
@@ -133,7 +133,7 @@ export default async function Home({
                 >
                   <Image
                     src="/images/phone.webp"
-                    alt="Headpat Phone View"
+                    alt="Headpat App View"
                     className={'rounded-[35px]'}
                     width={316}
                     height={684}

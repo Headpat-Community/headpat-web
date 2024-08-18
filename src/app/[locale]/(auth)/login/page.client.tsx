@@ -296,6 +296,7 @@ export default function Login() {
 
                 <form action={signInWithMicrosoft}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#01A6F0] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={'/logos/Microsoft_logo.svg.png'}
                       alt={'Microsoft'}

@@ -3,11 +3,43 @@ import { getUser } from '@/utils/server-api/account/user'
 import PageLayout from '@/components/pageLayout'
 import { Link } from '@/navigation'
 import { Button } from '@/components/ui/button'
+import { getTranslations } from 'next-intl/server'
 
-export const metadata = {
-  title: 'Gallery',
-  description:
-    'The gallery page is where you can see all the images that have been uploaded to the site.',
+export async function generateMetadata({ params: { locale } }) {
+  const meta = await getTranslations({ locale, namespace: 'GalleryMetadata' })
+
+  return {
+    title: {
+      default: meta('title'),
+      template: `%s - ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+    },
+    description: meta('description'),
+    keywords: [
+      'headpat',
+      'community',
+      'social',
+      'network',
+      'gallery',
+      'images',
+      'furry',
+    ],
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/gallery`,
+      languages: {
+        en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/gallery`,
+        de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/gallery`,
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/gallery`,
+      },
+    },
+    openGraph: {
+      title: meta('title'),
+      description: meta('description'),
+      siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
+      locale: locale,
+      type: 'website',
+    },
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+  }
 }
 
 export const runtime = 'edge'
