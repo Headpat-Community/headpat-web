@@ -27,6 +27,10 @@
     "frontpage": "Profiel",
     "socials": "Socials"
   },
+  "MainMetadata": {
+    "title": "Headpat Community",
+    "description": "De Headpat Community is een online gemeenschap voor sociale media. We bieden onze leden vrijwillig een platform om te verbinden, uit te wisselen en zich uit te drukken."
+  },
   "AccountMetadata": {
     "title": "Account",
     "description": "Op de accountpagina kun je je accountinstellingen beheren."

@@ -4,16 +4,19 @@ import { ThemeProvider } from './providers'
 import { Toaster } from '@/components/ui/toaster'
 import { Toaster as SonnerToaster } from '@/components/ui/sonner'
 import { cn } from '@/lib/utils'
+import { getTranslations } from 'next-intl/server'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export async function generateMetadata() {
+export async function generateMetadata({ params: { locale } }) {
+  const meta = await getTranslations({ locale, namespace: 'MainMetadata' })
+
   return {
     title: {
-      default: 'Headpat Community',
+      default: meta('title'),
       template: `%s - Headpat`,
     },
-    description: 'Social network for headpawties',
+    description: meta('description'),
     keywords: [
       'headpat',
       'community',
@@ -22,15 +25,17 @@ export async function generateMetadata() {
       'furry',
       'fandom',
       'headpawties',
+      'gallery',
+      'location sharing',
     ],
     icons: {
       icon: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
     },
     openGraph: {
-      title: 'Headpat Community',
-      description: 'Social network for headpawties',
-      siteName: 'Headpat',
+      title: meta('title'),
+      description: meta('description'),
       images: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
+      locale: locale,
       type: 'website',
     },
     metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),

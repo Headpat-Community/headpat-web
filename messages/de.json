@@ -27,6 +27,10 @@
     "frontpage": "Profil",
     "socials": "Soziale Netzwerke"
   },
+  "MainMetadata": {
+    "title": "Headpat Community",
+    "description": "Die Headpat Community ist eine Online-Community für soziale Medien. Wir bieten unseren Mitgliedern freiwillig eine Plattform zum Verbinden, Austauschen und Ausdrücken an."
+  },
   "AccountMetadata": {
     "title": "Konto",
     "description": "Auf der Kontoseite können Sie Ihre Kontoeinstellungen verwalten."
