@@ -27,6 +27,10 @@
     "frontpage": "Profile",
     "socials": "Socials"
   },
+  "MainMetadata": {
+    "title": "Headpat Community",
+    "description": "The Headpat Community is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing."
+  },
   "AccountMetadata": {
     "title": "Account",
     "description": "The account page is where you can manage your account settings."

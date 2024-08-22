@@ -13,7 +13,8 @@ export async function generateMetadata() {
       default: 'Headpat Community',
       template: `%s - Headpat`,
     },
-    description: 'Social network for headpawties',
+    description:
+      'The Headpat Community is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
     keywords: [
       'headpat',
       'community',
@@ -22,14 +23,16 @@ export async function generateMetadata() {
       'furry',
       'fandom',
       'headpawties',
+      'gallery',
+      'location sharing',
     ],
     icons: {
       icon: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
     },
     openGraph: {
       title: 'Headpat Community',
-      description: 'Social network for headpawties',
-      siteName: 'Headpat',
+      description:
+        'The Headpat Community is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
       images: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
       type: 'website',
     },
