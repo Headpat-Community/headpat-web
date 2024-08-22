@@ -78,13 +78,13 @@ export default async function UserProfile({ params: { profileUrl } }) {
     [Query.equal('profileUrl', profileUrl)]
   )
   const userData = userDataResponse.documents[0]
-  const followers = await getFollowers(userData.$id)
-  const following = await getFollowing(userData.$id)
+  const followers = await getFollowers(userData.$id, 0, 5000000)
+  const following = await getFollowing(userData.$id, 0, 5000000)
   const isFollowingResponse = await getIsFollowing(account.$id, userData.$id)
   const isFollowing = isFollowingResponse?.documents?.length > 0 || false
 
-  const totalFollowers = followers?.documents?.length
-  const totalFollowing = following?.documents?.length
+  const totalFollowers: number = followers?.length
+  const totalFollowing: number = following?.length
 
   const formatDate = (date: Date) =>
     date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')

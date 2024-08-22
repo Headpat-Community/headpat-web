@@ -17,9 +17,14 @@ import PageLayout from '@/components/pageLayout'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-export default function ClientPage() {
+export default function ClientPage({
+  userData,
+}: {
+  userData: UserData.UserDataType
+}) {
   const [users, setUsers] = useState<UserData.UserDataDocumentsType[]>([])
   const [isFetching, setIsFetching] = useState<boolean>(true)
+  const user = userData.documents[0]
 
   const fetchUsers = useCallback(async () => {
     setIsFetching(true)
@@ -28,12 +33,12 @@ export default function ClientPage() {
         '65e2126d9e431eb3c473',
         '',
         false,
-        `/users?limit=250`, // You can specify a static limit here if desired
+        `/user/following?userId=${user.$id}&limit=250`, // You can specify a static limit here if desired
         ExecutionMethod.GET
       )
 
       const response = JSON.parse(data.responseBody)
-      setUsers(response.documents)
+      setUsers(response)
     } catch (error) {
       console.log(error)
       toast('Failed to fetch users. Please try again later.')
@@ -57,7 +62,7 @@ export default function ClientPage() {
 
   if (isFetching && users.length === 0) {
     return (
-      <PageLayout title={'Users'}>
+      <PageLayout title={`${user?.displayName}'s following`}>
         <div className={'flex flex-1 justify-center items-center h-full'}>
           <div className={'p-4 gap-6 text-center'}>
             <h1 className={'text-2xl font-semibold'}>Loading...</h1>
@@ -69,12 +74,13 @@ export default function ClientPage() {
 
   if (!isFetching && users.length === 0) {
     return (
-      <PageLayout title={'Users'}>
+      <PageLayout title={`${user?.displayName}'s following`}>
         <div className={'flex flex-1 justify-center items-center h-full'}>
           <div className={'p-4 gap-6 text-center'}>
-            <h1 className={'text-2xl font-semibold'}>No users!</h1>
+            <h1 className={'text-2xl font-semibold'}>So lonely..</h1>
             <p className={'text-muted-foreground'}>
-              There are no users to show at the moment.
+              {user?.displayName} is not following anyone at the moment. You
+              could blackmail them into following you. Just a thought.
             </p>
           </div>
         </div>
@@ -83,7 +89,7 @@ export default function ClientPage() {
   }
 
   return (
-    <PageLayout title={'Users'}>
+    <PageLayout title={`${user?.displayName}'s following`}>
       <div
         className={
           'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 3xl:grid-cols-8 5xl:grid-cols-10 gap-4 xl:gap-6 p-4 mx-auto'
