@@ -38,6 +38,7 @@ export const pathnames = {
   '/account/gallery': '/account/gallery',
   '/account/gallery/upload': '/account/gallery/upload',
   '/account/gallery/[galleryId]': '/account/gallery/[galleryId]',
+  '/profile': '/profile',
   '/user/[profileUrl]': '/user/[profileUrl]',
   '/user/[profileUrl]/followers': '/user/[profileUrl]/followers',
   '/user/[profileUrl]/following': '/user/[profileUrl]/following',
