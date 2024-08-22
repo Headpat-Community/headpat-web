@@ -139,15 +139,9 @@ export default function SidebarResizable({
                   >
                     {isCollapsed ? (
                       <Avatar className="size-10 rounded-xl">
-                        <AvatarImage
-                          className={'rounded-xl'}
-                          src={
-                            userImage ||
-                            '/public/logos/Headpat_Logo_web_64x64_240518-06.png'
-                          }
-                        />
+                        <AvatarImage className={'rounded-xl'} src={userImage} />
                         <AvatarFallback className={'rounded-xl'}>
-                          ER
+                          {userData.displayName.charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
                     ) : (
@@ -157,13 +151,10 @@ export default function SidebarResizable({
                             <Avatar className="size-10 rounded-xl">
                               <AvatarImage
                                 className={'rounded-xl'}
-                                src={
-                                  userImage ||
-                                  '/public/logos/Headpat_Logo_web_64x64_240518-06.png'
-                                }
+                                src={userImage}
                               />
                               <AvatarFallback className={'rounded-xl'}>
-                                ER
+                                {userData.displayName.charAt(0).toUpperCase()}
                               </AvatarFallback>
                             </Avatar>
                             <span className="min-w-0">

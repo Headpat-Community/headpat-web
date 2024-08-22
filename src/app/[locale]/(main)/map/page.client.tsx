@@ -213,7 +213,9 @@ export default function PageClient() {
               >
                 <Avatar>
                   <AvatarImage src={getUserAvatar(user?.userData?.avatarId)} />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarFallback>
+                    {user.displayName.charAt(0).toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
               </AdvancedMarker>
             )
