@@ -72,6 +72,7 @@ export default function PageClient() {
       )
 
       const promises = data.documents.map(async (doc) => {
+        if (!doc) return
         const userData: UserData.UserDataDocumentsType = await getDocument(
           'hp_db',
           'userdata',
@@ -180,9 +181,9 @@ export default function PageClient() {
         onOpenChange={(open) => setModalUserOpen(open)}
       >
         <DialogContent>
-          <DialogTitle>{currentUser.title}</DialogTitle>
-          <span>Status: {currentUser.status}</span>
-          <DialogDescription>{currentUser.description}</DialogDescription>
+          <DialogTitle>{currentUser?.title}</DialogTitle>
+          <span>Status: {currentUser?.status}</span>
+          <DialogDescription>{currentUser?.description}</DialogDescription>
         </DialogContent>
       </Dialog>
 
@@ -213,7 +214,6 @@ export default function PageClient() {
               <AdvancedMarker
                 key={index}
                 position={{ lat: user.lat, lng: user.long }}
-                title={'AdvancedMarker with custom html content.'}
                 onClick={() => (
                   setCurrentUser({
                     title: user.userData?.displayName,

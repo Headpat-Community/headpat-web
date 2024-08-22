@@ -10,12 +10,10 @@ import { unstable_noStore } from 'next/cache'
  * @example
  * const userData = await getUser()
  */
-export async function getUser(): Promise<Account.AccountPrefs> {
+export async function getUser(): Promise<Models.User<Account.AccountPrefs>> {
   unstable_noStore()
   const { account } = await createSessionServerClient()
-  return await account.get().catch((error) => {
-    return error
-  })
+  return await account.get()
 }
 
 /**

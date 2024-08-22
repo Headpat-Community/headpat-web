@@ -129,62 +129,80 @@ export default function SidebarResizable({
               </div>
             </ScrollArea>
             <div className={'mt-auto relative bottom-0 block'}>
-              <Separator />
-              <DropdownMenu>
-                <DropdownMenuTrigger className={'w-full focus:outline-0'}>
-                  <div
-                    className={
-                      'flex items-center justify-between my-4 mx-4 hover:bg-white/5 rounded-xl p-2'
-                    }
-                  >
-                    {isCollapsed ? (
-                      <Avatar className="size-10 rounded-xl">
-                        <AvatarImage className={'rounded-xl'} src={userImage} />
-                        <AvatarFallback className={'rounded-xl'}>
-                          {userData.displayName.charAt(0).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                    ) : (
-                      <>
-                        <div>
-                          <span className="flex min-w-0 items-center gap-3">
-                            <Avatar className="size-10 rounded-xl">
-                              <AvatarImage
-                                className={'rounded-xl'}
-                                src={userImage}
-                              />
-                              <AvatarFallback className={'rounded-xl'}>
-                                {userData.displayName.charAt(0).toUpperCase()}
-                              </AvatarFallback>
-                            </Avatar>
-                            <span className="min-w-0">
-                              <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">
-                                {userData?.displayName || 'Unknown'}
+              {accountData ? (
+                <>
+                  <Separator />
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className={'w-full focus:outline-0'}>
+                      <div
+                        className={
+                          'flex items-center justify-between my-4 mx-4 hover:bg-white/5 rounded-xl p-2'
+                        }
+                      >
+                        {isCollapsed ? (
+                          <Avatar className="size-10 rounded-xl">
+                            <AvatarImage
+                              className={'rounded-xl'}
+                              src={userImage}
+                            />
+                            <AvatarFallback className={'rounded-xl'}>
+                              {userData?.displayName?.charAt(0).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                        ) : (
+                          <>
+                            <div>
+                              <span className="flex min-w-0 items-center gap-3">
+                                <Avatar className="size-10 rounded-xl">
+                                  <AvatarImage
+                                    className={'rounded-xl'}
+                                    src={userImage}
+                                  />
+                                  <AvatarFallback className={'rounded-xl'}>
+                                    {userData?.displayName
+                                      ?.charAt(0)
+                                      .toUpperCase()}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <span className="min-w-0">
+                                  <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">
+                                    {userData?.displayName || 'Unknown'}
+                                  </span>
+                                </span>
                               </span>
-                            </span>
-                          </span>
-                        </div>
-                        <div>
-                          <ChevronUpIcon />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className={'w-24'}>
-                  <DropdownMenuItem onClick={() => router.push('/account')}>
-                    My Account
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => router.push('/profile')}>
-                    Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => router.push('/logout')}>
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                            </div>
+                            <div>
+                              <ChevronUpIcon />
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className={'w-24'}>
+                      <DropdownMenuItem onClick={() => router.push('/account')}>
+                        My Account
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => router.push('/profile')}>
+                        Profile
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => router.push('/logout')}>
+                        Logout
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
+              ) : (
+                <div>
+                  <Separator />
+                  <Nav
+                    isCollapsed={isCollapsed}
+                    links={NavFooter(accountData, translations)}
+                    translations={translations}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </ResizablePanel>

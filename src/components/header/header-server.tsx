@@ -19,16 +19,22 @@ export default async function HeaderServer({
   const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined
   const navCollapsedSize = 4
 
-  const accountData = await getUser()
-
   const getAvatar = (id: string) => {
     if (!id) return
 
     return `https://api.headpat.de/v1/storage/buckets/avatars/files/${id}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&width=250&height=250&quality=50`
   }
 
-  const userData = await getUserDataSingle(accountData.$id)
-  const userImage = getAvatar(userData.avatarId)
+  let accountData = null
+  let userData = null
+  let userImage = null
+  try {
+    accountData = await getUser()
+    userData = await getUserDataSingle(accountData.$id)
+    userImage = getAvatar(userData.avatarId)
+  } catch (error) {
+    // do nothing
+  }
 
   return (
     <>
