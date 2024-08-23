@@ -30,7 +30,7 @@ export default function ClientPage({
     setIsFetching(true)
     try {
       const data = await functions.createExecution(
-        '65e2126d9e431eb3c473',
+        'user-endpoints',
         '',
         false,
         `/user/following?userId=${user.$id}&limit=250`, // You can specify a static limit here if desired

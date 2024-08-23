@@ -15,7 +15,7 @@ export async function getFollowing(
 ): Promise<Followers.FollowerDocumentsType> {
   const { functions } = await createSessionServerClient()
   const data = await functions.createExecution(
-    '65e2126d9e431eb3c473',
+    'user-endpoints',
     '',
     false,
     `/user/following?userId=${userId}&limit=${limit}&offset=${offset}`,

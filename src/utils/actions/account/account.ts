@@ -68,7 +68,7 @@ export async function deleteAccount() {
   try {
     const { account, functions } = await createSessionServerClient()
     await functions.createExecution(
-      '65e2126d9e431eb3c473',
+      'user-endpoints',
       '',
       true,
       '/deleteAccount',
