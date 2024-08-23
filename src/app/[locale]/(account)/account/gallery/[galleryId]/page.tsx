@@ -4,6 +4,7 @@ import { createAdminClient } from '@/app/appwrite-session'
 import { Gallery } from '@/utils/types/models'
 import PageLayout from '@/components/pageLayout'
 import { getUser } from '@/utils/server-api/account/user'
+import { redirect } from '@/navigation'
 
 export const runtime = 'edge'
 
@@ -14,7 +15,13 @@ export const metadata = {
 export default async function AccountSingleGalleryPage({
   params: { galleryId },
 }) {
-  const userData = await getUser()
+  let userData = null
+  try {
+    userData = await getUser()
+  } catch (error) {
+    return redirect('/login')
+  }
+
   const userId = userData?.$id
 
   const { databases } = await createAdminClient()
@@ -31,7 +38,6 @@ export default async function AccountSingleGalleryPage({
     const galleryUserId = singleGallery?.userId
 
     if (!galleryUserId) return notFound() // Wait for userId to be available
-    if (!userId) return notFound() // Wait for userId to be available
 
     if (userId !== galleryUserId) {
       return notFound()

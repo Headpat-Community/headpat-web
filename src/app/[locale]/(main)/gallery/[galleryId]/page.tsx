@@ -21,8 +21,14 @@ export const runtime = 'edge'
 
 export default async function GalleryPage({ params: { galleryId } }) {
   const { databases } = await createSessionServerClient()
-  const userSelf = await getUser()
-  const enableNsfw = userSelf?.prefs?.nsfw || false
+  let userSelf = null
+  let enableNsfw = false
+  try {
+    userSelf = await getUser()
+    enableNsfw = userSelf?.prefs?.nsfw
+  } catch (e) {
+    // do nothing
+  }
 
   const gallery: Gallery.GalleryType = await databases.listDocuments(
     'hp_db',

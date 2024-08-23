@@ -6,9 +6,10 @@ import { redirect } from '@/navigation'
 export const runtime = 'edge'
 
 export default async function Page() {
-  const user = await getUser()
-
-  if (!user.$id) {
+  let user = null
+  try {
+    user = await getUser()
+  } catch (e) {
     return redirect('/login')
   }
 

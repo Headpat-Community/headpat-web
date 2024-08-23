@@ -14,8 +14,12 @@ export function FollowerButton({ displayName, communityId }) {
 
   useEffect(() => {
     const getUserId = async () => {
-      const data = await account.get()
-      setUserId(data.$id)
+      try {
+        const data = await account.get()
+        setUserId(data?.$id)
+      } catch (error) {
+        setUserId(null)
+      }
     }
     getUserId().then()
   }, [])

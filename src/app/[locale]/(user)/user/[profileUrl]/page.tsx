@@ -70,7 +70,12 @@ export async function generateMetadata({
 
 export default async function UserProfile({ params: { profileUrl } }) {
   const { databases } = await createSessionServerClient()
-  const account = await getUser()
+  let account = null
+  try {
+    account = await getUser()
+  } catch (error) {
+    // User is not logged in
+  }
 
   const userDataResponse: UserData.UserDataType = await databases.listDocuments(
     'hp_db',
@@ -80,7 +85,7 @@ export default async function UserProfile({ params: { profileUrl } }) {
   const userData = userDataResponse.documents[0]
   const followers = await getFollowers(userData.$id, 0, 5000000)
   const following = await getFollowing(userData.$id, 0, 5000000)
-  const isFollowingResponse = await getIsFollowing(account.$id, userData.$id)
+  const isFollowingResponse = await getIsFollowing(account?.$id, userData?.$id)
   const isFollowing = isFollowingResponse?.documents?.length > 0 || false
 
   const totalFollowers: number = followers?.length
@@ -211,20 +216,20 @@ export default async function UserProfile({ params: { profileUrl } }) {
                       {userData.displayName}
                     </CardTitle>
                     <FollowerButton
-                      userId={account.$id}
-                      displayName={userData.displayName}
+                      userId={account?.$id}
+                      displayName={userData?.displayName}
                       followerId={userData.$id}
                       isFollowing={isFollowing}
                     />
                   </div>
                   <div className={'grid grid-cols-2'}>
-                    <CardDescription>{userData.status}</CardDescription>
+                    <CardDescription>{userData?.status}</CardDescription>
                   </div>
                   <CardDescription className={'flex pt-4 gap-4'}>
                     <Link
                       href={{
                         pathname: '/user/[profileUrl]/following',
-                        params: { profileUrl: userData.profileUrl },
+                        params: { profileUrl: userData?.profileUrl },
                       }}
                     >
                       <Button variant={'link'} className={'p-0'}>
@@ -239,7 +244,7 @@ export default async function UserProfile({ params: { profileUrl } }) {
                     <Link
                       href={{
                         pathname: '/user/[profileUrl]/followers',
-                        params: { profileUrl: userData.profileUrl },
+                        params: { profileUrl: userData?.profileUrl },
                       }}
                     >
                       {' '}
@@ -257,11 +262,11 @@ export default async function UserProfile({ params: { profileUrl } }) {
                 <Separator className={'mb-6'} />
                 <CardContent>
                   <div className={'grid grid-cols-2 mx-auto gap-4'}>
-                    {userData.pronouns && (
+                    {userData?.pronouns && (
                       <>
                         <div className={'col-span-1'}>Pronouns</div>
                         <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
-                          {userData.pronouns}
+                          {userData?.pronouns}
                         </div>
                       </>
                     )}

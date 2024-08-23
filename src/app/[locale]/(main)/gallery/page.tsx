@@ -53,8 +53,13 @@ function UploadButton() {
 }
 
 export default async function Gallery() {
-  const accountData = await getUser()
-  const enableNsfw = accountData?.prefs?.nsfw
+  let enableNsfw = false
+  try {
+    const accountData = await getUser()
+    enableNsfw = accountData?.prefs?.nsfw
+  } catch (e) {
+    // do nothing
+  }
 
   return (
     <PageLayout title={'Gallery'} middleComponent={<UploadButton />}>
