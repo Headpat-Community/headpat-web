@@ -6,14 +6,33 @@ import { addFollow } from '@/utils/actions/community/addFollow'
 import { removeFollow } from '@/utils/actions/community/removeFollow'
 import { account } from '@/app/appwrite-client'
 import { getIsFollowingCommunity } from '@/utils/server-api/community-followers/getIsFollowingCommunity'
+import { getUser } from '@/utils/server-api/account/user'
 
-export function FollowerButton({ displayName, communityId }) {
+export function FollowerButton({ userSelf, displayName, communityId }) {
   const { toast } = useToast()
   const [isFollowingState, setIsFollowingState] = useState(false)
-  const [userId, setUserId] = useState(null)
+
+  const getUserId = async () => {
+    try {
+      const isFollowing = await getIsFollowingCommunity(
+        userSelf?.$id,
+        communityId
+      )
+      if (isFollowing.documents.length > 0) {
+        setIsFollowingState(true)
+      }
+    } catch (error) {
+      // Do nothing
+    }
+  }
+
+  useEffect(() => {
+    getUserId().then()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [communityId])
 
   const handleFollow = async () => {
-    const data = await addFollow(userId, communityId)
+    const data = await addFollow(userSelf?.$id, communityId)
     if (data.code === 401) {
       return toast({
         title: 'Error',
@@ -36,7 +55,7 @@ export function FollowerButton({ displayName, communityId }) {
   }
 
   const handleUnfollow = async () => {
-    const data = await removeFollow(userId, communityId)
+    const data = await removeFollow(userSelf?.$id, communityId)
     if (data.code === 401) {
       return toast({
         title: 'Error',

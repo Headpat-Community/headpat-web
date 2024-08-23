@@ -20,6 +20,7 @@ import { Separator } from '@/components/ui/separator'
 import ContextMenuProfile from '@/components/user/contextMenuProfile'
 import { FollowerButton } from '@/app/[locale]/(main)/community/[communityId]/page.client'
 import { getCommunityFollowers } from '@/utils/server-api/community-followers/getCommunityFollowers'
+import { getUser } from '@/utils/server-api/account/user'
 
 export const runtime = 'edge'
 
@@ -51,6 +52,12 @@ export default async function Page({
 }) {
   const community = await getCommunity(communityId)
   const followers = await getCommunityFollowers(communityId)
+  let userSelf = null
+  try {
+    userSelf = await getUser()
+  } catch (error) {
+    // Do nothing
+  }
 
   return (
     <PageLayout title={community.name || 'Community'}>
@@ -114,6 +121,7 @@ export default async function Page({
                       {community.name}
                     </CardTitle>
                     <FollowerButton
+                      userSelf={userSelf}
                       displayName={community.name}
                       communityId={communityId}
                     />
