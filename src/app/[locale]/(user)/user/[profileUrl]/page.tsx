@@ -306,6 +306,7 @@ const ListSocialItem = ({ IconComponent, userData, link }) => (
     <Link
       href={link}
       className="relative flex items-center space-x-4 py-4 px-2"
+      target={'_blank'}
     >
       <div className={'min-w-0 flex-auto'}>
         <div className="flex items-center gap-x-3">
