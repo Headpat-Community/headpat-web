@@ -1,7 +1,9 @@
 import { cookies } from 'next/headers'
 import SidebarResizable from '@/components/header/header-resizable'
 import MobileNav from '@/components/header/mobile-nav'
-import { createSessionServerClient } from '@/app/appwrite-session'
+import { getUserDataSingle } from '@/utils/server-api/user/getUserData'
+import { getUser } from '@/utils/server-api/account/user'
+import { storage } from '@/app/appwrite-server'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,11 +19,22 @@ export default async function HeaderServer({
   const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined
   const navCollapsedSize = 4
 
-  const { account } = await createSessionServerClient()
+  const getAvatar = (id: string) => {
+    if (!id) return
 
-  const accountData = await account.get().catch(() => {
-    return
-  })
+    return `https://api.headpat.de/v1/storage/buckets/avatars/files/${id}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&width=250&height=250&quality=50`
+  }
+
+  let accountData = null
+  let userData = null
+  let userImage = null
+  try {
+    accountData = await getUser()
+    userData = await getUserDataSingle(accountData.$id)
+    userImage = getAvatar(userData.avatarId)
+  } catch (error) {
+    // do nothing
+  }
 
   return (
     <>
@@ -29,6 +42,8 @@ export default async function HeaderServer({
         <div className="md:hidden">
           <MobileNav
             accountData={accountData || null}
+            userData={userData || null}
+            userImage={userImage}
             translations={translations}
           >
             {children}
@@ -40,6 +55,8 @@ export default async function HeaderServer({
             defaultCollapsed={defaultCollapsed}
             navCollapsedSize={navCollapsedSize}
             accountData={accountData || null}
+            userData={userData || null}
+            userImage={userImage}
             translations={translations}
           >
             {children}

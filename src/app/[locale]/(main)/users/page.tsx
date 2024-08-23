@@ -8,9 +8,5 @@ export default async function Users({
 }: {
   params: { locale: string }
 }) {
-  return (
-    <PageLayout title={'Users'}>
-      <PageClient />
-    </PageLayout>
-  )
+  return <PageClient />
 }

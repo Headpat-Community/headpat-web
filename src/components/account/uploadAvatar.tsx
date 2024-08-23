@@ -270,7 +270,10 @@ export default function UploadAvatar({
               >
                 Cancel
               </AlertDialogCancel>
-              <AlertDialogAction onClick={onUploadCropClick}>
+              <AlertDialogAction
+                onClick={onUploadCropClick}
+                disabled={isUploading}
+              >
                 Submit
               </AlertDialogAction>
             </AlertDialogFooter>

@@ -4,9 +4,8 @@ import { useToast } from '@/components/ui/use-toast'
 import { useEffect, useState } from 'react'
 import { addFollow } from '@/utils/actions/community/addFollow'
 import { removeFollow } from '@/utils/actions/community/removeFollow'
-import { listDocuments } from '@/components/api/documents'
-import { Query } from 'node-appwrite'
 import { account } from '@/app/appwrite-client'
+import { getIsFollowingCommunity } from '@/utils/server-api/community-followers/getIsFollowingCommunity'
 
 export function FollowerButton({ displayName, communityId }) {
   const { toast } = useToast()
@@ -23,10 +22,7 @@ export function FollowerButton({ displayName, communityId }) {
 
   useEffect(() => {
     const isFollowing = async () => {
-      const data = await listDocuments(userId, communityId, [
-        Query.equal('userId', userId),
-        Query.equal('communityId', communityId),
-      ])
+      const data = await getIsFollowingCommunity(userId, communityId)
       if (data.documents.length > 0) {
         setIsFollowingState(true)
       }
@@ -52,8 +48,8 @@ export function FollowerButton({ displayName, communityId }) {
       })
     } else {
       toast({
-        title: 'Follow added',
-        description: `You have followed ${displayName}`,
+        title: 'Joined community',
+        description: `You have joined ${displayName}`,
       })
       setIsFollowingState(true)
     }
@@ -75,8 +71,8 @@ export function FollowerButton({ displayName, communityId }) {
       })
     } else {
       toast({
-        title: 'Follow removed',
-        description: `You have unfollowed ${displayName}`,
+        title: 'Left community',
+        description: `You have left ${displayName}`,
       })
       setIsFollowingState(false)
     }
@@ -84,7 +80,7 @@ export function FollowerButton({ displayName, communityId }) {
 
   return (
     <Button onClick={isFollowingState ? handleUnfollow : handleFollow}>
-      {isFollowingState ? 'Unfollow' : 'Follow'}
+      {isFollowingState ? 'Leave' : 'Join'}
     </Button>
   )
 }

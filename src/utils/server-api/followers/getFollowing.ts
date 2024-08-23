@@ -1,25 +1,27 @@
 import { createSessionServerClient } from '@/app/appwrite-session'
 import { Followers } from '@/utils/types/models'
-import { Query } from 'node-appwrite'
+import { ExecutionMethod, Query } from 'node-appwrite'
 import { unstable_noStore } from 'next/cache'
 
 /**
- * This function is used to get the following users of a user.
- * @param {string} userId The user id.
- * @returns {Promise<Followers.FollowerDocumentsType>} The following users of the user.
+ * This function is used to get the followers of a user.
  * @example
- * const following = await getFollowing('user_id')
+ * const following = await getFollowing('user_id', 0, 20)
  */
 export async function getFollowing(
-  userId: string
-): Promise<Followers.FollowerType> {
-  unstable_noStore()
-  const { databases } = await createSessionServerClient()
-  return await databases
-    .listDocuments('hp_db', 'followers', [Query.equal('userId', userId)])
-    .catch((error) => {
-      return error
-    })
+  userId: string,
+  offset: number = 0,
+  limit: number = 20
+): Promise<Followers.FollowerDocumentsType> {
+  const { functions } = await createSessionServerClient()
+  const data = await functions.createExecution(
+    '65e2126d9e431eb3c473',
+    '',
+    false,
+    `/user/following?userId=${userId}&limit=${limit}&offset=${offset}`,
+    ExecutionMethod.GET
+  )
+  return JSON.parse(data.responseBody)
 }
 
 /**

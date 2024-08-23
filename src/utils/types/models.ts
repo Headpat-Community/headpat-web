@@ -1,9 +1,7 @@
 import { type AppwriteException, Models } from 'node-appwrite'
 
 export namespace Account {
-  export interface AccountType
-    extends Models.User<Models.Preferences>,
-      AppwriteException {}
+  export interface AccountType extends Models.User<Models.Preferences> {}
 
   /**
    * This data is returned from the API by calling their own account data.

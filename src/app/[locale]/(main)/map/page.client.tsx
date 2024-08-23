@@ -72,6 +72,7 @@ export default function PageClient() {
       )
 
       const promises = data.documents.map(async (doc) => {
+        if (!doc) return
         const userData: UserData.UserDataDocumentsType = await getDocument(
           'hp_db',
           'userdata',
@@ -112,6 +113,18 @@ export default function PageClient() {
 
         switch (eventType) {
           case 'update':
+            setFriendsLocations(
+              (prevLocations: Location.LocationDocumentsType[]) => {
+                return prevLocations.map((location) => {
+                  if (location.$id === updatedDocument.$id) {
+                    return updatedDocument
+                  } else {
+                    return location
+                  }
+                })
+              }
+            )
+            break
           case 'create':
             // Fetch userData for the updated or created document
             const userData: UserData.UserDataDocumentsType = await getDocument(
@@ -168,9 +181,9 @@ export default function PageClient() {
         onOpenChange={(open) => setModalUserOpen(open)}
       >
         <DialogContent>
-          <DialogTitle>{currentUser.title}</DialogTitle>
-          <span>Status: {currentUser.status}</span>
-          <DialogDescription>{currentUser.description}</DialogDescription>
+          <DialogTitle>{currentUser?.title}</DialogTitle>
+          <span>Status: {currentUser?.status}</span>
+          <DialogDescription>{currentUser?.description}</DialogDescription>
         </DialogContent>
       </Dialog>
 
@@ -201,7 +214,6 @@ export default function PageClient() {
               <AdvancedMarker
                 key={index}
                 position={{ lat: user.lat, lng: user.long }}
-                title={'AdvancedMarker with custom html content.'}
                 onClick={() => (
                   setCurrentUser({
                     title: user.userData?.displayName,
@@ -213,7 +225,9 @@ export default function PageClient() {
               >
                 <Avatar>
                   <AvatarImage src={getUserAvatar(user?.userData?.avatarId)} />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarFallback>
+                    {user?.displayName?.charAt(0)?.toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
               </AdvancedMarker>
             )
@@ -224,7 +238,6 @@ export default function PageClient() {
                 const [lat, lng] = coord.split(',').map(Number)
                 return { lat, lng }
               })
-              console.log(coords)
               return (
                 <Polygon
                   key={index}

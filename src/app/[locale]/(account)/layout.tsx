@@ -2,10 +2,10 @@ import { getUser } from '@/utils/server-api/account/user'
 import { redirect } from '@/navigation'
 
 export default async function Layout({ children }) {
-  const accountData = await getUser()
-  if (accountData.code === 401) {
-    redirect('/login')
-  } else {
+  try {
+    await getUser()
     return children
+  } catch (error) {
+    redirect('/login')
   }
 }

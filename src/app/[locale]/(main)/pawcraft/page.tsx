@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { Link } from '@/navigation'
 
 export const metadata = {
   title: 'Pawcraft',
