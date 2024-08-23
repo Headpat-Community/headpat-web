@@ -12,30 +12,6 @@ export function FollowerButton({ displayName, communityId }) {
   const [isFollowingState, setIsFollowingState] = useState(false)
   const [userId, setUserId] = useState(null)
 
-  useEffect(() => {
-    const getUserId = async () => {
-      try {
-        const data = await account.get()
-        setUserId(data?.$id)
-      } catch (error) {
-        setUserId(null)
-      }
-    }
-    getUserId().then()
-  }, [])
-
-  useEffect(() => {
-    const isFollowing = async () => {
-      const data = await getIsFollowingCommunity(userId, communityId)
-      if (data.documents.length > 0) {
-        setIsFollowingState(true)
-      }
-    }
-    if (userId) {
-      isFollowing().then()
-    }
-  }, [communityId, userId])
-
   const handleFollow = async () => {
     const data = await addFollow(userId, communityId)
     if (data.code === 401) {
