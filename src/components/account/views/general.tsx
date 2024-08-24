@@ -254,7 +254,7 @@ export default function GeneralAccountView({
                   <div className="mt-2">
                     <div className="flex rounded-md bg-background ring-1 ring-offset-background ring-inset focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-black/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 dark:ring-white/10">
                       <span className="flex select-none items-center pl-3 text-gray-400 sm:text-sm">
-                        headpat.de/user/
+                        headpat.place/user/
                       </span>
                       <Input
                         type="text"

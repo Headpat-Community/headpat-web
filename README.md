@@ -15,18 +15,16 @@ or `fix/bug-name`). This will help us to keep track of what's going on.
 First, install the dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### NOTE:
 
-Most pages require API Keys to work. If you require an API Key, please contact Faye.
+Some pages require API Keys to work. If you require an API Key, please contact Faye at faye@headpat.place.
 
 #### Then, run the development server:
 
 ```bash
-npm run dev
-# or
 pnpm dev
 ```
 

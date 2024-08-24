@@ -30,9 +30,9 @@ export default function LegalPage() {
                 <Link
                   className="text-indigo-600 hover:text-indigo-500"
                   // @ts-ignore
-                  href="mailto:help@headpat.de"
+                  href="mailto:help@headpat.place"
                 >
-                  help@headpat.de
+                  help@headpat.place
                 </Link>
                 .
               </dd>

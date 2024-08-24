@@ -21,19 +21,19 @@ export default function ImpressumPage() {
             Contact
           </h1>
           <br />
-          <p>Only on request: help@headpat.de</p>
+          <p>Only on request: help@headpat.place</p>
           <br />
           <p>
             <strong>Contact info</strong>
           </p>
-          <p>E-Mail: help@headpat.de</p>
-          <p>Webseite: https://headpat.de</p>
+          <p>E-Mail: help@headpat.place</p>
+          <p>Webseite: https://headpat.place</p>
           <br />
           <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
-            Online dispute reoslution
+            Online dispute resolution
           </h1>
           <p>
-            The European Comission provides a platform for online dispute
+            The European Commission provides a platform for online dispute
             resolution, available here:{' '}
             <Link
               className="text-indigo-600 hover:text-indigo-500"

@@ -22,7 +22,7 @@ export default async function HeaderServer({
   const getAvatar = (id: string) => {
     if (!id) return
 
-    return `https://api.headpat.de/v1/storage/buckets/avatars/files/${id}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&width=250&height=250&quality=50`
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${id}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&width=250&height=250&quality=50`
   }
 
   let accountData = null

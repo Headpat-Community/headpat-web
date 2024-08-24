@@ -171,7 +171,7 @@ export default function PageClient() {
 
   const getUserAvatar = (avatarId: string) => {
     if (!avatarId) return
-    return `https://api.headpat.de/v1/storage/buckets/avatars/files/${avatarId}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&width=100&height=100`
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${avatarId}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&width=100&height=100`
   }
 
   return (

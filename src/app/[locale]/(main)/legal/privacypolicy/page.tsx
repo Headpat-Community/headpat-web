@@ -20,8 +20,8 @@ export default function PrivacyPolicyPage() {
           <ul className="list-disc list-inside ml-4">
             <li>
               Visit our website at{' '}
-              <a href="https://headpat.de" className="text-blue-500">
-                https://headpat.de
+              <a href="https://headpat.place" className="text-blue-500">
+                https://headpat.place
               </a>
               , or any website of ours that links to this privacy notice
             </li>
@@ -39,8 +39,8 @@ export default function PrivacyPolicyPage() {
             understand your privacy rights and choices. If you do not agree with
             our policies and practices, please do not use our Services. If you
             still have any questions or concerns, please contact us at{' '}
-            <a href="mailto:help@headpat.de" className="text-blue-500">
-              help@headpat.de
+            <a href="mailto:help@headpat.place" className="text-blue-500">
+              help@headpat.place
             </a>
             .
           </p>
@@ -316,7 +316,7 @@ export default function PrivacyPolicyPage() {
           </p>
           <p className="mb-4">
             If you have questions or comments about your privacy rights, you may
-            email us at help@headpat.de.
+            email us at help@headpat.place.
           </p>
 
           <h2 className="text-2xl font-bold mb-4">

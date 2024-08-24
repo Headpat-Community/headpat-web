@@ -16,11 +16,19 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: '*.headpat.place',
+      },
+      {
+        protocol: 'https',
         hostname: '*.headpat.de',
       },
       {
         protocol: 'https',
         hostname: '*.headpat-de.pages.dev',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.headpat-place.pages.dev',
       },
       {
         protocol: 'https',
