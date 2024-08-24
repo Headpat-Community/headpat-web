@@ -45,7 +45,7 @@ export default function ClientPage({
     } finally {
       setIsFetching(false)
     }
-  }, [])
+  }, [user.$id])
 
   useEffect(() => {
     fetchUsers().then()
@@ -77,10 +77,10 @@ export default function ClientPage({
       <PageLayout title={`${user?.displayName}'s following`}>
         <div className={'flex flex-1 justify-center items-center h-full'}>
           <div className={'p-4 gap-6 text-center'}>
-            <h1 className={'text-2xl font-semibold'}>So lonely..</h1>
+            <h1 className={'text-2xl font-semibold'}>So quiet here...</h1>
             <p className={'text-muted-foreground'}>
-              {user?.displayName} is not following anyone at the moment. You
-              could blackmail them into following you. Just a thought.
+              {user?.displayName} hasn&apos;t followed anyone yet. Maybe they
+              are just waiting for the perfect moment!
             </p>
           </div>
         </div>

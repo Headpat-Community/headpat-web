@@ -1,4 +1,3 @@
-import PageLayout from '@/components/pageLayout'
 import PageClient from './page.client'
 
 export const runtime = 'edge'

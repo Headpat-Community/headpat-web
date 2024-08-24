@@ -45,7 +45,7 @@ export default function ClientPage({
     } finally {
       setIsFetching(false)
     }
-  }, [])
+  }, [user.$id])
 
   useEffect(() => {
     fetchUsers().then()

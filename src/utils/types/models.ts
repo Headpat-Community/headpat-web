@@ -1,4 +1,4 @@
-import { type AppwriteException, Models } from 'node-appwrite'
+import { Models } from 'node-appwrite'
 
 export namespace Account {
   export interface AccountType extends Models.User<Models.Preferences> {}

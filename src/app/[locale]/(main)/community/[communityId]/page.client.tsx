@@ -4,9 +4,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { useEffect, useState } from 'react'
 import { addFollow } from '@/utils/actions/community/addFollow'
 import { removeFollow } from '@/utils/actions/community/removeFollow'
-import { account } from '@/app/appwrite-client'
 import { getIsFollowingCommunity } from '@/utils/server-api/community-followers/getIsFollowingCommunity'
-import { getUser } from '@/utils/server-api/account/user'
 
 export function FollowerButton({ userSelf, displayName, communityId }) {
   const { toast } = useToast()

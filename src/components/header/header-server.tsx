@@ -3,7 +3,6 @@ import SidebarResizable from '@/components/header/header-resizable'
 import MobileNav from '@/components/header/mobile-nav'
 import { getUserDataSingle } from '@/utils/server-api/user/getUserData'
 import { getUser } from '@/utils/server-api/account/user'
-import { storage } from '@/app/appwrite-server'
 
 export const dynamic = 'force-dynamic'
 
