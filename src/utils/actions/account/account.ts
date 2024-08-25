@@ -72,12 +72,11 @@ export async function deleteAccount() {
       '',
       true,
       '/deleteAccount',
-      ExecutionMethod.POST
+      ExecutionMethod.DELETE
     )
     await account.deleteSessions()
     return redirect('/')
   } catch (error) {
-    console.log(error.status + ' ' + error.message)
     return JSON.parse(JSON.stringify(error))
   }
 }
