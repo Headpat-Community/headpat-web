@@ -1,74 +1,47 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import { useToast } from '@/components/ui/use-toast'
 import { addFollow } from '@/utils/actions/followers/addFollow'
 import { useState } from 'react'
 import { removeFollow } from '@/utils/actions/followers/removeFollow'
+import { toast } from 'sonner'
 
-export function FollowerButton({
-  displayName,
-  userId,
-  followerId,
-  isFollowing,
-}) {
-  const { toast } = useToast()
+export function FollowerButton({ displayName, followerId, isFollowing }) {
   const [isFollowingState, setIsFollowingState] = useState(isFollowing || false)
 
   const handleFollow = async () => {
-    const data = await addFollow(userId, followerId)
-    console.log(data)
-    if (data.code === 401) {
-      return toast({
-        title: 'Error',
-        description: 'You must be logged in to follow users',
-        variant: 'destructive',
-      })
-    } else if (data.code === 409) {
-      return toast({
-        title: 'Error',
-        description: 'You cannot follow yourself',
-        variant: 'destructive',
-      })
-    } else if (data.code === 404) {
-      return toast({
-        title: 'Error',
-        description: 'You are already following this user',
-        variant: 'destructive',
-      })
+    const data = await addFollow(followerId)
+
+    if (data.type === 'addfollow_missing_id') {
+      return toast.error('No user ID provided')
+    } else if (data.type === 'addfollow_unauthorized') {
+      return toast.error('You must be logged in to follow users')
+    } else if (data.type === 'addfollow_same_user') {
+      return toast.error('You cannot follow yourself')
+    } else if (data.type === 'addfollow_already_following') {
+      return toast.error('You are already following this user')
+    } else if (data.type === 'addfollow_delete_error') {
+      return toast.error('There was an error following this user.')
     } else {
-      toast({
-        title: 'Follow added',
-        description: `You have followed ${displayName}`,
-      })
+      toast.success(`You have followed ${displayName}`)
       setIsFollowingState(true)
     }
   }
 
   const handleUnfollow = async () => {
-    const data = await removeFollow(followerId, userId)
-    if (data.code === 401) {
-      return toast({
-        title: 'Error',
-        description: 'You must be logged in to unfollow users',
-        variant: 'destructive',
-      })
-    } else if (data.code === 409) {
-      return toast({
-        title: 'Error',
-        description: 'You cannot unfollow yourself',
-        variant: 'destructive',
-      })
-    } else if (data.code === 403) {
-      return toast({
-        title: 'Error',
-        description: 'You are not following this user',
-        variant: 'destructive',
-      })
+    const data = await removeFollow(followerId)
+
+    if (data.type === 'removefollow_missing_id') {
+      return toast.error('No user ID provided')
+    } else if (data.type === 'removefollow_unauthorized') {
+      return toast.error('You must be logged in to follow users')
+    } else if (data.type === 'removefollow_same_user') {
+      return toast.error('You cannot unfollow yourself')
+    } else if (data.type === 'removefollow_not_following') {
+      return toast.error('You are not following this user')
+    } else if (data.type === 'removefollow_delete_error') {
+      return toast.error('There was an error unfollowing this user.')
     } else {
-      toast({
-        title: 'Follow removed',
-        description: `You have unfollowed ${displayName}`,
-      })
+      toast.success(`You have unfollowed ${displayName}`)
       setIsFollowingState(false)
     }
   }

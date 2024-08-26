@@ -1,31 +1,16 @@
-'use server'
+'use client'
 
-import { createSessionServerClient } from '@/app/appwrite-session'
-import { ID } from 'node-appwrite'
-import { getUser } from '@/utils/server-api/account/user'
-import { getIsFollowing } from '@/utils/server-api/followers/getFollowing'
+import { functions } from '@/app/appwrite-client'
+import { ExecutionMethod } from 'node-appwrite'
 
-export async function addFollow(userId: string, followerId: string) {
-  try {
-    const { databases } = await createSessionServerClient()
-    const account = await getUser()
+export async function addFollow(followerId: string) {
+  const data = await functions.createExecution(
+    'user-endpoints',
+    '',
+    false,
+    `/user/follow?followerId=${followerId}`,
+    ExecutionMethod.POST
+  )
 
-    if (!account.$id) {
-      return { code: 401 }
-    }
-    if (account.$id === followerId) {
-      return { code: 409 }
-    }
-    const following = await getIsFollowing(userId, followerId)
-    if (following.documents.length > 0) {
-      return { code: 404 }
-    }
-
-    return await databases.createDocument('hp_db', 'followers', ID.unique(), {
-      userId: account.$id,
-      followerId: followerId,
-    })
-  } catch (error) {
-    return JSON.parse(JSON.stringify(error))
-  }
+  return JSON.parse(data.responseBody)
 }

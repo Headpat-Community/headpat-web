@@ -216,7 +216,6 @@ export default async function UserProfile({ params: { profileUrl } }) {
                       {userData.displayName}
                     </CardTitle>
                     <FollowerButton
-                      userId={account?.$id}
                       displayName={userData?.displayName}
                       followerId={userData.$id}
                       isFollowing={isFollowing}

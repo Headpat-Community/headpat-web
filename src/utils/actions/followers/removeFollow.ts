@@ -1,31 +1,16 @@
-'use server'
+'use client'
 
-import { createSessionServerClient } from '@/app/appwrite-session'
-import { getUser } from '@/utils/server-api/account/user'
-import { getIsFollowing } from '@/utils/server-api/followers/getFollowing'
+import { functions } from '@/app/appwrite-client'
+import { ExecutionMethod } from 'node-appwrite'
 
-export async function removeFollow(followerId: string, userId: string) {
-  try {
-    const { databases } = await createSessionServerClient()
-    const account = await getUser()
+export async function removeFollow(followerId: string) {
+  const data = await functions.createExecution(
+    'user-endpoints',
+    '',
+    false,
+    `/user/follow?followerId=${followerId}`,
+    ExecutionMethod.DELETE
+  )
 
-    if (!account.$id) {
-      return { code: 401 }
-    }
-    if (account.$id === followerId) {
-      return { code: 409 }
-    }
-    const following = await getIsFollowing(userId, followerId)
-    if (following.documents.length === 0) {
-      return { code: 403 }
-    }
-
-    return await databases.deleteDocument(
-      'hp_db',
-      'followers',
-      following.documents[0].$id
-    )
-  } catch (error) {
-    return JSON.parse(JSON.stringify(error))
-  }
+  return JSON.parse(data.responseBody)
 }
