@@ -31,7 +31,6 @@ import {
 import { Link } from '@/navigation'
 import { Button } from '@/components/ui/button'
 import ContextMenuProfile from '@/components/user/contextMenuProfile'
-import { getUser } from '@/utils/server-api/account/user'
 import {
   getAvatarImageUrlView,
   getBannerImageUrlPreview,
@@ -70,12 +69,6 @@ export async function generateMetadata({
 
 export default async function UserProfile({ params: { profileUrl } }) {
   const { databases } = await createSessionServerClient()
-  let account = null
-  try {
-    account = await getUser()
-  } catch (error) {
-    // User is not logged in
-  }
 
   const userDataResponse: UserData.UserDataType = await databases.listDocuments(
     'hp_db',
@@ -85,8 +78,7 @@ export default async function UserProfile({ params: { profileUrl } }) {
   const userData = userDataResponse.documents[0]
   const followers = await getFollowers(userData.$id, 0, 5000000)
   const following = await getFollowing(userData.$id, 0, 5000000)
-  const isFollowingResponse = await getIsFollowing(account?.$id, userData?.$id)
-  const isFollowing = isFollowingResponse?.documents?.length > 0 || false
+  const isFollowing = await getIsFollowing(userData?.$id)
 
   const totalFollowers: number = followers?.length
   const totalFollowing: number = following?.length
