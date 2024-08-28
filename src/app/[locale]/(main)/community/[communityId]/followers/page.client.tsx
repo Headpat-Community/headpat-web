@@ -1,4 +1,7 @@
 'use client'
+import { functions } from '@/app/appwrite-client'
+import { ExecutionMethod } from 'node-appwrite'
+import PageLayout from '@/components/pageLayout'
 import { UserData } from '@/utils/types/models'
 import { Card } from '@/components/ui/card'
 import {
@@ -11,52 +14,39 @@ import Image from 'next/image'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { CakeIcon, CalendarDays } from 'lucide-react'
-import { ExecutionMethod } from 'node-appwrite'
-import { functions } from '@/app/appwrite-client'
-import PageLayout from '@/components/pageLayout'
-import { useCallback, useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import { useEffect, useState } from 'react'
 
-export default function ClientPage() {
-  const [users, setUsers] = useState<UserData.UserDataDocumentsType[]>([])
+export default function PageClient({ communityId }: { communityId: string }) {
+  const [followers, setFollowers] =
+    useState<UserData.UserDataDocumentsType[]>(null)
   const [isFetching, setIsFetching] = useState<boolean>(true)
 
-  const fetchUsers = useCallback(async () => {
-    setIsFetching(true)
+  const fetchFollowers = async () => {
     try {
       const data = await functions.createExecution(
-        'user-endpoints',
+        'community-endpoints',
         '',
         false,
-        `/users?limit=250`, // You can specify a static limit here if desired
+        `/community/followers?communityId=${communityId}`, // You can specify a static limit here if desired
         ExecutionMethod.GET
       )
 
       const response = JSON.parse(data.responseBody)
-      setUsers(response.documents)
-    } catch (error) {
-      toast('Failed to fetch users. Please try again later.')
-    } finally {
+      setFollowers(response)
       setIsFetching(false)
+    } catch (error) {
+      // Do nothing
     }
-  }, [])
+  }
 
   useEffect(() => {
-    fetchUsers().then()
-  }, [fetchUsers])
+    fetchFollowers().then()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  const formatDate = (date: Date) =>
-    date
-      .toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-      })
-      .replace(/\//g, '.')
-
-  if (isFetching && users.length === 0) {
+  if (isFetching || !followers) {
     return (
-      <PageLayout title={'Users'}>
+      <PageLayout title={'Friends'}>
         <div className={'flex flex-1 justify-center items-center h-full'}>
           <div className={'p-4 gap-6 text-center'}>
             <h1 className={'text-2xl font-semibold'}>Loading...</h1>
@@ -66,14 +56,14 @@ export default function ClientPage() {
     )
   }
 
-  if (!isFetching && users.length === 0) {
+  if (followers.length === 0) {
     return (
-      <PageLayout title={'Users'}>
+      <PageLayout title={'Friends'}>
         <div className={'flex flex-1 justify-center items-center h-full'}>
           <div className={'p-4 gap-6 text-center'}>
-            <h1 className={'text-2xl font-semibold'}>No users!</h1>
+            <h1 className={'text-2xl font-semibold'}>No followers found</h1>
             <p className={'text-muted-foreground'}>
-              There are no users to show at the moment.
+              They don&apos;t have any followers yet.
             </p>
           </div>
         </div>
@@ -81,14 +71,17 @@ export default function ClientPage() {
     )
   }
 
+  const formatDate = (date: Date) =>
+    date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')
+
   return (
-    <PageLayout title={'Users'}>
+    <PageLayout title={'Followers'}>
       <div
         className={
           'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 3xl:grid-cols-8 5xl:grid-cols-10 gap-4 xl:gap-6 p-4 mx-auto'
         }
       >
-        {users.map((user) => {
+        {followers.map((user: UserData.UserDataDocumentsType) => {
           const today = formatDate(new Date())
           const birthday = user.birthday
             ? formatDate(new Date(user.birthday))

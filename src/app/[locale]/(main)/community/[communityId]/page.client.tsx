@@ -1,24 +1,27 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import { useToast } from '@/components/ui/use-toast'
 import { useEffect, useState } from 'react'
 import { addFollow } from '@/utils/actions/community/addFollow'
 import { removeFollow } from '@/utils/actions/community/removeFollow'
-import { getIsFollowingCommunity } from '@/utils/server-api/community-followers/getIsFollowingCommunity'
+import { functions } from '@/app/appwrite-client'
+import { ExecutionMethod } from 'node-appwrite'
+import { toast } from 'sonner'
 
 export function FollowerButton({ userSelf, displayName, communityId }) {
-  const { toast } = useToast()
   const [isFollowingState, setIsFollowingState] = useState(false)
 
   const getUserId = async () => {
     try {
-      const isFollowing = await getIsFollowingCommunity(
-        userSelf?.$id,
-        communityId
+      const data = await functions.createExecution(
+        'community-endpoints',
+        '',
+        false,
+        `/community/isFollowing?communityId=${communityId}`, // You can specify a static limit here if desired
+        ExecutionMethod.GET
       )
-      if (isFollowing.documents.length > 0) {
-        setIsFollowingState(true)
-      }
+
+      const response = JSON.parse(data.responseBody)
+      setIsFollowingState(response)
     } catch (error) {
       // Do nothing
     }
@@ -32,22 +35,11 @@ export function FollowerButton({ userSelf, displayName, communityId }) {
   const handleFollow = async () => {
     const data = await addFollow(userSelf?.$id, communityId)
     if (data.code === 401) {
-      return toast({
-        title: 'Error',
-        description: 'You must be logged in to follow a community',
-        variant: 'destructive',
-      })
+      return toast.error('You must be logged in to follow a community')
     } else if (data.code === 404) {
-      return toast({
-        title: 'Error',
-        description: 'You are already following this community',
-        variant: 'destructive',
-      })
+      return toast.error('You are already following this community')
     } else {
-      toast({
-        title: 'Joined community',
-        description: `You have joined ${displayName}`,
-      })
+      toast.success(`You have joined ${displayName}`)
       setIsFollowingState(true)
     }
   }
@@ -55,22 +47,11 @@ export function FollowerButton({ userSelf, displayName, communityId }) {
   const handleUnfollow = async () => {
     const data = await removeFollow(userSelf?.$id, communityId)
     if (data.code === 401) {
-      return toast({
-        title: 'Error',
-        description: 'You must be logged in to unfollow a community',
-        variant: 'destructive',
-      })
+      return toast.error('You must be logged in to unfollow a community')
     } else if (data.code === 403) {
-      return toast({
-        title: 'Error',
-        description: 'You are not following this user',
-        variant: 'destructive',
-      })
+      return toast.error('You are not following this user')
     } else {
-      toast({
-        title: 'Left community',
-        description: `You have left ${displayName}`,
-      })
+      toast.success(`You have left ${displayName}`)
       setIsFollowingState(false)
     }
   }
