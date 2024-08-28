@@ -17,9 +17,11 @@
     "logout": "Afmelden"
   },
   "HomePage": {
-    "clickToJoin": "Klik hier om mee te doen!",
+    "showoffwithconfidence": "Laat zien met vertrouwen",
+    "latestupdates": "Laatste updates",
+    "checkapp": "Bekijk onze app!",
     "description1": "De Headpat Community is een online gemeenschap voor sociale media. We bieden onze leden vrijwillig een platform om te verbinden, uit te wisselen en zich uit te drukken.",
-    "description2": "Dit omvat onze Discord-server, onze Telegram-groep, de Minecraft-server (Pawcraft), een online portfolio (headpat.place), een app, een planner voor sociale media-con, een VR-kaart, online en offline evenementen en nog veel meer!"
+    "description2": "Dit omvat onze Discord-server, onze Telegram-groep, de Minecraft-server (Pawcraft), een online portfolio (headpat.place), een app, een planner voor sociale media-con, online en offline evenementen en nog veel meer!"
   },
   "Account": {
     "accountsettings": "Accountinstellingen",

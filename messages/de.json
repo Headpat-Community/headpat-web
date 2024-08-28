@@ -17,9 +17,11 @@
     "logout": "Abmelden"
   },
   "HomePage": {
-    "clickToJoin": "Klicke hier, um beizutreten!",
+    "showoffwithconfidence": "Zeige mit Selbstvertrauen",
+    "latestupdates": "Neueste Updates",
+    "checkapp": "Schau dir unsere App an!",
     "description1": "Die Headpat Community ist eine Online-Community für soziale Medien. Wir bieten unseren Mitgliedern freiwillig eine Plattform zum Verbinden, Austauschen und Ausdrücken an.",
-    "description2": "Dazu gehören unter anderem unser Discord-Server, unsere Telegram-Gruppe, der Minecraft-Server (Pawcraft), ein Online-Portfolio (headpat.place), eine App, ein Social-Media-Con-Planer, eine VR-Map, Online- und Offline-Events und vieles mehr!"
+    "description2": "Dazu gehören unter anderem unser Discord-Server, unsere Telegram-Gruppe, der Minecraft-Server (Pawcraft), ein Online-Portfolio (headpat.place), eine App, ein Social-Media-Con-Planer, Online- und Offline-Events und vieles mehr!"
   },
   "Account": {
     "accountsettings": "Kontoeinstellungen",

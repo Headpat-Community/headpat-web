@@ -10,6 +10,7 @@ export const pathnames = {
   // single external path can be provided.
   '#': '#',
   '/': '/',
+  '/app': '/app',
   '/gallery': '/gallery',
   '/gallery/upload': '/gallery/upload',
   '/gallery/[galleryId]': '/gallery/[galleryId]',
