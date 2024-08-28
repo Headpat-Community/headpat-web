@@ -33,7 +33,12 @@ export default async function Home({
                   height={200}
                   patternUnits="userSpaceOnUse"
                 >
-                  <path d="M.5 200V.5H200" fill="none" stroke="#6b7280" />
+                  <path
+                    d="M.5 200V.5H200"
+                    fill="none"
+                    stroke="#6b7280"
+                    stroke-opacity="0.5"
+                  />
                 </pattern>
               </defs>
               <svg x="50%" y={-1} className="overflow-visible fill-gray-800/20">
