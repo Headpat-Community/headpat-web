@@ -37,7 +37,7 @@ export default async function Home({
                     d="M.5 200V.5H200"
                     fill="none"
                     stroke="#6b7280"
-                    stroke-opacity="0.5"
+                    strokeOpacity="0.5"
                   />
                 </pattern>
               </defs>

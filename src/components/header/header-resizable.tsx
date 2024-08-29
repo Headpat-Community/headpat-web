@@ -23,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Account, UserData } from '@/utils/types/models'
-import { useRouter } from '@/navigation'
+import { Link, useRouter } from '@/navigation'
 
 export default function SidebarResizable({
   defaultLayout = [265, 440, 655],
@@ -86,23 +86,25 @@ export default function SidebarResizable({
             )}
           >
             <div>
-              <div
-                className={cn(
-                  'flex h-[52px] items-center',
-                  isCollapsed ? 'h-[52px] justify-center' : 'px-2 ml-2'
-                )}
-              >
-                <Image
-                  src={'/logos/Headpat_Logo_web_128x128_240518-05.png'}
-                  width={32}
-                  height={32}
-                  alt={'Headpat logo'}
-                  className={'rounded-full'}
-                />
-                <span className={cn('ml-2', isCollapsed && 'hidden')}>
-                  Headpat
-                </span>
-              </div>
+              <Link href={'/'}>
+                <div
+                  className={cn(
+                    'flex h-[52px] items-center',
+                    isCollapsed ? 'h-[52px] justify-center' : 'px-2 ml-2'
+                  )}
+                >
+                  <Image
+                    src={'/logos/Headpat_Logo_web_128x128_240518-05.png'}
+                    width={32}
+                    height={32}
+                    alt={'Headpat logo'}
+                    className={'rounded-full'}
+                  />
+                  <span className={cn('ml-2', isCollapsed && 'hidden')}>
+                    Headpat
+                  </span>
+                </div>
+              </Link>
               <Separator />
             </div>
             <ScrollArea className={'h-full overflow-auto'}>
