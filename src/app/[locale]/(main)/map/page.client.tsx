@@ -7,7 +7,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogTitle,
 } from '@/components/ui/dialog'
 import { formatDate } from '@/components/calculateTimeLeft'
@@ -16,6 +15,7 @@ import { toast } from 'sonner'
 import { client, Query } from '@/app/appwrite-client'
 import { Polygon } from '@/components/map/polygon'
 import { Circle } from '@/components/map/circle'
+import sanitizeHtml from 'sanitize-html'
 
 export default function PageClient() {
   const [events, setEvents] = useState<Events.EventsType>(null)
@@ -174,6 +174,9 @@ export default function PageClient() {
     return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${avatarId}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&width=100&height=100`
   }
 
+  const sanitizedDescription = sanitizeHtml(currentEvent?.description)
+  const descriptionResult = sanitizedDescription.replace(/\n/g, '<br />')
+
   return (
     <div className={'h-[90vh] w-full'}>
       <Dialog
@@ -193,11 +196,15 @@ export default function PageClient() {
       >
         <DialogContent>
           <DialogTitle>{currentEvent?.title}</DialogTitle>
-          <DialogDescription>{currentEvent?.description}</DialogDescription>
-          <DialogFooter>
-            <div>Start: {formatDate(new Date(currentEvent?.date))}</div>
-            <div>Until: {formatDate(new Date(currentEvent?.dateUntil))}</div>
-          </DialogFooter>
+          <DialogDescription>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: descriptionResult || 'Nothing here yet!',
+              }}
+            />
+          </DialogDescription>
+          <div>Start: {formatDate(new Date(currentEvent?.date))}</div>
+          <div>Until: {formatDate(new Date(currentEvent?.dateUntil))}</div>
         </DialogContent>
       </Dialog>
 

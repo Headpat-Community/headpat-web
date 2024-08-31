@@ -25,7 +25,7 @@ export async function getIsFollowing(followerId: string) {
     '',
     false,
     `/user/isFollowing?followerId=${followerId}`,
-    ExecutionMethod.POST
+    ExecutionMethod.GET
   )
 
   return JSON.parse(data.responseBody)
