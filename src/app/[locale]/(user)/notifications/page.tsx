@@ -1,6 +1,5 @@
 import PageLayout from '@/components/pageLayout'
 import { getUserNotifications } from '@/utils/server-api/notifications/getUserNotifications'
-import { getUserDataSingle } from '@/utils/server-api/user/getUserData'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import { formatDate } from '@/components/calculateTimeLeft'
