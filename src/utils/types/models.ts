@@ -464,5 +464,9 @@ export namespace Notifications {
      * The date the notification was created.
      */
     type: 'newFollower'
+    /**
+     * The user data of the user
+     */
+    userData: UserData.UserDataDocumentsType
   }
 }
