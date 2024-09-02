@@ -5,8 +5,40 @@ import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import { formatDate } from '@/components/calculateTimeLeft'
 import UserCard from '@/components/user/userCard'
 import { Link } from '@/navigation'
+import { getTranslations } from 'next-intl/server'
 
 export const runtime = 'edge'
+
+export async function generateMetadata({ params: { locale } }) {
+  const meta = await getTranslations({
+    locale,
+    namespace: 'NotificationsMetadata',
+  })
+
+  return {
+    title: {
+      default: meta('title'),
+      template: `%s - ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+    },
+    description: meta('description'),
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/notifications`,
+      languages: {
+        en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/notifications`,
+        de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/notifications`,
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/notifications`,
+      },
+    },
+    openGraph: {
+      title: meta('title'),
+      description: meta('description'),
+      siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
+      locale: locale,
+      type: 'website',
+    },
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+  }
+}
 
 export default async function Page() {
   const notifications = await getUserNotifications()

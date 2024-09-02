@@ -6,6 +6,37 @@ import { getTranslations } from 'next-intl/server'
 
 export const runtime = 'edge'
 
+export async function generateMetadata({ params: { locale } }) {
+  const meta = await getTranslations({ locale, namespace: 'MainMetadata' })
+
+  return {
+    title: {
+      default: meta('title'),
+      template: `%s - Headpat`,
+    },
+    description: meta('description'),
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/`,
+      languages: {
+        en: `${process.env.NEXT_PUBLIC_DOMAIN}/en`,
+        de: `${process.env.NEXT_PUBLIC_DOMAIN}/de`,
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl`,
+      },
+    },
+    icons: {
+      icon: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
+    },
+    openGraph: {
+      title: meta('title'),
+      description: meta('description'),
+      images: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
+      locale: locale,
+      type: 'website',
+    },
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+  }
+}
+
 export default async function Home({
   params: { locale },
 }: {

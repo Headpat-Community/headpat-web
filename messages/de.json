@@ -35,10 +35,42 @@
   },
   "AccountMetadata": {
     "title": "Konto",
-    "description": "Auf der Kontoseite können Sie Ihre Kontoeinstellungen verwalten."
+    "description": "Auf der Kontoseite kannst du Ihre Kontoeinstellungen verwalten."
   },
   "GalleryMetadata": {
     "title": "Galerie",
     "description": "Möchtest du süße Bilder sehen? Dann bist du hier genau richtig!"
+  },
+  "UsersMetadata": {
+    "title": "Benutzer",
+    "description": "Finde hier die zuletzt registrierten Benutzer."
+  },
+  "SupportMetadata": {
+    "title": "Unterstützung",
+    "description": "Benötigst du Hilfe? Wir sind hier, um dir zu helfen!"
+  },
+  "LocationsMetadata": {
+    "title": "Kartenstandorte",
+    "description": "Möchtest du deine Freunde oder Veranstaltungen auf einer Karte sehen? Schau dir unsere Karte an!"
+  },
+  "LegalMetadata": {
+    "title": "Rechtliches",
+    "description": "Alle rechtlichen Informationen findest du hier."
+  },
+  "EventsMetadata": {
+    "title": "Veranstaltungen",
+    "description": "Hier findest du alle Veranstaltungen."
+  },
+  "CommunitiesMetadata": {
+    "title": "Gemeinschaften",
+    "description": "Suche hier nach Gemeinschaften um dich zu verbinden."
+  },
+  "NotificationsMetadata": {
+    "title": "Benachrichtigungen",
+    "description": "Hier findest du alle Benachrichtigungen."
+  },
+  "AnnouncementsMetadata": {
+    "title": "Ankündigungen",
+    "description": "Hier findest du alle Ankündigungen."
   }
 }

@@ -1,7 +1,38 @@
-import PageLayout from '@/components/pageLayout'
 import PageClient from './page.client'
+import { getTranslations } from 'next-intl/server'
 
 export const runtime = 'edge'
+
+export async function generateMetadata({ params: { locale } }) {
+  const meta = await getTranslations({
+    locale,
+    namespace: 'CommunitiesMetadata',
+  })
+
+  return {
+    title: {
+      default: meta('title'),
+      template: `%s - ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+    },
+    description: meta('description'),
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/community`,
+      languages: {
+        en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/community`,
+        de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/community`,
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/community`,
+      },
+    },
+    openGraph: {
+      title: meta('title'),
+      description: meta('description'),
+      siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
+      locale: locale,
+      type: 'website',
+    },
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+  }
+}
 
 export default async function Page() {
   return <PageClient />

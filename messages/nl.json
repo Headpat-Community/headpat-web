@@ -40,5 +40,37 @@
   "GalleryMetadata": {
     "title": "Galerij",
     "description": "Wil je schattige foto's zien? Dan ben je hier aan het juiste adres!"
+  },
+  "UsersMetadata": {
+    "title": "Gebruikers",
+    "description": "Vind hier de laatst geregistreerde gebruikers."
+  },
+  "SupportMetadata": {
+    "title": "Ondersteuning",
+    "description": "Heb je hulp nodig? We zijn hier om je te helpen!"
+  },
+  "LocationsMetadata": {
+    "title": "Kaartlocaties",
+    "description": "Wil je je vrienden of evenementen op een kaart zien? Bekijk onze kaart!"
+  },
+  "LegalMetadata": {
+    "title": "Juridisch",
+    "description": "Alle juridische informatie is hier te vinden."
+  },
+  "EventsMetadata": {
+    "title": "Evenementen",
+    "description": "Bekijk hier de aankomende evenementen."
+  },
+  "CommunitiesMetadata": {
+    "title": "Gemeenschappen",
+    "description": "Ontdek de verschillende gemeenschappen en sluit je aan bij degenen die je leuk vindt."
+  },
+  "NotificationsMetadata": {
+    "title": "Meldingen",
+    "description": "Bekijk hier al je meldingen."
+  },
+  "AnnouncementsMetadata": {
+    "title": "Aankondigingen",
+    "description": "Bekijk hier alle aankondigingen."
   }
 }

@@ -3,12 +3,39 @@ import { createAdminClient } from '@/app/appwrite-session'
 import { Announcements } from '@/utils/types/models'
 import { Link } from '@/navigation'
 import PageLayout from '@/components/pageLayout'
+import { getTranslations } from 'next-intl/server'
 
 export const runtime = 'edge'
 
-export const metadata = {
-  title: 'Announcements',
-  description: 'View the latest Community Announcements from Headpat.',
+export async function generateMetadata({ params: { locale } }) {
+  const meta = await getTranslations({
+    locale,
+    namespace: 'AnnouncementsMetadata',
+  })
+
+  return {
+    title: {
+      default: meta('title'),
+      template: `%s - ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+    },
+    description: meta('description'),
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/announcements`,
+      languages: {
+        en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/announcements`,
+        de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/announcements`,
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/announcements`,
+      },
+    },
+    openGraph: {
+      title: meta('title'),
+      description: meta('description'),
+      siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
+      locale: locale,
+      type: 'website',
+    },
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+  }
 }
 
 export default async function AnnouncementsPage() {

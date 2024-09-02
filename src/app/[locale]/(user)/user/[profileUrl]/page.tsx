@@ -40,9 +40,9 @@ import sanitizeHtml from 'sanitize-html'
 export const runtime = 'edge'
 
 export async function generateMetadata({
-  params: { profileUrl },
+  params: { profileUrl, locale },
 }: {
-  params: { profileUrl: string }
+  params: { profileUrl: string; locale: string }
 }) {
   const { databases } = await createSessionServerClient()
   const userDataResponse: UserData.UserDataType = await databases.listDocuments(
@@ -59,11 +59,22 @@ export async function generateMetadata({
     icons: {
       icon: getAvatarImageUrlView(userData.avatarId),
     },
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/user/${profileUrl}`,
+      languages: {
+        en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/user/${profileUrl}`,
+        de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/user/${profileUrl}`,
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/user/${profileUrl}`,
+      },
+    },
     openGraph: {
       title: userData.displayName || userData?.profileUrl,
       description: sanitizedBio,
       images: getAvatarImageUrlView(userData.avatarId),
+      locale: locale,
+      type: 'profile',
     },
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
   }
 }
 

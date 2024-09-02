@@ -14,15 +14,6 @@ export async function generateMetadata({ params: { locale } }) {
       template: `%s - ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
     },
     description: meta('description'),
-    keywords: [
-      'headpat',
-      'community',
-      'social',
-      'network',
-      'gallery',
-      'images',
-      'furry',
-    ],
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/gallery`,
       languages: {

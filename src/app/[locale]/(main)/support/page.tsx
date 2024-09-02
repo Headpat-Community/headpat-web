@@ -1,8 +1,33 @@
 import Link from 'next/link'
 import PageLayout from '@/components/pageLayout'
+import { getTranslations } from 'next-intl/server'
 
-export const metadata = {
-  title: 'Support',
+export async function generateMetadata({ params: { locale } }) {
+  const meta = await getTranslations({ locale, namespace: 'SupportMetadata' })
+
+  return {
+    title: {
+      default: meta('title'),
+      template: `%s - ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+    },
+    description: meta('description'),
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/support`,
+      languages: {
+        en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/support`,
+        de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/support`,
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/support`,
+      },
+    },
+    openGraph: {
+      title: meta('title'),
+      description: meta('description'),
+      siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
+      locale: locale,
+      type: 'website',
+    },
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+  }
 }
 
 export const runtime = 'edge'

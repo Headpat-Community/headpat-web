@@ -40,5 +40,37 @@
   "GalleryMetadata": {
     "title": "Gallery",
     "description": "Do you want to see cute pictures? Then you're in the right place!"
+  },
+  "UsersMetadata": {
+    "title": "Users",
+    "description": "Find the latest registered users here."
+  },
+  "SupportMetadata": {
+    "title": "Support",
+    "description": "Do you require help? We're here to assist you!"
+  },
+  "LocationsMetadata": {
+    "title": "Map Locations",
+    "description": "Want to see your friends or events on a map? Check out our map!"
+  },
+  "LegalMetadata": {
+    "title": "Legal",
+    "description": "All legal information can be found here."
+  },
+  "EventsMetadata": {
+    "title": "Events",
+    "description": "Come and join us at our or community events!"
+  },
+  "CommunitiesMetadata": {
+    "title": "Communities",
+    "description": "Find communities that you can join and participate in."
+  },
+  "NotificationsMetadata": {
+    "title": "Notifications",
+    "description": "See all your notifications here."
+  },
+  "AnnouncementsMetadata": {
+    "title": "Announcements",
+    "description": "Stay up to date with all the latest announcements."
   }
 }

@@ -1,8 +1,33 @@
 import { Paperclip } from 'lucide-react'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
-export const metadata = {
-  title: 'Legal',
+export async function generateMetadata({ params: { locale } }) {
+  const meta = await getTranslations({ locale, namespace: 'LegalMetadata' })
+
+  return {
+    title: {
+      default: meta('title'),
+      template: `%s - ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
+    },
+    description: meta('description'),
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/legal`,
+      languages: {
+        en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/legal`,
+        de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/legal`,
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/legal`,
+      },
+    },
+    openGraph: {
+      title: meta('title'),
+      description: meta('description'),
+      siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
+      locale: locale,
+      type: 'website',
+    },
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+  }
 }
 
 export const runtime = 'edge'
