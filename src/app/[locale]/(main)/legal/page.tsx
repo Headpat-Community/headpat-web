@@ -1,6 +1,7 @@
 import { Paperclip } from 'lucide-react'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
+import PageLayout from '@/components/pageLayout'
 
 export async function generateMetadata({ params: { locale } }) {
   const meta = await getTranslations({ locale, namespace: 'LegalMetadata' })
@@ -34,7 +35,7 @@ export const runtime = 'edge'
 
 export default function LegalPage() {
   return (
-    <>
+    <PageLayout title={'Legal'}>
       <div className="mx-auto mb-4 mt-8 max-w-7xl">
         <div className="px-4 sm:px-0">
           <h3 className="text-base font-semibold leading-7">
@@ -140,6 +141,26 @@ export default function LegalPage() {
                         aria-hidden="true"
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                        <span className="truncate font-medium">EULA</span>
+                      </div>
+                    </div>
+                    <div className="ml-4 flex-shrink-0">
+                      <Link
+                        // @ts-ignore
+                        href={'/legal/eula'}
+                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                      >
+                        View
+                      </Link>
+                    </div>
+                  </li>
+                  <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                    <div className="flex w-0 flex-1 items-center">
+                      <Paperclip
+                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      <div className="ml-4 flex min-w-0 flex-1 gap-2">
                         <span className="truncate font-medium">Disclaimer</span>
                         <span className="flex-shrink-0 text-gray-400">PDF</span>
                       </div>
@@ -230,6 +251,6 @@ export default function LegalPage() {
           </dl>
         </div>
       </div>
-    </>
+    </PageLayout>
   )
 }
