@@ -4,6 +4,7 @@ import { ThemeProvider } from './providers'
 import { Toaster } from '@/components/ui/toaster'
 import { Toaster as SonnerToaster } from '@/components/ui/sonner'
 import { cn } from '@/lib/utils'
+import { UserProvider } from '@/components/contexts/UserContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -55,7 +56,9 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          <div className="w-full">{children}</div>
+          <UserProvider>
+            <div className="w-full">{children}</div>
+          </UserProvider>
         </ThemeProvider>
         <Toaster />
         <SonnerToaster />
