@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import { Gallery, UserData } from '@/utils/types/models'
 import sanitize from 'sanitize-html'
 import { useUser } from '@/components/contexts/UserContext'
-import { databases, functions } from '@/app/appwrite-client'
+import { databases, functions, storage } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
 
 export default function PageClient({ galleryId }: { galleryId: string }) {
@@ -56,6 +56,11 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
 
   if (!image || !userData) {
     return <PageLayout title={'Gallery'}>Loading...</PageLayout>
+  }
+
+  const getImageUrl = (galleryId: string) => {
+    const file = storage.getFileView('gallery', galleryId)
+    return file.href
   }
 
   return (
@@ -112,13 +117,8 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                   ) : (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={getGalleryImageUrlPreview(
-                        image.galleryId,
-                        image.mimeType.includes('gif')
-                          ? 'height=500&output=gif'
-                          : 'height=500&output=webp'
-                      )}
-                      alt={image?.name || 'Headpat Community Image'}
+                      src={getImageUrl(image?.galleryId)}
+                      alt={image?.name || 'Headpat Gallery Image'}
                       className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
                     />
                   )}

@@ -7,17 +7,14 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '~/components/ui/alert-dialog'
-import { Text } from '~/components/ui/text'
+} from '@/components/ui/alert-dialog'
 import React, { useState } from 'react'
-import { reportUserProfile } from '~/components/user/api/reportUserProfile'
-import { UserData } from '~/lib/types/collections'
-import { View } from 'react-native'
-import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group'
-import { Label } from '~/components/ui/label'
-import { Input } from '~/components/ui/input'
-import * as Sentry from '@sentry/react-native'
-import { useAlertModal } from '~/components/contexts/AlertModalProvider'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { UserData } from '@/utils/types/models'
+import { toast } from 'sonner'
+import { reportUserProfile } from '@/utils/actions/user/reportUserProfile'
 
 export default function ReportUserModal({
   open,
@@ -30,10 +27,8 @@ export default function ReportUserModal({
 }) {
   const [reportReason, setReportReason] = useState<string>('')
   const [otherReason, setOtherReason] = useState<string>('')
-  const { showLoadingModal, hideLoadingModal, showAlertModal } = useAlertModal()
 
   const reportUser = async () => {
-    showLoadingModal()
     try {
       const data = await reportUserProfile({
         reportedUserId: user.$id,
@@ -41,14 +36,15 @@ export default function ReportUserModal({
       })
       setOpen(false)
       if (data.type === 'report_success') {
-        hideLoadingModal()
-        showAlertModal('SUCCESS', 'Thanks for keeping the community safe!')
+        toast.success('Success', {
+          description: 'Thanks for keeping the community safe!',
+        })
         setReportReason('')
         setOtherReason('')
       }
     } catch (e) {
-      Sentry.captureException(e)
-      showAlertModal('FAILED', 'Failed to report user. Please try again later.')
+      console.error(e)
+      toast.error('An error occurred while reporting the user')
     }
   }
 
@@ -68,7 +64,7 @@ export default function ReportUserModal({
           <AlertDialogDescription>
             What is the reason for reporting this user?
           </AlertDialogDescription>
-          <View className={'z-50'}>
+          <div className={'z-50'}>
             <RadioGroup
               value={reportReason}
               onValueChange={setReportReason}
@@ -98,24 +94,22 @@ export default function ReportUserModal({
                 <Input
                   placeholder="Please specify"
                   value={otherReason}
-                  onChangeText={setOtherReason}
+                  onChange={(e) => setOtherReason(e.target.value)}
                 />
               )}
             </RadioGroup>
-          </View>
+          </div>
           <AlertDialogFooter>
             <AlertDialogAction
               className={'bg-destructive'}
-              onPress={reportUser}
+              onClick={reportUser}
               disabled={
                 !reportReason || (reportReason === 'Other' && !otherReason)
               }
             >
-              <Text className={'text-white'}>Report</Text>
+              Report
             </AlertDialogAction>
-            <AlertDialogCancel>
-              <Text>Cancel</Text>
-            </AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -131,11 +125,9 @@ function RadioGroupItemWithLabel({
   onLabelPress: () => void
 }) {
   return (
-    <View className={'flex-row gap-2 items-center'}>
+    <div className={'flex-row gap-2 items-center'}>
       <RadioGroupItem aria-labelledby={`label-for-${value}`} value={value} />
-      <Label nativeID={`label-for-${value}`} onPress={onLabelPress}>
-        {value}
-      </Label>
-    </View>
+      <Label>{value}</Label>
+    </div>
   )
 }
