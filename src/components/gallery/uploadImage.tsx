@@ -21,14 +21,14 @@ export default function UploadPage({ userId }: { userId: string }) {
     nsfw: false,
   })
 
-  const maxSizeInBytes = 16 * 1024 * 1024 // 16 MB
+  const maxSizeInBytes = 8 * 1024 * 1024 // 8 MB
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0]
 
       if (file.size > maxSizeInBytes) {
-        toast.error('File size exceeds the 16 MB limit.')
+        toast.error('File size exceeds the 8 MB limit.')
         if (fileInputRef.current) {
           fileInputRef.current.value = '' // Reset the input field
         }
@@ -64,7 +64,7 @@ export default function UploadPage({ userId }: { userId: string }) {
       const file = event.dataTransfer.files[0]
 
       if (file.size > maxSizeInBytes) {
-        toast.error('File size exceeds the 16 MB limit.')
+        toast.error('File size exceeds the 8 MB limit.')
         if (fileInputRef.current) {
           fileInputRef.current.value = '' // Reset the input field
         }

@@ -52,11 +52,13 @@ export async function mfaChallengeNeeded() {
   try {
     return await account.get()
   } catch (error) {
+    console.log(error)
     if (error.type === `user_more_factors_required`) {
       return NextResponse.redirect(
         `${process.env.NEXT_PUBLIC_DOMAIN}/login/mfa`
       )
     } else {
+      console.log('second error')
       return JSON.parse(JSON.stringify(error))
     }
   }
