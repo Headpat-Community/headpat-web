@@ -8,12 +8,16 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Textarea } from '@/components/ui/textarea'
 import { useRouter } from '@/navigation'
 import { toast } from 'sonner'
+import imageCompression from 'browser-image-compression'
+import { Button } from '@/components/ui/button'
+import { Progress } from '@/components/ui/progress'
 
 export default function UploadPage({ userId }: { userId: string }) {
   const [isUploading, setIsUploading] = useState(false)
+  const [progress, setProgress] = useState(0)
   const router = useRouter()
-  const [selectedFileInput, setSelectedFileInput] = useState(null)
-  const [selectedFile, setSelectedFile] = useState(null)
+  const [selectedFileInput, setSelectedFileInput] = useState<string>(null)
+  const [selectedFile, setSelectedFile] = useState<File>(null)
   const fileInputRef = useRef(null)
   const [data, setData] = useState({
     name: '',
@@ -23,45 +27,104 @@ export default function UploadPage({ userId }: { userId: string }) {
 
   const maxSizeInBytes = 8 * 1024 * 1024 // 8 MB
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0]
+      let file: any = event.target.files[0]
 
-      if (file.size > maxSizeInBytes) {
-        toast.error('File size exceeds the 8 MB limit.')
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '' // Reset the input field
+      if (file.type.includes('image/gif' || 'video')) {
+        if (file.size > maxSizeInBytes) {
+          toast.error('File size exceeds the 8 MB limit.')
+          if (fileInputRef.current) {
+            fileInputRef.current.value = '' // Reset the input field
+          }
+          return
         }
+
+        setSelectedFile(file)
+        setSelectedFileInput(URL.createObjectURL(file))
         return
       }
 
-      const reader = new FileReader()
-      reader.onload = function (e) {
-        const img = document.getElementById(
-          'selected-image'
-        ) as HTMLImageElement
-        if (img) {
-          //console.log('File read successfully, updating image src.') // Debugging log
-          img.src = e.target.result as string
-          setSelectedFileInput(e.target.result as string)
-          setSelectedFile(file)
-        } else {
-          console.error('Failed to find the image element.') // Debugging log
-        }
-      }
-      reader.onerror = function (error) {
-        console.error('Error reading file:', error) // Debugging log
-      }
-      reader.readAsDataURL(file)
+      file = await imageCompression(file, {
+        maxSizeMB: 0.5,
+        alwaysKeepResolution: true,
+        useWebWorker: true,
+        onProgress: (progress) => {
+          setProgress(progress)
+        },
+      })
+        .then((compressedFile) => {
+          console.log('compressedFile', compressedFile)
+          if (compressedFile.size > maxSizeInBytes) {
+            toast.error('File size exceeds the 8 MB limit.')
+            if (fileInputRef.current) {
+              fileInputRef.current.value = '' // Reset the input
+            }
+            return
+          }
+          return compressedFile
+        })
+        .catch((error) => {
+          console.error('Error compressing file:', error)
+          toast.error('Error compressing file.')
+          return
+        })
+
+      const imgSrc = await imageCompression.getDataUrlFromFile(file)
+      const compressedFile = await imageCompression.getFilefromDataUrl(
+        imgSrc,
+        file.name
+      )
+
+      // Convert Blob back to a File object
+      const newFile = new File([compressedFile], file.name, {
+        type: compressedFile.type,
+        lastModified: file.lastModified,
+      })
+
+      setSelectedFileInput(imgSrc)
+      setSelectedFile(newFile)
     } else {
-      console.log('No file selected.') // Debugging log
+      toast.error('No file selected.')
     }
   }
 
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
     if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
-      const file = event.dataTransfer.files[0]
+      let file = event.dataTransfer.files[0]
+      console.log(file)
+
+      if (file.type.includes('image/gif' || 'video')) {
+        if (file.size > maxSizeInBytes) {
+          toast.error('File size exceeds the 8 MB limit.')
+          if (fileInputRef.current) {
+            fileInputRef.current.value = '' // Reset the input field
+          }
+          return
+        }
+
+        setSelectedFile(file)
+        setSelectedFileInput(URL.createObjectURL(file))
+        return
+      }
+
+      try {
+        file = await imageCompression(file, {
+          maxSizeMB: 0.5,
+          alwaysKeepResolution: true,
+          useWebWorker: true,
+          onProgress: (progress) => {
+            setProgress(progress)
+          },
+        })
+      } catch (error) {
+        console.error('Error compressing file:', error)
+        toast.error('Error compressing file.')
+        return
+      }
 
       if (file.size > maxSizeInBytes) {
         toast.error('File size exceeds the 8 MB limit.')
@@ -71,26 +134,22 @@ export default function UploadPage({ userId }: { userId: string }) {
         return
       }
 
-      const reader = new FileReader()
-      reader.onload = function (e) {
-        const img = document.getElementById(
-          'selected-image'
-        ) as HTMLImageElement
-        if (img) {
-          //console.log('File dropped successfully, updating image src.') // Debugging log
-          img.src = e.target.result as string
-          setSelectedFileInput(e.target.result as string)
-          setSelectedFile(file)
-        } else {
-          console.error('Failed to find the image element.') // Debugging log
-        }
-      }
-      reader.onerror = function (error) {
-        console.error('Error reading file:', error) // Debugging log
-      }
-      reader.readAsDataURL(file)
+      const imgSrc = await imageCompression.getDataUrlFromFile(file)
+      const compressedFile = await imageCompression.getFilefromDataUrl(
+        imgSrc,
+        file.name
+      )
+
+      // Convert Blob back to a File object
+      const newFile = new File([compressedFile], file.name, {
+        type: compressedFile.type,
+        lastModified: file.lastModified,
+      })
+
+      setSelectedFileInput(imgSrc)
+      setSelectedFile(newFile)
     } else {
-      console.log('No file dropped.') // Debugging log
+      toast.error('No file dropped.')
     }
   }
 
@@ -104,9 +163,18 @@ export default function UploadPage({ userId }: { userId: string }) {
   const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault()
 
+    if (selectedFile.size > maxSizeInBytes) {
+      toast.error('File size exceeds the 8 MB limit.')
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '' // Reset the input field
+      }
+      return
+    }
+
     try {
       setIsUploading(true) // Set isUploading to true before making the API call
 
+      console.log('Uploading file:', selectedFile)
       const fileData = storage.createFile('gallery', ID.unique(), selectedFile)
 
       fileData.then(
@@ -214,11 +282,18 @@ export default function UploadPage({ userId }: { userId: string }) {
             </div>
           </div>
 
+          {/* Progress bar */}
+          {progress !== 0 && progress !== 100 && (
+            <div className={'border-b border-white/10 pb-8'}>
+              <Progress value={progress} className="w-full" />
+            </div>
+          )}
+
           <div className={'border-b border-white/10 pb-8'}>
             <div className="flex text-sm leading-6 text-gray-400 items-center">
               <Label>Supported:</Label>
               <p className="pl-1">
-                PNG, JPEG, GIF, SVG, TIFF, ICO, DVU up to 16MB
+                PNG, JPEG, GIF, SVG, TIFF, ICO, DVU up to 8MB
               </p>
             </div>
           </div>
@@ -276,18 +351,13 @@ export default function UploadPage({ userId }: { userId: string }) {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <button type="button" className="text-sm font-semibold leading-6">
-            Cancel
-          </button>
-          <button
+          <Button
             type="submit"
-            value="Submit"
-            className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
             disabled={isUploading} // Disable the button if isUploading is true
           >
             {isUploading ? 'Uploading...' : 'Save'}{' '}
             {/* Show different text based on the upload state */}
-          </button>
+          </Button>
         </div>
       </form>
     </>

@@ -5,15 +5,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { databases, storage } from '@/app/appwrite-client'
-import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
 import { Gallery } from '@/utils/types/models'
 import { Link, useRouter } from '@/navigation'
 import { getGalleryImageUrlView } from '@/components/getStorageItem'
 import { getDocument } from '@/components/api/documents'
+import { toast } from 'sonner'
 
 export default function FetchGallery({ singleGallery, galleryId }) {
-  const { toast } = useToast()
   const router = useRouter()
   const [isUploading, setIsUploading] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -44,8 +43,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
           storage.deleteFile('gallery', imageId)
           databases.deleteDocument('hp_db', 'gallery-images', documentId)
 
-          toast({
-            title: 'Success',
+          toast.success('Success', {
             description: 'Image successfully deleted! Sending you back...',
           })
           setTimeout(() => {
@@ -55,20 +53,15 @@ export default function FetchGallery({ singleGallery, galleryId }) {
         function (error) {
           console.error(error)
           Sentry.captureException(error)
-          toast({
-            title: 'Error',
+          toast.error('Error', {
             description: "Something went wrong, but don't worry, we are on it!",
-            variant: 'destructive',
-            security: 'true',
           })
           setIsDeleting(false)
         }
       )
     } catch (error) {
-      toast({
-        title: 'Error',
+      toast.error('Error', {
         description: "You encountered an error. But don't worry, we're on it.",
-        variant: 'destructive',
       })
       Sentry.captureException(error)
       setIsDeleting(false)
@@ -88,15 +81,12 @@ export default function FetchGallery({ singleGallery, galleryId }) {
 
       // Handle response and update state accordingly
     } catch (error) {
-      toast({
-        title: 'Error',
+      toast.error('Error', {
         description: "Something went wrong, but don't worry, we are on it!",
-        variant: 'destructive',
       })
       setIsUploading(false)
     } finally {
-      toast({
-        title: 'Image updated',
+      toast.success('Image updated', {
         description: 'Your image info has been updated successfully!',
       })
       setIsUploading(false)
@@ -208,7 +198,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <Link
-            href={`/account/gallery`}
+            href={`/gallery`}
             className="text-sm font-semibold leading-6 text-white"
           >
             Cancel
