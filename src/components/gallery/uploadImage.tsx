@@ -48,7 +48,7 @@ export default function UploadPage({ userId }: { userId: string }) {
       }
 
       file = await imageCompression(file, {
-        maxSizeMB: 0.5,
+        maxSizeMB: 8,
         alwaysKeepResolution: true,
         useWebWorker: true,
         onProgress: (progress) => {
@@ -113,7 +113,7 @@ export default function UploadPage({ userId }: { userId: string }) {
 
       try {
         file = await imageCompression(file, {
-          maxSizeMB: 0.5,
+          maxSizeMB: 8,
           alwaysKeepResolution: true,
           useWebWorker: true,
           onProgress: (progress) => {
