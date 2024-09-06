@@ -49,8 +49,8 @@ export default function FetchGallery({ singleGallery, galleryId }) {
             description: 'Image successfully deleted! Sending you back...',
           })
           setTimeout(() => {
-            router.push('/account/gallery')
-          }, 5000)
+            router.push('/gallery')
+          }, 3000)
         },
         function (error) {
           console.error(error)
