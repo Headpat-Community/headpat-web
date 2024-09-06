@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from 'react'
 import { useRouter } from '@/navigation'
 import { mfaChallengeNeeded } from '@/utils/server-api/account/user'
+import { account } from '@/app/appwrite-client'
 
 export default function MfaPageClient() {
   const { toast } = useToast()
@@ -23,13 +24,16 @@ export default function MfaPageClient() {
 
   useEffect(() => {
     const checkMfa = async () => {
-      const mfaNeeded = await mfaChallengeNeeded()
-      if (mfaNeeded && mfaNeeded.type === 'general_unauthorized_scope') {
-        router.push('/login')
-      } else if (mfaNeeded?.$id) {
+      try {
+        const data = await account.get()
+        console.log(data)
         router.push('/account')
-      } else {
-        setNeedsMfa(true)
+      } catch (error) {
+        if (error.type === 'general_unauthorized_scope') {
+          router.push('/login')
+        } else {
+          setNeedsMfa(true)
+        }
       }
     }
     checkMfa().then()

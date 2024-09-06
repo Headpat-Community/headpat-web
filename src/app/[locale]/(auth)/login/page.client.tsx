@@ -48,7 +48,6 @@ export default function Login() {
       }
 
       const response = await createUser(body)
-      console.log(response)
 
       if (response.code === 400) {
         toast({
@@ -80,7 +79,21 @@ export default function Login() {
         return
       }
 
-      window.location.href = '/account'
+      const signIn = await fetch('/api/user/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
+      })
+
+      const dataResponse = await signIn.json()
+      client.setSession(dataResponse.secret)
+
+      router.push('/login/mfa')
     } else {
       const signIn = await fetch('/api/user/signin', {
         method: 'POST',
