@@ -24,10 +24,10 @@ export default function MfaPageClient() {
   useEffect(() => {
     const checkMfa = async () => {
       const mfaNeeded = await mfaChallengeNeeded()
-      if (mfaNeeded.type === 'general_unauthorized_scope') {
-        window.location.href = '/login'
-      } else if (mfaNeeded.$id) {
-        window.location.href = '/account'
+      if (mfaNeeded?.type === 'general_unauthorized_scope') {
+        router.push('/login')
+      } else if (mfaNeeded?.$id) {
+        router.push('/account')
       } else {
         setNeedsMfa(true)
       }
