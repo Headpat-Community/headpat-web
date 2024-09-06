@@ -71,6 +71,7 @@ const withMDX = createMDX({
 
 // Injected content via Sentry wizard below
 
+/*
 export default withSentryConfig(withNextIntl(withMDX(nextConfig)), {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
@@ -106,3 +107,6 @@ export default withSentryConfig(withNextIntl(withMDX(nextConfig)), {
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: false,
 })
+ */
+
+export default withNextIntl(withMDX(nextConfig))
