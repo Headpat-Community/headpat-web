@@ -1,10 +1,7 @@
 'use client'
 import { Link } from '@/navigation'
 import { Button } from '@/components/ui/button'
-import {
-  getGalleryImageUrlPreview,
-  getGalleryImageUrlView,
-} from '@/components/getStorageItem'
+import { getGalleryImageUrlView } from '@/components/getStorageItem'
 import PageLayout from '@/components/pageLayout'
 import { useEffect, useState } from 'react'
 import { Gallery, UserData } from '@/utils/types/models'

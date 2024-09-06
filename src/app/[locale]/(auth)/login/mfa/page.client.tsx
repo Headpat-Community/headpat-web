@@ -13,7 +13,6 @@ import {
 } from '@/utils/actions/account/account'
 import { useEffect, useState } from 'react'
 import { useRouter } from '@/navigation'
-import { mfaChallengeNeeded } from '@/utils/server-api/account/user'
 import { account } from '@/app/appwrite-client'
 
 export default function MfaPageClient() {
