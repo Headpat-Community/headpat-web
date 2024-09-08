@@ -156,6 +156,18 @@ export namespace UserData {
      */
     nickName: string
   }
+
+  /**
+   * This data is returned from the API within the `documents` array.
+   * @see UserPrefsType
+   */
+  export interface UserProfileDocumentsType extends UserDataDocumentsType {
+    /**
+     * The user ID of the user.
+     */
+    prefs: UserPrefsDocumentsType
+    isFollowing: boolean
+  }
 }
 
 export namespace Location {
