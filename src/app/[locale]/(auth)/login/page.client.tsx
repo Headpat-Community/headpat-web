@@ -25,6 +25,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { createUser } from '@/utils/actions/login-actions'
 import { Link, useRouter } from '@/navigation'
 import { client } from '@/app/appwrite-client'
+import PageLayout from '@/components/pageLayout'
 
 export default function Login() {
   const [data, setData] = useState({
@@ -129,13 +130,10 @@ export default function Login() {
   }
 
   return (
-    <>
-      <Button className={'m-8 absolute z-10'} onClick={() => router.push('/')}>
-        Home
-      </Button>
+    <PageLayout title={'Login'}>
       <div className="flex flex-1 justify-center items-center absolute inset-0">
         {/* Add justify-center and items-center here */}
-        <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:bg-[#04050a]/85 dark:ring-white">
+        <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:ring-white">
           <div className={'text-center'}>
             <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
               Welcome to Headpat!
@@ -334,6 +332,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-    </>
+    </PageLayout>
   )
 }
