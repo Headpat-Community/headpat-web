@@ -66,7 +66,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
         <div className="flex flex-wrap items-center justify-center gap-4 p-8">
           <div>
             <div className="flex flex-wrap items-start">
-              {!image.nsfw && !current.prefs.nsfw && (
+              {!image.nsfw && !current?.prefs?.nsfw && (
                 <div className="mb-4 mr-4 flex sm:mt-4 md:mb-0">
                   <Link
                     href={'/gallery'}
@@ -76,7 +76,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                   </Link>
                 </div>
               )}
-              {image.nsfw && !current.prefs.nsfw ? (
+              {image.nsfw && !current?.prefs?.nsfw ? (
                 <div className="fixed inset-0 flex items-center justify-center">
                   {/* Semi-transparent overlay */}
                   <div
