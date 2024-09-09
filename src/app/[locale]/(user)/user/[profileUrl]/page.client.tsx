@@ -120,7 +120,6 @@ export default function PageClient({
     }
 
     fetchUserData().then((data) => {
-      console.log('Fetched user data: ', data)
       setUserData(data)
       setLoading(false)
     })
