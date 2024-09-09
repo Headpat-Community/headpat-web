@@ -123,8 +123,8 @@ importers:
         specifier: ^2.0.13
         version: 2.0.13
       '@vis.gl/react-google-maps':
-        specifier: ^1.1.2
-        version: 1.1.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^1.1.3
+        version: 1.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       appwrite:
         specifier: ^15.0.0
         version: 15.0.0
@@ -1923,8 +1923,8 @@ packages:
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
-  '@vis.gl/react-google-maps@1.1.2':
-    resolution: {integrity: sha512-L3AyZBk3oXNbfZbEefdpaUXkZrjEwktbbSNH2tpvYdLF6kN3Aq7Avb19IS08pVyz57kVwWQYKPPzGxcf9220MA==}
+  '@vis.gl/react-google-maps@1.1.3':
+    resolution: {integrity: sha512-jsjj5OpL5AyQDSfzBHU+r5UGAuZxv/7mw9gM2dP4EhqRXkXBpwDKKlml47/4l0m1WL4fSEXLzv85Mrh1VhPiFA==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -6250,7 +6250,7 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@vis.gl/react-google-maps@1.1.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@vis.gl/react-google-maps@1.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@types/google.maps': 3.57.0
       fast-deep-equal: 3.1.3
