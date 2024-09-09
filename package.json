@@ -74,7 +74,7 @@
     "node-appwrite": "^14.0.0",
     "postcss": "^8.4.45",
     "react": "18.3.1",
-    "react-day-picker": "^9.0.8",
+    "react-day-picker": "^9.0.9",
     "react-dom": "18.3.1",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.53.0",
