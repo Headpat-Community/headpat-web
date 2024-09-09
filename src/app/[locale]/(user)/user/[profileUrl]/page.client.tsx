@@ -1,7 +1,7 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { addFollow } from '@/utils/actions/followers/addFollow'
-import { Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { removeFollow } from '@/utils/actions/followers/removeFollow'
 import { toast } from 'sonner'
 import { Separator } from '@/components/ui/separator'
@@ -30,7 +30,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import ContextMenuProfile from '@/components/user/contextMenuProfile'
-import { notFound } from 'next/navigation'
 import sanitizeHtml from 'sanitize-html'
 import { UserData } from '@/utils/types/models'
 import { functions } from '@/app/appwrite-client'
@@ -121,6 +120,7 @@ export default function PageClient({
     }
 
     fetchUserData().then((data) => {
+      console.log('Fetched user data: ', data)
       setUserData(data)
       setLoading(false)
     })
