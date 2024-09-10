@@ -12,9 +12,6 @@ export const getAvatarImageUrlPreview = (
   galleryId: string,
   attributes: string
 ) => {
-  if (!galleryId) {
-    return '/images/404.webp'
-  }
   return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${galleryId}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&${attributes}`
 }
 
