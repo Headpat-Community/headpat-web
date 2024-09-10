@@ -1,6 +1,6 @@
 import createNextIntlPlugin from 'next-intl/plugin'
 import createMDX from '@next/mdx'
-import { withSentryConfig } from '@sentry/nextjs'
+//import { withSentryConfig } from '@sentry/nextjs'
 
 const withNextIntl = createNextIntlPlugin()
 

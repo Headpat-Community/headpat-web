@@ -23,10 +23,9 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { createUser } from '@/utils/actions/login-actions'
-import { Link, useRouter } from '@/navigation'
+import { Link } from '@/navigation'
 import { client } from '@/app/appwrite-client'
 import PageLayout from '@/components/pageLayout'
-import { useUser } from '@/components/contexts/UserContext'
 
 export default function Login() {
   const [data, setData] = useState({
@@ -36,7 +35,6 @@ export default function Login() {
   })
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
-  const router = useRouter()
   const { toast } = useToast()
 
   const handleEmailLogin = async (e: any) => {
