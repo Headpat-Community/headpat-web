@@ -36,6 +36,7 @@ import { functions } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
 import PageLayout from '@/components/pageLayout'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useUser } from '@/components/contexts/UserContext'
 
 function FollowerButton({ displayName, followerId, isFollowing }) {
   const [isFollowingState, setIsFollowingState] = useState(isFollowing || false)
@@ -98,6 +99,7 @@ export default function PageClient({
     // @ts-ignore
     useState<UserData.UserProfileDocumentsType>(user)
   const [loading, setLoading] = useState(true)
+  const { current } = useUser()
 
   const formatDate = (date: Date) =>
     date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')
@@ -245,15 +247,16 @@ export default function PageClient({
                     <CardTitle className={'col-span-1'}>
                       {userData.displayName}
                     </CardTitle>
-                    {!loading ? (
-                      <FollowerButton
-                        displayName={userData?.displayName}
-                        followerId={userData.$id}
-                        isFollowing={userData.isFollowing}
-                      />
-                    ) : (
-                      <Skeleton className="h-8 w-full" />
-                    )}
+                    {current?.$id !== userData?.$id &&
+                      (!loading ? (
+                        <FollowerButton
+                          displayName={userData?.displayName}
+                          followerId={userData.$id}
+                          isFollowing={userData.isFollowing}
+                        />
+                      ) : (
+                        <Skeleton className="h-8 w-full" />
+                      ))}
                   </div>
                   <div className={'grid grid-cols-2'}>
                     <CardDescription>{userData?.status}</CardDescription>

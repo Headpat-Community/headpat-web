@@ -88,7 +88,7 @@ export default function FetchGallery({ enableNsfw }) {
     fetchGalleryData().catch((error) => {
       toast({
         title: 'Error',
-        description: "You encountered an error. But don't worry, we're on it.",
+        description: "You  encountered an error. But don't worry, we're on it.",
         variant: 'destructive',
       })
       Sentry.captureException(error)
