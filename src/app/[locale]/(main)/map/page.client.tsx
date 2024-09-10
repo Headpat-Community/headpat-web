@@ -10,13 +10,17 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { formatDateLocale } from '@/components/calculateTimeLeft'
-import { getDocument, listDocuments } from '@/components/api/documents'
+import { listDocuments } from '@/components/api/documents'
 import { toast } from 'sonner'
 import { client, databases, Query } from '@/app/appwrite-client'
 import { Polygon } from '@/components/map/polygon'
 import { Circle } from '@/components/map/circle'
 import sanitizeHtml from 'sanitize-html'
 import { useUser } from '@/components/contexts/UserContext'
+import FiltersModal from '@/components/map/FiltersModal'
+import { Button } from '@/components/ui/button'
+import { FilterIcon, SettingsIcon } from 'lucide-react'
+import SettingsModal from '@/components/map/SettingsModal'
 
 type User = {
   lat: number
@@ -35,7 +39,6 @@ export default function PageClient() {
   const [friendsLocations, setFriendsLocations] = useState(null)
   const [filtersOpen, setFiltersOpen] = useState<boolean>(false)
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false)
-  const [userLocation, setUserLocation] = useState(null)
   const [userStatus, setUserStatus] =
     useState<Location.LocationDocumentsType>(null)
 
@@ -90,9 +93,8 @@ export default function PageClient() {
       )
 
       const promises = data.documents.map(async (doc) => {
-        if (current?.$id === doc.$id) {
+        if (current && current.$id === doc.$id) {
           setUserStatus(doc)
-          return
         }
         const userData: UserData.UserDataDocumentsType =
           await databases.getDocument('hp_db', 'userdata', doc.$id)
@@ -120,7 +122,7 @@ export default function PageClient() {
       locationsSubscribed()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locationsSubscribed])
+  }, [current, locationsSubscribed])
 
   function handleSubscribedEvents() {
     locationsSubscribed = client.subscribe(
@@ -133,7 +135,6 @@ export default function PageClient() {
           case 'update':
             if (current && updatedDocument.$id === current.$id) {
               setUserStatus(updatedDocument)
-              return
             }
 
             setFriendsLocations(
@@ -161,7 +162,6 @@ export default function PageClient() {
           case 'delete':
             if (current && updatedDocument.$id === current.$id) {
               setUserStatus(null)
-              return
             }
             setFriendsLocations(
               (prevLocations: Location.LocationDocumentsType[]) => {
@@ -174,7 +174,6 @@ export default function PageClient() {
           case 'create':
             if (current && updatedDocument.$id === current.$id) {
               setUserStatus(updatedDocument)
-              return
             }
 
             const userData: UserData.UserDataDocumentsType =
@@ -216,10 +215,7 @@ export default function PageClient() {
     return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${avatarId}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&width=100&height=100`
   }
 
-  const sanitizedDescription = useMemo(() => {
-    if (!currentEvent?.description) return ''
-    return currentEvent.description.replace(/<[^>]*>?/gm, '')
-  }, [currentEvent])
+  const sanitizedDescription = sanitizeHtml(currentEvent?.description)
 
   return (
     <div className={'h-[90vh] w-full'}>
@@ -254,6 +250,23 @@ export default function PageClient() {
         </DialogContent>
       </Dialog>
 
+      {/* Filters dialog */}
+      <FiltersModal
+        openModal={filtersOpen}
+        setOpenModal={setFiltersOpen}
+        filters={filters}
+        setFilters={setFilters}
+      />
+
+      {/* Settings dialog */}
+      <SettingsModal
+        openModal={settingsOpen}
+        setOpenModal={setSettingsOpen}
+        userStatus={userStatus}
+        setUserStatus={setUserStatus}
+        current={current}
+      />
+
       <APIProvider apiKey={'AIzaSyDRkaXuz3k7vlbouwfZKpKH4KUgBtgJZOM'}>
         <Map
           mapId={'bf51a910020fa25a'}
@@ -262,89 +275,129 @@ export default function PageClient() {
           gestureHandling={'greedy'}
           disableDefaultUI
         >
-          {friendsLocations?.map((user: User, index: number) => {
-            return (
-              <AdvancedMarker
-                key={index}
-                position={{ lat: user.lat, lng: user.long }}
-                onClick={() => (
-                  setCurrentUser({
-                    title: user.userData?.displayName,
-                    status: user.userData?.status,
-                    description: user.userData?.bio,
-                  }),
-                  setModalUserOpen(true)
-                )}
-              >
-                <Avatar
-                  style={{
-                    borderWidth: 2,
-                    borderColor: user?.statusColor,
-                  }}
-                >
-                  <AvatarImage src={getUserAvatar(user?.userData?.avatarId)} />
-                  <AvatarFallback>
-                    {user?.userData?.displayName
-                      ? user?.userData?.displayName.charAt(0)
-                      : 'U'}
-                  </AvatarFallback>
-                </Avatar>
-              </AdvancedMarker>
-            )
-          })}
-          {events?.documents.map((event, index) => {
-            if (event?.locationZoneMethod === 'polygon') {
-              const coords = event?.coordinates.map((coord) => {
-                const [lat, lng] = coord.split(',').map(Number)
-                return { lat, lng }
-              })
-              return (
-                <Polygon
-                  key={index}
-                  fillColor="rgba(100, 200, 200, 0.5)" // optional, fill color of the polygon
-                  strokeColor="rgba(255,0,0,0.5)" // optional, border color of the polygon
-                  paths={coords}
-                  onClick={() => (
-                    setCurrentEvent({
-                      title: event.title,
-                      description: event.description,
-                      date: event.date,
-                      dateUntil: event.dateUntil,
-                    }),
-                    setModalEventOpen(true)
-                  )}
-                />
-              )
-            } else if (event?.locationZoneMethod === 'circle') {
-              // Assuming the first coordinate is the center of the circle
-              const [centerLatitude, centerLongitude] = event?.coordinates[0]
-                .split(',')
-                .map(Number)
-              return (
-                <Circle
-                  key={index}
-                  center={{
-                    lat: centerLatitude,
-                    lng: centerLongitude,
-                  }}
-                  radius={event?.circleRadius} // specify the radius here
-                  fillColor="rgba(100, 200, 200, 0.5)" // optional, fill color of the circle
-                  strokeColor="rgba(255,0,0,0.5)" // optional, border color of the circle
-                  onClick={() => (
-                    setCurrentEvent({
-                      title: event.title,
-                      description: event.description,
-                      date: event.date,
-                      dateUntil: event.dateUntil,
-                    }),
-                    setModalEventOpen(true)
-                  )}
-                />
-              )
-            }
-          })}
+          {filters.showUsers &&
+            friendsLocations?.map((user: User, index: number) => {
+              if (user?.lat && user?.long) {
+                return (
+                  <AdvancedMarker
+                    key={index}
+                    position={{ lat: user.lat, lng: user.long }}
+                    onClick={() => (
+                      setCurrentUser({
+                        title: user.userData?.displayName,
+                        status: user?.status || user.userData?.status,
+                        description: user.userData?.bio,
+                      }),
+                      setModalUserOpen(true)
+                    )}
+                  >
+                    <Avatar
+                      style={{
+                        borderWidth: 2,
+                        borderColor: user?.statusColor,
+                      }}
+                    >
+                      <AvatarImage
+                        src={getUserAvatar(user?.userData?.avatarId)}
+                      />
+                      <AvatarFallback>
+                        {user?.userData?.displayName
+                          ? user?.userData?.displayName.charAt(0)
+                          : 'U'}
+                      </AvatarFallback>
+                    </Avatar>
+                  </AdvancedMarker>
+                )
+              }
+            })}
+          {filters.showEvents &&
+            events?.documents.map((event, index) => {
+              if (event?.locationZoneMethod === 'polygon') {
+                const coords = event?.coordinates.map((coord) => {
+                  const [lat, lng] = coord.split(',').map(Number)
+                  return { lat, lng }
+                })
+                return (
+                  <Polygon
+                    key={index}
+                    fillColor="rgba(100, 200, 200, 0.5)" // optional, fill color of the polygon
+                    strokeColor="rgba(255,0,0,0.5)" // optional, border color of the polygon
+                    paths={coords}
+                    onClick={() => (
+                      setCurrentEvent({
+                        title: event.title,
+                        description: event.description,
+                        date: event.date,
+                        dateUntil: event.dateUntil,
+                      }),
+                      setModalEventOpen(true)
+                    )}
+                  />
+                )
+              } else if (event?.locationZoneMethod === 'circle') {
+                // Assuming the first coordinate is the center of the circle
+                const [centerLatitude, centerLongitude] = event?.coordinates[0]
+                  .split(',')
+                  .map(Number)
+                return (
+                  <Circle
+                    key={index}
+                    center={{
+                      lat: centerLatitude,
+                      lng: centerLongitude,
+                    }}
+                    radius={event?.circleRadius} // specify the radius here
+                    fillColor="rgba(100, 200, 200, 0.5)" // optional, fill color of the circle
+                    strokeColor="rgba(255,0,0,0.5)" // optional, border color of the circle
+                    onClick={() => (
+                      setCurrentEvent({
+                        title: event.title,
+                        description: event.description,
+                        date: event.date,
+                        dateUntil: event.dateUntil,
+                      }),
+                      setModalEventOpen(true)
+                    )}
+                  />
+                )
+              }
+            })}
         </Map>
       </APIProvider>
+      <div
+        className={
+          'absolute top-[110px] sm:top-20 right-4 sm:right-8 rounded-full overflow-hidden'
+        }
+      >
+        <Button
+          className={
+            'justify-center items-center bg-white h-14 w-14 rounded-full shadow'
+          }
+          onClick={() => setFiltersOpen(true)}
+        >
+          <FilterIcon size={24} color={'black'} />
+        </Button>
+      </div>
+      {userStatus && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 160,
+            right: 30,
+            borderRadius: 50,
+            overflow: 'hidden',
+          }}
+        >
+          <Button
+            className={
+              'justify-center items-center bg-white h-14 w-14 rounded-full shadow'
+            }
+            onClick={() => setSettingsOpen(true)}
+          >
+            <SettingsIcon size={24} color={'black'} />
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
