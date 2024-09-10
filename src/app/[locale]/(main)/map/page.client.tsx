@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { AdvancedMarker, APIProvider, Map } from '@vis.gl/react-google-maps'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Events, Location, UserData } from '@/utils/types/models'
@@ -9,22 +9,37 @@ import {
   DialogDescription,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { formatDate } from '@/components/calculateTimeLeft'
+import { formatDateLocale } from '@/components/calculateTimeLeft'
 import { getDocument, listDocuments } from '@/components/api/documents'
 import { toast } from 'sonner'
-import { client, Query } from '@/app/appwrite-client'
+import { client, databases, Query } from '@/app/appwrite-client'
 import { Polygon } from '@/components/map/polygon'
 import { Circle } from '@/components/map/circle'
 import sanitizeHtml from 'sanitize-html'
+import { useUser } from '@/components/contexts/UserContext'
+
+type User = {
+  lat: number
+  long: number
+  status: string
+  statusColor: string
+  userData: UserData.UserDataDocumentsType
+}
 
 export default function PageClient() {
   const [events, setEvents] = useState<Events.EventsType>(null)
-  const [friendsLocations, setFriendsLocations] = useState(null)
   const [filters, setFilters] = useState({
     showEvents: true,
-    showFriends: true,
-    showCommunity: true,
+    showUsers: true,
   })
+  const [friendsLocations, setFriendsLocations] = useState(null)
+  const [filtersOpen, setFiltersOpen] = useState<boolean>(false)
+  const [settingsOpen, setSettingsOpen] = useState<boolean>(false)
+  const [userLocation, setUserLocation] = useState(null)
+  const [userStatus, setUserStatus] =
+    useState<Location.LocationDocumentsType>(null)
+
+  const { current } = useUser()
 
   const [currentUser, setCurrentUser] = useState({
     title: 'Nothing selected..',
@@ -62,22 +77,25 @@ export default function PageClient() {
   const fetchUserLocations = async () => {
     try {
       let query = []
-      //if (user?.current?.$id) {
-      //  query = [Query.notEqual('$id', user?.current?.$id)]
-      //}
-      const data: Location.LocationType = await listDocuments(
+      /*
+       if (current?.$id) {
+       query = [Query.notEqual('$id', current?.$id)]
+       }
+       */
+
+      const data: Location.LocationType = await databases.listDocuments(
         'hp_db',
         'locations',
         query
       )
 
       const promises = data.documents.map(async (doc) => {
-        if (!doc) return
-        const userData: UserData.UserDataDocumentsType = await getDocument(
-          'hp_db',
-          'userdata',
-          `${doc.$id}`
-        )
+        if (current?.$id === doc.$id) {
+          setUserStatus(doc)
+          return
+        }
+        const userData: UserData.UserDataDocumentsType =
+          await databases.getDocument('hp_db', 'userdata', doc.$id)
         return { ...doc, userData }
       })
 
@@ -113,31 +131,64 @@ export default function PageClient() {
 
         switch (eventType) {
           case 'update':
+            if (current && updatedDocument.$id === current.$id) {
+              setUserStatus(updatedDocument)
+              return
+            }
+
             setFriendsLocations(
               (prevLocations: Location.LocationDocumentsType[]) => {
-                return prevLocations.map((location) => {
-                  if (location.$id === updatedDocument.$id) {
-                    return updatedDocument
-                  } else {
-                    return location
-                  }
-                })
+                const existingLocation = prevLocations.find(
+                  (location) => location?.$id === updatedDocument.$id
+                )
+                if (existingLocation) {
+                  // Merge updated document with existing one, preserving userData
+                  return prevLocations.map((location) =>
+                    location?.$id === updatedDocument.$id
+                      ? {
+                          ...location,
+                          ...updatedDocument,
+                          userData: location.userData,
+                        }
+                      : location
+                  )
+                } else {
+                  return [...prevLocations, updatedDocument]
+                }
+              }
+            )
+            break
+          case 'delete':
+            if (current && updatedDocument.$id === current.$id) {
+              setUserStatus(null)
+              return
+            }
+            setFriendsLocations(
+              (prevLocations: Location.LocationDocumentsType[]) => {
+                return prevLocations.filter(
+                  (location) => location?.$id !== updatedDocument.$id
+                )
               }
             )
             break
           case 'create':
-            // Fetch userData for the updated or created document
-            const userData: UserData.UserDataDocumentsType = await getDocument(
-              'hp_db',
-              'userdata',
-              `${updatedDocument.$id}`
-            )
+            if (current && updatedDocument.$id === current.$id) {
+              setUserStatus(updatedDocument)
+              return
+            }
+
+            const userData: UserData.UserDataDocumentsType =
+              await databases.getDocument(
+                'hp_db',
+                'userdata',
+                `${updatedDocument.$id}`
+              )
             const updatedLocationWithUserData = { ...updatedDocument, userData }
 
             setFriendsLocations(
               (prevLocations: Location.LocationDocumentsType[]) => {
                 const locationExists = prevLocations.some(
-                  (location) => location.$id === updatedDocument.$id
+                  (location) => location?.$id === updatedDocument.$id
                 )
                 if (locationExists) {
                   // Update existing location
@@ -153,15 +204,6 @@ export default function PageClient() {
               }
             )
             break
-          case 'delete':
-            // Remove the deleted document from the state
-            setFriendsLocations(
-              (prevLocations: Location.LocationDocumentsType[]) =>
-                prevLocations.filter(
-                  (location) => location.$id !== updatedDocument.$id
-                )
-            )
-            break
           default:
             console.error('Unknown event type:', eventType)
         }
@@ -174,8 +216,10 @@ export default function PageClient() {
     return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${avatarId}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&width=100&height=100`
   }
 
-  const sanitizedDescription = sanitizeHtml(currentEvent?.description)
-  const descriptionResult = sanitizedDescription.replace(/\n/g, '<br />')
+  const sanitizedDescription = useMemo(() => {
+    if (!currentEvent?.description) return ''
+    return currentEvent.description.replace(/<[^>]*>?/gm, '')
+  }, [currentEvent])
 
   return (
     <div className={'h-[90vh] w-full'}>
@@ -199,12 +243,14 @@ export default function PageClient() {
           <DialogDescription>
             <div
               dangerouslySetInnerHTML={{
-                __html: descriptionResult || 'Nothing here yet!',
+                __html: sanitizedDescription || 'Nothing here yet!',
               }}
             />
           </DialogDescription>
-          <div>Start: {formatDate(new Date(currentEvent?.date))}</div>
-          <div>Until: {formatDate(new Date(currentEvent?.dateUntil))}</div>
+          <div>Start: {formatDateLocale(new Date(currentEvent?.date))}</div>
+          <div>
+            Until: {formatDateLocale(new Date(currentEvent?.dateUntil))}
+          </div>
         </DialogContent>
       </Dialog>
 
@@ -216,7 +262,7 @@ export default function PageClient() {
           gestureHandling={'greedy'}
           disableDefaultUI
         >
-          {friendsLocations?.map((user, index) => {
+          {friendsLocations?.map((user: User, index: number) => {
             return (
               <AdvancedMarker
                 key={index}
@@ -230,10 +276,17 @@ export default function PageClient() {
                   setModalUserOpen(true)
                 )}
               >
-                <Avatar>
+                <Avatar
+                  style={{
+                    borderWidth: 2,
+                    borderColor: user?.statusColor,
+                  }}
+                >
                   <AvatarImage src={getUserAvatar(user?.userData?.avatarId)} />
                   <AvatarFallback>
-                    {user?.displayName?.charAt(0)?.toUpperCase()}
+                    {user?.userData?.displayName
+                      ? user?.userData?.displayName.charAt(0)
+                      : 'U'}
                   </AvatarFallback>
                 </Avatar>
               </AdvancedMarker>

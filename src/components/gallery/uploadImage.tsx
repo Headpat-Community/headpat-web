@@ -33,7 +33,7 @@ export default function UploadPage({ userId }: { userId: string }) {
     if (event.target.files && event.target.files.length > 0) {
       let file: any = event.target.files[0]
 
-      if (file.type.includes('image/gif' || 'video')) {
+      if (file.type.includes('image/gif') || file.type.includes('video')) {
         if (file.size > maxSizeInBytes) {
           toast.error('File size exceeds the 8 MB limit.')
           if (fileInputRef.current) {
@@ -97,7 +97,7 @@ export default function UploadPage({ userId }: { userId: string }) {
       let file = event.dataTransfer.files[0]
       console.log(file)
 
-      if (file.type.includes('image/gif' || 'video')) {
+      if (file.type.includes('image/gif') || file.type.includes('video')) {
         if (file.size > maxSizeInBytes) {
           toast.error('File size exceeds the 8 MB limit.')
           if (fileInputRef.current) {
