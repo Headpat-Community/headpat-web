@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AdvancedMarker, APIProvider, Map } from '@vis.gl/react-google-maps'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Events, Location, UserData } from '@/utils/types/models'

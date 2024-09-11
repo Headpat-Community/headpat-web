@@ -125,9 +125,11 @@ function RadioGroupItemWithLabel({
   onLabelPress: () => void
 }) {
   return (
-    <div className={'flex-row gap-2 items-center'}>
+    <div className={'flex gap-2 items-center'}>
       <RadioGroupItem aria-labelledby={`label-for-${value}`} value={value} />
-      <Label>{value}</Label>
+      <Label id={`label-for-${value}`} onClick={onLabelPress}>
+        {value}
+      </Label>
     </div>
   )
 }

@@ -43,7 +43,6 @@ export default async function Home({
   params: { locale: string }
 }) {
   const main = await getTranslations({ locale, namespace: 'HomePage' })
-  const pageNames = await getTranslations({ locale, namespace: 'PageNames' })
 
   return (
     <PageLayout title="Home">

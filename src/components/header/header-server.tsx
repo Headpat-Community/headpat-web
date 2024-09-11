@@ -41,8 +41,6 @@ export default async function HeaderServer({
         <div className="md:hidden">
           <MobileNav
             accountData={accountData || null}
-            userData={userData || null}
-            userImage={userImage}
             translations={translations}
           >
             {children}

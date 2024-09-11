@@ -65,9 +65,6 @@ export default function PageClient({ communityId }: { communityId: string }) {
     )
   }
 
-  const formatDate = (date: Date) =>
-    date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')
-
   return (
     <PageLayout title={'Followers'}>
       <div

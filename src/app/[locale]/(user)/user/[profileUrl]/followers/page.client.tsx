@@ -45,15 +45,6 @@ export default function ClientPage({
     fetchUsers().then()
   }, [fetchUsers])
 
-  const formatDate = (date: Date) =>
-    date
-      .toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-      })
-      .replace(/\//g, '.')
-
   if (isFetching && users.length === 0) {
     return (
       <PageLayout title={`${user?.displayName}'s followers`}>
