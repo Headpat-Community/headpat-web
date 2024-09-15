@@ -1,3 +1,6 @@
+'use client'
+import { useState } from 'react'
+import { toast } from 'sonner'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,43 +11,39 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import React, { useState } from 'react'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { UserData } from '@/utils/types/models'
-import { toast } from 'sonner'
-import { reportUserProfile } from '@/utils/actions/user/reportUserProfile'
+import { Label } from '@/components/ui/label'
+import { Gallery } from '@/utils/types/models'
+import { reportGalleryImage } from '@/utils/actions/moderation/reportGalleryImage'
 
-export default function ReportUserModal({
+export default function ReportGalleryModal({
   open,
   setOpen,
-  user,
+  image,
 }: {
   open: boolean
   setOpen: (open: boolean) => void
-  user: UserData.UserDataDocumentsType
+  image: Gallery.GalleryDocumentsType
 }) {
   const [reportReason, setReportReason] = useState<string>('')
   const [otherReason, setOtherReason] = useState<string>('')
 
   const reportUser = async () => {
     try {
-      const data = await reportUserProfile({
-        reportedUserId: user.$id,
+      const data = await reportGalleryImage({
+        reportedGalleryId: image.$id,
         reason: reportReason === 'Other' ? otherReason : reportReason,
       })
+      console.log(data)
       setOpen(false)
       if (data.type === 'report_success') {
-        toast.success('Success', {
-          description: 'Thanks for keeping the community safe!',
-        })
+        toast.success('Thanks for keeping the community safe!')
         setReportReason('')
         setOtherReason('')
       }
     } catch (e) {
-      console.error(e)
-      toast.error('An error occurred while reporting the user')
+      toast.error('Failed to report user. Please try again later.')
     }
   }
 
@@ -59,10 +58,10 @@ export default function ReportUserModal({
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent className={'w-full'}>
           <AlertDialogHeader>
-            <AlertDialogTitle>Report {user?.displayName}</AlertDialogTitle>
+            <AlertDialogTitle>Report Image</AlertDialogTitle>
           </AlertDialogHeader>
           <AlertDialogDescription>
-            What is the reason for reporting this user?
+            What is the reason for reporting this image?
           </AlertDialogDescription>
           <div className={'z-50'}>
             <RadioGroup
@@ -107,7 +106,7 @@ export default function ReportUserModal({
                 !reportReason || (reportReason === 'Other' && !otherReason)
               }
             >
-              Report
+              <span className={'text-white'}>Report</span>
             </AlertDialogAction>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
           </AlertDialogFooter>

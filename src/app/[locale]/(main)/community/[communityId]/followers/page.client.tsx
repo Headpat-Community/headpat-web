@@ -4,17 +4,11 @@ import { ExecutionMethod } from 'node-appwrite'
 import PageLayout from '@/components/pageLayout'
 import { UserData } from '@/utils/types/models'
 import { Card } from '@/components/ui/card'
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@/components/ui/hover-card'
 import { Link } from '@/navigation'
 import Image from 'next/image'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { CakeIcon, CalendarDays } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import UserCard from '@/components/user/userCard'
 
 export default function PageClient({ communityId }: { communityId: string }) {
   const [followers, setFollowers] =
@@ -71,9 +65,6 @@ export default function PageClient({ communityId }: { communityId: string }) {
     )
   }
 
-  const formatDate = (date: Date) =>
-    date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')
-
   return (
     <PageLayout title={'Followers'}>
       <div
@@ -82,17 +73,10 @@ export default function PageClient({ communityId }: { communityId: string }) {
         }
       >
         {followers.map((user: UserData.UserDataDocumentsType) => {
-          const today = formatDate(new Date())
-          const birthday = user.birthday
-            ? formatDate(new Date(user.birthday))
-            : '01/01/1900'
-
-          const isBirthday = birthday !== '01/01/1900' && birthday === today
-
           return (
             <Card className={'border-none h-40 w-40 mx-auto'} key={user.$id}>
-              <HoverCard openDelay={100} closeDelay={100}>
-                <HoverCardTrigger>
+              <Card className={'border-none h-40 w-40 mx-auto'} key={user.$id}>
+                <UserCard user={user}>
                   <div className={'h-full w-full'}>
                     <Link
                       href={{
@@ -122,43 +106,8 @@ export default function PageClient({ communityId }: { communityId: string }) {
                       )}
                     </Link>
                   </div>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-80">
-                  <div className="flex space-x-4">
-                    <Avatar>
-                      <AvatarImage
-                        src={
-                          getAvatarImageUrlPreview(
-                            user.avatarId,
-                            'width=250&height=250'
-                          ) || null
-                        }
-                      />
-                      <AvatarFallback>
-                        {user.displayName.charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="space-y-1">
-                      <h4 className="text-sm font-semibold">{`@${user.displayName}`}</h4>
-                      <p className="text-sm flex-wrap">{user.status}</p>
-                      {isBirthday && (
-                        <div className="flex items-center pt-2">
-                          <CakeIcon className="mr-2 h-4 w-4 opacity-70" />{' '}
-                          <span className="text-xs text-muted-foreground">
-                            Today is my birthday!
-                          </span>
-                        </div>
-                      )}
-                      <div className="flex items-center pt-2">
-                        <CalendarDays className="mr-2 h-4 w-4 opacity-70" />{' '}
-                        <span className="text-xs text-muted-foreground">
-                          Joined {formatDate(new Date(user.$createdAt))}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </HoverCardContent>
-              </HoverCard>
+                </UserCard>
+              </Card>
             </Card>
           )
         })}

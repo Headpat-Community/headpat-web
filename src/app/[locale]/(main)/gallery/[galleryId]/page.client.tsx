@@ -1,10 +1,7 @@
 'use client'
 import { Link } from '@/navigation'
 import { Button } from '@/components/ui/button'
-import {
-  getGalleryImageUrlPreview,
-  getGalleryImageUrlView,
-} from '@/components/getStorageItem'
+import { getGalleryImageUrlView } from '@/components/getStorageItem'
 import PageLayout from '@/components/pageLayout'
 import { useEffect, useState } from 'react'
 import { Gallery, UserData } from '@/utils/types/models'
@@ -12,14 +9,15 @@ import sanitize from 'sanitize-html'
 import { useUser } from '@/components/contexts/UserContext'
 import { databases, functions, storage } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
+import { Skeleton } from '@/components/ui/skeleton'
+import UserCard from '@/components/user/userCard'
+import ModerationModal from '@/components/gallery/moderation/ModerationModal'
 
 export default function PageClient({ galleryId }: { galleryId: string }) {
   const [image, setImage] = useState<Gallery.GalleryDocumentsType>(null)
   const [imagePrefs, setImagePrefs] = useState(null)
   const [userData, setUserData] = useState<UserData.UserDataDocumentsType>(null)
-  const [modalVisible, setModalVisible] = useState(false)
   const [moderationModalOpen, setModerationModalOpen] = useState(false)
-  const [reportGalleryModalOpen, setReportGalleryModalOpen] = useState(false)
   const { current } = useUser()
 
   const fetchGallery = async () => {
@@ -54,7 +52,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
   const description = sanitize(image?.longText)
   const descriptionSanitized = description.replace(/\n/g, '<br />')
 
-  if (!image || !userData) {
+  if (!image) {
     return <PageLayout title={'Gallery'}>Loading...</PageLayout>
   }
 
@@ -69,7 +67,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
         <div className="flex flex-wrap items-center justify-center gap-4 p-8">
           <div>
             <div className="flex flex-wrap items-start">
-              {!image.nsfw && (
+              {!image.nsfw && !current?.prefs?.nsfw && (
                 <div className="mb-4 mr-4 flex sm:mt-4 md:mb-0">
                   <Link
                     href={'/gallery'}
@@ -79,7 +77,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                   </Link>
                 </div>
               )}
-              {image.nsfw ? (
+              {image.nsfw && !current?.prefs?.nsfw ? (
                 <div className="fixed inset-0 flex items-center justify-center">
                   {/* Semi-transparent overlay */}
                   <div
@@ -146,17 +144,15 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                   User:
                                 </dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                  <Link
-                                    href={{
-                                      pathname: `/user/[profileUrl]`,
-                                      params: {
-                                        profileUrl: userData.profileUrl,
-                                      },
-                                    }}
-                                    className="text-indigo-500 hover:text-indigo-400"
-                                  >
-                                    {userData.displayName}
-                                  </Link>
+                                  {userData ? (
+                                    <UserCard user={userData} isChild={true}>
+                                      <span className="text-indigo-500 hover:text-indigo-400">
+                                        {userData.displayName}
+                                      </span>
+                                    </UserCard>
+                                  ) : (
+                                    <Skeleton className={'h-4 w-[100px]'} />
+                                  )}
                                 </dd>
                               </div>
                               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -164,7 +160,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                   Created at
                                 </dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                  {new Date(userData.$createdAt).toLocaleString(
+                                  {new Date(image.$createdAt).toLocaleString(
                                     'en-GB',
                                     {
                                       day: '2-digit',
@@ -181,7 +177,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                   Last changed
                                 </dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                  {new Date(userData.$updatedAt).toLocaleString(
+                                  {new Date(image.$updatedAt).toLocaleString(
                                     'en-GB',
                                     {
                                       day: '2-digit',
@@ -220,6 +216,13 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                     See full image
                                   </Button>
                                 </Link>
+                                <ModerationModal
+                                  isOpen={moderationModalOpen}
+                                  setIsOpen={setModerationModalOpen}
+                                  image={image}
+                                  imagePrefs={imagePrefs}
+                                  current={current}
+                                />
                                 {current?.$id === image.userId && (
                                   <Link
                                     href={{

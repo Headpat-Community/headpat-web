@@ -1,6 +1,19 @@
 import { AccessibilityIcon } from 'lucide-react'
 import Link from 'next/link'
 
+export async function generateMetadata() {
+  return {
+    title: 'Page Not Found',
+    description:
+      "The page you're looking for doesn't exist, has been moved or you have no access to it.",
+    openGraph: {
+      title: 'Page Not Found',
+      type: 'website',
+    },
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+  }
+}
+
 export default function NotFoundComponent() {
   return (
     <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">

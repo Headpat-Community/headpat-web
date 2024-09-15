@@ -29,7 +29,7 @@ export default function PageClient() {
       const response = JSON.parse(data.responseBody)
       setCommunities(response)
     } catch (error) {
-      toast('Failed to fetch communities. Please try again later.')
+      toast.error('Failed to fetch communities. Please try again later.')
     } finally {
       setIsFetching(false)
     }

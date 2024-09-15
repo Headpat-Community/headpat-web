@@ -23,8 +23,9 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { createUser } from '@/utils/actions/login-actions'
-import { Link, useRouter } from '@/navigation'
+import { Link } from '@/navigation'
 import { client } from '@/app/appwrite-client'
+import PageLayout from '@/components/pageLayout'
 
 export default function Login() {
   const [data, setData] = useState({
@@ -34,95 +35,68 @@ export default function Login() {
   })
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
-  const router = useRouter()
   const { toast } = useToast()
 
   const handleEmailLogin = async (e: any) => {
     e.preventDefault()
 
-    if (isRegistering) {
-      const body = {
-        email: data.email,
-        password: data.password,
-        username: data.username,
-      }
-
-      const response = await createUser(body)
-      console.log(response)
-
-      if (response.code === 400) {
-        toast({
-          title: 'Error',
-          description: 'Invalid E-Mail or password provided.',
-          variant: 'destructive',
-        })
-        return
-      } else if (response.code === 401) {
-        toast({
-          title: 'Error',
-          description: 'E-Mail or Password incorrect.',
-          variant: 'destructive',
-        })
-        return
-      } else if (response.code === 409) {
-        toast({
-          title: 'Error',
-          description: 'E-Mail already in use.',
-          variant: 'destructive',
-        })
-        return
-      } else if (response.code === 429) {
-        toast({
-          title: 'Error',
-          description: 'Too many requests, please try again later.',
-          variant: 'destructive',
-        })
-        return
-      }
-
-      window.location.href = '/account'
-    } else {
-      const signIn = await fetch('/api/user/signin', {
+    const signIn = async () => {
+      const response = await fetch('/api/user/signin', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: data.email, password: data.password }),
       })
-      const dataResponse = await signIn.json()
-      if (dataResponse?.error?.response?.type == 'user_invalid_credentials') {
+      return response.json()
+    }
+
+    if (isRegistering) {
+      const response = await createUser(data)
+
+      const errorMessages = {
+        400: 'Invalid E-Mail or password provided.',
+        401: 'E-Mail or Password incorrect.',
+        409: 'E-Mail already in use.',
+        429: 'Too many requests, please try again later.',
+      }
+
+      if (errorMessages[response.code]) {
         toast({
           title: 'Error',
-          description: 'E-Mail or Password incorrect.',
+          description: errorMessages[response.code],
           variant: 'destructive',
         })
         return
-      } else if (dataResponse?.error?.response?.type == 'user_blocked') {
+      }
+
+      const dataResponse = await signIn()
+      client.setSession(dataResponse.secret)
+      window.location.href = '/login/mfa'
+    } else {
+      const dataResponse = await signIn()
+
+      const errorMessages = {
+        user_invalid_credentials: 'E-Mail or Password incorrect.',
+        user_blocked: 'User is blocked.',
+      }
+
+      if (errorMessages[dataResponse?.error?.response?.type]) {
         toast({
           title: 'Error',
-          description: 'User is blocked.',
+          description: errorMessages[dataResponse.error.response.type],
           variant: 'destructive',
         })
         return
       }
 
       client.setSession(dataResponse.secret)
-
-      router.replace('/login/mfa')
+      window.location.href = '/login/mfa'
     }
   }
 
   return (
-    <>
-      <Button className={'m-8 absolute z-10'} onClick={() => router.push('/')}>
-        Home
-      </Button>
+    <PageLayout title={'Login'}>
       <div className="flex flex-1 justify-center items-center absolute inset-0">
-        {/* Add justify-center and items-center here */}
-        <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:bg-[#04050a]/85 dark:ring-white">
+        <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:ring-white">
           <div className={'text-center'}>
             <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
               Welcome to Headpat!
@@ -246,6 +220,7 @@ export default function Login() {
                   </span>
                 </div>
               </div>
+              {/* OAuth Sign-In */}
 
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <form action={signInWithDiscord}>
@@ -321,6 +296,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-    </>
+    </PageLayout>
   )
 }

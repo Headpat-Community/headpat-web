@@ -20,13 +20,7 @@ import { useRouter } from '@/navigation'
 import ChangeLanguage from '@/components/system/changeLanguage'
 import { ThemeToggle } from '@/components/ThemeToggle'
 
-export default function MobileNav({
-  accountData,
-  userData,
-  userImage,
-  translations,
-  children,
-}) {
+export default function MobileNav({ accountData, translations, children }) {
   const router = useRouter()
   const [isOpen, setIsOpen] = React.useState(false)
 

@@ -1,5 +1,6 @@
 import createNextIntlPlugin from 'next-intl/plugin'
 import createMDX from '@next/mdx'
+//import { withSentryConfig } from '@sentry/nextjs'
 
 const withNextIntl = createNextIntlPlugin()
 
@@ -68,17 +69,15 @@ const withMDX = createMDX({
   // Add Markdown plugins here, as desired
 })
 
-/*
 // Injected content via Sentry wizard below
 
-const { withSentryConfig } = require('@sentry/nextjs')
-
-module.exports = withSentryConfig(module.exports, {
+/*
+export default withSentryConfig(withNextIntl(withMDX(nextConfig)), {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
 
   org: 'headpat',
-  project: 'javascript-nextjs',
+  project: 'headpat-web',
   sentryUrl: 'https://sentry.fayevr.dev/',
 
   // Only print logs for uploading source maps in CI
@@ -92,8 +91,8 @@ module.exports = withSentryConfig(module.exports, {
 
   // Uncomment to route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
   // This can increase your server load as well as your hosting bill.
-  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
-  // side errors will fail.
+  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of
+  // client-side errors will fail.
   // tunnelRoute: "/monitoring",
 
   // Hides source maps from generated client bundles
@@ -101,9 +100,6 @@ module.exports = withSentryConfig(module.exports, {
 
   // Automatically tree-shake Sentry logger statements to reduce bundle size
   disableLogger: true,
-const withMDX = createMDX({
-  // Add Markdown plugins here, as desired
-})
 
   // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
   // See the following for more information:
