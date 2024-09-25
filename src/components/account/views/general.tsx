@@ -51,27 +51,29 @@ export default function GeneralAccountView({
   const handleEmailChange = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
 
-    const email = (document.getElementById('email') as HTMLInputElement).value
-    const email_password = (
-      document.getElementById('email_password') as HTMLInputElement
-    ).value
-
-    // Check if profileUrl has at least 4 characters
-    if (email_password.length < 8 || email_password.length > 256) {
-      toast.error('Please enter a valid password with at least 8 characters.')
+    // Check if email_password has at least 8 characters
+    if (userData.password.length < 8) {
+      toast.error('Password must be at least 8 characters long.')
       return
     }
 
-    const data = await changeEmail(email, email_password)
+    const data = await changeEmail(userData.email, userData.password)
 
-    if (data.type === 'user_invalid_credentials') {
+    if (data.type == 'user_invalid_credentials') {
       toast.error("Password doesn't match.")
+      return
     }
-    if (data.type === 'user_target_already_exists') {
+    if (data.type == 'user_target_already_exists') {
       toast.error('Account already exists with this email.')
+      return
     } else {
       toast.success('E-Mail updated successfully.')
+      setUserData((prevUserData: any) => ({
+        ...prevUserData,
+        email: userData.email,
+      }))
       Sentry.captureException(data)
+      return
     }
   }
 
@@ -184,8 +186,9 @@ export default function GeneralAccountView({
                     name="email"
                     type="email"
                     required
+                    minLength={3}
                     onChange={(e) => {
-                      setUserMe((prevUserData: any) => ({
+                      setUserData((prevUserData: any) => ({
                         ...prevUserData,
                         email: e.target.value,
                       }))
@@ -196,7 +199,7 @@ export default function GeneralAccountView({
                 </div>
               </div>
               <div className="col-span-full">
-                <Label htmlFor="password">Current Password</Label>
+                <Label htmlFor="email_password">Current Password</Label>
                 <div className="mt-2">
                   <div className="flex rounded-md bg-white/5 ring-1 ring-inset ring-black/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 dark:ring-white/10">
                     <Input
@@ -205,8 +208,15 @@ export default function GeneralAccountView({
                       id="email_password"
                       minLength={8}
                       maxLength={128}
+                      onChange={(e) => {
+                        setUserData((prevUserData: any) => ({
+                          ...prevUserData,
+                          password: e.target.value,
+                        }))
+                      }}
                       required
-                      autoComplete="current-password"
+                      value={userMe ? userMe.password : ''}
+                      autoComplete="password"
                     />
                   </div>
                 </div>

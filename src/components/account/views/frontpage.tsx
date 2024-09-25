@@ -119,13 +119,12 @@ export default function FrontpageView({
                           displayName: e.target.value,
                         })
                       }
-                    }} // Update state when the input changes, only if the length is less than or equal to 32
-                    maxLength={32} // Limit the maximum number of characters to 32
+                    }}
+                    maxLength={32}
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
                       {userData ? userData.displayName?.length : 0}
-                      {/* Check if userData.displayname is defined before accessing its length property */}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>
                   </div>
@@ -219,22 +218,22 @@ export default function FrontpageView({
                     id="location"
                     name="location"
                     type="text"
-                    value={userData ? userData.location : ''} // Set the value from state
+                    value={userData ? userData.location : ''}
                     onChange={(e) => {
-                      if (e.target.value.length <= 256) {
+                      if (e.target.value.length <= 48) {
                         setUserData({
                           ...userData,
                           location: e.target.value,
                         })
                       }
-                    }} // Update state when the input changes, only if the length is less than or equal to 16
-                    maxLength={256} // Limit the maximum number of characters to 16
+                    }}
+                    maxLength={48}
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
                       {userData ? userData.location?.length : 0}
                     </span>
-                    <span className="select-none text-gray-400">/{256}</span>
+                    <span className="select-none text-gray-400">/{48}</span>
                   </div>
                 </div>
               </div>
@@ -250,13 +249,13 @@ export default function FrontpageView({
                   <Textarea
                     id="biostatus"
                     name="biostatus"
-                    value={userData ? userData.bio : ''} // Set the value from state
+                    value={userData ? userData.bio : ''}
                     onChange={(e) => {
                       if (e.target.value.length <= 2048) {
                         setUserData({ ...userData, bio: e.target.value })
                       }
-                    }} // Update state when the input changes, only if the length is less than or equal to 256
-                    maxLength={2048} // Limit the maximum number of characters to 256
+                    }}
+                    maxLength={2048}
                   />
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-end pb-2 pr-4 text-sm leading-5">
                     <span className="select-none">
