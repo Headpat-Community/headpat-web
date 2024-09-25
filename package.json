@@ -94,7 +94,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/google.maps": "^3.57.0",
+    "@types/google.maps": "^3.58.1",
     "@types/node": "22.5.2",
     "@types/react": "18.3.5",
     "@types/sanitize-html": "^2.13.0",
