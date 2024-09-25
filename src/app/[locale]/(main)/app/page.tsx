@@ -1,11 +1,7 @@
-import PageLayout from '@/components/pageLayout'
+import PageClient from './page.client'
 
 export const runtime = 'edge'
 
-export default async function Home({
-  params: { locale },
-}: {
-  params: { locale: string }
-}) {
-  return <PageLayout title={'hi'}>Test</PageLayout>
+export default async function Home() {
+  return <PageClient />
 }

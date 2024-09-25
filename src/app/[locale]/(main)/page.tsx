@@ -99,14 +99,14 @@ export default async function Home({
             <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-40 lg:flex lg:px-8 lg:pt-40">
               <div className="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8">
                 <div className="mt-24 sm:mt-32 lg:mt-16 inline-flex space-x-6">
-                  <Link href="#">
+                  <Link href="/app">
                     <span className="rounded-full bg-indigo-500/10 px-3 py-1 text-sm font-semibold leading-6 text-indigo-400 ring-1 ring-inset ring-indigo-500/20">
-                      {main('latestupdates')} (Soon!)
+                      {main('checkapp')}
                     </span>
                   </Link>
                   <Link href="#">
                     <span className="inline-flex items-center space-x-2 text-sm font-medium leading-6 text-muted-foreground">
-                      <span>{main('checkapp')} (Soon!)</span>
+                      <span>{main('latestupdates')} (Soon!)</span>
                       <ChevronRightIcon
                         aria-hidden="true"
                         className="h-5 w-5"
