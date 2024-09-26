@@ -70,7 +70,7 @@ export async function deleteAccount() {
     await functions.createExecution(
       'user-endpoints',
       '',
-      true,
+      false,
       '/deleteAccount',
       ExecutionMethod.DELETE
     )

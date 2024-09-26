@@ -24,8 +24,7 @@ export default function MfaPageClient() {
   useEffect(() => {
     const checkMfa = async () => {
       try {
-        const data = await account.get()
-        console.log(data)
+        await account.get()
         router.push('/account')
       } catch (error) {
         if (error.type === 'general_unauthorized_scope') {
@@ -35,8 +34,9 @@ export default function MfaPageClient() {
         }
       }
     }
-    checkMfa().then()
-  })
+    checkMfa().then(createMfaCode)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const createMfaCode = async () => {
     try {
@@ -46,10 +46,6 @@ export default function MfaPageClient() {
       console.log(error)
     }
   }
-
-  useEffect(() => {
-    createMfaCode().then()
-  }, [])
 
   const handleMfaVerify = async (otp: string) => {
     try {
@@ -97,7 +93,6 @@ export default function MfaPageClient() {
   } else {
     return (
       <div className="flex flex-1 justify-center items-center absolute inset-0">
-        {/* Add justify-center and items-center here */}
         <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:bg-[#04050a]/85 dark:ring-white">
           <div className="mt-10">
             <div>

@@ -24,7 +24,7 @@ import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { createUser } from '@/utils/actions/login-actions'
 import { Link } from '@/navigation'
-import { client } from '@/app/appwrite-client'
+import { account, client } from '@/app/appwrite-client'
 import PageLayout from '@/components/pageLayout'
 
 export default function Login() {
@@ -70,7 +70,7 @@ export default function Login() {
 
       const dataResponse = await signIn()
       client.setSession(dataResponse.secret)
-      window.location.href = '/login/mfa'
+      window.location.href = '/account'
     } else {
       const dataResponse = await signIn()
 
@@ -89,7 +89,7 @@ export default function Login() {
       }
 
       client.setSession(dataResponse.secret)
-      window.location.href = '/login/mfa'
+      window.location.href = '/account'
     }
   }
 

@@ -2,6 +2,7 @@ import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -55,8 +56,13 @@ export default function MfaRecoveryCodes() {
         code
       )
 
+      let recoveryCodesResult = null
       if (mfaVerifyResult) {
-        const recoveryCodesResult = await account.updateMfaRecoveryCodes()
+        try {
+          recoveryCodesResult = await account.updateMfaRecoveryCodes()
+        } catch (error) {
+          recoveryCodesResult = await account.createMfaRecoveryCodes()
+        }
         setRecoveryCodes(recoveryCodesResult.recoveryCodes)
         setMfaMode('hasRecoveryCodes')
       } else {
@@ -95,10 +101,10 @@ export default function MfaRecoveryCodes() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Recovery Codes</AlertDialogTitle>
-            <p className={'text-sm text-muted-foreground'}>
+            <AlertDialogDescription>
               Save these codes in a safe place. You can use them to access your
               account if you lose your device.
-            </p>
+            </AlertDialogDescription>
             <div className={'flex flex-col'}>
               {mfaMode === 'challengeStarted' && (
                 <p>
@@ -116,7 +122,7 @@ export default function MfaRecoveryCodes() {
                         toast({
                           title: 'Error',
                           description:
-                            "You encountered an error. But don't worry, we're on it.",
+                            "Incorrect code. Please try again. If you're having trouble, please contact support.",
                           variant: 'destructive',
                         })
                         Sentry.captureException(error)
@@ -143,13 +149,11 @@ export default function MfaRecoveryCodes() {
                     <h4 className="mb-4 text-sm font-medium leading-none">
                       Tags
                     </h4>
-                    {recoveryCodes.map((code) => (
-                      <>
+                    {recoveryCodes.map((code, index) => (
+                      <div key={index}>
                         <Separator className="my-2" />
-                        <div key={code} className="text-sm">
-                          {code}
-                        </div>
-                      </>
+                        <div className="text-sm">{code}</div>
+                      </div>
                     ))}
                   </div>
                 </ScrollArea>

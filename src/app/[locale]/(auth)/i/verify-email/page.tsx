@@ -50,7 +50,7 @@ const ResetPassword = () => {
             height={128}
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
-            Reset Password
+            Verify E-Mail
           </h2>
 
           <form className="mt-10 space-y-6" action="#" method="POST">
@@ -102,7 +102,7 @@ const ResetPassword = () => {
                 className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                 onClick={handleSubmit}
               >
-                E-Mail bestätigen
+                Verify
               </button>
             </div>
           </form>
