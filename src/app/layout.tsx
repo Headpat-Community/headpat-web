@@ -49,6 +49,9 @@ export async function generateMetadata(): Promise<Metadata> {
         app_store_id: '6502715063',
       },
     },
+    other: {
+      'apple-itunes-app': 'app-id=6502715063',
+    },
     generator: 'Headpat',
     metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
   }
