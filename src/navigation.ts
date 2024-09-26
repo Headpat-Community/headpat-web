@@ -36,6 +36,7 @@ export const pathnames = {
   '/announcements': '/announcements',
   '/announcements/[announcementId]': '/announcements/[announcementId]',
   '/account': '/account',
+  '/account/verify': '/account/verify',
   '/account/gallery': '/account/gallery',
   '/account/gallery/upload': '/account/gallery/upload',
   '/account/gallery/[galleryId]': '/account/gallery/[galleryId]',

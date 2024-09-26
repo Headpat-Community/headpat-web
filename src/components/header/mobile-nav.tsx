@@ -19,10 +19,12 @@ import Image from 'next/image'
 import { useRouter } from '@/navigation'
 import ChangeLanguage from '@/components/system/changeLanguage'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { useUser } from '@/components/contexts/UserContext'
 
-export default function MobileNav({ accountData, translations, children }) {
+export default function MobileNav({ translations, children }) {
   const router = useRouter()
   const [isOpen, setIsOpen] = React.useState(false)
+  const { current } = useUser()
 
   return (
     <>
@@ -77,7 +79,7 @@ export default function MobileNav({ accountData, translations, children }) {
                       <Separator />
                       <Nav
                         isCollapsed={false}
-                        links={Nav2(accountData, translations)}
+                        links={Nav2(current, translations)}
                         setIsOpen={setIsOpen}
                         translations={translations}
                       />
@@ -95,7 +97,7 @@ export default function MobileNav({ accountData, translations, children }) {
                   <Separator className={'mb-2'} />
                   <Nav
                     isCollapsed={false}
-                    links={NavFooter(accountData, translations)}
+                    links={NavFooter(current, translations)}
                     setIsOpen={setIsOpen}
                     translations={translations}
                   />

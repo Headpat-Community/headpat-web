@@ -26,6 +26,7 @@ import { createUser } from '@/utils/actions/login-actions'
 import { Link } from '@/navigation'
 import { account, client } from '@/app/appwrite-client'
 import PageLayout from '@/components/pageLayout'
+import { useUser } from '@/components/contexts/UserContext'
 
 export default function Login() {
   const [data, setData] = useState({
@@ -36,6 +37,7 @@ export default function Login() {
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
   const { toast } = useToast()
+  const { setUser } = useUser()
 
   const handleEmailLogin = async (e: any) => {
     e.preventDefault()
@@ -70,6 +72,7 @@ export default function Login() {
 
       const dataResponse = await signIn()
       client.setSession(dataResponse.secret)
+      await account.createVerification('https://headpat.place/i/verify-email')
       window.location.href = '/account'
     } else {
       const dataResponse = await signIn()
@@ -200,6 +203,9 @@ export default function Login() {
                       className="w-full"
                     >
                       {isRegistering ? 'Register' : 'Login'}
+                    </Button>
+                    <Button variant={'link'} className={'w-full'}>
+                      Forgot password?
                     </Button>
                   </div>
                 </div>

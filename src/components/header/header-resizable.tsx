@@ -11,7 +11,7 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 import { Nav } from '@/components/header/header-nav'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Nav1, Nav2, Nav3, NavFooter } from '@/components/header/data'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ChevronUpIcon } from 'lucide-react'
@@ -22,30 +22,58 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Account, UserData } from '@/utils/types/models'
+import { UserData } from '@/utils/types/models'
 import { Link, useRouter } from '@/navigation'
+import { useUser } from '@/components/contexts/UserContext'
+import { databases } from '@/app/appwrite-client'
+import { toast } from 'sonner'
+
+const getAvatar = (id: string) => {
+  if (!id) return
+
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${id}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&width=250&height=250&quality=50`
+}
 
 export default function SidebarResizable({
   defaultLayout = [265, 440, 655],
   defaultCollapsed = false,
   navCollapsedSize,
-  accountData,
-  userData,
-  userImage,
   translations,
   children,
 }: {
   defaultLayout: number[]
   defaultCollapsed: boolean
   navCollapsedSize: number
-  accountData: Account.AccountPrefs
-  userData: UserData.UserDataDocumentsType
-  userImage: string
   translations: any
   children: React.ReactNode
 }) {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(defaultCollapsed)
+  const [userData, setUserData] =
+    useState<UserData.UserDataDocumentsType | null>(null)
+  const [userImage, setUserImage] = useState<string | null>(null)
   const router = useRouter()
+  const { current } = useUser()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (current) {
+        try {
+          await databases
+            .getDocument('hp_db', 'userdata', `${current.$id}`)
+            .then((data: UserData.UserDataDocumentsType) => {
+              setUserData(data)
+              const image = getAvatar(data.avatarId)
+              setUserImage(image)
+            })
+        } catch (error) {
+          toast.error('Failed to fetch user data')
+        }
+      }
+    }
+
+    fetchData().then()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current])
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -118,7 +146,7 @@ export default function SidebarResizable({
                 <Separator />
                 <Nav
                   isCollapsed={isCollapsed}
-                  links={Nav2(accountData, translations)}
+                  links={Nav2(current, translations)}
                   translations={translations}
                 />
                 <Separator />
@@ -130,7 +158,7 @@ export default function SidebarResizable({
               </div>
             </ScrollArea>
             <div className={'mt-auto relative bottom-0 block'}>
-              {accountData ? (
+              {current ? (
                 <>
                   <Separator />
                   <DropdownMenu>
@@ -199,7 +227,7 @@ export default function SidebarResizable({
                   <Separator />
                   <Nav
                     isCollapsed={isCollapsed}
-                    links={NavFooter(accountData, translations)}
+                    links={NavFooter(current, translations)}
                     translations={translations}
                   />
                 </div>

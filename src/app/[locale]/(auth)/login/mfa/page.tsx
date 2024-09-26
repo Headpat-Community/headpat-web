@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Link } from '@/navigation'
-import MfaPageClient from '@/app/[locale]/(auth)/login/mfa/page.client'
+import MfaPageClient from './page.client'
 
 export const metadata = {
   title: 'Login',

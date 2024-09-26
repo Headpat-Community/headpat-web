@@ -5,7 +5,7 @@ import { account } from '@/app/appwrite-client'
 import { ID } from 'node-appwrite'
 
 interface UserContextValue {
-  current: Account.AccountType | null
+  current: Account.AccountPrefs | null
   setUser: React.Dispatch<React.SetStateAction<Account.AccountType | null>>
   login: (email: string, password: string) => Promise<void>
   loginOAuth: (userId: string, secret: string) => Promise<void>
