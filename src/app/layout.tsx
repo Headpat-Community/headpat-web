@@ -5,10 +5,11 @@ import { Toaster } from '@/components/ui/toaster'
 import { Toaster as SonnerToaster } from '@/components/ui/sonner'
 import { cn } from '@/lib/utils'
 import { UserProvider } from '@/components/contexts/UserContext'
+import { Metadata } from 'next'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
       default: 'Headpat Community',
@@ -29,6 +30,7 @@ export async function generateMetadata() {
     ],
     icons: {
       icon: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
+      apple: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
     },
     openGraph: {
       title: 'Headpat Community',
@@ -37,6 +39,17 @@ export async function generateMetadata() {
       images: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
       type: 'website',
     },
+    appLinks: {
+      android: {
+        url: 'https://play.google.com/store/apps/details?id=com.headpat.app',
+        package: 'com.headpat.app',
+      },
+      ios: {
+        url: 'https://apps.apple.com/app/headpat/id6502715063',
+        app_store_id: '6502715063',
+      },
+    },
+    generator: 'Headpat',
     metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
   }
 }

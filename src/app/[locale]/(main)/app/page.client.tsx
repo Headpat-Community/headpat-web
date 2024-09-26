@@ -6,27 +6,35 @@ import { DownloadIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
-const isMobileDevice = () => {
-  const userAgent =
-    navigator.userAgent || navigator.vendor || (window as any).opera
-  if (/android/i.test(userAgent)) {
-    return 'android'
+interface DeviceType {
+  model?: string
+  type?: string
+  vendor?: string
+}
+
+const isMobileDevice = async () => {
+  const deviceType: DeviceType = await fetch('/api/device').then((res) =>
+    res.json()
+  )
+
+  if (deviceType.type === 'mobile') {
+    if (deviceType.vendor === 'Apple') {
+      window.location.href = 'https://apps.apple.com/app/headpat/id6502715063'
+    } else if (deviceType.vendor === 'Google') {
+      window.location.href =
+        'https://play.google.com/store/apps/details?id=com.headpat.app'
+    }
   }
-  if (/iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream) {
-    return 'ios'
-  }
-  return null
+  return 'unknown'
 }
 
 export default function PageClient() {
   useEffect(() => {
-    const deviceType = isMobileDevice()
-    if (deviceType === 'android') {
-      window.location.href =
-        'https://play.google.com/store/apps/details?id=com.headpat.app'
-    } else if (deviceType === 'ios') {
-      window.location.href = 'https://apps.apple.com/app/headpat/id6502715063'
+    const fetchDevice = async () => {
+      await isMobileDevice()
     }
+
+    fetchDevice().then()
   }, [])
 
   return (
