@@ -98,27 +98,42 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                 </div>
               ) : (
                 <>
-                  {image?.mimeType?.includes('video') ? (
-                    <video
-                      controls
-                      controlsList="nodownload"
-                      loop={true}
-                      draggable={false}
-                      className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
-                    >
-                      <source
-                        src={getGalleryImageUrlView(image?.galleryId)}
-                        type={image?.mimeType}
-                      />
-                      Your browser does not support the video tag.
-                    </video>
+                  {imagePrefs?.isHidden ? (
+                    <div className="imgsinglegallery mx-auto h-[550px] w-96 max-w-full rounded-lg object-contain">
+                      This image is hidden.
+                      <Button
+                        onClick={() => setModerationModalOpen(true)}
+                        variant={'outline'}
+                        className={'flex mt-4'}
+                      >
+                        Show image
+                      </Button>
+                    </div>
                   ) : (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={getImageUrl(image?.galleryId)}
-                      alt={image?.name || 'Headpat Gallery Image'}
-                      className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
-                    />
+                    <>
+                      {image?.mimeType?.includes('video') ? (
+                        <video
+                          controls
+                          controlsList="nodownload"
+                          loop={true}
+                          draggable={false}
+                          className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
+                        >
+                          <source
+                            src={getGalleryImageUrlView(image?.galleryId)}
+                            type={image?.mimeType}
+                          />
+                          Your browser does not support the video tag.
+                        </video>
+                      ) : (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={getImageUrl(image?.galleryId)}
+                          alt={image?.name || 'Headpat Gallery Image'}
+                          className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
+                        />
+                      )}
+                    </>
                   )}
                   <div className="ml-4">
                     <div className="mt-4">
@@ -221,6 +236,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                   setIsOpen={setModerationModalOpen}
                                   image={image}
                                   imagePrefs={imagePrefs}
+                                  setImagePrefs={setImagePrefs}
                                   current={current}
                                 />
                                 {current?.$id === image.userId && (

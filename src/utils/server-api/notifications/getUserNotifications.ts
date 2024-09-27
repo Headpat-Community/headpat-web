@@ -15,9 +15,5 @@ export async function getUserNotifications(): Promise<
     `/user/notifications`,
     ExecutionMethod.GET
   )
-  const response: Notifications.NotificationsDocumentsType[] = JSON.parse(
-    data.responseBody
-  )
-  console.log(response)
-  return response
+  return JSON.parse(data.responseBody)
 }

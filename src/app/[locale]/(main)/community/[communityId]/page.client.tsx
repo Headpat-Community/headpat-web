@@ -48,7 +48,6 @@ export default function PageClient({
         ExecutionMethod.GET
       )
       const response = JSON.parse(data.responseBody)
-      console.log(response)
 
       setCommunity(response)
     }

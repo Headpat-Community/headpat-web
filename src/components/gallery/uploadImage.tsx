@@ -56,7 +56,6 @@ export default function UploadPage({ userId }: { userId: string }) {
         },
       })
         .then((compressedFile) => {
-          console.log('compressedFile', compressedFile)
           if (compressedFile.size > maxSizeInBytes) {
             toast.error('File size exceeds the 8 MB limit.')
             if (fileInputRef.current) {
@@ -95,7 +94,6 @@ export default function UploadPage({ userId }: { userId: string }) {
     event.preventDefault()
     if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
       let file = event.dataTransfer.files[0]
-      console.log(file)
 
       if (file.type.includes('image/gif') || file.type.includes('video')) {
         if (file.size > maxSizeInBytes) {
@@ -174,7 +172,6 @@ export default function UploadPage({ userId }: { userId: string }) {
     try {
       setIsUploading(true) // Set isUploading to true before making the API call
 
-      console.log('Uploading file:', selectedFile)
       const fileData = storage.createFile('gallery', ID.unique(), selectedFile)
 
       fileData.then(

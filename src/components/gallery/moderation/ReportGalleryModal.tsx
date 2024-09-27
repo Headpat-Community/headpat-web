@@ -35,7 +35,7 @@ export default function ReportGalleryModal({
         reportedGalleryId: image.$id,
         reason: reportReason === 'Other' ? otherReason : reportReason,
       })
-      console.log(data)
+
       setOpen(false)
       if (data.type === 'report_success') {
         toast.success('Thanks for keeping the community safe!')

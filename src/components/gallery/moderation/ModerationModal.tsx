@@ -14,21 +14,28 @@ import { ShieldAlertIcon } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { Account, Gallery } from '@/utils/types/models'
 import ReportGalleryModal from '@/components/gallery/moderation/ReportGalleryModal'
+import { ExecutionMethod } from 'node-appwrite'
+import { functions } from '@/app/appwrite-client'
+import { toast } from 'sonner'
+import { useRouter } from '@/navigation'
 
 export default function ModerationModal({
   isOpen,
   setIsOpen,
   image,
   imagePrefs,
+  setImagePrefs,
   current,
 }: {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
   image: Gallery.GalleryDocumentsType
   imagePrefs: Gallery.GalleryPrefsDocumentsType
+  setImagePrefs: (prefs: Gallery.GalleryPrefsDocumentsType) => void
   current: Account.AccountType
 }) {
   const [reportGalleryModalOpen, setReportGalleryModalOpen] = useState(false)
+  //const router = useRouter()
 
   const handleReport = useCallback(() => {
     setIsOpen(false)
@@ -37,7 +44,37 @@ export default function ModerationModal({
   }, [])
 
   const handleHide = async () => {
-    console.log('test2')
+    const loadingToast = toast.loading(
+      `${imagePrefs?.isHidden ? 'Unhiding' : 'Hiding'} image...`
+    )
+    try {
+      const data = await functions.createExecution(
+        'gallery-endpoints',
+        JSON.stringify({
+          galleryId: image.$id,
+          isHidden: !imagePrefs?.isHidden,
+        }),
+        false,
+        `/gallery/prefs`,
+        ExecutionMethod.PUT
+      )
+      const response = JSON.parse(data.responseBody)
+      toast.dismiss(loadingToast)
+      if (response.code === 200) {
+        toast.success(
+          `${imagePrefs?.isHidden ? 'Unhidden' : 'Hidden'} image successfully`
+        )
+        setImagePrefs({ ...imagePrefs, isHidden: !imagePrefs?.isHidden })
+        setIsOpen(false)
+      } else {
+        toast.error('Failed to hide image. Please try again later.')
+      }
+    } catch (error) {
+      toast.dismiss(loadingToast)
+      toast.error(
+        `Failed to ${imagePrefs?.isHidden ? 'unhide' : 'hide'} image. Please try again later.`
+      )
+    }
   }
 
   return (
