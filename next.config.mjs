@@ -10,9 +10,9 @@ const nextConfig = {
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   compiler: {
     styledComponents: true,
-    removeConsole: {
-      exclude: ['error', 'info', 'warn'],
-    },
+    //removeConsole: {
+    //exclude: ['error', 'info', 'warn'],
+    //},
   },
   experimental: {
     mdxRs: true,

@@ -206,7 +206,7 @@ export default function FrontpageView({
                       className="mr-6 select-none text-gray-400"
                     >
                       DD/MM/YYYY
-                    </span>{' '}
+                    </span>
                   </div>
                 </div>
               </div>

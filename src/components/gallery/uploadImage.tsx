@@ -355,7 +355,7 @@ export default function UploadPage({ userId }: { userId: string }) {
             type="submit"
             disabled={isUploading} // Disable the button if isUploading is true
           >
-            {isUploading ? 'Uploading...' : 'Save'}{' '}
+            {isUploading ? 'Uploading...' : 'Save'}
             {/* Show different text based on the upload state */}
           </Button>
         </div>
