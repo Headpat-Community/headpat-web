@@ -1,6 +1,5 @@
 import { Community } from '@/utils/types/models'
 import { createSessionServerClient } from '@/app/appwrite-session'
-import { Query } from 'node-appwrite'
 
 /**
  * This function is used to get a community by id

@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import { Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { functions } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
 import { toast } from 'sonner'
