@@ -17,7 +17,6 @@ import ReportGalleryModal from '@/components/gallery/moderation/ReportGalleryMod
 import { ExecutionMethod } from 'node-appwrite'
 import { functions } from '@/app/appwrite-client'
 import { toast } from 'sonner'
-import { useRouter } from '@/navigation'
 
 export default function ModerationModal({
   isOpen,
@@ -35,7 +34,6 @@ export default function ModerationModal({
   current: Account.AccountType
 }) {
   const [reportGalleryModalOpen, setReportGalleryModalOpen] = useState(false)
-  //const router = useRouter()
 
   const handleReport = useCallback(() => {
     setIsOpen(false)

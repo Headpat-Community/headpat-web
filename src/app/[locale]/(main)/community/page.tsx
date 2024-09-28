@@ -1,5 +1,8 @@
-import PageClient from './page.client'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getTranslations } from 'next-intl/server'
+import PageLayout from '@/components/pageLayout'
+import AllCommunities from '@/app/[locale]/(main)/community/allCommunities'
+import MyCommunities from '@/app/[locale]/(main)/community/myCommunities'
 
 export const runtime = 'edge'
 
@@ -35,5 +38,23 @@ export async function generateMetadata({ params: { locale } }) {
 }
 
 export default async function Page() {
-  return <PageClient />
+  return (
+    <PageLayout title={'Communities'}>
+      <Tabs defaultValue="all" className="w-full">
+        <div className="flex flex-col items-center justify-center">
+          <TabsList className="grid w-full sm:max-w-4xl grid-cols-2">
+            <TabsTrigger value="all">All communities</TabsTrigger>
+            <TabsTrigger value="my">My communities</TabsTrigger>
+          </TabsList>
+        </div>
+
+        <TabsContent value="all">
+          <AllCommunities />
+        </TabsContent>
+        <TabsContent value="my">
+          <MyCommunities />
+        </TabsContent>
+      </Tabs>
+    </PageLayout>
+  )
 }

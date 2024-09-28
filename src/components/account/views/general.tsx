@@ -30,6 +30,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { getDocument } from '@/components/api/documents'
 import { toast } from 'sonner'
+import { useUser } from '@/components/contexts/UserContext'
 
 export default function GeneralAccountView({
   accountData,
@@ -41,11 +42,14 @@ export default function GeneralAccountView({
   const [userMe, setUserMe] = useState(accountData)
   const [userData, setUserData] = useState(null)
   const router = useRouter()
+  const { setUser } = useUser()
 
   useEffect(() => {
-    getDocument('hp_db', 'userdata', accountData.$id).then(
-      (data: UserData.UserDataDocumentsType) => setUserData(data)
-    )
+    getDocument('hp_db', 'userdata', accountData.$id)
+      .then((data: UserData.UserDataDocumentsType) => setUserData(data))
+      .catch(() => {
+        window.location.reload()
+      })
   }, [accountData])
 
   const handleEmailChange = async (event: { preventDefault: () => void }) => {
@@ -158,6 +162,7 @@ export default function GeneralAccountView({
     try {
       await deleteAccount()
 
+      setUser(null)
       toast.success('Account deleted successfully.')
       router.push('/')
     } catch (error) {
