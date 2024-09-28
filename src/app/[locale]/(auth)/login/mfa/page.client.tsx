@@ -77,7 +77,7 @@ export default function MfaPageClient() {
   if (!needsMfa) {
     return (
       <div className="flex flex-1 justify-center items-center absolute inset-0">
-        <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:bg-[#04050a]/85 dark:ring-white">
+        <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:ring-white">
           <div className="mt-10">
             <div>
               <div className={'text-center'}>
@@ -93,15 +93,15 @@ export default function MfaPageClient() {
   } else {
     return (
       <div className="flex flex-1 justify-center items-center absolute inset-0">
-        <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:bg-[#04050a]/85 dark:ring-white">
+        <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:ring-white">
           <div className="mt-10">
-            <div>
-              <div className={'text-center'}>
-                <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
+            <div className="flex flex-col items-center justify-center text-center">
+              <div>
+                <h2 className="mt-8 text-2xl font-bold tracking-tight">
                   Please fill in your 2FA code
                 </h2>
               </div>
-              <div key="1" className="mx-auto max-w-4xl p-6 space-y-6">
+              <div key="1" className="space-y-6">
                 <InputOTP
                   maxLength={6}
                   onComplete={(result) => {

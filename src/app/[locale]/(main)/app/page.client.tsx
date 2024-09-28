@@ -40,14 +40,14 @@ export default function PageClient() {
   return (
     <PageLayout title={'App'}>
       <div className="grid md:grid-cols-2 gap-6 p-6">
-        <Card className="bg-gray-900 border-gray-800">
+        <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
+            <CardTitle className="flex items-center gap-2">
               Google Play
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-400 mb-4">
+            <p className="text-muted-foreground mb-4">
               Download Headpat for your Android device and start patting heads
               today!
             </p>
@@ -57,21 +57,19 @@ export default function PageClient() {
               }
               target={'_blank'}
             >
-              <Button className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white">
+              <Button className="w-full mt-4 bg-gray-800 hover:bg-gray-700 text-white">
                 <DownloadIcon className="mr-2 h-4 w-4" /> Get it on Google Play
               </Button>
             </Link>
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-900 border-gray-800">
+        <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              iOS
-            </CardTitle>
+            <CardTitle className="flex items-center gap-2">iOS</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-400 mb-4">
+            <p className="text-muted-foreground mb-4">
               Experience Headpat on your iPhone or iPad. Available on the App
               Store.
             </p>

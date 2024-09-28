@@ -18,33 +18,36 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from '@/components/ui/input-otp'
-import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { ShieldAlertIcon } from 'lucide-react'
+import { toast } from 'sonner'
 
 export default function MfaRecoveryCodes() {
   const [open, setOpen] = useState<boolean>(false)
   const [mfaMode, setMfaMode] = useState<string>('needsChallenge')
   const [challengeId, setChallengeId] = useState<string>('')
   const [recoveryCodes, setRecoveryCodes] = useState<string[]>([])
-  const { toast } = useToast()
 
   const handleStartChallenge = async () => {
     if (mfaMode === 'needsChallenge') {
-      const mfaRequestResult = await account.createMfaChallenge(
-        AuthenticationFactor.Totp
-      )
+      try {
+        const mfaRequestResult = await account.createMfaChallenge(
+          AuthenticationFactor.Totp
+        )
 
-      if (mfaRequestResult) {
         setChallengeId(mfaRequestResult.$id)
         setMfaMode('challengeStarted')
-      } else {
-        toast({
-          title: 'Error',
-          description: 'An error occurred. Please try again.',
-          variant: 'destructive',
-        })
+      } catch (error) {
+        if (error.type === 'general_rate_limit_exceeded') {
+          toast.error(
+            'You have exceeded the rate limit for this action. Please try again later.'
+          )
+        } else {
+          toast.error('Failed to start MFA challenge. Please try again later.')
+        }
       }
     }
   }
@@ -66,13 +69,16 @@ export default function MfaRecoveryCodes() {
         setRecoveryCodes(recoveryCodesResult.recoveryCodes)
         setMfaMode('hasRecoveryCodes')
       } else {
-        toast({
-          title: 'Error',
-          description: 'Invalid code. Please try again.',
-          variant: 'destructive',
-        })
+        toast.error('Invalid code. Please try again.')
       }
     }
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+    setMfaMode('needsChallenge')
+    setChallengeId('')
+    setRecoveryCodes([])
   }
 
   return (
@@ -85,12 +91,9 @@ export default function MfaRecoveryCodes() {
             onClick={() => {
               setOpen(true)
               handleStartChallenge().catch((error) => {
-                toast({
-                  title: 'Error',
-                  description:
-                    "You encountered an error. But don't worry, we're on it.",
-                  variant: 'destructive',
-                })
+                toast.error(
+                  "You encountered an error. If you're having trouble, please contact support."
+                )
                 Sentry.captureException(error)
               })
             }}
@@ -105,6 +108,14 @@ export default function MfaRecoveryCodes() {
               Save these codes in a safe place. You can use them to access your
               account if you lose your device.
             </AlertDialogDescription>
+            <Alert>
+              <ShieldAlertIcon className="h-4 w-4" />
+              <AlertTitle>Heads up!</AlertTitle>
+              <AlertDescription>
+                This will invalidate any existing recovery codes. Make sure to
+                save these new ones.
+              </AlertDescription>
+            </Alert>
             <div className={'flex flex-col'}>
               {mfaMode === 'challengeStarted' && (
                 <p>
@@ -119,12 +130,9 @@ export default function MfaRecoveryCodes() {
                     maxLength={6}
                     onComplete={(result) => {
                       handleGetRecoveryCodes(result).catch((error) => {
-                        toast({
-                          title: 'Error',
-                          description:
-                            "Incorrect code. Please try again. If you're having trouble, please contact support.",
-                          variant: 'destructive',
-                        })
+                        toast.error(
+                          "Incorrect code. Please try again. If you're having trouble, please contact support."
+                        )
                         Sentry.captureException(error)
                       })
                     }}
@@ -162,7 +170,7 @@ export default function MfaRecoveryCodes() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel asChild>
-              <Button variant={'outline'} onClick={() => setOpen(false)}>
+              <Button variant={'outline'} onClick={handleClose}>
                 Close
               </Button>
             </AlertDialogCancel>

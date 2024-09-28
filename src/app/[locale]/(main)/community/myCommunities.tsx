@@ -88,7 +88,7 @@ export default function MyCommunities() {
         return (
           <li
             key={community.$id}
-            className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50/90 dark:hover:bg-gray-50/10 sm:px-6"
+            className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-950/10 dark:hover:bg-gray-50/10 sm:px-6"
           >
             <div className="flex min-w-0 gap-x-4 items-center">
               <Image
