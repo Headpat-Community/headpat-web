@@ -14,6 +14,6 @@ export async function getVotingSystem(): Promise<Interactive.VotesSystem> {
   return await databases
     .getDocument('interactive', 'system', 'main')
     .catch((error) => {
-      return error
+      return JSON.parse(JSON.stringify(error))
     })
 }

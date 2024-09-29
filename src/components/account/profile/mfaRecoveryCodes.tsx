@@ -83,7 +83,10 @@ export default function MfaRecoveryCodes() {
 
   return (
     <>
-      <AlertDialog open={open}>
+      <AlertDialog
+        open={open}
+        onOpenChange={(isOpen) => !isOpen && handleClose()}
+      >
         <AlertDialogTrigger asChild>
           <Button
             type="submit"
@@ -170,9 +173,7 @@ export default function MfaRecoveryCodes() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel asChild>
-              <Button variant={'outline'} onClick={handleClose}>
-                Close
-              </Button>
+              <Button variant={'outline'}>Close</Button>
             </AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>

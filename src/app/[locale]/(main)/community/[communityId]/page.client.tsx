@@ -117,7 +117,6 @@ export default function PageClient({
                       {community.name}
                     </CardTitle>
                     <FollowerButton
-                      userSelf={userSelf}
                       displayName={community.name}
                       communityId={communityId}
                     />
@@ -166,7 +165,7 @@ export default function PageClient({
   )
 }
 
-export function FollowerButton({ userSelf, displayName, communityId }) {
+export function FollowerButton({ displayName, communityId }) {
   const [isFollowingState, setIsFollowingState] = useState<boolean>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
@@ -193,7 +192,6 @@ export function FollowerButton({ userSelf, displayName, communityId }) {
   }, [communityId])
 
   const handleFollow = async () => {
-    //const data = await addFollow(userSelf?.$id, communityId)
     const data = await functions.createExecution(
       'community-endpoints',
       '',
@@ -201,7 +199,6 @@ export function FollowerButton({ userSelf, displayName, communityId }) {
       `/community/follow?communityId=${communityId}`,
       ExecutionMethod.POST
     )
-    console.log(data)
     const response = JSON.parse(data.responseBody)
     if (response.code === 400) {
       return toast.error('Community ID is missing. Please try again later.')
@@ -217,22 +214,26 @@ export function FollowerButton({ userSelf, displayName, communityId }) {
   }
 
   const handleUnfollow = async () => {
-    //const data = await removeFollow(userSelf?.$id, communityId)
     const data = await functions.createExecution(
       'community-endpoints',
       '',
       false,
-      `/community/unfollow?communityId=${communityId}`,
+      `/community/follow?communityId=${communityId}`,
       ExecutionMethod.DELETE
     )
     const response = JSON.parse(data.responseBody)
-    if (response.code === 400) {
+    console.log(response)
+    if (response.type === 'community_unfollow_missing_id') {
       return toast.error('Community ID is missing. Please try again later.')
-    } else if (response.code === 401) {
+    } else if (response.type === 'community_unfollow_owner') {
+      return toast.error('You cannot unfollow a community you own')
+    } else if (response.type === 'community_unfollow_unauthorized') {
       return toast.error('You must be logged in to unfollow a community')
-    } else if (response.code === 403) {
+    } else if (response.type === 'community_unfollow_not_following') {
       setIsFollowingState(false)
       return toast.error('You are not following this community')
+    } else if (response.type === 'community_unfollow_error') {
+      return toast.error('An error occurred while unfollowing the community')
     } else {
       toast.success(`You have left ${displayName}`)
       setIsFollowingState(false)

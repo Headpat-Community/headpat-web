@@ -15,6 +15,6 @@ export async function getVotes(): Promise<Interactive.VotesAnswersType> {
   return await databases
     .listDocuments('interactive', 'answers')
     .catch((error) => {
-      return error
+      return JSON.parse(JSON.stringify(error))
     })
 }

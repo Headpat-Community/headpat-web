@@ -13,6 +13,6 @@ export async function getCommunity(
   return await databases
     .getDocument('hp_db', 'community', communityId)
     .catch((error) => {
-      return error
+      return JSON.parse(JSON.stringify(error))
     })
 }

@@ -9,6 +9,6 @@ import { createSessionServerClient } from '@/app/appwrite-session'
 export async function getEvents(): Promise<Events.EventsType> {
   const { databases } = await createSessionServerClient()
   return await databases.listDocuments('hp_db', 'events').catch((error) => {
-    return error
+    return JSON.parse(JSON.stringify(error))
   })
 }

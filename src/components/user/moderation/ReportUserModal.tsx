@@ -55,65 +55,63 @@ export default function ReportUserModal({
   }
 
   return (
-    <>
-      <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent className={'w-full'}>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Report {user?.displayName}</AlertDialogTitle>
-          </AlertDialogHeader>
-          <AlertDialogDescription>
-            What is the reason for reporting this user?
-          </AlertDialogDescription>
-          <div className={'z-50'}>
-            <RadioGroup
-              value={reportReason}
-              onValueChange={setReportReason}
-              className="gap-3"
-            >
-              <RadioGroupItemWithLabel
-                value="Inappropriate content"
-                onLabelPress={onLabelPress('Inappropriate content')}
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogContent className={'w-full'}>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Report {user?.displayName}</AlertDialogTitle>
+        </AlertDialogHeader>
+        <AlertDialogDescription>
+          What is the reason for reporting this user?
+        </AlertDialogDescription>
+        <div className={'z-50'}>
+          <RadioGroup
+            value={reportReason}
+            onValueChange={setReportReason}
+            className="gap-3"
+          >
+            <RadioGroupItemWithLabel
+              value="Inappropriate content"
+              onLabelPress={onLabelPress('Inappropriate content')}
+            />
+            <RadioGroupItemWithLabel
+              value="Spam"
+              onLabelPress={onLabelPress('Spam')}
+            />
+            <RadioGroupItemWithLabel
+              value="Harassment"
+              onLabelPress={onLabelPress('Harassment')}
+            />
+            <RadioGroupItemWithLabel
+              value="Impersonation"
+              onLabelPress={onLabelPress('Impersonation')}
+            />
+            <RadioGroupItemWithLabel
+              value="Other"
+              onLabelPress={onLabelPress('Other')}
+            />
+            {reportReason === 'Other' && (
+              <Input
+                placeholder="Please specify"
+                value={otherReason}
+                onChange={(e) => setOtherReason(e.target.value)}
               />
-              <RadioGroupItemWithLabel
-                value="Spam"
-                onLabelPress={onLabelPress('Spam')}
-              />
-              <RadioGroupItemWithLabel
-                value="Harassment"
-                onLabelPress={onLabelPress('Harassment')}
-              />
-              <RadioGroupItemWithLabel
-                value="Impersonation"
-                onLabelPress={onLabelPress('Impersonation')}
-              />
-              <RadioGroupItemWithLabel
-                value="Other"
-                onLabelPress={onLabelPress('Other')}
-              />
-              {reportReason === 'Other' && (
-                <Input
-                  placeholder="Please specify"
-                  value={otherReason}
-                  onChange={(e) => setOtherReason(e.target.value)}
-                />
-              )}
-            </RadioGroup>
-          </div>
-          <AlertDialogFooter>
-            <AlertDialogAction
-              className={'bg-destructive'}
-              onClick={reportUser}
-              disabled={
-                !reportReason || (reportReason === 'Other' && !otherReason)
-              }
-            >
-              Report
-            </AlertDialogAction>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+            )}
+          </RadioGroup>
+        </div>
+        <AlertDialogFooter>
+          <AlertDialogAction
+            className={'bg-destructive'}
+            onClick={reportUser}
+            disabled={
+              !reportReason || (reportReason === 'Other' && !otherReason)
+            }
+          >
+            Report
+          </AlertDialogAction>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }
 

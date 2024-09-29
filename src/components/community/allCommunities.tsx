@@ -8,14 +8,11 @@ import { useCallback, useEffect, useState } from 'react'
 import { functions } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
 import { toast } from 'sonner'
-import PageLayout from '@/components/pageLayout'
-import { useUser } from '@/components/contexts/UserContext'
 
-export default function MyCommunities() {
+export default function AllCommunities() {
   const [communities, setCommunities] =
     useState<Community.CommunityDocumentsType[]>(null)
   const [isFetching, setIsFetching] = useState<boolean>(true)
-  const { current } = useUser()
 
   const fetchCommunities = useCallback(async () => {
     setIsFetching(true)
@@ -24,18 +21,12 @@ export default function MyCommunities() {
         'community-endpoints',
         '',
         false,
-        `/communities/joined?limit=250`, // You can specify a static limit here if desired
+        `/communities?limit=250`, // You can specify a static limit here if desired
         ExecutionMethod.GET
       )
 
       const response = JSON.parse(data.responseBody)
 
-      if (response.code === 401) {
-        toast.error(
-          'You are not signed in. Please sign in to view your communities.'
-        )
-        return
-      }
       setCommunities(response)
     } catch (error) {
       toast.error('Failed to fetch communities. Please try again later.')
@@ -45,29 +36,9 @@ export default function MyCommunities() {
   }, [])
 
   useEffect(() => {
-    if (!current) {
-      return
-    }
     fetchCommunities().then()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  if (!current) {
-    return (
-      <div className={'flex flex-1 justify-center items-center h-full'}>
-        <div className={'p-4 gap-6 text-center'}>
-          <h1 className={'text-2xl font-semibold'}>You are not signed in.</h1>
-          <p className={'text-gray-400 dark:text-gray-300'}>
-            Please{' '}
-            <Link className={'text-primary'} href={'/login'}>
-              sign in
-            </Link>{' '}
-            to view your communities.
-          </p>
-        </div>
-      </div>
-    )
-  }
 
   if (isFetching || !communities) {
     return (

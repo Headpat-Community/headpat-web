@@ -17,24 +17,7 @@ export async function getUserDataFromProfileUrl(
   return await databases
     .listDocuments('hp_db', 'userdata', [Query.equal('profileUrl', profileUrl)])
     .catch((error) => {
-      return error
-    })
-}
-
-/**
- * This function is used to get the user data from the user id.
- * @example
- * const userData = await getUserDataSingle('userId')
- */
-export async function getUserDataSingle(
-  userId: string
-): Promise<UserData.UserDataDocumentsType> {
-  unstable_noStore()
-  const { databases } = await createSessionServerClient()
-  return await databases
-    .getDocument('hp_db', 'userdata', `${userId}`)
-    .catch((error) => {
-      return error
+      return JSON.parse(JSON.stringify(error))
     })
 }
 
@@ -50,19 +33,6 @@ export async function getUserData(): Promise<UserData.UserDataDocumentsType> {
   return await databases
     .getDocument('hp_db', 'userdata', `${accountData.$id}`)
     .catch((error) => {
-      return error
+      return JSON.parse(JSON.stringify(error))
     })
-}
-
-/**
- * This function is used to get the user data of all users.
- * @example
- * const userData = await getUserDataList()
- */
-export async function getUserDataList(): Promise<UserData.UserDataType> {
-  unstable_noStore()
-  const { databases } = await createSessionServerClient()
-  return await databases.listDocuments('hp_db', 'userdata').catch((error) => {
-    return error
-  })
 }

@@ -1,5 +1,11 @@
 import { Models } from 'node-appwrite'
 
+export interface HeadpatException {
+  error: string
+  type: string
+  code: number
+}
+
 export namespace Account {
   export interface AccountType extends Models.User<Models.Preferences> {}
 

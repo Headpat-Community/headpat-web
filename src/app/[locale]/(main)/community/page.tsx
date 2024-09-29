@@ -1,8 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getTranslations } from 'next-intl/server'
 import PageLayout from '@/components/pageLayout'
-import AllCommunities from '@/app/[locale]/(main)/community/allCommunities'
-import MyCommunities from '@/app/[locale]/(main)/community/myCommunities'
+import AllCommunities from '@/components/community/allCommunities'
+import MyCommunities from '@/components/community/myCommunities'
 
 export const runtime = 'edge'
 
