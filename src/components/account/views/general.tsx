@@ -48,6 +48,7 @@ export default function GeneralAccountView({
     getDocument('hp_db', 'userdata', accountData.$id)
       .then((data: UserData.UserDataDocumentsType) => setUserData(data))
       .catch(() => {
+        // Sometimes the function is too slow and the data is not created yet
         window.location.reload()
       })
   }, [accountData])

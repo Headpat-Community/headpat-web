@@ -114,6 +114,10 @@ export namespace UserData {
      */
     location: string | null
     /**
+     * The user's badges.
+     */
+    badges: string[]
+    /**
      * The user's followers count.
      */
     followersCount: number
@@ -448,11 +452,6 @@ export namespace Community {
      */
     description: string
     /**
-     * If the community is nsfw.
-     * @default false
-     */
-    nsfw: boolean
-    /**
      * The tags of the community for searching.
      */
     tags: string[]
@@ -472,6 +471,26 @@ export namespace Community {
      * The amount of followers the community has.
      */
     followersCount: number
+  }
+
+  export interface CommunitySettingsType {
+    total: number
+    documents: CommunitySettingsDocumentsType[]
+  }
+
+  export interface CommunitySettingsDocumentsType extends Models.Document {
+    /**
+     * If the community is indexed by search engines and findable.
+     */
+    isFindable: boolean
+    /**
+     * If the community is publicly accessible.
+     */
+    hasPublicPage: boolean
+    /**
+     * If the community is nsfw.
+     */
+    nsfw: boolean
   }
 
   export interface CommunityFollowersType {

@@ -40,7 +40,7 @@ export default function PageClient({ communityId }: { communityId: string }) {
 
   if (isFetching || !followers) {
     return (
-      <PageLayout title={'Friends'}>
+      <PageLayout title={'Followers'}>
         <div className={'flex flex-1 justify-center items-center h-full'}>
           <div className={'p-4 gap-6 text-center'}>
             <h1 className={'text-2xl font-semibold'}>Loading...</h1>
@@ -52,7 +52,7 @@ export default function PageClient({ communityId }: { communityId: string }) {
 
   if (followers.length === 0) {
     return (
-      <PageLayout title={'Friends'}>
+      <PageLayout title={'Followers'}>
         <div className={'flex flex-1 justify-center items-center h-full'}>
           <div className={'p-4 gap-6 text-center'}>
             <h1 className={'text-2xl font-semibold'}>No followers found</h1>

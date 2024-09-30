@@ -2,7 +2,6 @@
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -19,7 +18,7 @@ import { Switch } from '@/components/ui/switch'
 import { z } from 'zod'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { AppwriteException, ExecutionMethod, Models } from 'node-appwrite'
+import { ExecutionMethod, Models } from 'node-appwrite'
 import { functions } from '@/app/appwrite-client'
 import { useRouter } from '@/navigation'
 import { HeadpatException } from '@/utils/types/models'
@@ -129,6 +128,7 @@ export default function AddCommunity({
               maxLength={4096}
               rows={8}
               value={communityData.description}
+              className="resize-none"
               onChange={(e) =>
                 setCommunityData((prev) => ({
                   ...prev,

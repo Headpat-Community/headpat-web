@@ -20,19 +20,18 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Link } from '@/navigation'
+import { Link, useRouter } from '@/navigation'
 import { Separator } from '@/components/ui/separator'
 import PageLayout from '@/components/pageLayout'
 import { Community } from '@/utils/types/models'
+import { hasAdminPanelAccess } from '@/utils/actions/community/checkRoles'
 
 export default function PageClient({
   communityId,
   communityData,
-  userSelf,
 }: {
   communityId: string
   communityData: Community.CommunityDocumentsType
-  userSelf: any
 }) {
   const [community, setCommunity] =
     useState<Community.CommunityDocumentsType>(communityData)
@@ -167,7 +166,9 @@ export default function PageClient({
 
 export function FollowerButton({ displayName, communityId }) {
   const [isFollowingState, setIsFollowingState] = useState<boolean>(null)
+  const [hasPermissions, setHasPermissions] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const router = useRouter()
 
   const getIsFollowing = async () => {
     try {
@@ -180,7 +181,9 @@ export function FollowerButton({ displayName, communityId }) {
       )
 
       const response = JSON.parse(data.responseBody)
-      setIsFollowingState(response)
+
+      setIsFollowingState(response.isFollowing)
+      setHasPermissions(await hasAdminPanelAccess(response.roles))
     } catch (error) {
       // Do nothing
     }
@@ -200,6 +203,7 @@ export function FollowerButton({ displayName, communityId }) {
       ExecutionMethod.POST
     )
     const response = JSON.parse(data.responseBody)
+
     if (response.code === 400) {
       return toast.error('Community ID is missing. Please try again later.')
     } else if (response.code === 401) {
@@ -222,7 +226,7 @@ export function FollowerButton({ displayName, communityId }) {
       ExecutionMethod.DELETE
     )
     const response = JSON.parse(data.responseBody)
-    console.log(response)
+
     if (response.type === 'community_unfollow_missing_id') {
       return toast.error('Community ID is missing. Please try again later.')
     } else if (response.type === 'community_unfollow_owner') {
@@ -240,13 +244,28 @@ export function FollowerButton({ displayName, communityId }) {
     }
   }
 
+  const handleManage = () => {
+    router.push({
+      pathname: `/community/[communityId]/admin`,
+      params: { communityId: communityId },
+    })
+  }
+
   return (
     <>
       {isLoading ? (
         <Skeleton className={'w-full h-10'} />
       ) : (
-        <Button onClick={isFollowingState ? handleUnfollow : handleFollow}>
-          {isFollowingState ? 'Leave' : 'Join'}
+        <Button
+          onClick={
+            hasPermissions
+              ? handleManage
+              : isFollowingState
+                ? handleUnfollow
+                : handleFollow
+          }
+        >
+          {hasPermissions ? 'Manage' : isFollowingState ? 'Leave' : 'Join'}
         </Button>
       )}
     </>

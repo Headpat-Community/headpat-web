@@ -27,9 +27,14 @@ export default function ClientPage() {
       )
 
       const response = JSON.parse(data.responseBody)
+
+      if (response.code === 500) {
+        toast.error('Failed to fetch users. Please try again later.')
+        return
+      }
       setUsers(response.documents)
     } catch (error) {
-      toast('Failed to fetch users. Please try again later.')
+      toast.error('Failed to fetch users. Please try again later.')
     } finally {
       setIsFetching(false)
     }
