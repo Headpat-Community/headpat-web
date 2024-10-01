@@ -9,6 +9,8 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { z } from 'zod'
 import { Textarea } from '@/components/ui/textarea'
+import { toast } from 'sonner'
+import * as Sentry from '@sentry/nextjs'
 
 const communitySchema = z.object({
   name: z
@@ -47,6 +49,29 @@ export default function CommunityAdminMain({
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    const result = communitySchema.safeParse(communityData)
+    if (!result.success) {
+      result.error.errors.forEach((err) => {
+        toast.error(err.message)
+      })
+      return
+    }
+
+    const loadingToast = toast.loading('Updating community data...')
+    try {
+      await databases.updateDocument('hp_db', 'community', community.$id, {
+        name: communityData.name,
+        description: communityData.description,
+        status: communityData.status,
+      })
+      toast.success('Community data updated successfully.')
+    } catch (error) {
+      Sentry.captureException(error)
+      toast.error('Error updating community data. Please try again later.')
+    } finally {
+      toast.dismiss(loadingToast)
+    }
   }
 
   return isLoading ? (
@@ -57,10 +82,10 @@ export default function CommunityAdminMain({
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
           <div>
             <h2 className="text-base font-semibold leading-7">
-              Frontpage Settings
+              General Settings
             </h2>
             <p className="mt-1 text-sm leading-6 text-gray-900 dark:text-gray-400">
-              Here you can change your public profile settings.
+              Update your community&apos;s general settings.
             </p>
           </div>
 

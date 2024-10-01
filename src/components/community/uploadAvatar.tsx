@@ -20,14 +20,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { Community } from '@/utils/types/models'
 import * as Sentry from '@sentry/nextjs'
 import {
   centerAspectCrop,
   createBlob,
 } from '@/components/gallery/upload/uploadHelper'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { UploadFileServer } from '@/utils/actions/community/uploadFileServer'
 import { ExecutionMethod, ID } from 'node-appwrite'
 
 export default function UploadAvatar({

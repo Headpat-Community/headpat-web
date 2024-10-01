@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import NoAccess from '@/components/static/noAccess'
 import { hasAdminPanelAccess } from '@/utils/actions/community/checkRoles'
 import { toast } from 'sonner'
+import CommunityAdminSettings from '@/components/community/admin/settings'
 
 export default function PageClient({
   community,
@@ -51,7 +52,7 @@ export default function PageClient({
         <CommunityAdminMain community={community} />
       </TabsContent>
       <TabsContent value="settings">
-        <MyCommunities />
+        <CommunityAdminSettings community={community} />
       </TabsContent>
     </>
   )

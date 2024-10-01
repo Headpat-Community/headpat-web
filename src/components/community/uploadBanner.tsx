@@ -26,7 +26,6 @@ import {
   centerAspectCrop,
   createBlob,
 } from '@/components/gallery/upload/uploadHelper'
-import { UploadFileServer } from '@/utils/actions/community/uploadFileServer'
 import { ExecutionMethod, ID } from 'node-appwrite'
 
 export default function UploadBanner({
