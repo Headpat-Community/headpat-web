@@ -47,19 +47,11 @@ export default function UploadAvatar({
   const scale = 1
   const rotate = 0
   const aspect = 1
+  const maxSizeInBytes = 1024 * 1024 // 1 MB
 
   function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0]
-      const maxSizeInBytes = 1024 * 1024 // 1 MB
-
-      if (file.size > maxSizeInBytes) {
-        toast.error('File size exceeds the 1 MB limit.')
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '' // Reset the input field
-        }
-        return
-      }
 
       setOpen(true)
       setCrop(undefined) // Makes crop preview update between images.
@@ -90,6 +82,15 @@ export default function UploadAvatar({
 
     try {
       const file = formData.get('file') as File
+
+      if (file.size > maxSizeInBytes) {
+        toast.dismiss(loadingToast)
+        toast.error('File size exceeds the 1 MB limit.')
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '' // Reset the input field
+        }
+        return
+      }
 
       setIsUploading(true)
 

@@ -1,9 +1,7 @@
 'use client'
 import { Community } from '@/utils/types/models'
-import { databases, functions } from '@/app/appwrite-client'
-import { ExecutionMethod } from 'node-appwrite'
+import { databases } from '@/app/appwrite-client'
 import { useEffect, useState } from 'react'
-import NoAccess from '@/components/static/noAccess'
 import UploadAvatar from '@/components/community/uploadAvatar'
 import UploadBanner from '@/components/community/uploadBanner'
 import { Label } from '@/components/ui/label'
@@ -130,6 +128,33 @@ export default function CommunityAdminMain({
                       {communityData ? communityData.description?.length : 0}
                     </span>
                     <span className="select-none text-gray-400">/{4096}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-span-full">
+                <Label htmlFor="status">Status</Label>
+                <div className="relative mt-2">
+                  <Input
+                    id="status"
+                    name="status"
+                    type="text"
+                    value={communityData ? communityData.status : ''}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 24) {
+                        setCommunityData({
+                          ...communityData,
+                          status: e.target.value,
+                        })
+                      }
+                    }}
+                    maxLength={24}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                    <span className="select-none">
+                      {communityData ? communityData.status?.length : 0}
+                    </span>
+                    <span className="select-none text-gray-400">/{24}</span>
                   </div>
                 </div>
               </div>

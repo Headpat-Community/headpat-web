@@ -83,6 +83,7 @@ export default function UploadBanner({
       const file = formData.get('file') as File
 
       if (file.size > maxSizeInBytes) {
+        toast.dismiss(loadingToast)
         toast.error('File size exceeds the 5 MB limit.')
         if (fileInputRef.current) {
           fileInputRef.current.value = '' // Reset the input field
