@@ -217,11 +217,16 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                   Description
                                 </dt>
                                 <dd className="mt-1 max-w-full break-words text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                  {descriptionSanitized ||
-                                    'No description provided.'}
+                                  <div
+                                    dangerouslySetInnerHTML={{
+                                      __html:
+                                        descriptionSanitized ||
+                                        'No description provided.',
+                                    }}
+                                  />
                                 </dd>
                               </div>
-                              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                              <div className="px-4 py-6 sm:gap-4 sm:px-0 flex items-center">
                                 <Link
                                   // @ts-ignore
                                   href={getGalleryImageUrlView(image.galleryId)}

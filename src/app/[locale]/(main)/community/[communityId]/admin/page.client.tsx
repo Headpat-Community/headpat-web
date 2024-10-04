@@ -2,7 +2,6 @@
 import { Community } from '@/utils/types/models'
 import { TabsContent } from '@/components/ui/tabs'
 import CommunityAdminMain from '@/components/community/admin/main'
-import MyCommunities from '@/components/community/myCommunities'
 import { functions } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
 import { useEffect, useState } from 'react'
