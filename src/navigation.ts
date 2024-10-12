@@ -21,6 +21,7 @@ export const pathnames = {
   '/community/[communityId]/events': '/community/[communityId]/events',
   '/community/[communityId]/events/[eventId]':
     '/community/[communityId]/events/[eventId]',
+  '/changelog': '/changelog',
   '/events': '/events',
   '/events/[eventId]': '/events/[eventId]',
   '/support': '/support',
