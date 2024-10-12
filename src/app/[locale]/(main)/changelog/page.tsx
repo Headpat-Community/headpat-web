@@ -5,6 +5,8 @@ import { createSessionServerClient } from '@/app/appwrite-session'
 import { Changelog } from '@/utils/types/models'
 import { Query } from 'node-appwrite'
 
+export const runtime = 'edge'
+
 export async function generateMetadata({ params: { locale } }) {
   const meta = await getTranslations({
     locale,
