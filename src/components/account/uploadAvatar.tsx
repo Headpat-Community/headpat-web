@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useRef } from 'react'
+import React, { useRef, useState } from 'react'
 
 import ReactCrop, { Crop, PixelCrop } from 'react-image-crop'
 import { canvasPreview } from '../gallery/upload/canvasPreview'
@@ -173,8 +173,7 @@ export default function UploadAvatar({
 
   const getAvatarImageUrl = (galleryId: string) => {
     if (!galleryId) return
-    const imageId = storage.getFileView('avatars', `${galleryId}`)
-    return `${imageId.href}`
+    return storage.getFileView('avatars', `${galleryId}`)
   }
 
   return (

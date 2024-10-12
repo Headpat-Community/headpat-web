@@ -2,7 +2,7 @@
 import { SetStateAction, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Loading from '@/app/loading'
-import { databases, storage, Query } from '@/app/appwrite-client'
+import { databases, Query, storage } from '@/app/appwrite-client'
 import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
 import { Link } from '@/navigation'
@@ -16,8 +16,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
 
   const getGalleryImageUrl = (galleryId: string) => {
     if (!galleryId) return
-    const imageId = storage.getFileView('gallery', `${galleryId}`)
-    return imageId.href
+    return storage.getFileView('gallery', `${galleryId}`)
   }
 
   useEffect(() => {
