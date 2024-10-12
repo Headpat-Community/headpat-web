@@ -468,6 +468,10 @@ export namespace Community {
      */
     status: string
     /**
+     * The community settings.
+     */
+    communitySettings: CommunitySettingsDocumentsType
+    /**
      * The amount of followers the community has.
      */
     followersCount: number

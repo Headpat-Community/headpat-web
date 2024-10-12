@@ -1,5 +1,6 @@
 import { Community } from '@/utils/types/models'
-import { createSessionServerClient } from '@/app/appwrite-session'
+import { createAdminClient } from '@/app/appwrite-session'
+import { unstable_noStore } from 'next/cache'
 
 /**
  * This function is used to get a community by id
@@ -9,7 +10,8 @@ import { createSessionServerClient } from '@/app/appwrite-session'
 export async function getCommunity(
   communityId: string
 ): Promise<Community.CommunityDocumentsType> {
-  const { databases } = await createSessionServerClient()
+  unstable_noStore()
+  const { databases } = await createAdminClient()
   return await databases
     .getDocument('hp_db', 'community', communityId)
     .catch((error) => {

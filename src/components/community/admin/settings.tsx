@@ -49,7 +49,7 @@ export default function CommunityAdminSettings({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [community])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const result = communitySchema.safeParse(communitySettings)
@@ -72,6 +72,10 @@ export default function CommunityAdminSettings({
           nsfw: communitySettings.nsfw,
         }
       )
+
+      await databases.updateDocument('hp_db', 'community', community.$id, {
+        communitySettings: 'headpat-official',
+      })
       toast.success('Community settings updated successfully.')
     } catch (error) {
       Sentry.captureException(error)

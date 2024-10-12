@@ -3,6 +3,8 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Account } from '@/utils/types/models'
 import { account } from '@/app/appwrite-client'
 import { ID } from 'node-appwrite'
+import { EyeOffIcon } from 'lucide-react'
+import Link from 'next/link'
 
 interface UserContextValue {
   current: Account.AccountPrefs | null
@@ -27,6 +29,7 @@ export function useUser(): UserContextValue {
 
 export function UserProvider(props: any) {
   const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   async function login(email: string, password: string) {
     await account.createEmailPasswordSession(email, password)
@@ -64,8 +67,51 @@ export function UserProvider(props: any) {
   }
 
   useEffect(() => {
-    init().then()
+    init().then(() => setLoading(false))
   }, [])
+
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <svg
+          version="1.1"
+          id="L4"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 100 100"
+          width="100"
+          height="100"
+        >
+          <circle fill="#fff" stroke="none" cx="15" cy="50" r="6">
+            <animate
+              attributeName="opacity"
+              dur="1s"
+              values="0;1;0"
+              repeatCount="indefinite"
+              begin="0.1"
+            />
+          </circle>
+          <circle fill="#fff" stroke="none" cx="50" cy="50" r="6">
+            <animate
+              attributeName="opacity"
+              dur="1s"
+              values="0;1;0"
+              repeatCount="indefinite"
+              begin="0.2"
+            />
+          </circle>
+          <circle fill="#fff" stroke="none" cx="85" cy="50" r="6">
+            <animate
+              attributeName="opacity"
+              dur="1s"
+              values="0;1;0"
+              repeatCount="indefinite"
+              begin="0.3"
+            />
+          </circle>
+        </svg>
+      </div>
+    )
+  }
 
   return (
     <UserContext.Provider

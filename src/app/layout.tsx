@@ -27,6 +27,8 @@ export async function generateMetadata(): Promise<Metadata> {
       'headpawties',
       'gallery',
       'location sharing',
+      'friends',
+      'fluffy',
     ],
     icons: {
       icon: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
