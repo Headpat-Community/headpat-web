@@ -51,6 +51,7 @@ export default async function LocaleLayout({ children, params: { locale } }) {
         users={pageNames('users')}
         myprofile={pageNames('myprofile')}
         legal={pageNames('legal')}
+        changelog={pageNames('changelog')}
         communities={pageNames('communities')}
         account={pageNames('account')}
         login={pageNames('login')}

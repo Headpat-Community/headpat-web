@@ -11,6 +11,7 @@
     "communities": "Communities",
     "about": "About us",
     "legal": "Legal",
+    "changelog": "Changelog",
     "contact": "Contact",
     "account": "Account",
     "login": "Login",
@@ -72,5 +73,9 @@
   "AnnouncementsMetadata": {
     "title": "Announcements",
     "description": "Stay up to date with all the latest announcements."
+  },
+  "ChangelogMetadata": {
+    "title": "Changelog",
+    "description": "Stay up to date with all the latest changes."
   }
 }

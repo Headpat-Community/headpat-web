@@ -104,9 +104,9 @@ export default async function Home({
                       {main('checkapp')}
                     </span>
                   </Link>
-                  <Link href="#">
+                  <Link href="/changelog">
                     <span className="inline-flex items-center space-x-2 text-sm font-medium leading-6 text-muted-foreground">
-                      <span>{main('latestupdates')} (Soon!)</span>
+                      <span>{main('latestupdates')}</span>
                       <ChevronRightIcon
                         aria-hidden="true"
                         className="h-5 w-5"

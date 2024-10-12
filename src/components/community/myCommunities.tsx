@@ -71,11 +71,21 @@ export default function MyCommunities() {
     )
   }
 
-  if (isFetching || !communities) {
+  if (isFetching) {
     return (
       <div className={'flex flex-1 justify-center items-center h-full'}>
         <div className={'p-4 gap-6 text-center'}>
           <h1 className={'text-2xl font-semibold'}>Loading...</h1>
+        </div>
+      </div>
+    )
+  }
+
+  if (!isFetching && !communities) {
+    return (
+      <div className={'flex flex-1 justify-center items-center h-full'}>
+        <div className={'p-4 gap-6 text-center'}>
+          <h1 className={'text-2xl font-semibold'}>No communities found</h1>
         </div>
       </div>
     )

@@ -12,9 +12,11 @@ import {
   LogOutIcon,
   MapIcon,
   MegaphoneIcon,
+  PencilIcon,
   UserSearchIcon,
 } from 'lucide-react'
 import { Account } from '@/utils/types/models'
+import { SiDiscord, SiGithub } from '@icons-pack/react-simple-icons'
 
 export const Nav1 = (translations: any) => [
   {
@@ -101,6 +103,30 @@ export const Nav3 = (translations: any) => [
     icon: BadgeHelpIcon,
     variant: 'ghost' as const,
     href: `/support`,
+  },
+  {
+    title: translations.changelog,
+    label: '',
+    icon: PencilIcon,
+    variant: 'ghost' as const,
+    href: `/changelog`,
+  },
+]
+
+export const Nav4 = () => [
+  {
+    title: 'Discord',
+    label: '',
+    icon: SiDiscord,
+    variant: 'ghost' as const,
+    href: `https://discord.gg/EaQTEKRg2A`,
+  },
+  {
+    title: 'GitHub',
+    label: '',
+    icon: SiGithub,
+    variant: 'ghost' as const,
+    href: `https://github.com/headpat-community/`,
   },
 ]
 

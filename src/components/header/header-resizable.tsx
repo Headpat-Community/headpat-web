@@ -10,7 +10,7 @@ import { Separator } from '@/components/ui/separator'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { Nav } from '@/components/header/header-nav'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Nav1, Nav2, Nav3, NavFooter } from '@/components/header/data'
+import { Nav1, Nav2, Nav3, Nav4, NavFooter } from '@/components/header/data'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -127,6 +127,7 @@ export default function SidebarResizable({
                     height={32}
                     alt={'Headpat logo'}
                     className={'rounded-full'}
+                    draggable={false}
                   />
                   <span className={cn('ml-2', isCollapsed && 'hidden')}>
                     Headpat
@@ -155,9 +156,17 @@ export default function SidebarResizable({
                   links={Nav3(translations)}
                   translations={translations}
                 />
+                <Separator />
+                <Nav
+                  isCollapsed={isCollapsed}
+                  links={Nav4()}
+                  translations={translations}
+                />
               </div>
             </ScrollArea>
             <div className={'mt-auto relative bottom-0 block'}>
+              <Separator />
+              <span className={'my-2 flex justify-center'}>BETA</span>
               {current ? (
                 <>
                   <Separator />

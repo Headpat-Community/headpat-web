@@ -11,7 +11,7 @@ import {
 import { MenuIcon } from 'lucide-react'
 import * as React from 'react'
 import { Separator } from '../ui/separator'
-import { Nav1, Nav2, Nav3, NavFooter } from '@/components/header/data'
+import { Nav1, Nav2, Nav3, Nav4, NavFooter } from '@/components/header/data'
 import { Nav } from '@/components/header/header-nav'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tabs } from '@/components/ui/tabs'
@@ -37,6 +37,7 @@ export default function MobileNav({ translations, children }) {
               height={32}
               alt={'Headpat logo'}
               className={'rounded-full'}
+              draggable={false}
             />
             <span className={'ml-2'}>Headpat</span>
           </div>
@@ -68,7 +69,6 @@ export default function MobileNav({ translations, children }) {
                       'mt-8 w-full h-full justify-items-center text-center'
                     }
                   >
-                    <h1 className={'border-b pb-2'}>Pages</h1>
                     <div>
                       <Nav
                         isCollapsed={false}
@@ -87,6 +87,13 @@ export default function MobileNav({ translations, children }) {
                       <Nav
                         isCollapsed={false}
                         links={Nav3(translations)}
+                        setIsOpen={setIsOpen}
+                        translations={translations}
+                      />
+                      <Separator />
+                      <Nav
+                        isCollapsed={false}
+                        links={Nav4()}
                         setIsOpen={setIsOpen}
                         translations={translations}
                       />

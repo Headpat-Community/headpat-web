@@ -52,7 +52,6 @@ export default function Page() {
                 Join our Discord server and ask for help by creating a ticket at{' '}
                 <Link
                   className="text-indigo-600 hover:text-indigo-500"
-                  // @ts-ignore
                   href="https://discord.gg/EaQTEKRg2A"
                 >
                   https://discord.gg/EaQTEKRg2A
@@ -68,10 +67,24 @@ export default function Page() {
                 send us a message via Discord. Our E-Mail is{' '}
                 <Link
                   className="text-indigo-600 hover:text-indigo-500"
-                  // @ts-ignore
                   href="mailto:help@headpat.place"
                 >
                   help@headpat.place
+                </Link>
+                .
+              </dd>
+            </div>
+            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt className="text-sm font-medium leading-6">GitHub</dt>
+              <dd className="mt-1 text-sm leading-6 text-black/80 dark:text-white/80 sm:col-span-2 sm:mt-0">
+                Did you know that our App & Website are both open-source? What
+                if I told you that you can help us create something big! Come
+                and look around in our GitHub:{' '}
+                <Link
+                  className="text-indigo-600 hover:text-indigo-500"
+                  href="https://github.com/Headpat-Community"
+                >
+                  https://github.com/Headpat-Community
                 </Link>
                 .
               </dd>

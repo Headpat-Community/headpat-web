@@ -57,6 +57,9 @@ const config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        'code-block': {
+          DEFAULT: 'hsl(var(--code-block))',
+        },
       },
       minWidth: {
         0: '0',

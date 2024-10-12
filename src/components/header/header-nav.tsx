@@ -10,6 +10,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { Link, usePathname } from '@/navigation'
+import { Badge } from '@/components/ui/badge'
 
 interface NavProps {
   isCollapsed: boolean
@@ -69,11 +70,7 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
                 className="flex items-center gap-4 z-20"
               >
                 {link.title}
-                {link.label && (
-                  <span className="ml-auto text-muted-foreground">
-                    {link.label}
-                  </span>
-                )}
+                {link.label && <Badge className="ml-auto">{link.label}</Badge>}
               </TooltipContent>
             </Tooltip>
           ) : (
@@ -97,14 +94,9 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
               <link.icon className="mr-2 h-4 w-4" />
               {link.title}
               {link.label && (
-                <span
-                  className={cn(
-                    'ml-auto',
-                    variant === 'default' && 'text-background dark:text-white'
-                  )}
-                >
+                <Badge variant={'secondary'} className={'ml-auto'}>
                   {link.label}
-                </span>
+                </Badge>
               )}
             </Link>
           )

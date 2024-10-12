@@ -11,6 +11,7 @@
     "communities": "Gemeinschaften",
     "about": "Über uns",
     "legal": "Rechtliches",
+    "changelog": "Änderungen",
     "contact": "Kontakt",
     "account": "Account",
     "login": "Anmelden",
@@ -72,5 +73,9 @@
   "AnnouncementsMetadata": {
     "title": "Ankündigungen",
     "description": "Hier findest du alle Ankündigungen."
+  },
+  "ChangelogMetadata": {
+    "title": "Änderungen",
+    "description": "Hier findest du alle Updates."
   }
 }

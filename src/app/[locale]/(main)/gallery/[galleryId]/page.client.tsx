@@ -57,8 +57,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
   }
 
   const getImageUrl = (galleryId: string) => {
-    const file = storage.getFileView('gallery', galleryId)
-    return file.href
+    return storage.getFileView('gallery', galleryId)
   }
 
   return (

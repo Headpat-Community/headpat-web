@@ -71,6 +71,9 @@ export default async function Page() {
               new Date(a.$createdAt).getTime()
           )
           .map(async (notification) => {
+            const userData = notification.userData
+            const isDeleted = !userData
+
             if (notification.type === 'newFollower') {
               return (
                 <li
@@ -78,49 +81,57 @@ export default async function Page() {
                   className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50/90 dark:hover:bg-gray-50/10 sm:px-6"
                 >
                   <div className="flex min-w-0 gap-x-4 items-center">
-                    <UserCard user={notification.userData} isChild={false}>
-                      <Link
-                        href={{
-                          pathname: '/user/[profileUrl]',
-                          params: {
-                            profileUrl: notification.userData.profileUrl,
-                          },
-                        }}
-                      >
-                        <Avatar>
-                          <AvatarImage
-                            src={
-                              getAvatarImageUrlPreview(
-                                notification.userData.avatarId,
-                                'width=250&height=250'
-                              ) || null
-                            }
-                          />
-                          <AvatarFallback>
-                            {notification.userData.displayName
-                              .charAt(0)
-                              .toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                      </Link>
-                    </UserCard>
+                    {isDeleted ? (
+                      <Avatar>
+                        <AvatarFallback>D</AvatarFallback>
+                      </Avatar>
+                    ) : (
+                      <UserCard user={userData} isChild={false}>
+                        <Link
+                          href={{
+                            pathname: '/user/[profileUrl]',
+                            params: {
+                              profileUrl: userData?.profileUrl,
+                            },
+                          }}
+                        >
+                          <Avatar>
+                            <AvatarImage
+                              src={
+                                getAvatarImageUrlPreview(
+                                  userData?.avatarId,
+                                  'width=250&height=250'
+                                ) || null
+                              }
+                            />
+                            <AvatarFallback>
+                              {userData?.displayName.charAt(0).toUpperCase() ||
+                                'U'}
+                            </AvatarFallback>
+                          </Avatar>
+                        </Link>
+                      </UserCard>
+                    )}
                     <div className="min-w-0 flex-auto">
                       <p className="mt-1 flex leading-5 text-gray-400 dark:text-gray-300">
-                        <UserCard user={notification.userData} isChild={false}>
-                          <Link
-                            href={{
-                              pathname: '/user/[profileUrl]',
-                              params: {
-                                profileUrl: notification.userData.profileUrl,
-                              },
-                            }}
-                            className={'font-bold'}
-                          >
-                            {notification.userData.displayName}
-                          </Link>
-                          &nbsp;
-                        </UserCard>{' '}
-                        followed you! 🎉
+                        {isDeleted ? (
+                          'Deleted Account'
+                        ) : (
+                          <UserCard user={userData} isChild={false}>
+                            <Link
+                              href={{
+                                pathname: '/user/[profileUrl]',
+                                params: {
+                                  profileUrl: userData?.profileUrl,
+                                },
+                              }}
+                              className={'font-bold'}
+                            >
+                              {userData?.displayName || 'Unknown user'}
+                            </Link>
+                          </UserCard>
+                        )}
+                        &nbsp; followed you! 🎉
                       </p>
                     </div>
                   </div>

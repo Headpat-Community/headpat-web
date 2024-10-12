@@ -20,7 +20,7 @@ export default function FetchGallery({ enableNsfw }) {
   ) => {
     if (!galleryId) return
 
-    const imageId = storage.getFilePreview(
+    return storage.getFilePreview(
       'gallery',
       `${galleryId}`,
       256,
@@ -35,13 +35,11 @@ export default function FetchGallery({ enableNsfw }) {
       undefined,
       output
     )
-    return imageId.href
   }
 
   const getVideoUrl = (galleryId: string) => {
     if (!galleryId) return
-    const videoId = storage.getFileView('gallery', `${galleryId}`)
-    return videoId.href
+    return storage.getFileView('gallery', `${galleryId}`)
   }
 
   useEffect(() => {
