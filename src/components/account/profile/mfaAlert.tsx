@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { account, avatars } from '@/app/appwrite-client'
-import { AuthenticatorType } from 'appwrite'
+import { AuthenticationFactor, AuthenticatorType } from 'appwrite'
 import { useState } from 'react'
 import {
   InputOTP,
@@ -35,7 +35,7 @@ export default function MfaAlert({ mfaList }) {
         AuthenticatorType.Totp
       )
       const qrCodeImage = avatars.getQR(mfaRequestResult.uri)
-      setQrCodeImage(qrCodeImage.href)
+      setQrCodeImage(qrCodeImage)
     }
 
     setMfaMode('totpEnable')
@@ -43,9 +43,13 @@ export default function MfaAlert({ mfaList }) {
 
   const handleMfaDelete = async (code: string) => {
     try {
+      const createChallengeResult = await account.createMfaChallenge(
+        AuthenticationFactor.Totp
+      )
+      await account.updateMfaChallenge(createChallengeResult.$id, code)
+
       const mfaDeleteResult = await account.deleteMfaAuthenticator(
-        AuthenticatorType.Totp,
-        code
+        AuthenticatorType.Totp
       )
       if (mfaDeleteResult) {
         toast({
