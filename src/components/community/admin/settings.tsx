@@ -1,6 +1,6 @@
 'use client'
 import { Community } from '@/utils/types/models'
-import { databases } from '@/app/appwrite-client'
+import { databases, functions } from '@/app/appwrite-client'
 import React, { useEffect, useState } from 'react'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -8,6 +8,19 @@ import { z } from 'zod'
 import { toast } from 'sonner'
 import * as Sentry from '@sentry/nextjs'
 import { Switch } from '@/components/ui/switch'
+import { Separator } from '@/components/ui/separator'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { useRouter } from '@/navigation'
+import { ExecutionMethod } from 'node-appwrite'
 
 const communitySchema = z.object({
   isFindable: z.boolean(),
@@ -20,6 +33,7 @@ export default function CommunityAdminSettings({
 }: {
   community: Community.CommunityDocumentsType
 }) {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [communitySettings, setCommunitySettings] =
     useState<Community.CommunitySettingsDocumentsType>(null)
@@ -62,6 +76,43 @@ export default function CommunityAdminSettings({
     } catch (error) {
       Sentry.captureException(error)
       toast.error('Error updating community data. Please try again later.')
+    } finally {
+      toast.dismiss(loadingToast)
+    }
+  }
+
+  const handleDelete = async () => {
+    const loadingToast = toast.loading('Deleting community...')
+    try {
+      const data = await functions.createExecution(
+        'community-endpoints',
+        '',
+        false,
+        `/community?communityId=${community.$id}`,
+        ExecutionMethod.DELETE
+      )
+      const response = JSON.parse(data.responseBody)
+
+      if (response.type === 'community_delete_missing_id') {
+        toast.error('Community ID is missing')
+        return
+      } else if (response.type === 'unauthorized') {
+        toast.error('Unauthorized')
+        return
+      } else if (response.type === 'community_delete_no_permission') {
+        toast.error('No permission')
+        return
+      } else if (response.type === 'community_delete_error') {
+        toast.error('Failed to delete community')
+        return
+      } else if (response.type === 'community_deleted') {
+        router.push('/community')
+        toast.success('Community deleted successfully.')
+        return
+      }
+    } catch (error) {
+      toast.error('Failed to delete community. Please try again later.')
+      Sentry.captureException(error)
     } finally {
       toast.dismiss(loadingToast)
     }
@@ -161,6 +212,60 @@ export default function CommunityAdminSettings({
             <div className="mt-8 flex">
               <Button type="submit">Save</Button>
             </div>
+
+            <Separator className={'my-4'} />
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant={'destructive'}>Delete community</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>Are you sure?</AlertDialogHeader>
+                <AlertDialogDescription>
+                  <span className={'text-destructive'}>Warning:</span> This
+                  action is irreversible. All data will be lost.
+                </AlertDialogDescription>
+                <div className={'flex-col'}>
+                  <div className={'mb-2'}>
+                    The following will be deleted:
+                    <div>
+                      <span className={'text-destructive'}>•</span> Your
+                      community
+                    </div>
+                    <div>
+                      <span className={'text-destructive'}>•</span> Community
+                      posts
+                    </div>
+                    <div>
+                      <span className={'text-destructive'}>•</span> Community
+                      followers
+                    </div>
+                    <div>
+                      <span className={'text-destructive'}>•</span> Community
+                      settings
+                    </div>
+                    <div>
+                      <span className={'text-destructive'}>•</span> Everything
+                      else that is associated with your community
+                    </div>
+                  </div>
+                  <div style={{ marginBottom: 8 }}>
+                    <p>
+                      If you are sure you want to delete your community, please
+                      confirm below.
+                    </p>
+                  </div>
+                </div>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    className={'bg-destructive'}
+                    onClick={handleDelete}
+                  >
+                    <span className={'text-white'}>Confirm deletion</span>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </form>
         </div>
       </div>
