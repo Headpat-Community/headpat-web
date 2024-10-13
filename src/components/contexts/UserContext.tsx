@@ -3,8 +3,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Account } from '@/utils/types/models'
 import { account } from '@/app/appwrite-client'
 import { ID } from 'node-appwrite'
-import { EyeOffIcon } from 'lucide-react'
-import Link from 'next/link'
 
 interface UserContextValue {
   current: Account.AccountPrefs | null

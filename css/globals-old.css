@@ -4,70 +4,6 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
-    --muted: 0 0% 90%;
-    --muted-foreground: 0 0% 50%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
-    --card: 0 0% 98%;
-    --card-foreground: 0 0% 0%;
-    --border: 0 0% 90%;
-    --input: 0 0% 85%;
-    --primary: 160 100% 25%; /* Darkened */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 160 100% 35%; /* Darkened */
-    --secondary-foreground: 0 0% 100%;
-    --accent: 160 100% 25%; /* Darkened */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 100% 30%;
-    --destructive-foreground: 0 0% 100%;
-    --ring: 160 100% 45%; /* Darkened */
-    --radius: 0.5rem;
-    --chart-1: 160 100% 45%; /* Darkened */
-    --chart-2: 160 100% 35%; /* Darkened */
-    --chart-3: 160 100% 25%; /* Darkened */
-    --chart-4: 160 100% 15%; /* Darkened */
-    --chart-5: 160 100% 5%;  /* Darkened */
-    --code-block: 160 100% 15%; /* Darkened */
-  }
-
-  .dark {
-    --background: 0 0% 7%;
-    --foreground: 0 0% 100%;
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 70%;
-    --popover: 0 0% 15%;
-    --popover-foreground: 0 0% 100%;
-    --card: 0 0% 15%;
-    --card-foreground: 0 0% 100%;
-    --border: 0 0% 20%;
-    --input: 0 0% 25%;
-    --primary: 155 100% 19%; /* Darkened */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 160 100% 35%; /* Darkened */
-    --secondary-foreground: 0 0% 100%;
-    --accent: 160 100% 25%; /* Darkened */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 100% 30%;
-    --destructive-foreground: 0 0% 100%;
-    --ring: 160 100% 45%; /* Darkened */
-    --chart-1: 160 100% 45%; /* Darkened */
-    --chart-2: 160 100% 35%; /* Darkened */
-    --chart-3: 160 100% 25%; /* Darkened */
-    --chart-4: 160 100% 15%; /* Darkened */
-    --chart-5: 160 100% 5%;  /* Darkened */
-    --code-block: 160 100% 15%; /* Darkened */
-  }
-}
-
-/*
-/**
- * This is the old version of the snippet above.
- * It is kept here for backup purposes.
- * /
-@layer base {
-  :root {
     --background: 0 0% 98.04%;
     --foreground: 241.2 89.29% 10.98%;
     --muted: 0 0% 89.8%;
@@ -124,7 +60,6 @@
     --code-block: 215 27.9% 16.9%
   }
 }
- */
 
 .blur {
   backdrop-filter: blur(10px);

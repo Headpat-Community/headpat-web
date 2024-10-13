@@ -2,7 +2,6 @@ import { getCommunity } from '@/utils/server-api/communities/getCommunity'
 import PageClient from './page.client'
 import { notFound } from 'next/navigation'
 import { getCommunityAvatarUrlView } from '@/components/getStorageItem'
-import { unstable_noStore } from 'next/cache'
 
 export const runtime = 'edge'
 

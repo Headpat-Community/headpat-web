@@ -3,6 +3,7 @@ import { ChevronRightIcon } from 'lucide-react'
 import PageLayout from '@/components/pageLayout'
 import { Link } from '@/navigation'
 import { getTranslations } from 'next-intl/server'
+import { Badge } from '@/components/ui/badge'
 
 export const runtime = 'edge'
 
@@ -98,14 +99,12 @@ export default async function Home({
             </div>
             <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-40 lg:flex lg:px-8 lg:pt-40">
               <div className="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8">
-                <div className="mt-24 sm:mt-32 lg:mt-16 inline-flex space-x-6">
+                <div className="mt-24 sm:mt-32 lg:mt-16 flex space-x-6 items-center">
                   <Link href="/app">
-                    <span className="rounded-full bg-indigo-500/10 px-3 py-1 text-sm font-semibold leading-6 text-indigo-400 ring-1 ring-inset ring-indigo-500/20">
-                      {main('checkapp')}
-                    </span>
+                    <Badge>{main('checkapp')}</Badge>
                   </Link>
                   <Link href="/changelog">
-                    <span className="inline-flex items-center space-x-2 text-sm font-medium leading-6 text-muted-foreground">
+                    <span className="inline-flex items-center space-x-2 text-sm font-medium leading-6 text-muted-foreground hover:text-muted-foreground/90">
                       <span>{main('latestupdates')}</span>
                       <ChevronRightIcon
                         aria-hidden="true"

@@ -268,7 +268,7 @@ export default function GeneralAccountView({
                 <div className="col-span-full">
                   <Label htmlFor="username">URL</Label>
                   <div className="mt-2">
-                    <div className="flex rounded-md bg-background ring-1 ring-offset-background ring-inset focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-black/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 dark:ring-white/10">
+                    <div className="flex rounded-md bg-background border border-input focus-within:border-primary">
                       <span className="flex select-none items-center pl-3 text-gray-400 sm:text-sm">
                         headpat.place/user/
                       </span>
@@ -429,7 +429,9 @@ export default function GeneralAccountView({
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction asChild>
                         <Button
-                          variant={'destructive'}
+                          className={
+                            'bg-destructive text-destructive-foreground hover:bg-destructive/90'
+                          }
                           onClick={deleteAccountButton}
                         >
                           Delete Account
