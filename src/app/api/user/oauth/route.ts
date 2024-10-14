@@ -24,5 +24,5 @@ export async function GET(request) {
     }
   )
 
-  return NextResponse.redirect(`${process.env.NEXT_PUBLIC_DOMAIN}/account`)
+  return NextResponse.redirect(`${process.env.NEXT_PUBLIC_DOMAIN}/login/oauth`)
 }

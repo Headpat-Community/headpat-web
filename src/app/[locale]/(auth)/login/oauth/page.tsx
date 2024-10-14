@@ -1,4 +1,4 @@
-import Client from './page.client'
+import OAuthLogin from './page.client'
 
 export const metadata = {
   title: 'Login',
@@ -8,10 +8,10 @@ export const metadata = {
 
 export const runtime = 'edge'
 
-export default async function LoginPage() {
+export default async function Page() {
   return (
     <>
-      <Client />
+      <OAuthLogin />
     </>
   )
 }

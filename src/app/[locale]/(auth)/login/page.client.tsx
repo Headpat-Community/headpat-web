@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   SiGithub,
   SiDiscord,
@@ -23,10 +23,9 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { createUser } from '@/utils/actions/login-actions'
-import { Link } from '@/navigation'
+import { Link, useRouter } from '@/navigation'
 import { account, client } from '@/app/appwrite-client'
 import PageLayout from '@/components/pageLayout'
-import { useUser } from '@/components/contexts/UserContext'
 
 export default function Login() {
   const [data, setData] = useState({
@@ -37,7 +36,21 @@ export default function Login() {
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
   const { toast } = useToast()
-  const { setUser } = useUser()
+  const router = useRouter()
+
+  useEffect(() => {
+    const checkAccount = async () => {
+      const accountData = await account.get().catch((e) => {
+        if (e.type === 'user_more_factors_required') router.push('/login/mfa')
+      })
+      if (accountData) {
+        router.push('/account')
+      }
+    }
+
+    checkAccount().then()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleEmailLogin = async (e: any) => {
     e.preventDefault()

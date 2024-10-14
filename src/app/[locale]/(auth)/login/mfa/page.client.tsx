@@ -14,8 +14,10 @@ import {
 import { useEffect, useState } from 'react'
 import { useRouter } from '@/navigation'
 import { account } from '@/app/appwrite-client'
+import { unstable_noStore } from 'next/cache'
 
 export default function MfaPageClient() {
+  unstable_noStore()
   const { toast } = useToast()
   const router = useRouter()
   const [challengeId, setChallengeId] = useState('')

@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function Loading() {
   return (
     <div role="status" className="flex h-screen items-center justify-center">
