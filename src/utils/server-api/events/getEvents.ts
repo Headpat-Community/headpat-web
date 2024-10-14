@@ -1,8 +1,5 @@
 import { Events } from '@/utils/types/models'
-import {
-  createAdminClient,
-  createSessionServerClient,
-} from '@/app/appwrite-session'
+import { createSessionServerClient } from '@/app/appwrite-session'
 
 /**
  * This function is used to get the events data
@@ -10,7 +7,7 @@ import {
  * const events = await getEvents()
  */
 export async function getEvents(): Promise<Events.EventsType> {
-  const { databases } = await createAdminClient()
+  const { databases } = await createSessionServerClient()
   return await databases.listDocuments('hp_db', 'events').catch((error) => {
     return JSON.parse(JSON.stringify(error))
   })
