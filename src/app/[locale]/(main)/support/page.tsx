@@ -40,7 +40,7 @@ export default function Page() {
           <h3 className="text-base font-semibold leading-7">
             Do you require help?
           </h3>
-          <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
+          <p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">
             Check below for all the ways you can get in touch with us.
           </p>
         </div>
