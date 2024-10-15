@@ -3,14 +3,26 @@ import { useEffect, useState } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useToast } from '@/components/ui/use-toast'
-import { editSocials } from '@/utils/actions/account/socials'
 import * as Sentry from '@sentry/nextjs'
 import { getDocument } from '@/components/api/documents'
 import { UserData } from '@/utils/types/models'
+import z from 'zod'
+import { databases } from '@/app/appwrite-client'
+import { toast } from 'sonner'
+
+const schema = z.object({
+  discordname: z.string().max(32, 'Discord name must be 32 characters or less'),
+  telegramname: z
+    .string()
+    .max(32, 'Telegram name must be 32 characters or less'),
+  furaffinityname: z
+    .string()
+    .max(32, 'Furaffinity name must be 32 characters or less'),
+  X_name: z.string().max(32, 'X / Twitter name must be 32 characters or less'),
+  twitchname: z.string().max(32, 'Twitch name must be 32 characters or less'),
+})
 
 export default function SocialsView({ accountData }) {
-  const { toast } = useToast()
   const [isUploading, setIsUploading] = useState(false)
   const [userData, setUserData] = useState(null)
 
@@ -23,44 +35,31 @@ export default function SocialsView({ accountData }) {
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
 
-    setIsUploading(true)
+    try {
+      // Validate the entire communitySettings object
+      schema.parse(userData)
+    } catch (error) {
+      toast.error(error.errors[0].message)
+      return
+    }
 
-    const discordname = (
-      document.getElementById('discordname') as HTMLInputElement
-    ).value
-    const telegramname = (
-      document.getElementById('telegramname') as HTMLInputElement
-    ).value
-    const furaffinityname = (
-      document.getElementById('furaffinityname') as HTMLInputElement
-    ).value
-    const X_name = (document.getElementById('X_name') as HTMLInputElement).value
-    const twitchname = (
-      document.getElementById('twitchname') as HTMLInputElement
-    ).value
+    try {
+      setIsUploading(true)
 
-    const promise = await editSocials(
-      discordname,
-      telegramname,
-      furaffinityname,
-      X_name,
-      twitchname
-    )
-
-    if (promise.error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to upload Data.',
-        variant: 'destructive',
+      await databases.updateDocument('hp_db', 'userdata', accountData.$id, {
+        discordname: userData.discordname,
+        telegramname: userData.telegramname,
+        furaffinityname: userData.furaffinityname,
+        X_name: userData.X_name,
+        twitchname: userData.twitchname,
       })
-      Sentry.captureException(promise)
+
+      toast.success('User data saved successfully.')
+    } catch (error) {
+      toast.error('Failed to save user data. Please try again later.')
+      Sentry.captureException(error)
+    } finally {
       setIsUploading(false)
-    } else {
-      setIsUploading(false)
-      toast({
-        title: 'Succees!',
-        description: 'Data has been saved.',
-      })
     }
   }
 

@@ -7,14 +7,12 @@ import {
   InputOTPSlot,
 } from '@/components/ui/input-otp'
 import { useToast } from '@/components/ui/use-toast'
-import {
-  startMfaChallenge,
-  updateMfaChallenge,
-} from '@/utils/actions/account/account'
 import { useEffect, useState } from 'react'
 import { useRouter } from '@/navigation'
 import { account } from '@/app/appwrite-client'
 import { unstable_noStore } from 'next/cache'
+import { getMfaFactors } from '@/utils/server-api/account/user'
+import { AuthenticationFactor } from 'node-appwrite'
 
 export default function MfaPageClient() {
   unstable_noStore()
@@ -42,8 +40,15 @@ export default function MfaPageClient() {
 
   const createMfaCode = async () => {
     try {
-      const data = await startMfaChallenge()
-      setChallengeId(data.$id)
+      const factors = await getMfaFactors()
+      if (factors.totp) {
+        const mfaData = await account.createMfaChallenge(
+          AuthenticationFactor.Totp
+        )
+        setChallengeId(mfaData.$id)
+      } else {
+        return
+      }
     } catch (error) {
       console.log(error)
     }
@@ -51,7 +56,7 @@ export default function MfaPageClient() {
 
   const handleMfaVerify = async (otp: string) => {
     try {
-      await updateMfaChallenge(challengeId, otp)
+      await account.updateMfaChallenge(challengeId, otp)
 
       router.replace('/account')
     } catch (error) {

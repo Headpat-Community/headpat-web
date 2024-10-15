@@ -6,15 +6,8 @@ import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import MfaAlert from '@/components/account/profile/mfaAlert'
 import * as Sentry from '@sentry/nextjs'
-import { Models } from 'node-appwrite'
+import { ExecutionMethod, Models } from 'node-appwrite'
 import MfaRecoveryCodes from '@/components/account/profile/mfaRecoveryCodes'
-import {
-  changeEmail,
-  changePassword,
-  changePreferences,
-  changeProfileUrl,
-  deleteAccount,
-} from '@/utils/actions/account/account'
 import { Account, UserData } from '@/utils/types/models'
 import { useRouter } from '@/navigation'
 import {
@@ -31,6 +24,7 @@ import {
 import { getDocument } from '@/components/api/documents'
 import { toast } from 'sonner'
 import { useUser } from '@/components/contexts/UserContext'
+import { account, databases, functions } from '@/app/appwrite-client'
 
 export default function GeneralAccountView({
   accountData,
@@ -62,23 +56,22 @@ export default function GeneralAccountView({
       return
     }
 
-    const data = await changeEmail(userData.email, userData.password)
-
-    if (data.type == 'user_invalid_credentials') {
-      toast.error("Password doesn't match.")
-      return
-    }
-    if (data.type == 'user_target_already_exists') {
-      toast.error('Account already exists with this email.')
-      return
-    } else {
+    try {
+      await account.updateEmail(userData.email, userData.password)
       toast.success('E-Mail updated successfully.')
       setUserData((prevUserData: any) => ({
         ...prevUserData,
         email: userData.email,
       }))
-      Sentry.captureException(data)
-      return
+    } catch (error) {
+      if (error.type == 'user_invalid_credentials') {
+        toast.error("Password doesn't match.")
+      } else if (error.type == 'user_target_already_exists') {
+        toast.error('Account already exists with this email.')
+      } else {
+        toast.error('Failed to update email. Please try again.')
+        Sentry.captureException(error)
+      }
     }
   }
 
@@ -102,29 +95,29 @@ export default function GeneralAccountView({
       return
     }
 
-    const promise = await changePassword(newPassword, currentPassword)
-
-    if (promise.code === 400) {
-      toast.error(promise.message)
-    } else if (promise.code === 401) {
-      toast.error("Password doesn't match.")
-    } else {
-      toast.error('Password updated successfully.')
-      target.reset()
+    try {
+      await account.updatePassword(newPassword, currentPassword)
+      toast.success('Password updated successfully.')
+    } catch (error) {
+      if (error.code === 400) {
+        toast.error(error.message)
+      } else if (error.code === 401) {
+        toast.error("Password doesn't match.")
+      } else {
+        toast.error('Failed to update password. Please try again.')
+        target.reset()
+      }
     }
   }
 
   const handleNsfw = async (checked: boolean) => {
     const prefs = userMe.prefs
-    const body = {
-      ...prefs,
-      nsfw: checked,
-    }
-    const promise = await changePreferences(body)
 
-    if (promise.error) {
-      toast.error('Failed to update NSFW. Please try again.')
-    } else {
+    try {
+      await account.updatePrefs({
+        ...prefs,
+        nsfw: checked,
+      })
       toast.success('NSFW updated successfully.')
       setUserMe((prevUserData: any) => ({
         ...prevUserData,
@@ -134,6 +127,10 @@ export default function GeneralAccountView({
         },
       }))
       router.refresh()
+    } catch (error) {
+      if (error) {
+        toast.error('Failed to update NSFW. Please try again.')
+      }
     }
   }
 
@@ -146,7 +143,14 @@ export default function GeneralAccountView({
       return
     }
 
-    const promise = await changeProfileUrl(profileUrl)
+    const promise = await databases.updateDocument(
+      'hp_db',
+      'userdata',
+      userMe?.$id,
+      {
+        profileUrl: profileUrl,
+      }
+    )
 
     if (promise.type === 'document_invalid_structure') {
       toast.error('Invalid structure.')
@@ -161,7 +165,14 @@ export default function GeneralAccountView({
 
   const deleteAccountButton = async () => {
     try {
-      await deleteAccount()
+      await functions.createExecution(
+        'user-endpoints',
+        '',
+        true,
+        '/deleteAccount',
+        ExecutionMethod.DELETE
+      )
+      await account.deleteSessions()
 
       setUser(null)
       toast.success('Account deleted successfully.')

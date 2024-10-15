@@ -9,16 +9,27 @@ import { useEffect, useState } from 'react'
 import UploadAvatar from '@/components/account/uploadAvatar'
 import UploadBanner from '@/components/account/uploadBanner'
 import { Account, UserData } from '@/utils/types/models'
-import { unstable_noStore } from 'next/cache'
 import { toast } from 'sonner'
 import { getDocument } from '@/components/api/documents'
+import z from 'zod'
+
+const schema = z.object({
+  status: z.string().max(24, 'Status: Max length is 24'),
+  bio: z.string().max(2048, 'Bio: Max length is 2048'),
+  displayName: z
+    .string()
+    .min(3, 'Display Name should be at least 3 characters')
+    .max(32, 'Display Name: Max length is 32'),
+  birthday: z.string().max(32, 'Max length is 32'),
+  pronouns: z.string().max(16, 'Pronouns: Max length is 16'),
+  location: z.string().max(48, 'Location: Max length is 48'),
+})
 
 export default function FrontpageView({
   accountData,
 }: {
   accountData: Account.AccountPrefs
 }) {
-  unstable_noStore()
   const [userData, setUserData] = useState<UserData.UserDataDocumentsType>(null)
   const [isUploading, setIsUploading] = useState<boolean>(false)
 
@@ -32,6 +43,14 @@ export default function FrontpageView({
     event.preventDefault()
 
     try {
+      // Validate the entire communitySettings object
+      schema.parse(userData)
+    } catch (error) {
+      toast.error(error.errors[0].message)
+      return
+    }
+
+    try {
       setIsUploading(true)
 
       const promise = databases.updateDocument(
@@ -39,20 +58,12 @@ export default function FrontpageView({
         'userdata',
         accountData.$id,
         {
-          status: (document.getElementById('status') as HTMLInputElement).value,
-          bio: (document.getElementById('biostatus') as HTMLInputElement).value,
-          displayName: (
-            document.getElementById('displayname') as HTMLInputElement
-          ).value,
-          birthday: new Date(
-            (document.getElementById('birthday') as HTMLInputElement).value
-          )
-            .toISOString()
-            .split('T')[0],
-          pronouns: (document.getElementById('pronouns') as HTMLInputElement)
-            .value,
-          location: (document.getElementById('location') as HTMLInputElement)
-            .value,
+          status: userData.status,
+          bio: userData.bio,
+          displayName: userData.displayName,
+          birthday: new Date(userData.birthday).toISOString().split('T')[0],
+          pronouns: userData.pronouns,
+          location: userData.location,
         }
       )
 
