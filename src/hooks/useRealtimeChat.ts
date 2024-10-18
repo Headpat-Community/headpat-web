@@ -21,13 +21,12 @@ export function useRealtimeChat() {
         'databases.hp_db.collections.messages.documents',
       ],
       (response: RealtimeResponseEvent<any>) => {
-        console.log('Realtime event:', response)
         const { events, payload } = response
 
         if (
           events.some((event) => event.includes('messages-contacts.documents'))
         ) {
-          handleContactEvent(events, payload)
+          handleContactEvent(events, payload).then()
         }
 
         if (events.some((event) => event.includes('messages.documents'))) {
