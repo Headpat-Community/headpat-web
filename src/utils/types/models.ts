@@ -24,6 +24,48 @@ export namespace Account {
   }
 }
 
+export namespace Messaging {
+  export interface MessagesType {
+    total: number
+    documents: MessagesDocumentsType[]
+  }
+
+  export interface MessagesDocumentsType extends Models.Document {
+    /**
+     * The user ID of the user that sent the message.
+     */
+    fromUserId: string
+    /**
+     * The user ID of the user that received the message.
+     */
+    targetUserId: string
+    /**
+     * The body of the message.
+     */
+    body: string
+  }
+
+  export interface MessageContactsType {
+    total: number
+    documents: MessageContactsDocumentsType[]
+  }
+
+  export interface MessageContactsDocumentsType extends Models.Document {
+    /**
+     * The userId that owns the contact.
+     */
+    userId: string
+    /**
+     * The userId of the contact.
+     */
+    targetUserId: string
+    /**
+     * The user data of the contact.
+     */
+    userdata?: UserData.UserDataDocumentsType
+  }
+}
+
 export namespace Followers {
   export interface FollowerType {
     total: number

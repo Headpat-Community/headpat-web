@@ -43,6 +43,7 @@ export default async function LocaleLayout({ children, params: { locale } }) {
       <Header
         locale={locale}
         home={pageNames('home')}
+        chat={pageNames('chat')}
         gallery={pageNames('gallery')}
         events={pageNames('events')}
         map={pageNames('map')}
