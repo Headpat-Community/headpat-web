@@ -1,6 +1,6 @@
 {
   "name": "headpat-web",
-  "version": "0.8.0",
+  "version": "0.8.2",
   "author": "Faye",
   "private": true,
   "type": "module",
@@ -11,6 +11,9 @@
     "lint": "next lint",
     "format": "prettier --write ."
   },
+  "packageManager": "pnpm@9.1.0",
+  "description": "Headpat is a social media platform for the next generation.",
+  "readme": "README.md",
   "prettier": {
     "trailingComma": "es5",
     "tabWidth": 2,

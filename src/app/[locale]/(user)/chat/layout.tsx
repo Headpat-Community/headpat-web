@@ -6,67 +6,342 @@ import React from 'react'
 import { useRealtimeChat } from '@/hooks/useRealtimeChat'
 import PageLayout from '@/components/pageLayout'
 import UserCard from '@/components/user/userCard'
-import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
+import {
+  getAvatarImageUrlPreview,
+  getCommunityAvatarUrlPreview,
+} from '@/components/getStorageItem'
+import { useUser } from '@/components/contexts/UserContext'
+import { useEffect, useState, useCallback } from 'react'
+import { databases, functions } from '@/app/appwrite-client'
+import { toast } from 'sonner'
+import { Menu, Plus, Search } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { useDebounce } from '@/hooks/useDebounce'
+import { Query } from 'appwrite'
+import { ExecutionMethod } from 'node-appwrite'
+import { Account, Messaging, UserData } from '@/utils/types/models'
+import { Users } from 'lucide-react'
 
 export default function ChatLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const { contacts } = useRealtimeChat()
+  const { conversations } = useRealtimeChat()
+  const { current } = useUser()
+  const [displayUsers, setDisplayUsers] = useState({})
+  const [userCache, setUserCache] = useState({})
+  const [isOpen, setIsOpen] = useState(false)
+  const [communityCache, setCommunityCache] = useState({})
+
+  const fetchUserData = useCallback(
+    async (userId: string) => {
+      if (userCache[userId]) {
+        return userCache[userId]
+      }
+
+      try {
+        const userData = await databases.getDocument(
+          'hp_db',
+          'userdata',
+          userId
+        )
+        setUserCache((prevCache) => ({ ...prevCache, [userId]: userData }))
+        return userData
+      } catch (error) {
+        toast.error('Error fetching user data')
+        return null
+      }
+    },
+    [userCache]
+  )
+
+  const fetchCommunityData = useCallback(
+    async (communityId: string) => {
+      if (communityCache[communityId]) {
+        return communityCache[communityId]
+      }
+
+      try {
+        const communityData = await databases.getDocument(
+          'hp_db',
+          'community',
+          communityId
+        )
+        setCommunityCache((prevCache) => ({
+          ...prevCache,
+          [communityId]: communityData,
+        }))
+        return communityData
+      } catch (error) {
+        toast.error('Error fetching community data')
+        return null
+      }
+    },
+    [communityCache]
+  )
+
+  useEffect(() => {
+    const updateDisplayUsers = async () => {
+      const newDisplayUsers = {}
+      for (const conversation of conversations) {
+        if (conversation.communityId) {
+          const communityData = await fetchCommunityData(
+            conversation.communityId
+          )
+          if (communityData) {
+            newDisplayUsers[conversation.$id] = {
+              isCommunity: true,
+              ...communityData,
+            }
+          }
+        } else if (conversation.participants) {
+          const otherParticipantId = conversation.participants.find(
+            (participant) => participant !== current.$id
+          )
+          if (otherParticipantId) {
+            const userData = await fetchUserData(otherParticipantId)
+            if (userData) {
+              newDisplayUsers[conversation.$id] = userData
+            }
+          }
+        }
+      }
+      setDisplayUsers(newDisplayUsers)
+    }
+
+    updateDisplayUsers()
+  }, [conversations, current.$id, fetchUserData, fetchCommunityData])
+
+  const closeSheet = () => setIsOpen(false)
 
   return (
     <PageLayout title={'Chat'}>
-      <div className="flex">
-        {/* Contacts Sidebar */}
-        <div className="w-[500px] border-r border-gray-200">
-          <div className="p-3 border-b border-gray-200">
-            <h2 className="text-xl font-semibold">Contacts</h2>
-          </div>
-          <ScrollArea className="h-[calc(95vh-5rem)]">
-            {contacts.map((contact) => (
-              <Link key={contact.$id} href={`/chat/${contact.$id}`}>
-                <div className="flex items-center p-4 cursor-pointer hover:bg-foreground/10">
-                  <UserCard user={contact?.userdata} isChild={true}>
-                    <Avatar className="h-10 w-10">
-                      <AvatarImage
-                        src={
-                          getAvatarImageUrlPreview(
-                            contact?.userdata?.avatarId,
-                            'width=250&height=250'
-                          ) || null
-                        }
-                        alt={contact.userdata?.displayName}
-                      />
-                      <AvatarFallback>
-                        {contact?.userdata?.displayName?.charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
-                  </UserCard>
-                  <div className="ml-4">
-                    <p className="font-semibold">
-                      {contact?.userdata?.displayName}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      {contact?.lastMessage}
-                    </p>
-                  </div>
-                  <div
-                    className={`ml-auto w-2 h-2 rounded-full ${
-                      contact.status === 'online'
-                        ? 'bg-green-500'
-                        : 'bg-gray-300'
-                    }`}
-                  />
-                </div>
-              </Link>
-            ))}
-          </ScrollArea>
+      <div className="flex flex-col md:flex-row h-[calc(100vh-4rem)]">
+        {/* Mobile Sidebar Toggle */}
+        <div className="md:hidden p-2">
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <Button>
+                <Menu className="mr-2" /> See conversations
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+              <ConversationsList
+                conversations={conversations}
+                displayUsers={displayUsers}
+                current={current}
+                closeSheet={closeSheet}
+              />
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        {/* Desktop Sidebar */}
+        <div className="hidden md:block w-[300px] lg:w-[400px] border-r border-gray-200 overflow-y-auto">
+          <ConversationsList
+            conversations={conversations}
+            displayUsers={displayUsers}
+            current={current}
+            closeSheet={closeSheet}
+          />
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1">{children}</div>
+        <div className="flex-1 overflow-hidden">{children}</div>
       </div>
     </PageLayout>
+  )
+}
+
+// Updated ConversationsList component
+function ConversationsList({
+  conversations,
+  displayUsers,
+  current,
+  closeSheet,
+}: {
+  conversations: Messaging.MessageConversationsDocumentsType[]
+  displayUsers: any
+  current: Account.AccountPrefs
+  closeSheet: () => void
+}) {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [searchResults, setSearchResults] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const debouncedSearchTerm = useDebounce(searchTerm, 500)
+
+  useEffect(() => {
+    const searchUsers = async () => {
+      if (debouncedSearchTerm) {
+        setIsLoading(true)
+        try {
+          const results = await databases.listDocuments('hp_db', 'userdata', [
+            Query.contains('profileUrl', debouncedSearchTerm),
+          ])
+          setSearchResults(results.documents)
+        } catch (error) {
+          toast.error('Error searching users')
+        } finally {
+          setIsLoading(false)
+        }
+      } else {
+        setSearchResults([])
+      }
+    }
+
+    searchUsers()
+  }, [debouncedSearchTerm])
+
+  const createConversation = async (recipientId) => {
+    const loadingToast = toast.loading('Creating conversation...')
+    try {
+      const data = await functions.createExecution(
+        'user-endpoints',
+        '',
+        false,
+        `/user/chat/conversation?recipientId=${recipientId}`,
+        ExecutionMethod.POST
+      )
+      const response = JSON.parse(data.responseBody)
+      toast.dismiss(loadingToast)
+      if (response.type === 'userchat_conversation_exists') {
+        return toast.error('Conversation already exists')
+      } else {
+        toast.success('Conversation created')
+      }
+      setIsModalOpen(false)
+    } catch (error) {
+      toast.error('Error creating conversation')
+    }
+  }
+
+  return (
+    <div className="h-full flex flex-col">
+      <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+        <h2 className="text-xl font-semibold">Conversations</h2>
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <Plus className="h-4 w-4" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent aria-describedby={undefined}>
+            <DialogHeader>
+              <DialogTitle>Create New Conversation</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Search className="h-4 w-4 text-gray-400" />
+                <Input
+                  placeholder="Search users..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <ScrollArea className="h-[300px]">
+                {isLoading ? (
+                  <div className="flex items-center justify-center h-full">
+                    <p>Loading...</p>
+                  </div>
+                ) : searchResults.length > 0 ? (
+                  searchResults.map((user) => (
+                    <div
+                      key={user.$id}
+                      className="flex items-center p-2 cursor-pointer hover:bg-foreground/10"
+                      onClick={() => createConversation(user.$id)}
+                    >
+                      <Avatar className="h-8 w-8 mr-2">
+                        <AvatarImage
+                          src={getAvatarImageUrlPreview(
+                            user.avatarId,
+                            'width=100&height=100'
+                          )}
+                          alt={user.displayName}
+                        />
+                        <AvatarFallback>
+                          {user.displayName?.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span>{user.displayName}</span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="flex items-center justify-center h-full">
+                    <p>No results found</p>
+                  </div>
+                )}
+              </ScrollArea>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+      <ScrollArea className="flex-grow">
+        {conversations.map((conversation) => {
+          const displayData = displayUsers[conversation.$id] || {}
+          const isCommunity = displayData.isCommunity
+
+          return (
+            <Link
+              href={`/chat/${conversation.$id}`}
+              onClick={closeSheet}
+              className="flex items-center p-4 cursor-pointer hover:bg-foreground/10 w-full"
+              key={conversation.$id}
+            >
+              <div className="relative">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage
+                    src={
+                      isCommunity
+                        ? getCommunityAvatarUrlPreview(
+                            displayData.avatarId,
+                            'width=250&height=250'
+                          )
+                        : getAvatarImageUrlPreview(
+                            displayData.avatarId,
+                            'width=250&height=250'
+                          ) || null
+                    }
+                    alt={
+                      isCommunity ? displayData.name : displayData.displayName
+                    }
+                  />
+                  <AvatarFallback>
+                    {isCommunity
+                      ? displayData.name?.charAt(0)
+                      : displayData.displayName?.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                {isCommunity && (
+                  <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground rounded-full p-0.5">
+                    <Users size={12} />
+                  </div>
+                )}
+              </div>
+              <div className="ml-4 flex-grow">
+                <div className="flex items-center">
+                  <p className="font-semibold">
+                    {isCommunity ? displayData.name : displayData.displayName}
+                  </p>
+                </div>
+                <p className="text-sm text-gray-500">
+                  {conversation?.lastMessage}
+                </p>
+              </div>
+            </Link>
+          )
+        })}
+      </ScrollArea>
+    </div>
   )
 }

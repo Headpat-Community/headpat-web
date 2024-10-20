@@ -6,6 +6,7 @@ import { Toaster as SonnerToaster } from '@/components/ui/sonner'
 import { cn } from '@/lib/utils'
 import { UserProvider } from '@/components/contexts/UserContext'
 import { Metadata } from 'next'
+import { DataCacheProvider } from '@/components/contexts/DataCacheContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -75,7 +76,9 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange
         >
           <UserProvider>
-            <div className="w-full">{children}</div>
+            <DataCacheProvider>
+              <div className="w-full">{children}</div>
+            </DataCacheProvider>
           </UserProvider>
         </ThemeProvider>
         <Toaster />

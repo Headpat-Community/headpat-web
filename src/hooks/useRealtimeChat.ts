@@ -1,32 +1,32 @@
 import { useEffect, useState } from 'react'
 import { RealtimeResponseEvent } from 'appwrite'
-import { Messaging, UserData } from '@/utils/types/models'
+import { Messaging } from '@/utils/types/models'
 import { client, databases } from '@/app/appwrite-client'
 import { Query } from 'node-appwrite'
-import { useUser } from '@/components/contexts/UserContext'
 
 export function useRealtimeChat() {
-  const [contacts, setContacts] = useState<
-    Messaging.MessageContactsDocumentsType[]
+  const [conversations, setConversations] = useState<
+    Messaging.MessageConversationsDocumentsType[]
   >([])
   const [messages, setMessages] = useState<Messaging.MessagesDocumentsType[]>(
     []
   )
-  const { current } = useUser()
 
   useEffect(() => {
     const unsubscribe = client.subscribe(
       [
-        'databases.hp_db.collections.messages-contacts.documents',
+        'databases.hp_db.collections.messages-conversations.documents',
         'databases.hp_db.collections.messages.documents',
       ],
       (response: RealtimeResponseEvent<any>) => {
         const { events, payload } = response
 
         if (
-          events.some((event) => event.includes('messages-contacts.documents'))
+          events.some((event) =>
+            event.includes('messages-conversations.documents')
+          )
         ) {
-          handleContactEvent(events, payload).then()
+          handleConversationEvent(events, payload).then()
         }
 
         if (events.some((event) => event.includes('messages.documents'))) {
@@ -44,88 +44,73 @@ export function useRealtimeChat() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleContactEvent = async (
+  const handleConversationEvent = async (
     events: string[],
-    payload: Messaging.MessageContactsDocumentsType
+    payload: Messaging.MessageConversationsDocumentsType
   ) => {
     if (events.some((event) => event.endsWith('.create'))) {
       // Ensure userdata is present
-      if (!payload.userdata) {
-        payload.userdata = await fetchUserData(payload.targetUserId)
-      }
-      setContacts((prevContacts) => [...prevContacts, payload])
+      setConversations((prevConversations) => [...prevConversations, payload])
     } else if (events.some((event) => event.endsWith('.update'))) {
       // Ensure userdata is present
-      if (!payload.userdata) {
-        payload.userdata = await fetchUserData(payload.targetUserId)
-      }
-      setContacts((prevContacts) => {
-        const index = prevContacts.findIndex(
-          (contact) => contact.$id === payload.$id
+      setConversations((prevConversations) => {
+        const index = prevConversations.findIndex(
+          (conversation) => conversation.$id === payload.$id
         )
         if (index !== -1) {
-          const newContacts = [...prevContacts]
-          newContacts[index] = payload
-          return newContacts
+          const newConversations = [...prevConversations]
+          newConversations[index] = payload
+          return newConversations
         }
-        return prevContacts
+        return prevConversations
       })
     } else if (events.some((event) => event.endsWith('.delete'))) {
-      setContacts((prevContacts) =>
-        prevContacts.filter((contact) => contact.$id !== payload.$id)
+      setConversations((prevConversations) =>
+        prevConversations.filter(
+          (conversation) => conversation.$id !== payload.$id
+        )
       )
     }
-  }
-
-  const fetchUserData = async (
-    contactId: string
-  ): Promise<UserData.UserDataDocumentsType> => {
-    // Fetch user data based on contactId
-    return await databases.getDocument('hp_db', 'userdata', contactId)
   }
 
   const handleMessageEvent = (
     events: string[],
     payload: Messaging.MessagesDocumentsType
   ) => {
-    if (events.some((event) => event.endsWith('.create'))) {
-      setMessages((prevMessages) => [...prevMessages, payload])
-    } else if (events.some((event) => event.endsWith('.update'))) {
-      setMessages((prevMessages) => {
-        const index = prevMessages.findIndex(
+    setMessages((prevMessages) => {
+      let updatedMessages = [...prevMessages]
+
+      if (events.some((event) => event.endsWith('.create'))) {
+        updatedMessages.push(payload)
+      } else if (events.some((event) => event.endsWith('.update'))) {
+        const index = updatedMessages.findIndex(
           (message) => message.$id === payload.$id
         )
         if (index !== -1) {
-          const newMessages = [...prevMessages]
-          newMessages[index] = payload
-          return newMessages
+          updatedMessages[index] = payload
         }
-        return prevMessages
-      })
-    } else if (events.some((event) => event.endsWith('.delete'))) {
-      setMessages((prevMessages) =>
-        prevMessages.filter((message) => message.$id !== payload.$id)
-      )
-    }
+      } else if (events.some((event) => event.endsWith('.delete'))) {
+        updatedMessages = updatedMessages.filter(
+          (message) => message.$id !== payload.$id
+        )
+      }
+
+      return updatedMessages
+    })
   }
 
   const fetchInitialData = async () => {
-    const initialContacts: Messaging.MessageContactsType =
-      await databases.listDocuments('hp_db', 'messages-contacts', [
-        Query.limit(5000),
+    const initialConversations: Messaging.MessageConversationsType =
+      await databases.listDocuments('hp_db', 'messages-conversations', [
+        Query.limit(500),
       ])
-    setContacts(initialContacts.documents)
-
-    const initialMessages: Messaging.MessagesType =
-      await databases.listDocuments('hp_db', 'messages', [
-        Query.or([
-          Query.equal('fromUserId', current.$id),
-          Query.equal('targetUserId', current.$id),
-        ]),
-        Query.limit(25),
-      ])
-    setMessages(initialMessages.documents)
+    setConversations(initialConversations.documents)
   }
 
-  return { contacts, messages }
+  return {
+    conversations,
+    messages,
+    setConversations,
+    setMessages,
+  }
 }

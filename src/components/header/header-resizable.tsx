@@ -166,7 +166,7 @@ export default function SidebarResizable({
             </ScrollArea>
             <div className={'mt-auto relative bottom-0 block'}>
               <Separator />
-              <span className={'my-2 flex justify-center'}>BETA</span>
+              <span className={'my-1 flex justify-center'}>BETA</span>
               {current ? (
                 <>
                   <Separator />

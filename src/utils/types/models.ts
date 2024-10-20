@@ -32,37 +32,56 @@ export namespace Messaging {
 
   export interface MessagesDocumentsType extends Models.Document {
     /**
-     * The user ID of the user that sent the message.
+     * The user ID of the sender.
      */
-    fromUserId: string
-    /**
-     * The user ID of the user that received the message.
-     */
-    targetUserId: string
+    senderId: string
     /**
      * The body of the message.
      */
     body: string
+    /**
+     * The conversation ID.
+     */
+    conversationId: string
+    /**
+     * The message type.
+     */
+    messageType:
+      | 'text'
+      | 'location'
+      | 'contact'
+      | 'sticker'
+      | 'reply'
+      | 'forward'
+      | 'file'
+    /**
+     * Attachment IDs of the message.
+     */
+    attachments: string[]
   }
 
-  export interface MessageContactsType {
+  export interface MessageConversationsType {
     total: number
-    documents: MessageContactsDocumentsType[]
+    documents: MessageConversationsDocumentsType[]
   }
 
-  export interface MessageContactsDocumentsType extends Models.Document {
+  export interface MessageConversationsDocumentsType extends Models.Document {
     /**
-     * The userId that owns the contact.
+     * The user IDs of the participants in the conversation.
      */
-    userId: string
+    participants: string[]
     /**
-     * The userId of the contact.
+     * If the conversation is a group conversation.
      */
-    targetUserId: string
+    communityId: string
     /**
-     * The user data of the contact.
+     * The last message in the conversation.
      */
-    userdata?: UserData.UserDataDocumentsType
+    lastMessage: string
+    /**
+     * The community data of the conversation.
+     */
+    community: Community.CommunityDocumentsType | null
   }
 }
 

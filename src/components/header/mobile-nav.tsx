@@ -57,16 +57,16 @@ export default function MobileNav({ translations, children }) {
                 <SheetHeader>
                   <SheetTitle>Menu</SheetTitle>
                   <SheetDescription>
-                    Interested in checking stuff out? Click on a link!
+                    Interested in checking stuff out? Click on a button!
                   </SheetDescription>
                 </SheetHeader>
 
                 <Separator className={'mt-2'} />
 
-                <ScrollArea className={'flex-grow'}>
+                <ScrollArea className={''}>
                   <div
                     className={
-                      'mt-8 w-full h-full justify-items-center text-center'
+                      'mt-8 w-full h-full'
                     }
                   >
                     <div>
