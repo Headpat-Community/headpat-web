@@ -161,50 +161,27 @@ export default function ChatClient({
         )
       )
 
-      // Fetch the conversation to check status and participants
-      const conversation = (await databases.getDocument(
-        'hp_db',
-        'messages-conversations',
-        conversationId
-      )) as Messaging.MessageConversationsDocumentsType
-
-      // Determine permissions based on conversation type
-      // PERMISSIONS NO WORKY
-      let permissions
-      if (conversation.communityId) {
-        permissions = [
-          Permission.read(Role.team(conversation.communityId)),
-          Permission.read(Role.user(current.$id)),
-          Permission.update(Role.user(current.$id)),
-          Permission.update(Role.team(conversation.communityId, 'owner')),
-          Permission.update(Role.team(conversation.communityId, 'mod')),
-          Permission.delete(Role.user(current.$id)),
-          Permission.delete(Role.team(conversation.communityId, 'owner')),
-          Permission.delete(Role.team(conversation.communityId, 'mod')),
-        ]
-      } else {
-        permissions = conversation.participants.map((participantId) =>
-          Permission.read(Role.user(participantId))
-        )
-      }
-
-      // Create the message document
-      await databases.createDocument(
-        'hp_db',
-        'messages',
-        ID.unique(),
-        {
-          conversationId,
-          body: message,
-          senderId: current.$id,
-          attachments: uploadedAttachments.map((file) => file.$id),
+      const data = await functions.createExecution(
+        'user-endpoints',
+        JSON.stringify({
+          message,
+          attachments: uploadedAttachments.map((file) => file.$id) || [],
           messageType: uploadedAttachments.length > 0 ? 'file' : 'text',
-        },
-        permissions
+        }),
+        false,
+        `/user/chat/message?conversationId=${conversationId}`,
+        ExecutionMethod.POST
       )
-
-      // Message sent successfully
-      toast.success('Message sent')
+      const response = JSON.parse(data.responseBody)
+      if (response.code === 500) {
+        toast.error('An error occurred while sending the message')
+        return
+      } else if (response.type === 'userchat_user_not_in_conversation') {
+        toast.error('You are not in this conversation')
+        return
+      } else if (response.type === 'userchat_message_sent') {
+        toast.success('Message sent')
+      }
 
       // Clear the form and attachments after sending
       form.reset()
@@ -304,7 +281,7 @@ export default function ChatClient({
               <Link
                 href={{
                   pathname: '/user/[profileUrl]',
-                  params: {
+                  query: {
                     profileUrl: user?.profileUrl,
                   },
                 }}

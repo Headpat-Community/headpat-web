@@ -2,10 +2,7 @@ import ChatClient from './page.client'
 
 export const runtime = 'edge'
 
-export default function Chat({
-  params,
-}: {
-  params: { conversationId: string }
-}) {
-  return <ChatClient conversationId={params.conversationId} />
+export default async function Chat({ params }) {
+  const paramsResponse = await params
+  return <ChatClient conversationId={paramsResponse.conversationId} />
 }

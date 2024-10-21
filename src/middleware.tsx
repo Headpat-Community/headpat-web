@@ -1,10 +1,11 @@
 import createMiddleware from 'next-intl/middleware'
-import { locales, pathnames } from './navigation'
+import { pathnames } from './navigation'
+import { routing } from './i18n/routing'
 
 export default createMiddleware({
   localePrefix: 'always',
-  defaultLocale: 'en',
-  locales,
+  defaultLocale: routing.defaultLocale,
+  locales: routing.locales,
   pathnames,
 })
 

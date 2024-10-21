@@ -1,7 +1,6 @@
-import { createLocalizedPathnamesNavigation } from 'next-intl/navigation'
+import { createNavigation } from 'next-intl/navigation'
 import { Pathnames } from 'next-intl/routing'
-
-export const locales = ['nl', 'de', 'en'] as const
+import { routing } from './i18n/routing'
 
 // The `pathnames` object holds pairs of internal
 // and external paths, separated by locale.
@@ -54,7 +53,7 @@ export const pathnames = {
     de: '/ueber-uns',
     nl: '/over-ons',
   },
-} satisfies Pathnames<typeof locales>
+} satisfies Pathnames<typeof routing.locales>
 
 export const { Link, redirect, usePathname, useRouter, getPathname } =
-  createLocalizedPathnamesNavigation({ locales, pathnames })
+  createNavigation(routing)

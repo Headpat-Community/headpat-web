@@ -30,6 +30,7 @@ import { Query } from 'appwrite'
 import { ExecutionMethod } from 'node-appwrite'
 import { Account, Messaging, UserData } from '@/utils/types/models'
 import { Users } from 'lucide-react'
+import { useRouter } from '@/navigation'
 
 export default function ChatLayout({
   children,
@@ -175,6 +176,7 @@ function ConversationsList({
   current: Account.AccountPrefs
   closeSheet: () => void
 }) {
+  const router = useRouter()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [searchResults, setSearchResults] = useState([])
@@ -214,11 +216,18 @@ function ConversationsList({
         ExecutionMethod.POST
       )
       const response = JSON.parse(data.responseBody)
+      console.log(response)
       toast.dismiss(loadingToast)
-      if (response.type === 'userchat_conversation_exists') {
-        return toast.error('Conversation already exists')
+      if (response.type === 'userchat_missing_recipient_id') {
+        toast.error('Missing recipient ID')
+      } else if (response.type === 'userchat_recipient_does_not_exist') {
+        toast.error('Recipient does not exist')
+      } else if (
+        response.type === 'userchat_recipient_cannot_be_the_same_as_the_user'
+      ) {
+        toast.error('Cannot create conversation with yourself')
       } else {
-        toast.success('Conversation created')
+        //router.push(`/chat/${response.conversationId}`)
       }
       setIsModalOpen(false)
     } catch (error) {
