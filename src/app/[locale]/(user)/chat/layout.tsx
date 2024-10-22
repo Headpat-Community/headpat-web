@@ -30,7 +30,7 @@ import { Query } from 'appwrite'
 import { ExecutionMethod } from 'node-appwrite'
 import { Account, Messaging, UserData } from '@/utils/types/models'
 import { Users } from 'lucide-react'
-import { useRouter } from '@/navigation'
+import { useRouter } from '@/i18n/routing'
 
 export default function ChatLayout({
   children,
@@ -215,9 +215,8 @@ function ConversationsList({
         `/user/chat/conversation?recipientId=${recipientId}`,
         ExecutionMethod.POST
       )
-      const response = JSON.parse(data.responseBody)
-      console.log(response)
       toast.dismiss(loadingToast)
+      const response = JSON.parse(data.responseBody)
       if (response.type === 'userchat_missing_recipient_id') {
         toast.error('Missing recipient ID')
       } else if (response.type === 'userchat_recipient_does_not_exist') {
@@ -231,7 +230,7 @@ function ConversationsList({
       }
       setIsModalOpen(false)
     } catch (error) {
-      toast.error('Error creating conversation')
+      toast.error('Error fetching conversation. Please try again later.')
     }
   }
 

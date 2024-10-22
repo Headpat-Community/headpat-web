@@ -1,6 +1,6 @@
 import { createAdminClient } from '@/app/appwrite-session'
 import { Announcements } from '@/utils/types/models'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 
 export const runtime = 'edge'
@@ -9,11 +9,13 @@ export const metadata = {
   title: 'Announcements',
 }
 
-export default async function Page({
-  params: { announcementId },
-}: {
-  params: { announcementId: string }
+export default async function Page(props: {
+  params: Promise<{ announcementId: string }>
 }) {
+  const params = await props.params
+
+  const { announcementId } = params
+
   const { databases } = await createAdminClient()
 
   const announcementData: Announcements.AnnouncementDocumentsType =

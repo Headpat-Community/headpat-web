@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { ChevronRightIcon } from 'lucide-react'
 import PageLayout from '@/components/pageLayout'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 import { getTranslations } from 'next-intl/server'
 import { Badge } from '@/components/ui/badge'
 

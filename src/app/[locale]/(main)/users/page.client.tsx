@@ -1,7 +1,7 @@
 'use client'
 import { UserData } from '@/utils/types/models'
 import { Card } from '@/components/ui/card'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 import Image from 'next/image'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import { ExecutionMethod } from 'node-appwrite'

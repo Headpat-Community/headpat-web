@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { databases, Query, storage } from '@/app/appwrite-client'
 import * as Sentry from '@sentry/nextjs'
 import { useToast } from '@/components/ui/use-toast'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 import { Gallery } from '@/utils/types/models'
 import { ImageFormat } from 'node-appwrite'
 

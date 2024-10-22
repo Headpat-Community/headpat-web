@@ -1,5 +1,5 @@
 import { Events } from '@/utils/types/models'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 import { Badge } from '@/components/ui/badge'
 import { CalendarIcon, ClockIcon, MapPinIcon, UsersIcon } from 'lucide-react'
 

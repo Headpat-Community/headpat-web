@@ -18,7 +18,7 @@ export default async function VotingPage() {
     'interactive',
     'answers-main'
   )
-  const forwardedFor = headers().get('x-forwarded-for')
+  const forwardedFor = (await headers()).get('x-forwarded-for')
 
   return (
     <>

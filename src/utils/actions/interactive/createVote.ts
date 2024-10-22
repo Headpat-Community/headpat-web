@@ -4,7 +4,7 @@ import { ID } from 'node-appwrite'
 import { headers } from 'next/headers'
 
 export async function createVote(questionId: string, optionId: number) {
-  const forwardedFor = headers().get('x-forwarded-for')
+  const forwardedFor = (await headers()).get('x-forwarded-for')
 
   const { databases } = await createAdminClient()
   return await databases.createDocument('interactive', 'answers', ID.unique(), {
@@ -15,7 +15,7 @@ export async function createVote(questionId: string, optionId: number) {
 }
 
 export async function createVoteMain(questionId: string, optionId: number) {
-  const forwardedFor = headers().get('x-forwarded-for')
+  const forwardedFor = (await headers()).get('x-forwarded-for')
 
   const { databases } = await createAdminClient()
   return await databases.createDocument(

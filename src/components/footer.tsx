@@ -1,6 +1,6 @@
 import { JSX, SVGProps } from 'react'
 import { Separator } from '@/components/ui/separator'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 
 export default function Footer() {
   const navigation = {

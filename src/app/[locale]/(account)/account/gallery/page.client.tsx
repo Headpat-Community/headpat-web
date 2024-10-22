@@ -5,7 +5,7 @@ import Loading from '@/app/loading'
 import { databases, Query, storage } from '@/app/appwrite-client'
 import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 
 export default function FetchGallery({ enableNsfw, userId }) {
   const [gallery, setGallery] = useState([])

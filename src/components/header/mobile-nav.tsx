@@ -16,7 +16,7 @@ import { Nav } from '@/components/header/header-nav'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tabs } from '@/components/ui/tabs'
 import Image from 'next/image'
-import { useRouter } from '@/navigation'
+import { useRouter } from '@/i18n/routing'
 import ChangeLanguage from '@/components/system/changeLanguage'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { useUser } from '@/components/contexts/UserContext'
@@ -64,11 +64,7 @@ export default function MobileNav({ translations, children }) {
                 <Separator className={'mt-2'} />
 
                 <ScrollArea className={''}>
-                  <div
-                    className={
-                      'mt-8 w-full h-full'
-                    }
-                  >
+                  <div className={'mt-8 w-full h-full'}>
                     <div>
                       <Nav
                         isCollapsed={false}

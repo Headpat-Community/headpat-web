@@ -11,11 +11,10 @@ import { ChatMessageList } from '@/components/ui/chat/chat-message-list'
 import { Button } from '@/components/ui/button'
 import {
   CornerDownLeftIcon,
-  MicIcon,
   PaperclipIcon,
   SendIcon,
-  XIcon,
   Users,
+  XIcon,
 } from 'lucide-react'
 import { formatDate } from '@/components/calculateTimeLeft'
 import { useUser } from '@/components/contexts/UserContext'
@@ -24,15 +23,15 @@ import { useRealtimeChat } from '@/hooks/useRealtimeChat'
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { databases, functions, storage } from '@/app/appwrite-client'
 import { ExecutionMethod, ID, Query } from 'node-appwrite'
-import { Community, Messaging, UserData } from '@/utils/types/models'
+import { Messaging } from '@/utils/types/models'
 import { useDataCache } from '@/components/contexts/DataCacheContext'
-import { Link } from '@/navigation'
 import { z } from 'zod'
 import { toast } from 'sonner'
-import { Label } from '@/components/ui/label'
 import { getCommunityAvatarUrlPreview } from '@/components/getStorageItem'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Permission, Role } from 'appwrite'
+import { Link } from '@/i18n/routing'
+import { Label } from '@/components/ui/label'
+import { FileIcon } from 'lucide-react'
 
 const schema = z.object({
   message: z
@@ -60,13 +59,6 @@ export default function ChatClient({
   const [hasMore, setHasMore] = useState(true)
   const [page, setPage] = useState(0)
   const messageListRef = useRef<HTMLDivElement>(null)
-
-  const actionIcons = [
-    {
-      icon: SendIcon,
-      type: 'send',
-    },
-  ]
 
   const fetchMessages = useCallback(
     async (reset = false) => {
@@ -201,17 +193,23 @@ export default function ChatClient({
   ) => {
     const files = event.target.files
     if (files) {
-      setAttachments((prevAttachments) => [
-        ...prevAttachments,
-        ...Array.from(files),
-      ])
+      const newFiles = Array.from(files)
+      setAttachments((prevAttachments) => {
+        const updatedAttachments = [...prevAttachments, ...newFiles]
+        console.log('Updated attachments:', updatedAttachments)
+        return updatedAttachments
+      })
     }
+    // Reset the file input
+    event.target.value = ''
   }
 
   const removeAttachment = (index: number) => {
-    setAttachments((prevAttachments) =>
-      prevAttachments.filter((_, i) => i !== index)
-    )
+    setAttachments((prevAttachments) => {
+      const updatedAttachments = prevAttachments.filter((_, i) => i !== index)
+      console.log('Attachments after removal:', updatedAttachments)
+      return updatedAttachments
+    })
   }
 
   const handleScroll = useCallback(() => {
@@ -268,6 +266,7 @@ export default function ChatClient({
           </div>
         </div>
       </div>
+
       <ChatMessageList
         className="flex-grow overflow-y-auto"
         ref={messageListRef}
@@ -276,12 +275,13 @@ export default function ChatClient({
         {messages.map((message, index) => {
           const variant = message.senderId === current.$id ? 'sent' : 'received'
           const user = userCache[message.senderId]
+
           return (
             <ChatBubble key={message.$id} variant={variant}>
               <Link
                 href={{
                   pathname: '/user/[profileUrl]',
-                  query: {
+                  params: {
                     profileUrl: user?.profileUrl,
                   },
                 }}
@@ -291,22 +291,19 @@ export default function ChatClient({
                   fallback={user?.displayName?.charAt(0) || '?'}
                 />
               </Link>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2 mb-1">
-                  {communityId && communityCache[communityId] && (
-                    <span className="font-semibold text-sm">
-                      {user?.displayName}
-                    </span>
-                  )}
-                  <ChatBubbleTimestamp
-                    timestamp={formatDate(new Date(message.$createdAt))}
-                    className="text-xs text-muted-foreground"
-                  />
-                </div>
-                <ChatBubbleMessage isLoading={message.isLoading}>
-                  {message.body}
-                </ChatBubbleMessage>
-              </div>
+              <ChatBubbleMessage isLoading={message.isLoading}>
+                {message.body}
+              </ChatBubbleMessage>
+              {/* Action Icons */}
+              <ChatBubbleActionWrapper>
+                <ChatBubbleAction
+                  className="size-7"
+                  icon={<SendIcon className="size-4" />}
+                  onClick={() =>
+                    console.log('Action send clicked for message ' + index)
+                  }
+                />
+              </ChatBubbleActionWrapper>
             </ChatBubble>
           )
         })}
@@ -322,13 +319,15 @@ export default function ChatClient({
           className="min-h-12 resize-none rounded-lg bg-background p-3 shadow-none focus-visible:ring-0"
         />
         <div className="flex items-center p-3">
-          {/*
-          <Label htmlFor="file-upload" className="cursor-pointer">
-            <Button variant="ghost" size="icon" type="button">
-              <PaperclipIcon className="size-4" />
-              <span className="sr-only">Attach files</span>
-            </Button>
-          </Label>
+          <Button
+            variant="ghost"
+            size="icon"
+            type="button"
+            onClick={() => document.getElementById('file-upload')?.click()}
+          >
+            <PaperclipIcon className="size-4" />
+            <span className="sr-only">Attach files</span>
+          </Button>
           <input
             id="file-upload"
             type="file"
@@ -343,7 +342,10 @@ export default function ChatClient({
                   key={index}
                   className="flex items-center bg-gray-100 rounded p-1"
                 >
-                  <span className="text-sm text-gray-500">{file.name}</span>
+                  <FileIcon className="size-4 mr-1" />
+                  <span className="text-sm text-gray-500 truncate max-w-[100px]">
+                    {file.name}
+                  </span>
                   <Button
                     variant="ghost"
                     size="icon"
@@ -356,8 +358,6 @@ export default function ChatClient({
               ))}
             </div>
           )}
-          */}
-
           <Button size="sm" className="ml-auto gap-1.5" type="submit">
             Send Message
             <CornerDownLeftIcon className="size-3.5" />

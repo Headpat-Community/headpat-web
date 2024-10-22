@@ -19,7 +19,7 @@ import {
   AlertDialogHeader,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { useRouter } from '@/navigation'
+import { useRouter } from '@/i18n/routing'
 import { ExecutionMethod } from 'node-appwrite'
 
 const communitySchema = z.object({

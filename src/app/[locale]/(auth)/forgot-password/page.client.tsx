@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { ErrorMessage, SuccessMessage } from '@/components/alerts'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('')

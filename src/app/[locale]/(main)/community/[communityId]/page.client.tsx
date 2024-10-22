@@ -19,7 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Link, useRouter } from '@/navigation'
+import { Link, useRouter } from '@/i18n/routing'
 import { Separator } from '@/components/ui/separator'
 import PageLayout from '@/components/pageLayout'
 import { Community } from '@/utils/types/models'

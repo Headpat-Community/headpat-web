@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/input-otp'
 import { useToast } from '@/components/ui/use-toast'
 import { useEffect, useState } from 'react'
-import { useRouter } from '@/navigation'
+import { useRouter } from '@/i18n/routing'
 import { account } from '@/app/appwrite-client'
 import { unstable_noStore } from 'next/cache'
 import { getMfaFactors } from '@/utils/server-api/account/user'

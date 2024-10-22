@@ -3,7 +3,13 @@ import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 import PageLayout from '@/components/pageLayout'
 
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata(props) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   const meta = await getTranslations({ locale, namespace: 'LegalMetadata' })
 
   return {

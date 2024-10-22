@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { ErrorMessage } from '@/components/alerts'
 import { resetPassword } from '@/utils/actions/user-actions'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 
 export const runtime = 'edge'
 

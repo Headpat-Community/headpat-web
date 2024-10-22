@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/input-otp'
 import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
-import { useRouter } from '@/navigation'
+import { useRouter } from '@/i18n/routing'
 
 export default function MfaAlert({ mfaList }) {
   const [open, setOpen] = useState<boolean>(false)

@@ -1,5 +1,5 @@
 'use client'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 import { Button } from '@/components/ui/button'
 import { getGalleryImageUrlView } from '@/components/getStorageItem'
 import PageLayout from '@/components/pageLayout'

@@ -23,7 +23,7 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { createUser } from '@/utils/actions/login-actions'
-import { Link, useRouter } from '@/navigation'
+import { Link, useRouter } from '@/i18n/routing'
 import { account, client } from '@/app/appwrite-client'
 import PageLayout from '@/components/pageLayout'
 

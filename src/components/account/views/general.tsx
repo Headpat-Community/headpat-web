@@ -9,7 +9,7 @@ import * as Sentry from '@sentry/nextjs'
 import { ExecutionMethod, Models } from 'node-appwrite'
 import MfaRecoveryCodes from '@/components/account/profile/mfaRecoveryCodes'
 import { Account, UserData } from '@/utils/types/models'
-import { useRouter } from '@/navigation'
+import { useRouter } from '@/i18n/routing'
 import {
   AlertDialog,
   AlertDialogAction,

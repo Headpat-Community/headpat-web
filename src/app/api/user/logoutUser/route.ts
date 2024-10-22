@@ -9,7 +9,7 @@ export async function POST(request) {
 
   try {
     // Delete the specified cookie
-    cookies().set(
+    (await cookies()).set(
       `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
       '',
       {

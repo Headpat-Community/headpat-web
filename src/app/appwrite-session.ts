@@ -13,7 +13,7 @@ import {
 import { headers } from 'next/headers'
 
 export async function createSessionServerClient() {
-  const headersList = headers()
+  const headersList = await headers()
   const cookieHeader = headersList.get('cookie')
   const cookies = cookieHeader ? cookieHeader.split('; ') : []
   const sessionCookie = cookies.find((cookie) =>

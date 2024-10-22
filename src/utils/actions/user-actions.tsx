@@ -2,7 +2,7 @@
 import { headers } from 'next/headers'
 
 export async function emailVerification(requestBody: any) {
-  const headersList = headers()
+  const headersList = await headers()
   const cookieHeader = headersList.get('cookie')
 
   const response = await fetch(

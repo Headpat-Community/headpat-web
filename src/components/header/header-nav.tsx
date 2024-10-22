@@ -9,7 +9,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { Link, usePathname } from '@/navigation'
+import { Link, usePathname } from '@/i18n/routing'
 import { Badge } from '@/components/ui/badge'
 
 interface NavProps {

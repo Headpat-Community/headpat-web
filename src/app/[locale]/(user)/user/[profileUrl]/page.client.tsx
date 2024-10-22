@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { removeFollow } from '@/utils/actions/followers/removeFollow'
 import { toast } from 'sonner'
 import { Separator } from '@/components/ui/separator'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import {

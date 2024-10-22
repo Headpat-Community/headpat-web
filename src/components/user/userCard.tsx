@@ -9,7 +9,7 @@ import { CakeIcon, CalendarDays } from 'lucide-react'
 import { UserData } from '@/utils/types/models'
 import { formatDate } from '@/components/calculateTimeLeft'
 import React from 'react'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 
 export default function UserCard({
   user,

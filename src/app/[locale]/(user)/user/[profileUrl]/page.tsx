@@ -8,11 +8,18 @@ import { notFound } from 'next/navigation'
 
 export const runtime = 'edge'
 
-export async function generateMetadata({
-  params: { profileUrl, locale },
-}: {
-  params: { profileUrl: string; locale: string }
-}) {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ profileUrl: string; locale: string }>
+  }
+) {
+  const params = await props.params;
+
+  const {
+    profileUrl,
+    locale
+  } = params;
+
   const { databases } = await createSessionServerClient()
   const userDataResponse: UserData.UserDataType = await databases.listDocuments(
     'hp_db',
@@ -52,7 +59,13 @@ export async function generateMetadata({
   }
 }
 
-export default async function UserProfile({ params: { profileUrl } }) {
+export default async function UserProfile(props) {
+  const params = await props.params;
+
+  const {
+    profileUrl
+  } = params;
+
   const { databases } = await createSessionServerClient()
 
   const userDataResponse: UserData.UserDataType = await databases.listDocuments(

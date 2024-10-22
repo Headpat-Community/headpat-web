@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import { getCommunityAvatarUrlPreview } from '@/components/getStorageItem'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 import { ChevronRight, MessageCircleIcon, UserRoundIcon } from 'lucide-react'
 import { Community } from '@/utils/types/models'
 import { useCallback, useEffect, useState } from 'react'
