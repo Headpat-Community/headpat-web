@@ -13,6 +13,7 @@ import {
   CornerDownLeftIcon,
   PaperclipIcon,
   SendIcon,
+  Trash2Icon,
   Users,
   XIcon,
 } from 'lucide-react'
@@ -36,6 +37,7 @@ import { FileIcon } from 'lucide-react'
 const schema = z.object({
   message: z
     .string()
+    .trim()
     .max(2048, 'Message: Max length is 2048')
     .min(1, 'Message: Min length is 1'),
   attachments: z.array(z.instanceof(File)).optional(),
@@ -52,13 +54,15 @@ export default function ChatClient({
     useDataCache()
   const [participants, setParticipants] = useState<string[]>([])
   const [communityId, setCommunityId] = useState<string | null>(null)
-  const [conversation, setConversation] =
-    useState<Messaging.MessageConversationsDocumentsType | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [attachments, setAttachments] = useState<File[]>([])
   const [hasMore, setHasMore] = useState(true)
   const [page, setPage] = useState(0)
   const messageListRef = useRef<HTMLDivElement>(null)
+  const [pendingMessages, setPendingMessages] = useState<
+    Messaging.MessagesDocumentsType[]
+  >([])
+  const [messageText, setMessageText] = useState('')
 
   const fetchMessages = useCallback(
     async (reset = false) => {
@@ -108,7 +112,6 @@ export default function ChatClient({
         }
       }
 
-      setConversation(conversationData)
       setParticipants(conversationData.participants || [])
     } catch (error) {
       console.error('Error fetching conversation:', error)
@@ -136,15 +139,30 @@ export default function ChatClient({
     return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${user.avatarId}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&width=100&height=100`
   }
 
-  const sendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const form = event.currentTarget
-    const formData = new FormData(form)
-    const message = formData.get('message') as string
+  const sendMessage = async (event?: React.FormEvent<HTMLFormElement>) => {
+    if (event) {
+      event.preventDefault()
+    }
 
     try {
       // Validate the message and attachments
-      schema.parse({ message, attachments })
+      schema.parse({ message: messageText, attachments })
+
+      // Create a pending message
+      const pendingMessage: Messaging.MessagesDocumentsType = {
+        $id: `pending_${Date.now()}`,
+        body: messageText,
+        senderId: current.$id || '',
+        conversationId,
+        messageType: 'text',
+        attachments: [],
+        $collectionId: 'messages',
+        $databaseId: 'hp_db',
+        $permissions: [],
+        $createdAt: new Date().toISOString(),
+        $updatedAt: new Date().toISOString(),
+      }
+      setPendingMessages((prev) => [...prev, pendingMessage])
 
       // Upload attachments
       const uploadedAttachments = await Promise.all(
@@ -165,7 +183,7 @@ export default function ChatClient({
       const data = await functions.createExecution(
         'user-endpoints',
         JSON.stringify({
-          message,
+          message: messageText,
           attachments: uploadedAttachments.map((file) => file.$id) || [],
           messageType: uploadedAttachments.length > 0 ? 'file' : 'text',
         }),
@@ -173,6 +191,16 @@ export default function ChatClient({
         endpointUrl,
         ExecutionMethod.POST
       )
+
+      // After successful send, remove the pending message
+      setPendingMessages((prev) =>
+        prev.filter((msg) => msg.$id !== pendingMessage.$id)
+      )
+
+      // Clear the message and attachments
+      setMessageText('')
+      setAttachments([])
+
       const response = JSON.parse(data.responseBody)
       if (response.code === 500) {
         toast.error('An error occurred while sending the message')
@@ -181,13 +209,15 @@ export default function ChatClient({
         toast.error('You are not in this conversation')
         return
       } else if (response.type === 'userchat_message_sent') {
-        toast.success('Message sent')
+        toast.success('Message sent', {
+          position: 'bottom-left',
+        })
       }
-
-      // Clear the form and attachments after sending
-      form.reset()
-      setAttachments([])
     } catch (error) {
+      // Remove the pending message in case of error
+      setPendingMessages((prev) =>
+        prev.filter((msg) => msg.$id !== `pending_${Date.now()}`)
+      )
       if (error instanceof z.ZodError) {
         toast.error(error.errors[0].message)
       } else {
@@ -248,6 +278,21 @@ export default function ChatClient({
       ?.displayName
   }
 
+  const deleteMessage = async (messageId: string) => {
+    try {
+      await databases.deleteDocument('hp_db', 'messages', messageId)
+    } catch (error) {
+      return false
+    }
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault()
+      sendMessage()
+    }
+  }
+
   return (
     <div className="flex flex-col h-full">
       <div className="p-2 md:p-4 border-b border-gray-200">
@@ -281,9 +326,10 @@ export default function ChatClient({
         ref={messageListRef}
         onScroll={handleScroll}
       >
-        {messages.map((message, index) => {
+        {[...messages, ...pendingMessages].map((message) => {
           const variant = message.senderId === current.$id ? 'sent' : 'received'
           const user = userCache[message.senderId]
+          const isPending = message.$id.startsWith('pending_')
 
           return (
             <ChatBubble key={message.$id} variant={variant}>
@@ -300,18 +346,22 @@ export default function ChatClient({
                   fallback={user?.displayName?.charAt(0) || '?'}
                 />
               </Link>
-              <ChatBubbleMessage isLoading={message.isLoading}>
-                {message.body}
-              </ChatBubbleMessage>
+              {!isPending ? (
+                <ChatBubbleMessage>{message.body}</ChatBubbleMessage>
+              ) : (
+                <ChatBubbleMessage className="animate-pulse text-muted-foreground">
+                  {message.body}
+                </ChatBubbleMessage>
+              )}
               {/* Action Icons */}
               <ChatBubbleActionWrapper>
-                <ChatBubbleAction
-                  className="size-7"
-                  icon={<SendIcon className="size-4" />}
-                  onClick={() =>
-                    console.log('Action send clicked for message ' + index)
-                  }
-                />
+                {!isPending && message.senderId === current.$id && (
+                  <ChatBubbleAction
+                    className="size-7"
+                    icon={<Trash2Icon className="size-4" />}
+                    onClick={() => deleteMessage(message.$id)}
+                  />
+                )}
               </ChatBubbleActionWrapper>
             </ChatBubble>
           )
@@ -326,6 +376,9 @@ export default function ChatClient({
           name="message"
           placeholder="Type your message here..."
           className="min-h-12 resize-none rounded-lg bg-background p-3 shadow-none focus-visible:ring-0"
+          value={messageText}
+          onChange={(e) => setMessageText(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <div className="flex items-center p-3">
           <Button
