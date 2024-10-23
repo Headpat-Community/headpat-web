@@ -13,7 +13,8 @@ export default async function Profile(props) {
     return redirect({ href: '/login', locale })
   }
   return redirect({
-    pathname: '/user/[profileUrl]',
-    params: { profileUrl: user.profileUrl },
+    // @ts-ignore
+    href: `/user/${user.profileUrl}`,
+    locale,
   })
 }

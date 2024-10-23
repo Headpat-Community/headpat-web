@@ -28,7 +28,7 @@ import { Input } from '@/components/ui/input'
 import { useDebounce } from '@/hooks/useDebounce'
 import { Query } from 'appwrite'
 import { ExecutionMethod } from 'node-appwrite'
-import { Account, Messaging, UserData } from '@/utils/types/models'
+import { Account, Community, Messaging, UserData } from '@/utils/types/models'
 import { Users } from 'lucide-react'
 import { useRouter } from '@/i18n/routing'
 
@@ -51,11 +51,8 @@ export default function ChatLayout({
       }
 
       try {
-        const userData = await databases.getDocument(
-          'hp_db',
-          'userdata',
-          userId
-        )
+        const userData: UserData.UserDataDocumentsType =
+          await databases.getDocument('hp_db', 'userdata', userId)
         setUserCache((prevCache) => ({ ...prevCache, [userId]: userData }))
         return userData
       } catch (error) {
@@ -73,11 +70,8 @@ export default function ChatLayout({
       }
 
       try {
-        const communityData = await databases.getDocument(
-          'hp_db',
-          'community',
-          communityId
-        )
+        const communityData: Community.CommunityDocumentsType =
+          await databases.getDocument('hp_db', 'community', communityId)
         setCommunityCache((prevCache) => ({
           ...prevCache,
           [communityId]: communityData,
@@ -96,9 +90,8 @@ export default function ChatLayout({
       const newDisplayUsers = {}
       for (const conversation of conversations) {
         if (conversation.communityId) {
-          const communityData = await fetchCommunityData(
-            conversation.communityId
-          )
+          const communityData: Community.CommunityDocumentsType =
+            await fetchCommunityData(conversation.communityId)
           if (communityData) {
             newDisplayUsers[conversation.$id] = {
               isCommunity: true,
@@ -110,7 +103,8 @@ export default function ChatLayout({
             (participant) => participant !== current.$id
           )
           if (otherParticipantId) {
-            const userData = await fetchUserData(otherParticipantId)
+            const userData: UserData.UserDataDocumentsType =
+              await fetchUserData(otherParticipantId)
             if (userData) {
               newDisplayUsers[conversation.$id] = userData
             }
@@ -121,7 +115,7 @@ export default function ChatLayout({
     }
 
     updateDisplayUsers()
-  }, [conversations, current.$id, fetchUserData, fetchCommunityData])
+  }, [conversations, current.$id])
 
   const closeSheet = () => setIsOpen(false)
 
@@ -217,6 +211,7 @@ function ConversationsList({
       )
       toast.dismiss(loadingToast)
       const response = JSON.parse(data.responseBody)
+      console.log(response)
       if (response.type === 'userchat_missing_recipient_id') {
         toast.error('Missing recipient ID')
       } else if (response.type === 'userchat_recipient_does_not_exist') {
@@ -226,7 +221,10 @@ function ConversationsList({
       ) {
         toast.error('Cannot create conversation with yourself')
       } else {
-        //router.push(`/chat/${response.conversationId}`)
+        router.push({
+          pathname: '/chat/[conversationId]',
+          params: { conversationId: response.$id },
+        })
       }
       setIsModalOpen(false)
     } catch (error) {

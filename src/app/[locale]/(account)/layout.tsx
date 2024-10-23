@@ -1,7 +1,7 @@
 import { redirect } from '@/i18n/routing'
 import { createSessionServerClient } from '@/app/appwrite-session'
 
-export default async function Layout(props, { children }) {
+export default async function Layout(props) {
   const params = await props.params
 
   const { locale } = params
@@ -9,7 +9,7 @@ export default async function Layout(props, { children }) {
   const { account } = await createSessionServerClient()
   try {
     await account.get()
-    return children
+    return props.children
   } catch (error) {
     if (error.type === 'general_unauthorized_scope') {
       redirect({ href: '/login', locale })

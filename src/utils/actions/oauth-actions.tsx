@@ -5,7 +5,7 @@ import { headers } from 'next/headers'
 import { OAuthProvider } from 'node-appwrite'
 import { redirect } from '@/i18n/routing'
 
-export async function signInWithGithub() {
+export async function signInWithGithub(locale: string) {
   const { account } = await createAdminClient()
 
   const origin = (await headers()).get('origin')
@@ -17,10 +17,10 @@ export async function signInWithGithub() {
   )
 
   // @ts-ignore
-  return redirect(redirectUrl)
+  return redirect({ href: redirectUrl, locale })
 }
 
-export async function signInWithGoogle() {
+export async function signInWithGoogle(locale: string) {
   const { account } = await createAdminClient()
 
   const origin = (await headers()).get('origin')
@@ -31,10 +31,10 @@ export async function signInWithGoogle() {
     `${origin}/login?failure=true`
   )
   // @ts-ignore
-  return redirect(redirectUrl)
+  return redirect({ href: redirectUrl, locale })
 }
 
-export async function signInWithDiscord() {
+export async function signInWithDiscord(locale: string) {
   const { account } = await createAdminClient()
 
   const origin = (await headers()).get('origin')
@@ -46,10 +46,10 @@ export async function signInWithDiscord() {
   )
 
   // @ts-ignore
-  return redirect(redirectUrl)
+  return redirect({ href: redirectUrl, locale })
 }
 
-export async function signInWithSpotify() {
+export async function signInWithSpotify(locale: string) {
   const { account } = await createAdminClient()
 
   const origin = (await headers()).get('origin')
@@ -61,10 +61,10 @@ export async function signInWithSpotify() {
   )
 
   // @ts-ignore
-  return redirect(redirectUrl)
+  return redirect({ href: redirectUrl, locale })
 }
 
-export async function signInWithTwitch() {
+export async function signInWithTwitch(locale: string) {
   const { account } = await createAdminClient()
 
   const origin = (await headers()).get('origin')
@@ -76,10 +76,10 @@ export async function signInWithTwitch() {
   )
 
   // @ts-ignore
-  return redirect(redirectUrl)
+  return redirect({ href: redirectUrl, locale })
 }
 
-export async function signInWithMicrosoft() {
+export async function signInWithMicrosoft(locale: string) {
   const { account } = await createAdminClient()
 
   const origin = (await headers()).get('origin')
@@ -91,10 +91,10 @@ export async function signInWithMicrosoft() {
   )
 
   // @ts-ignore
-  return redirect(redirectUrl)
+  return redirect({ href: redirectUrl, locale })
 }
 
-export async function signInWithApple() {
+export async function signInWithApple(locale: string) {
   const { account } = await createAdminClient()
 
   const origin = (await headers()).get('origin')
@@ -106,5 +106,5 @@ export async function signInWithApple() {
   )
 
   // @ts-ignore
-  return redirect(redirectUrl)
+  return redirect({ href: redirectUrl, locale })
 }

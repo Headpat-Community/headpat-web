@@ -27,7 +27,7 @@ import { Link, useRouter } from '@/i18n/routing'
 import { account, client } from '@/app/appwrite-client'
 import PageLayout from '@/components/pageLayout'
 
-export default function Login() {
+export default function Login({ locale }) {
   const [data, setData] = useState({
     email: '',
     password: '',

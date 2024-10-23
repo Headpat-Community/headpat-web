@@ -153,6 +153,15 @@ export default function ChatClient({
         )
       )
 
+      // Prepare the endpoint URL
+      let endpointUrl = `/user/chat/message?conversationId=${conversationId}`
+      if (!communityId) {
+        const recipientId = participants.find((id) => id !== current.$id)
+        if (recipientId) {
+          endpointUrl += `&recipientId=${recipientId}`
+        }
+      }
+
       const data = await functions.createExecution(
         'user-endpoints',
         JSON.stringify({
@@ -161,7 +170,7 @@ export default function ChatClient({
           messageType: uploadedAttachments.length > 0 ? 'file' : 'text',
         }),
         false,
-        `/user/chat/message?conversationId=${conversationId}`,
+        endpointUrl,
         ExecutionMethod.POST
       )
       const response = JSON.parse(data.responseBody)
