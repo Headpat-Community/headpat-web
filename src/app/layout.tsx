@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { UserProvider } from '@/components/contexts/UserContext'
 import { Metadata } from 'next'
 import { DataCacheProvider } from '@/components/contexts/DataCacheContext'
+import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -82,7 +83,23 @@ export default function RootLayout({ children }) {
           </UserProvider>
         </ThemeProvider>
         <Toaster />
-        <SonnerToaster />
+        <SonnerToaster
+          toastOptions={{
+            classNames: {
+              error:
+                'border border-destructive bg-gradient-to-r from-destructive/50 via-destructive/10 to-destructive/0 text-destructive-foreground',
+              success:
+                'border border-primary bg-gradient-to-r from-primary/50 via-primary/10 to-primary/0 dark:text-foreground text-background',
+              loading:
+                'border dark:border-muted bg-gradient-to-r dark:from-muted from-muted-foreground dark:via-muted/10 via-secondary/10 to-secondary/0 dark:text-foreground text-background',
+            },
+          }}
+          icons={{
+            error: <AlertCircle className="size-4" />,
+            success: <CheckCircle className="size-4" />,
+            loading: <Loader2 className="size-4 animate-spin" />,
+          }}
+        />
       </body>
     </html>
   )

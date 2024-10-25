@@ -2,22 +2,28 @@
 
 import PageLayout from '@/components/pageLayout'
 import { Button } from '@/components/ui/button'
-import { useToast } from '@/components/ui/use-toast'
+import { toast } from 'sonner'
 
 export default function Test() {
-  const { toast } = useToast()
-
   const handleClick = () => {
-    toast({
-      title: 'Scheduled: Catch up',
-      description: 'Friday, February 10, 2023 at 5:57 PM',
-      variant: 'destructive',
-    })
+    toast.success('Your action was successful.')
+  }
+
+  const handleErrorClick = () => {
+    toast.error('Something went wrong.')
+  }
+
+  const handleLoadingClick = () => {
+    toast.loading('Please wait...')
   }
 
   return (
     <PageLayout title="Test">
-      <Button onClick={handleClick}>Click me!</Button>
+      <div className="space-x-2">
+        <Button onClick={handleClick}>Success</Button>
+        <Button onClick={handleErrorClick}>Error</Button>
+        <Button onClick={handleLoadingClick}>Loading</Button>
+      </div>
     </PageLayout>
   )
 }
