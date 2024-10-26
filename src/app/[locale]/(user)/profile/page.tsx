@@ -8,13 +8,15 @@ export default async function Profile(props) {
 
   const { locale } = params
 
-  const user = await getUserData()
-  if (!user) {
+  try {
+    const user = await getUserData()
+
+    return redirect({
+      // @ts-ignore
+      href: `/user/${user.profileUrl}`,
+      locale,
+    })
+  } catch (error) {
     return redirect({ href: '/login', locale })
   }
-  return redirect({
-    // @ts-ignore
-    href: `/user/${user.profileUrl}`,
-    locale,
-  })
 }

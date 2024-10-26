@@ -92,7 +92,7 @@ export const Nav2 = (account: Account.AccountPrefs, translations: any) => {
       label: '',
       icon: HeartHandshakeIcon,
       variant: 'ghost' as const,
-      href: '/community',
+      href: `/community`,
     },
   ]
 }

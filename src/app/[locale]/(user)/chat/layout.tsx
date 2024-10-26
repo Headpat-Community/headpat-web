@@ -5,7 +5,6 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import React from 'react'
 import { useRealtimeChat } from '@/hooks/useRealtimeChat'
 import PageLayout from '@/components/pageLayout'
-import UserCard from '@/components/user/userCard'
 import {
   getAvatarImageUrlPreview,
   getCommunityAvatarUrlPreview,
@@ -28,21 +27,28 @@ import { Input } from '@/components/ui/input'
 import { useDebounce } from '@/hooks/useDebounce'
 import { Query } from 'appwrite'
 import { ExecutionMethod } from 'node-appwrite'
-import { Account, Community, Messaging, UserData } from '@/utils/types/models'
+import { Community, Messaging, UserData } from '@/utils/types/models'
 import { Users } from 'lucide-react'
 import { useRouter } from '@/i18n/routing'
 
-export default function ChatLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function ChatLayout(props) {
+  const router = useRouter()
   const { conversations } = useRealtimeChat()
   const { current } = useUser()
   const [displayUsers, setDisplayUsers] = useState({})
   const [userCache, setUserCache] = useState({})
   const [isOpen, setIsOpen] = useState(false)
   const [communityCache, setCommunityCache] = useState({})
+
+  useEffect(() => {
+    if (!current) {
+      router.push('/login')
+    }
+  }, [current, router])
+
+  if (!current) {
+    return null // or a loading indicator
+  }
 
   const fetchUserData = useCallback(
     async (userId: string) => {
@@ -134,7 +140,6 @@ export default function ChatLayout({
               <ConversationsList
                 conversations={conversations}
                 displayUsers={displayUsers}
-                current={current}
                 closeSheet={closeSheet}
               />
             </SheetContent>
@@ -146,13 +151,12 @@ export default function ChatLayout({
           <ConversationsList
             conversations={conversations}
             displayUsers={displayUsers}
-            current={current}
             closeSheet={closeSheet}
           />
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1 overflow-hidden">{children}</div>
+        <div className="flex-1 overflow-hidden">{props.children}</div>
       </div>
     </PageLayout>
   )
@@ -162,12 +166,10 @@ export default function ChatLayout({
 function ConversationsList({
   conversations,
   displayUsers,
-  current,
   closeSheet,
 }: {
   conversations: Messaging.MessageConversationsDocumentsType[]
   displayUsers: any
-  current: Account.AccountPrefs
   closeSheet: () => void
 }) {
   const router = useRouter()
