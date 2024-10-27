@@ -13,7 +13,19 @@ export default function sitemap() {
       priority: 0.8,
     },
     {
-      url: `https://headpat.place/pawcraft`,
+      url: `https://headpat.place/events`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `https://headpat.place/users`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `https://headpat.place/support`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.5,
