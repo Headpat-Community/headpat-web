@@ -1,6 +1,6 @@
 import '../../css/globals.css'
 import { Inter } from 'next/font/google'
-import { ThemeProvider } from './providers'
+import { ThemeProvider } from '../components/contexts/ThemeContext'
 import { Toaster as SonnerToaster } from '@/components/ui/sonner'
 import { cn } from '@/lib/utils'
 import { UserProvider } from '@/components/contexts/UserContext'
@@ -13,11 +13,11 @@ const inter = Inter({ subsets: ['latin'] })
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
-      default: 'Headpat Community',
+      default: 'Headpat',
       template: `%s - Headpat`,
     },
     description:
-      'The Headpat Community is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
+      'Headpat is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
     keywords: [
       'headpat',
       'community',
@@ -28,19 +28,30 @@ export async function generateMetadata(): Promise<Metadata> {
       'headpawties',
       'gallery',
       'location sharing',
-      'friends',
+      'find friends',
       'fluffy',
+      'social media platform',
+      'online community',
+      'furry social network',
     ],
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Headpat Community',
+      description:
+        'Headpat is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
+      images: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
+    },
     icons: {
       icon: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
       apple: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
     },
     openGraph: {
-      title: 'Headpat Community',
+      title: 'Headpat',
       description:
-        'The Headpat Community is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
+        'Headpat is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
       images: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
       type: 'website',
+      siteName: 'Headpat',
     },
     appLinks: {
       android: {

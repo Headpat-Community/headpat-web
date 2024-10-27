@@ -369,25 +369,52 @@ export default function PageClient({
   )
 }
 
-const ListSocialItem = ({ IconComponent, userData, link }) => (
-  <li>
-    <Link
-      href={link}
-      className="relative flex items-center space-x-4 py-4 px-2"
-      target={'_blank'}
-    >
-      <div className={'min-w-0 flex-auto'}>
-        <div className="flex items-center gap-x-3">
-          <div className={'flex-none rounded-full p-1'}>
-            <IconComponent />
-          </div>
-          <h2 className="min-w-0 text-sm font-semibold leading-6 truncate">
-            <span>{userData}</span>
-          </h2>
-        </div>
-      </div>
+const ListSocialItem = ({ IconComponent, userData, link }) => {
+  const handleCopy = () => {
+    navigator.clipboard.writeText(userData)
+    toast.success('Copied to clipboard!')
+  }
 
-      <ChevronRight className="h-5 w-5 flex-none" aria-hidden="true" />
-    </Link>
-  </li>
-)
+  const isCopy = link === '#'
+
+  return (
+    <li>
+      {isCopy ? (
+        <button
+          onClick={handleCopy}
+          className="relative flex items-center space-x-4 py-4 px-2 w-full rounded-md"
+        >
+          <div className={'min-w-0 flex-auto'}>
+            <div className="flex items-center gap-x-3">
+              <div className={'flex-none rounded-full p-1'}>
+                <IconComponent />
+              </div>
+              <h2 className="min-w-0 text-sm font-semibold leading-6 truncate">
+                <span>{userData}</span>
+              </h2>
+            </div>
+          </div>
+          <ChevronRight className="h-5 w-5 flex-none" aria-hidden="true" />
+        </button>
+      ) : (
+        <Link
+          href={link}
+          className="relative flex items-center space-x-4 py-4 px-2"
+          target={'_blank'}
+        >
+          <div className={'min-w-0 flex-auto'}>
+            <div className="flex items-center gap-x-3">
+              <div className={'flex-none rounded-full p-1'}>
+                <IconComponent />
+              </div>
+              <h2 className="min-w-0 text-sm font-semibold leading-6 truncate">
+                <span>{userData}</span>
+              </h2>
+            </div>
+          </div>
+          <ChevronRight className="h-5 w-5 flex-none" aria-hidden="true" />
+        </Link>
+      )}
+    </li>
+  )
+}
