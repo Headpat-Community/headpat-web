@@ -57,7 +57,7 @@ export default function UserCard({
               </AvatarFallback>
             </Avatar>
             <div className="space-y-1">
-              <h4 className="text-sm font-semibold">{`@${user?.displayName}`}</h4>
+              <h4 className="text-sm font-semibold">{`${user?.displayName}`}</h4>
               <p className="text-sm flex-wrap">{user?.status}</p>
               {isBirthday && (
                 <div className="flex items-center pt-2">
