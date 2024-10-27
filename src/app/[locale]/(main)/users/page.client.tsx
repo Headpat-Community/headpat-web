@@ -42,7 +42,7 @@ export default function ClientPage() {
 
   useEffect(() => {
     fetchUsers().then()
-  }, [fetchUsers])
+  }, [])
 
   if (isFetching && users.length === 0) {
     return (

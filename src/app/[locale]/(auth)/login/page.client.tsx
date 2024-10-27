@@ -18,7 +18,6 @@ import {
   signInWithSpotify,
   signInWithTwitch,
 } from '@/utils/actions/oauth-actions'
-import { useToast } from '@/components/ui/use-toast'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -26,6 +25,7 @@ import { createUser } from '@/utils/actions/login-actions'
 import { Link, useRouter } from '@/i18n/routing'
 import { account, client } from '@/app/appwrite-client'
 import PageLayout from '@/components/pageLayout'
+import { toast } from 'sonner'
 
 export default function Login({ locale }) {
   const [data, setData] = useState({
@@ -35,7 +35,6 @@ export default function Login({ locale }) {
   })
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
-  const { toast } = useToast()
   const router = useRouter()
 
   useEffect(() => {
@@ -75,11 +74,7 @@ export default function Login({ locale }) {
       }
 
       if (errorMessages[response.code]) {
-        toast({
-          title: 'Error',
-          description: errorMessages[response.code],
-          variant: 'destructive',
-        })
+        toast.error(errorMessages[response.code])
         return
       }
 
@@ -96,11 +91,7 @@ export default function Login({ locale }) {
       }
 
       if (errorMessages[dataResponse?.error?.response?.type]) {
-        toast({
-          title: 'Error',
-          description: errorMessages[dataResponse.error.response.type],
-          variant: 'destructive',
-        })
+        toast.error(errorMessages[dataResponse.error.response.type])
         return
       }
 

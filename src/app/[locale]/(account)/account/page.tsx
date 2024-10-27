@@ -45,14 +45,21 @@ export default async function AccountSettings({ params }) {
   return (
     <PageLayout title="Account Settings">
       <Suspense fallback={<Loading />}>
-        <Tabs defaultValue="general" className="">
-          <TabsList className={'mb-2'}>
-            <TabsTrigger value="general">{translations('general')}</TabsTrigger>
-            <TabsTrigger value="frontpage">
-              {translations('frontpage')}
-            </TabsTrigger>
-            <TabsTrigger value="socials">{translations('socials')}</TabsTrigger>
-          </TabsList>
+        <Tabs defaultValue="general" className="w-full">
+          <div className="flex flex-col items-center justify-center">
+            <TabsList className="grid w-full sm:max-w-4xl grid-cols-3">
+              <TabsTrigger value="general">
+                {translations('general')}
+              </TabsTrigger>
+              <TabsTrigger value="frontpage">
+                {translations('frontpage')}
+              </TabsTrigger>
+              <TabsTrigger value="socials">
+                {translations('socials')}
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
           <TabsContent value="general">
             <GeneralAccountView accountData={accountData} mfaList={mfaList} />
           </TabsContent>

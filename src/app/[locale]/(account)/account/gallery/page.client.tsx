@@ -3,16 +3,15 @@ import { SetStateAction, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Loading from '@/app/loading'
 import { databases, Query, storage } from '@/app/appwrite-client'
-import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
 import { Link } from '@/i18n/routing'
+import { toast } from 'sonner'
 
 export default function FetchGallery({ enableNsfw, userId }) {
   const [gallery, setGallery] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
-  const { toast } = useToast()
 
   const getGalleryImageUrl = (galleryId: string) => {
     if (!galleryId) return
@@ -59,11 +58,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
     }
 
     fetchGalleryData().catch((error) => {
-      toast({
-        title: 'Error',
-        description: "You encountered an error. But don't worry, we're on it.",
-        variant: 'destructive',
-      })
+      toast.error('Failed to fetch gallery. Please try again later.')
       Sentry.captureException(error)
     })
   }, [userId, enableNsfw, toast, currentPage])

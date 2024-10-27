@@ -1,7 +1,6 @@
 import '../../css/globals.css'
 import { Inter } from 'next/font/google'
 import { ThemeProvider } from './providers'
-import { Toaster } from '@/components/ui/toaster'
 import { Toaster as SonnerToaster } from '@/components/ui/sonner'
 import { cn } from '@/lib/utils'
 import { UserProvider } from '@/components/contexts/UserContext'
@@ -82,7 +81,6 @@ export default function RootLayout({ children }) {
             </DataCacheProvider>
           </UserProvider>
         </ThemeProvider>
-        <Toaster />
         <SonnerToaster
           toastOptions={{
             classNames: {
