@@ -197,7 +197,7 @@ export default function PageClient({
                 priority={true}
                 unoptimized
               />
-              {!isBirthday && (
+              {isBirthday && (
                 <Badge className="absolute top-0 right-0 rounded-full w-full justify-center">
                   It&apos;s my birthday!
                 </Badge>
