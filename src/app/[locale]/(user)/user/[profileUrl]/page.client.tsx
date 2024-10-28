@@ -192,7 +192,15 @@ export default function PageClient({
               <Image
                 src={getAvatarImageUrlView(userData.avatarId)}
                 alt={'User Avatar'}
-                className={'object-contain rounded-t-xl'}
+                className={cn('object-contain rounded-t-xl', {
+                  'rounded-b-xl': !(
+                    userData.discordname ||
+                    userData.telegramname ||
+                    userData.furaffinityname ||
+                    userData.X_name ||
+                    userData.twitchname
+                  ),
+                })}
                 fill={true}
                 priority={true}
                 unoptimized
@@ -204,66 +212,72 @@ export default function PageClient({
               )}
             </AspectRatio>
 
-            <Card className="border-border rounded-t-none">
-              <CardContent className="p-4">
-                <ul>
-                  {userData.discordname && (
-                    <>
+            {(userData.discordname ||
+              userData.telegramname ||
+              userData.furaffinityname ||
+              userData.X_name ||
+              userData.twitchname) && (
+              <Card className="border-border rounded-t-none">
+                <CardContent className="p-4">
+                  <ul>
+                    {userData.discordname && (
+                      <>
+                        <ListSocialItem
+                          IconComponent={SiDiscord}
+                          userData={userData.discordname}
+                          link={'#'}
+                        />
+                        {(userData.telegramname ||
+                          userData.furaffinityname ||
+                          userData.X_name ||
+                          userData.twitchname) && <Separator />}
+                      </>
+                    )}
+                    {userData.telegramname && (
+                      <>
+                        <ListSocialItem
+                          IconComponent={SiTelegram}
+                          userData={userData.telegramname}
+                          link={`https://t.me/${userData.telegramname}`}
+                        />
+                        {(userData.furaffinityname ||
+                          userData.X_name ||
+                          userData.twitchname) && <Separator />}
+                      </>
+                    )}
+                    {userData.furaffinityname && (
+                      <>
+                        <ListSocialItem
+                          IconComponent={SiFuraffinity}
+                          userData={userData.furaffinityname}
+                          link={`https://www.furaffinity.net/user/${userData.furaffinityname}`}
+                        />
+                        {(userData.X_name || userData.twitchname) && (
+                          <Separator />
+                        )}
+                      </>
+                    )}
+                    {userData.X_name && (
+                      <>
+                        <ListSocialItem
+                          IconComponent={SiX}
+                          userData={userData.X_name}
+                          link={`https://x.com/${userData.X_name}`}
+                        />
+                        {userData.twitchname && <Separator />}
+                      </>
+                    )}
+                    {userData.twitchname && (
                       <ListSocialItem
-                        IconComponent={SiDiscord}
-                        userData={userData.discordname}
-                        link={'#'}
+                        IconComponent={SiTwitch}
+                        userData={userData.twitchname}
+                        link={`https://www.twitch.tv/${userData.twitchname}`}
                       />
-                      {(userData.telegramname ||
-                        userData.furaffinityname ||
-                        userData.X_name ||
-                        userData.twitchname) && <Separator />}
-                    </>
-                  )}
-                  {userData.telegramname && (
-                    <>
-                      <ListSocialItem
-                        IconComponent={SiTelegram}
-                        userData={userData.telegramname}
-                        link={`https://t.me/${userData.telegramname}`}
-                      />
-                      {(userData.furaffinityname ||
-                        userData.X_name ||
-                        userData.twitchname) && <Separator />}
-                    </>
-                  )}
-                  {userData.furaffinityname && (
-                    <>
-                      <ListSocialItem
-                        IconComponent={SiFuraffinity}
-                        userData={userData.furaffinityname}
-                        link={`https://www.furaffinity.net/user/${userData.furaffinityname}`}
-                      />
-                      {(userData.X_name || userData.twitchname) && (
-                        <Separator />
-                      )}
-                    </>
-                  )}
-                  {userData.X_name && (
-                    <>
-                      <ListSocialItem
-                        IconComponent={SiX}
-                        userData={userData.X_name}
-                        link={`https://x.com/${userData.X_name}`}
-                      />
-                      {userData.twitchname && <Separator />}
-                    </>
-                  )}
-                  {userData.twitchname && (
-                    <ListSocialItem
-                      IconComponent={SiTwitch}
-                      userData={userData.twitchname}
-                      link={`https://www.twitch.tv/${userData.twitchname}`}
-                    />
-                  )}
-                </ul>
-              </CardContent>
-            </Card>
+                    )}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           {/* Center */}
