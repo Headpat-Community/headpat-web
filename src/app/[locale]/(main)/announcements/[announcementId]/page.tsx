@@ -2,6 +2,8 @@ import { createAdminClient } from '@/app/appwrite-session'
 import { Announcements } from '@/utils/types/models'
 import { Link } from '@/i18n/routing'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
+import sanitize from 'sanitize-html'
+import { Button } from '@/components/ui/button'
 
 export const runtime = 'edge'
 
@@ -21,6 +23,9 @@ export default async function Page(props: {
   const announcementData: Announcements.AnnouncementDocumentsType =
     await databases.getDocument('hp_db', 'announcements', announcementId)
 
+  const description = sanitize(announcementData?.description)
+  const descriptionSanitized = description.replace(/\n/g, '<br />')
+
   return (
     <>
       <div>
@@ -31,26 +36,22 @@ export default async function Page(props: {
         </div>
         <div className="mx-auto mt-6 max-w-4xl">
           <dd className="mb-8 mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
-            <Link
-              href={'/announcements'}
-              className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-            >
-              &larr; Go back
-            </Link>
+            <Button asChild>
+              <Link href={'/announcements'}>&larr; Go back</Link>
+            </Button>
           </dd>
           <dl className="divide-y divide-black/40 dark:divide-white/40">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm font-medium leading-6">Author</dt>
               <dd className="mt-1 flex items-center text-sm leading-6 sm:col-span-2 sm:mt-0">
                 <Link
-                  className="flex items-center text-indigo-500 hover:text-indigo-400"
+                  className="flex items-center text-link hover:text-link/80"
                   href={{
                     pathname: '/user/[profileUrl]',
                     params: {
                       profileUrl: announcementData?.userData?.profileUrl,
                     },
                   }}
-                  passHref
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -89,20 +90,22 @@ export default async function Page(props: {
                   new Date(announcementData?.validUntil).toLocaleDateString()}
                 {new Date(announcementData?.validUntil) > new Date() ? (
                   <div className="mt-1 flex items-center gap-x-1.5">
-                    <div className="flex-none rounded-full bg-emerald-500/20 p-1">
-                      <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    </div>
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
                     <p className="text-xs leading-5 text-black/80 dark:text-white/80">
-                      Aktiv
+                      Active
                     </p>
                   </div>
                 ) : (
                   <div className="mt-1 flex items-center gap-x-1.5">
-                    <div className="flex-none rounded-full bg-red-500/20 p-1">
-                      <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
-                    </div>
+                    <span className="relative flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                    </span>
                     <p className="text-xs leading-5 text-black/80 dark:text-white/80">
-                      Inaktiv
+                      Inactive
                     </p>
                   </div>
                 )}
@@ -111,7 +114,11 @@ export default async function Page(props: {
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm font-medium leading-6">Description</dt>
               <dd className="mb-4 mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
-                {announcementData?.description || 'Unknown'}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: descriptionSanitized || 'Nothing here yet!',
+                  }}
+                />
               </dd>
             </div>
           </dl>

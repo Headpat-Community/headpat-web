@@ -113,7 +113,7 @@ export default function Login({ locale }) {
               <Link
                 href="#"
                 onClick={() => setIsRegistering(!isRegistering)}
-                className="font-semibold text-indigo-600 hover:text-indigo-500"
+                className="font-semibold text-link hover:text-link/80"
               >
                 Click here!
               </Link>

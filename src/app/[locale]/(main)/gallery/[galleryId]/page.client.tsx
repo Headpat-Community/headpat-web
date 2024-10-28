@@ -68,12 +68,9 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
             <div className="flex flex-wrap items-start">
               {!image.nsfw && !current?.prefs?.nsfw && (
                 <div className="mb-4 mr-4 flex sm:mt-4 md:mb-0">
-                  <Link
-                    href={'/gallery'}
-                    className="mb-4 rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                  >
-                    &larr; Go back
-                  </Link>
+                  <Button asChild>
+                    <Link href={'/gallery'}>&larr; Go back</Link>
+                  </Button>
                 </div>
               )}
               {image.nsfw && !current?.prefs?.nsfw ? (
@@ -160,7 +157,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                 <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
                                   {userData ? (
                                     <UserCard user={userData} isChild={true}>
-                                      <span className="text-indigo-500 hover:text-indigo-400">
+                                      <span className="text-link hover:text-link/80">
                                         {userData.displayName}
                                       </span>
                                     </UserCard>

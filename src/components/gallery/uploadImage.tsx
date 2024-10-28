@@ -33,68 +33,7 @@ export default function UploadPage({ userId }: { userId: string }) {
     if (event.target.files && event.target.files.length > 0) {
       let file: any = event.target.files[0]
 
-      if (file.type.includes('image/gif') || file.type.includes('video')) {
-        if (file.size > maxSizeInBytes) {
-          toast.error('File size exceeds the 8 MB limit.')
-          if (fileInputRef.current) {
-            fileInputRef.current.value = '' // Reset the input field
-          }
-          return
-        }
-
-        setSelectedFile(file)
-        setSelectedFileInput(URL.createObjectURL(file))
-        return
-      }
-
-      file = await imageCompression(file, {
-        maxSizeMB: 8,
-        alwaysKeepResolution: true,
-        useWebWorker: true,
-        onProgress: (progress) => {
-          setProgress(progress)
-        },
-      })
-        .then((compressedFile) => {
-          if (compressedFile.size > maxSizeInBytes) {
-            toast.error('File size exceeds the 8 MB limit.')
-            if (fileInputRef.current) {
-              fileInputRef.current.value = '' // Reset the input
-            }
-            return
-          }
-          return compressedFile
-        })
-        .catch((error) => {
-          console.error('Error compressing file:', error)
-          toast.error('Error compressing file.')
-          return
-        })
-
-      const imgSrc = await imageCompression.getDataUrlFromFile(file)
-      const compressedFile = await imageCompression.getFilefromDataUrl(
-        imgSrc,
-        file.name
-      )
-
-      // Convert Blob back to a File object
-      const newFile = new File([compressedFile], file.name, {
-        type: compressedFile.type,
-        lastModified: file.lastModified,
-      })
-
-      setSelectedFileInput(imgSrc)
-      setSelectedFile(newFile)
-    } else {
-      toast.error('No file selected.')
-    }
-  }
-
-  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-    if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
-      let file = event.dataTransfer.files[0]
-
+      // Handle GIFs and videos separately without compression
       if (file.type.includes('image/gif') || file.type.includes('video')) {
         if (file.size > maxSizeInBytes) {
           toast.error('File size exceeds the 8 MB limit.')
@@ -110,7 +49,8 @@ export default function UploadPage({ userId }: { userId: string }) {
       }
 
       try {
-        file = await imageCompression(file, {
+        // Compress the image first
+        const compressedFile = await imageCompression(file, {
           maxSizeMB: 8,
           alwaysKeepResolution: true,
           useWebWorker: true,
@@ -118,34 +58,104 @@ export default function UploadPage({ userId }: { userId: string }) {
             setProgress(progress)
           },
         })
+
+        // Then check the size
+        if (compressedFile.size > maxSizeInBytes) {
+          toast.error(
+            'File size exceeds the 8 MB limit even after compression.'
+          )
+          if (fileInputRef.current) {
+            fileInputRef.current.value = '' // Reset the input
+          }
+          return
+        }
+
+        const imgSrc = await imageCompression.getDataUrlFromFile(compressedFile)
+        const finalFile = await imageCompression.getFilefromDataUrl(
+          imgSrc,
+          file.name
+        )
+
+        // Convert Blob back to a File object
+        const newFile = new File([finalFile], file.name, {
+          type: finalFile.type,
+          lastModified: file.lastModified,
+        })
+
+        setSelectedFileInput(imgSrc)
+        setSelectedFile(newFile)
       } catch (error) {
         console.error('Error compressing file:', error)
         toast.error('Error compressing file.')
-        return
-      }
-
-      if (file.size > maxSizeInBytes) {
-        toast.error('File size exceeds the 8 MB limit.')
         if (fileInputRef.current) {
-          fileInputRef.current.value = '' // Reset the input field
+          fileInputRef.current.value = '' // Reset the input
         }
+      }
+    } else {
+      toast.error('No file selected.')
+    }
+  }
+
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+      let file = event.dataTransfer.files[0]
+
+      // Handle GIFs and videos separately without compression
+      if (file.type.includes('image/gif') || file.type.includes('video')) {
+        if (file.size > maxSizeInBytes) {
+          toast.error('File size exceeds the 8 MB limit.')
+          if (fileInputRef.current) {
+            fileInputRef.current.value = '' // Reset the input field
+          }
+          return
+        }
+
+        setSelectedFile(file)
+        setSelectedFileInput(URL.createObjectURL(file))
         return
       }
 
-      const imgSrc = await imageCompression.getDataUrlFromFile(file)
-      const compressedFile = await imageCompression.getFilefromDataUrl(
-        imgSrc,
-        file.name
-      )
+      try {
+        // Compress the image first
+        const compressedFile = await imageCompression(file, {
+          maxSizeMB: 5,
+          alwaysKeepResolution: true,
+          useWebWorker: true,
+          onProgress: (progress) => {
+            setProgress(progress)
+          },
+        })
 
-      // Convert Blob back to a File object
-      const newFile = new File([compressedFile], file.name, {
-        type: compressedFile.type,
-        lastModified: file.lastModified,
-      })
+        // Then check the size
+        if (compressedFile.size > maxSizeInBytes) {
+          toast.error(
+            'File size exceeds the 8 MB limit even after compression.'
+          )
+          if (fileInputRef.current) {
+            fileInputRef.current.value = '' // Reset the input field
+          }
+          return
+        }
 
-      setSelectedFileInput(imgSrc)
-      setSelectedFile(newFile)
+        const imgSrc = await imageCompression.getDataUrlFromFile(compressedFile)
+        const finalFile = await imageCompression.getFilefromDataUrl(
+          imgSrc,
+          file.name
+        )
+
+        // Convert Blob back to a File object
+        const newFile = new File([finalFile], file.name, {
+          type: finalFile.type,
+          lastModified: file.lastModified,
+        })
+
+        setSelectedFileInput(imgSrc)
+        setSelectedFile(newFile)
+      } catch (error) {
+        console.error('Error compressing file:', error)
+        toast.error('Error compressing file.')
+      }
     } else {
       toast.error('No file dropped.')
     }
@@ -227,7 +237,7 @@ export default function UploadPage({ userId }: { userId: string }) {
   }
 
   return (
-    <>
+    <div className="p-4">
       <form onSubmit={handleSubmit}>
         <div className="space-y-6">
           <div>
@@ -253,7 +263,7 @@ export default function UploadPage({ userId }: { userId: string }) {
                   onClick={handleClick}
                 >
                   <div className="text-center">
-                    <Label className="rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500">
+                    <Label>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         id="selected-image"
@@ -357,6 +367,6 @@ export default function UploadPage({ userId }: { userId: string }) {
           </Button>
         </div>
       </form>
-    </>
+    </div>
   )
 }

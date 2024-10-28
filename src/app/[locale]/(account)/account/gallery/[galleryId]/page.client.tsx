@@ -11,6 +11,7 @@ import { Link, useRouter } from '@/i18n/routing'
 import { getGalleryImageUrlView } from '@/components/getStorageItem'
 import { getDocument } from '@/components/api/documents'
 import { toast } from 'sonner'
+import { Checkbox } from '@/components/ui/checkbox'
 
 export default function FetchGallery({ singleGallery, galleryId }) {
   const router = useRouter()
@@ -160,17 +161,14 @@ export default function FetchGallery({ singleGallery, galleryId }) {
 
           <div className="sm:col-span-6">
             <Label htmlFor="nsfw">NSFW</Label>
-            <div className="mt-2">
-              <input
-                type="checkbox"
-                name="nsfw"
+            <div className="mt-2 flex">
+              <Checkbox
                 id="nsfw"
-                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                checked={userData.nsfw} // Use userData.nsfw
-                onChange={(e) =>
+                checked={userData.nsfw}
+                onCheckedChange={(e) =>
                   setUserData({
                     ...userData,
-                    nsfw: e.target.checked, // Set nsfw to true or false
+                    nsfw: e,
                   })
                 }
               />
@@ -178,7 +176,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
           </div>
 
           <div className="col-span-full">
-            <Label htmlFor="longtext">Beschreibung</Label>
+            <Label htmlFor="longtext">Description</Label>
             <div className="relative mt-2">
               <Textarea
                 id="longtext"
@@ -196,31 +194,41 @@ export default function FetchGallery({ singleGallery, galleryId }) {
           </div>
         </div>
 
-        <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Link
-            href={`/gallery`}
-            className="text-sm font-semibold leading-6 text-white"
-          >
-            Cancel
-          </Link>
-          <Button
-            type="submit"
-            value="Submit"
-            disabled={isUploading || isDeleting} // Disable the button if isUploading is true
-            onClick={updateImage} // Call the deleteImage function on click
-          >
-            {isUploading ? 'Uploading...' : 'Save'}{' '}
-            {/* Show different text based on the upload state */}
-          </Button>
-          <Button
-            type="submit"
-            value="Submit"
-            disabled={isDeleting || isUploading} // Disable the button if isUploading is true
-            onClick={deleteImage} // Call the deleteImage function on click
-          >
-            {isDeleting ? 'Deleting...' : 'Delete'}{' '}
-            {/* Show different text based on the upload state */}
-          </Button>
+        <div className="mt-6 flex items-center gap-x-6 justify-between">
+          <div className="flex items-center gap-x-6">
+            <Button variant={'link'} asChild>
+              <Link
+                href={{
+                  pathname: '/gallery/[galleryId]',
+                  params: {
+                    galleryId: galleryId,
+                  },
+                }}
+                className="text-sm font-semibold leading-6 text-white"
+              >
+                Go to image
+              </Link>
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-x-6">
+            <Button
+              type="button"
+              value="Submit"
+              disabled={isUploading || isDeleting}
+              onClick={updateImage}
+            >
+              {isUploading ? 'Uploading...' : 'Save'}{' '}
+            </Button>
+            <Button
+              type="button"
+              variant={'destructive'}
+              disabled={isDeleting || isUploading}
+              onClick={deleteImage}
+            >
+              {isDeleting ? 'Deleting...' : 'Delete'}{' '}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
