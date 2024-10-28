@@ -12,12 +12,10 @@ import { Button } from '@/components/ui/button'
 import {
   CornerDownLeftIcon,
   PaperclipIcon,
-  SendIcon,
   Trash2Icon,
   Users,
   XIcon,
 } from 'lucide-react'
-import { formatDate } from '@/components/calculateTimeLeft'
 import { useUser } from '@/components/contexts/UserContext'
 import { ChatInput } from '@/components/ui/chat/chat-input'
 import { useRealtimeChat } from '@/hooks/useRealtimeChat'
@@ -31,7 +29,6 @@ import { toast } from 'sonner'
 import { getCommunityAvatarUrlPreview } from '@/components/getStorageItem'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Link } from '@/i18n/routing'
-import { Label } from '@/components/ui/label'
 import { FileIcon } from 'lucide-react'
 
 const schema = z.object({
