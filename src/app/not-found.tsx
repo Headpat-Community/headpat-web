@@ -1,6 +1,8 @@
 import { AccessibilityIcon } from 'lucide-react'
 import Link from 'next/link'
 
+export const runtime = 'edge'
+
 export async function generateMetadata() {
   return {
     title: 'Page Not Found',
