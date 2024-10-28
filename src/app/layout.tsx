@@ -7,6 +7,8 @@ import { UserProvider } from '@/components/contexts/UserContext'
 import { Metadata } from 'next'
 import { DataCacheProvider } from '@/components/contexts/DataCacheContext'
 import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react'
+import { createSessionServerClient } from './appwrite-session'
+import Maintenance from '@/components/static/maintenance'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -71,7 +73,32 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const { databases } = await createSessionServerClient()
+  const status = await databases.getDocument('config', 'status', 'website')
+
+  if (status.isMaintenance) {
+    return (
+      <html lang="en" className="h-full" suppressHydrationWarning>
+        <body
+          className={cn(
+            'flex min-h-screen bg-background antialiased',
+            inter.className
+          )}
+        >
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Maintenance />
+          </ThemeProvider>
+        </body>
+      </html>
+    )
+  }
+
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body
