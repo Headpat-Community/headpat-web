@@ -95,7 +95,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20241004.0",
+    "@cloudflare/workers-types": "^4.20241022.0",
     "@types/google.maps": "^3.58.1",
     "@types/node": "22.7.5",
     "@types/react": "18.3.11",
