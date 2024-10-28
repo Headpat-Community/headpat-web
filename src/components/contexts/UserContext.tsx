@@ -1,11 +1,12 @@
 'use client'
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { Account } from '@/utils/types/models'
-import { account } from '@/app/appwrite-client'
+import { Account, UserData } from '@/utils/types/models'
+import { account, databases } from '@/app/appwrite-client'
 import { ID } from 'node-appwrite'
 
 interface UserContextValue {
   current: Account.AccountPrefs | null
+  settings: UserData.UserSettingsDocumentsType | null
   setUser: React.Dispatch<React.SetStateAction<Account.AccountType | null>>
   login: (email: string, password: string) => Promise<void>
   loginOAuth: (userId: string, secret: string) => Promise<void>
@@ -27,6 +28,7 @@ export function useUser(): UserContextValue {
 
 export function UserProvider(props: any) {
   const [user, setUser] = useState(null)
+  const [userSettings, setUserSettings] = useState(null)
   const [loading, setLoading] = useState(true)
   const [fadeOut, setFadeOut] = useState(false)
 
@@ -60,6 +62,12 @@ export function UserProvider(props: any) {
     try {
       const loggedIn = await account.get()
       setUser(loggedIn)
+      const settings = await databases.getDocument(
+        'hp_db',
+        'user-settings',
+        loggedIn.$id
+      )
+      setUserSettings(settings)
     } catch (error) {
       setUser(null)
     }
@@ -76,6 +84,7 @@ export function UserProvider(props: any) {
     <UserContext.Provider
       value={{
         current: user,
+        settings: userSettings,
         setUser,
         login,
         loginOAuth,
