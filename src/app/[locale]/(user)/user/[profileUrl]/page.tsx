@@ -5,20 +5,16 @@ import PageClient from './page.client'
 import { UserData } from '@/utils/types/models'
 import sanitizeHtml from 'sanitize-html'
 import { notFound } from 'next/navigation'
+import PageLayout from '@/components/pageLayout'
 
 export const runtime = 'edge'
 
-export async function generateMetadata(
-  props: {
-    params: Promise<{ profileUrl: string; locale: string }>
-  }
-) {
-  const params = await props.params;
+export async function generateMetadata(props: {
+  params: Promise<{ profileUrl: string; locale: string }>
+}) {
+  const params = await props.params
 
-  const {
-    profileUrl,
-    locale
-  } = params;
+  const { profileUrl, locale } = params
 
   const { databases } = await createSessionServerClient()
   const userDataResponse: UserData.UserDataType = await databases.listDocuments(
@@ -60,11 +56,9 @@ export async function generateMetadata(
 }
 
 export default async function UserProfile(props) {
-  const params = await props.params;
+  const params = await props.params
 
-  const {
-    profileUrl
-  } = params;
+  const { profileUrl } = params
 
   const { databases } = await createSessionServerClient()
 
@@ -75,9 +69,13 @@ export default async function UserProfile(props) {
   )
 
   return (
-    <PageClient
-      user={userDataResponse.documents[0]}
-      userId={userDataResponse.documents[0].$id}
-    />
+    <PageLayout
+      title={`${userDataResponse.documents[0].displayName || 'Someone'}'s profile`}
+    >
+      <PageClient
+        user={userDataResponse.documents[0]}
+        userId={userDataResponse.documents[0].$id}
+      />
+    </PageLayout>
   )
 }

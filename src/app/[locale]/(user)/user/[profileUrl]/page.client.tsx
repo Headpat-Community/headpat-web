@@ -204,7 +204,7 @@ export default function PageClient({
               )}
             </AspectRatio>
 
-            <Card className="border-0">
+            <Card className="border-border rounded-t-none">
               <CardContent className="p-4">
                 <ul>
                   {userData.discordname && (
