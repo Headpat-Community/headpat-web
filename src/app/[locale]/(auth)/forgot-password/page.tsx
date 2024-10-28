@@ -15,7 +15,7 @@ export const metadata = {
   },
 }
 
-export default async function Page(props: { params: { locale: string } }) {
+export default async function Page(props) {
   const params = await props.params
   const { locale } = params
 
