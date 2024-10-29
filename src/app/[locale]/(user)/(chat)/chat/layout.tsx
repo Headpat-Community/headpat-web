@@ -30,7 +30,6 @@ import { ExecutionMethod } from 'node-appwrite'
 import { Community, Messaging, UserData } from '@/utils/types/models'
 import { Users } from 'lucide-react'
 import { useRouter } from '@/i18n/routing'
-import Maintenance from '@/components/static/maintenance'
 
 export default function ChatLayout(props) {
   const router = useRouter()
