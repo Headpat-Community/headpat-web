@@ -11,6 +11,7 @@ import { ChatMessageList } from '@/components/ui/chat/chat-message-list'
 import { Button } from '@/components/ui/button'
 import {
   CornerDownLeftIcon,
+  FlagIcon,
   PaperclipIcon,
   Trash2Icon,
   Users,
@@ -30,6 +31,7 @@ import { getCommunityAvatarUrlPreview } from '@/components/getStorageItem'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Link } from '@/i18n/routing'
 import { FileIcon } from 'lucide-react'
+import ReportMessageModal from '@/components/user/moderation/ReportMessageModal'
 
 const schema = z.object({
   message: z
@@ -60,6 +62,9 @@ export default function ChatClient({
     Messaging.MessagesDocumentsType[]
   >([])
   const [messageText, setMessageText] = useState('')
+  const [reportMessageOpen, setReportMessageOpen] = useState(false)
+  const [selectedMessage, setSelectedMessage] =
+    useState<Messaging.MessagesDocumentsType | null>(null)
 
   const fetchMessages = useCallback(
     async (reset = false) => {
@@ -78,6 +83,16 @@ export default function ChatClient({
 
         const newMessages =
           result.documents as Messaging.MessagesType['documents']
+
+        // Fetch user data for any new message senders
+        const newParticipants = newMessages.map((msg) => msg.senderId)
+        const participantPromises = newParticipants.map(async (userId) => {
+          if (!userCache[userId]) {
+            await fetchUserData(userId)
+          }
+        })
+        await Promise.all(participantPromises)
+
         setMessages((prevMessages) =>
           reset ? newMessages : [...prevMessages, ...newMessages]
         )
@@ -87,7 +102,7 @@ export default function ChatClient({
         console.error('Error fetching messages:', error)
       }
     },
-    [conversationId, hasMore, page, setMessages]
+    [conversationId, hasMore, page, setMessages, userCache, fetchUserData]
   )
 
   const fetchConversation = async () => {
@@ -109,7 +124,25 @@ export default function ChatClient({
         }
       }
 
-      setParticipants(conversationData.participants || [])
+      const messageParticipants = messages.map((msg) => msg.senderId)
+      const conversationParticipants = conversationData.participants || []
+      const allParticipants = [
+        ...new Set([...messageParticipants, ...conversationParticipants]),
+      ]
+
+      const participantPromises = allParticipants.map(async (userId) => {
+        if (!userCache[userId]) {
+          await fetchUserData(userId)
+        }
+      })
+
+      await Promise.all(participantPromises)
+
+      setParticipants(
+        conversationData.communityId
+          ? messageParticipants
+          : conversationData.participants || []
+      )
     } catch (error) {
       console.error('Error fetching conversation:', error)
     } finally {
@@ -123,16 +156,25 @@ export default function ChatClient({
   }, [conversationId])
 
   useEffect(() => {
-    participants.forEach((userId) => {
-      if (!userCache[userId]) {
-        fetchUserData(userId)
-      }
-    })
+    const fetchParticipantsData = async () => {
+      const promises = participants.map((userId) => {
+        if (!userCache[userId]) {
+          return fetchUserData(userId)
+        }
+        return Promise.resolve()
+      })
+      await Promise.all(promises)
+    }
+
+    if (participants.length > 0) {
+      fetchParticipantsData()
+    }
   }, [participants, fetchUserData, userCache])
 
   const getUserAvatar = (userId: string) => {
     const user = userCache[userId]
-    if (!user || !user.avatarId) return
+    if (!user) return undefined
+    if (!user.avatarId) return undefined
     return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${user.avatarId}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&width=100&height=100`
   }
 
@@ -248,11 +290,11 @@ export default function ChatClient({
     })
   }
 
-  const handleScroll = useCallback(() => {
+  const handleScroll = useCallback(async () => {
     if (messageListRef.current) {
       const { scrollTop } = messageListRef.current
       if (scrollTop === 0 && hasMore) {
-        fetchMessages()
+        await fetchMessages()
       }
     }
   }, [fetchMessages, hasMore])
@@ -283,6 +325,11 @@ export default function ChatClient({
     }
   }
 
+  const reportMessage = async (message: Messaging.MessagesDocumentsType) => {
+    setSelectedMessage(message)
+    setReportMessageOpen(true)
+  }
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault()
@@ -291,138 +338,153 @@ export default function ChatClient({
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="p-2 md:p-4 border-b border-gray-200">
-        <div className="flex items-center">
-          <div className="relative mr-3">
-            <Avatar className="h-10 w-10">
-              <AvatarImage
-                src={getConversationAvatar()}
-                alt={getConversationName()}
-              />
-              <AvatarFallback>
-                {getConversationName()?.charAt(0) || '?'}
-              </AvatarFallback>
-            </Avatar>
-            {communityId && communityCache[communityId] && (
-              <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground rounded-full p-0.5">
-                <Users size={12} />
+    <>
+      <div className="flex flex-col h-full">
+        <div className="p-2 md:p-4 border-b border-gray-200">
+          <div className="flex items-center">
+            <div className="relative mr-3">
+              <Avatar className="h-10 w-10">
+                <AvatarImage
+                  src={getConversationAvatar()}
+                  alt={getConversationName()}
+                />
+                <AvatarFallback>
+                  {getConversationName()?.charAt(0) || '?'}
+                </AvatarFallback>
+              </Avatar>
+              {communityId && communityCache[communityId] && (
+                <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground rounded-full p-0.5">
+                  <Users size={12} />
+                </div>
+              )}
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold">
+                {isLoading ? 'Loading...' : getConversationName()}
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        <ChatMessageList
+          className="flex-grow overflow-y-auto"
+          ref={messageListRef}
+          onScroll={handleScroll}
+        >
+          {[...messages, ...pendingMessages].map((message) => {
+            const variant =
+              message.senderId === current.$id ? 'sent' : 'received'
+            const user = userCache[message.senderId]
+            const isPending = message.$id.startsWith('pending_')
+
+            return (
+              <ChatBubble key={message.$id} variant={variant}>
+                <Link
+                  href={{
+                    pathname: '/user/[profileUrl]',
+                    params: {
+                      profileUrl: user?.profileUrl,
+                    },
+                  }}
+                >
+                  <ChatBubbleAvatar
+                    src={getUserAvatar(message.senderId)}
+                    fallback={user?.displayName?.charAt(0) || '...'}
+                  />
+                </Link>
+                {!isPending ? (
+                  <ChatBubbleMessage>{message.body}</ChatBubbleMessage>
+                ) : (
+                  <ChatBubbleMessage className="animate-pulse text-muted-foreground">
+                    {message.body}
+                  </ChatBubbleMessage>
+                )}
+                {/* Action Icons */}
+                <ChatBubbleActionWrapper>
+                  {!isPending && (
+                    <ChatBubbleAction
+                      className="size-7"
+                      icon={<FlagIcon className="size-4" />}
+                      onClick={() => reportMessage(message)}
+                    />
+                  )}
+                  {!isPending && message.senderId === current.$id && (
+                    <ChatBubbleAction
+                      className="size-7"
+                      icon={<Trash2Icon className="size-4" />}
+                      onClick={() => deleteMessage(message.$id)}
+                    />
+                  )}
+                </ChatBubbleActionWrapper>
+              </ChatBubble>
+            )
+          })}
+          {isLoading && <div>Loading...</div>}
+        </ChatMessageList>
+        <form
+          className="flex-none w-full p-1 border-t bg-background focus-within:ring-1 focus-within:ring-ring"
+          onSubmit={sendMessage}
+        >
+          <ChatInput
+            name="message"
+            placeholder="Type your message here..."
+            className="min-h-12 resize-none rounded-lg bg-background p-3 shadow-none focus-visible:ring-0"
+            value={messageText}
+            onChange={(e) => setMessageText(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+          <div className="flex items-center p-3">
+            <Button
+              variant="ghost"
+              size="icon"
+              type="button"
+              onClick={() => document.getElementById('file-upload')?.click()}
+            >
+              <PaperclipIcon className="size-4" />
+              <span className="sr-only">Attach files</span>
+            </Button>
+            <input
+              id="file-upload"
+              type="file"
+              multiple
+              className="hidden"
+              onChange={handleAttachmentChange}
+            />
+            {attachments.length > 0 && (
+              <div className="ml-2 flex flex-wrap gap-2">
+                {attachments.map((file, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center bg-gray-100 rounded p-1"
+                  >
+                    <FileIcon className="size-4 mr-1" />
+                    <span className="text-sm text-gray-500 truncate max-w-[100px]">
+                      {file.name}
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="ml-1"
+                      onClick={() => removeAttachment(index)}
+                    >
+                      <XIcon className="size-3" />
+                    </Button>
+                  </div>
+                ))}
               </div>
             )}
+            <Button size="sm" className="ml-auto gap-1.5" type="submit">
+              Send Message
+              <CornerDownLeftIcon className="size-3.5" />
+            </Button>
           </div>
-          <div>
-            <h2 className="text-xl font-semibold">
-              {isLoading ? 'Loading...' : getConversationName()}
-            </h2>
-          </div>
-        </div>
+        </form>
       </div>
-
-      <ChatMessageList
-        className="flex-grow overflow-y-auto"
-        ref={messageListRef}
-        onScroll={handleScroll}
-      >
-        {[...messages, ...pendingMessages].map((message) => {
-          const variant = message.senderId === current.$id ? 'sent' : 'received'
-          const user = userCache[message.senderId]
-          const isPending = message.$id.startsWith('pending_')
-
-          return (
-            <ChatBubble key={message.$id} variant={variant}>
-              <Link
-                href={{
-                  pathname: '/user/[profileUrl]',
-                  params: {
-                    profileUrl: user?.profileUrl,
-                  },
-                }}
-              >
-                <ChatBubbleAvatar
-                  src={getUserAvatar(message.senderId)}
-                  fallback={user?.displayName?.charAt(0) || '?'}
-                />
-              </Link>
-              {!isPending ? (
-                <ChatBubbleMessage>{message.body}</ChatBubbleMessage>
-              ) : (
-                <ChatBubbleMessage className="animate-pulse text-muted-foreground">
-                  {message.body}
-                </ChatBubbleMessage>
-              )}
-              {/* Action Icons */}
-              <ChatBubbleActionWrapper>
-                {!isPending && message.senderId === current.$id && (
-                  <ChatBubbleAction
-                    className="size-7"
-                    icon={<Trash2Icon className="size-4" />}
-                    onClick={() => deleteMessage(message.$id)}
-                  />
-                )}
-              </ChatBubbleActionWrapper>
-            </ChatBubble>
-          )
-        })}
-        {isLoading && <div>Loading...</div>}
-      </ChatMessageList>
-      <form
-        className="flex-none w-full p-1 border-t bg-background focus-within:ring-1 focus-within:ring-ring"
-        onSubmit={sendMessage}
-      >
-        <ChatInput
-          name="message"
-          placeholder="Type your message here..."
-          className="min-h-12 resize-none rounded-lg bg-background p-3 shadow-none focus-visible:ring-0"
-          value={messageText}
-          onChange={(e) => setMessageText(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <div className="flex items-center p-3">
-          <Button
-            variant="ghost"
-            size="icon"
-            type="button"
-            onClick={() => document.getElementById('file-upload')?.click()}
-          >
-            <PaperclipIcon className="size-4" />
-            <span className="sr-only">Attach files</span>
-          </Button>
-          <input
-            id="file-upload"
-            type="file"
-            multiple
-            className="hidden"
-            onChange={handleAttachmentChange}
-          />
-          {attachments.length > 0 && (
-            <div className="ml-2 flex flex-wrap gap-2">
-              {attachments.map((file, index) => (
-                <div
-                  key={index}
-                  className="flex items-center bg-gray-100 rounded p-1"
-                >
-                  <FileIcon className="size-4 mr-1" />
-                  <span className="text-sm text-gray-500 truncate max-w-[100px]">
-                    {file.name}
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="ml-1"
-                    onClick={() => removeAttachment(index)}
-                  >
-                    <XIcon className="size-3" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          )}
-          <Button size="sm" className="ml-auto gap-1.5" type="submit">
-            Send Message
-            <CornerDownLeftIcon className="size-3.5" />
-          </Button>
-        </div>
-      </form>
-    </div>
+      <ReportMessageModal
+        open={reportMessageOpen}
+        setOpen={setReportMessageOpen}
+        message={selectedMessage}
+      />
+    </>
   )
 }

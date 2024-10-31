@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useRealtimeChat } from '@/hooks/useRealtimeChat'
 import PageLayout from '@/components/pageLayout'
 import {
@@ -10,10 +10,9 @@ import {
   getCommunityAvatarUrlPreview,
 } from '@/components/getStorageItem'
 import { useUser } from '@/components/contexts/UserContext'
-import { useEffect, useState, useCallback } from 'react'
 import { databases, functions } from '@/app/appwrite-client'
 import { toast } from 'sonner'
-import { Menu, Plus, Search } from 'lucide-react'
+import { Menu, Plus, Search, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import {
@@ -28,8 +27,8 @@ import { useDebounce } from '@/hooks/useDebounce'
 import { Query } from 'appwrite'
 import { ExecutionMethod } from 'node-appwrite'
 import { Community, Messaging, UserData } from '@/utils/types/models'
-import { Users } from 'lucide-react'
 import { useRouter } from '@/i18n/routing'
+import FeatureAccess from '@/components/FeatureAccess'
 
 export default function ChatLayout(props) {
   const router = useRouter()
@@ -39,16 +38,6 @@ export default function ChatLayout(props) {
   const [userCache, setUserCache] = useState({})
   const [isOpen, setIsOpen] = useState(false)
   const [communityCache, setCommunityCache] = useState({})
-
-  useEffect(() => {
-    if (!current) {
-      router.push('/login')
-    }
-  }, [current, router])
-
-  if (!current) {
-    return null // or a loading indicator
-  }
 
   const fetchUserData = useCallback(
     async (userId: string) => {
@@ -120,44 +109,56 @@ export default function ChatLayout(props) {
       setDisplayUsers(newDisplayUsers)
     }
 
-    updateDisplayUsers()
+    updateDisplayUsers().then()
   }, [conversations, current.$id])
+
+  useEffect(() => {
+    if (!current) {
+      router.push('/login')
+    }
+  }, [current, router])
+
+  if (!current) {
+    return null // or a loading indicator
+  }
 
   const closeSheet = () => setIsOpen(false)
 
   return (
     <PageLayout title={'Chat'}>
-      <div className="flex flex-col md:flex-row h-[calc(100vh-4rem)]">
-        {/* Mobile Sidebar Toggle */}
-        <div className="md:hidden p-2">
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-              <Button>
-                <Menu className="mr-2" /> See conversations
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-              <ConversationsList
-                conversations={conversations}
-                displayUsers={displayUsers}
-                closeSheet={closeSheet}
-              />
-            </SheetContent>
-          </Sheet>
-        </div>
+      <FeatureAccess featureName={'messaging'}>
+        <div className="flex flex-col md:flex-row h-[calc(100vh-4rem)]">
+          {/* Mobile Sidebar Toggle */}
+          <div className="md:hidden p-2">
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <Button>
+                  <Menu className="mr-2" /> See conversations
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+                <ConversationsList
+                  conversations={conversations}
+                  displayUsers={displayUsers}
+                  closeSheet={closeSheet}
+                />
+              </SheetContent>
+            </Sheet>
+          </div>
 
-        {/* Desktop Sidebar */}
-        <div className="hidden md:block w-[300px] lg:w-[400px] border-r border-gray-200 overflow-y-auto">
-          <ConversationsList
-            conversations={conversations}
-            displayUsers={displayUsers}
-            closeSheet={closeSheet}
-          />
-        </div>
+          {/* Desktop Sidebar */}
+          <div className="hidden md:block w-[300px] lg:w-[400px] border-r border-gray-200 overflow-y-auto">
+            <ConversationsList
+              conversations={conversations}
+              displayUsers={displayUsers}
+              closeSheet={closeSheet}
+            />
+          </div>
 
-        {/* Chat Area */}
-        <div className="flex-1 overflow-hidden">{props.children}</div>
-      </div>
+          {/* Chat Area */}
+          <div className="flex-1 overflow-hidden">{props.children}</div>
+        </div>
+      </FeatureAccess>
     </PageLayout>
   )
 }
@@ -216,12 +217,18 @@ function ConversationsList({
       console.log(response)
       if (response.type === 'userchat_missing_recipient_id') {
         toast.error('Missing recipient ID')
+        return
       } else if (response.type === 'userchat_recipient_does_not_exist') {
         toast.error('Recipient does not exist')
+        return
+      } else if (response.type === 'userchat_messaging_disabled') {
+        toast.error('Messaging is currently disabled')
+        return
       } else if (
         response.type === 'userchat_recipient_cannot_be_the_same_as_the_user'
       ) {
         toast.error('Cannot create conversation with yourself')
+        return
       } else {
         router.push({
           pathname: '/chat/[conversationId]',

@@ -55,7 +55,7 @@ export const routing = defineRouting({
     '/user/[profileUrl]': '/user/[profileUrl]',
     '/user/[profileUrl]/followers': '/user/[profileUrl]/followers',
     '/user/[profileUrl]/following': '/user/[profileUrl]/following',
-  
+
     // If locales use different paths, you can
     // specify each external path per locale.
     '/about': {
@@ -63,7 +63,7 @@ export const routing = defineRouting({
       de: '/ueber-uns',
       nl: '/over-ons',
     },
-  }
+  },
 })
 
 export const { Link, redirect, usePathname, useRouter, getPathname } =

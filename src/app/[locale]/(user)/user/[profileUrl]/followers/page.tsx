@@ -8,17 +8,12 @@ import { getAvatarImageUrlView } from '@/components/getStorageItem'
 
 export const runtime = 'edge'
 
-export async function generateMetadata(
-  props: {
-    params: Promise<{ profileUrl: string; locale: string }>
-  }
-) {
-  const params = await props.params;
+export async function generateMetadata(props: {
+  params: Promise<{ profileUrl: string; locale: string }>
+}) {
+  const params = await props.params
 
-  const {
-    profileUrl,
-    locale
-  } = params;
+  const { profileUrl, locale } = params
 
   const { databases } = await createSessionServerClient()
   const userDataResponse: UserData.UserDataType = await databases.listDocuments(
@@ -54,17 +49,12 @@ export async function generateMetadata(
   }
 }
 
-export default async function FollowerPage(
-  props: {
-    params: Promise<{ locale: string; profileUrl: string }>
-  }
-) {
-  const params = await props.params;
+export default async function FollowerPage(props: {
+  params: Promise<{ locale: string; profileUrl: string }>
+}) {
+  const params = await props.params
 
-  const {
-    locale,
-    profileUrl
-  } = params;
+  const { locale, profileUrl } = params
 
   const userData = await getUserDataFromProfileUrl(profileUrl)
 

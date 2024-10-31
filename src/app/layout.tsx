@@ -122,12 +122,18 @@ export default async function RootLayout({ children }) {
         <SonnerToaster
           toastOptions={{
             classNames: {
-              error:
-                'border border-destructive bg-gradient-to-r from-destructive/50 via-destructive/10 to-destructive/0 text-destructive-foreground',
-              success:
-                'border border-primary bg-gradient-to-r from-primary/50 via-primary/10 to-primary/0 dark:text-foreground text-background',
-              loading:
-                'border dark:border-muted bg-gradient-to-r dark:from-muted from-muted-foreground dark:via-muted/10 via-secondary/10 to-secondary/0 dark:text-foreground text-background',
+              error: [
+                'border border-destructive text-destructive-foreground',
+                'bg-gradient-to-r from-destructive via-black to-black',
+              ].join(' '),
+              success: [
+                'border border-primary dark:text-foreground text-background',
+                'bg-gradient-to-r from-primary via-black to-black',
+              ].join(' '),
+              loading: [
+                'border dark:border-muted dark:text-foreground text-background',
+                'bg-gradient-to-r from-muted via-black to-black',
+              ].join(' '),
             },
           }}
           icons={{

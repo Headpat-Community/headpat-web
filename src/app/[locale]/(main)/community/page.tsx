@@ -7,11 +7,9 @@ import MyCommunities from '@/components/community/myCommunities'
 export const runtime = 'edge'
 
 export async function generateMetadata(props) {
-  const params = await props.params;
+  const params = await props.params
 
-  const {
-    locale
-  } = params;
+  const { locale } = params
 
   const meta = await getTranslations({
     locale,

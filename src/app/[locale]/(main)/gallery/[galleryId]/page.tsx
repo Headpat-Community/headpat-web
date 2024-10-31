@@ -4,12 +4,9 @@ import { Gallery } from '@/utils/types/models'
 import { createSessionServerClient } from '@/app/appwrite-session'
 
 export async function generateMetadata(props) {
-  const params = await props.params;
+  const params = await props.params
 
-  const {
-    locale,
-    galleryId
-  } = params;
+  const { locale, galleryId } = params
 
   const { databases } = await createSessionServerClient()
 
@@ -47,12 +44,9 @@ export async function generateMetadata(props) {
 export const runtime = 'edge'
 
 export default async function GalleryPage(props) {
-  const params = await props.params;
+  const params = await props.params
 
-  const {
-    galleryId,
-    locale
-  } = params;
+  const { galleryId, locale } = params
 
   return <PageClient galleryId={galleryId} />
 }

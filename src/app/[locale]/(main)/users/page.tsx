@@ -4,11 +4,9 @@ import { getTranslations } from 'next-intl/server'
 export const runtime = 'edge'
 
 export async function generateMetadata(props) {
-  const params = await props.params;
+  const params = await props.params
 
-  const {
-    locale
-  } = params;
+  const { locale } = params
 
   const meta = await getTranslations({ locale, namespace: 'UsersMetadata' })
 
@@ -37,16 +35,12 @@ export async function generateMetadata(props) {
   }
 }
 
-export default async function Users(
-  props: {
-    params: Promise<{ locale: string }>
-  }
-) {
-  const params = await props.params;
+export default async function Users(props: {
+  params: Promise<{ locale: string }>
+}) {
+  const params = await props.params
 
-  const {
-    locale
-  } = params;
+  const { locale } = params
 
   return <PageClient />
 }

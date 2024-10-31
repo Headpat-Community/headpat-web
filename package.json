@@ -67,8 +67,6 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "embla-carousel-react": "^8.3.0",
-    "eslint": "^8.57.0",
-    "eslint-config-next": "^15.0.2",
     "import-in-the-middle": "^1.11.2",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.453.0",
@@ -104,6 +102,9 @@
     "@types/node": "22.8.1",
     "@types/react": "18.3.12",
     "@types/sanitize-html": "^2.13.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^15.0.2",
+    "eslint-plugin-react-compiler": "19.0.0-beta-6fc168f-20241025",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8"
   }
