@@ -132,7 +132,7 @@ export default function PageClient({
       }
     }
 
-    fetchUserData()
+    fetchUserData().then()
 
     return () => {
       isMounted = false
@@ -385,8 +385,9 @@ export default function PageClient({
 
 const ListSocialItem = ({ IconComponent, userData, link }) => {
   const handleCopy = () => {
-    navigator.clipboard.writeText(userData)
-    toast.success('Copied to clipboard!')
+    navigator.clipboard.writeText(userData).then(() => {
+      toast.success('Copied to clipboard!')
+    })
   }
 
   const isCopy = link === '#'

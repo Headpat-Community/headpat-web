@@ -30,7 +30,7 @@ import { Community, Messaging, UserData } from '@/utils/types/models'
 import { useRouter } from '@/i18n/routing'
 import FeatureAccess from '@/components/FeatureAccess'
 
-export default function ChatLayout(props) {
+export default function ChatLayout(props: any) {
   const router = useRouter()
   const { conversations } = useRealtimeChat()
   const { current } = useUser()
@@ -38,11 +38,6 @@ export default function ChatLayout(props) {
   const [userCache, setUserCache] = useState({})
   const [isOpen, setIsOpen] = useState(false)
   const [communityCache, setCommunityCache] = useState({})
-
-  if (!current) {
-    router.push('/login')
-    return null
-  }
 
   const fetchUserData = useCallback(
     async (userId: string) => {
@@ -115,16 +110,10 @@ export default function ChatLayout(props) {
     }
 
     updateDisplayUsers().then()
-  }, [conversations, current.$id, fetchCommunityData, fetchUserData])
-
-  useEffect(() => {
-    if (!current) {
-      router.push('/login')
-    }
-  }, [current, router])
+  }, [conversations, current, fetchCommunityData, fetchUserData])
 
   if (!current) {
-    return null // or a loading indicator
+    return router.push('/login')
   }
 
   const closeSheet = () => setIsOpen(false)
