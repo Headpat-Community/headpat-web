@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useRouter } from '@/i18n/routing'
 import { useUser } from '@/components/contexts/UserContext'
 
 export const runtime = 'edge'

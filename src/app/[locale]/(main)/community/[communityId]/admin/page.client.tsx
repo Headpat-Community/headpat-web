@@ -4,7 +4,7 @@ import { TabsContent } from '@/components/ui/tabs'
 import CommunityAdminMain from '@/components/community/admin/main'
 import { functions } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import NoAccess from '@/components/static/noAccess'
 import { hasAdminPanelAccess } from '@/utils/actions/community/checkRoles'
 import { toast } from 'sonner'
@@ -18,7 +18,7 @@ export default function PageClient({
   const [hasPermission, setHasPermission] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
-  const getOwnerStatus = async () => {
+  const getOwnerStatus = useCallback(async () => {
     try {
       const data = await functions.createExecution(
         'community-endpoints',
@@ -38,11 +38,11 @@ export default function PageClient({
     } catch (error) {
       toast.error('Error fetching community data. Please try again later.')
     }
-  }
+  }, [community.$id])
 
   useEffect(() => {
     getOwnerStatus().then(() => setIsLoading(false))
-  }, [community])
+  }, [getOwnerStatus])
 
   if (!isLoading && !hasPermission) {
     return <NoAccess />

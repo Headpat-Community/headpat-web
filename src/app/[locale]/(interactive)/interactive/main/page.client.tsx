@@ -26,7 +26,7 @@ export default function VotingClient({
   const [questions, setQuestions] = useState([])
   const [voteCounts, setVoteCounts] = useState({})
 
-  const loadVotedQuestions = () => {
+  const loadVotedQuestions = useCallback(() => {
     let newVotedQuestions = { ...votedQuestions }
     votes.documents.forEach((vote) => {
       if (vote.ipAddress === forwardedFor) {
@@ -34,7 +34,7 @@ export default function VotingClient({
       }
     })
     setVotedQuestions(newVotedQuestions)
-  }
+  }, [votedQuestions, votes, forwardedFor])
 
   const loadVoteCounts = async () => {
     const response = await databases.listDocuments(

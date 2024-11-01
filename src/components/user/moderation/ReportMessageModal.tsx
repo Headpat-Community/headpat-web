@@ -14,7 +14,6 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Messaging } from '@/utils/types/models'
 import { toast } from 'sonner'
-import { reportUserProfile } from '@/utils/actions/user/reportUserProfile'
 import { functions } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
 
