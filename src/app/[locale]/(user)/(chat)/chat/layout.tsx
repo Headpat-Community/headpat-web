@@ -41,6 +41,7 @@ export default function ChatLayout(props) {
 
   if (!current) {
     router.push('/login')
+    return null
   }
 
   const fetchUserData = useCallback(
