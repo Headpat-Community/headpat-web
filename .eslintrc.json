@@ -2,6 +2,7 @@
   "extends": "next/core-web-vitals",
   "plugins": ["eslint-plugin-react-compiler"],
   "rules": {
-    "react-compiler/react-compiler": "error"
+    "react-compiler/react-compiler": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

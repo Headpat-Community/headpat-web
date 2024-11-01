@@ -37,7 +37,6 @@ export default function AllCommunities() {
 
   useEffect(() => {
     fetchCommunities().then()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchCommunities])
 
   if (isFetching) {
