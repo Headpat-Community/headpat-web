@@ -72,7 +72,6 @@ export default function SidebarResizable({
     }
 
     fetchData().then()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current])
 
   return (

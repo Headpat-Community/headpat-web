@@ -105,7 +105,7 @@ export default function ChatClient({
     [conversationId, hasMore, page, setMessages, userCache, fetchUserData]
   )
 
-  const fetchConversation = async () => {
+  const fetchConversation = useCallback(async () => {
     setIsLoading(true)
     try {
       await fetchMessages(true)
@@ -148,12 +148,19 @@ export default function ChatClient({
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [
+    fetchMessages,
+    conversationId,
+    communityCache,
+    fetchCommunityData,
+    messages,
+    userCache,
+    fetchUserData,
+  ])
 
   useEffect(() => {
-    fetchConversation()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [conversationId])
+    fetchConversation().then()
+  }, [conversationId, fetchConversation])
 
   useEffect(() => {
     const fetchParticipantsData = async () => {
@@ -167,7 +174,7 @@ export default function ChatClient({
     }
 
     if (participants.length > 0) {
-      fetchParticipantsData()
+      fetchParticipantsData().then()
     }
   }, [participants, fetchUserData, userCache])
 
@@ -333,7 +340,7 @@ export default function ChatClient({
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault()
-      sendMessage()
+      sendMessage().then()
     }
   }
 

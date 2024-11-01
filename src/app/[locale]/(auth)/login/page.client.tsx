@@ -48,8 +48,7 @@ export default function Login({ locale }) {
     }
 
     checkAccount().then()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [router])
 
   const handleEmailLogin = async (e: any) => {
     e.preventDefault()

@@ -1,7 +1,7 @@
 'use client'
 import { Community } from '@/utils/types/models'
 import { databases, functions } from '@/app/appwrite-client'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { z } from 'zod'
@@ -38,16 +38,15 @@ export default function CommunityAdminSettings({
   const [communitySettings, setCommunitySettings] =
     useState<Community.CommunitySettingsDocumentsType>(null)
 
-  const getSettings = async () => {
+  const getSettings = useCallback(async () => {
     const data: Community.CommunitySettingsDocumentsType =
       await databases.getDocument('hp_db', 'community-settings', community.$id)
     setCommunitySettings(data)
-  }
+  }, [community.$id])
 
   useEffect(() => {
     getSettings().then(() => setIsLoading(false))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [community])
+  }, [community, getSettings])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

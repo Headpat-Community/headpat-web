@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/card'
 import { Link } from '@/i18n/routing'
 import Image from 'next/image'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import UserCard from '@/components/user/userCard'
 
 export default function PageClient({ communityId }: { communityId: string }) {
@@ -15,7 +15,7 @@ export default function PageClient({ communityId }: { communityId: string }) {
     useState<UserData.UserDataDocumentsType[]>(null)
   const [isFetching, setIsFetching] = useState<boolean>(true)
 
-  const fetchFollowers = async () => {
+  const fetchFollowers = useCallback(async () => {
     try {
       const data = await functions.createExecution(
         'community-endpoints',
@@ -31,12 +31,11 @@ export default function PageClient({ communityId }: { communityId: string }) {
     } catch (error) {
       // Do nothing
     }
-  }
+  }, [communityId])
 
   useEffect(() => {
     fetchFollowers().then()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [fetchFollowers])
 
   if (isFetching || !followers) {
     return (
@@ -76,35 +75,28 @@ export default function PageClient({ communityId }: { communityId: string }) {
           return (
             <Card className={'border-none h-40 w-40 mx-auto'} key={user.$id}>
               <Card className={'border-none h-40 w-40 mx-auto'} key={user.$id}>
-                <UserCard user={user}>
+                <UserCard user={user} isChild>
                   <div className={'h-full w-full'}>
-                    <Link
-                      href={{
-                        pathname: '/user/[profileUrl]',
-                        params: { profileUrl: user.profileUrl },
-                      }}
-                    >
-                      {user.avatarId ? (
-                        <Image
-                          src={
-                            getAvatarImageUrlPreview(
-                              user.avatarId,
-                              'width=250&height=250'
-                            ) || null
-                          }
-                          alt={user.displayName}
-                          className="object-cover rounded-md"
-                          width={1000}
-                          height={1000}
-                        />
-                      ) : (
-                        <div className="h-full w-full bg-gray-200 rounded-md flex items-center justify-center text-wrap truncate">
-                          <p className="text-gray-400 text-center">
-                            {user.displayName}
-                          </p>
-                        </div>
-                      )}
-                    </Link>
+                    {user.avatarId ? (
+                      <Image
+                        src={
+                          getAvatarImageUrlPreview(
+                            user.avatarId,
+                            'width=250&height=250'
+                          ) || null
+                        }
+                        alt={user.displayName}
+                        className="object-cover rounded-md"
+                        width={1000}
+                        height={1000}
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-gray-200 rounded-md flex items-center justify-center text-wrap truncate">
+                        <p className="text-gray-400 text-center">
+                          {user.displayName}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </UserCard>
               </Card>

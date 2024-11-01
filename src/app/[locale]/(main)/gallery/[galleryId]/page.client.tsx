@@ -3,7 +3,7 @@ import { Link } from '@/i18n/routing'
 import { Button } from '@/components/ui/button'
 import { getGalleryImageUrlView } from '@/components/getStorageItem'
 import PageLayout from '@/components/pageLayout'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Gallery, UserData } from '@/utils/types/models'
 import sanitize from 'sanitize-html'
 import { useUser } from '@/components/contexts/UserContext'
@@ -20,7 +20,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
   const [moderationModalOpen, setModerationModalOpen] = useState(false)
   const { current } = useUser()
 
-  const fetchGallery = async () => {
+  const fetchGallery = useCallback(async () => {
     try {
       const [imageData, imagePrefs]: any = await Promise.all([
         databases.getDocument('hp_db', 'gallery-images', `${galleryId}`),
@@ -42,12 +42,11 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
     } catch (error) {
       console.error(error)
     }
-  }
+  }, [galleryId])
 
   useEffect(() => {
     fetchGallery().then()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [galleryId])
+  }, [fetchGallery, galleryId])
 
   const description = sanitize(image?.longText)
   const descriptionSanitized = description.replace(/\n/g, '<br />')

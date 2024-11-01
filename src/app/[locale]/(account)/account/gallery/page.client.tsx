@@ -61,7 +61,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
       toast.error('Failed to fetch gallery. Please try again later.')
       Sentry.captureException(error)
     })
-  }, [userId, enableNsfw, toast, currentPage])
+  }, [userId, enableNsfw, currentPage])
 
   const handlePageChange = (page: SetStateAction<number>) => {
     setCurrentPage(page)

@@ -34,8 +34,7 @@ export default function MfaPageClient() {
       }
     }
     checkMfa().then(createMfaCode)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [router])
 
   const createMfaCode = async () => {
     try {

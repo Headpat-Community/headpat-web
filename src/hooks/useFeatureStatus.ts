@@ -20,7 +20,7 @@ export const useFeatureStatus = (feature: string) => {
     }
 
     fetchFeatureStatus().then()
-  }, [])
+  }, [feature])
 
   return featureStatus
 }

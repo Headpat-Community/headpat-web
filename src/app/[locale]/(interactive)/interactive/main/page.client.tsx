@@ -1,6 +1,6 @@
 'use client'
 import { createVoteMain } from '@/utils/actions/interactive/createVote'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { RealtimeResponseEvent } from 'appwrite'
 import { Interactive } from '@/utils/types/models'
 import { client, databases } from '@/app/appwrite-client'
@@ -61,8 +61,7 @@ export default function VotingClient({
       .then((response) => {
         setQuestions(response.documents)
       })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [loadVotedQuestions])
 
   useEffect(() => {
     if (votedQuestions[selectedQuestionId] !== undefined) {
@@ -76,20 +75,8 @@ export default function VotingClient({
     questionId: string
   }
 
-  let subscribed = null
-  useEffect(() => {
-    handleSubscribedEvents()
-    return () => {
-      // Remove the event listener when the component is unmounted
-      if (subscribed) {
-        subscribed()
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subscribed])
-
-  function handleSubscribedEvents() {
-    subscribed = client.subscribe(
+  const handleSubscribedEvents = useCallback(() => {
+    return client.subscribe(
       [
         'databases.interactive.collections.system-main.documents.main',
         'databases.interactive.collections.countedAnswers-main.documents',
@@ -118,7 +105,17 @@ export default function VotingClient({
         }
       }
     )
-  }
+  }, [])
+
+  useEffect(() => {
+    const subscription = handleSubscribedEvents()
+    return () => {
+      // Remove the event listener when the component is unmounted
+      if (subscription) {
+        subscription()
+      }
+    }
+  }, [handleSubscribedEvents])
 
   if (!questions || !questions.length) {
     return <div>Loading....</div>

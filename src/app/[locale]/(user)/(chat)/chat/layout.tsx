@@ -110,7 +110,7 @@ export default function ChatLayout(props) {
     }
 
     updateDisplayUsers().then()
-  }, [conversations, current.$id])
+  }, [conversations, current.$id, fetchCommunityData, fetchUserData])
 
   useEffect(() => {
     if (!current) {
@@ -199,10 +199,10 @@ function ConversationsList({
       }
     }
 
-    searchUsers()
+    searchUsers().then()
   }, [debouncedSearchTerm])
 
-  const createConversation = async (recipientId) => {
+  const createConversation = async (recipientId: string) => {
     const loadingToast = toast.loading('Creating conversation...')
     try {
       const data = await functions.createExecution(

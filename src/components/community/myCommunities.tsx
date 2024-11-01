@@ -51,8 +51,7 @@ export default function MyCommunities() {
       return
     }
     fetchCommunities().then()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [fetchCommunities, current])
 
   if (!current) {
     return (

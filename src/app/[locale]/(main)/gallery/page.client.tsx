@@ -82,7 +82,7 @@ export default function FetchGallery({ enableNsfw }) {
       toast.error("You encountered an error. But don't worry, we're on it.")
       Sentry.captureException(error)
     })
-  }, [currentPage, enableNsfw, toast])
+  }, [currentPage, enableNsfw])
 
   return (
     <div>

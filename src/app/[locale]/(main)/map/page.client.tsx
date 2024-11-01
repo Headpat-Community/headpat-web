@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { AdvancedMarker, APIProvider, Map } from '@vis.gl/react-google-maps'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Events, Location, UserData } from '@/utils/types/models'
@@ -58,7 +58,7 @@ export default function PageClient() {
   const [modalUserOpen, setModalUserOpen] = useState<boolean>(false)
   const [modalEventOpen, setModalEventOpen] = useState<boolean>(false)
 
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
     try {
       const currentDate = new Date()
 
@@ -75,9 +75,9 @@ export default function PageClient() {
     } catch (error) {
       toast('Failed to fetch events. Please try again later.')
     }
-  }
+  }, [])
 
-  const fetchUserLocations = async () => {
+  const fetchUserLocations = useCallback(async () => {
     try {
       let query = []
       /*
@@ -106,26 +106,15 @@ export default function PageClient() {
     } catch (error) {
       toast('Failed to fetch locations. Please try again later.')
     }
-  }
+  }, [current])
 
-  const onRefresh = () => {
-    fetchUserLocations().then()
-    fetchEvents().then()
-  }
+  const onRefresh = useCallback(async () => {
+    await fetchUserLocations()
+    await fetchEvents()
+  }, [fetchUserLocations, fetchEvents])
 
-  let locationsSubscribed = null
-  useEffect(() => {
-    onRefresh()
-    handleSubscribedEvents()
-    return () => {
-      // Remove the event listener when the component is unmounted
-      locationsSubscribed()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current, locationsSubscribed])
-
-  function handleSubscribedEvents() {
-    locationsSubscribed = client.subscribe(
+  const handleSubscribedEvents = useCallback(() => {
+    return client.subscribe(
       ['databases.hp_db.collections.locations.documents'],
       async (response) => {
         const eventType = response.events[0].split('.').pop()
@@ -143,7 +132,6 @@ export default function PageClient() {
                   (location) => location?.$id === updatedDocument.$id
                 )
                 if (existingLocation) {
-                  // Merge updated document with existing one, preserving userData
                   return prevLocations.map((location) =>
                     location?.$id === updatedDocument.$id
                       ? {
@@ -190,14 +178,12 @@ export default function PageClient() {
                   (location) => location?.$id === updatedDocument.$id
                 )
                 if (locationExists) {
-                  // Update existing location
                   return prevLocations.map((location) =>
                     location.$id === updatedDocument.$id
                       ? updatedLocationWithUserData
                       : location
                   )
                 } else {
-                  // Add new location
                   return [...prevLocations, updatedLocationWithUserData]
                 }
               }
@@ -208,11 +194,48 @@ export default function PageClient() {
         }
       }
     )
-  }
+  }, [current])
+
+  useEffect(() => {
+    onRefresh().then()
+    const locationsSubscribed = handleSubscribedEvents()
+    return () => {
+      locationsSubscribed()
+    }
+  }, [current, handleSubscribedEvents, onRefresh])
 
   const getUserAvatar = (avatarId: string) => {
     if (!avatarId) return
     return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${avatarId}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&width=100&height=100`
+  }
+
+  const advancedMarkerClick = (user: User) => {
+    setCurrentUser({
+      title: user.userData?.displayName,
+      status: user.status,
+      description: user.userData?.bio,
+    })
+    setModalUserOpen(true)
+  }
+
+  const polygonClick = (event: Events.EventsDocumentsType) => {
+    setCurrentEvent({
+      title: event.title,
+      description: event.description,
+      date: event.date,
+      dateUntil: event.dateUntil,
+    })
+    setModalEventOpen(true)
+  }
+
+  const circleClick = (event: Events.EventsDocumentsType) => {
+    setCurrentEvent({
+      title: event.title,
+      description: event.description,
+      date: event.date,
+      dateUntil: event.dateUntil,
+    })
+    setModalEventOpen(true)
   }
 
   const sanitizedDescription = sanitizeHtml(currentEvent?.description)
@@ -282,14 +305,7 @@ export default function PageClient() {
                   <AdvancedMarker
                     key={index}
                     position={{ lat: user.lat, lng: user.long }}
-                    onClick={() => (
-                      setCurrentUser({
-                        title: user.userData?.displayName,
-                        status: user?.status || user.userData?.status,
-                        description: user.userData?.bio,
-                      }),
-                      setModalUserOpen(true)
-                    )}
+                    onClick={() => advancedMarkerClick(user)}
                   >
                     <Avatar
                       style={{
@@ -323,15 +339,7 @@ export default function PageClient() {
                     fillColor="rgba(100, 200, 200, 0.5)" // optional, fill color of the polygon
                     strokeColor="rgba(255,0,0,0.5)" // optional, border color of the polygon
                     paths={coords}
-                    onClick={() => (
-                      setCurrentEvent({
-                        title: event.title,
-                        description: event.description,
-                        date: event.date,
-                        dateUntil: event.dateUntil,
-                      }),
-                      setModalEventOpen(true)
-                    )}
+                    onClick={() => polygonClick(event)}
                   />
                 )
               } else if (event?.locationZoneMethod === 'circle') {
@@ -349,15 +357,7 @@ export default function PageClient() {
                     radius={event?.circleRadius} // specify the radius here
                     fillColor="rgba(100, 200, 200, 0.5)" // optional, fill color of the circle
                     strokeColor="rgba(255,0,0,0.5)" // optional, border color of the circle
-                    onClick={() => (
-                      setCurrentEvent({
-                        title: event.title,
-                        description: event.description,
-                        date: event.date,
-                        dateUntil: event.dateUntil,
-                      }),
-                      setModalEventOpen(true)
-                    )}
+                    onClick={() => circleClick(event)}
                   />
                 )
               }
