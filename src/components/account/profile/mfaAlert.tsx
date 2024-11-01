@@ -18,16 +18,15 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from '@/components/ui/input-otp'
-import { useToast } from '@/components/ui/use-toast'
 import * as Sentry from '@sentry/nextjs'
-import { useRouter } from '@/navigation'
+import { useRouter } from '@/i18n/routing'
+import { toast } from 'sonner'
 
 export default function MfaAlert({ mfaList }) {
   const [open, setOpen] = useState<boolean>(false)
   const [mfaMode, setMfaMode] = useState<string>('')
   const [qrCodeImage, setQrCodeImage] = useState<string>('')
   const router = useRouter()
-  const { toast } = useToast()
 
   const handleMfaAdd = async (mfaMode: string) => {
     if (mfaMode === 'totp') {
@@ -52,21 +51,14 @@ export default function MfaAlert({ mfaList }) {
         AuthenticatorType.Totp
       )
       if (mfaDeleteResult) {
-        toast({
-          title: '2FA disabled',
-          description: 'You have successfully disabled 2FA.',
-        })
+        toast.success('You have successfully disabled 2FA.')
         await account.updateMFA(false)
         setOpen(false)
         router.refresh()
       }
     } catch (error) {
       console.error(error)
-      toast({
-        title: 'Error',
-        description: "You encountered an error. But don't worry, we're on it.",
-        variant: 'destructive',
-      })
+      toast.error("You encountered an error. But don't worry, we're on it.")
       Sentry.captureException(error)
     }
   }
@@ -79,10 +71,7 @@ export default function MfaAlert({ mfaList }) {
       )
 
       if (mfaVerifyResult) {
-        toast({
-          title: '2FA enabled',
-          description: 'You have successfully enabled 2FA.',
-        })
+        toast.success('You have successfully enabled 2FA.')
         await account.updateMFA(true)
         router.refresh()
       }
@@ -91,10 +80,7 @@ export default function MfaAlert({ mfaList }) {
       setOpen(false)
     } catch (error) {
       if (error.code === 401) {
-        toast({
-          title: 'Invalid code',
-          description: 'The code you entered is invalid. Please try again.',
-        })
+        toast.error('The code you entered is invalid. Please try again.')
       }
     }
   }
@@ -156,12 +142,9 @@ export default function MfaAlert({ mfaList }) {
                     maxLength={6}
                     onComplete={(result) => {
                       handleMfaVerify(result).catch((error) => {
-                        toast({
-                          title: 'Error',
-                          description:
-                            "You encountered an error. But don't worry, we're on it.",
-                          variant: 'destructive',
-                        })
+                        toast.error(
+                          "You encountered an error. But don't worry, we're on it."
+                        )
                         Sentry.captureException(error)
                       })
                     }}
@@ -222,12 +205,9 @@ export default function MfaAlert({ mfaList }) {
                     maxLength={6}
                     onComplete={(result) => {
                       handleMfaDelete(result).catch((error) => {
-                        toast({
-                          title: 'Error',
-                          description:
-                            "You encountered an error. But don't worry, we're on it.",
-                          variant: 'destructive',
-                        })
+                        toast.error(
+                          "You encountered an error. But don't worry, we're on it."
+                        )
                         Sentry.captureException(error)
                       })
                     }}

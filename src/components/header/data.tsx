@@ -12,6 +12,7 @@ import {
   LogOutIcon,
   MapIcon,
   MegaphoneIcon,
+  MessagesSquareIcon,
   PencilIcon,
   UserSearchIcon,
 } from 'lucide-react'
@@ -25,6 +26,13 @@ export const Nav1 = (translations: any) => [
     icon: HomeIcon,
     variant: 'ghost' as const,
     href: `/`,
+  },
+  {
+    title: translations.chat,
+    label: '',
+    icon: MessagesSquareIcon,
+    variant: 'ghost' as const,
+    href: `/chat`,
   },
   {
     title: translations.gallery,
@@ -84,7 +92,7 @@ export const Nav2 = (account: Account.AccountPrefs, translations: any) => {
       label: '',
       icon: HeartHandshakeIcon,
       variant: 'ghost' as const,
-      href: '/community',
+      href: `/community`,
     },
   ]
 }

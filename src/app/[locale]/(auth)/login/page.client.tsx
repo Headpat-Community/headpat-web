@@ -18,16 +18,16 @@ import {
   signInWithSpotify,
   signInWithTwitch,
 } from '@/utils/actions/oauth-actions'
-import { useToast } from '@/components/ui/use-toast'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { createUser } from '@/utils/actions/login-actions'
-import { Link, useRouter } from '@/navigation'
+import { Link, useRouter } from '@/i18n/routing'
 import { account, client } from '@/app/appwrite-client'
 import PageLayout from '@/components/pageLayout'
+import { toast } from 'sonner'
 
-export default function Login() {
+export default function Login({ locale }) {
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -35,7 +35,6 @@ export default function Login() {
   })
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
-  const { toast } = useToast()
   const router = useRouter()
 
   useEffect(() => {
@@ -49,8 +48,7 @@ export default function Login() {
     }
 
     checkAccount().then()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [router])
 
   const handleEmailLogin = async (e: any) => {
     e.preventDefault()
@@ -75,11 +73,7 @@ export default function Login() {
       }
 
       if (errorMessages[response.code]) {
-        toast({
-          title: 'Error',
-          description: errorMessages[response.code],
-          variant: 'destructive',
-        })
+        toast.error(errorMessages[response.code])
         return
       }
 
@@ -96,11 +90,7 @@ export default function Login() {
       }
 
       if (errorMessages[dataResponse?.error?.response?.type]) {
-        toast({
-          title: 'Error',
-          description: errorMessages[dataResponse.error.response.type],
-          variant: 'destructive',
-        })
+        toast.error(errorMessages[dataResponse.error.response.type])
         return
       }
 
@@ -122,7 +112,7 @@ export default function Login() {
               <Link
                 href="#"
                 onClick={() => setIsRegistering(!isRegistering)}
-                className="font-semibold text-indigo-600 hover:text-indigo-500"
+                className="font-semibold text-link hover:text-link/80"
               >
                 Click here!
               </Link>
@@ -242,7 +232,7 @@ export default function Login() {
               {/* OAuth Sign-In */}
 
               <div className="mt-6 grid grid-cols-2 gap-4">
-                <form action={signInWithDiscord}>
+                <form action={() => signInWithDiscord(locale)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#5865F2] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20">
                     <SiDiscord className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">
@@ -251,7 +241,7 @@ export default function Login() {
                   </button>
                 </form>
 
-                <form action={signInWithGithub}>
+                <form action={() => signInWithGithub(locale)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiGithub className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">
@@ -260,7 +250,7 @@ export default function Login() {
                   </button>
                 </form>
 
-                <form action={signInWithApple}>
+                <form action={() => signInWithApple(locale)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#000000] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiApple className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">
@@ -269,7 +259,7 @@ export default function Login() {
                   </button>
                 </form>
 
-                <form action={signInWithGoogle}>
+                <form action={() => signInWithGoogle(locale)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#131314] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiGoogle className={'h-4'} />
 
@@ -279,7 +269,7 @@ export default function Login() {
                   </button>
                 </form>
 
-                <form action={signInWithSpotify}>
+                <form action={() => signInWithSpotify(locale)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#1DB954] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiSpotify className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">
@@ -288,7 +278,7 @@ export default function Login() {
                   </button>
                 </form>
 
-                <form action={signInWithMicrosoft}>
+                <form action={() => signInWithMicrosoft(locale)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#01A6F0] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -302,7 +292,7 @@ export default function Login() {
                   </button>
                 </form>
 
-                <form action={signInWithTwitch}>
+                <form action={() => signInWithTwitch(locale)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#6441A5] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiTwitch className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">

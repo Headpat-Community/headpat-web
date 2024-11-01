@@ -1,11 +1,15 @@
 import Client from './page.client'
 import { getUser } from '@/utils/server-api/account/user'
 import PageLayout from '@/components/pageLayout'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 import { Button } from '@/components/ui/button'
 import { getTranslations } from 'next-intl/server'
 
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata(props) {
+  const params = await props.params
+
+  const { locale } = params
+
   const meta = await getTranslations({ locale, namespace: 'GalleryMetadata' })
 
   return {

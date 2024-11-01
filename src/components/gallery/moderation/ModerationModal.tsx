@@ -38,8 +38,7 @@ export default function ModerationModal({
   const handleReport = useCallback(() => {
     setIsOpen(false)
     setReportGalleryModalOpen(true)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [setIsOpen])
 
   const handleHide = async () => {
     const loadingToast = toast.loading(

@@ -3,7 +3,10 @@ import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { ErrorMessage } from '@/components/alerts'
 import { resetPassword } from '@/utils/actions/user-actions'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 
 export const runtime = 'edge'
 
@@ -75,19 +78,12 @@ const ResetPassword = () => {
 
           <form className="mt-10 space-y-6" action="#" method="POST">
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-white"
-              >
-                User ID
-              </label>
+              <Label htmlFor="userId">User ID</Label>
               <div className="mt-2">
-                <input
+                <Input
                   id="userId"
-                  name="userId"
                   type="text"
                   required
-                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   value={userId}
                   onChange={(e) => setUserId(e.target.value)}
                   disabled
@@ -96,19 +92,12 @@ const ResetPassword = () => {
             </div>
 
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-white"
-              >
-                Code
-              </label>
+              <Label htmlFor="code">Code</Label>
               <div className="mt-2">
-                <input
+                <Input
                   id="code"
-                  name="code"
                   type="password"
                   required
-                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
                   disabled
@@ -117,22 +106,13 @@ const ResetPassword = () => {
             </div>
 
             <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-white"
-                >
-                  Password:
-                </label>
-              </div>
+              <Label htmlFor="password">Password</Label>
               <div className="mt-2">
-                <input
+                <Input
                   id="newpassword"
-                  name="newpassword"
                   type="password"
                   autoComplete="password"
                   required
-                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -140,22 +120,13 @@ const ResetPassword = () => {
             </div>
 
             <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-white"
-                >
-                  Confirm Password:
-                </label>
-              </div>
+              <Label htmlFor="confirmpassword">Confirm Password</Label>
               <div className="mt-2">
-                <input
+                <Input
                   id="confirmpassword"
-                  name="confirmpassword"
                   type="password"
                   autoComplete="password"
                   required
-                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
@@ -163,22 +134,14 @@ const ResetPassword = () => {
             </div>
 
             <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                onClick={handleSubmit}
-              >
+              <Button type="submit" onClick={handleSubmit} className="w-full">
                 Reset Password
-              </button>
+              </Button>
             </div>
             <div>
-              <Link
-                href={'/register'}
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-red-800 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-              >
-                Create account &rarr;
-              </Link>
+              <Button variant={'destructive'} asChild className="w-full">
+                <Link href={'/register'}>Create account &rarr;</Link>
+              </Button>
             </div>
           </form>
         </div>

@@ -1,13 +1,17 @@
 import { ChevronRight, MegaphoneIcon } from 'lucide-react'
 import { createAdminClient } from '@/app/appwrite-session'
 import { Announcements } from '@/utils/types/models'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 import PageLayout from '@/components/pageLayout'
 import { getTranslations } from 'next-intl/server'
 
 export const runtime = 'edge'
 
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata(props) {
+  const params = await props.params
+
+  const { locale } = params
+
   const meta = await getTranslations({
     locale,
     namespace: 'AnnouncementsMetadata',

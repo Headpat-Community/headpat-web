@@ -21,7 +21,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import Image from 'next/image'
 import AccountAnnouncements from '@/components/account/accountAnnouncements'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 //import ChangeLanguage from '@/components/system/changeLanguage'
 
 export default async function Dashboard({ children }) {

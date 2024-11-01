@@ -3,7 +3,8 @@ import Client from './page.client'
 export const runtime = 'edge'
 
 export const metadata = {
-  title: 'Passwort vergessen?',
+  title: 'Forgot password?',
+  description: "Don't remember your password? Reset it here!",
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/forgot-password`,
     languages: {
@@ -14,10 +15,9 @@ export const metadata = {
   },
 }
 
-export default function Page() {
-  return (
-    <>
-      <Client />
-    </>
-  )
+export default async function Page(props) {
+  const params = await props.params
+  const { locale } = params
+
+  return <Client />
 }

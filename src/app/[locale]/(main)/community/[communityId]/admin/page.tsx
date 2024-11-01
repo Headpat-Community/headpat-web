@@ -6,11 +6,13 @@ import PageClient from './page.client'
 
 export const runtime = 'edge'
 
-export async function generateMetadata({
-  params: { communityId },
-}: {
-  params: { communityId: string }
+export async function generateMetadata(props: {
+  params: Promise<{ communityId: string }>
 }) {
+  const params = await props.params
+
+  const { communityId } = params
+
   const community = await getCommunity(communityId)
 
   if (!community.$id) {
@@ -31,11 +33,13 @@ export async function generateMetadata({
   }
 }
 
-export default async function Page({
-  params: { communityId },
-}: {
-  params: { communityId: string }
+export default async function Page(props: {
+  params: Promise<{ communityId: string }>
 }) {
+  const params = await props.params
+
+  const { communityId } = params
+
   const community = await getCommunity(communityId)
 
   return (

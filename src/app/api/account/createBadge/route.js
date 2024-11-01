@@ -4,7 +4,7 @@ import { headers } from 'next/headers'
 export const runtime = 'edge'
 
 export async function POST(request) {
-  const headersList = headers()
+  const headersList = await headers()
   const cookieHeader = headersList.get('cookie')
 
   try {

@@ -1,7 +1,7 @@
 import { createAdminClient } from '@/app/appwrite-session'
 import { notFound } from 'next/navigation'
 import { Announcements } from '@/utils/types/models'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 
 export default async function AccountAnnouncements() {
   const { databases } = await createAdminClient()

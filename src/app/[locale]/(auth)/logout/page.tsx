@@ -1,13 +1,12 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useRouter } from '@/navigation'
+import { useRouter } from '@/i18n/routing'
 import { useUser } from '@/components/contexts/UserContext'
 
 export const runtime = 'edge'
 
 export default function LogoutPage() {
   const [error, setError] = useState(null)
-  const router = useRouter()
   const { setUser } = useUser()
 
   useEffect(() => {
@@ -27,8 +26,7 @@ export default function LogoutPage() {
       .catch((err) => {
         setError(err)
       })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [setUser])
 
   if (error) {
     return <div>Error: {error.message}</div>

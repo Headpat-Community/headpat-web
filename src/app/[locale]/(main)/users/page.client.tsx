@@ -1,7 +1,6 @@
 'use client'
 import { UserData } from '@/utils/types/models'
 import { Card } from '@/components/ui/card'
-import { Link } from '@/navigation'
 import Image from 'next/image'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import { ExecutionMethod } from 'node-appwrite'
@@ -81,35 +80,28 @@ export default function ClientPage() {
         {users.map((user) => {
           return (
             <Card className={'border-none h-40 w-40 mx-auto'} key={user.$id}>
-              <UserCard user={user}>
+              <UserCard user={user} isChild>
                 <div className={'h-full w-full'}>
-                  <Link
-                    href={{
-                      pathname: '/user/[profileUrl]',
-                      params: { profileUrl: user.profileUrl },
-                    }}
-                  >
-                    {user.avatarId ? (
-                      <Image
-                        src={
-                          getAvatarImageUrlPreview(
-                            user.avatarId,
-                            'width=250&height=250'
-                          ) || null
-                        }
-                        alt={user.displayName}
-                        className="object-cover rounded-md"
-                        width={1000}
-                        height={1000}
-                      />
-                    ) : (
-                      <div className="h-full w-full bg-gray-200 rounded-md flex items-center justify-center text-wrap truncate">
-                        <p className="text-gray-400 text-center">
-                          {user.displayName}
-                        </p>
-                      </div>
-                    )}
-                  </Link>
+                  {user.avatarId ? (
+                    <Image
+                      src={
+                        getAvatarImageUrlPreview(
+                          user.avatarId,
+                          'width=250&height=250'
+                        ) || null
+                      }
+                      alt={user.displayName}
+                      className="object-cover rounded-md"
+                      width={1000}
+                      height={1000}
+                    />
+                  ) : (
+                    <div className="h-full w-full bg-gray-200 rounded-md flex items-center justify-center text-wrap truncate">
+                      <p className="text-gray-400 text-center">
+                        {user.displayName}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </UserCard>
             </Card>

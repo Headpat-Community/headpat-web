@@ -2,7 +2,11 @@ import Link from 'next/link'
 import PageLayout from '@/components/pageLayout'
 import { getTranslations } from 'next-intl/server'
 
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata(props) {
+  const params = await props.params
+
+  const { locale } = params
+
   const meta = await getTranslations({ locale, namespace: 'SupportMetadata' })
 
   return {
@@ -51,7 +55,7 @@ export default function Page() {
               <dd className="mt-1 text-sm leading-6 text-black/80 dark:text-white/80 sm:col-span-2 sm:mt-0">
                 Join our Discord server and ask for help by creating a ticket at{' '}
                 <Link
-                  className="text-indigo-600 hover:text-indigo-500"
+                  className="text-link hover:text-link/80"
                   href="https://discord.gg/EaQTEKRg2A"
                 >
                   https://discord.gg/EaQTEKRg2A
@@ -66,7 +70,7 @@ export default function Page() {
                 it might take 24-48 hours. If you require faster help, please
                 send us a message via Discord. Our E-Mail is{' '}
                 <Link
-                  className="text-indigo-600 hover:text-indigo-500"
+                  className="text-link hover:text-link/80"
                   href="mailto:help@headpat.place"
                 >
                   help@headpat.place
@@ -81,7 +85,7 @@ export default function Page() {
                 if I told you that you can help us create something big! Come
                 and look around in our GitHub:{' '}
                 <Link
-                  className="text-indigo-600 hover:text-indigo-500"
+                  className="text-link hover:text-link/80"
                   href="https://github.com/Headpat-Community"
                 >
                   https://github.com/Headpat-Community

@@ -9,7 +9,7 @@ import * as Sentry from '@sentry/nextjs'
 import { ExecutionMethod, Models } from 'node-appwrite'
 import MfaRecoveryCodes from '@/components/account/profile/mfaRecoveryCodes'
 import { Account, UserData } from '@/utils/types/models'
-import { useRouter } from '@/navigation'
+import { useRouter } from '@/i18n/routing'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -218,24 +218,22 @@ export default function GeneralAccountView({
               <div className="col-span-full">
                 <Label htmlFor="email_password">Current Password</Label>
                 <div className="mt-2">
-                  <div className="flex rounded-md bg-white/5 ring-1 ring-inset ring-black/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 dark:ring-white/10">
-                    <Input
-                      type="password"
-                      name="email_password"
-                      id="email_password"
-                      minLength={8}
-                      maxLength={128}
-                      onChange={(e) => {
-                        setUserData((prevUserData: any) => ({
-                          ...prevUserData,
-                          password: e.target.value,
-                        }))
-                      }}
-                      required
-                      value={userMe ? userMe.password : ''}
-                      autoComplete="password"
-                    />
-                  </div>
+                  <Input
+                    type="password"
+                    name="email_password"
+                    id="email_password"
+                    minLength={8}
+                    maxLength={128}
+                    onChange={(e) => {
+                      setUserData((prevUserData: any) => ({
+                        ...prevUserData,
+                        password: e.target.value,
+                      }))
+                    }}
+                    required
+                    value={userMe ? userMe.password : ''}
+                    autoComplete="password"
+                  />
                 </div>
               </div>
             </div>
@@ -395,15 +393,12 @@ export default function GeneralAccountView({
 
           <form className="md:col-span-2">
             <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-              <div className="col-span-full">
-                <Checkbox
-                  id="nsfwtoggle"
-                  aria-describedby="nsfwtoggle"
-                  name="nsfwtoggle"
-                  checked={userMe ? userMe.prefs.nsfw : false}
-                  onCheckedChange={handleNsfw}
-                />
-              </div>
+              <Checkbox
+                id="nsfwtoggle"
+                aria-describedby="nsfwtoggle"
+                checked={userMe ? userMe.prefs.nsfw : false}
+                onCheckedChange={handleNsfw}
+              />
             </div>
           </form>
         </div>

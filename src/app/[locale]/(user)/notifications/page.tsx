@@ -4,12 +4,16 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import { formatDate } from '@/components/calculateTimeLeft'
 import UserCard from '@/components/user/userCard'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 import { getTranslations } from 'next-intl/server'
 
 export const runtime = 'edge'
 
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata(props) {
+  const params = await props.params
+
+  const { locale } = params
+
   const meta = await getTranslations({
     locale,
     namespace: 'NotificationsMetadata',

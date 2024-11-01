@@ -1,4 +1,4 @@
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 
 export const metadata = {
   title: 'Impressum',
@@ -36,7 +36,7 @@ export default function ImpressumPage() {
             The European Commission provides a platform for online dispute
             resolution, available here:{' '}
             <Link
-              className="text-indigo-600 hover:text-indigo-500"
+              className="text-link hover:text-link/80"
               // @ts-ignore
               href="https://ec.europa.eu/consumers/odr/"
             >

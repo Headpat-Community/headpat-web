@@ -4,10 +4,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CurrentEvents from '@/components/events/currentEvents'
 import ArchivedEvents from '@/components/events/archivedEvents'
 import UpcomingEvents from '@/components/events/upcomingEvents'
+import FeatureAccess from '@/components/FeatureAccess'
 
 export const runtime = 'edge'
 
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata(props) {
+  const params = await props.params
+
+  const { locale } = params
+
   const meta = await getTranslations({ locale, namespace: 'EventsMetadata' })
 
   return {
@@ -38,25 +43,27 @@ export async function generateMetadata({ params: { locale } }) {
 export default async function Page() {
   return (
     <PageLayout title={'Events'}>
-      <Tabs defaultValue="current" className="w-full">
-        <div className="flex flex-col items-center justify-center">
-          <TabsList className="grid w-full sm:max-w-4xl grid-cols-3">
-            <TabsTrigger value="current">Current</TabsTrigger>
-            <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
-            <TabsTrigger value="archived">Archived</TabsTrigger>
-          </TabsList>
-        </div>
+      <FeatureAccess featureName={'events'}>
+        <Tabs defaultValue="current" className="w-full">
+          <div className="flex flex-col items-center justify-center">
+            <TabsList className="grid w-full sm:max-w-4xl grid-cols-3">
+              <TabsTrigger value="current">Current</TabsTrigger>
+              <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
+              <TabsTrigger value="archived">Archived</TabsTrigger>
+            </TabsList>
+          </div>
 
-        <TabsContent value="current">
-          <CurrentEvents />
-        </TabsContent>
-        <TabsContent value="upcoming">
-          <UpcomingEvents />
-        </TabsContent>
-        <TabsContent value="archived">
-          <ArchivedEvents />
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="current">
+            <CurrentEvents />
+          </TabsContent>
+          <TabsContent value="upcoming">
+            <UpcomingEvents />
+          </TabsContent>
+          <TabsContent value="archived">
+            <ArchivedEvents />
+          </TabsContent>
+        </Tabs>
+      </FeatureAccess>
     </PageLayout>
   )
 }

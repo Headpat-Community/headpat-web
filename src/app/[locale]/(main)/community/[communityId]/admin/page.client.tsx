@@ -19,26 +19,29 @@ export default function PageClient({
   const [isLoading, setIsLoading] = useState(true)
 
   const getOwnerStatus = async () => {
-    const data = await functions.createExecution(
-      'community-endpoints',
-      '',
-      false,
-      `/community/isFollowing?communityId=${community.$id}`,
-      ExecutionMethod.GET
-    )
+    try {
+      const data = await functions.createExecution(
+        'community-endpoints',
+        '',
+        false,
+        `/community/isFollowing?communityId=${community.$id}`,
+        ExecutionMethod.GET
+      )
 
-    const response = JSON.parse(data.responseBody)
+      const response = JSON.parse(data.responseBody)
 
-    if (response.code === 500) {
+      if (response.code === 500) {
+        toast.error('Error fetching community data. Please try again later.')
+      }
+
+      setHasPermission(await hasAdminPanelAccess(response.roles))
+    } catch (error) {
       toast.error('Error fetching community data. Please try again later.')
     }
-
-    setHasPermission(await hasAdminPanelAccess(response.roles))
   }
 
   useEffect(() => {
     getOwnerStatus().then(() => setIsLoading(false))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [community])
 
   if (!isLoading && !hasPermission) {

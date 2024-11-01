@@ -3,7 +3,11 @@ import { Query } from 'node-appwrite'
 import { Gallery } from '@/utils/types/models'
 import { createSessionServerClient } from '@/app/appwrite-session'
 
-export async function generateMetadata({ params: { locale, galleryId } }) {
+export async function generateMetadata(props) {
+  const params = await props.params
+
+  const { locale, galleryId } = params
+
   const { databases } = await createSessionServerClient()
 
   const gallery: Gallery.GalleryType = await databases.listDocuments(
@@ -39,6 +43,10 @@ export async function generateMetadata({ params: { locale, galleryId } }) {
 
 export const runtime = 'edge'
 
-export default async function GalleryPage({ params: { galleryId, locale } }) {
+export default async function GalleryPage(props) {
+  const params = await props.params
+
+  const { galleryId, locale } = params
+
   return <PageClient galleryId={galleryId} />
 }

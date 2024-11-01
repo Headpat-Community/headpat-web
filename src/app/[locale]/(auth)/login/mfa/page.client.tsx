@@ -6,17 +6,16 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from '@/components/ui/input-otp'
-import { useToast } from '@/components/ui/use-toast'
 import { useEffect, useState } from 'react'
-import { useRouter } from '@/navigation'
+import { useRouter } from '@/i18n/routing'
 import { account } from '@/app/appwrite-client'
 import { unstable_noStore } from 'next/cache'
 import { getMfaFactors } from '@/utils/server-api/account/user'
 import { AuthenticationFactor } from 'node-appwrite'
+import { toast } from 'sonner'
 
 export default function MfaPageClient() {
   unstable_noStore()
-  const { toast } = useToast()
   const router = useRouter()
   const [challengeId, setChallengeId] = useState('')
   const [needsMfa, setNeedsMfa] = useState(false)
@@ -35,8 +34,7 @@ export default function MfaPageClient() {
       }
     }
     checkMfa().then(createMfaCode)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [router])
 
   const createMfaCode = async () => {
     try {
@@ -61,20 +59,12 @@ export default function MfaPageClient() {
       router.replace('/account')
     } catch (error) {
       if (error.type === 'user_invalid_token') {
-        toast({
-          title: 'Error',
-          description:
-            "Incorrect code. Please try again. If you're having trouble, please contact support.",
-          variant: 'destructive',
-        })
+        toast.error(
+          "Incorrect code. Please try again. If you're having trouble, please contact support."
+        )
         return
       } else {
-        toast({
-          title: 'Error',
-          description:
-            "You encountered an error. But don't worry, we're on it.",
-          variant: 'destructive',
-        })
+        toast.error("You encountered an error. But don't worry, we're on it.")
         Sentry.captureException(error)
         return
       }
@@ -114,12 +104,9 @@ export default function MfaPageClient() {
                   onComplete={(result) => {
                     handleMfaVerify(result).catch((error) => {
                       console.log(error)
-                      toast({
-                        title: 'Error',
-                        description:
-                          "You encountered an error. But don't worry, we're on it.",
-                        variant: 'destructive',
-                      })
+                      toast.error(
+                        "You encountered an error. But don't worry, we're on it."
+                      )
                       Sentry.captureException(error)
                       return
                     })

@@ -2,7 +2,9 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { ErrorMessage, SuccessMessage } from '@/components/alerts'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('')
@@ -76,13 +78,12 @@ const ForgotPassword = () => {
                 Email address
               </label>
               <div className="mt-2">
-                <input
+                <Input
                   id="email"
                   name="email"
                   type="email"
                   autoComplete="email"
                   required
-                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 ring-inset ring-black/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:ring-white/10 sm:text-sm sm:leading-6"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -90,22 +91,16 @@ const ForgotPassword = () => {
             </div>
 
             <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                onClick={handleSubmit}
-              >
+              <Button type="submit" onClick={handleSubmit} className="w-full">
                 Send E-Mail
-              </button>
+              </Button>
             </div>
             <div>
-              <Link
-                href={'/login'}
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-red-800 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-              >
-                &larr; Login
-              </Link>
+              <Button variant={'destructive'} asChild>
+                <Link href={'/login'} className="w-full">
+                  &larr; Login
+                </Link>
+              </Button>
             </div>
           </form>
         </div>

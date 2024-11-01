@@ -63,6 +63,9 @@ const config = {
         'code-block': {
           DEFAULT: 'hsl(var(--code-block))',
         },
+        link: {
+          DEFAULT: 'hsl(var(--link))',
+        },
       },
       minWidth: {
         0: '0',

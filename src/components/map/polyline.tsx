@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import {
   forwardRef,
   useContext,
@@ -45,8 +44,9 @@ function usePolyline(props: PolylineProps) {
     encodedPath,
     ...polylineOptions
   } = props
-  // This is here to avoid triggering the useEffect below when the callbacks change (which happen if the user didn't memoize them)
+
   const callbacks = useRef<Record<string, (e: unknown) => void>>({})
+  // eslint-disable-next-line react-compiler/react-compiler
   Object.assign(callbacks.current, {
     onClick,
     onDrag,
@@ -57,30 +57,42 @@ function usePolyline(props: PolylineProps) {
   })
 
   const geometryLibrary = useMapsLibrary('geometry')
-
-  const polyline = useRef(new google.maps.Polyline()).current
-  // update PolylineOptions (note the dependencies aren't properly checked
-  // here, we just assume that setOptions is smart enough to not waste a
-  // lot of time updating values that didn't change)
-  useMemo(() => {
-    polyline.setOptions(polylineOptions)
-  }, [polyline, polylineOptions])
-
   const map = useContext(GoogleMapsContext)?.map
+  const polylineRef = useRef<google.maps.Polyline | null>(null)
 
-  // update the path with the encodedPath
-  useMemo(() => {
-    if (!encodedPath || !geometryLibrary) return
+  // Initialize the polyline instance only once after the component mounts
+  useEffect(() => {
+    if (!polylineRef.current) {
+      polylineRef.current = new google.maps.Polyline()
+    }
+    return () => {
+      // Cleanup the polyline when the component unmounts
+      polylineRef.current?.setMap(null)
+    }
+  }, [])
+
+  // Update polyline options
+  useEffect(() => {
+    const polyline = polylineRef.current
+    if (!polyline) return
+
+    polyline.setOptions(polylineOptions)
+  }, [polylineOptions])
+
+  // Update the path with the encodedPath
+  useEffect(() => {
+    const polyline = polylineRef.current
+    if (!polyline || !encodedPath || !geometryLibrary) return
     const path = geometryLibrary.encoding.decodePath(encodedPath)
     polyline.setPath(path)
-  }, [polyline, encodedPath, geometryLibrary])
+  }, [encodedPath, geometryLibrary])
 
-  // create polyline instance and add to the map once the map is available
+  // Attach the polyline to the map
   useEffect(() => {
-    if (!map) {
+    const polyline = polylineRef.current
+    if (!map || !polyline) {
       if (map === undefined)
         console.error('<Polyline> has to be inside a Map component.')
-
       return
     }
 
@@ -89,13 +101,13 @@ function usePolyline(props: PolylineProps) {
     return () => {
       polyline.setMap(null)
     }
-  }, [map, polyline])
+  }, [map])
 
-  // attach and re-attach event-handlers when any of the properties change
+  // Attach event handlers
   useEffect(() => {
+    const polyline = polylineRef.current
     if (!polyline) return
 
-    // Add event listeners
     const gme = google.maps.event
     ;[
       ['click', 'onClick'],
@@ -114,19 +126,20 @@ function usePolyline(props: PolylineProps) {
     return () => {
       gme.clearInstanceListeners(polyline)
     }
-  }, [polyline])
+  }, [polylineOptions])
 
-  return polyline
+  return polylineRef
 }
 
 /**
  * Component to render a polyline on a map
  */
-// eslint-disable-next-line react/display-name
 export const Polyline = forwardRef((props: PolylineProps, ref: PolylineRef) => {
-  const polyline = usePolyline(props)
+  const polylineRef = usePolyline(props)
 
-  useImperativeHandle(ref, () => polyline, [polyline])
+  useImperativeHandle(ref, () => polylineRef.current, [polylineRef])
 
   return null
 })
+
+Polyline.displayName = 'Polyline'

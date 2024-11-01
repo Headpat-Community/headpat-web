@@ -24,6 +24,67 @@ export namespace Account {
   }
 }
 
+export namespace Messaging {
+  export interface MessagesType {
+    total: number
+    documents: MessagesDocumentsType[]
+  }
+
+  export interface MessagesDocumentsType extends Models.Document {
+    /**
+     * The user ID of the sender.
+     */
+    senderId: string
+    /**
+     * The body of the message.
+     */
+    body: string
+    /**
+     * The conversation ID.
+     */
+    conversationId: string
+    /**
+     * The message type.
+     */
+    messageType:
+      | 'text'
+      | 'location'
+      | 'contact'
+      | 'sticker'
+      | 'reply'
+      | 'forward'
+      | 'file'
+    /**
+     * Attachment IDs of the message.
+     */
+    attachments: string[]
+  }
+
+  export interface MessageConversationsType {
+    total: number
+    documents: MessageConversationsDocumentsType[]
+  }
+
+  export interface MessageConversationsDocumentsType extends Models.Document {
+    /**
+     * The user IDs of the participants in the conversation.
+     */
+    participants: string[]
+    /**
+     * If the conversation is a group conversation.
+     */
+    communityId: string
+    /**
+     * The last message in the conversation.
+     */
+    lastMessage: string
+    /**
+     * The community data of the conversation.
+     */
+    community: Community.CommunityDocumentsType | null
+  }
+}
+
 export namespace Followers {
   export interface FollowerType {
     total: number
@@ -178,6 +239,23 @@ export namespace UserData {
     prefs: UserPrefsDocumentsType
     isFollowing: boolean
   }
+
+  /**
+   * This data is returned from the API by calling the userSettings endpoint.
+   * @see UserSettingsDocumentsType
+   */
+  export interface UserSettingsType {
+    total: number
+    documents: UserSettingsDocumentsType[]
+  }
+
+  /**
+   * This data is returned from the API within the `documents` array.
+   * @see UserSettingsType
+   */
+  export interface UserSettingsDocumentsType extends Models.Document {
+    roles: string[]
+  }
 }
 
 export namespace Location {
@@ -197,6 +275,9 @@ export namespace Location {
   export interface LocationDocumentsType extends Models.Document {
     lat: number
     long: number
+    timeUntilEnd: string
+    status: string
+    statusColor: string
     userData: UserData.UserDataDocumentsType
   }
 }
@@ -530,11 +611,23 @@ export namespace Notifications {
     /**
      * The date the notification was created.
      */
-    type: 'newFollower'
+    type: 'newFollower' | 'newMessage' | 'newEvent' | 'newAnnouncement'
     /**
      * The user data of the user
      */
     userData: UserData.UserDataDocumentsType
+  }
+}
+
+export namespace Config {
+  export interface ConfigFeaturesType {
+    total: number
+    documents: ConfigFeaturesDocumentsType[]
+  }
+
+  export interface ConfigFeaturesDocumentsType extends Models.Document {
+    isEnabled: boolean
+    type: 'public' | 'earlyaccess' | 'staff' | 'dev'
   }
 }
 

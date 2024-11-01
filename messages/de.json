@@ -1,6 +1,7 @@
 {
   "PageNames": {
     "home": "Startseite",
+    "chat": "Chat",
     "gallery": "Galerie",
     "events": "Veranstaltungen",
     "map": "Karte",
@@ -8,7 +9,7 @@
     "notifications": "Benachrichtigungen",
     "users": "Benutzer",
     "myprofile": "Mein Profil",
-    "communities": "Gemeinschaften",
+    "communities": "Communities",
     "about": "Über uns",
     "legal": "Rechtliches",
     "changelog": "Änderungen",

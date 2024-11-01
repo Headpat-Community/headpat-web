@@ -8,8 +8,12 @@ import FrontpageView from '@/components/account/views/frontpage'
 import SocialsView from '@/components/account/views/socials'
 import { getTranslations } from 'next-intl/server'
 
-export async function generateMetadata({ params: { locale } }) {
-  const meta = await getTranslations({ locale, namespace: 'AccountMetadata' })
+export async function generateMetadata({ params }) {
+  const paramsResponse = await params
+  const meta = await getTranslations({
+    locale: paramsResponse.locale,
+    namespace: 'AccountMetadata',
+  })
 
   return {
     title: {
@@ -21,7 +25,7 @@ export async function generateMetadata({ params: { locale } }) {
       title: meta('title'),
       description: meta('description'),
       siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
-      locale: locale,
+      locale: paramsResponse.locale,
       type: 'website',
     },
   }
@@ -29,26 +33,33 @@ export async function generateMetadata({ params: { locale } }) {
 
 export const runtime = 'edge'
 
-export default async function AccountSettings({
-  params: { locale },
-}: {
-  params: { locale: string }
-}) {
+export default async function AccountSettings({ params }) {
+  const paramsResponse = await params
   const mfaList = await getMfaList()
   const accountData = await getUser()
-  const translations = await getTranslations({ locale, namespace: 'Account' })
+  const translations = await getTranslations({
+    locale: paramsResponse.locale,
+    namespace: 'Account',
+  })
 
   return (
     <PageLayout title="Account Settings">
       <Suspense fallback={<Loading />}>
-        <Tabs defaultValue="general" className="">
-          <TabsList className={'mb-2'}>
-            <TabsTrigger value="general">{translations('general')}</TabsTrigger>
-            <TabsTrigger value="frontpage">
-              {translations('frontpage')}
-            </TabsTrigger>
-            <TabsTrigger value="socials">{translations('socials')}</TabsTrigger>
-          </TabsList>
+        <Tabs defaultValue="general" className="w-full">
+          <div className="flex flex-col items-center justify-center">
+            <TabsList className="grid w-full sm:max-w-4xl grid-cols-3">
+              <TabsTrigger value="general">
+                {translations('general')}
+              </TabsTrigger>
+              <TabsTrigger value="frontpage">
+                {translations('frontpage')}
+              </TabsTrigger>
+              <TabsTrigger value="socials">
+                {translations('socials')}
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
           <TabsContent value="general">
             <GeneralAccountView accountData={accountData} mfaList={mfaList} />
           </TabsContent>

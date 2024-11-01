@@ -20,7 +20,7 @@ export default function PageLayout({
         </div>
         <Separator />
       </div>
-      <div className={'p-0 lg:p-4'}>{children}</div>
+      <div>{children}</div>
     </>
   )
 }

@@ -1,11 +1,11 @@
 'use client'
 import { createVote } from '@/utils/actions/interactive/createVote'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { RealtimeResponseEvent } from 'appwrite'
 import { Interactive } from '@/utils/types/models'
 import { client, databases } from '@/app/appwrite-client'
 import { Separator } from '@/components/ui/separator'
-import { XSquareIcon, CheckIcon } from 'lucide-react'
+import { CheckIcon, XSquareIcon } from 'lucide-react'
 import { chartConfig, DDChart } from '../main/chart'
 
 export default function VotingClient({
@@ -14,7 +14,7 @@ export default function VotingClient({
   votes,
   forwardedFor,
 }: {
-  questionId: string // Changed from number to string
+  questionId: string
   paused: boolean
   votes: Interactive.VotesAnswersType
   forwardedFor: string
@@ -59,8 +59,7 @@ export default function VotingClient({
     databases.listDocuments('interactive', 'questions').then((response) => {
       setQuestions(response.documents)
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [loadVotedQuestions])
 
   useEffect(() => {
     if (votedQuestions[selectedQuestionId] !== undefined) {
@@ -74,20 +73,8 @@ export default function VotingClient({
     questionId: string
   }
 
-  let subscribed = null
-  useEffect(() => {
-    handleSubscribedEvents()
-    return () => {
-      // Remove the event listener when the component is unmounted
-      if (subscribed) {
-        subscribed()
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subscribed])
-
-  function handleSubscribedEvents() {
-    subscribed = client.subscribe(
+  const handleSubscribedEvents = useCallback(() => {
+    return client.subscribe(
       [
         'databases.interactive.collections.system.documents.main',
         'databases.interactive.collections.countedAnswers.documents',
@@ -116,7 +103,17 @@ export default function VotingClient({
         }
       }
     )
-  }
+  }, [])
+
+  useEffect(() => {
+    const subscription = handleSubscribedEvents
+    return () => {
+      // Remove the event listener when the component is unmounted
+      if (subscription) {
+        subscription()
+      }
+    }
+  }, [handleSubscribedEvents])
 
   if (!questions || !questions.length) {
     return <div>Loading....</div>

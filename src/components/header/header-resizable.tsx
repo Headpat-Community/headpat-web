@@ -14,7 +14,7 @@ import { Nav1, Nav2, Nav3, Nav4, NavFooter } from '@/components/header/data'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { ChevronUpIcon } from 'lucide-react'
+import { ChevronsUpDown } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { UserData } from '@/utils/types/models'
-import { Link, useRouter } from '@/navigation'
+import { Link, useRouter } from '@/i18n/routing'
 import { useUser } from '@/components/contexts/UserContext'
 import { databases } from '@/app/appwrite-client'
 import { toast } from 'sonner'
@@ -72,7 +72,6 @@ export default function SidebarResizable({
     }
 
     fetchData().then()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current])
 
   return (
@@ -166,7 +165,7 @@ export default function SidebarResizable({
             </ScrollArea>
             <div className={'mt-auto relative bottom-0 block'}>
               <Separator />
-              <span className={'my-2 flex justify-center'}>BETA</span>
+              <span className={'my-1 flex justify-center'}>BETA</span>
               {current ? (
                 <>
                   <Separator />
@@ -210,13 +209,18 @@ export default function SidebarResizable({
                               </span>
                             </div>
                             <div>
-                              <ChevronUpIcon />
+                              <ChevronsUpDown className="ml-auto size-4" />
                             </div>
                           </>
                         )}
                       </div>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className={'w-24'}>
+                    <DropdownMenuContent
+                      className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                      side="bottom"
+                      align="end"
+                      sideOffset={4}
+                    >
                       <DropdownMenuItem onClick={() => router.push('/account')}>
                         My Account
                       </DropdownMenuItem>

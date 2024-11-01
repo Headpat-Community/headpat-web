@@ -1,7 +1,7 @@
 'use client'
 import { Community } from '@/utils/types/models'
 import { databases } from '@/app/appwrite-client'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import UploadAvatar from '@/components/community/uploadAvatar'
 import UploadBanner from '@/components/community/uploadBanner'
 import { Label } from '@/components/ui/label'
@@ -33,21 +33,20 @@ export default function CommunityAdminMain({
     useState<Community.CommunityDocumentsType>(null)
   const [isUploading, setIsUploading] = useState(false)
 
-  const getCommunity = async () => {
+  const getCommunity = useCallback(async () => {
     const data: Community.CommunityDocumentsType = await databases.getDocument(
       'hp_db',
       'community',
       community.$id
     )
     setCommunityData(data)
-  }
+  }, [community.$id])
 
   useEffect(() => {
     getCommunity().then(() => setIsLoading(false))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [community])
+  }, [community, getCommunity])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault()
 
     const result = communitySchema.safeParse(communityData)

@@ -3,16 +3,15 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { databases, Query, storage } from '@/app/appwrite-client'
 import * as Sentry from '@sentry/nextjs'
-import { useToast } from '@/components/ui/use-toast'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 import { Gallery } from '@/utils/types/models'
 import { ImageFormat } from 'node-appwrite'
+import { toast } from 'sonner'
 
 export default function FetchGallery({ enableNsfw }) {
   const [gallery, setGallery] = useState<Gallery.GalleryDocumentsType[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
-  const { toast } = useToast()
 
   const getGalleryImageUrl = (
     galleryId: string,
@@ -74,24 +73,16 @@ export default function FetchGallery({ enableNsfw }) {
         setGallery(gallery.documents)
         setTotalPages(gallery.total / pageSize)
       } catch (error) {
-        toast({
-          title: 'Error',
-          description: error,
-          variant: 'destructive',
-        })
+        toast.error(error)
         Sentry.captureException(error)
       }
     }
 
     fetchGalleryData().catch((error) => {
-      toast({
-        title: 'Error',
-        description: "You  encountered an error. But don't worry, we're on it.",
-        variant: 'destructive',
-      })
+      toast.error("You encountered an error. But don't worry, we're on it.")
       Sentry.captureException(error)
     })
-  }, [currentPage, enableNsfw, toast])
+  }, [currentPage, enableNsfw])
 
   return (
     <div>

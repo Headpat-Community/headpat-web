@@ -1,5 +1,5 @@
 import { Events } from '@/utils/types/models'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 import { Badge } from '@/components/ui/badge'
 import { CalendarIcon, ClockIcon, MapPinIcon, UsersIcon } from 'lucide-react'
 
@@ -9,7 +9,7 @@ export default function EventsList({
   events: Events.EventsDocumentsType[]
 }) {
   return (
-    <div className={'space-y-4 mx-2'}>
+    <div className={'space-y-4 mx-auto flex-row items-center max-w-4xl'}>
       {events.map((event) => (
         <div key={event.$id} className="rounded-lg border p-4 shadow-sm">
           <div className="space-y-2">

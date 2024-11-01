@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { functions } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
 import { toast } from 'sonner'
@@ -19,7 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Link, useRouter } from '@/navigation'
+import { Link, useRouter } from '@/i18n/routing'
 import { Separator } from '@/components/ui/separator'
 import PageLayout from '@/components/pageLayout'
 import { Community } from '@/utils/types/models'
@@ -184,7 +184,7 @@ export function FollowerButton({ displayName, communityId }) {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const router = useRouter()
 
-  const getIsFollowing = async () => {
+  const getIsFollowing = useCallback(async () => {
     try {
       const data = await functions.createExecution(
         'community-endpoints',
@@ -201,12 +201,11 @@ export function FollowerButton({ displayName, communityId }) {
     } catch (error) {
       // Do nothing
     }
-  }
+  }, [communityId])
 
   useEffect(() => {
     getIsFollowing().then(() => setIsLoading(false))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [communityId])
+  }, [communityId, getIsFollowing])
 
   const handleFollow = async () => {
     const data = await functions.createExecution(

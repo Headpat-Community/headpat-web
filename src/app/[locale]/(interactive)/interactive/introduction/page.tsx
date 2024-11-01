@@ -20,7 +20,7 @@ export default async function IntroductionVotingPage() {
     'interactive',
     'answers'
   )
-  const forwardedFor = headers().get('x-forwarded-for')
+  const forwardedFor = (await headers()).get('x-forwarded-for')
 
   return (
     <>

@@ -1,10 +1,8 @@
-/* eslint-disable complexity */
 import {
   forwardRef,
   useContext,
   useEffect,
   useImperativeHandle,
-  useMemo,
   useRef,
 } from 'react'
 
@@ -45,8 +43,9 @@ function usePolygon(props: PolygonProps) {
     encodedPaths,
     ...polygonOptions
   } = props
-  // This is here to avoid triggering the useEffect below when the callbacks change (which happen if the user didn't memoize them)
+
   const callbacks = useRef<Record<string, (e: unknown) => void>>({})
+  // eslint-disable-next-line react-compiler/react-compiler
   Object.assign(callbacks.current, {
     onClick,
     onDrag,
@@ -57,32 +56,44 @@ function usePolygon(props: PolygonProps) {
   })
 
   const geometryLibrary = useMapsLibrary('geometry')
-
-  const polygon = useRef(new google.maps.Polygon()).current
-  // update PolygonOptions (note the dependencies aren't properly checked
-  // here, we just assume that setOptions is smart enough to not waste a
-  // lot of time updating values that didn't change)
-  useMemo(() => {
-    polygon.setOptions(polygonOptions)
-  }, [polygon, polygonOptions])
-
   const map = useContext(GoogleMapsContext)?.map
+  const polygonRef = useRef<google.maps.Polygon | null>(null)
 
-  // update the path with the encodedPath
-  useMemo(() => {
-    if (!encodedPaths || !geometryLibrary) return
+  // Initialize the polygon instance only once after the component mounts
+  useEffect(() => {
+    if (!polygonRef.current) {
+      polygonRef.current = new google.maps.Polygon()
+    }
+    return () => {
+      // Cleanup the polygon when the component unmounts
+      polygonRef.current?.setMap(null)
+    }
+  }, [])
+
+  useEffect(() => {
+    const polygon = polygonRef.current
+    if (!polygon) return
+
+    // Update polygon options
+    polygon.setOptions(polygonOptions)
+  }, [polygonOptions])
+
+  // Update the path with the encodedPaths
+  useEffect(() => {
+    const polygon = polygonRef.current
+    if (!polygon || !encodedPaths || !geometryLibrary) return
     const paths = encodedPaths.map((path) =>
       geometryLibrary.encoding.decodePath(path)
     )
     polygon.setPaths(paths)
-  }, [polygon, encodedPaths, geometryLibrary])
+  }, [encodedPaths, geometryLibrary])
 
-  // create polygon instance and add to the map once the map is available
+  // Attach the polygon to the map
   useEffect(() => {
-    if (!map) {
+    const polygon = polygonRef.current
+    if (!map || !polygon) {
       if (map === undefined)
         console.error('<Polygon> has to be inside a Map component.')
-
       return
     }
 
@@ -91,13 +102,13 @@ function usePolygon(props: PolygonProps) {
     return () => {
       polygon.setMap(null)
     }
-  }, [map, polygon])
+  }, [map])
 
-  // attach and re-attach event-handlers when any of the properties change
+  // Attach event handlers
   useEffect(() => {
+    const polygon = polygonRef.current
     if (!polygon) return
 
-    // Add event listeners
     const gme = google.maps.event
     ;[
       ['click', 'onClick'],
@@ -116,19 +127,20 @@ function usePolygon(props: PolygonProps) {
     return () => {
       gme.clearInstanceListeners(polygon)
     }
-  }, [polygon])
+  }, [polygonOptions])
 
-  return polygon
+  return polygonRef
 }
 
 /**
  * Component to render a polygon on a map
  */
-// eslint-disable-next-line react/display-name
 export const Polygon = forwardRef((props: PolygonProps, ref: PolygonRef) => {
-  const polygon = usePolygon(props)
+  const polygonRef = usePolygon(props)
 
-  useImperativeHandle(ref, () => polygon, [polygon])
+  useImperativeHandle(ref, () => polygonRef.current, [polygonRef])
 
   return null
 })
+
+Polygon.displayName = 'Polygon'

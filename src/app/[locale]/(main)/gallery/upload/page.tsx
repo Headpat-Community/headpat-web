@@ -1,16 +1,20 @@
 import PageLayout from '@/components/pageLayout'
 import UploadImage from '@/components/gallery/uploadImage'
 import { getUser } from '@/utils/server-api/account/user'
-import { redirect } from '@/navigation'
+import { redirect } from '@/i18n/routing'
 
 export const runtime = 'edge'
 
-export default async function Page() {
+export default async function Page(props) {
+  const params = await props.params
+
+  const { locale } = params
+
   let user = null
   try {
     user = await getUser()
   } catch (e) {
-    return redirect('/login')
+    return redirect({ href: '/login', locale })
   }
 
   return (

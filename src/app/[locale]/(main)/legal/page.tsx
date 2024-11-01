@@ -3,7 +3,11 @@ import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 import PageLayout from '@/components/pageLayout'
 
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata(props) {
+  const params = await props.params
+
+  const { locale } = params
+
   const meta = await getTranslations({ locale, namespace: 'LegalMetadata' })
 
   return {
@@ -54,7 +58,7 @@ export default function LegalPage() {
                 to the use of our website or app. If you have any questions,
                 please contact us at{' '}
                 <Link
-                  className="text-indigo-600 hover:text-indigo-500"
+                  className="text-link hover:text-link/80"
                   // @ts-ignore
                   href="mailto:help@headpat.place"
                 >
@@ -83,7 +87,7 @@ export default function LegalPage() {
                     <div className="ml-4 flex-shrink-0">
                       <Link
                         href={'/legal/impressum'}
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                        className="font-medium text-link hover:text-link/80"
                       >
                         View
                       </Link>
@@ -106,7 +110,7 @@ export default function LegalPage() {
                       <Link
                         // @ts-ignore
                         href={'/legal/termsofservice.pdf'}
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                        className="font-medium text-link hover:text-link/80"
                       >
                         View
                       </Link>
@@ -128,7 +132,7 @@ export default function LegalPage() {
                       <Link
                         // @ts-ignore
                         href={'/legal/privacypolicy'}
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                        className="font-medium text-link hover:text-link/80"
                       >
                         View
                       </Link>
@@ -148,7 +152,7 @@ export default function LegalPage() {
                       <Link
                         // @ts-ignore
                         href={'/legal/eula'}
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                        className="font-medium text-link hover:text-link/80"
                       >
                         View
                       </Link>
@@ -169,7 +173,7 @@ export default function LegalPage() {
                       <Link
                         // @ts-ignore
                         href={'/legal/disclaimer.pdf'}
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                        className="font-medium text-link hover:text-link/80"
                       >
                         View
                       </Link>
@@ -192,7 +196,7 @@ export default function LegalPage() {
                       <Link
                         // @ts-ignore
                         href={'/legal/acceptableuse.pdf'}
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                        className="font-medium text-link hover:text-link/80"
                       >
                         View
                       </Link>
@@ -216,7 +220,7 @@ export default function LegalPage() {
                     <div className="ml-4 flex-shrink-0">
                       <Link
                         href="/legal/returnpolicy.pdf"
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                        className="font-medium text-link hover:text-link/80"
                       >
                         View
                       </Link>
@@ -239,7 +243,7 @@ export default function LegalPage() {
                       <Link
                         // @ts-ignore
                         href={'/legal/returnpolicy.pdf'}
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                        className="font-medium text-link hover:text-link/80"
                       >
                         View
                       </Link>

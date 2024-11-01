@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { removeFollow } from '@/utils/actions/followers/removeFollow'
 import { toast } from 'sonner'
 import { Separator } from '@/components/ui/separator'
-import { Link } from '@/navigation'
+import { Link } from '@/i18n/routing'
 import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import {
@@ -107,22 +107,36 @@ export default function PageClient({
     date.toLocaleDateString('en-GB').slice(0, 5).replace(/-/g, '.')
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const data = await functions.createExecution(
-        'user-endpoints',
-        '',
-        false,
-        `/user/profile?userId=${userId}`,
-        ExecutionMethod.GET
-      )
+    let isMounted = true
 
-      return JSON.parse(data.responseBody)
+    const fetchUserData = async () => {
+      try {
+        const data = await functions.createExecution(
+          'user-endpoints',
+          '',
+          false,
+          `/user/profile?userId=${userId}`,
+          ExecutionMethod.GET
+        )
+
+        if (isMounted) {
+          const parsedData = JSON.parse(data.responseBody)
+          setUserData(parsedData)
+          setLoading(false)
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+        if (isMounted) {
+          setLoading(false)
+        }
+      }
     }
 
-    fetchUserData().then((data) => {
-      setUserData(data)
-      setLoading(false)
-    })
+    fetchUserData()
+
+    return () => {
+      isMounted = false
+    }
   }, [userId])
 
   if (!userData) {
@@ -142,7 +156,7 @@ export default function PageClient({
   const bioWithLineBreaks = sanitizedBio.replace(/\n/g, '<br />')
 
   return (
-    <main className={'max-w-7xl mx-auto'}>
+    <main className={'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'}>
       <>
         {/* Header */}
         {userData.profileBannerId && (
@@ -155,7 +169,7 @@ export default function PageClient({
                 )}
                 alt={'User Banner'}
                 className={
-                  'rounded-md object-cover max-w-[1200px] max-h-[250px] px-8 lg:px-0 mt-8 lg:mt-0 w-full h-auto'
+                  'rounded-md object-cover max-w-[1200px] max-h-[250px] mt-8 lg:mt-0 w-full h-auto'
                 }
                 width={1200}
                 height={250}
@@ -168,74 +182,106 @@ export default function PageClient({
         {/* Grid */}
         <div
           className={cn(
-            'grid grid-cols-1 gap-x-2 md:gap-x-4 lg:gap-x-8 gap-y-8 lg:grid-cols-3 xl:gap-x-10 pr-8 pl-8 md:grid-cols-2',
+            'grid grid-cols-1 gap-y-8 lg:grid-cols-3 lg:gap-x-8',
             userData.profileBannerId ? 'mt-0' : 'mt-8'
           )}
         >
           {/* Left */}
-          <div
-            className={
-              'col-span-3 lg:col-span-1 lg:mt-0 mt-4 rounded-t-xl rounded-b-xl md:col-span-1'
-            }
-          >
-            <AspectRatio ratio={2 / 2}>
+          <div className={'col-span-1 lg:col-span-1'}>
+            <AspectRatio ratio={1}>
               <Image
                 src={getAvatarImageUrlView(userData.avatarId)}
                 alt={'User Avatar'}
-                className={'object-contain rounded-t-xl'}
+                className={cn('object-contain rounded-t-xl', {
+                  'rounded-b-xl': !(
+                    userData.discordname ||
+                    userData.telegramname ||
+                    userData.furaffinityname ||
+                    userData.X_name ||
+                    userData.twitchname
+                  ),
+                })}
                 fill={true}
                 priority={true}
                 unoptimized
               />
               {isBirthday && (
-                <Badge className="relative ml-auto flex shrink-0 items-center justify-center rounded-none rounded-t-xl">
+                <Badge className="absolute top-0 right-0 rounded-full w-full justify-center">
                   It&apos;s my birthday!
                 </Badge>
               )}
             </AspectRatio>
 
-            <ul>
-              {userData.discordname && (
-                <ListSocialItem
-                  IconComponent={SiDiscord}
-                  userData={userData.discordname}
-                  link={'#'}
-                />
-              )}
-              {userData.telegramname && (
-                <ListSocialItem
-                  IconComponent={SiTelegram}
-                  userData={userData.telegramname}
-                  link={`https://t.me/${userData.telegramname}`}
-                />
-              )}
-              {userData.furaffinityname && (
-                <ListSocialItem
-                  IconComponent={SiFuraffinity}
-                  userData={userData.furaffinityname}
-                  link={`https://www.furaffinity.net/user/${userData.furaffinityname}`}
-                />
-              )}
-              {userData.X_name && (
-                <ListSocialItem
-                  IconComponent={SiX}
-                  userData={userData.X_name}
-                  link={`https://x.com/${userData.X_name}`}
-                />
-              )}
-              {userData.twitchname && (
-                <ListSocialItem
-                  IconComponent={SiTwitch}
-                  userData={userData.twitchname}
-                  link={`https://www.twitch.tv/${userData.twitchname}`}
-                />
-              )}
-            </ul>
+            {(userData.discordname ||
+              userData.telegramname ||
+              userData.furaffinityname ||
+              userData.X_name ||
+              userData.twitchname) && (
+              <Card className="border-border rounded-t-none">
+                <CardContent className="p-4">
+                  <ul>
+                    {userData.discordname && (
+                      <>
+                        <ListSocialItem
+                          IconComponent={SiDiscord}
+                          userData={userData.discordname}
+                          link={'#'}
+                        />
+                        {(userData.telegramname ||
+                          userData.furaffinityname ||
+                          userData.X_name ||
+                          userData.twitchname) && <Separator />}
+                      </>
+                    )}
+                    {userData.telegramname && (
+                      <>
+                        <ListSocialItem
+                          IconComponent={SiTelegram}
+                          userData={userData.telegramname}
+                          link={`https://t.me/${userData.telegramname}`}
+                        />
+                        {(userData.furaffinityname ||
+                          userData.X_name ||
+                          userData.twitchname) && <Separator />}
+                      </>
+                    )}
+                    {userData.furaffinityname && (
+                      <>
+                        <ListSocialItem
+                          IconComponent={SiFuraffinity}
+                          userData={userData.furaffinityname}
+                          link={`https://www.furaffinity.net/user/${userData.furaffinityname}`}
+                        />
+                        {(userData.X_name || userData.twitchname) && (
+                          <Separator />
+                        )}
+                      </>
+                    )}
+                    {userData.X_name && (
+                      <>
+                        <ListSocialItem
+                          IconComponent={SiX}
+                          userData={userData.X_name}
+                          link={`https://x.com/${userData.X_name}`}
+                        />
+                        {userData.twitchname && <Separator />}
+                      </>
+                    )}
+                    {userData.twitchname && (
+                      <ListSocialItem
+                        IconComponent={SiTwitch}
+                        userData={userData.twitchname}
+                        link={`https://www.twitch.tv/${userData.twitchname}`}
+                      />
+                    )}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
           </div>
+
           {/* Center */}
-          <Card
-            className={'col-span-3 border-none md:col-span-1 lg:col-span-2'}
-          >
+          <Card className={'col-span-1 lg:col-span-2 border-none'}>
             <CardHeader>
               <div className={'grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-0'}>
                 <CardTitle className={'col-span-1'}>
@@ -331,34 +377,58 @@ export default function PageClient({
               </div>
             </CardContent>
           </Card>
-          {/* Right */}
-          {/* Gallery here */}
         </div>
       </>
     </main>
   )
 }
 
-const ListSocialItem = ({ IconComponent, userData, link }) => (
-  <li>
-    <Separator />
-    <Link
-      href={link}
-      className="relative flex items-center space-x-4 py-4 px-2"
-      target={'_blank'}
-    >
-      <div className={'min-w-0 flex-auto'}>
-        <div className="flex items-center gap-x-3">
-          <div className={'flex-none rounded-full p-1'}>
-            <IconComponent />
-          </div>
-          <h2 className="min-w-0 text-sm font-semibold leading-6 truncate">
-            <span>{userData}</span>
-          </h2>
-        </div>
-      </div>
+const ListSocialItem = ({ IconComponent, userData, link }) => {
+  const handleCopy = () => {
+    navigator.clipboard.writeText(userData)
+    toast.success('Copied to clipboard!')
+  }
 
-      <ChevronRight className="h-5 w-5 flex-none" aria-hidden="true" />
-    </Link>
-  </li>
-)
+  const isCopy = link === '#'
+
+  return (
+    <li>
+      {isCopy ? (
+        <button
+          onClick={handleCopy}
+          className="relative flex items-center space-x-4 py-4 px-2 w-full rounded-md"
+        >
+          <div className={'min-w-0 flex-auto'}>
+            <div className="flex items-center gap-x-3">
+              <div className={'flex-none rounded-full p-1'}>
+                <IconComponent />
+              </div>
+              <h2 className="min-w-0 text-sm font-semibold leading-6 truncate">
+                <span>{userData}</span>
+              </h2>
+            </div>
+          </div>
+          <ChevronRight className="h-5 w-5 flex-none" aria-hidden="true" />
+        </button>
+      ) : (
+        <Link
+          href={link}
+          className="relative flex items-center space-x-4 py-4 px-2"
+          target={'_blank'}
+        >
+          <div className={'min-w-0 flex-auto'}>
+            <div className="flex items-center gap-x-3">
+              <div className={'flex-none rounded-full p-1'}>
+                <IconComponent />
+              </div>
+              <h2 className="min-w-0 text-sm font-semibold leading-6 truncate">
+                <span>{userData}</span>
+              </h2>
+            </div>
+          </div>
+          <ChevronRight className="h-5 w-5 flex-none" aria-hidden="true" />
+        </Link>
+      )}
+    </li>
+  )
+}
