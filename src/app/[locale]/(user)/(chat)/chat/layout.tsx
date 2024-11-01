@@ -39,6 +39,10 @@ export default function ChatLayout(props) {
   const [isOpen, setIsOpen] = useState(false)
   const [communityCache, setCommunityCache] = useState({})
 
+  if (!current) {
+    router.push('/login')
+  }
+
   const fetchUserData = useCallback(
     async (userId: string) => {
       if (userCache[userId]) {
