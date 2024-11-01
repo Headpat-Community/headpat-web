@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import {
   forwardRef,
   useContext,
@@ -39,8 +38,9 @@ function useCircle(props: CircleProps) {
     center,
     ...circleOptions
   } = props
-  // This is here to avoid triggering the useEffect below when the callbacks change (which happen if the user didn't memoize them)
+
   const callbacks = useRef<Record<string, (e: unknown) => void>>({})
+  // eslint-disable-next-line react-compiler/react-compiler
   Object.assign(callbacks.current, {
     onClick,
     onDrag,
@@ -52,30 +52,44 @@ function useCircle(props: CircleProps) {
     onCenterChanged,
   })
 
-  const circle = useRef(new google.maps.Circle()).current
-  // update circleOptions (note the dependencies aren't properly checked
-  // here, we just assume that setOptions is smart enough to not waste a
-  // lot of time updating values that didn't change)
-  circle.setOptions(circleOptions)
-
-  useEffect(() => {
-    if (!center) return
-    if (!latLngEquals(center, circle.getCenter())) circle.setCenter(center)
-  }, [center, circle])
-
-  useEffect(() => {
-    if (radius === undefined || radius === null) return
-    if (radius !== circle.getRadius()) circle.setRadius(radius)
-  }, [circle, radius])
-
+  const circleRef = useRef<google.maps.Circle | null>(null)
   const map = useContext(GoogleMapsContext)?.map
 
-  // create circle instance and add to the map once the map is available
+  // Initialize the circle instance only once after the component mounts
   useEffect(() => {
-    if (!map) {
+    if (!circleRef.current) {
+      circleRef.current = new google.maps.Circle()
+    }
+    return () => {
+      // Cleanup the circle when the component unmounts
+      circleRef.current?.setMap(null)
+    }
+  }, [])
+
+  useEffect(() => {
+    const circle = circleRef.current
+    if (!circle) return
+
+    // Update circle options
+    circle.setOptions(circleOptions)
+
+    // Update center
+    if (center && !latLngEquals(center, circle.getCenter())) {
+      circle.setCenter(center)
+    }
+
+    // Update radius
+    if (radius !== undefined && radius !== circle.getRadius()) {
+      circle.setRadius(radius)
+    }
+  }, [center, radius, circleOptions])
+
+  // Attach to the map when available
+  useEffect(() => {
+    const circle = circleRef.current
+    if (!map || !circle) {
       if (map === undefined)
         console.error('<Circle> has to be inside a Map component.')
-
       return
     }
 
@@ -84,13 +98,13 @@ function useCircle(props: CircleProps) {
     return () => {
       circle.setMap(null)
     }
-  }, [circle, map])
+  }, [map])
 
-  // attach and re-attach event-handlers when any of the properties change
+  // Attach and re-attach event handlers when properties change
   useEffect(() => {
+    const circle = circleRef.current
     if (!circle) return
 
-    // Add event listeners
     const gme = google.maps.event
     ;[
       ['click', 'onClick'],
@@ -117,19 +131,20 @@ function useCircle(props: CircleProps) {
     return () => {
       gme.clearInstanceListeners(circle)
     }
-  }, [circle])
+  }, [circleOptions])
 
-  return circle
+  return circleRef
 }
 
 /**
  * Component to render a circle on a map
  */
-// eslint-disable-next-line react/display-name
 export const Circle = forwardRef((props: CircleProps, ref: CircleRef) => {
-  const circle = useCircle(props)
+  const circleRef = useCircle(props)
 
-  useImperativeHandle(ref, () => circle)
+  useImperativeHandle(ref, () => circleRef.current)
 
   return null
 })
+
+Circle.displayName = 'Circle'

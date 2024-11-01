@@ -13,6 +13,7 @@ import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { databases } from '@/app/appwrite-client'
+import { Location } from '@/utils/types/models'
 
 export default function SettingsModal({
   openModal,
@@ -59,7 +60,7 @@ export default function SettingsModal({
               id={'doNotDisturb'}
               checked={userStatus?.statusColor === 'red'}
               onCheckedChange={() =>
-                setUserStatus((prev) => ({
+                setUserStatus((prev: Location.LocationDocumentsType) => ({
                   ...prev,
                   statusColor: prev.statusColor === 'red' ? 'green' : 'red',
                 }))
@@ -68,7 +69,7 @@ export default function SettingsModal({
             <Label
               id={'doNotDisturb'}
               onClick={() => {
-                setUserStatus((prev) => ({
+                setUserStatus((prev: Location.LocationDocumentsType) => ({
                   ...prev,
                   statusColor: prev.statusColor === 'red' ? 'green' : 'red',
                 }))
