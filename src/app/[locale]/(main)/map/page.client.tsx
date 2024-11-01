@@ -290,7 +290,7 @@ export default function PageClient() {
         current={current}
       />
 
-      <APIProvider apiKey={'AIzaSyDRkaXuz3k7vlbouwfZKpKH4KUgBtgJZOM'}>
+      <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}>
         <Map
           mapId={'bf51a910020fa25a'}
           defaultZoom={3}
