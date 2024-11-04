@@ -20,6 +20,7 @@ interface NavProps {
     icon: LucideIcon
     variant: 'default' | 'ghost'
     href: string
+    target?: string
   }[]
   setIsOpen?: any
   translations: any
@@ -48,6 +49,7 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
                 <Link
                   // @ts-ignore
                   href={link.href}
+                  target={link.target}
                   onClick={() => {
                     if (window.innerWidth <= 768) {
                       // 768px is a common breakpoint for mobile devices
@@ -78,6 +80,7 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
               key={index}
               // @ts-ignore
               href={link.href}
+              target={link.target}
               onClick={() => {
                 if (window.innerWidth <= 768) {
                   // 768px is a common breakpoint for mobile devices

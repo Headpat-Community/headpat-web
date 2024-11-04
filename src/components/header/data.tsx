@@ -128,6 +128,7 @@ export const Nav4 = () => [
     icon: SiDiscord,
     variant: 'ghost' as const,
     href: `https://discord.gg/EaQTEKRg2A`,
+    target: '_blank',
   },
   {
     title: 'GitHub',
@@ -135,6 +136,7 @@ export const Nav4 = () => [
     icon: SiGithub,
     variant: 'ghost' as const,
     href: `https://github.com/headpat-community/`,
+    target: '_blank',
   },
 ]
 
