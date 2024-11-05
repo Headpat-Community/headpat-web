@@ -13,8 +13,6 @@ interface UserContextValue {
   register: (email: string, password: string, username: string) => Promise<void>
 }
 
-// TODO: Check this out, proper typing.
-// @ts-ignore
 const UserContext = createContext<UserContextValue | undefined>(undefined)
 
 export function useUser(): UserContextValue {
