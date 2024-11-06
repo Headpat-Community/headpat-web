@@ -32,6 +32,16 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Link } from '@/i18n/routing'
 import { FileIcon } from 'lucide-react'
 import ReportMessageModal from '@/components/user/moderation/ReportMessageModal'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 
 const schema = z.object({
   message: z
@@ -160,7 +170,7 @@ export default function ChatClient({
 
   useEffect(() => {
     fetchConversation().then()
-  }, [conversationId, fetchConversation])
+  }, [conversationId])
 
   useEffect(() => {
     const fetchParticipantsData = async () => {
@@ -176,7 +186,7 @@ export default function ChatClient({
     if (participants.length > 0) {
       fetchParticipantsData().then()
     }
-  }, [participants, fetchUserData, userCache])
+  }, [participants, userCache])
 
   const getUserAvatar = (userId: string) => {
     const user = userCache[userId]
@@ -327,8 +337,19 @@ export default function ChatClient({
   const deleteMessage = async (messageId: string) => {
     try {
       await databases.deleteDocument('hp_db', 'messages', messageId)
+      return toast.success('Message deleted', {
+        position: 'bottom-left',
+      })
     } catch (error) {
-      return false
+      if (error.code === 401) {
+        return toast.error('You are not authorized to delete this message', {
+          position: 'bottom-left',
+        })
+      } else {
+        return toast.error('An error occurred while deleting the message', {
+          position: 'bottom-left',
+        })
+      }
     }
   }
 
@@ -343,6 +364,12 @@ export default function ChatClient({
       sendMessage().then()
     }
   }
+
+  useEffect(() => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight
+    }
+  }, [messages])
 
   return (
     <>
@@ -415,13 +442,37 @@ export default function ChatClient({
                       onClick={() => reportMessage(message)}
                     />
                   )}
-                  {!isPending && message.senderId === current.$id && (
-                    <ChatBubbleAction
-                      className="size-7"
-                      icon={<Trash2Icon className="size-4" />}
-                      onClick={() => deleteMessage(message.$id)}
-                    />
-                  )}
+                  {!isPending &&
+                    (message.senderId === current.$id || communityId) && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <ChatBubbleAction
+                            className="size-7"
+                            icon={<Trash2Icon className="size-4" />}
+                          />
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogTitle>Delete message</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Are you sure you want to delete this message? This
+                            action cannot be undone
+                          </AlertDialogDescription>
+                          <AlertDialogFooter>
+                            <AlertDialogAction
+                              onClick={() => {
+                                deleteMessage(message.$id).then()
+                              }}
+                              className={
+                                'bg-destructive hover:bg-destructive/80'
+                              }
+                            >
+                              Delete
+                            </AlertDialogAction>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
                 </ChatBubbleActionWrapper>
               </ChatBubble>
             )

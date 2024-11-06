@@ -101,6 +101,7 @@ export function useRealtimeChat() {
   const fetchInitialData = async () => {
     const initialConversations: Messaging.MessageConversationsType =
       await databases.listDocuments('hp_db', 'messages-conversations', [
+        Query.orderDesc('$updatedAt'),
         Query.limit(500),
       ])
     setConversations(initialConversations.documents)
