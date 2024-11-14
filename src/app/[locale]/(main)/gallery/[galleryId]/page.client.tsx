@@ -12,6 +12,7 @@ import { ExecutionMethod } from 'node-appwrite'
 import { Skeleton } from '@/components/ui/skeleton'
 import UserCard from '@/components/user/userCard'
 import ModerationModal from '@/components/gallery/moderation/ModerationModal'
+import Image from 'next/image'
 
 export default function PageClient({ galleryId }: { galleryId: string }) {
   const [image, setImage] = useState<Gallery.GalleryDocumentsType>(null)
@@ -121,11 +122,12 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                           Your browser does not support the video tag.
                         </video>
                       ) : (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
+                        <Image
                           src={getImageUrl(image?.galleryId)}
                           alt={image?.name || 'Headpat Gallery Image'}
-                          className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
+                          fill
+                          sizes={'100vw'}
+                          unoptimized={false}
                         />
                       )}
                     </>
