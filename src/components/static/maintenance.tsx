@@ -1,5 +1,3 @@
-import { Button } from '@/components/ui/button'
-
 export default function Maintenance() {
   return (
     <div className="h-svh mx-auto">
