@@ -10,7 +10,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import UserCard from '@/components/user/userCard'
 
-export default function ClientPage() {
+export default function ClientPage({ locale }: { locale: string }) {
   const [users, setUsers] = useState<UserData.UserDataDocumentsType[]>([])
   const [isFetching, setIsFetching] = useState<boolean>(true)
 
@@ -41,7 +41,7 @@ export default function ClientPage() {
 
   useEffect(() => {
     fetchUsers().then()
-  }, [fetchUsers])
+  }, [])
 
   if (isFetching && users.length === 0) {
     return (
