@@ -125,9 +125,14 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                         <Image
                           src={getImageUrl(image?.galleryId)}
                           alt={image?.name || 'Headpat Gallery Image'}
-                          fill
-                          sizes={'100vw'}
-                          unoptimized={false}
+                          title={image?.name || 'Headpat Gallery Image'}
+                          width={1200}
+                          height={550}
+                          className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
+                          unoptimized={
+                            image.mimeType?.includes('svg') ||
+                            image.mimeType?.includes('gif')
+                          }
                         />
                       )}
                     </>
