@@ -1,5 +1,4 @@
 'use client'
-import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -27,66 +26,76 @@ import { useDebounce } from '@/hooks/useDebounce'
 import { Query } from 'appwrite'
 import { ExecutionMethod } from 'node-appwrite'
 import { Community, Messaging, UserData } from '@/utils/types/models'
-import { useRouter } from '@/i18n/routing'
+import { Link, useRouter } from '@/i18n/routing'
 import FeatureAccess from '@/components/FeatureAccess'
+import { useDataCache } from '@/components/contexts/DataCacheContext'
 
 export default function ChatLayout(props: any) {
   const router = useRouter()
   const { conversations } = useRealtimeChat()
   const { current } = useUser()
-  const [displayUsers, setDisplayUsers] = useState({})
-  const [userCache, setUserCache] = useState({})
+  const [displayUsers, setDisplayUsers] = useState<
+    UserData.UserDataDocumentsType | Community.CommunityDocumentsType
+  >(null)
   const [isOpen, setIsOpen] = useState(false)
-  const [communityCache, setCommunityCache] = useState({})
+  const { getCache, saveCache } = useDataCache()
 
   const fetchUserData = useCallback(
     async (userId: string) => {
-      if (userCache[userId]) {
-        return userCache[userId]
+      const userCache = await getCache<UserData.UserDataDocumentsType>(
+        'users',
+        userId
+      )
+      if (userCache) {
+        return userCache
       }
 
       try {
         const userData: UserData.UserDataDocumentsType =
           await databases.getDocument('hp_db', 'userdata', userId)
-        setUserCache((prevCache) => ({ ...prevCache, [userId]: userData }))
+        saveCache('users', userId, userData)
         return userData
       } catch (error) {
         toast.error('Error fetching user data')
         return null
       }
     },
-    [userCache]
+    [getCache, saveCache]
   )
 
   const fetchCommunityData = useCallback(
     async (communityId: string) => {
-      if (communityCache[communityId]) {
-        return communityCache[communityId]
+      const communityCache = await getCache<Community.CommunityDocumentsType>(
+        'communities',
+        communityId
+      )
+      if (communityCache) {
+        return communityCache
       }
 
       try {
         const communityData: Community.CommunityDocumentsType =
           await databases.getDocument('hp_db', 'community', communityId)
-        setCommunityCache((prevCache) => ({
-          ...prevCache,
-          [communityId]: communityData,
-        }))
+        saveCache('communities', communityId, communityData)
         return communityData
       } catch (error) {
         toast.error('Error fetching community data')
         return null
       }
     },
-    [communityCache]
+    [getCache, saveCache]
   )
 
   useEffect(() => {
     const updateDisplayUsers = async () => {
       const newDisplayUsers = {}
-      for (const conversation of conversations) {
+
+      // Create an array of promises for fetching data
+      const fetchPromises = conversations.map(async (conversation) => {
         if (conversation.communityId) {
-          const communityData: Community.CommunityDocumentsType =
-            await fetchCommunityData(conversation.communityId)
+          const communityData = await fetchCommunityData(
+            conversation.communityId
+          )
           if (communityData) {
             newDisplayUsers[conversation.$id] = {
               isCommunity: true,
@@ -98,15 +107,19 @@ export default function ChatLayout(props: any) {
             (participant) => participant !== current.$id
           )
           if (otherParticipantId) {
-            const userData: UserData.UserDataDocumentsType =
-              await fetchUserData(otherParticipantId)
+            const userData = await fetchUserData(otherParticipantId)
             if (userData) {
               newDisplayUsers[conversation.$id] = userData
             }
           }
         }
-      }
-      setDisplayUsers(newDisplayUsers)
+      })
+
+      // Wait for all fetch promises to resolve
+      await Promise.all(fetchPromises)
+
+      // Update state with all fetched data
+      setDisplayUsers(newDisplayUsers as any)
     }
 
     updateDisplayUsers().then()
@@ -164,7 +177,9 @@ function ConversationsList({
   closeSheet,
 }: {
   conversations: Messaging.MessageConversationsDocumentsType[]
-  displayUsers: any
+  displayUsers:
+    | UserData.UserDataDocumentsType
+    | Community.CommunityDocumentsType
   closeSheet: () => void
 }) {
   const router = useRouter()
@@ -208,7 +223,7 @@ function ConversationsList({
       )
       toast.dismiss(loadingToast)
       const response = JSON.parse(data.responseBody)
-      console.log(response)
+
       if (response.type === 'userchat_missing_recipient_id') {
         toast.error('Missing recipient ID')
         return
@@ -297,12 +312,15 @@ function ConversationsList({
       </div>
       <ScrollArea className="flex-grow">
         {conversations.map((conversation) => {
-          const displayData = displayUsers[conversation.$id] || {}
-          const isCommunity = displayData.isCommunity
+          const displayData = displayUsers[conversation.$id]?.data || {}
+          const isCommunity = !!displayData.name
 
           return (
             <Link
-              href={`/chat/${conversation.$id}`}
+              href={{
+                pathname: '/chat/[conversationId]',
+                params: { conversationId: conversation.$id },
+              }}
               onClick={closeSheet}
               className="flex items-center p-4 cursor-pointer hover:bg-foreground/10 w-full"
               key={conversation.$id}

@@ -36,6 +36,7 @@ import { ExecutionMethod } from 'node-appwrite'
 import PageLayout from '@/components/pageLayout'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useUser } from '@/components/contexts/UserContext'
+import { useDataCache } from '@/components/contexts/DataCacheContext'
 
 function FollowerButton({ displayName, followerId, isFollowing }) {
   const [isFollowingState, setIsFollowingState] = useState(isFollowing || false)
@@ -99,6 +100,7 @@ export default function PageClient({
     useState<UserData.UserProfileDocumentsType>(user)
   const [loading, setLoading] = useState(true)
   const { current } = useUser()
+  const { getCache, saveCache } = useDataCache()
 
   const formatDate = (date: Date) =>
     date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')
@@ -107,9 +109,12 @@ export default function PageClient({
     date.toLocaleDateString('en-GB').slice(0, 5).replace(/-/g, '.')
 
   useEffect(() => {
-    let isMounted = true
-
     const fetchUserData = async () => {
+      const cache = await getCache('users', userId)
+      if (cache) {
+        setUserData(cache.data as UserData.UserProfileDocumentsType)
+        setLoading(false)
+      }
       try {
         const data = await functions.createExecution(
           'user-endpoints',
@@ -119,25 +124,18 @@ export default function PageClient({
           ExecutionMethod.GET
         )
 
-        if (isMounted) {
-          const parsedData = JSON.parse(data.responseBody)
-          setUserData(parsedData)
-          setLoading(false)
-        }
+        const parsedData = JSON.parse(data.responseBody)
+        setUserData(parsedData)
+        saveCache('users', userId, parsedData)
+        setLoading(false)
       } catch (error) {
         console.error('Error fetching user data:', error)
-        if (isMounted) {
-          setLoading(false)
-        }
+        setLoading(false)
       }
     }
 
     fetchUserData().then()
-
-    return () => {
-      isMounted = false
-    }
-  }, [userId])
+  }, [getCache, saveCache, userId])
 
   if (!userData) {
     return (

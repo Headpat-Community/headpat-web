@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card'
 import Image from 'next/image'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import { ExecutionMethod } from 'node-appwrite'
-import { functions } from '@/app/appwrite-client'
+import { databases, functions, Query } from '@/app/appwrite-client'
 import PageLayout from '@/components/pageLayout'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -14,23 +14,18 @@ export default function ClientPage({ locale }: { locale: string }) {
   const [users, setUsers] = useState<UserData.UserDataDocumentsType[]>([])
   const [isFetching, setIsFetching] = useState<boolean>(true)
 
-  const fetchUsers = useCallback(async () => {
+  const fetchUsers = useCallback(async (limit: number, offset: number) => {
     setIsFetching(true)
     try {
-      const data = await functions.createExecution(
-        'user-endpoints',
-        '',
-        false,
-        `/users?limit=250`, // You can specify a static limit here if desired
-        ExecutionMethod.GET
+      const response: UserData.UserDataType = await databases.listDocuments(
+        'hp_db',
+        'userdata',
+        [
+          Query.orderDesc('$createdAt'),
+          Query.limit(limit),
+          Query.offset(offset),
+        ]
       )
-
-      const response = JSON.parse(data.responseBody)
-
-      if (response.code === 500) {
-        toast.error('Failed to fetch users. Please try again later.')
-        return
-      }
       setUsers(response.documents)
     } catch (error) {
       toast.error('Failed to fetch users. Please try again later.')
@@ -40,7 +35,7 @@ export default function ClientPage({ locale }: { locale: string }) {
   }, [])
 
   useEffect(() => {
-    fetchUsers().then()
+    fetchUsers(250, 0).then()
   }, [])
 
   if (isFetching && users.length === 0) {

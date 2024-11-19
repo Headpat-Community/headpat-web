@@ -1,17 +1,32 @@
 'use client'
-import React, { createContext, useContext, useState, useCallback } from 'react'
-import { databases } from '@/app/appwrite-client'
-import { UserData, Community } from '@/utils/types/models'
+import React, { createContext, useCallback, useContext, useState } from 'react'
+import {
+  deleteFromDb,
+  getAllFromDb,
+  getFromDb,
+  openDb,
+  saveToDb,
+} from '@/lib/indexeddb-utils'
+
+const DB_NAME = 'HeadpatCache'
+const DB_VERSION = 3 // Increment this when changing the schema
+const CACHE_EXPIRATION_TIME = 24 * 60 * 60 * 1000 // 24 hours
+
+const STORE_NAMES = ['users', 'communities', 'notifications']
 
 type DataCacheContextType = {
-  userCache: Record<string, UserData.UserDataDocumentsType>
-  communityCache: Record<string, Community.CommunityDocumentsType>
-  fetchUserData: (
-    userId: string
-  ) => Promise<UserData.UserDataDocumentsType | null>
-  fetchCommunityData: (
-    communityId: string
-  ) => Promise<Community.CommunityDocumentsType | null>
+  getCache: <T>(storeName: string, key: string) => Promise<CacheItem<T> | null>
+  saveCache: <T>(storeName: string, key: string, data: T) => void
+  removeCache: (storeName: string, key: string) => void
+  getCacheSync: <T>(storeName: string, key: string) => CacheItem<T> | null
+  getAllCache: <T>(storeName: string) => Promise<CacheItem<T>[]>
+  saveAllCache: <T>(storeName: string, data: T[]) => void
+}
+
+type CacheItem<T> = {
+  id: string
+  data: T
+  timestamp: number
 }
 
 const DataCacheContext = createContext<DataCacheContextType | undefined>(
@@ -21,72 +36,141 @@ const DataCacheContext = createContext<DataCacheContextType | undefined>(
 export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [userCache, setUserCache] = useState<
-    Record<string, UserData.UserDataDocumentsType>
-  >({})
-  const [communityCache, setCommunityCache] = useState<
-    Record<string, Community.CommunityDocumentsType>
-  >({})
+  const [db, setDb] = React.useState<IDBDatabase | null>(null)
+  const [cacheData, setCacheData] = useState<Record<string, any>>({})
+  const [loading, setLoading] = useState(true)
 
-  const fetchUserData = useCallback(
-    async (userId: string) => {
-      if (userCache[userId]) {
-        return userCache[userId]
-      }
+  React.useEffect(() => {
+    const initDb = async <T,>() => {
+      const database = await openDb(DB_NAME, DB_VERSION, STORE_NAMES)
+      setDb(database)
 
-      try {
-        const userData = (await databases.getDocument(
-          'hp_db',
-          'userdata',
-          userId
-        )) as UserData.UserDataDocumentsType
-        setUserCache((prevCache) => ({ ...prevCache, [userId]: userData }))
-        return userData
-      } catch (error) {
-        console.error('Error fetching user data:', error)
-        return null
+      const allCacheData: Record<string, any> = {}
+      for (const storeName of STORE_NAMES) {
+        const storeData = await getAllFromDb<CacheItem<T>>(database, storeName)
+        storeData.forEach((item) => {
+          allCacheData[`${storeName}-${item.id}`] = item
+        })
       }
+      setCacheData(allCacheData)
+      setLoading(false)
+    }
+    initDb().then()
+  }, [])
+
+  const waitForDb = useCallback(async () => {
+    while (loading) {
+      await new Promise((resolve) => setTimeout(resolve, 50))
+    }
+  }, [loading])
+
+  const getAllCache = useCallback(
+    async <T,>(storeName: string): Promise<CacheItem<T>[]> => {
+      await waitForDb()
+      if (!db) return []
+      return await getAllFromDb<CacheItem<T>>(db, storeName)
     },
-    [userCache]
+    [db, waitForDb]
   )
 
-  const fetchCommunityData = useCallback(
-    async (communityId: string) => {
-      if (communityCache[communityId]) {
-        return communityCache[communityId]
-      }
+  const getCache = useCallback(
+    async <T,>(
+      storeName: string,
+      key: string
+    ): Promise<CacheItem<T> | null> => {
+      await waitForDb()
+      if (!db) return null
+      const cachedData = await getFromDb<CacheItem<T>>(db, storeName, key)
 
-      try {
-        const communityData = (await databases.getDocument(
-          'hp_db',
-          'community',
-          communityId
-        )) as Community.CommunityDocumentsType
-        setCommunityCache((prevCache) => ({
-          ...prevCache,
-          [communityId]: communityData,
+      if (
+        cachedData &&
+        Date.now() - cachedData.timestamp < CACHE_EXPIRATION_TIME
+      ) {
+        setCacheData((prev) => ({
+          ...prev,
+          [`${storeName}-${key}`]: cachedData,
         }))
-        return communityData
-      } catch (error) {
-        console.error('Error fetching community data:', error)
-        return null
+        return cachedData
       }
+      await deleteFromDb(db, storeName, key)
+      return null
     },
-    [communityCache]
+    [db, waitForDb]
+  )
+
+  const saveAllCache = useCallback(
+    async <T,>(storeName: string, data: T[]) => {
+      await waitForDb()
+      if (!db) return
+      await Promise.all(
+        data.map(async (item) => {
+          const cacheItem = { data: item, timestamp: Date.now() }
+          await saveToDb(db, storeName, { id: item['id'], ...cacheItem })
+          setCacheData((prev) => ({
+            ...prev,
+            [`${storeName}-${item['id']}`]: cacheItem,
+          }))
+        })
+      )
+    },
+    [db, waitForDb]
+  )
+
+  const saveCache = useCallback(
+    async <T,>(storeName: string, key: string, data: T) => {
+      await waitForDb()
+      if (!db) return
+
+      const cacheItem = { data, timestamp: Date.now() }
+      await saveToDb(db, storeName, { id: key, ...cacheItem })
+      setCacheData((prev) => ({
+        ...prev,
+        [`${storeName}-${key}`]: cacheItem,
+      }))
+    },
+    [db, waitForDb]
+  )
+
+  const removeCache = useCallback(
+    async (storeName: string, key: string) => {
+      await waitForDb()
+      if (!db) return
+      await deleteFromDb(db, storeName, key)
+      setCacheData((prev) => {
+        const newData = { ...prev }
+        delete newData[`${storeName}-${key}`]
+        return newData
+      })
+    },
+    [db, waitForDb]
+  )
+
+  const getCacheSync = useCallback(
+    <T,>(storeName: string, key: string): CacheItem<T> | null => {
+      return cacheData[`${storeName}-${key}`] || null
+    },
+    [cacheData]
   )
 
   return (
     <DataCacheContext.Provider
-      value={{ userCache, communityCache, fetchUserData, fetchCommunityData }}
+      value={{
+        getCache,
+        saveCache,
+        removeCache,
+        getCacheSync,
+        getAllCache,
+        saveAllCache,
+      }}
     >
-      {children}
+      {loading ? <div>Loading...</div> : children}
     </DataCacheContext.Provider>
   )
 }
 
 export const useDataCache = () => {
   const context = useContext(DataCacheContext)
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useDataCache must be used within a DataCacheProvider')
   }
   return context

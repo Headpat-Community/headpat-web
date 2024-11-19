@@ -132,6 +132,7 @@ export default async function Home({ params }) {
                   <Image
                     alt="App screenshot"
                     src="/images/headpat_frontpage.webp"
+                    draggable={false}
                     priority
                     width={1580}
                     height={1848}
