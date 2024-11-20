@@ -42,5 +42,5 @@ export default async function Users(props: {
 
   const { locale } = params
 
-  return <PageClient />
+  return <PageClient locale={locale} />
 }

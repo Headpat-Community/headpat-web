@@ -1,5 +1,3 @@
-import { Button } from '@/components/ui/button'
-
 export default function Maintenance() {
   return (
     <div className="h-svh mx-auto">
@@ -10,9 +8,6 @@ export default function Maintenance() {
           This page is not available at the moment. <br />
           We&apos;ll be back online shortly.
         </p>
-        <div className="mt-6 flex gap-4">
-          <Button variant="outline">Learn more</Button>
-        </div>
       </div>
     </div>
   )

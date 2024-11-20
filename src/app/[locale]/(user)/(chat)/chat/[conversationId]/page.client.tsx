@@ -23,11 +23,14 @@ import { useRealtimeChat } from '@/hooks/useRealtimeChat'
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { databases, functions, storage } from '@/app/appwrite-client'
 import { ExecutionMethod, ID, Query } from 'node-appwrite'
-import { Messaging } from '@/utils/types/models'
+import { Community, Messaging, UserData } from '@/utils/types/models'
 import { useDataCache } from '@/components/contexts/DataCacheContext'
 import { z } from 'zod'
 import { toast } from 'sonner'
-import { getCommunityAvatarUrlPreview } from '@/components/getStorageItem'
+import {
+  getAvatarImageUrlPreview,
+  getCommunityAvatarUrlPreview,
+} from '@/components/getStorageItem'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Link } from '@/i18n/routing'
 import { FileIcon } from 'lucide-react'
@@ -59,8 +62,7 @@ export default function ChatClient({
 }) {
   const { current } = useUser()
   const { messages, setMessages } = useRealtimeChat()
-  const { userCache, communityCache, fetchUserData, fetchCommunityData } =
-    useDataCache()
+  const { getCache, saveCache, getCacheSync } = useDataCache()
   const [participants, setParticipants] = useState<string[]>([])
   const [communityId, setCommunityId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -97,8 +99,12 @@ export default function ChatClient({
         // Fetch user data for any new message senders
         const newParticipants = newMessages.map((msg) => msg.senderId)
         const participantPromises = newParticipants.map(async (userId) => {
-          if (!userCache[userId]) {
-            await fetchUserData(userId)
+          if (!(await getCache('users', userId))) {
+            await databases
+              .getDocument('hp_db', 'userdata', userId)
+              .then((userData) => {
+                saveCache('users', userId, userData)
+              })
           }
         })
         await Promise.all(participantPromises)
@@ -112,7 +118,7 @@ export default function ChatClient({
         console.error('Error fetching messages:', error)
       }
     },
-    [conversationId, hasMore, page, setMessages, userCache, fetchUserData]
+    [conversationId, hasMore, page, setMessages, getCache, saveCache]
   )
 
   const fetchConversation = useCallback(async () => {
@@ -129,8 +135,16 @@ export default function ChatClient({
 
       if (conversationData.communityId) {
         setCommunityId(conversationData.communityId)
-        if (!communityCache[conversationData.communityId]) {
-          await fetchCommunityData(conversationData.communityId)
+        if (!(await getCache('communities', conversationData.communityId))) {
+          await databases
+            .getDocument('hp_db', 'community', conversationData.communityId)
+            .then((communityData) => {
+              saveCache(
+                'communities',
+                conversationData.communityId,
+                communityData
+              )
+            })
         }
       }
 
@@ -141,8 +155,12 @@ export default function ChatClient({
       ]
 
       const participantPromises = allParticipants.map(async (userId) => {
-        if (!userCache[userId]) {
-          await fetchUserData(userId)
+        if (!(await getCache('users', userId))) {
+          await databases
+            .getDocument('hp_db', 'userdata', userId)
+            .then((userData) => {
+              saveCache('users', userId, userData)
+            })
         }
       })
 
@@ -158,15 +176,7 @@ export default function ChatClient({
     } finally {
       setIsLoading(false)
     }
-  }, [
-    fetchMessages,
-    conversationId,
-    communityCache,
-    fetchCommunityData,
-    messages,
-    userCache,
-    fetchUserData,
-  ])
+  }, [fetchMessages, conversationId, messages, getCache, saveCache])
 
   useEffect(() => {
     fetchConversation().then()
@@ -175,8 +185,12 @@ export default function ChatClient({
   useEffect(() => {
     const fetchParticipantsData = async () => {
       const promises = participants.map((userId) => {
-        if (!userCache[userId]) {
-          return fetchUserData(userId)
+        if (!getCache('users', userId)) {
+          return databases
+            .getDocument('hp_db', 'userdata', userId)
+            .then((userData) => {
+              saveCache('users', userId, userData)
+            })
         }
         return Promise.resolve()
       })
@@ -186,14 +200,7 @@ export default function ChatClient({
     if (participants.length > 0) {
       fetchParticipantsData().then()
     }
-  }, [participants, userCache])
-
-  const getUserAvatar = (userId: string) => {
-    const user = userCache[userId]
-    if (!user) return undefined
-    if (!user.avatarId) return undefined
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/avatars/files/${user.avatarId}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&width=100&height=100`
-  }
+  }, [participants])
 
   const sendMessage = async (event?: React.FormEvent<HTMLFormElement>) => {
     if (event) {
@@ -316,10 +323,27 @@ export default function ChatClient({
     }
   }, [fetchMessages, hasMore])
 
+  const getUserAvatar = (userId: string) => {
+    if (!userId) return undefined
+    const userCache = getCacheSync<UserData.UserDataDocumentsType>(
+      'users',
+      userId
+    )
+    return getAvatarImageUrlPreview(
+      userCache?.data?.avatarId,
+      'width=100&height=100'
+    )
+  }
+
   const getConversationAvatar = () => {
-    if (communityId && communityCache[communityId]) {
+    if (communityId) {
+      const communityCache = getCacheSync<Community.CommunityDocumentsType>(
+        'communities',
+        communityId
+      )
+
       return getCommunityAvatarUrlPreview(
-        communityCache[communityId].avatarId,
+        communityCache?.data?.avatarId,
         'width=100&height=100'
       )
     }
@@ -327,11 +351,19 @@ export default function ChatClient({
   }
 
   const getConversationName = () => {
-    if (communityId && communityCache[communityId]) {
-      return communityCache[communityId].name
+    if (communityId) {
+      const communityCache = getCacheSync<Community.CommunityDocumentsType>(
+        'communities',
+        communityId
+      )
+
+      return communityCache?.data?.name
     }
-    return userCache[participants.find((id) => id !== current.$id) || '']
-      ?.displayName
+    const userCache = getCacheSync<UserData.UserDataDocumentsType>(
+      'users',
+      participants.find((id) => id !== current.$id) || ''
+    )
+    return userCache?.data?.displayName
   }
 
   const deleteMessage = async (messageId: string) => {
@@ -386,7 +418,7 @@ export default function ChatClient({
                   {getConversationName()?.charAt(0) || '?'}
                 </AvatarFallback>
               </Avatar>
-              {communityId && communityCache[communityId] && (
+              {communityId && (
                 <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground rounded-full p-0.5">
                   <Users size={12} />
                 </div>
@@ -408,7 +440,10 @@ export default function ChatClient({
           {[...messages, ...pendingMessages].map((message) => {
             const variant =
               message.senderId === current.$id ? 'sent' : 'received'
-            const user = userCache[message.senderId]
+            const user = getCacheSync<UserData.UserDataDocumentsType>(
+              'users',
+              message.senderId
+            )
             const isPending = message.$id.startsWith('pending_')
 
             return (
@@ -417,13 +452,13 @@ export default function ChatClient({
                   href={{
                     pathname: '/user/[profileUrl]',
                     params: {
-                      profileUrl: user?.profileUrl,
+                      profileUrl: user?.data?.profileUrl,
                     },
                   }}
                 >
                   <ChatBubbleAvatar
                     src={getUserAvatar(message.senderId)}
-                    fallback={user?.displayName?.charAt(0) || '...'}
+                    fallback={user?.data?.displayName?.charAt(0) || '...'}
                   />
                 </Link>
                 {!isPending ? (
