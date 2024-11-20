@@ -100,7 +100,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241022.0",
     "@types/google.maps": "^3.58.1",
-    "@types/node": "22.8.1",
+    "@types/node": "22.9.1",
     "@types/react": "18.3.12",
     "@types/sanitize-html": "^2.13.0",
     "@types/mdx": "^2.0.13",
