@@ -527,7 +527,8 @@ export default function ChatClient({
             onKeyDown={handleKeyDown}
           />
           <div className="flex items-center p-3">
-            <Button
+            {/*
+             <Button
               variant="ghost"
               size="icon"
               type="button"
@@ -566,6 +567,7 @@ export default function ChatClient({
                 ))}
               </div>
             )}
+            */}
             <Button size="sm" className="ml-auto gap-1.5" type="submit">
               Send Message
               <CornerDownLeftIcon className="size-3.5" />
