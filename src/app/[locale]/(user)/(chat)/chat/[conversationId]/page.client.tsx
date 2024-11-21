@@ -9,14 +9,7 @@ import {
 } from '@/components/ui/chat/chat-bubble'
 import { ChatMessageList } from '@/components/ui/chat/chat-message-list'
 import { Button } from '@/components/ui/button'
-import {
-  CornerDownLeftIcon,
-  FlagIcon,
-  PaperclipIcon,
-  Trash2Icon,
-  Users,
-  XIcon,
-} from 'lucide-react'
+import { CornerDownLeftIcon, FlagIcon, Trash2Icon, Users } from 'lucide-react'
 import { useUser } from '@/components/contexts/UserContext'
 import { ChatInput } from '@/components/ui/chat/chat-input'
 import { useRealtimeChat } from '@/hooks/useRealtimeChat'
@@ -33,7 +26,6 @@ import {
 } from '@/components/getStorageItem'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Link } from '@/i18n/routing'
-import { FileIcon } from 'lucide-react'
 import ReportMessageModal from '@/components/user/moderation/ReportMessageModal'
 import {
   AlertDialog,
