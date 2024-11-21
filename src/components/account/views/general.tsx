@@ -134,6 +134,30 @@ export default function GeneralAccountView({
     }
   }
 
+  const handleIndex = async (checked: boolean) => {
+    const prefs = userMe.prefs
+
+    try {
+      await account.updatePrefs({
+        ...prefs,
+        indexingEnabled: checked,
+      })
+      toast.success('Indexing updated successfully.')
+      setUserMe((prevUserData: any) => ({
+        ...prevUserData,
+        prefs: {
+          ...prevUserData.prefs,
+          indexingEnabled: checked,
+        },
+      }))
+      router.refresh()
+    } catch (error) {
+      if (error) {
+        toast.error('Failed to update indexing. Please try again.')
+      }
+    }
+  }
+
   const handleProfileUrlChange = async () => {
     const profileUrl = userData.profileUrl
 
@@ -385,8 +409,8 @@ export default function GeneralAccountView({
             <p className="mt-1 text-sm leading-6 text-gray-400">
               Checking this box will enable NSFW images. 18+ only.
             </p>
-            <p className="text-sm leading-6 text-gray-400">
-              Anyone under the age of 18 caught viewing NSFW content will be
+            <p className="text-sm leading-6 text-destructive">
+              Anyone under the age of 18 caught having NSFW enabled will be
               suspended.
             </p>
           </div>
@@ -398,6 +422,27 @@ export default function GeneralAccountView({
                 aria-describedby="nsfwtoggle"
                 checked={userMe ? userMe.prefs.nsfw : false}
                 onCheckedChange={handleNsfw}
+              />
+            </div>
+          </form>
+        </div>
+
+        <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+          <div>
+            <h2 className="text-base font-semibold leading-7">Index profile</h2>
+            <p className="mt-1 text-sm leading-6 text-gray-400">
+              Checking this box will enable your profile to be indexed by search
+              engines.
+            </p>
+          </div>
+
+          <form className="md:col-span-2">
+            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+              <Checkbox
+                id="indexingtoggle"
+                aria-describedby="indexingtoggle"
+                checked={userMe ? userMe.prefs.indexingEnabled : false}
+                onCheckedChange={handleIndex}
               />
             </div>
           </form>

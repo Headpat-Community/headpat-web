@@ -9,6 +9,7 @@ import {
   Messaging,
   Locale,
   Avatars,
+  Users,
 } from 'node-appwrite'
 import { headers } from 'next/headers'
 
@@ -128,6 +129,9 @@ export async function createAdminClient() {
     },
     get avatars() {
       return new Avatars(client)
+    },
+    get users() {
+      return new Users(client)
     },
   }
 }

@@ -38,7 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ],
     twitter: {
       card: 'summary_large_image',
-      title: 'Headpat Community',
+      title: 'Headpat',
       description:
         'Headpat is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
       images: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
@@ -53,7 +53,6 @@ export async function generateMetadata(): Promise<Metadata> {
         'Headpat is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
       images: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
       type: 'website',
-      siteName: 'Headpat',
     },
     appLinks: {
       android: {
@@ -67,6 +66,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     other: {
       'apple-itunes-app': 'app-id=6502715063',
+      'google-play-app': 'app-id=com.headpat.app',
     },
     generator: 'Headpat',
     metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),

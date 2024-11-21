@@ -10,7 +10,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { Link, usePathname } from '@/i18n/routing'
-import { Badge } from '@/components/ui/badge'
 
 interface NavProps {
   isCollapsed: boolean
@@ -40,7 +39,6 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
             link.title === translations.home
               ? currentPath === link.href.replace(/\/$/, '')
               : currentPath.startsWith(link.href)
-
           const variant = isActive ? 'default' : 'ghost'
 
           return isCollapsed ? (
@@ -50,7 +48,7 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
                   // @ts-ignore
                   href={link.href}
                   target={link.target}
-                  onClick={() => {
+                  onClick={(e) => {
                     if (window.innerWidth <= 768) {
                       // 768px is a common breakpoint for mobile devices
                       setIsOpen(false)
@@ -60,19 +58,20 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
                     buttonVariants({ variant, size: 'icon' }),
                     'h-9 w-9',
                     variant === 'default' &&
-                      'bg-muted text-foreground hover:bg-muted hover:text-foreground'
+                      'dark:bg-muted dark:text-muted-foreground dark:hover:text-white'
                   )}
                 >
                   <link.icon className="h-4 w-4" />
                   <span className="sr-only">{link.title}</span>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent
-                side="right"
-                className="flex items-center gap-4 z-20"
-              >
+              <TooltipContent side="right" className="flex items-center gap-4">
                 {link.title}
-                {link.label && <Badge className="ml-auto">{link.label}</Badge>}
+                {link.label && (
+                  <span className="ml-auto text-muted-foreground">
+                    {link.label}
+                  </span>
+                )}
               </TooltipContent>
             </Tooltip>
           ) : (
@@ -81,7 +80,7 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
               // @ts-ignore
               href={link.href}
               target={link.target}
-              onClick={() => {
+              onClick={(e) => {
                 if (window.innerWidth <= 768) {
                   // 768px is a common breakpoint for mobile devices
                   setIsOpen(false)
@@ -90,16 +89,21 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
               className={cn(
                 buttonVariants({ variant, size: 'sm' }),
                 variant === 'default' &&
-                  'bg-muted text-foreground hover:bg-muted hover:text-foreground',
+                  'dark:bg-muted dark:text-white dark:hover:text-white',
                 'justify-start'
               )}
             >
               <link.icon className="mr-2 h-4 w-4" />
               {link.title}
               {link.label && (
-                <Badge variant={'secondary'} className={'ml-auto'}>
+                <span
+                  className={cn(
+                    'ml-auto',
+                    variant === 'default' && 'text-background dark:text-white'
+                  )}
+                >
                   {link.label}
-                </Badge>
+                </span>
               )}
             </Link>
           )

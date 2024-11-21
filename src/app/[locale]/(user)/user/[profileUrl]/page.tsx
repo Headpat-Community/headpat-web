@@ -1,4 +1,7 @@
-import { createSessionServerClient } from '@/app/appwrite-session'
+import {
+  createAdminClient,
+  createSessionServerClient,
+} from '@/app/appwrite-session'
 import { Query } from '@/app/appwrite-server'
 import { getAvatarImageUrlView } from '@/components/getStorageItem'
 import PageClient from './page.client'
@@ -6,22 +9,26 @@ import { UserData } from '@/utils/types/models'
 import sanitizeHtml from 'sanitize-html'
 import { notFound } from 'next/navigation'
 import PageLayout from '@/components/pageLayout'
+import { Metadata } from 'next'
 
 export const runtime = 'edge'
 
 export async function generateMetadata(props: {
   params: Promise<{ profileUrl: string; locale: string }>
-}) {
+}): Promise<Metadata> {
   const params = await props.params
 
   const { profileUrl, locale } = params
 
   const { databases } = await createSessionServerClient()
+  const { users } = await createAdminClient()
   const userDataResponse: UserData.UserDataType = await databases.listDocuments(
     'hp_db',
     'userdata',
     [Query.equal('profileUrl', profileUrl)]
   )
+  const userAccountResponse = await users.get(userDataResponse.documents[0].$id)
+  const indexingEnabled: boolean = userAccountResponse?.prefs?.indexingEnabled
 
   if (userDataResponse.total === 0) {
     return notFound()
@@ -34,7 +41,8 @@ export async function generateMetadata(props: {
     title: userData.displayName || userData?.profileUrl,
     description: sanitizedBio,
     icons: {
-      icon: getAvatarImageUrlView(userData.avatarId),
+      icon: getAvatarImageUrlView(userData?.avatarId),
+      apple: getAvatarImageUrlView(userData?.avatarId),
     },
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/user/${profileUrl}`,
@@ -50,6 +58,10 @@ export async function generateMetadata(props: {
       images: getAvatarImageUrlView(userData.avatarId),
       locale: locale,
       type: 'profile',
+    },
+    robots: {
+      index: indexingEnabled,
+      follow: indexingEnabled,
     },
     metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
   }

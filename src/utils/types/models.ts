@@ -20,6 +20,8 @@ export namespace Account {
     prefs: {
       // The user's nsfw preference.
       nsfw: boolean
+      // The user's indexing preference.
+      indexingEnabled: boolean
     }
   }
 }
