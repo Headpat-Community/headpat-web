@@ -15,14 +15,14 @@ import z from 'zod'
 
 const schema = z.object({
   status: z.string().max(24, 'Status: Max length is 24'),
-  bio: z.string().max(2048, 'Bio: Max length is 2048'),
+  bio: z.string().max(2048, 'Bio: Max length is 2048').nullable(),
   displayName: z
     .string()
     .min(3, 'Display Name should be at least 3 characters')
     .max(32, 'Display Name: Max length is 32'),
-  birthday: z.string().max(32, 'Max length is 32'),
-  pronouns: z.string().max(16, 'Pronouns: Max length is 16'),
-  location: z.string().max(48, 'Location: Max length is 48'),
+  birthday: z.string().max(32, 'Max length is 32').nullable(),
+  pronouns: z.string().max(16, 'Pronouns: Max length is 16').nullable(),
+  location: z.string().max(48, 'Location: Max length is 48').nullable(),
 })
 
 export default function FrontpageView({
@@ -38,6 +38,7 @@ export default function FrontpageView({
       (data: UserData.UserDataDocumentsType) => setUserData(data)
     )
   }, [accountData])
+  console.log(userData)
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
@@ -46,6 +47,7 @@ export default function FrontpageView({
       // Validate the entire communitySettings object
       schema.parse(userData)
     } catch (error) {
+      console.log(error.errors[0])
       toast.error(error.errors[0].message)
       return
     }
@@ -122,7 +124,7 @@ export default function FrontpageView({
                     id="displayname"
                     name="displayname"
                     type="text"
-                    value={userData ? userData.displayName : ''}
+                    value={userData?.displayName || ''}
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
@@ -135,7 +137,7 @@ export default function FrontpageView({
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData ? userData.displayName?.length : 0}
+                      {userData?.displayName?.length || 0}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>
                   </div>
@@ -149,7 +151,7 @@ export default function FrontpageView({
                     id="status"
                     name="status"
                     type="text"
-                    value={userData ? userData.status : ''}
+                    value={userData?.status || ''}
                     onChange={(e) => {
                       if (e.target.value.length <= 24) {
                         setUserData({ ...userData, status: e.target.value })
@@ -159,7 +161,7 @@ export default function FrontpageView({
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData ? userData.status?.length : 0}
+                      {userData?.status?.length || 0}
                     </span>
                     <span className="select-none text-gray-400">/{24}</span>
                   </div>
@@ -173,7 +175,7 @@ export default function FrontpageView({
                     id="pronouns"
                     name="pronouns"
                     type="text"
-                    value={userData ? userData.pronouns : ''}
+                    value={userData?.pronouns || ''}
                     onChange={(e) => {
                       if (e.target.value.length <= 16) {
                         setUserData({
@@ -186,7 +188,7 @@ export default function FrontpageView({
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData ? userData?.pronouns?.length : 0}
+                      {userData?.pronouns?.length || 0}
                     </span>
                     <span className="select-none text-gray-400">/{16}</span>
                   </div>
@@ -201,11 +203,11 @@ export default function FrontpageView({
                     name="birthday"
                     type="date"
                     value={
-                      userData && !isNaN(Date.parse(userData.birthday))
-                        ? new Date(userData.birthday)
+                      !isNaN(Date.parse(userData?.birthday))
+                        ? new Date(userData?.birthday)
                             .toISOString()
                             .split('T')[0]
-                        : ''
+                        : '01-01-1900T00:00:00'
                     }
                     onChange={(e) => {
                       setUserData({ ...userData, birthday: e.target.value })
@@ -229,7 +231,7 @@ export default function FrontpageView({
                     id="location"
                     name="location"
                     type="text"
-                    value={userData ? userData.location : ''}
+                    value={userData?.location || ''}
                     onChange={(e) => {
                       if (e.target.value.length <= 48) {
                         setUserData({
@@ -242,7 +244,7 @@ export default function FrontpageView({
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData ? userData.location?.length : 0}
+                      {userData?.location?.length || 0}
                     </span>
                     <span className="select-none text-gray-400">/{48}</span>
                   </div>
@@ -251,16 +253,16 @@ export default function FrontpageView({
 
               <div className="col-span-full">
                 <Label
-                  htmlFor="biostatus"
+                  htmlFor="bio"
                   className="block text-sm font-medium leading-6"
                 >
                   Bio
                 </Label>
                 <div className="relative mt-2">
                   <Textarea
-                    id="biostatus"
-                    name="biostatus"
-                    value={userData ? userData.bio : ''}
+                    id="bio"
+                    name="bio"
+                    value={userData?.bio || ''}
                     onChange={(e) => {
                       if (e.target.value.length <= 2048) {
                         setUserData({ ...userData, bio: e.target.value })
@@ -270,7 +272,7 @@ export default function FrontpageView({
                   />
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-end pb-2 pr-4 text-sm leading-5">
                     <span className="select-none">
-                      {userData ? userData.bio?.length : 0}
+                      {userData?.bio?.length || 0}
                     </span>
                     <span className="select-none text-gray-400">/{2048}</span>
                   </div>

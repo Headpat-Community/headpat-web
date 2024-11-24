@@ -11,15 +11,26 @@ import { databases } from '@/app/appwrite-client'
 import { toast } from 'sonner'
 
 const schema = z.object({
-  discordname: z.string().max(32, 'Discord name must be 32 characters or less'),
+  discordname: z
+    .string()
+    .max(32, 'Discord name must be 32 characters or less')
+    .nullable(),
   telegramname: z
     .string()
-    .max(32, 'Telegram name must be 32 characters or less'),
+    .max(32, 'Telegram name must be 32 characters or less')
+    .nullable(),
   furaffinityname: z
     .string()
-    .max(32, 'Furaffinity name must be 32 characters or less'),
-  X_name: z.string().max(32, 'X / Twitter name must be 32 characters or less'),
-  twitchname: z.string().max(32, 'Twitch name must be 32 characters or less'),
+    .max(32, 'Furaffinity name must be 32 characters or less')
+    .nullable(),
+  X_name: z
+    .string()
+    .max(32, 'X / Twitter name must be 32 characters or less')
+    .nullable(),
+  twitchname: z
+    .string()
+    .max(32, 'Twitch name must be 32 characters or less')
+    .nullable(),
 })
 
 export default function SocialsView({ accountData }) {
