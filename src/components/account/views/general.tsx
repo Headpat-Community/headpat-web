@@ -17,7 +17,6 @@ import {
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
-  AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
@@ -25,6 +24,52 @@ import { getDocument } from '@/components/api/documents'
 import { toast } from 'sonner'
 import { useUser } from '@/components/contexts/UserContext'
 import { account, databases, functions } from '@/app/appwrite-client'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form'
+import InputField from '@/components/fields/InputField'
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card'
+import { Info } from 'lucide-react'
+
+const emailFormSchema = z.object({
+  email: z.string().email().trim(),
+  password: z
+    .string()
+    .trim()
+    .min(8, 'Password must be at least 8 characters long.')
+    .max(128, 'Password must be at most 128 characters long.'),
+})
+
+const profileUrlFormSchema = z.object({
+  profileUrl: z
+    .string()
+    .trim()
+    .min(2, 'Profile URL must be at least 3 characters long.'),
+})
+
+const passwordFormSchema = z.object({
+  password: z
+    .string()
+    .trim()
+    .min(8, 'Password must be at least 8 characters long.')
+    .max(264, 'Password must be at most 264 characters long.'),
+  newpassword: z
+    .string()
+    .trim()
+    .min(8, 'Password must be at least 8 characters long.')
+    .max(264, 'Password must be at most 264 characters long.'),
+})
 
 export default function GeneralAccountView({
   accountData,
@@ -38,6 +83,29 @@ export default function GeneralAccountView({
   const router = useRouter()
   const { setUser } = useUser()
 
+  const emailForm = useForm<z.infer<typeof emailFormSchema>>({
+    resolver: zodResolver(emailFormSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
+
+  const profileUrlForm = useForm<z.infer<typeof profileUrlFormSchema>>({
+    resolver: zodResolver(profileUrlFormSchema),
+    defaultValues: {
+      profileUrl: '',
+    },
+  })
+
+  const passwordForm = useForm<z.infer<typeof passwordFormSchema>>({
+    resolver: zodResolver(passwordFormSchema),
+    defaultValues: {
+      password: '',
+      newpassword: '',
+    },
+  })
+
   useEffect(() => {
     getDocument('hp_db', 'userdata', accountData.$id)
       .then((data: UserData.UserDataDocumentsType) => setUserData(data))
@@ -47,17 +115,9 @@ export default function GeneralAccountView({
       })
   }, [accountData])
 
-  const handleEmailChange = async (event: { preventDefault: () => void }) => {
-    event.preventDefault()
-
-    // Check if email_password has at least 8 characters
-    if (userData.password.length < 8) {
-      toast.error('Password must be at least 8 characters long.')
-      return
-    }
-
+  const handleEmailChange = async (values: z.infer<typeof emailFormSchema>) => {
     try {
-      await account.updateEmail(userData.email, userData.password)
+      await account.updateEmail(values.email, values.password)
       toast.success('E-Mail updated successfully.')
       setUserData((prevUserData: any) => ({
         ...prevUserData,
@@ -76,36 +136,28 @@ export default function GeneralAccountView({
   }
 
   const handlePasswordReset = async (
-    event: React.FormEvent<HTMLFormElement>
+    values: z.infer<typeof passwordFormSchema>
   ) => {
-    event.preventDefault()
-
-    const target = event.target as typeof event.target & {
-      currentpassword: { value: string }
-      newpassword: { value: string }
-      reset: () => void
-    }
-
-    const currentPassword = target.currentpassword.value
-    const newPassword = target.newpassword.value
-
-    // Check if profileUrl has at least 4 characters
-    if (newPassword.length < 8) {
-      toast.error('Password must be at least 8 characters long.')
-      return
-    }
-
     try {
-      await account.updatePassword(newPassword, currentPassword)
+      await account.updatePassword(values.newpassword, values.password)
       toast.success('Password updated successfully.')
     } catch (error) {
-      if (error.code === 400) {
+      console.log(error.type)
+      if (error.type === 'general_argument_invalid') {
+        toast.error(
+          'Password must be at least 8 characters long and cannot be a common password.'
+        )
+        return
+      } else if (error.code === 400) {
         toast.error(error.message)
-      } else if (error.code === 401) {
+      } else if (error.type === 'user_invalid_credentials') {
         toast.error("Password doesn't match.")
       } else {
         toast.error('Failed to update password. Please try again.')
-        target.reset()
+        passwordForm.reset({
+          password: '',
+          newpassword: '',
+        })
       }
     }
   }
@@ -158,21 +210,15 @@ export default function GeneralAccountView({
     }
   }
 
-  const handleProfileUrlChange = async () => {
-    const profileUrl = userData.profileUrl
-
-    // Check if profileUrl has at least 4 characters
-    if (profileUrl.length < 3) {
-      toast.error('Profile URL must be at least 3 characters long.')
-      return
-    }
-
+  const handleProfileUrlChange = async (
+    values: z.infer<typeof profileUrlFormSchema>
+  ) => {
     const promise = await databases.updateDocument(
       'hp_db',
       'userdata',
       userMe?.$id,
       {
-        profileUrl: profileUrl,
+        profileUrl: values.profileUrl,
       }
     )
 
@@ -217,57 +263,54 @@ export default function GeneralAccountView({
             </p>
           </div>
 
-          <form onSubmit={handleEmailChange} className="md:col-span-2">
-            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-              <div className="col-span-full">
-                <Label htmlFor="email">Email address</Label>
-                <div className="mt-2">
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    minLength={3}
-                    onChange={(e) => {
-                      setUserData((prevUserData: any) => ({
-                        ...prevUserData,
-                        email: e.target.value,
-                      }))
-                    }}
-                    placeholder={userMe ? userMe.email : ''}
-                    autoComplete={'email'}
-                  />
+          <Form {...emailForm}>
+            <form
+              onSubmit={emailForm.handleSubmit(handleEmailChange)}
+              className="md:col-span-2"
+            >
+              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+                <div className="col-span-full">
+                  <div className="mt-2">
+                    <FormField
+                      control={emailForm.control}
+                      name="email"
+                      render={({ field }) => (
+                        <InputField
+                          label="E-Mail"
+                          description="Your new email address."
+                          placeholder=""
+                          field={field}
+                        />
+                      )}
+                    />
+                  </div>
+                </div>
+                <div className="col-span-full">
+                  <div className="mt-2">
+                    <FormField
+                      control={emailForm.control}
+                      name="password"
+                      render={({ field }) => (
+                        <InputField
+                          label={'Password'}
+                          description={'Your current password.'}
+                          placeholder={''}
+                          field={field}
+                          type={'password'}
+                        />
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="col-span-full">
-                <Label htmlFor="email_password">Current Password</Label>
-                <div className="mt-2">
-                  <Input
-                    type="password"
-                    name="email_password"
-                    id="email_password"
-                    minLength={8}
-                    maxLength={128}
-                    onChange={(e) => {
-                      setUserData((prevUserData: any) => ({
-                        ...prevUserData,
-                        password: e.target.value,
-                      }))
-                    }}
-                    required
-                    value={userMe ? userMe.password : ''}
-                    autoComplete="password"
-                  />
-                </div>
-              </div>
-            </div>
 
-            <div className="mt-8 flex">
-              <Button type="submit" variant={'outline'}>
-                Save
-              </Button>
-            </div>
-          </form>
+              <div className="mt-8 flex">
+                <Button type="submit" variant={'outline'}>
+                  Save
+                </Button>
+              </div>
+            </form>
+          </Form>
         </div>
 
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
@@ -279,61 +322,61 @@ export default function GeneralAccountView({
             </p>
           </div>
 
-          <AlertDialog>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will change your profile
-                  URL to the one you entered. We will not redirect the old URL
-                  to the new one.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={handleProfileUrlChange}>
-                  Continue
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-            <div className="md:col-span-2">
-              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-                <div className="col-span-full">
-                  <Label htmlFor="username">URL</Label>
-                  <div className="mt-2">
-                    <div className="flex rounded-md bg-background border border-input focus-within:border-primary">
-                      <span className="flex select-none items-center pl-3 text-gray-400 sm:text-sm">
-                        headpat.place/user/
+          <Form {...profileUrlForm}>
+            <form
+              onSubmit={profileUrlForm.handleSubmit(handleProfileUrlChange)}
+            >
+              <div className="md:col-span-2">
+                <div>
+                  <Label htmlFor="profileUrl">URL</Label>
+                  <HoverCard openDelay={100} closeDelay={50}>
+                    <HoverCardTrigger>
+                      <span className="ml-2 text-gray-500">
+                        <Info className="inline-block h-4 w-4" />
                       </span>
-                      <Input
-                        type="text"
-                        name="profileurl"
-                        id="profileurl"
-                        required
-                        onChange={(e) => {
-                          setUserData((prevUserData: any) => ({
-                            ...prevUserData,
-                            profileUrl: e.target.value,
-                          }))
-                        }}
-                        placeholder={userData ? userData.profileUrl : ''}
-                        className="border-0 pl-0 align-middle bg-transparent ml-1 focus:ring-0 focus:outline-none focus:border-0 focus-visible:ring-0 focus-visible:outline-none focus-visible:border-0 focus-visible:ring-offset-0"
-                        minLength={3}
-                      />
-                    </div>
-                  </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent className={'w-96'}>
+                      This action cannot be undone. This will change your
+                      profile URL to the one you entered. We will not redirect
+                      the old URL to the new one.
+                    </HoverCardContent>
+                  </HoverCard>
                 </div>
-              </div>
+                <FormField
+                  control={profileUrlForm.control}
+                  name="profileUrl"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center col-span-full">
+                      <div className="mt-2 w-full">
+                        <div className="flex rounded-md bg-background border border-input focus-within:border-primary">
+                          <span className="flex select-none items-center pl-3 text-gray-400 sm:text-sm">
+                            headpat.place/user/
+                          </span>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              type="text"
+                              id="profileurl"
+                              required
+                              placeholder={userData ? userData.profileUrl : ''}
+                              className="flex-1 w-full min-w-0 rounded-none rounded-r-md border-0 focus:ring-0 sm:text-sm pl-1"
+                            />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
 
-              <div className="mt-8 flex">
-                <AlertDialogTrigger asChild>
-                  <Button type="button" variant={'outline'}>
+                <div className="mt-8 flex">
+                  <Button type="submit" variant={'outline'}>
                     Save
                   </Button>
-                </AlertDialogTrigger>
+                </div>
               </div>
-            </div>
-          </AlertDialog>
+            </form>
+          </Form>
         </div>
 
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
@@ -346,45 +389,50 @@ export default function GeneralAccountView({
             </p>
           </div>
 
-          <form className="md:col-span-2" onSubmit={handlePasswordReset}>
-            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-              <div className="col-span-full">
-                <Label
-                  htmlFor="current-password"
-                  className="mb-2 block text-sm font-medium"
-                >
-                  Current password
-                </Label>
-                <Input
-                  type="password"
-                  name="currentpassword" // Updated name
-                  id="currentpassword"
-                  autoComplete="current-password"
-                  required
-                />
+          <Form {...passwordForm}>
+            <form
+              className="md:col-span-2"
+              onSubmit={passwordForm.handleSubmit(handlePasswordReset)}
+            >
+              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+                <div className="col-span-full">
+                  <FormField
+                    control={passwordForm.control}
+                    name="password"
+                    render={({ field }) => (
+                      <InputField
+                        label={'Current password'}
+                        description={'Your current password.'}
+                        placeholder={''}
+                        field={field}
+                        type={'password'}
+                      />
+                    )}
+                  />
+                </div>
+                <div className="col-span-full">
+                  <FormField
+                    control={passwordForm.control}
+                    name="newpassword"
+                    render={({ field }) => (
+                      <InputField
+                        label={'New password'}
+                        description={'Your new password.'}
+                        placeholder={''}
+                        field={field}
+                        type={'password'}
+                      />
+                    )}
+                  />
+                </div>
+                <div className="col-span-full">
+                  <Button type="submit" variant={'outline'}>
+                    Save
+                  </Button>
+                </div>
               </div>
-              <div className="col-span-full">
-                <Label
-                  htmlFor="new-password"
-                  className="mb-2 block text-sm font-medium"
-                >
-                  New password
-                </Label>
-                <Input
-                  type="password"
-                  name="newpassword" // Updated name
-                  id="newpassword"
-                  autoComplete="new-password"
-                  required
-                />
-              </div>
-              <div className="col-span-full">
-                <Button type="submit" variant={'outline'}>
-                  Save
-                </Button>
-              </div>
-            </div>
-          </form>
+            </form>
+          </Form>
         </div>
 
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
@@ -458,42 +506,38 @@ export default function GeneralAccountView({
             </p>
           </div>
 
-          <form className="md:col-span-2" onSubmit={handlePasswordReset}>
-            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-              <div className="col-span-full">
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button type={'button'} variant={'destructive'}>
-                      Delete Account
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      all your data, including images, comments, and profile
-                      information. You will not be able to recover your account.
-                    </AlertDialogDescription>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction asChild>
-                        <Button
-                          className={
-                            'bg-destructive text-destructive-foreground hover:bg-destructive/90'
-                          }
-                          onClick={deleteAccountButton}
-                        >
-                          Delete Account
-                        </Button>
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </div>
+          <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+            <div className="col-span-full">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button type={'button'} variant={'destructive'}>
+                    Delete Account
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    all your data, including images, comments, and profile
+                    information. You will not be able to recover your account.
+                  </AlertDialogDescription>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction asChild>
+                      <Button
+                        className={
+                          'bg-destructive text-destructive-foreground hover:bg-destructive/90'
+                        }
+                        onClick={deleteAccountButton}
+                      >
+                        Delete Account
+                      </Button>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </>
