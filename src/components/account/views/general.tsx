@@ -407,7 +407,7 @@ export default function GeneralAccountView({
           <div>
             <h2 className="text-base font-semibold leading-7">Enable NSFW</h2>
             <p className="mt-1 text-sm leading-6 text-gray-400">
-              Checking this box will enable NSFW images. 18+ only.
+              Checking this box will enable NSFW content. 18+ only.
             </p>
             <p className="text-sm leading-6 text-destructive">
               Anyone under the age of 18 caught having NSFW enabled will be
