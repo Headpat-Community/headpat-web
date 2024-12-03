@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import {
   FormControl,
   FormLabel,
@@ -32,7 +32,9 @@ const NumberField: React.FC<NumberFieldProps> = ({
   const parseValue = (value: any): number =>
     value === undefined || value === '' ? 0 : Number(value)
 
-  const [inputValue, setInputValue] = useState<number>(parseValue(field.value))
+  const [inputValue, setInputValue] = React.useState<number>(
+    parseValue(field.value)
+  )
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value)
