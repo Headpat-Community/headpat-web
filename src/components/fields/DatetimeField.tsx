@@ -5,7 +5,6 @@ import {
   FormMessage,
   FormItem,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { CalendarIcon, Info } from 'lucide-react'
 import {
   HoverCard,
@@ -68,7 +67,7 @@ const DatetimeField: React.FC<DatetimeFieldProps> = ({
               mode="single"
               selected={datetimeValue}
               onSelect={(date) => handleChange(date.toISOString())}
-              initialFocus
+              autoFocus
             />
           </PopoverContent>
         </Popover>
