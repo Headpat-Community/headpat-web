@@ -1,6 +1,9 @@
 import { getUserDataFromProfileUrl } from '@/utils/server-api/user/getUserData'
 import ClientPage from './page.client'
-import { createSessionServerClient } from '@/app/appwrite-session'
+import {
+  createAdminClient,
+  createSessionServerClient,
+} from '@/app/appwrite-session'
 import { UserData } from '@/utils/types/models'
 import { Query } from '@/app/appwrite-server'
 import sanitizeHtml from 'sanitize-html'
@@ -16,6 +19,7 @@ export async function generateMetadata(props: {
   const { profileUrl, locale } = params
 
   const { databases } = await createSessionServerClient()
+  const { users } = await createAdminClient()
   const userDataResponse: UserData.UserDataType = await databases.listDocuments(
     'hp_db',
     'userdata',
@@ -23,6 +27,9 @@ export async function generateMetadata(props: {
   )
   const userData = userDataResponse.documents[0]
   const sanitizedBio = sanitizeHtml(userData.bio)
+
+  const userAccountResponse = await users.get(userDataResponse.documents[0].$id)
+  const indexingEnabled: boolean = userAccountResponse?.prefs?.indexingEnabled
 
   return {
     title: userData.displayName || userData?.profileUrl,
@@ -44,6 +51,10 @@ export async function generateMetadata(props: {
       images: getAvatarImageUrlView(userData.avatarId),
       locale: locale,
       type: 'profile',
+    },
+    robots: {
+      index: indexingEnabled,
+      follow: indexingEnabled,
     },
     metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
   }

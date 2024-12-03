@@ -1,82 +1,82 @@
 {
-  "PageNames": {
-    "home": "Startseite",
-    "chat": "Chat",
-    "gallery": "Galerie",
-    "events": "Veranstaltungen",
-    "map": "Karte",
-    "announcements": "Ankündigungen",
-    "notifications": "Benachrichtigungen",
-    "users": "Benutzer",
-    "myprofile": "Mein Profil",
-    "communities": "Communities",
-    "about": "Über uns",
-    "legal": "Rechtliches",
-    "changelog": "Änderungen",
-    "contact": "Kontakt",
-    "account": "Account",
-    "login": "Anmelden",
-    "logout": "Abmelden"
-  },
-  "HomePage": {
-    "showoffwithconfidence": "Zeige mit Selbstvertrauen",
-    "latestupdates": "Neueste Updates",
-    "checkapp": "Schau dir unsere App an!",
-    "description1": "Die Headpat Community ist eine Online-Community für soziale Medien. Wir bieten unseren Mitgliedern freiwillig eine Plattform zum Verbinden, Austauschen und Ausdrücken an.",
-    "description2": "Begleiten Sie uns, um Ihre Momente zu teilen, Veranstaltungen zu entdecken, sich mit Gemeinschaften zu verbinden, Orte zu erkunden und vieles mehr!"
-  },
   "Account": {
     "accountsettings": "Kontoeinstellungen",
-    "general": "Allgemein",
     "frontpage": "Profil",
+    "general": "Allgemein",
     "socials": "Soziale Netzwerke"
   },
-  "MainMetadata": {
-    "title": "Headpat Community",
-    "description": "Die Headpat Community ist eine Online-Community für soziale Medien. Wir bieten unseren Mitgliedern freiwillig eine Plattform zum Verbinden, Austauschen und Ausdrücken an."
-  },
   "AccountMetadata": {
-    "title": "Konto",
-    "description": "Auf der Kontoseite kannst du Ihre Kontoeinstellungen verwalten."
-  },
-  "GalleryMetadata": {
-    "title": "Galerie",
-    "description": "Möchtest du süße Bilder sehen? Dann bist du hier genau richtig!"
-  },
-  "UsersMetadata": {
-    "title": "Benutzer",
-    "description": "Finde hier die zuletzt registrierten Benutzer."
-  },
-  "SupportMetadata": {
-    "title": "Unterstützung",
-    "description": "Benötigst du Hilfe? Wir sind hier, um dir zu helfen!"
-  },
-  "LocationsMetadata": {
-    "title": "Kartenstandorte",
-    "description": "Möchtest du deine Freunde oder Veranstaltungen auf einer Karte sehen? Schau dir unsere Karte an!"
-  },
-  "LegalMetadata": {
-    "title": "Rechtliches",
-    "description": "Alle rechtlichen Informationen findest du hier."
-  },
-  "EventsMetadata": {
-    "title": "Veranstaltungen",
-    "description": "Hier findest du alle Veranstaltungen."
-  },
-  "CommunitiesMetadata": {
-    "title": "Gemeinschaften",
-    "description": "Suche hier nach Gemeinschaften um dich zu verbinden."
-  },
-  "NotificationsMetadata": {
-    "title": "Benachrichtigungen",
-    "description": "Hier findest du alle Benachrichtigungen."
+    "description": "Auf der Kontoseite kannst du Ihre Kontoeinstellungen verwalten.",
+    "title": "Konto"
   },
   "AnnouncementsMetadata": {
-    "title": "Ankündigungen",
-    "description": "Hier findest du alle Ankündigungen."
+    "description": "Hier findest du alle Ankündigungen.",
+    "title": "Ankündigungen"
   },
   "ChangelogMetadata": {
-    "title": "Änderungen",
-    "description": "Hier findest du alle Updates."
+    "description": "Hier findest du alle Updates.",
+    "title": "Änderungen"
+  },
+  "CommunitiesMetadata": {
+    "description": "Suche hier nach Gemeinschaften um dich zu verbinden.",
+    "title": "Gemeinschaften"
+  },
+  "EventsMetadata": {
+    "description": "Hier findest du alle Veranstaltungen.",
+    "title": "Veranstaltungen"
+  },
+  "GalleryMetadata": {
+    "description": "Möchtest du süße Bilder sehen? Dann bist du hier genau richtig!",
+    "title": "Galerie"
+  },
+  "HomePage": {
+    "checkapp": "Schau dir unsere App an!",
+    "description1": "Die Headpat Community ist eine Online-Community für soziale Medien. Wir bieten unseren Mitgliedern freiwillig eine Plattform zum Verbinden, Austauschen und Ausdrücken an.",
+    "description2": "Begleiten Sie uns, um Ihre Momente zu teilen, Veranstaltungen zu entdecken, sich mit Gemeinschaften zu verbinden, Orte zu erkunden und vieles mehr!",
+    "latestupdates": "Neueste Updates",
+    "showoffwithconfidence": "Zeige mit Selbstvertrauen"
+  },
+  "LegalMetadata": {
+    "description": "Alle rechtlichen Informationen findest du hier.",
+    "title": "Rechtliches"
+  },
+  "LocationsMetadata": {
+    "description": "Möchtest du deine Freunde oder Veranstaltungen auf einer Karte sehen? Schau dir unsere Karte an!",
+    "title": "Kartenstandorte"
+  },
+  "MainMetadata": {
+    "description": "Die Headpat Community ist eine Online-Community für soziale Medien. Wir bieten unseren Mitgliedern freiwillig eine Plattform zum Verbinden, Austauschen und Ausdrücken an.",
+    "title": "Headpat Community"
+  },
+  "NotificationsMetadata": {
+    "description": "Hier findest du alle Benachrichtigungen.",
+    "title": "Benachrichtigungen"
+  },
+  "PageNames": {
+    "about": "Über uns",
+    "account": "Account",
+    "announcements": "Ankündigungen",
+    "changelog": "Änderungen",
+    "chat": "Chat",
+    "communities": "Communities",
+    "contact": "Kontakt",
+    "events": "Veranstaltungen",
+    "gallery": "Galerie",
+    "home": "Startseite",
+    "legal": "Rechtliches",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "map": "Karte",
+    "myprofile": "Mein Profil",
+    "notifications": "Benachrichtigungen",
+    "users": "Benutzer"
+  },
+  "SupportMetadata": {
+    "description": "Benötigst du Hilfe? Wir sind hier, um dir zu helfen!",
+    "title": "Unterstützung"
+  },
+  "UsersMetadata": {
+    "description": "Finde hier die zuletzt registrierten Benutzer.",
+    "title": "Benutzer"
   }
 }

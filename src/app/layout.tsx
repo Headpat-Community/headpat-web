@@ -9,6 +9,7 @@ import { DataCacheProvider } from '@/components/contexts/DataCacheContext'
 import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react'
 import { createSessionServerClient } from './appwrite-session'
 import Maintenance from '@/components/static/maintenance'
+import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -82,6 +83,11 @@ export default async function RootLayout({ children }) {
   if (status.isMaintenance) {
     return (
       <html lang="en" className="h-full" suppressHydrationWarning>
+        <Script
+          defer
+          src={'https://analytics.fayevr.dev/script.js'}
+          data-website-id="38b87c81-4112-43ce-ba99-b084bab611d6"
+        />
         <body
           className={cn(
             'flex min-h-screen bg-background antialiased',
@@ -103,6 +109,11 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
+      <Script
+        defer
+        src={'https://analytics.fayevr.dev/script.js'}
+        data-website-id="38b87c81-4112-43ce-ba99-b084bab611d6"
+      />
       <body
         className={cn(
           'flex min-h-screen bg-background antialiased',
