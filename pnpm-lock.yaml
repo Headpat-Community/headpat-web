@@ -122,6 +122,12 @@ importers:
       '@tailwindcss/typography':
         specifier: ^0.5.15
         version: 0.5.15(tailwindcss@3.4.14(ts-node@10.9.1(@types/node@22.8.1)(typescript@5.6.3)))
+      '@typebot.io/js':
+        specifier: ^0.3.33
+        version: 0.3.33
+      '@typebot.io/nextjs':
+        specifier: ^0.3.33
+        version: 0.3.33(@typebot.io/js@0.3.33)(next@15.0.3(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@vis.gl/react-google-maps':
         specifier: ^1.3.0
         version: 1.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2287,6 +2293,16 @@ packages:
 
   '@tweenjs/tween.js@23.1.3':
     resolution: {integrity: sha512-vJmvvwFxYuGnF2axRtPYocag6Clbb5YS7kLL+SO/TeVFzHqDIWrNKYtcsPMibjDx9O+bu+psAy9NKfWklassUA==}
+
+  '@typebot.io/js@0.3.33':
+    resolution: {integrity: sha512-H0dFdRDigDWnNnWR5Mc7acvTGWXn2ocgh7mnQwq46LpGdh1KRMuzAUZDuU8gEnaUgHpzLV7eWxchctQLa0C69A==}
+
+  '@typebot.io/nextjs@0.3.33':
+    resolution: {integrity: sha512-UA8dls5QLU1exDljvp2zJrO7wKqNei16ECf1D/MbFivLgltEmbUKYK3LqeXJrSNEEfijN0kPxUaLXBFEbMnV1w==}
+    peerDependencies:
+      '@typebot.io/js': 0.3.22
+      next: 12.x || 13.x || 14.x
+      react: ^16.0.0 || ^17.0.0 || ^18.0.0
 
   '@types/acorn@4.0.6':
     resolution: {integrity: sha512-veQTnWP+1D/xbxVrPC3zHnCZRjSrKfhbMUlEA43iMZLu7EsnTtkJklIuwrCPbOi8YkvDQAiW05VQQFvvz9oieQ==}
@@ -8024,6 +8040,14 @@ snapshots:
   '@tsconfig/node16@1.0.4': {}
 
   '@tweenjs/tween.js@23.1.3': {}
+
+  '@typebot.io/js@0.3.33': {}
+
+  '@typebot.io/nextjs@0.3.33(@typebot.io/js@0.3.33)(next@15.0.3(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@typebot.io/js': 0.3.33
+      next: 15.0.3(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
 
   '@types/acorn@4.0.6':
     dependencies:
