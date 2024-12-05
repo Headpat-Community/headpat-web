@@ -23,5 +23,8 @@ export default async function Page() {
     // do nothing
   }
 
+  console.log(sessionCookie)
+  console.log(accountData)
+
   return <PageClient asc={sessionCookie} userId={accountData?.$id} />
 }

@@ -8,6 +8,8 @@ export default function PageClient({
   asc: string
   userId: string
 }) {
+  console.log('asc: ', asc)
+  console.log('userId: ', userId)
   return (
     <div>
       <h1>Chatbot test</h1>
