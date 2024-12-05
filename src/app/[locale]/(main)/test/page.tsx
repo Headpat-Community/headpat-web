@@ -1,6 +1,7 @@
 import PageClient from './page.client'
 import { headers } from 'next/headers'
 import { createSessionServerClient } from '@/app/appwrite-session'
+import { Models } from 'node-appwrite'
 
 export const runtime = 'edge'
 
@@ -14,8 +15,13 @@ export default async function Page() {
     )
   )
 
+  let accountData: Models.User<Models.Preferences>
   const { account } = await createSessionServerClient()
-  const accountData = await account.get()
+  try {
+    accountData = await account.get()
+  } catch {
+    // do nothing
+  }
 
-  return <PageClient asc={sessionCookie} userId={accountData.$id} />
+  return <PageClient asc={sessionCookie} userId={accountData?.$id} />
 }
