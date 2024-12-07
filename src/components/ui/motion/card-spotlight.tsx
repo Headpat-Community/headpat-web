@@ -1,9 +1,9 @@
 "use client";
 
-import { useMotionValue, motion, useMotionTemplate } from "framer-motion";
-import React, { MouseEvent as ReactMouseEvent, useState } from "react";
-import { CanvasRevealEffect } from "@/components/ui/motion/canvas-reveal-effect";
-import { cn } from "@/lib/utils";
+import { motion, useMotionTemplate, useMotionValue } from 'framer-motion'
+import React, { MouseEvent as ReactMouseEvent, useState } from 'react'
+import { CanvasRevealEffect } from '@/components/ui/motion/canvas-reveal-effect'
+import { cn } from '@/lib/utils'
 
 export const CardSpotlight = ({
   children,

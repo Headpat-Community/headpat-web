@@ -1,6 +1,6 @@
 "use client";
-import React, { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 
 export const TextHoverEffect = ({
   text,
