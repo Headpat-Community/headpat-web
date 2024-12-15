@@ -1,6 +1,6 @@
 {
   "name": "headpat-web",
-  "version": "0.8.3",
+  "version": "0.8.5",
   "author": "Faye",
   "private": true,
   "type": "module",
@@ -102,7 +102,7 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.6.3",
     "vaul": "^1.1.0",
-    "zod": "^3.23.8"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241022.0",

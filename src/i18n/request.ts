@@ -57,6 +57,6 @@ export default getRequestConfig(async ({ requestLocale }) => {
         return 'Dear developer, please fix this message: ' + path
       }
     },
-    messages: (await import(`../../messages/${locale}.json`)).default,
+    messages: (await import(`./translations/${locale}.json`)).default,
   }
 })

@@ -3,7 +3,6 @@ import { ChevronRightIcon } from 'lucide-react'
 import PageLayout from '@/components/pageLayout'
 import { Link } from '@/i18n/routing'
 import { getTranslations } from 'next-intl/server'
-import { Badge } from '@/components/ui/badge'
 import { HoverBorderGradient } from '@/components/ui/motion/hover-border-gradient'
 
 export const runtime = 'edge'
