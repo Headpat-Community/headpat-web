@@ -1,0 +1,82 @@
+{
+  "Account": {
+    "accountsettings": "Kontoeinstellungen",
+    "frontpage": "Profil",
+    "general": "Allgemein",
+    "socials": "Soziale Netzwerke"
+  },
+  "AccountMetadata": {
+    "description": "Auf der Kontoseite kannst du Ihre Kontoeinstellungen verwalten.",
+    "title": "Konto"
+  },
+  "AnnouncementsMetadata": {
+    "description": "Hier findest du alle Ankündigungen.",
+    "title": "Ankündigungen"
+  },
+  "ChangelogMetadata": {
+    "description": "Hier findest du alle Updates.",
+    "title": "Änderungen"
+  },
+  "CommunitiesMetadata": {
+    "description": "Suche hier nach Gemeinschaften um dich zu verbinden.",
+    "title": "Gemeinschaften"
+  },
+  "EventsMetadata": {
+    "description": "Hier findest du alle Veranstaltungen.",
+    "title": "Veranstaltungen"
+  },
+  "GalleryMetadata": {
+    "description": "Möchtest du süße Bilder sehen? Dann bist du hier genau richtig!",
+    "title": "Galerie"
+  },
+  "HomePage": {
+    "checkapp": "Schau dir unsere App an!",
+    "description1": "Die Headpat Community ist eine Online-Community für soziale Medien. Wir bieten unseren Mitgliedern freiwillig eine Plattform zum Verbinden, Austauschen und Ausdrücken an.",
+    "description2": "Begleiten Sie uns, um Ihre Momente zu teilen, Veranstaltungen zu entdecken, sich mit Gemeinschaften zu verbinden, Orte zu erkunden und vieles mehr!",
+    "latestupdates": "Neueste Updates",
+    "showoffwithconfidence": "Zeige mit Selbstvertrauen"
+  },
+  "LegalMetadata": {
+    "description": "Alle rechtlichen Informationen findest du hier.",
+    "title": "Rechtliches"
+  },
+  "LocationsMetadata": {
+    "description": "Möchtest du deine Freunde oder Veranstaltungen auf einer Karte sehen? Schau dir unsere Karte an!",
+    "title": "Kartenstandorte"
+  },
+  "MainMetadata": {
+    "description": "Die Headpat Community ist eine Online-Community für soziale Medien. Wir bieten unseren Mitgliedern freiwillig eine Plattform zum Verbinden, Austauschen und Ausdrücken an.",
+    "title": "Headpat Community"
+  },
+  "NotificationsMetadata": {
+    "description": "Hier findest du alle Benachrichtigungen.",
+    "title": "Benachrichtigungen"
+  },
+  "PageNames": {
+    "about": "Über uns",
+    "account": "Account",
+    "announcements": "Ankündigungen",
+    "changelog": "Änderungen",
+    "chat": "Chat",
+    "communities": "Communities",
+    "contact": "Kontakt",
+    "events": "Veranstaltungen",
+    "gallery": "Galerie",
+    "home": "Startseite",
+    "legal": "Rechtliches",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "map": "Karte",
+    "myprofile": "Mein Profil",
+    "notifications": "Benachrichtigungen",
+    "users": "Benutzer"
+  },
+  "SupportMetadata": {
+    "description": "Benötigst du Hilfe? Wir sind hier, um dir zu helfen!",
+    "title": "Unterstützung"
+  },
+  "UsersMetadata": {
+    "description": "Finde hier die zuletzt registrierten Benutzer.",
+    "title": "Benutzer"
+  }
+}
