@@ -1,82 +1,82 @@
 {
   "Account": {
-    "accountsettings": "Accountinstellingen",
-    "frontpage": "Profiel",
-    "general": "Algemeen",
+    "accountsettings": "Account settings",
+    "frontpage": "Profile",
+    "general": "General",
     "socials": "Socials"
   },
   "AccountMetadata": {
-    "description": "Op de accountpagina kun je je accountinstellingen beheren.",
+    "description": "The account page is where you can manage your account settings.",
     "title": "Account"
   },
   "AnnouncementsMetadata": {
-    "description": "Bekijk hier alle aankondigingen.",
-    "title": "Aankondigingen"
+    "description": "Stay up to date with all the latest announcements.",
+    "title": "Announcements"
   },
   "ChangelogMetadata": {
-    "description": "Bekijk hier alle wijzigingen die we hebben aangebracht.",
-    "title": "Wijzigingslogboek"
+    "description": "Stay up to date with all the latest changes.",
+    "title": "Changelog"
   },
   "CommunitiesMetadata": {
-    "description": "Ontdek de verschillende gemeenschappen en sluit je aan bij degenen die je leuk vindt.",
-    "title": "Gemeenschappen"
+    "description": "Find communities that you can join and participate in.",
+    "title": "Communities"
   },
   "EventsMetadata": {
-    "description": "Bekijk hier de aankomende evenementen.",
-    "title": "Evenementen"
+    "description": "Come and join us at our or community events!",
+    "title": "Events"
   },
   "GalleryMetadata": {
-    "description": "Wil je schattige foto's zien? Dan ben je hier aan het juiste adres!",
-    "title": "Galerij"
+    "description": "Do you want to see cute pictures? Then you're in the right place!",
+    "title": "Gallery"
   },
   "HomePage": {
-    "checkapp": "Bekijk onze app!",
-    "description1": "De Headpat Community is een online gemeenschap voor sociale media. We bieden onze leden vrijwillig een platform om te verbinden, uit te wisselen en zich uit te drukken.",
-    "description2": "Doe met ons mee om je momenten te delen, evenementen te ontdekken, gemeenschappen te verbinden, locaties te verkennen en nog veel meer!",
-    "latestupdates": "Laatste updates",
-    "showoffwithconfidence": "Laat zien met vertrouwen"
+    "checkapp": "Check out our app!",
+    "description1": "The Headpat Community is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.",
+    "description2": "Join us to share your moments, discover events, connect with communities, explore locations, and so much more!",
+    "latestupdates": "Latest updates",
+    "showoffwithconfidence": "Show off with confidence"
   },
   "LegalMetadata": {
-    "description": "Alle juridische informatie is hier te vinden.",
-    "title": "Juridisch"
+    "description": "All legal information can be found here.",
+    "title": "Legal"
   },
   "LocationsMetadata": {
-    "description": "Wil je je vrienden of evenementen op een kaart zien? Bekijk onze kaart!",
-    "title": "Kaartlocaties"
+    "description": "Want to see your friends or events on a map? Check out our map!",
+    "title": "Map Locations"
   },
   "MainMetadata": {
-    "description": "De Headpat Community is een online gemeenschap voor sociale media. We bieden onze leden vrijwillig een platform om te verbinden, uit te wisselen en zich uit te drukken.",
+    "description": "The Headpat Community is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.",
     "title": "Headpat Community"
   },
   "NotificationsMetadata": {
-    "description": "Bekijk hier al je meldingen.",
-    "title": "Meldingen"
+    "description": "See all your notifications here.",
+    "title": "Notifications"
   },
   "PageNames": {
-    "about": "Over ons",
+    "about": "About us",
     "account": "Account",
-    "announcements": "Aankondigingen",
-    "changelog": "Wijzigingen",
+    "announcements": "Announcements",
+    "changelog": "Changelog",
     "chat": "Chat",
-    "communities": "Gemeenschappen",
+    "communities": "Communities",
     "contact": "Contact",
-    "events": "Evenementen",
-    "gallery": "Galerij",
-    "home": "Startpagina",
-    "legal": "Juridisch",
-    "login": "Aanmelden",
-    "logout": "Afmelden",
-    "map": "Kaart",
-    "myprofile": "Mijn Profiel",
-    "notifications": "Meldingen",
-    "users": "Gebruikers"
+    "events": "Events",
+    "gallery": "Gallery",
+    "home": "Home",
+    "legal": "Legal",
+    "login": "Login",
+    "logout": "Logout",
+    "map": "Map",
+    "myprofile": "My Profile",
+    "notifications": "Notifications",
+    "users": "Users"
   },
   "SupportMetadata": {
-    "description": "Heb je hulp nodig? We zijn hier om je te helpen!",
-    "title": "Ondersteuning"
+    "description": "Do you require help? We're here to assist you!",
+    "title": "Support"
   },
   "UsersMetadata": {
-    "description": "Vind hier de laatst geregistreerde gebruikers.",
-    "title": "Gebruikers"
+    "description": "Find the latest registered users here.",
+    "title": "Users"
   }
 }
