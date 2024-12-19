@@ -21,15 +21,13 @@ import {
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
+import { createUser } from '@/utils/actions/login-actions'
 import { Link, useRouter } from '@/i18n/routing'
-import { account } from '@/app/appwrite-client'
+import { account, client } from '@/app/appwrite-client'
 import PageLayout from '@/components/pageLayout'
 import { toast } from 'sonner'
-import { useUser } from '@/components/contexts/UserContext'
-import { ID } from 'node-appwrite'
 
 export default function Login({ locale }) {
-  const { setUser } = useUser()
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -54,44 +52,50 @@ export default function Login({ locale }) {
 
   const handleEmailLogin = async (e: any) => {
     e.preventDefault()
-    await account.createVerification('https://headpat.place/i/verify-email')
 
-    const errorMessages = {
-      user_invalid_credentials: 'E-Mail or Password incorrect.',
-      user_blocked: 'User is blocked.',
-      user_oauth2_unauthorized: 'OAuth2 not authorized.',
-      user_session_already_exists:
-        'Session already exists. Please logout first.',
+    const signIn = async () => {
+      const response = await fetch('/api/user/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: data.email, password: data.password }),
+      })
+      return response.json()
     }
 
-    const errorCodes = {
-      400: 'Invalid E-Mail or password provided.',
-      401: 'E-Mail or Password incorrect.',
-      409: 'E-Mail already in use.',
-      429: 'Too many requests, please try again later.',
-    }
+    if (isRegistering) {
+      const response = await createUser(data)
 
-    try {
-      if (isRegistering) {
-        await account.create(
-          ID.unique(),
-          data.email,
-          data.password,
-          // @ts-ignore
-          data.username
-        )
-        window.location.href = '/account'
+      const errorMessages = {
+        400: 'Invalid E-Mail or password provided.',
+        401: 'E-Mail or Password incorrect.',
+        409: 'E-Mail already in use.',
+        429: 'Too many requests, please try again later.',
       }
-      await account.createEmailPasswordSession(data.email, data.password)
-      const session = await account.get()
-      setUser(session)
-      toast.success('Logged in successfully.')
-    } catch (error) {
-      const errorMessage =
-        errorMessages[error?.response?.type] || errorCodes[error.code]
-      if (errorMessage) {
-        toast.error(errorMessage)
+
+      if (errorMessages[response.code]) {
+        toast.error(errorMessages[response.code])
+        return
       }
+
+      const dataResponse = await signIn()
+      client.setSession(dataResponse.secret)
+      await account.createVerification('https://headpat.place/i/verify-email')
+      window.location.href = '/account'
+    } else {
+      const dataResponse = await signIn()
+
+      const errorMessages = {
+        user_invalid_credentials: 'E-Mail or Password incorrect.',
+        user_blocked: 'User is blocked.',
+      }
+
+      if (errorMessages[dataResponse?.error?.response?.type]) {
+        toast.error(errorMessages[dataResponse.error.response.type])
+        return
+      }
+
+      client.setSession(dataResponse.secret)
+      window.location.href = '/account'
     }
   }
 
