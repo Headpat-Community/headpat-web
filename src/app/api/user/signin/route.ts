@@ -1,11 +1,11 @@
-import { createAdminClient } from '@/app/appwrite-session'
+import { createSessionServerClient } from '@/app/appwrite-session'
 import { cookies } from 'next/headers'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 export const runtime = 'edge'
 
-export async function POST(request) {
-  const { account } = await createAdminClient()
+export async function POST(request: NextRequest) {
+  const { account } = await createSessionServerClient()
   // if POST is not json, return 400
   if (request.headers.get('content-type') !== 'application/json') {
     return NextResponse.json({ error: 'Invalid content type', status: 400 })
