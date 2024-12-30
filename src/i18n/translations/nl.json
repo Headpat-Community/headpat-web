@@ -22,7 +22,7 @@
     "title": "Gemeenschappen"
   },
   "EventsMetadata": {
-    "description": "Bekijk hier de aankomende evenementen.",
+    "description": "Bekijk hier de aankomende evenementen",
     "title": "Evenementen"
   },
   "GalleryMetadata": {
@@ -78,5 +78,14 @@
   "UsersMetadata": {
     "description": "Vind hier de laatst geregistreerde gebruikers.",
     "title": "Gebruikers"
+  },
+  "Zod": {
+    "Login": {
+      "MinPasswordLength": "Wachtwoord moet minstens 8 tekens bevatten",
+      "MinUsernameLength": "Gebruikersnaam moet uit minstens 3 tekens bestaan",
+      "MaxPasswordLength": "Wachtwoord mag maximaal 256 tekens bevatten",
+      "AcceptedTerms": "Je moet de voorwaarden accepteren",
+      "InvalidEmail": "Ongeldig e-mailadres"
+    }
   }
 }

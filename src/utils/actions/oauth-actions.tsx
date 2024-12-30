@@ -108,3 +108,18 @@ export async function signInWithApple(locale: string) {
   // @ts-ignore
   return redirect({ href: redirectUrl, locale })
 }
+
+export async function signInWithEurofurence(locale: string) {
+  const { account } = await createAdminClient()
+
+  const origin = (await headers()).get('origin')
+
+  const redirectUrl = await account.createOAuth2Token(
+    OAuthProvider.Oidc,
+    `${origin}/api/user/oauth`,
+    `${origin}/login?failure=true`
+  )
+
+  // @ts-ignore
+  return redirect({ href: redirectUrl, locale })
+}

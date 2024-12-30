@@ -22,7 +22,7 @@
     "title": "Communities"
   },
   "EventsMetadata": {
-    "description": "Come and join us at our or community events!",
+    "description": "Come and join us at our or community events",
     "title": "Events"
   },
   "GalleryMetadata": {
@@ -78,5 +78,14 @@
   "UsersMetadata": {
     "description": "Find the latest registered users here.",
     "title": "Users"
+  },
+  "Zod": {
+    "Login": {
+      "MinPasswordLength": "Password must be at least 8 characters",
+      "MinUsernameLength": "Username must be at least 3 characters",
+      "MaxPasswordLength": "Password must be at most 256 characters",
+      "AcceptedTerms": "You must accept the terms and conditions",
+      "InvalidEmail": "Invalid email address"
+    }
   }
 }

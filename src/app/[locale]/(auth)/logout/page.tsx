@@ -1,31 +1,28 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useUser } from '@/components/contexts/UserContext'
+import { useRouter } from '@/i18n/routing'
 
 export const runtime = 'edge'
 
 export default function LogoutPage() {
   const [error, setError] = useState(null)
-  const { setUser } = useUser()
+  const { current, logout } = useUser()
+  const router = useRouter()
 
   useEffect(() => {
-    fetch(`/api/user/logoutUser`, {
-      method: 'POST',
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw response
-        }
-        return response.json() // we only get here if there is no error
-      })
+    if (!current) {
+      router.push('/')
+      return
+    }
+    logout()
       .then(() => {
-        setUser(null)
-        window.location.href = '/'
+        router.push('/')
       })
-      .catch((err) => {
-        setError(err)
+      .catch((error) => {
+        setError(error)
       })
-  }, [setUser])
+  }, [current, logout, router])
 
   if (error) {
     return <div>Error: {error.message}</div>

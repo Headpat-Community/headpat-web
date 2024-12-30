@@ -41,6 +41,7 @@ export const routing = defineRouting({
     '/legal/termsofservice': '/legal/termsofservice',
     '/login': '/login',
     '/login/mfa': '/login/mfa',
+    '/forgot-password': '/forgot-password',
     '/register': '/register',
     '/logout': '/logout',
     '/pawcraft': '/pawcraft',

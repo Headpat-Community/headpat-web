@@ -80,6 +80,10 @@ export default async function UserProfile(props) {
     [Query.equal('profileUrl', profileUrl)]
   )
 
+  if (userDataResponse.total === 0) {
+    return notFound()
+  }
+
   return (
     <PageLayout
       title={`${userDataResponse.documents[0].displayName || 'Someone'}'s profile`}

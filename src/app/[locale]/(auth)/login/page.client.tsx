@@ -12,30 +12,68 @@ import { Button } from '@/components/ui/button'
 import {
   signInWithApple,
   signInWithDiscord,
+  signInWithEurofurence,
   signInWithGithub,
   signInWithGoogle,
   signInWithMicrosoft,
   signInWithSpotify,
   signInWithTwitch,
 } from '@/utils/actions/oauth-actions'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Checkbox } from '@/components/ui/checkbox'
-import { createUser } from '@/utils/actions/login-actions'
 import { Link, useRouter } from '@/i18n/routing'
-import { account, client } from '@/app/appwrite-client'
+import { account, ID } from '@/app/appwrite-client'
 import PageLayout from '@/components/pageLayout'
 import { toast } from 'sonner'
+import Image from 'next/image'
+import { Form, FormField } from '@/components/ui/form'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import InputField from '@/components/fields/InputField'
+import CheckboxField from '@/components/fields/CheckboxField'
+import { useTranslations } from 'next-intl'
+import { useUser } from '@/components/contexts/UserContext'
+import { toastHandling } from '@/utils/toastHandling'
 
 export default function Login({ locale }) {
-  const [data, setData] = useState({
-    email: '',
-    password: '',
-    username: '',
-  })
-  const [acceptedTerms, setAcceptedTerms] = useState(false)
+  const { init } = useUser()
   const [isRegistering, setIsRegistering] = useState(false)
   const router = useRouter()
+  const zodTranslations = useTranslations('Zod.Login')
+
+  const registerSchema = z.object({
+    username: z.string().trim().min(3, zodTranslations('MinUsernameLength')),
+    email: z.string().trim().email(zodTranslations('InvalidEmail')),
+    password: z
+      .string()
+      .trim()
+      .min(8, zodTranslations('MinPasswordLength'))
+      .max(256, zodTranslations('MaxPasswordLength')),
+    acceptedTerms: z.boolean().refine((value) => value === true, {
+      message: zodTranslations('AcceptedTerms'),
+    }),
+  })
+
+  const loginSchema = z.object({
+    email: z.string().trim().email(zodTranslations('InvalidEmail')),
+    password: z
+      .string()
+      .trim()
+      .min(8, zodTranslations('MinPasswordLength'))
+      .max(256, zodTranslations('MaxPasswordLength')),
+  })
+
+  const formSchema = isRegistering ? registerSchema : loginSchema
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      // @ts-expect-error
+      username: '',
+      email: '',
+      password: '',
+      acceptedTerms: false,
+    },
+  })
+  const { handleSubmit } = form
 
   useEffect(() => {
     const checkAccount = async () => {
@@ -50,8 +88,13 @@ export default function Login({ locale }) {
     checkAccount().then()
   }, [router])
 
-  const handleEmailLogin = async (e: any) => {
-    e.preventDefault()
+  const submit = async (data: z.infer<typeof formSchema>) => {
+    const errorCodes = {
+      400: 'Invalid E-Mail or password provided.',
+      401: 'E-Mail or Password incorrect.',
+      409: 'E-Mail already in use.',
+      429: 'Too many requests, please try again later.',
+    }
 
     const signIn = async () => {
       const response = await fetch('/api/user/signin', {
@@ -62,47 +105,32 @@ export default function Login({ locale }) {
       return response.json()
     }
 
-    if (isRegistering) {
-      const response = await createUser(data)
-
-      const errorMessages = {
-        400: 'Invalid E-Mail or password provided.',
-        401: 'E-Mail or Password incorrect.',
-        409: 'E-Mail already in use.',
-        429: 'Too many requests, please try again later.',
+    try {
+      if (isRegistering) {
+        await account.create(
+          ID.unique(),
+          data.email,
+          data.password,
+          // @ts-expect-error
+          data.username
+        )
       }
-
-      if (errorMessages[response.code]) {
-        toast.error(errorMessages[response.code])
-        return
+      await signIn()
+      await init()
+      toast.success('Logged in successfully.')
+      router.push('/account')
+    } catch (error) {
+      const errorMessage = toastHandling[error] || errorCodes[error.code]
+      if (errorMessage) {
+        toast.error(errorMessage)
       }
-
-      const dataResponse = await signIn()
-      client.setSession(dataResponse.secret)
-      await account.createVerification('https://headpat.place/i/verify-email')
-      window.location.href = '/account'
-    } else {
-      const dataResponse = await signIn()
-
-      const errorMessages = {
-        user_invalid_credentials: 'E-Mail or Password incorrect.',
-        user_blocked: 'User is blocked.',
-      }
-
-      if (errorMessages[dataResponse?.error?.response?.type]) {
-        toast.error(errorMessages[dataResponse.error.response.type])
-        return
-      }
-
-      client.setSession(dataResponse.secret)
-      window.location.href = '/account'
     }
   }
 
   return (
     <PageLayout title={'Login'}>
-      <div className="flex flex-1 justify-center items-center absolute inset-0">
-        <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:ring-white">
+      <div className="flex justify-center items-center">
+        <div className="mx-auto min-w-1/3 rounded-2xl dark:ring-white">
           <div className={'text-center'}>
             <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
               Welcome to Headpat!
@@ -119,100 +147,84 @@ export default function Login({ locale }) {
             </p>
           </div>
 
-          <div className="mt-10">
+          <div className="mt-4">
             <div>
-              <form
-                action="#"
-                method="POST"
-                className="space-y-6"
-                onSubmit={handleEmailLogin}
-              >
-                <div key="1" className="mx-auto max-w-4xl p-6 space-y-6">
-                  <div className="space-y-4">
-                    {isRegistering && (
-                      <>
-                        <div className="space-y-2">
-                          <Label className="flex items-center" htmlFor="email">
-                            Username
-                            <span className="ml-1 text-red-500">*</span>
-                          </Label>
-                          <Input
-                            id="username"
-                            required
-                            type="username"
-                            onChange={(e) =>
-                              setData({ ...data, username: e.target.value })
-                            }
-                          />
-                        </div>
-                      </>
-                    )}
-                    <div className="space-y-2">
-                      <Label className="flex items-center" htmlFor="email">
-                        Email
-                        <span className="ml-1 text-red-500">*</span>
-                      </Label>
-                      <Input
-                        id="email"
-                        placeholder="j@example.com"
-                        required
-                        type="email"
-                        onChange={(e) =>
-                          setData({ ...data, email: e.target.value })
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="flex items-center" htmlFor="password">
-                        Password
-                        <span className="ml-1 text-red-500">*</span>
-                      </Label>
-                      <Input
-                        id="password"
-                        required
-                        type="password"
-                        minLength={8}
-                        onChange={(e) =>
-                          setData({ ...data, password: e.target.value })
-                        }
-                      />
-                    </div>
-                    {isRegistering && (
-                      <div className="space-y-2">
-                        <div className="flex items-center">
-                          <div className="space-y-2">
-                            <div className="flex items-center space-x-2">
-                              <Checkbox
-                                id="terms"
-                                required
-                                onCheckedChange={() =>
-                                  setAcceptedTerms(!acceptedTerms)
-                                }
+              <Form {...form}>
+                <form className="space-y-6" onSubmit={handleSubmit(submit)}>
+                  <div key="1" className="mx-auto max-w-4xl p-6 space-y-6">
+                    <div className="space-y-4">
+                      {isRegistering && (
+                        <>
+                          <FormField
+                            control={form.control}
+                            // @ts-expect-error
+                            name="username"
+                            render={({ field }) => (
+                              <InputField
+                                label="Username"
+                                description=""
+                                placeholder=""
+                                field={field}
                               />
-                              <Label className="leading-none" htmlFor="terms">
-                                I agree to the{' '}
-                                <Link className="underline" href="#">
-                                  terms and conditions
-                                </Link>
-                                <span className="ml-1 text-red-500">*</span>
-                              </Label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    <Button
-                      disabled={isRegistering && !acceptedTerms}
-                      className="w-full"
-                    >
-                      {isRegistering ? 'Register' : 'Login'}
-                    </Button>
-                    <Button variant={'link'} className={'w-full'}>
-                      Forgot password?
-                    </Button>
+                            )}
+                          />
+                        </>
+                      )}
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <InputField
+                            label="E-Mail"
+                            description=""
+                            placeholder=""
+                            field={field}
+                          />
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                          <InputField
+                            label="Password"
+                            description=""
+                            placeholder=""
+                            field={field}
+                            type={'password'}
+                          />
+                        )}
+                      />
+                      {isRegistering && (
+                        <FormField
+                          control={form.control}
+                          // @ts-expect-error
+                          name="acceptedTerms"
+                          render={({ field }) => (
+                            <CheckboxField
+                              label="Accept terms and conditions"
+                              description=""
+                              field={field}
+                            />
+                          )}
+                        />
+                      )}
+                      <Button className="w-full">
+                        {isRegistering ? 'Register' : 'Login'}
+                      </Button>
+                      <Link href={'/forgot-password'}>
+                        <Button
+                          variant={'link'}
+                          type={'button'}
+                          className={'p-0'}
+                        >
+                          Forgot password?
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </Form>
             </div>
 
             <div className="mt-8">
@@ -240,6 +252,23 @@ export default function Login({ locale }) {
                     </span>
                   </button>
                 </form>
+
+                {/*
+                <form action={() => signInWithEurofurence(locale)}>
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#005953] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20">
+                    <Image
+                      src={'/logos/eurofurence.webp'}
+                      alt={'Eurofurence Logo'}
+                      className={'rounded-xl'}
+                      width={20}
+                      height={20}
+                    />
+                    <span className="text-sm font-semibold leading-6">
+                      Eurofurence
+                    </span>
+                  </button>
+                </form>
+                */}
 
                 <form action={() => signInWithGithub(locale)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">

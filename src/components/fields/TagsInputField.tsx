@@ -1,23 +1,20 @@
-import React from 'react'
-import { FormControl, FormLabel, FormItem } from '@/components/ui/form'
-import { Tag, TagInput } from 'emblor'
+import React, { useEffect } from 'react'
+import { FormControl, FormItem, FormLabel } from '@/components/ui/form'
 import { Info } from 'lucide-react'
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
+import { InputTags } from '../ui/input-tags'
 
 interface TagInputFieldProps {
   label: string
   description: string
   placeholder: string
   field: any
-  tags: Tag[]
-  setTags: React.Dispatch<React.SetStateAction<Tag[]>>
-  activeTagIndex: number | null
-  setActiveTagIndex: React.Dispatch<React.SetStateAction<number | null>>
   error?: any
+  maxLength?: number
 }
 
 const TagsInputField: React.FC<TagInputFieldProps> = ({
@@ -25,16 +22,11 @@ const TagsInputField: React.FC<TagInputFieldProps> = ({
   description,
   placeholder,
   field,
-  tags,
-  setTags,
-  activeTagIndex,
-  setActiveTagIndex,
   error,
+  maxLength,
 }) => {
-  const handleTagsChange = (newTags: Tag[]) => {
-    const tagsText = newTags.map((tag) => tag.text)
-    setTags(newTags) // Update the state with the new tags
-    field.onChange(tagsText) // Ensure the form gets the array of strings
+  const handleTagsChange = (newTags: string[]) => {
+    field.onChange(newTags)
   }
 
   return (
@@ -53,28 +45,18 @@ const TagsInputField: React.FC<TagInputFieldProps> = ({
         )}
       </FormLabel>
       <FormControl>
-        <TagInput
-          {...field}
+        <InputTags
+          value={field.value || []} // Ensure it uses the value from the form state
+          onChange={handleTagsChange}
           placeholder={placeholder}
-          tags={tags} // tags is an array of Tag objects
-          setTags={handleTagsChange} // Use handleTagsChange to update the state correctly
-          activeTagIndex={activeTagIndex}
-          setActiveTagIndex={setActiveTagIndex}
-          styleClasses={{
-            tag: { body: 'pl-2' },
-            inlineTagsContainer: 'p-2',
-            input: 'border-none my-2 focus:ring-0',
-          }}
-          borderStyle="none"
-          animation="fadeIn"
+          maxLength={maxLength}
         />
       </FormControl>
-      {Array.isArray(error) &&
-        error.map((err, index) => (
-          <span key={index} className="text-sm text-red-500 dark:text-red-900">
-            {err.message}
-          </span>
-        ))}
+      {error && (
+        <span className="text-sm text-red-500 dark:text-red-900">
+          {error.message}
+        </span>
+      )}
     </FormItem>
   )
 }

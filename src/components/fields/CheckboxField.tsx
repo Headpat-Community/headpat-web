@@ -5,42 +5,36 @@ import {
   FormMessage,
   FormItem,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Info } from 'lucide-react'
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
+import { CheckedState } from '@radix-ui/react-checkbox'
 
-interface InputFieldProps {
+interface CheckboxFieldProps {
   label: string
   description: string
-  placeholder: string
   field: any
-  type?: string
-  maxLength?: number
 }
 
-const InputField: React.FC<InputFieldProps> = ({
+const CheckboxField: React.FC<CheckboxFieldProps> = ({
   label,
   description,
-  placeholder,
   field,
-  type = 'text',
-  maxLength,
 }) => {
-  const [inputValue, setInputValue] = useState<string>(field.value || '')
+  const [checked, setChecked] = useState<CheckedState>(field.value || false)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setInputValue(value)
-    field.onChange(value)
+  const handleChange = (e: CheckedState) => {
+    setChecked(e)
+    field.onChange(e)
   }
 
   return (
     <FormItem>
-      {label && (
+      <div className="flex flex-col gap-3">
         <FormLabel>
           {label || 'Label'}
           {description && (
@@ -54,19 +48,16 @@ const InputField: React.FC<InputFieldProps> = ({
             </HoverCard>
           )}
         </FormLabel>
-      )}
-      <FormControl>
-        <Input
-          type={type}
-          placeholder={placeholder}
-          value={inputValue}
-          onChange={handleChange}
-          maxLength={maxLength}
-        />
-      </FormControl>
-      <FormMessage />
+        <FormControl>
+          <Checkbox
+            checked={checked}
+            onCheckedChange={(e) => handleChange(e)}
+          />
+        </FormControl>
+        <FormMessage />
+      </div>
     </FormItem>
   )
 }
 
-export default InputField
+export default CheckboxField

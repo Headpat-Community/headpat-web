@@ -6,7 +6,7 @@ import {
   FormItem,
 } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
-import { Info } from 'lucide-react'
+import { GlobeIcon, Info } from 'lucide-react'
 import {
   HoverCard,
   HoverCardContent,
@@ -18,6 +18,8 @@ interface TextareaFieldProps {
   description: string
   placeholder: string
   field: any
+  resizable?: boolean
+  rightIcon?: React.ReactNode
 }
 
 const TextareaField: React.FC<TextareaFieldProps> = ({
@@ -25,6 +27,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
   description,
   placeholder,
   field,
+  resizable,
 }) => {
   const [textareaValue, setTextareaValue] = useState(field.value || '')
 
@@ -35,24 +38,28 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
 
   return (
     <FormItem>
-      <FormLabel>
-        {label}
-        {description && (
-          <HoverCard openDelay={100} closeDelay={50}>
-            <HoverCardTrigger>
-              <span className="ml-2 text-gray-500">
-                <Info className="inline-block h-4 w-4" />
-              </span>
-            </HoverCardTrigger>
-            <HoverCardContent>{description}</HoverCardContent>
-          </HoverCard>
-        )}
-      </FormLabel>
+      <div className={'flex items-center justify-between'}>
+        <FormLabel>
+          {label}
+          {description && (
+            <HoverCard openDelay={100} closeDelay={50}>
+              <HoverCardTrigger>
+                <span className="ml-2 text-gray-500">
+                  <Info className="inline-block h-4 w-4" />
+                </span>
+              </HoverCardTrigger>
+              <HoverCardContent>{description}</HoverCardContent>
+            </HoverCard>
+          )}
+        </FormLabel>
+        <GlobeIcon className="h-4 w-4" />
+      </div>
       <FormControl>
         <Textarea
           placeholder={placeholder}
           value={textareaValue}
           onChange={handleChange}
+          className={`${resizable ? null : 'resize-none'}`}
         />
       </FormControl>
       <FormMessage />

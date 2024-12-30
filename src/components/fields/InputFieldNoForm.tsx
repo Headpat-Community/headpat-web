@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Info } from 'lucide-react'
 import {
@@ -12,12 +12,14 @@ interface InputFieldProps {
   label: string
   description: string
   placeholder: string
+  maxLength?: number
 }
 
 const InputFieldNoForm: React.FC<InputFieldProps> = ({
   label,
   description,
   placeholder,
+  maxLength,
 }) => {
   return (
     <div className={'text-start'}>
@@ -35,7 +37,12 @@ const InputFieldNoForm: React.FC<InputFieldProps> = ({
         )}
       </Label>
       <div>
-        <Input type="text" placeholder={placeholder} disabled />
+        <Input
+          type="text"
+          placeholder={placeholder}
+          disabled
+          maxLength={maxLength}
+        />
       </div>
     </div>
   )

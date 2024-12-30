@@ -10,6 +10,8 @@ import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react'
 import { createSessionServerClient } from './appwrite-session'
 import Maintenance from '@/components/static/maintenance'
 import Script from 'next/script'
+import { getMessages } from 'next-intl/server'
+import { NextIntlClientProvider } from 'next-intl'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -79,6 +81,7 @@ export default async function RootLayout({ children }) {
   const status = await databases
     .getDocument('config', 'status', 'website')
     .catch(() => ({ isMaintenance: true }))
+  const messages = await getMessages()
 
   if (status.isMaintenance) {
     return (
@@ -126,11 +129,13 @@ export default async function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          <UserProvider>
-            <DataCacheProvider>
-              <div className="w-full">{children}</div>
-            </DataCacheProvider>
-          </UserProvider>
+          <NextIntlClientProvider messages={messages}>
+            <UserProvider>
+              <DataCacheProvider>
+                <div className="w-full">{children}</div>
+              </DataCacheProvider>
+            </UserProvider>
+          </NextIntlClientProvider>
         </ThemeProvider>
         <SonnerToaster
           toastOptions={{
