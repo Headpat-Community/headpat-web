@@ -68,7 +68,7 @@ const DatetimeField: React.FC<DatetimeFieldProps> = ({
               mode="single"
               selected={datetimeValue}
               onSelect={(date) => handleChange(date.toISOString())}
-              initialFocus
+              autoFocus
             />
           </PopoverContent>
         </Popover>
