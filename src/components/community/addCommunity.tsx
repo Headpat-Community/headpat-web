@@ -21,7 +21,7 @@ import { Button } from '@/components/ui/button'
 import { ExecutionMethod, Models } from 'node-appwrite'
 import { functions } from '@/app/appwrite-client'
 import { useRouter } from '@/i18n/routing'
-import { HeadpatException } from '@/utils/types/models'
+import { FunctionResponse } from '@/utils/types/models'
 
 const communitySchema = z.object({
   name: z
@@ -67,7 +67,7 @@ export default function AddCommunity({
       `/community/create`,
       ExecutionMethod.POST
     )
-    const resultCreate: Models.Team<Models.Preferences> | HeadpatException =
+    const resultCreate: Models.Team<Models.Preferences> | FunctionResponse =
       JSON.parse(data.responseBody)
 
     if ('type' in resultCreate) {

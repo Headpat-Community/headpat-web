@@ -1,6 +1,6 @@
 import { Models } from 'node-appwrite'
 
-export interface HeadpatException {
+export interface FunctionResponse {
   error: string
   type: string
   code: number
