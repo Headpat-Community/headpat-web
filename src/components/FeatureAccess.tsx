@@ -20,29 +20,29 @@ const FeatureAccess = ({ featureName, children }: FeatureAccessProps) => {
     return null
   }
 
-  if (!current) {
+  if (featureStatus.type !== 'public' && !current) {
     router.push('/login')
     return null
   }
 
-  if (!featureStatus?.isEnabled && !current.labels?.includes('dev')) {
+  if (!featureStatus.isEnabled && !current?.labels?.includes('dev')) {
     return <Maintenance />
   } else if (
-    featureStatus?.type === 'earlyaccess' &&
+    featureStatus.type === 'earlyaccess' &&
     !(
-      current.labels?.includes(`${featureName}Beta`) ||
-      current.labels?.includes('dev')
+      current?.labels?.includes(`${featureName}Beta`) ||
+      current?.labels?.includes('dev')
     )
   ) {
     return <NoAccess />
   } else if (
-    featureStatus?.type === 'staff' &&
-    !(current.labels?.includes('staff') || current.labels?.includes('dev'))
+    featureStatus.type === 'staff' &&
+    !(current?.labels?.includes('staff') || current?.labels?.includes('dev'))
   ) {
     return <NoAccess />
   } else if (
-    featureStatus?.type === 'dev' &&
-    !current.labels?.includes('dev')
+    featureStatus.type === 'dev' &&
+    !current?.labels?.includes('dev')
   ) {
     return <NoAccess />
   }
