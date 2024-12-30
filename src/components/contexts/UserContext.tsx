@@ -9,6 +9,7 @@ import { useTheme } from 'next-themes'
 
 interface UserContextValue {
   current: Account.AccountPrefs | null
+  init: () => Promise<void>
   setUser: React.Dispatch<React.SetStateAction<Account.AccountType | null>>
   login: (email: string, password: string) => Promise<void>
   loginOAuth: (userId: string, secret: string) => Promise<void>
