@@ -511,7 +511,7 @@ export namespace Events {
     /**
      * User IDs of attendees.
      */
-    attendees: string[]
+    attendees: string[] | number
     /**
      * The community ID connected to the event.
      */

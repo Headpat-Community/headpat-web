@@ -13,7 +13,9 @@ import { unstable_noStore } from 'next/cache'
 export async function getUser(): Promise<Account.AccountPrefs> {
   unstable_noStore()
   const { account } = await createSessionServerClient()
-  return await account.get()
+  return await account.get().catch((error) => {
+    return JSON.parse(JSON.stringify(error))
+  })
 }
 
 /**
