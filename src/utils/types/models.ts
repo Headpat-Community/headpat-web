@@ -511,11 +511,19 @@ export namespace Events {
     /**
      * User IDs of attendees.
      */
-    attendees: string[]
+    attendees: string[] | number
     /**
      * The community ID connected to the event.
      */
     communityId: string
+    /**
+     * Maximum amount of attendees.
+     */
+    visitorCapacity: number
+    /**
+     * Images of the event.
+     */
+    images: string[]
   }
 }
 

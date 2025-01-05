@@ -6,6 +6,7 @@ export default function PageLayout({
   children,
   title,
   middleComponent = null,
+  className = '',
 }) {
   return (
     <>
@@ -20,7 +21,7 @@ export default function PageLayout({
         </div>
         <Separator />
       </div>
-      <div>{children}</div>
+      <div className={className}>{children}</div>
     </>
   )
 }
