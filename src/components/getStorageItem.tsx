@@ -79,3 +79,10 @@ export const getCommunityBannerUrlPreview = (
   if (!galleryId) return defaultImage
   return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/community-banners/files/${galleryId}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&${attributes}`
 }
+
+export const getEventImageUrlPreview = (
+  galleryId: string,
+  attributes: string
+) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/events/files/${galleryId}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&${attributes}`
+}
