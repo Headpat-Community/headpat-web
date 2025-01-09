@@ -444,7 +444,7 @@ export default function GeneralAccountView({
           </div>
 
           <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-            <div className="col-span-fullf flex gap-4">
+            <div className="col-span-full flex gap-4">
               <MfaAlert mfaList={mfaList} />
               {mfaList.totp && <MfaRecoveryCodes />}
             </div>
