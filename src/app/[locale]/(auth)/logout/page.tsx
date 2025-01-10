@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { useUser } from '@/components/contexts/UserContext'
 import { useRouter } from '@/i18n/routing'
+import { useSearchParams } from 'next/navigation'
 
 export const runtime = 'edge'
 
@@ -9,20 +10,26 @@ export default function LogoutPage() {
   const [error, setError] = useState(null)
   const { current, logout } = useUser()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirect = searchParams.get('redirect') !== 'false'
 
   useEffect(() => {
     if (!current) {
-      router.push('/')
+      if (redirect) {
+        router.push('/')
+      }
       return
     }
-    logout()
+    logout(redirect)
       .then(() => {
-        router.push('/')
+        if (redirect) {
+          router.push('/')
+        }
       })
       .catch((error) => {
         setError(error)
       })
-  }, [current, logout, router])
+  }, [current, logout, router, redirect])
 
   if (error) {
     return <div>Error: {error.message}</div>

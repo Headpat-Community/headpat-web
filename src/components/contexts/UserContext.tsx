@@ -13,7 +13,7 @@ interface UserContextValue {
   setUser: React.Dispatch<React.SetStateAction<Account.AccountType | null>>
   login: (email: string, password: string) => Promise<void>
   loginOAuth: (userId: string, secret: string) => Promise<void>
-  logout: () => Promise<void>
+  logout: (redirect: boolean) => Promise<void>
   register: (email: string, password: string, username: string) => Promise<void>
 }
 
@@ -48,9 +48,9 @@ export function UserProvider(props: any) {
     setUser(accountData)
   }
 
-  async function logout() {
+  async function logout(redirect: boolean) {
     try {
-      fetch(`/api/user/logoutUser`, {
+      fetch(`/api/user/logoutUser?redirect=${redirect}`, {
         method: 'POST',
       })
         .then((response) => {

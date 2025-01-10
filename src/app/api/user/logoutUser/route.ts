@@ -1,27 +1,30 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { createSessionClient } from '@/app/appwrite-session'
 
 export const runtime = 'edge'
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   const { account } = await createSessionClient(request)
+  const cookie = await cookies()
+
+  const redirect = request.nextUrl.searchParams.get('userId') === 'true'
 
   try {
     // Delete the specified cookie
-    ;(await cookies()).set(
-      `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
-      '',
-      {
-        path: '/',
-        domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
-        secure: true,
-        httpOnly: true,
-        expires: new Date(0),
-      }
-    )
+    cookie.set(`a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`, '', {
+      path: '/',
+      domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
+      secure: true,
+      httpOnly: true,
+      expires: new Date(0),
+    })
 
-    await account.deleteSession('current')
+    if (redirect) {
+      await account.deleteSession('current')
+    } else {
+      await account.deleteSessions()
+    }
 
     return NextResponse.json({ status: 204 })
   } catch (error) {
