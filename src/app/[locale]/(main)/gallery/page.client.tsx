@@ -7,6 +7,8 @@ import { Link } from '@/i18n/routing'
 import { Gallery } from '@/utils/types/models'
 import { ImageFormat } from 'node-appwrite'
 import { toast } from 'sonner'
+import { Badge } from '@/components/ui/badge'
+import { isMimeTypeAnimatable } from '@/utils/helpers'
 
 export default function FetchGallery({ enableNsfw }) {
   const [gallery, setGallery] = useState<Gallery.GalleryDocumentsType[]>([])
@@ -101,7 +103,7 @@ export default function FetchGallery({ enableNsfw }) {
                 <div key={item.$id}>
                   {item && (
                     <div
-                      className={`h-64 w-64 overflow-hidden rounded-lg ${
+                      className={`h-64 w-64 ${
                         item.nsfw && !enableNsfw ? 'relative' : ''
                       }`}
                     >
@@ -113,6 +115,7 @@ export default function FetchGallery({ enableNsfw }) {
                           pathname: '/gallery/[galleryId]',
                           params: { galleryId: item.$id },
                         }}
+                        className="relative"
                       >
                         {item?.mimeType?.includes('video') && (
                           <div className="relative h-full w-full">
@@ -136,13 +139,22 @@ export default function FetchGallery({ enableNsfw }) {
                         <Image
                           src={getGalleryImageUrl(item.galleryId, imageFormat)}
                           alt={item.name || 'Gallery Image'}
-                          className={`h-full max-h-[600px] w-full max-w-[600px] object-cover`}
-                          width={600}
-                          height={600}
+                          className={`h-full max-h-[600px] w-full max-w-[600px] object-cover rounded-lg`}
+                          width={256}
+                          height={256}
+                          quality={90}
                           draggable={false}
                           loading="lazy"
-                          unoptimized={true}
+                          unoptimized={isMimeTypeAnimatable(item.mimeType)}
+                          placeholder="blur"
+                          blurDataURL={'/images/placeholder-image-color.webp'}
                         />
+                        {(item.mimeType === 'image/gif' ||
+                          item.mimeType.includes('video')) && (
+                          <Badge className="absolute top-0 -translate-y-1/2 left-2 bg-secondary border-primary uppercase">
+                            {imageFormat}
+                          </Badge>
+                        )}
                       </Link>
                     </div>
                   )}

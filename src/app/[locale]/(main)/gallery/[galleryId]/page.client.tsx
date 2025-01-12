@@ -13,6 +13,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import UserCard from '@/components/user/userCard'
 import ModerationModal from '@/components/gallery/moderation/ModerationModal'
 import Image from 'next/image'
+import { isMimeTypeAnimatable } from '@/utils/helpers'
+import NoAccessNsfw from '@/components/static/noAccessNsfw'
 
 export default function PageClient({ galleryId }: { galleryId: string }) {
   const [image, setImage] = useState<Gallery.GalleryDocumentsType>(null)
@@ -52,9 +54,9 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
   const description = sanitize(image?.longText)
   const descriptionSanitized = description.replace(/\n/g, '<br />')
 
-  if (!image) {
-    return <PageLayout title={'Gallery'}>Loading...</PageLayout>
-  }
+  // if (!image) {
+  //   return <PageLayout title={'Gallery'}>Loading...</PageLayout>
+  // }
 
   const getImageUrl = (galleryId: string) => {
     return storage.getFileView('gallery', galleryId)
@@ -62,80 +64,60 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
 
   return (
     <PageLayout title={'Gallery'}>
-      <div>
+      <div className="m-4">
+        <Button asChild>
+          <Link href={'/gallery'}>&larr; Go back</Link>
+        </Button>
         <div className="flex flex-wrap items-center justify-center gap-4 p-8">
           <div>
             <div className="flex flex-wrap items-start">
-              {!image.nsfw && !current?.prefs?.nsfw && (
-                <div className="mb-4 mr-4 flex sm:mt-4 md:mb-0">
-                  <Button asChild>
-                    <Link href={'/gallery'}>&larr; Go back</Link>
-                  </Button>
-                </div>
-              )}
-              {image.nsfw && !current?.prefs?.nsfw ? (
-                <div className="fixed inset-0 flex items-center justify-center">
-                  {/* Semi-transparent overlay */}
-                  <div
-                    className="fixed inset-0 bg-black opacity-50"
-                    onClick={() => {
-                      // Handle overlay click if needed (e.g., close the error message)
-                    }}
-                  ></div>
-                  <div className="relative z-10 rounded-lg bg-white p-4 text-xl text-black shadow-lg">
-                    You disabled NSFW or you are not logged in, so you
-                    can&apos;t see this image.
-                    <br />
-                    <br />
-                    <Link href={'/gallery'}>
-                      <Button>Back to gallery</Button>
-                    </Link>
-                  </div>
-                </div>
+              {image?.nsfw && !current?.prefs?.nsfw ? (
+                <NoAccessNsfw />
               ) : (
                 <>
-                  {imagePrefs?.isHidden ? (
-                    <div className="imgsinglegallery mx-auto h-[550px] w-96 max-w-full rounded-lg object-contain">
-                      This image is hidden.
-                      <Button
-                        onClick={() => setModerationModalOpen(true)}
-                        variant={'outline'}
-                        className={'flex mt-4'}
-                      >
-                        Show image
-                      </Button>
-                    </div>
-                  ) : (
-                    <>
-                      {image?.mimeType?.includes('video') ? (
-                        <video
-                          controls
-                          controlsList="nodownload"
-                          loop={true}
-                          draggable={false}
-                          className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
+                  {image ? (
+                    imagePrefs?.isHidden ? (
+                      <div className="imgsinglegallery mx-auto h-[550px] w-96 max-w-full rounded-lg object-contain">
+                        This image is hidden.
+                        <Button
+                          onClick={() => setModerationModalOpen(true)}
+                          variant={'outline'}
+                          className={'flex mt-4'}
                         >
-                          <source
-                            src={getGalleryImageUrlView(image?.galleryId)}
-                            type={image?.mimeType}
+                          Show image
+                        </Button>
+                      </div>
+                    ) : (
+                      <>
+                        {image?.mimeType?.includes('video') ? (
+                          <video
+                            controls
+                            controlsList="nodownload"
+                            loop={true}
+                            draggable={false}
+                            className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
+                          >
+                            <source
+                              src={getGalleryImageUrlView(image?.galleryId)}
+                              type={image?.mimeType}
+                            />
+                            Your browser does not support the video tag.
+                          </video>
+                        ) : (
+                          <Image
+                            src={getImageUrl(image?.galleryId)}
+                            alt={image?.name || 'Headpat Gallery Image'}
+                            title={image?.name || 'Headpat Gallery Image'}
+                            width={1200}
+                            height={550}
+                            className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
+                            unoptimized={isMimeTypeAnimatable(image?.mimeType)}
                           />
-                          Your browser does not support the video tag.
-                        </video>
-                      ) : (
-                        <Image
-                          src={getImageUrl(image?.galleryId)}
-                          alt={image?.name || 'Headpat Gallery Image'}
-                          title={image?.name || 'Headpat Gallery Image'}
-                          width={1200}
-                          height={550}
-                          className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
-                          unoptimized={
-                            image.mimeType?.includes('svg') ||
-                            image.mimeType?.includes('gif')
-                          }
-                        />
-                      )}
-                    </>
+                        )}
+                      </>
+                    )
+                  ) : (
+                    <Skeleton className={'h-96 w-96'} />
                   )}
                   <div className="ml-4">
                     <div className="mt-4">
@@ -153,7 +135,11 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                   Title
                                 </dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                  {image.name || 'No title provided.'}
+                                  {image ? (
+                                    image.name || 'No title provided.'
+                                  ) : (
+                                    <Skeleton className={'h-4 w-[100px]'} />
+                                  )}
                                 </dd>
                               </div>
                               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -177,15 +163,19 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                   Created at
                                 </dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                  {new Date(image.$createdAt).toLocaleString(
-                                    'en-GB',
-                                    {
-                                      day: '2-digit',
-                                      month: '2-digit',
-                                      year: 'numeric',
-                                      hour: '2-digit',
-                                      minute: '2-digit',
-                                    }
+                                  {image ? (
+                                    new Date(image.$createdAt).toLocaleString(
+                                      'en-GB',
+                                      {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                      }
+                                    )
+                                  ) : (
+                                    <Skeleton className={'h-4 w-[100px]'} />
                                   )}
                                 </dd>
                               </div>
@@ -194,15 +184,19 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                   Last changed
                                 </dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                  {new Date(image.$updatedAt).toLocaleString(
-                                    'en-GB',
-                                    {
-                                      day: '2-digit',
-                                      month: '2-digit',
-                                      year: 'numeric',
-                                      hour: '2-digit',
-                                      minute: '2-digit',
-                                    }
+                                  {image ? (
+                                    new Date(image.$updatedAt).toLocaleString(
+                                      'en-GB',
+                                      {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                      }
+                                    )
+                                  ) : (
+                                    <Skeleton className={'h-4 w-[100px]'} />
                                   )}
                                 </dd>
                               </div>
@@ -211,7 +205,15 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                   NSFW
                                 </dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                  {image?.nsfw ? 'Yes' : 'No'}
+                                  {image ? (
+                                    image?.nsfw ? (
+                                      'Yes'
+                                    ) : (
+                                      'No'
+                                    )
+                                  ) : (
+                                    <Skeleton className={'h-4 w-[50px]'} />
+                                  )}
                                 </dd>
                               </div>
                               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -219,34 +221,47 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                   Description
                                 </dt>
                                 <dd className="mt-1 max-w-full break-words text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                  <div
-                                    dangerouslySetInnerHTML={{
-                                      __html:
-                                        descriptionSanitized ||
-                                        'No description provided.',
-                                    }}
-                                  />
+                                  {image ? (
+                                    <div
+                                      dangerouslySetInnerHTML={{
+                                        __html:
+                                          descriptionSanitized ||
+                                          'No description provided.',
+                                      }}
+                                    />
+                                  ) : (
+                                    <Skeleton className={'h-4 w-[100px]'} />
+                                  )}
                                 </dd>
                               </div>
                               <div className="px-4 py-6 sm:gap-4 sm:px-0 flex items-center">
-                                <Link
-                                  // @ts-ignore
-                                  href={getGalleryImageUrlView(image.galleryId)}
-                                  target={'_blank'}
-                                >
-                                  <Button variant={'outline'}>
-                                    See full image
-                                  </Button>
-                                </Link>
-                                <ModerationModal
-                                  isOpen={moderationModalOpen}
-                                  setIsOpen={setModerationModalOpen}
-                                  image={image}
-                                  imagePrefs={imagePrefs}
-                                  setImagePrefs={setImagePrefs}
-                                  current={current}
-                                />
-                                {current?.$id === image.userId && (
+                                {image ? (
+                                  <Link
+                                    // @ts-ignore
+                                    href={getGalleryImageUrlView(
+                                      image.galleryId
+                                    )}
+                                    target={'_blank'}
+                                  >
+                                    <Button variant={'outline'}>
+                                      See full image
+                                    </Button>
+                                  </Link>
+                                ) : (
+                                  <Skeleton className={'h-4 w-[100px]'} />
+                                )}
+                                {image && (
+                                  <ModerationModal
+                                    isOpen={moderationModalOpen}
+                                    setIsOpen={setModerationModalOpen}
+                                    image={image}
+                                    imagePrefs={imagePrefs}
+                                    setImagePrefs={setImagePrefs}
+                                    current={current}
+                                  />
+                                )}
+
+                                {image && current?.$id === image.userId && (
                                   <Link
                                     href={{
                                       pathname: '/account/gallery/[galleryId]',
