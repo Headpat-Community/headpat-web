@@ -1,14 +1,14 @@
 'use client'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
 import { databases, Query, storage } from '@/app/appwrite-client'
-import * as Sentry from '@sentry/nextjs'
-import { Link } from '@/i18n/routing'
-import { Gallery } from '@/utils/types/models'
-import { ImageFormat } from 'node-appwrite'
-import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
+import { Link } from '@/i18n/routing'
 import { isMimeTypeAnimatable } from '@/utils/helpers'
+import { Gallery } from '@/utils/types/models'
+import * as Sentry from '@sentry/nextjs'
+import Image from 'next/image'
+import { ImageFormat } from 'node-appwrite'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 export default function FetchGallery({ enableNsfw }) {
   const [gallery, setGallery] = useState<Gallery.GalleryDocumentsType[]>([])

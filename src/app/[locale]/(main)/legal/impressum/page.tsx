@@ -1,5 +1,3 @@
-import { Link } from '@/i18n/routing'
-
 export const metadata = {
   title: 'Impressum',
 }
@@ -21,13 +19,20 @@ export default function ImpressumPage() {
             Contact
           </h1>
           <br />
-          <p>Only on request: help@headpat.place</p>
+          <p>
+            Only on request:{' '}
+            <a href="mailto:help@headpat.place">help@headpat.place</a>
+          </p>
           <br />
           <p>
             <strong>Contact info</strong>
           </p>
-          <p>E-Mail: help@headpat.place</p>
-          <p>Webseite: https://headpat.place</p>
+          <p>
+            E-Mail: <a href="mailto:help@headpat.place">help@headpat.place</a>
+          </p>
+          <p>
+            Website: <a href="https://headpat.place">https://headpat.place</a>
+          </p>
           <br />
           <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
             Online dispute resolution
@@ -35,13 +40,13 @@ export default function ImpressumPage() {
           <p>
             The European Commission provides a platform for online dispute
             resolution, available here:{' '}
-            <Link
+            <a
               className="text-link hover:text-link/80"
-              // @ts-ignore
               href="https://ec.europa.eu/consumers/odr/"
+              target="_blank"
             >
               https://ec.europa.eu/consumers/odr/
-            </Link>
+            </a>
             <br />
             <br />I am neither willing nor obliged to participate in dispute
             resolution proceedings in front of a consumer arbitration board.
