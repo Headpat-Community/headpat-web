@@ -253,7 +253,6 @@ export default function Login({ locale }) {
                   </button>
                 </form>
 
-                {/*
                 <form action={() => signInWithEurofurence(locale)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#005953] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20">
                     <Image
@@ -268,7 +267,6 @@ export default function Login({ locale }) {
                     </span>
                   </button>
                 </form>
-                */}
 
                 <form action={() => signInWithGithub(locale)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
