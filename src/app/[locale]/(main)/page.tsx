@@ -137,7 +137,9 @@ export default async function Home({ params }) {
                 <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-lg">
                   <Image
                     alt="App screenshot"
-                    src="/images/headpat_frontpage.webp"
+                    src={
+                      'https://api.headpat.place/v1/storage/buckets/main-storage/files/headpat_frontpage/view?project=hp-main'
+                    }
                     draggable={false}
                     priority
                     width={512}
