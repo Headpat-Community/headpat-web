@@ -9,12 +9,16 @@ import { ExecutionMethod } from 'node-appwrite'
 import { functions } from '@/app/appwrite-client'
 import { useDataCache } from '@/components/contexts/DataCacheContext'
 import { toast } from 'sonner'
+import { useUser } from '@/components/contexts/UserContext'
+import { useRouter } from '@/i18n/routing'
 
 export default function PageClient() {
+  const router = useRouter()
   const [loading, setLoading] = React.useState(true)
   const [notifications, setNotifications] = React.useState<
     Notifications.NotificationsDocumentsType[]
   >([])
+  const { current } = useUser()
   const { getAllCache, saveCache } = useDataCache()
 
   const fetchNotifications = React.useCallback(async () => {
@@ -50,6 +54,10 @@ export default function PageClient() {
   React.useEffect(() => {
     fetchNotifications().then()
   }, [])
+
+  if (!current) {
+    router.push('/login')
+  }
 
   if (loading) {
     return (
