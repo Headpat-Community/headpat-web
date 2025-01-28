@@ -16,10 +16,7 @@ export async function generateMetadata({ params }) {
   })
 
   return {
-    title: {
-      default: 'Account Settings',
-      template: `%s - ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
-    },
+    title: 'Account Settings',
     description: meta('description'),
     openGraph: {
       title: meta('title'),

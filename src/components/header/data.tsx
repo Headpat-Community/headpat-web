@@ -85,7 +85,7 @@ export const Nav2 = (account: Account.AccountPrefs, translations: any) => {
       label: '',
       icon: File,
       variant: 'ghost' as const,
-      href: account ? `/profile` : `/login`,
+      href: `/profile`,
     },
     {
       title: translations.communities,

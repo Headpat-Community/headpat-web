@@ -371,7 +371,7 @@ export default function PageClient() {
       >
         <Button
           className={
-            'justify-center items-center bg-white h-14 w-14 rounded-full shadow'
+            'justify-center items-center bg-white h-14 w-14 rounded-full shadow-sm'
           }
           onClick={() => setFiltersOpen(true)}
         >
@@ -390,7 +390,7 @@ export default function PageClient() {
         >
           <Button
             className={
-              'justify-center items-center bg-white h-14 w-14 rounded-full shadow'
+              'justify-center items-center bg-white h-14 w-14 rounded-full shadow-sm'
             }
             onClick={() => setSettingsOpen(true)}
           >

@@ -96,7 +96,7 @@ const ForgotPassword = () => {
               </Button>
             </div>
             <div>
-              <Button variant={'destructive'} asChild>
+              <Button variant={'outline'} asChild>
                 <Link href={'/login'} className="w-full">
                   &larr; Login
                 </Link>

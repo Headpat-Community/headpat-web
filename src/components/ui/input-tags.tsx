@@ -38,7 +38,7 @@ const InputTags = React.forwardRef<HTMLInputElement, InputTagsProps>(
     return (
       <div
         className={cn(
-          "has-[:focus-visible]:outline-none min-h-10 flex w-full flex-wrap gap-2 rounded-md border border-neutral-200 px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:ring-offset-neutral- items-center",
+          "has-focus-visible:outline-hidden min-h-10 flex w-full flex-wrap gap-2 rounded-md border border-neutral-200 px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:ring-offset-neutral- items-center",
           className
         )}
       >

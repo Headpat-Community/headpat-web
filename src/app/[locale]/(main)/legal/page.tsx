@@ -11,10 +11,7 @@ export async function generateMetadata(props) {
   const meta = await getTranslations({ locale, namespace: 'LegalMetadata' })
 
   return {
-    title: {
-      default: meta('title'),
-      template: `%s - ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
-    },
+    title: meta('title'),
     description: meta('description'),
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/legal`,
@@ -77,14 +74,14 @@ export default function LegalPage() {
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">
                       <Paperclip
-                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        className="h-5 w-5 shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
                         <span className="truncate font-medium">Impressum</span>
                       </div>
                     </div>
-                    <div className="ml-4 flex-shrink-0">
+                    <div className="ml-4 shrink-0">
                       <Link
                         href={'/legal/impressum'}
                         className="font-medium text-link hover:text-link/80"
@@ -96,17 +93,17 @@ export default function LegalPage() {
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">
                       <Paperclip
-                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        className="h-5 w-5 shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
                         <span className="truncate font-medium">
                           Terms of Service
                         </span>
-                        <span className="flex-shrink-0 text-gray-400">PDF</span>
+                        <span className="shrink-0 text-gray-400">PDF</span>
                       </div>
                     </div>
-                    <div className="ml-4 flex-shrink-0">
+                    <div className="ml-4 shrink-0">
                       <Link
                         // @ts-ignore
                         href={'/legal/termsofservice.pdf'}
@@ -119,7 +116,7 @@ export default function LegalPage() {
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">
                       <Paperclip
-                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        className="h-5 w-5 shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
@@ -128,7 +125,7 @@ export default function LegalPage() {
                         </span>
                       </div>
                     </div>
-                    <div className="ml-4 flex-shrink-0">
+                    <div className="ml-4 shrink-0">
                       <Link
                         // @ts-ignore
                         href={'/legal/privacypolicy'}
@@ -141,14 +138,14 @@ export default function LegalPage() {
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">
                       <Paperclip
-                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        className="h-5 w-5 shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
                         <span className="truncate font-medium">EULA</span>
                       </div>
                     </div>
-                    <div className="ml-4 flex-shrink-0">
+                    <div className="ml-4 shrink-0">
                       <Link
                         // @ts-ignore
                         href={'/legal/eula'}
@@ -161,15 +158,15 @@ export default function LegalPage() {
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">
                       <Paperclip
-                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        className="h-5 w-5 shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
                         <span className="truncate font-medium">Disclaimer</span>
-                        <span className="flex-shrink-0 text-gray-400">PDF</span>
+                        <span className="shrink-0 text-gray-400">PDF</span>
                       </div>
                     </div>
-                    <div className="ml-4 flex-shrink-0">
+                    <div className="ml-4 shrink-0">
                       <Link
                         // @ts-ignore
                         href={'/legal/disclaimer.pdf'}
@@ -182,17 +179,17 @@ export default function LegalPage() {
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">
                       <Paperclip
-                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        className="h-5 w-5 shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
                         <span className="truncate font-medium">
                           Acceptable Use
                         </span>
-                        <span className="flex-shrink-0 text-gray-400">PDF</span>
+                        <span className="shrink-0 text-gray-400">PDF</span>
                       </div>
                     </div>
-                    <div className="ml-4 flex-shrink-0">
+                    <div className="ml-4 shrink-0">
                       <Link
                         // @ts-ignore
                         href={'/legal/acceptableuse.pdf'}
@@ -205,19 +202,19 @@ export default function LegalPage() {
                   {/*<li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">
                       <PaperClipIcon
-                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        className="h-5 w-5 shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
                         <span className="truncate font-medium">
                           Return Policy
                         </span>
-                        <span className="flex-shrink-0 text-gray-400">
+                        <span className="shrink-0 text-gray-400">
                           PDF
                         </span>
                       </div>
                     </div>
-                    <div className="ml-4 flex-shrink-0">
+                    <div className="ml-4 shrink-0">
                       <Link
                         href="/legal/returnpolicy.pdf"
                         className="font-medium text-link hover:text-link/80"
@@ -229,17 +226,17 @@ export default function LegalPage() {
                   <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                     <div className="flex w-0 flex-1 items-center">
                       <Paperclip
-                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        className="h-5 w-5 shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
                       <div className="ml-4 flex min-w-0 flex-1 gap-2">
                         <span className="truncate font-medium">
                           Shipping Policy
                         </span>
-                        <span className="flex-shrink-0 text-gray-400">PDF</span>
+                        <span className="shrink-0 text-gray-400">PDF</span>
                       </div>
                     </div>
-                    <div className="ml-4 flex-shrink-0">
+                    <div className="ml-4 shrink-0">
                       <Link
                         // @ts-ignore
                         href={'/legal/returnpolicy.pdf'}

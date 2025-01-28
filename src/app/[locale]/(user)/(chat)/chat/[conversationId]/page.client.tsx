@@ -425,7 +425,7 @@ export default function ChatClient({
         </div>
 
         <ChatMessageList
-          className="flex-grow overflow-y-auto"
+          className="grow overflow-y-auto"
           ref={messageListRef}
           onScroll={handleScroll}
         >

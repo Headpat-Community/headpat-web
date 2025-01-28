@@ -17,10 +17,7 @@ export async function generateMetadata(props) {
   })
 
   return {
-    title: {
-      default: meta('title'),
-      template: `%s - ${process.env.NEXT_PUBLIC_WEBSITE_NAME}`,
-    },
+    title: meta('title'),
     description: meta('description'),
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/community`,

@@ -17,10 +17,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: {
-      default: 'Headpat',
-      template: `%s - Headpat`,
-    },
+    title: 'App',
     description:
       'Headpat is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
     keywords: [
@@ -142,15 +139,15 @@ export default async function RootLayout({ children }) {
             classNames: {
               error: [
                 'border border-destructive text-destructive-foreground',
-                'bg-gradient-to-r from-destructive via-black to-black',
+                'bg-linear-to-r from-destructive via-black to-black',
               ].join(' '),
               success: [
                 'border border-primary dark:text-foreground text-background',
-                'bg-gradient-to-r from-primary via-black to-black',
+                'bg-linear-to-r from-primary via-black to-black',
               ].join(' '),
               loading: [
                 'border dark:border-muted dark:text-foreground text-background',
-                'bg-gradient-to-r from-muted via-black to-black',
+                'bg-linear-to-r from-muted via-black to-black',
               ].join(' '),
             },
           }}

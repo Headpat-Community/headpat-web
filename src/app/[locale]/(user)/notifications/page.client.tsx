@@ -83,7 +83,7 @@ export default function PageClient() {
   return (
     <ul
       role="list"
-      className="mx-8 lg:mx-auto mb-4 mt-8 max-w-4xl divide-y divide-gray-100 shadow-sm ring-1 ring-black/95 dark:ring-white/95 sm:rounded-xl"
+      className="mx-8 lg:mx-auto mb-4 mt-8 max-w-4xl divide-y divide-gray-100 shadow-xs ring-1 ring-black/95 dark:ring-white/95 sm:rounded-xl"
     >
       {notifications
         .sort(

@@ -310,7 +310,7 @@ function ConversationsList({
           </DialogContent>
         </Dialog>
       </div>
-      <ScrollArea className="flex-grow">
+      <ScrollArea className="grow">
         {conversations.map((conversation) => {
           const displayData = displayUsers[conversation.$id]?.data || {}
           const isCommunity = !!displayData.name
@@ -355,7 +355,7 @@ function ConversationsList({
                   </div>
                 )}
               </div>
-              <div className="ml-4 flex-grow">
+              <div className="ml-4 grow">
                 <div className="flex items-center">
                   <p className="font-semibold">
                     {isCommunity ? displayData.name : displayData.displayName}

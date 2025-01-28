@@ -209,7 +209,7 @@ export default function VotingClient({
                 }
                 disabled={isPaused}
               >
-                <div className="rounded-lg border p-4 shadow-sm">
+                <div className="rounded-lg border p-4 shadow-xs">
                   <div className="space-y-2">
                     <div className={'flex justify-between'}>
                       <div

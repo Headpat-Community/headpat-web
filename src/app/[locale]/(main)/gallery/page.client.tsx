@@ -146,7 +146,7 @@ export default function FetchGallery({ enableNsfw }) {
                           draggable={false}
                           loading="lazy"
                           unoptimized={isMimeTypeAnimatable(item.mimeType)}
-                          placeholder="blur"
+                          placeholder={'blur'}
                           blurDataURL={'/images/placeholder-image-color.webp'}
                         />
                         {(item.mimeType === 'image/gif' ||

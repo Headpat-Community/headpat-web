@@ -39,7 +39,7 @@ export default async function AccountAnnouncements() {
                   pathname: '/announcements/[announcementId]',
                   params: { announcementId: announcementData.$id },
                 }}
-                className="flex-none rounded-full bg-primary px-3.5 py-1 text-primary-foreground text-sm font-semibold shadow-sm hover:bg-primary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/80"
+                className="flex-none rounded-full bg-primary px-3.5 py-1 text-primary-foreground text-sm font-semibold shadow-xs hover:bg-primary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/80"
               >
                 More info <span aria-hidden="true">&rarr;</span>
               </Link>

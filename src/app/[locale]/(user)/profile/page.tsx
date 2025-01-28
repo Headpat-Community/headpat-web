@@ -2,6 +2,7 @@ import { redirect } from '@/i18n/routing'
 import { getUserData } from '@/utils/server-api/user/getUserData'
 
 export const runtime = 'edge'
+export const dynamic = 'auto'
 
 export default async function Profile(props) {
   const params = await props.params
