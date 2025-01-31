@@ -115,7 +115,15 @@ export default function Login({ locale }) {
           data.username
         )
       }
-      await signIn()
+      const response = await signIn()
+
+      const errorMessage =
+        toastHandling[response.error] || errorCodes[response.status]
+      if (errorMessage) {
+        toast.error(errorMessage)
+        return
+      }
+
       await init()
       toast.success('Logged in successfully.')
       router.push('/account')
