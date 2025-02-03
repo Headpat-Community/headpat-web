@@ -97,7 +97,7 @@
     "require-in-the-middle": "^7.4.0",
     "sanitize-html": "^2.14.0",
     "sharp": "^0.33.5",
-    "sonner": "^1.7.2",
+    "sonner": "^1.7.4",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "4.0.0",
     "tailwindcss-animate": "^1.0.7",
