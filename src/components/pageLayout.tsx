@@ -12,7 +12,7 @@ export default function PageLayout({
     <>
       <div className={'relative z-50'}>
         <div className="flex flex-row items-center px-4 py-1.5 justify-between align-middle">
-          <h1 className="text-xl font-bold">{title || 'Undefined'}</h1>
+          <h3 className="text-xl font-bold">{title || 'Undefined'}</h3>
           {middleComponent}
           <div className={'align-middle gap-2 hidden md:flex'}>
             <ChangeLanguage />
