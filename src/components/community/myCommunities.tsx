@@ -11,13 +11,14 @@ import { toast } from 'sonner'
 import { useUser } from '@/components/contexts/UserContext'
 import { Button } from '@/components/ui/button'
 import AddCommunity from '@/components/community/addCommunity'
+import { useDataCache } from '@/components/contexts/DataCacheContext'
 
 export default function MyCommunities() {
   const [communities, setCommunities] =
     useState<Community.CommunityDocumentsType[]>(null)
   const [isFetching, setIsFetching] = useState<boolean>(true)
-  const [createModalOpen, setCreateModalOpen] = useState<boolean>(false)
   const { current } = useUser()
+  const { saveAllCache } = useDataCache()
 
   const fetchCommunities = useCallback(async () => {
     setIsFetching(true)
@@ -39,6 +40,7 @@ export default function MyCommunities() {
         return
       }
       setCommunities(response)
+      saveAllCache('communities', response)
     } catch (error) {
       toast.error('Failed to fetch communities. Please try again later.')
     } finally {
@@ -117,6 +119,8 @@ export default function MyCommunities() {
                   alt={community.name}
                   width={200}
                   height={200}
+                  unoptimized={true}
+                  draggable={false}
                 />
                 <div className="min-w-0 flex-auto">
                   <p className="text-sm font-semibold leading-6">

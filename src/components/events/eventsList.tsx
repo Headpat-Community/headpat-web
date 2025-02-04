@@ -9,11 +9,11 @@ export default function EventsList({
   events: Events.EventsDocumentsType[]
 }) {
   return (
-    <div className={'space-y-4 mx-auto flex-row items-center max-w-4xl'}>
+    <div className="grid gap-4 mx-auto sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
       {events.map((event) => (
         <div key={event.$id} className="rounded-lg border p-4 shadow-xs">
           <div className="space-y-2">
-            <div className={'flex justify-between'}>
+            <div className="flex justify-between">
               <Link
                 href={{
                   pathname: '/community/[communityId]/events/[eventId]',
@@ -26,9 +26,7 @@ export default function EventsList({
                 <h3 className="text-lg font-semibold">{event.title}</h3>
               </Link>
               {event.label && (
-                <Badge className="shrink-0 h-6 leading-6">
-                  {event.label}
-                </Badge>
+                <Badge className="shrink-0 h-6 leading-6">{event.label}</Badge>
               )}
             </div>
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">

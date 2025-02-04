@@ -276,6 +276,10 @@ h6 {
   line-height: 1.25rem;
 }
 
+button {
+  @apply cursor-pointer
+}
+
 pre {
   @apply rounded p-2 bg-code-block text-[#f8f8f2];
 }

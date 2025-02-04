@@ -127,15 +127,17 @@ export default function PageClient({
         const parsedData = JSON.parse(data.responseBody)
         setUserData(parsedData)
         saveCache('users', userId, parsedData)
-        setLoading(false)
       } catch (error) {
         console.error('Error fetching user data:', error)
+      } finally {
         setLoading(false)
       }
     }
 
     fetchUserData().then()
   }, [getCache, saveCache, userId])
+
+  console.log(userData)
 
   if (!userData) {
     return (
@@ -189,16 +191,15 @@ export default function PageClient({
             <Image
               src={getAvatarImageUrlView(userData.avatarId)}
               alt={'User Avatar'}
-              className={cn(
-                'object-contain rounded-xl',
-                !(
+              className={cn('object-contain rounded-t-xl', {
+                'rounded-b-xl': !(
                   userData.discordname ||
                   userData.telegramname ||
                   userData.furaffinityname ||
                   userData.X_name ||
                   userData.twitchname
-                )
-              )}
+                ),
+              })}
               fill={true}
               priority={true}
               unoptimized
@@ -309,10 +310,14 @@ export default function PageClient({
                 <Button variant={'link'} className={'p-0'}>
                   {!loading ? (
                     <div className="flex items-center space-x-4">
-                      <span>
-                        <span className={'font-bold text-foreground'}>
-                          {userData.followingCount}
-                        </span>{' '}
+                      <span className={'flex gap-1'}>
+                        {userData.followingCount !== undefined ? (
+                          <span className={'font-bold text-foreground'}>
+                            {userData.followingCount}
+                          </span>
+                        ) : (
+                          <Skeleton className="h-4 w-[50px]" />
+                        )}{' '}
                         Following
                       </span>
                     </div>
@@ -330,10 +335,14 @@ export default function PageClient({
                 <Button variant={'link'} className={'p-0'}>
                   {!loading ? (
                     <div className="flex items-center space-x-4">
-                      <span>
-                        <span className={'font-bold text-foreground'}>
-                          {userData.followersCount}
-                        </span>{' '}
+                      <span className={'flex gap-1'}>
+                        {userData.followersCount !== undefined ? (
+                          <span className={'font-bold text-foreground'}>
+                            {userData.followersCount}
+                          </span>
+                        ) : (
+                          <Skeleton className="h-4 w-[50px]" />
+                        )}{' '}
                         Followers
                       </span>
                     </div>
@@ -401,9 +410,7 @@ const ListSocialItem = ({ IconComponent, userData, link }) => {
               <div className={'flex-none rounded-full p-1'}>
                 <IconComponent />
               </div>
-              <h2 className="min-w-0 text-sm font-semibold leading-6 truncate">
-                <span>{userData}</span>
-              </h2>
+              <span>{userData}</span>
             </div>
           </div>
           <ChevronRight className="h-5 w-5 flex-none" aria-hidden="true" />
@@ -419,9 +426,7 @@ const ListSocialItem = ({ IconComponent, userData, link }) => {
               <div className={'flex-none rounded-full p-1'}>
                 <IconComponent />
               </div>
-              <h2 className="min-w-0 text-sm font-semibold leading-6 truncate">
-                <span>{userData}</span>
-              </h2>
+              <span>{userData}</span>
             </div>
           </div>
           <ChevronRight className="h-5 w-5 flex-none" aria-hidden="true" />

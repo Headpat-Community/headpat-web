@@ -8,11 +8,13 @@ import { useCallback, useEffect, useState } from 'react'
 import { functions } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
 import { toast } from 'sonner'
+import { useDataCache } from '@/components/contexts/DataCacheContext'
 
 export default function AllCommunities() {
   const [communities, setCommunities] =
     useState<Community.CommunityDocumentsType[]>(null)
   const [isFetching, setIsFetching] = useState<boolean>(true)
+  const { saveAllCache } = useDataCache()
 
   const fetchCommunities = useCallback(async () => {
     setIsFetching(true)
@@ -28,6 +30,7 @@ export default function AllCommunities() {
       const response = JSON.parse(data.responseBody)
 
       setCommunities(response)
+      saveAllCache('communities', response)
     } catch (error) {
       toast.error('Failed to fetch communities. Please try again later.')
     } finally {
@@ -80,6 +83,8 @@ export default function AllCommunities() {
                 alt={community.name}
                 width={200}
                 height={200}
+                unoptimized={true}
+                draggable={false}
               />
               <div className="min-w-0 flex-auto">
                 <p className="text-sm font-semibold leading-6">

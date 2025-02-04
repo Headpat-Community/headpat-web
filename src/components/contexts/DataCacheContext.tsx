@@ -102,16 +102,21 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
     async <T,>(storeName: string, data: T[]) => {
       await waitForDb()
       if (!db) return
+
+      const cache = data.reduce((acc, item) => {
+        acc[item['$id']] = { data: item, timestamp: Date.now() }
+        return acc
+      }, {})
+
       await Promise.all(
-        data.map(async (item) => {
-          const cacheItem = { data: item, timestamp: Date.now() }
-          await saveToDb(db, storeName, { id: item['id'], ...cacheItem })
-          setCacheData((prev) => ({
-            ...prev,
-            [`${storeName}-${item['id']}`]: cacheItem,
-          }))
+        Object.entries(cache).map(async ([key, cacheItem]) => {
+          if (typeof cacheItem === 'object' && cacheItem !== null) {
+            await saveToDb(db, storeName, { id: key, ...cacheItem })
+          }
         })
       )
+
+      setCacheData((prev) => ({ ...prev, ...cache }))
     },
     [db, waitForDb]
   )

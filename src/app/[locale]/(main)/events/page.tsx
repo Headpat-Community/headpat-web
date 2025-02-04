@@ -41,7 +41,7 @@ export default async function Page() {
   return (
     <PageLayout title={'Events'}>
       <FeatureAccess featureName={'events'}>
-        <Tabs defaultValue="current" className="w-full">
+        <Tabs defaultValue="current" className="p-4">
           <div className="flex flex-col items-center justify-center">
             <TabsList className="grid w-full sm:max-w-4xl grid-cols-3">
               <TabsTrigger value="current">Current</TabsTrigger>
