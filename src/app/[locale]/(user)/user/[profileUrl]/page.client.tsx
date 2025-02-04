@@ -155,228 +155,227 @@ export default function PageClient({
 
   return (
     <main className={'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'}>
-      <>
-        {/* Header */}
-        {userData.profileBannerId && (
-          <header className={'p-0 lg:p-8'}>
-            <div className={''}>
-              <Image
-                src={getBannerImageUrlPreview(
-                  userData.profileBannerId,
-                  'width=1200&height=250&output=webp'
-                )}
-                alt={'User Banner'}
-                className={
-                  'rounded-md object-cover max-w-[1200px] max-h-[250px] mt-8 lg:mt-0 w-full h-auto'
-                }
-                width={1200}
-                height={250}
-                priority={true}
-              />
-            </div>
-          </header>
-        )}
-
-        {/* Grid */}
-        <div
-          className={cn(
-            'grid grid-cols-1 gap-y-8 lg:grid-cols-3 lg:gap-x-8',
-            userData.profileBannerId ? 'mt-0' : 'mt-8'
-          )}
-        >
-          {/* Left */}
-          <div className={'col-span-1 lg:col-span-1'}>
-            <AspectRatio ratio={1}>
-              <Image
-                src={getAvatarImageUrlView(userData.avatarId)}
-                alt={'User Avatar'}
-                className={cn('object-contain rounded-t-xl', {
-                  'rounded-b-xl': !(
-                    userData.discordname ||
-                    userData.telegramname ||
-                    userData.furaffinityname ||
-                    userData.X_name ||
-                    userData.twitchname
-                  ),
-                })}
-                fill={true}
-                priority={true}
-                unoptimized
-              />
-              {isBirthday && (
-                <Badge className="absolute top-0 right-0 rounded-full w-full justify-center">
-                  It&apos;s my birthday!
-                </Badge>
+      {/* Header */}
+      {userData.profileBannerId && (
+        <header className={'p-0 py-4'}>
+          <div className={''}>
+            <Image
+              src={getBannerImageUrlPreview(
+                userData.profileBannerId,
+                'width=1200&height=250&output=webp'
               )}
-            </AspectRatio>
-
-            {(userData.discordname ||
-              userData.telegramname ||
-              userData.furaffinityname ||
-              userData.X_name ||
-              userData.twitchname) && (
-              <Card className="border-border rounded-t-none">
-                <CardContent className="p-4">
-                  <ul>
-                    {userData.discordname && (
-                      <>
-                        <ListSocialItem
-                          IconComponent={SiDiscord}
-                          userData={userData.discordname}
-                          link={'#'}
-                        />
-                        {(userData.telegramname ||
-                          userData.furaffinityname ||
-                          userData.X_name ||
-                          userData.twitchname) && <Separator />}
-                      </>
-                    )}
-                    {userData.telegramname && (
-                      <>
-                        <ListSocialItem
-                          IconComponent={SiTelegram}
-                          userData={userData.telegramname}
-                          link={`https://t.me/${userData.telegramname}`}
-                        />
-                        {(userData.furaffinityname ||
-                          userData.X_name ||
-                          userData.twitchname) && <Separator />}
-                      </>
-                    )}
-                    {userData.furaffinityname && (
-                      <>
-                        <ListSocialItem
-                          IconComponent={SiFuraffinity}
-                          userData={userData.furaffinityname}
-                          link={`https://www.furaffinity.net/user/${userData.furaffinityname}`}
-                        />
-                        {(userData.X_name || userData.twitchname) && (
-                          <Separator />
-                        )}
-                      </>
-                    )}
-                    {userData.X_name && (
-                      <>
-                        <ListSocialItem
-                          IconComponent={SiX}
-                          userData={userData.X_name}
-                          link={`https://x.com/${userData.X_name}`}
-                        />
-                        {userData.twitchname && <Separator />}
-                      </>
-                    )}
-                    {userData.twitchname && (
-                      <ListSocialItem
-                        IconComponent={SiTwitch}
-                        userData={userData.twitchname}
-                        link={`https://www.twitch.tv/${userData.twitchname}`}
-                      />
-                    )}
-                  </ul>
-                </CardContent>
-              </Card>
-            )}
+              alt={'User Banner'}
+              className={
+                'rounded-md object-cover max-w-[1200px] max-h-[250px] w-full h-auto'
+              }
+              width={1200}
+              height={250}
+              priority={true}
+            />
           </div>
+        </header>
+      )}
 
-          {/* Center */}
-          <Card className={'col-span-1 lg:col-span-2 border-none'}>
-            <CardHeader>
-              <div className={'grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-0'}>
-                <CardTitle className={'col-span-1'}>
-                  {userData.displayName}
-                </CardTitle>
-                {current?.$id !== userData?.$id &&
-                  (!loading ? (
-                    <FollowerButton
-                      displayName={userData?.displayName}
-                      followerId={userData.$id}
-                      isFollowing={userData.isFollowing}
+      {/* Grid */}
+      <div
+        className={cn(
+          'grid grid-cols-1 sm:grid-cols-2 gap-y-8 lg:grid-cols-3 lg:gap-x-8',
+          userData.profileBannerId ? 'mt-0' : 'mt-8'
+        )}
+      >
+        {/* Left */}
+        <div className={'col-span-1 lg:col-span-1'}>
+          <AspectRatio ratio={1}>
+            <Image
+              src={getAvatarImageUrlView(userData.avatarId)}
+              alt={'User Avatar'}
+              className={cn(
+                'object-contain rounded-xl',
+                !(
+                  userData.discordname ||
+                  userData.telegramname ||
+                  userData.furaffinityname ||
+                  userData.X_name ||
+                  userData.twitchname
+                )
+              )}
+              fill={true}
+              priority={true}
+              unoptimized
+            />
+            {isBirthday && (
+              <Badge className="absolute top-0 right-0 rounded-t rounded-b-none w-full justify-center">
+                It&apos;s my birthday!
+              </Badge>
+            )}
+          </AspectRatio>
+
+          {(userData.discordname ||
+            userData.telegramname ||
+            userData.furaffinityname ||
+            userData.X_name ||
+            userData.twitchname) && (
+            <Card className="border-border rounded-t-none">
+              <CardContent className="p-4">
+                <ul>
+                  {userData.discordname && (
+                    <>
+                      <ListSocialItem
+                        IconComponent={SiDiscord}
+                        userData={userData.discordname}
+                        link={'#'}
+                      />
+                      {(userData.telegramname ||
+                        userData.furaffinityname ||
+                        userData.X_name ||
+                        userData.twitchname) && <Separator />}
+                    </>
+                  )}
+                  {userData.telegramname && (
+                    <>
+                      <ListSocialItem
+                        IconComponent={SiTelegram}
+                        userData={userData.telegramname}
+                        link={`https://t.me/${userData.telegramname}`}
+                      />
+                      {(userData.furaffinityname ||
+                        userData.X_name ||
+                        userData.twitchname) && <Separator />}
+                    </>
+                  )}
+                  {userData.furaffinityname && (
+                    <>
+                      <ListSocialItem
+                        IconComponent={SiFuraffinity}
+                        userData={userData.furaffinityname}
+                        link={`https://www.furaffinity.net/user/${userData.furaffinityname}`}
+                      />
+                      {(userData.X_name || userData.twitchname) && (
+                        <Separator />
+                      )}
+                    </>
+                  )}
+                  {userData.X_name && (
+                    <>
+                      <ListSocialItem
+                        IconComponent={SiX}
+                        userData={userData.X_name}
+                        link={`https://x.com/${userData.X_name}`}
+                      />
+                      {userData.twitchname && <Separator />}
+                    </>
+                  )}
+                  {userData.twitchname && (
+                    <ListSocialItem
+                      IconComponent={SiTwitch}
+                      userData={userData.twitchname}
+                      link={`https://www.twitch.tv/${userData.twitchname}`}
                     />
-                  ) : (
-                    <Skeleton className="h-8 w-full" />
-                  ))}
-              </div>
-              <div className={'grid grid-cols-2'}>
-                <CardDescription>{userData?.status}</CardDescription>
-              </div>
-              <CardDescription className={'flex pt-4 gap-4 items-center'}>
-                <Link
-                  href={{
-                    pathname: '/user/[profileUrl]/following',
-                    params: { profileUrl: userData?.profileUrl },
-                  }}
-                >
-                  <Button variant={'link'} className={'p-0'}>
-                    {!loading ? (
-                      <div className="flex items-center space-x-4">
-                        <span>
-                          <span className={'font-bold text-foreground'}>
-                            {userData.followingCount}
-                          </span>{' '}
-                          Following
-                        </span>
-                      </div>
-                    ) : (
-                      <Skeleton className="h-4 w-[200px]" />
-                    )}
-                  </Button>
-                </Link>
-                <Link
-                  href={{
-                    pathname: '/user/[profileUrl]/followers',
-                    params: { profileUrl: userData?.profileUrl },
-                  }}
-                >
-                  <Button variant={'link'} className={'p-0'}>
-                    {!loading ? (
-                      <div className="flex items-center space-x-4">
-                        <span>
-                          <span className={'font-bold text-foreground'}>
-                            {userData.followersCount}
-                          </span>{' '}
-                          Followers
-                        </span>
-                      </div>
-                    ) : (
-                      <Skeleton className="h-4 w-[200px]" />
-                    )}
-                  </Button>
-                </Link>
-              </CardDescription>
-            </CardHeader>
-            <Separator className={'mb-6'} />
-            <CardContent>
-              <div className={'grid grid-cols-2 mx-auto gap-4'}>
-                {userData?.pronouns && (
-                  <>
-                    <div className={'col-span-1'}>Pronouns</div>
-                    <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
-                      {userData?.pronouns}
-                    </div>
-                  </>
-                )}
-                {birthday !== '01/01/1900' && (
-                  <>
-                    <div className={'col-span-1'}>Birthday</div>
-                    <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
-                      {birthday}
-                    </div>
-                  </>
-                )}
-              </div>
-              <div className={'border border-ring p-8 rounded-xl mt-8'}>
-                <div className={'flex flex-wrap items-center'}>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: bioWithLineBreaks || 'Nothing here yet!',
-                    }}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                  )}
+                </ul>
+              </CardContent>
+            </Card>
+          )}
         </div>
-      </>
+
+        {/* Center */}
+        <Card className={'col-span-1 lg:col-span-2 border-none'}>
+          <CardHeader>
+            <div className={'grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-0'}>
+              <CardTitle className={'col-span-1'}>
+                {userData.displayName}
+              </CardTitle>
+              {current?.$id !== userData?.$id &&
+                (!loading ? (
+                  <FollowerButton
+                    displayName={userData?.displayName}
+                    followerId={userData.$id}
+                    isFollowing={userData.isFollowing}
+                  />
+                ) : (
+                  <Skeleton className="h-8 w-full" />
+                ))}
+            </div>
+            <div className={'grid grid-cols-2'}>
+              <CardDescription>{userData?.status}</CardDescription>
+            </div>
+            <CardDescription className={'flex pt-4 gap-4 items-center'}>
+              <Link
+                href={{
+                  pathname: '/user/[profileUrl]/following',
+                  params: { profileUrl: userData?.profileUrl },
+                }}
+              >
+                <Button variant={'link'} className={'p-0'}>
+                  {!loading ? (
+                    <div className="flex items-center space-x-4">
+                      <span>
+                        <span className={'font-bold text-foreground'}>
+                          {userData.followingCount}
+                        </span>{' '}
+                        Following
+                      </span>
+                    </div>
+                  ) : (
+                    <Skeleton className="h-4 w-[200px]" />
+                  )}
+                </Button>
+              </Link>
+              <Link
+                href={{
+                  pathname: '/user/[profileUrl]/followers',
+                  params: { profileUrl: userData?.profileUrl },
+                }}
+              >
+                <Button variant={'link'} className={'p-0'}>
+                  {!loading ? (
+                    <div className="flex items-center space-x-4">
+                      <span>
+                        <span className={'font-bold text-foreground'}>
+                          {userData.followersCount}
+                        </span>{' '}
+                        Followers
+                      </span>
+                    </div>
+                  ) : (
+                    <Skeleton className="h-4 w-[200px]" />
+                  )}
+                </Button>
+              </Link>
+            </CardDescription>
+          </CardHeader>
+          <Separator className={'mb-6'} />
+          <CardContent>
+            <div className={'grid grid-cols-2 mx-auto gap-4'}>
+              {userData?.pronouns && (
+                <>
+                  <div className={'col-span-1'}>Pronouns</div>
+                  <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
+                    {userData?.pronouns}
+                  </div>
+                </>
+              )}
+              {birthday !== '01/01/1900' && (
+                <>
+                  <div className={'col-span-1'}>Birthday</div>
+                  <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
+                    {birthday}
+                  </div>
+                </>
+              )}
+            </div>
+            <div className={'border border-ring p-8 rounded-xl mt-8'}>
+              <div className={'flex flex-wrap items-center'}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: bioWithLineBreaks || 'Nothing here yet!',
+                  }}
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </main>
   )
 }
