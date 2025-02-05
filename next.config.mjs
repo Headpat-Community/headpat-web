@@ -6,7 +6,7 @@ const withNextIntl = createNextIntlPlugin()
 
 const nextConfig = {
   reactStrictMode: true,
-  poweredByHeader: false,
+  poweredByHeader: true,
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   compiler: {
     styledComponents: true,
@@ -46,6 +46,19 @@ const nextConfig = {
         hostname: 'placekitten.com',
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'x-powered-by',
+            value: 'Headpat',
+          },
+        ],
+      },
+    ]
   },
   async rewrites() {
     return [
