@@ -47,19 +47,6 @@ const nextConfig = {
       },
     ],
   },
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'x-powered-by',
-            value: 'Headpat',
-          },
-        ],
-      },
-    ]
-  },
   async rewrites() {
     return [
       {
