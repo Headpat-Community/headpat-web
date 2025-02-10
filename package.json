@@ -115,7 +115,7 @@
     "@types/three": "^0.172.0",
     "eslint": "^9.19.0",
     "eslint-config-next": "^15.1.6",
-    "eslint-plugin-react-compiler": "19.0.0-beta-6fc168f-20241025",
+    "eslint-plugin-react-compiler": "19.0.0-beta-714736e-20250131",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.11"
   }
