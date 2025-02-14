@@ -18,11 +18,17 @@ export default function ClientPage({ locale }: { locale: string }) {
   const fetchUsers = useCallback(
     async (limit: number, offset: number) => {
       setIsFetching(true)
-      const cache =
-        await getAllCache<UserData.UserDataDocumentsType[]>('notifications')
+      const cache = await getAllCache<UserData.UserDataDocumentsType[]>('users')
       const usersMapping = cache.map((item) => item.data) // Assuming each CacheItem has a 'data' property
       if (usersMapping.length > 0) {
-        setUsers(usersMapping.flat()) // Flatten the array if necessary
+        const sortedUsers = usersMapping
+          .flat()
+          .sort(
+            (a, b) =>
+              new Date(b.$createdAt).getTime() -
+              new Date(a.$createdAt).getTime()
+          )
+        setUsers(sortedUsers)
         setIsFetching(false)
       }
       try {
@@ -43,7 +49,7 @@ export default function ClientPage({ locale }: { locale: string }) {
         setIsFetching(false)
       }
     },
-    [saveAllCache]
+    [getAllCache, saveAllCache]
   )
 
   useEffect(() => {

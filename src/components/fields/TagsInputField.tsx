@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+'use client'
+import React from 'react'
 import { FormControl, FormItem, FormLabel } from '@/components/ui/form'
 import { Info } from 'lucide-react'
 import {
