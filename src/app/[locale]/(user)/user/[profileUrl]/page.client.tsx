@@ -137,8 +137,6 @@ export default function PageClient({
     fetchUserData().then()
   }, [getCache, saveCache, userId])
 
-  console.log(userData)
-
   if (!userData) {
     return (
       <PageLayout title={'Loading user...'}>Loading, please wait.</PageLayout>
@@ -160,7 +158,7 @@ export default function PageClient({
       {/* Header */}
       {userData.profileBannerId && (
         <header className={'p-0 py-4'}>
-          <div className={''}>
+          <div>
             <Image
               src={getBannerImageUrlPreview(
                 userData.profileBannerId,
@@ -287,7 +285,7 @@ export default function PageClient({
                 {userData.displayName}
               </CardTitle>
               {current?.$id !== userData?.$id &&
-                (!loading ? (
+                (!loading && userData.isFollowing !== undefined ? (
                   <FollowerButton
                     displayName={userData?.displayName}
                     followerId={userData.$id}
