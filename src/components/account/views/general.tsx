@@ -257,7 +257,7 @@ export default function GeneralAccountView({
       <div className="divide-y divide-black/5 dark:divide-white/5">
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
           <div>
-            <h2 className="text-base font-semibold leading-7">Change Email</h2>
+            <h4 className="text-base font-semibold leading-7">Change Email</h4>
             <p className="mt-1 text-sm leading-6 text-gray-400">
               Change your email address.
             </p>
@@ -315,7 +315,7 @@ export default function GeneralAccountView({
 
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
           <div>
-            <h2 className="text-base font-semibold leading-7">Profile URL</h2>
+            <h4 className="text-base font-semibold leading-7">Profile URL</h4>
             <p className="mt-1 text-sm leading-6 text-gray-400">
               Your Profile URL is the link that you can share with others to
               showcase your profile.
@@ -332,7 +332,7 @@ export default function GeneralAccountView({
                   <HoverCard openDelay={100} closeDelay={50}>
                     <HoverCardTrigger>
                       <span className="ml-2 text-gray-500">
-                        <Info className="inline-block h-4 w-4" />
+                        <Info className="inline-block size-4" />
                       </span>
                     </HoverCardTrigger>
                     <HoverCardContent className={'w-96'}>
@@ -381,9 +381,9 @@ export default function GeneralAccountView({
 
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
           <div>
-            <h2 className="leading- text-base font-semibold">
+            <h4 className="leading- text-base font-semibold">
               Change password
-            </h2>
+            </h4>
             <p className="mt-1 text-sm leading-6 text-gray-400">
               Change your password.
             </p>
@@ -437,7 +437,7 @@ export default function GeneralAccountView({
 
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
           <div>
-            <h2 className="leading- text-base font-semibold">2FA / MFA</h2>
+            <h4 className="leading- text-base font-semibold">2FA / MFA</h4>
             <p className="mt-1 text-sm leading-6 text-gray-400">
               Two-Factor-Authentication / Multi-Factor-Authentication
             </p>
@@ -453,7 +453,7 @@ export default function GeneralAccountView({
 
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
           <div>
-            <h2 className="text-base font-semibold leading-7">Enable NSFW</h2>
+            <h4 className="text-base font-semibold leading-7">Enable NSFW</h4>
             <p className="mt-1 text-sm leading-6 text-gray-400">
               Checking this box will enable NSFW content. 18+ only.
             </p>
@@ -477,7 +477,7 @@ export default function GeneralAccountView({
 
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
           <div>
-            <h2 className="text-base font-semibold leading-7">Index profile</h2>
+            <h4 className="text-base font-semibold leading-7">Index profile</h4>
             <p className="mt-1 text-sm leading-6 text-gray-400">
               Checking this box will enable your profile to be indexed by search
               engines.
@@ -498,7 +498,7 @@ export default function GeneralAccountView({
 
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
           <div>
-            <h2 className="leading- text-base font-semibold">Delete Account</h2>
+            <h4 className="leading- text-base font-semibold">Delete Account</h4>
             <p className="mt-1 text-sm leading-6 text-gray-400">
               Warning: This action cannot be undone. This will permanently
               delete all your data, including images, comments, and profile

@@ -80,9 +80,9 @@ export default function CommunityAdminMain({
       <div className="divide-y divide-black/5 dark:divide-white/5">
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
           <div>
-            <h2 className="text-base font-semibold leading-7">
+            <h4 className="text-base font-semibold leading-7">
               General Settings
-            </h2>
+            </h4>
             <p className="mt-1 text-sm leading-6 text-gray-900 dark:text-gray-400">
               Update your community&apos;s general settings.
             </p>

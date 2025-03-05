@@ -61,7 +61,7 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
                       'dark:bg-muted dark:text-muted-foreground dark:hover:text-white'
                   )}
                 >
-                  <link.icon className="h-4 w-4" />
+                  <link.icon className="size-4" />
                   <span className="sr-only">{link.title}</span>
                 </Link>
               </TooltipTrigger>
@@ -93,7 +93,7 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
                 'justify-start'
               )}
             >
-              <link.icon className="mr-2 h-4 w-4" />
+              <link.icon className="mr-2 size-4" />
               {link.title}
               {link.label && (
                 <span

@@ -26,11 +26,11 @@ const ChangeIcon = ({
 }) => {
   switch (type) {
     case 'feature':
-      return <Sparkles className="h-4 w-4 mt-1 text-blue-500" />
+      return <Sparkles className="size-4 mt-1 text-blue-500" />
     case 'improvement':
-      return <Wrench className="h-4 w-4 mt-1 text-green-500" />
+      return <Wrench className="size-4 mt-1 text-green-500" />
     case 'bugfix':
-      return <Bug className="h-4 w-4 mt-1 text-red-500" />
+      return <Bug className="size-4 mt-1 text-red-500" />
     default:
       return null
   }
@@ -105,9 +105,9 @@ export default function ListComponent({
                           </CardDescription>
                         </div>
                         {openVersions.includes(release.$id) ? (
-                          <ChevronUp className="h-4 w-4" />
+                          <ChevronUp className="size-4" />
                         ) : (
-                          <ChevronDown className="h-4 w-4" />
+                          <ChevronDown className="size-4" />
                         )}
                         <span className="sr-only">Toggle changes</span>
                       </div>

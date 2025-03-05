@@ -16,23 +16,23 @@ export const chartConfig = {
   },
   option0: {
     label: 'Antwort 1',
-    color: 'hsl(var(--chart-1))',
+    color: 'var(--chart-1)',
   },
   option1: {
     label: 'Antwort 2',
-    color: 'hsl(var(--chart-2))',
+    color: 'var(--chart-2)',
   },
   option2: {
     label: 'Antwort 3',
-    color: 'hsl(var(--chart-3))',
+    color: 'var(--chart-3)',
   },
   option3: {
     label: 'Antwort 4',
-    color: 'hsl(var(--chart-4))',
+    color: 'var(--chart-4)',
   },
   option4: {
     label: 'Antwort 5',
-    color: 'hsl(var(--chart-5))',
+    color: 'var(--chart-5)',
   },
 } satisfies ChartConfig
 

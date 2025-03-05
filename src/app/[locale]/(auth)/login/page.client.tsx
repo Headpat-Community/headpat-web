@@ -140,9 +140,9 @@ export default function Login({ locale }) {
       <div className="flex justify-center items-center">
         <div className="mx-auto min-w-1/3 rounded-2xl dark:ring-white">
           <div className={'text-center'}>
-            <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
+            <h4 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
               Welcome to Headpat!
-            </h2>
+            </h4>
             <p className="mt-2 text-sm leading-6 text-gray-500">
               {isRegistering ? 'Already registered?' : 'Not yet registered?'}{' '}
               <Link

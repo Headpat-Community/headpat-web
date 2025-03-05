@@ -61,14 +61,14 @@ export default function UserCard({
               <p className="text-sm flex-wrap">{user?.status}</p>
               {isBirthday && (
                 <div className="flex items-center pt-2">
-                  <CakeIcon className="mr-2 h-4 w-4 opacity-70" />{' '}
+                  <CakeIcon className="mr-2 size-4 opacity-70" />{' '}
                   <span className="text-xs text-muted-foreground">
                     Today is my birthday!
                   </span>
                 </div>
               )}
               <div className="flex items-center pt-2">
-                <CalendarDays className="mr-2 h-4 w-4 opacity-70" />{' '}
+                <CalendarDays className="mr-2 size-4 opacity-70" />{' '}
                 <span className="text-xs text-muted-foreground">
                   Joined {formatDate(new Date(user?.$createdAt))}
                 </span>

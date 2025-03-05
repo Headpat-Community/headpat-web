@@ -29,10 +29,10 @@ export default function PawcraftPage() {
               <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
                 Pawcraft 3
               </h1>
-              <h2 className="mt-6 text-lg leading-8 text-gray-300">
+              <h4 className="mt-6 text-lg leading-8 text-gray-300">
                 Minecraft Vanilla Server mit viel Spaß und Orten zum Erkunden!
                 <br />
-              </h2>
+              </h4>
               <span className="text-red-400">Es gibt eine Whitelist.</span>
             </div>
             <Image

@@ -78,9 +78,9 @@ export default function MfaPageClient() {
           <div className="mt-10">
             <div>
               <div className={'text-center'}>
-                <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
+                <h4 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
                   Loading...
-                </h2>
+                </h4>
               </div>
             </div>
           </div>
@@ -94,9 +94,9 @@ export default function MfaPageClient() {
           <div className="mt-10">
             <div className="flex flex-col items-center justify-center text-center">
               <div>
-                <h2 className="mt-8 text-2xl font-bold tracking-tight">
+                <h4 className="mt-8 text-2xl font-bold tracking-tight">
                   Please fill in your 2FA code
-                </h2>
+                </h4>
               </div>
               <div key="1" className="space-y-6">
                 <InputOTP

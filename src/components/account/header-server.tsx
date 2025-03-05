@@ -42,7 +42,7 @@ export default async function Dashboard({ children }) {
             </Link>
             {/*
             <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
-              <Bell className="h-4 w-4" />
+              <Bell className="size-4" />
               <span className="sr-only">Toggle notifications</span>
             </Button>
             */}
@@ -53,14 +53,14 @@ export default async function Dashboard({ children }) {
                 href={'/'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
-                <Home className="h-4 w-4" />
+                <Home className="size-4" />
                 Homepage
               </Link>
               <Link
                 href={'/account'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
-                <LayoutDashboard className="h-4 w-4" />
+                <LayoutDashboard className="size-4" />
                 Dashboard
                 {/*
                 <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
@@ -79,14 +79,14 @@ export default async function Dashboard({ children }) {
                 href={'/account/gallery/upload'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
-                <Package className="h-4 w-4" />
+                <Package className="size-4" />
                 Upload Image
               </Link>
               <Link
                 href={'/account/gallery'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
-                <Users className="h-4 w-4" />
+                <Users className="size-4" />
                 Manage Gallery
               </Link>
               <div className="flex items-center px-4 text-center text-2xl my-2">
@@ -100,7 +100,7 @@ export default async function Dashboard({ children }) {
                 href={'/community'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
-                <LineChart className="h-4 w-4" />
+                <LineChart className="size-4" />
                 Manage Communities
               </Link>
             </nav>
@@ -198,7 +198,7 @@ export default async function Dashboard({ children }) {
 
               <form>
                 <div className="relative">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Search className="absolute left-2.5 top-2.5 size-4 text-muted-foreground" />
                   <Input
                     type="search"
                     placeholder="Search for anything..."

@@ -58,7 +58,7 @@ export default function PageClient() {
               target={'_blank'}
             >
               <Button className="w-full mt-4 bg-gray-800 hover:bg-gray-700 text-white">
-                <DownloadIcon className="mr-2 h-4 w-4" /> Get it on Google Play
+                <DownloadIcon className="mr-2 size-4" /> Get it on Google Play
               </Button>
             </Link>
           </CardContent>
@@ -78,7 +78,7 @@ export default function PageClient() {
               target={'_blank'}
             >
               <Button className="w-full mt-4 bg-gray-800 hover:bg-gray-700 text-white">
-                <DownloadIcon className="mr-2 h-4 w-4" /> Download on the App
+                <DownloadIcon className="mr-2 size-4" /> Download on the App
                 Store
               </Button>
             </Link>

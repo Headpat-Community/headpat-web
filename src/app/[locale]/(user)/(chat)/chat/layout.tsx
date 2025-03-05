@@ -253,11 +253,11 @@ function ConversationsList({
   return (
     <div className="h-full flex flex-col">
       <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-        <h2 className="text-xl font-semibold">Conversations</h2>
+        <h4 className="text-xl font-semibold">Conversations</h4>
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogTrigger asChild>
             <Button variant="ghost" size="icon">
-              <Plus className="h-4 w-4" />
+              <Plus className="size-4" />
             </Button>
           </DialogTrigger>
           <DialogContent aria-describedby={undefined}>
@@ -266,7 +266,7 @@ function ConversationsList({
             </DialogHeader>
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
-                <Search className="h-4 w-4 text-gray-400" />
+                <Search className="size-4 text-gray-400" />
                 <Input
                   placeholder="Search users..."
                   value={searchTerm}

@@ -108,7 +108,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
                       </Link>
                     </div>
                   )}
-                  <h2>{item.name}</h2>
+                  <h4>{item.name}</h4>
                 </div>
               ))}
             </ul>

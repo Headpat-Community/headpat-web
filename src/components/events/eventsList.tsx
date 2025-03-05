@@ -30,7 +30,7 @@ export default function EventsList({
               )}
             </div>
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-              <CalendarIcon className="h-4 w-4" />
+              <CalendarIcon className="size-4" />
               <span>
                 {new Date(event.date).toLocaleDateString(undefined, {
                   year: 'numeric',
@@ -40,7 +40,7 @@ export default function EventsList({
               </span>
             </div>
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-              <ClockIcon className="h-4 w-4" />
+              <ClockIcon className="size-4" />
               <span>
                 {new Date(event.date).toLocaleTimeString(undefined, {
                   hour: '2-digit',
@@ -54,7 +54,7 @@ export default function EventsList({
               </span>
             </div>
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-              <MapPinIcon className="h-4 w-4 shrink-0" />
+              <MapPinIcon className="size-4 shrink-0" />
               <span>
                 {event.locationZoneMethod === 'polygon' ||
                 event.locationZoneMethod === 'circle'
@@ -63,7 +63,7 @@ export default function EventsList({
               </span>
             </div>
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-              <UsersIcon className="h-4 w-4 shrink-0" />
+              <UsersIcon className="size-4 shrink-0" />
               <span>{event.attendees}</span>
             </div>
           </div>

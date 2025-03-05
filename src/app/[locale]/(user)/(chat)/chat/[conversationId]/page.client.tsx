@@ -417,9 +417,9 @@ export default function ChatClient({
               )}
             </div>
             <div>
-              <h2 className="text-xl font-semibold">
+              <h4 className="text-xl font-semibold">
                 {isLoading ? 'Loading...' : getConversationName()}
-              </h2>
+              </h4>
             </div>
           </div>
         </div>

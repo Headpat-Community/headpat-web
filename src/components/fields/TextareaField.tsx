@@ -45,14 +45,14 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
             <HoverCard openDelay={100} closeDelay={50}>
               <HoverCardTrigger>
                 <span className="ml-2 text-gray-500">
-                  <Info className="inline-block h-4 w-4" />
+                  <Info className="inline-block size-4" />
                 </span>
               </HoverCardTrigger>
               <HoverCardContent>{description}</HoverCardContent>
             </HoverCard>
           )}
         </FormLabel>
-        <GlobeIcon className="h-4 w-4" />
+        <GlobeIcon className="size-4" />
       </div>
       <FormControl>
         <Textarea

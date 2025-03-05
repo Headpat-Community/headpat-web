@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion'
 import React, { MouseEvent as ReactMouseEvent, useState } from 'react'
@@ -8,34 +8,34 @@ import { cn } from '@/lib/utils'
 export const CardSpotlight = ({
   children,
   radius = 350,
-  color = "#262626",
+  color = '#262626',
   className,
   ...props
 }: {
-  radius?: number;
-  color?: string;
-  children: React.ReactNode;
+  radius?: number
+  color?: string
+  children: React.ReactNode
 } & React.HTMLAttributes<HTMLDivElement>) => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
   function handleMouseMove({
     currentTarget,
     clientX,
     clientY,
   }: ReactMouseEvent<HTMLDivElement>) {
-    let { left, top } = currentTarget.getBoundingClientRect();
+    let { left, top } = currentTarget.getBoundingClientRect()
 
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
+    mouseX.set(clientX - left)
+    mouseY.set(clientY - top)
   }
 
-  const [isHovering, setIsHovering] = useState(false);
-  const handleMouseEnter = () => setIsHovering(true);
-  const handleMouseLeave = () => setIsHovering(false);
+  const [isHovering, setIsHovering] = useState(false)
+  const handleMouseEnter = () => setIsHovering(true)
+  const handleMouseLeave = () => setIsHovering(false)
   return (
     <div
       className={cn(
-        "group/spotlight p-10 rounded-md relative border border-neutral-800 bg-black dark:border-neutral-800",
+        'group/spotlight p-10 rounded-md relative border border-neutral-800 bg-black dark:border-neutral-800',
         className
       )}
       onMouseMove={handleMouseMove}
@@ -70,5 +70,5 @@ export const CardSpotlight = ({
       </motion.div>
       {children}
     </div>
-  );
-};
+  )
+}

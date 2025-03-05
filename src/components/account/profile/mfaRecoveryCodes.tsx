@@ -112,7 +112,7 @@ export default function MfaRecoveryCodes() {
               account if you lose your device.
             </AlertDialogDescription>
             <Alert>
-              <ShieldAlertIcon className="h-4 w-4" />
+              <ShieldAlertIcon className="size-4" />
               <AlertTitle>Heads up!</AlertTitle>
               <AlertDescription>
                 This will invalidate any existing recovery codes. Make sure to

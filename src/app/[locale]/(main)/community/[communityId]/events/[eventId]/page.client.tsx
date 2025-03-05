@@ -191,7 +191,7 @@ export default function PageClient({ eventData, communityData }) {
             </div>
           </div>
           <div className="mt-6">
-            <h2 className="text-2xl font-semibold mb-2">About this event</h2>
+            <h4 className="text-2xl font-semibold mb-2">About this event</h4>
             <div
               className="text-muted-foreground"
               dangerouslySetInnerHTML={{

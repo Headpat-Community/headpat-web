@@ -1,10 +1,11 @@
 import createNextIntlPlugin from 'next-intl/plugin'
 import createMDX from '@next/mdx'
+import { NextConfig } from 'next'
 //import { withSentryConfig } from '@sentry/nextjs'
 
 const withNextIntl = createNextIntlPlugin()
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: true,
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
@@ -16,6 +17,7 @@ const nextConfig = {
   },
   experimental: {
     mdxRs: true,
+    //reactCompiler: true,
   },
   images: {
     deviceSizes: [320, 420, 768, 1024, 1200],

@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import * as React from 'react'
 import { Badge } from '@/components/ui/badge'
@@ -7,43 +7,43 @@ import { XIcon } from 'lucide-react'
 import { Input, type InputProps } from './input'
 import { cn } from '@/lib/utils'
 
-type InputTagsProps = Omit<InputProps, "value" | "onChange"> & {
-  value: string[];
-  onChange: React.Dispatch<React.SetStateAction<string[]>>;
-};
+type InputTagsProps = Omit<InputProps, 'value' | 'onChange'> & {
+  value: string[]
+  onChange: React.Dispatch<React.SetStateAction<string[]>>
+}
 
 const InputTags = React.forwardRef<HTMLInputElement, InputTagsProps>(
   ({ className, value, onChange, maxLength, ...props }, ref) => {
-    const [pendingDataPoint, setPendingDataPoint] = React.useState("")
+    const [pendingDataPoint, setPendingDataPoint] = React.useState('')
 
     React.useEffect(() => {
-      if (pendingDataPoint.includes(",")) {
+      if (pendingDataPoint.includes(',')) {
         const newDataPoints = new Set([
           ...value,
-          ...pendingDataPoint.split(",").map((chunk) => chunk.trim()),
+          ...pendingDataPoint.split(',').map((chunk) => chunk.trim()),
         ])
         onChange(Array.from(newDataPoints))
-        setPendingDataPoint("")
+        setPendingDataPoint('')
       }
     }, [pendingDataPoint, onChange, value])
 
     const addPendingDataPoint = () => {
-      if (pendingDataPoint.trim() !== "") {
+      if (pendingDataPoint.trim() !== '') {
         const newDataPoints = new Set([...value, pendingDataPoint.trim()])
         onChange(Array.from(newDataPoints))
-        setPendingDataPoint("")
+        setPendingDataPoint('')
       }
     }
 
     return (
       <div
         className={cn(
-          "has-focus-visible:outline-hidden min-h-10 flex w-full flex-wrap gap-2 rounded-md border border-neutral-200 px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:ring-offset-neutral- items-center",
+          'has-focus-visible:outline-hidden min-h-10 flex w-full flex-wrap gap-2 rounded-md border border-neutral-200 px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:ring-offset-neutral- items-center',
           className
         )}
       >
         {value.map((item) => (
-          <Badge key={item} variant="secondary" className={"h-8"}>
+          <Badge key={item} variant="secondary" className={'h-8'}>
             {item}
             <Button
               variant="ghost"
@@ -62,11 +62,11 @@ const InputTags = React.forwardRef<HTMLInputElement, InputTagsProps>(
           value={pendingDataPoint}
           onChange={(e) => setPendingDataPoint(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === ",") {
+            if (e.key === 'Enter' || e.key === ',') {
               e.preventDefault()
               addPendingDataPoint()
             } else if (
-              e.key === "Backspace" &&
+              e.key === 'Backspace' &&
               pendingDataPoint.length === 0 &&
               value.length > 0
             ) {
@@ -83,6 +83,6 @@ const InputTags = React.forwardRef<HTMLInputElement, InputTagsProps>(
   }
 )
 
-InputTags.displayName = "InputTags";
+InputTags.displayName = 'InputTags'
 
-export { InputTags };
+export { InputTags }

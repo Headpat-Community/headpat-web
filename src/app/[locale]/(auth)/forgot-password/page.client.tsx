@@ -65,9 +65,9 @@ const ForgotPassword = () => {
             width={128}
             height={128}
           />
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
+          <h4 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
             Forgot password?
-          </h2>
+          </h4>
 
           <form className="mt-10 space-y-6" action="#" method="POST">
             <div>

@@ -14,7 +14,7 @@ const mainVariant = {
     y: -20,
     opacity: 0.9,
   },
-};
+}
 
 const secondaryVariant = {
   initial: {
@@ -23,33 +23,33 @@ const secondaryVariant = {
   animate: {
     opacity: 1,
   },
-};
+}
 
 export const FileUpload = ({
   onChange,
 }: {
-  onChange?: (files: File[]) => void;
+  onChange?: (files: File[]) => void
 }) => {
-  const [files, setFiles] = useState<File[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = useState<File[]>([])
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileChange = (newFiles: File[]) => {
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-    onChange && onChange(newFiles);
-  };
+    setFiles((prevFiles) => [...prevFiles, ...newFiles])
+    onChange && onChange(newFiles)
+  }
 
   const handleClick = () => {
-    fileInputRef.current?.click();
-  };
+    fileInputRef.current?.click()
+  }
 
   const { getRootProps, isDragActive } = useDropzone({
     multiple: false,
     noClick: true,
     onDrop: handleFileChange,
     onDropRejected: (error) => {
-      console.log(error);
+      console.log(error)
     },
-  });
+  })
 
   return (
     <div className="w-full" {...getRootProps()}>
@@ -79,11 +79,11 @@ export const FileUpload = ({
             {files.length > 0 &&
               files.map((file, idx) => (
                 <motion.div
-                  key={"file" + idx}
-                  layoutId={idx === 0 ? "file-upload" : "file-upload-" + idx}
+                  key={'file' + idx}
+                  layoutId={idx === 0 ? 'file-upload' : 'file-upload-' + idx}
                   className={cn(
-                    "relative overflow-hidden z-40 bg-white dark:bg-neutral-900 flex flex-col items-start justify-start md:h-24 p-4 mt-4 w-full mx-auto rounded-md",
-                    "shadow-xs"
+                    'relative overflow-hidden z-40 bg-white dark:bg-neutral-900 flex flex-col items-start justify-start md:h-24 p-4 mt-4 w-full mx-auto rounded-md',
+                    'shadow-xs'
                   )}
                 >
                   <div className="flex justify-between w-full items-center gap-4">
@@ -120,7 +120,7 @@ export const FileUpload = ({
                       animate={{ opacity: 1 }}
                       layout
                     >
-                      modified{" "}
+                      modified{' '}
                       {new Date(file.lastModified).toLocaleDateString()}
                     </motion.p>
                   </div>
@@ -131,13 +131,13 @@ export const FileUpload = ({
                 layoutId="file-upload"
                 variants={mainVariant}
                 transition={{
-                  type: "spring",
+                  type: 'spring',
                   stiffness: 300,
                   damping: 20,
                 }}
                 className={cn(
-                  "relative group-hover/file:shadow-2xl z-40 bg-white dark:bg-neutral-900 flex items-center justify-center h-32 mt-4 w-full max-w-[8rem] mx-auto rounded-md",
-                  "shadow-[0px_10px_50px_rgba(0,0,0,0.1)]"
+                  'relative group-hover/file:shadow-2xl z-40 bg-white dark:bg-neutral-900 flex items-center justify-center h-32 mt-4 w-full max-w-[8rem] mx-auto rounded-md',
+                  'shadow-[0px_10px_50px_rgba(0,0,0,0.1)]'
                 )}
               >
                 {isDragActive ? (
@@ -147,10 +147,10 @@ export const FileUpload = ({
                     className="text-neutral-600 flex flex-col items-center"
                   >
                     Drop it
-                    <UploadIcon className="h-4 w-4 text-neutral-600 dark:text-neutral-400" />
+                    <UploadIcon className="size-4 text-neutral-600 dark:text-neutral-400" />
                   </motion.p>
                 ) : (
-                  <UploadIcon className="h-4 w-4 text-neutral-600 dark:text-neutral-300" />
+                  <UploadIcon className="size-4 text-neutral-600 dark:text-neutral-300" />
                 )}
               </motion.div>
             )}
@@ -165,29 +165,29 @@ export const FileUpload = ({
         </div>
       </motion.div>
     </div>
-  );
-};
+  )
+}
 
 export function GridPattern() {
-  const columns = 41;
-  const rows = 11;
+  const columns = 41
+  const rows = 11
   return (
     <div className="flex bg-gray-100 dark:bg-neutral-900 shrink-0 flex-wrap justify-center items-center gap-x-px gap-y-px  scale-105">
       {Array.from({ length: rows }).map((_, row) =>
         Array.from({ length: columns }).map((_, col) => {
-          const index = row * columns + col;
+          const index = row * columns + col
           return (
             <div
               key={`${col}-${row}`}
               className={`w-10 h-10 flex shrink-0 rounded-[2px] ${
                 index % 2 === 0
-                  ? "bg-gray-50 dark:bg-neutral-950"
-                  : "bg-gray-50 dark:bg-neutral-950 shadow-[0px_0px_1px_3px_rgba(255,255,255,1)_inset] dark:shadow-[0px_0px_1px_3px_rgba(0,0,0,1)_inset]"
+                  ? 'bg-gray-50 dark:bg-neutral-950'
+                  : 'bg-gray-50 dark:bg-neutral-950 shadow-[0px_0px_1px_3px_rgba(255,255,255,1)_inset] dark:shadow-[0px_0px_1px_3px_rgba(0,0,0,1)_inset]'
               }`}
             />
-          );
+          )
         })
       )}
     </div>
-  );
+  )
 }

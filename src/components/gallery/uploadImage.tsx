@@ -241,7 +241,7 @@ export default function UploadPage({ userId }: { userId: string }) {
       <form onSubmit={handleSubmit}>
         <div className="space-y-6">
           <div>
-            <h2 className="text-base font-semibold leading-7">Image Upload</h2>
+            <h4 className="text-base font-semibold leading-7">Image Upload</h4>
             <p className="mt-1 text-sm leading-6 text-gray-900 dark:text-gray-400">
               This information will be displayed publicly so be careful what you
               share.
@@ -306,7 +306,7 @@ export default function UploadPage({ userId }: { userId: string }) {
           </div>
 
           <div className="border-b border-white/10 pb-12">
-            <h2 className="text-base font-semibold leading-7">Informationen</h2>
+            <h4 className="text-base font-semibold leading-7">Informationen</h4>
             <p className="mt-1 text-sm leading-6 text-gray-900 dark:text-gray-400">
               Alles mit ein asterisk (<span className="text-red-500">*</span>)
               ist nötig.

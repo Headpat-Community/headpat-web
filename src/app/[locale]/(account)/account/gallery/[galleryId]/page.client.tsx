@@ -106,9 +106,9 @@ export default function FetchGallery({ singleGallery, galleryId }) {
       </div>
 
       <div className="mt-2 mb-12">
-        <h2 className="text-base font-semibold leading-7 text-white">
+        <h4 className="text-base font-semibold leading-7 text-white">
           Information
-        </h2>
+        </h4>
         <p className="text-sm leading-6 text-gray-400">
           Everything with an asterisk (<span className="text-red-500">*</span>)
           is required.

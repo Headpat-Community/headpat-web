@@ -51,7 +51,7 @@ const CommandSelectField: React.FC<CommandSelectFieldProps> = ({
             <HoverCard openDelay={100} closeDelay={50}>
               <HoverCardTrigger>
                 <span className="ml-2 text-gray-500">
-                  <Info className="inline-block h-4 w-4" />
+                  <Info className="inline-block size-4" />
                 </span>
               </HoverCardTrigger>
               <HoverCardContent>{description}</HoverCardContent>
@@ -65,7 +65,7 @@ const CommandSelectField: React.FC<CommandSelectFieldProps> = ({
                 {field.value.length > 0
                   ? `${field.value.length} languages selected`
                   : 'Select languages...'}
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[300px] p-0">
@@ -90,7 +90,7 @@ const CommandSelectField: React.FC<CommandSelectFieldProps> = ({
                       >
                         <Check
                           className={cn(
-                            'mr-2 h-4 w-4',
+                            'mr-2 size-4',
                             field.value.includes(option.value)
                               ? 'opacity-100'
                               : 'opacity-0'
