@@ -8,12 +8,13 @@ import { UserData } from '@/utils/types/models'
 import { Query } from '@/app/appwrite-server'
 import sanitizeHtml from 'sanitize-html'
 import { getAvatarImageUrlView } from '@/components/getStorageItem'
+import { Metadata } from 'next'
 
 export const runtime = 'edge'
 
 export async function generateMetadata(props: {
   params: Promise<{ profileUrl: string; locale: string }>
-}) {
+}): Promise<Metadata> {
   const params = await props.params
 
   const { profileUrl, locale } = params
@@ -26,14 +27,14 @@ export async function generateMetadata(props: {
     [Query.equal('profileUrl', profileUrl)]
   )
   const userData = userDataResponse.documents[0]
-  const sanitizedBio = sanitizeHtml(userData.bio)
+  const sanitizedBio = sanitizeHtml(userData?.bio)
 
   const userAccountResponse = await users.get(userDataResponse.documents[0].$id)
   const indexingEnabled: boolean = userAccountResponse?.prefs?.indexingEnabled
 
   return {
     title: userData.displayName || userData?.profileUrl,
-    description: sanitizedBio,
+    description: sanitizedBio || '',
     icons: {
       icon: getAvatarImageUrlView(userData.avatarId),
     },
@@ -47,7 +48,7 @@ export async function generateMetadata(props: {
     },
     openGraph: {
       title: userData.displayName || userData?.profileUrl,
-      description: sanitizedBio,
+      description: sanitizedBio || '',
       images: getAvatarImageUrlView(userData.avatarId),
       locale: locale,
       type: 'profile',

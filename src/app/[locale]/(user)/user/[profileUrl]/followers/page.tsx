@@ -26,14 +26,14 @@ export async function generateMetadata(props: {
     [Query.equal('profileUrl', profileUrl)]
   )
   const userData = userDataResponse.documents[0]
-  const sanitizedBio = sanitizeHtml(userData.bio)
+  const sanitizedBio = sanitizeHtml(userData?.bio)
 
   const userAccountResponse = await users.get(userDataResponse.documents[0].$id)
   const indexingEnabled: boolean = userAccountResponse?.prefs?.indexingEnabled
 
   return {
     title: userData.displayName || userData?.profileUrl,
-    description: sanitizedBio,
+    description: sanitizedBio || '',
     icons: {
       icon: getAvatarImageUrlView(userData.avatarId),
     },
@@ -47,7 +47,7 @@ export async function generateMetadata(props: {
     },
     openGraph: {
       title: userData.displayName || userData?.profileUrl,
-      description: sanitizedBio,
+      description: sanitizedBio || '',
       images: getAvatarImageUrlView(userData.avatarId),
       locale: locale,
       type: 'profile',
