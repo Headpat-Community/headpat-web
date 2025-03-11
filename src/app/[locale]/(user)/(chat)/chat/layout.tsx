@@ -26,9 +26,10 @@ import { useDebounce } from '@/hooks/useDebounce'
 import { Query } from 'appwrite'
 import { ExecutionMethod } from 'node-appwrite'
 import { Community, Messaging, UserData } from '@/utils/types/models'
-import { Link, useRouter } from '@/i18n/routing'
+import Link from 'next/link'
 import FeatureAccess from '@/components/FeatureAccess'
 import { useDataCache } from '@/components/contexts/DataCacheContext'
+import { useRouter } from 'next/navigation'
 
 export default function ChatLayout(props: any) {
   const router = useRouter()
@@ -239,10 +240,7 @@ function ConversationsList({
         toast.error('Cannot create conversation with yourself')
         return
       } else {
-        router.push({
-          pathname: '/chat/[conversationId]',
-          params: { conversationId: response.$id },
-        })
+        router.push(`/chat/${response.$id}`)
       }
       setIsModalOpen(false)
     } catch (error) {
@@ -317,10 +315,7 @@ function ConversationsList({
 
           return (
             <Link
-              href={{
-                pathname: '/chat/[conversationId]',
-                params: { conversationId: conversation.$id },
-              }}
+              href={`/chat/${conversation.$id}`}
               onClick={closeSheet}
               className="flex items-center p-4 cursor-pointer hover:bg-foreground/10 w-full"
               key={conversation.$id}

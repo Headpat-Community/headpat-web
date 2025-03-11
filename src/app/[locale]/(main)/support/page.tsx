@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import PageLayout from '@/components/pageLayout'
-import { getTranslations } from 'next-intl/server'
+import { getDict } from 'gt-next/server'
 
 export async function generateMetadata(props) {
   const params = await props.params
 
   const { locale } = params
 
-  const meta = await getTranslations({ locale, namespace: 'SupportMetadata' })
+  const meta = await getDict('SupportMetadata')
 
   return {
     title: meta('title'),

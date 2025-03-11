@@ -1,4 +1,4 @@
-import PageClient from '@/app/[locale]/(main)/gallery/[galleryId]/page.client'
+import PageClient from './page.client'
 import { Query } from 'node-appwrite'
 import { Gallery } from '@/utils/types/models'
 import { createSessionServerClient } from '@/app/appwrite-session'

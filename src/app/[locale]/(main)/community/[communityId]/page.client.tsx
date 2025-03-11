@@ -19,14 +19,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Link, useRouter } from '@/i18n/routing'
+import Link from 'next/link'
 import { Separator } from '@/components/ui/separator'
 import PageLayout from '@/components/pageLayout'
 import { Community } from '@/utils/types/models'
 import { hasAdminPanelAccess } from '@/utils/actions/community/checkRoles'
 import { useUser } from '@/components/contexts/UserContext'
 import NoAccessNsfw from '@/components/static/noAccessNsfw'
-import { notFound } from 'next/navigation'
+import { notFound, useRouter } from 'next/navigation'
 
 export default function PageClient({
   communityId,
@@ -138,12 +138,7 @@ export default function PageClient({
                   <CardDescription>{community.status}</CardDescription>
                 </div>
                 <CardDescription className={'flex pt-4 gap-4'}>
-                  <Link
-                    href={{
-                      pathname: '/community/[communityId]/followers',
-                      params: { communityId },
-                    }}
-                  >
+                  <Link href={`/community/${communityId}/followers`}>
                     <Button variant={'link'} className={'p-0'}>
                       {isLoading ? (
                         <Skeleton className={'w-full h-10'} />
@@ -258,10 +253,7 @@ export function FollowerButton({ displayName, communityId }) {
   }
 
   const handleManage = () => {
-    router.push({
-      pathname: `/community/[communityId]/admin`,
-      params: { communityId: communityId },
-    })
+    router.push(`/community/${communityId}/admin`)
   }
 
   return (

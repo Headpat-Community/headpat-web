@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import { getCommunityAvatarUrlPreview } from '@/components/getStorageItem'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 import { ChevronRight, MessageCircleIcon, UserRoundIcon } from 'lucide-react'
 import { Community } from '@/utils/types/models'
 import { useCallback, useEffect, useState } from 'react'
@@ -88,12 +88,7 @@ export default function AllCommunities() {
               />
               <div className="min-w-0 flex-auto">
                 <p className="text-sm font-semibold leading-6">
-                  <Link
-                    href={{
-                      pathname: '/community/[communityId]',
-                      params: { communityId: community.$id },
-                    }}
-                  >
+                  <Link href={`/community/${community.$id}`}>
                     <span className="absolute inset-x-0 -top-px bottom-0" />
                     {community.name}
                   </Link>

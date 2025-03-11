@@ -9,7 +9,7 @@ import { CakeIcon, CalendarDays } from 'lucide-react'
 import { UserData } from '@/utils/types/models'
 import { formatDate } from '@/components/calculateTimeLeft'
 import React from 'react'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 
 export default function UserCard({
   user,
@@ -29,14 +29,7 @@ export default function UserCard({
 
   return (
     <HoverCard openDelay={200} closeDelay={100}>
-      <Link
-        href={{
-          pathname: `/user/[profileUrl]`,
-          params: {
-            profileUrl: user?.profileUrl,
-          },
-        }}
-      >
+      <Link href={`/user/${user?.profileUrl}`}>
         <HoverCardTrigger {...(isChild ? { asChild: true } : {})}>
           {children}
         </HoverCardTrigger>

@@ -2,7 +2,7 @@
 import { ReactNode } from 'react'
 import { useFeatureStatus } from '@/hooks/useFeatureStatus'
 import { useUser } from '@/components/contexts/UserContext'
-import { useRouter } from '@/i18n/routing'
+import { useRouter } from 'next/navigation'
 import Maintenance from '@/components/static/maintenance'
 import NoAccess from '@/components/static/noAccess'
 

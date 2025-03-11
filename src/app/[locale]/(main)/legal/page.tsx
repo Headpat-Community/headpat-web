@@ -1,6 +1,6 @@
 import { Paperclip } from 'lucide-react'
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import { getDict } from 'gt-next/server'
 import PageLayout from '@/components/pageLayout'
 
 export async function generateMetadata(props) {
@@ -8,7 +8,7 @@ export async function generateMetadata(props) {
 
   const { locale } = params
 
-  const meta = await getTranslations({ locale, namespace: 'LegalMetadata' })
+  const meta = await getDict('LegalMetadata')
 
   return {
     title: meta('title'),

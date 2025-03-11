@@ -1,4 +1,4 @@
-import { redirect } from '@/i18n/routing'
+import { redirect } from 'next/link'
 import { getUserData } from '@/utils/server-api/user/getUserData'
 
 export const runtime = 'edge'

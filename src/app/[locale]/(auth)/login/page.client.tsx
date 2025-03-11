@@ -19,7 +19,7 @@ import {
   signInWithSpotify,
   signInWithTwitch,
 } from '@/utils/actions/oauth-actions'
-import { Link, useRouter } from '@/i18n/routing'
+import Link from 'next/link'
 import { account, ID } from '@/app/appwrite-client'
 import PageLayout from '@/components/pageLayout'
 import { toast } from 'sonner'
@@ -30,15 +30,16 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import InputField from '@/components/fields/InputField'
 import CheckboxField from '@/components/fields/CheckboxField'
-import { useTranslations } from 'next-intl'
+import { useDict } from 'gt-next/client'
 import { useUser } from '@/components/contexts/UserContext'
 import { toastHandling } from '@/utils/toastHandling'
+import { useRouter } from 'next/navigation'
 
 export default function Login({ locale }) {
   const { init } = useUser()
   const [isRegistering, setIsRegistering] = useState(false)
   const router = useRouter()
-  const zodTranslations = useTranslations('Zod.Login')
+  const zodTranslations = useDict('Zod.Login')
 
   const registerSchema = z.object({
     username: z.string().trim().min(3, zodTranslations('MinUsernameLength')),
@@ -253,7 +254,7 @@ export default function Login({ locale }) {
 
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <form action={() => signInWithDiscord(locale)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#5865F2] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20">
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#5865F2] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20">
                     <SiDiscord className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">
                       Discord
@@ -262,7 +263,7 @@ export default function Login({ locale }) {
                 </form>
 
                 <form action={() => signInWithEurofurence(locale)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#005953] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20">
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#005953] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20">
                     <Image
                       src={'/logos/eurofurence.webp'}
                       alt={'Eurofurence Logo'}
@@ -277,7 +278,7 @@ export default function Login({ locale }) {
                 </form>
 
                 <form action={() => signInWithGithub(locale)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiGithub className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">
                       GitHub
@@ -286,7 +287,7 @@ export default function Login({ locale }) {
                 </form>
 
                 <form action={() => signInWithApple(locale)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#000000] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#000000] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiApple className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">
                       Apple
@@ -295,7 +296,7 @@ export default function Login({ locale }) {
                 </form>
 
                 <form action={() => signInWithGoogle(locale)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#131314] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#131314] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiGoogle className={'h-4'} />
 
                     <span className="text-sm font-semibold leading-6">
@@ -305,7 +306,7 @@ export default function Login({ locale }) {
                 </form>
 
                 <form action={() => signInWithSpotify(locale)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#1DB954] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#1DB954] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiSpotify className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">
                       Spotify
@@ -314,7 +315,7 @@ export default function Login({ locale }) {
                 </form>
 
                 <form action={() => signInWithMicrosoft(locale)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#01A6F0] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#01A6F0] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={'/logos/Microsoft_logo.svg.png'}
@@ -328,7 +329,7 @@ export default function Login({ locale }) {
                 </form>
 
                 <form action={() => signInWithTwitch(locale)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#6441A5] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#6441A5] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiTwitch className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">
                       Twitch

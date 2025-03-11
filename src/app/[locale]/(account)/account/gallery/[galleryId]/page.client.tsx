@@ -7,11 +7,12 @@ import { Label } from '@/components/ui/label'
 import { databases, storage } from '@/app/appwrite-client'
 import * as Sentry from '@sentry/nextjs'
 import { Gallery } from '@/utils/types/models'
-import { Link, useRouter } from '@/i18n/routing'
+import Link from 'next/link'
 import { getGalleryImageUrlView } from '@/components/getStorageItem'
 import { getDocument } from '@/components/api/documents'
 import { toast } from 'sonner'
 import { Checkbox } from '@/components/ui/checkbox'
+import { useRouter } from 'next/navigation'
 
 export default function FetchGallery({ singleGallery, galleryId }) {
   const router = useRouter()
@@ -198,12 +199,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
           <div className="flex items-center gap-x-6">
             <Button variant={'link'} asChild>
               <Link
-                href={{
-                  pathname: '/gallery/[galleryId]',
-                  params: {
-                    galleryId: galleryId,
-                  },
-                }}
+                href={`/gallery/${galleryId}`}
                 className="text-sm font-semibold leading-6 text-white"
               >
                 Go to image

@@ -1,9 +1,7 @@
-import createNextIntlPlugin from 'next-intl/plugin'
 import createMDX from '@next/mdx'
 import { NextConfig } from 'next'
+import { withGTConfig } from 'gt-next/config'
 //import { withSentryConfig } from '@sentry/nextjs'
-
-const withNextIntl = createNextIntlPlugin()
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -107,4 +105,11 @@ export default withSentryConfig(withNextIntl(withMDX(nextConfig)), {
 })
  */
 
-export default withNextIntl(withMDX(nextConfig))
+export default withMDX(
+  withGTConfig(nextConfig, {
+    defaultLocale: 'en',
+    locales: ['nl', 'de', 'en'],
+    runtimeUrl: null,
+    loadDictionaryPath: './src/loadDictionary.ts',
+  })
+)

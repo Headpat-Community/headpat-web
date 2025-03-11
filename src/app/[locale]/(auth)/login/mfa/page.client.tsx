@@ -7,7 +7,7 @@ import {
   InputOTPSlot,
 } from '@/components/ui/input-otp'
 import { useEffect, useState } from 'react'
-import { useRouter } from '@/i18n/routing'
+import { useRouter } from 'next/navigation'
 import { account } from '@/app/appwrite-client'
 import { unstable_noStore } from 'next/cache'
 import { getMfaFactors } from '@/utils/server-api/account/user'

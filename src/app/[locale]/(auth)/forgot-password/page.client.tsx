@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { ErrorMessage, SuccessMessage } from '@/components/alerts'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 

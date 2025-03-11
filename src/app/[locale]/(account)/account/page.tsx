@@ -6,14 +6,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import GeneralAccountView from '@/components/account/views/general'
 import FrontpageView from '@/components/account/views/frontpage'
 import SocialsView from '@/components/account/views/socials'
-import { getTranslations } from 'next-intl/server'
+import { getDict } from 'gt-next/server'
 
 export async function generateMetadata({ params }) {
   const paramsResponse = await params
-  const meta = await getTranslations({
-    locale: paramsResponse.locale,
-    namespace: 'AccountMetadata',
-  })
+  const meta = await getDict('AccountMetadata')
 
   return {
     title: 'Account Settings',
@@ -30,14 +27,10 @@ export async function generateMetadata({ params }) {
 
 export const runtime = 'edge'
 
-export default async function AccountSettings({ params }) {
-  const paramsResponse = await params
+export default async function AccountSettings() {
   const mfaList = await getMfaList()
   const accountData = await getUser()
-  const translations = await getTranslations({
-    locale: paramsResponse.locale,
-    namespace: 'Account',
-  })
+  const translations = await getDict('Account')
 
   return (
     <PageLayout title="Account Settings">

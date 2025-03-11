@@ -1,6 +1,6 @@
 import PageLayout from '@/components/pageLayout'
 import ListComponent from '@/components/changelog/list'
-import { getTranslations } from 'next-intl/server'
+import { getDict } from 'gt-next/server'
 import { createSessionServerClient } from '@/app/appwrite-session'
 import { Changelog } from '@/utils/types/models'
 import { Query } from 'node-appwrite'
@@ -12,10 +12,7 @@ export async function generateMetadata(props) {
 
   const { locale } = params
 
-  const meta = await getTranslations({
-    locale,
-    namespace: 'ChangelogMetadata',
-  })
+  const meta = await getDict('ChangelogMetadata')
 
   return {
     title: meta('title'),

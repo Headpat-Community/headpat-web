@@ -3,7 +3,7 @@
 import { createAdminClient } from '@/app/appwrite-session'
 import { headers } from 'next/headers'
 import { OAuthProvider } from 'node-appwrite'
-import { redirect } from '@/i18n/routing'
+import { redirect } from 'next/link'
 
 export async function signInWithGithub(locale: string) {
   const { account } = await createAdminClient()

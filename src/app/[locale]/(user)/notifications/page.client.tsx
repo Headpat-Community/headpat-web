@@ -10,7 +10,7 @@ import { functions } from '@/app/appwrite-client'
 import { useDataCache } from '@/components/contexts/DataCacheContext'
 import { toast } from 'sonner'
 import { useUser } from '@/components/contexts/UserContext'
-import { useRouter } from '@/i18n/routing'
+import { useRouter } from 'next/navigation'
 
 export default function PageClient() {
   const router = useRouter()

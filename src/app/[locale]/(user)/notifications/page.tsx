@@ -1,5 +1,5 @@
 import PageLayout from '@/components/pageLayout'
-import { getTranslations } from 'next-intl/server'
+import { getDict } from 'gt-next/server'
 import PageClient from './page.client'
 
 export const runtime = 'edge'
@@ -9,10 +9,7 @@ export async function generateMetadata(props) {
 
   const { locale } = params
 
-  const meta = await getTranslations({
-    locale,
-    namespace: 'NotificationsMetadata',
-  })
+  const meta = await getDict('NotificationsMetadata')
 
   return {
     title: meta('title'),

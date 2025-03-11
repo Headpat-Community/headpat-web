@@ -1,5 +1,5 @@
 'use client'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { getGalleryImageUrlView } from '@/components/getStorageItem'
 import PageLayout from '@/components/pageLayout'
@@ -262,14 +262,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                 )}
 
                                 {image && current?.$id === image.userId && (
-                                  <Link
-                                    href={{
-                                      pathname: '/account/gallery/[galleryId]',
-                                      params: {
-                                        galleryId: image.$id,
-                                      },
-                                    }}
-                                  >
+                                  <Link href={`/account/gallery/${image.$id}`}>
                                     <Button variant={'outline'}>
                                       Edit image
                                     </Button>

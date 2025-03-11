@@ -1,6 +1,6 @@
 import { JSX, SVGProps } from 'react'
 import { Separator } from '@/components/ui/separator'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 
 export default function Footer() {
   const navigation = {
@@ -52,7 +52,6 @@ export default function Footer() {
           {navigation.main.map((item) => (
             <div key={item.name} className="pb-6">
               <Link
-                // @ts-ignore
                 href={item.href}
                 className="text-sm leading-6 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-500"
                 target={item.name === 'Discord' ? '_blank' : '_self'}
@@ -67,7 +66,6 @@ export default function Footer() {
           {navigation.social.map((item) => (
             <Link
               key={item.name}
-              // @ts-ignore
               href={item.href}
               className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-500"
               target={'_blank'}

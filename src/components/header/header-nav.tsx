@@ -9,7 +9,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { Link, usePathname } from '@/i18n/routing'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 interface NavProps {
   isCollapsed: boolean
@@ -45,7 +46,6 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
             <Tooltip key={index} delayDuration={0}>
               <TooltipTrigger asChild>
                 <Link
-                  // @ts-ignore
                   href={link.href}
                   target={link.target}
                   onClick={(e) => {
@@ -77,7 +77,6 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
           ) : (
             <Link
               key={index}
-              // @ts-ignore
               href={link.href}
               target={link.target}
               onClick={(e) => {

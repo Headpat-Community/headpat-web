@@ -20,7 +20,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { ExecutionMethod, Models } from 'node-appwrite'
 import { functions } from '@/app/appwrite-client'
-import { useRouter } from '@/i18n/routing'
+import { useRouter } from 'next/navigation'
 import { FunctionResponse } from '@/utils/types/models'
 
 const communitySchema = z.object({

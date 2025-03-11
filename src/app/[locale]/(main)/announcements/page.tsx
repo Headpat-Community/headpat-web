@@ -1,9 +1,9 @@
 import { ChevronRight, MegaphoneIcon } from 'lucide-react'
 import { createAdminClient } from '@/app/appwrite-session'
 import { Announcements } from '@/utils/types/models'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 import PageLayout from '@/components/pageLayout'
-import { getTranslations } from 'next-intl/server'
+import { getDict } from 'gt-next/server'
 
 export const runtime = 'edge'
 
@@ -12,10 +12,7 @@ export async function generateMetadata(props) {
 
   const { locale } = params
 
-  const meta = await getTranslations({
-    locale,
-    namespace: 'AnnouncementsMetadata',
-  })
+  const meta = await getDict('AnnouncementsMetadata')
 
   return {
     title: meta('title'),
@@ -62,12 +59,7 @@ export default async function AnnouncementsPage() {
                   <MegaphoneIcon className={'h-12'} />
                   <div className="min-w-0 flex-auto">
                     <p className="text-sm font-semibold leading-6">
-                      <Link
-                        href={{
-                          pathname: '/announcements/[announcementId]',
-                          params: { announcementId: announcement.$id },
-                        }}
-                      >
+                      <Link href={`/announcements/${announcement.$id}`}>
                         <span className="absolute inset-x-0 -top-px bottom-0" />
                         {announcement.title}
                       </Link>
