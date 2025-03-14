@@ -237,7 +237,6 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                               <div className="px-4 py-6 sm:gap-4 sm:px-0 flex items-center">
                                 {image ? (
                                   <Link
-                                    // @ts-ignore
                                     href={getGalleryImageUrlView(
                                       image.galleryId
                                     )}

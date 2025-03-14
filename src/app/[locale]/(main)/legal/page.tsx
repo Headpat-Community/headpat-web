@@ -56,7 +56,6 @@ export default function LegalPage() {
                 please contact us at{' '}
                 <Link
                   className="text-link hover:text-link/80"
-                  // @ts-ignore
                   href="mailto:help@headpat.place"
                 >
                   help@headpat.place
@@ -105,7 +104,6 @@ export default function LegalPage() {
                     </div>
                     <div className="ml-4 shrink-0">
                       <Link
-                        // @ts-ignore
                         href={'/legal/termsofservice.pdf'}
                         className="font-medium text-link hover:text-link/80"
                       >
@@ -127,7 +125,6 @@ export default function LegalPage() {
                     </div>
                     <div className="ml-4 shrink-0">
                       <Link
-                        // @ts-ignore
                         href={'/legal/privacypolicy'}
                         className="font-medium text-link hover:text-link/80"
                       >
@@ -147,7 +144,6 @@ export default function LegalPage() {
                     </div>
                     <div className="ml-4 shrink-0">
                       <Link
-                        // @ts-ignore
                         href={'/legal/eula'}
                         className="font-medium text-link hover:text-link/80"
                       >
@@ -168,7 +164,6 @@ export default function LegalPage() {
                     </div>
                     <div className="ml-4 shrink-0">
                       <Link
-                        // @ts-ignore
                         href={'/legal/disclaimer.pdf'}
                         className="font-medium text-link hover:text-link/80"
                       >
@@ -191,7 +186,6 @@ export default function LegalPage() {
                     </div>
                     <div className="ml-4 shrink-0">
                       <Link
-                        // @ts-ignore
                         href={'/legal/acceptableuse.pdf'}
                         className="font-medium text-link hover:text-link/80"
                       >
@@ -238,7 +232,6 @@ export default function LegalPage() {
                     </div>
                     <div className="ml-4 shrink-0">
                       <Link
-                        // @ts-ignore
                         href={'/legal/returnpolicy.pdf'}
                         className="font-medium text-link hover:text-link/80"
                       >
