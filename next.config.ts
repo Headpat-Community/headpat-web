@@ -72,8 +72,8 @@ const sentryOptions: SentryBuildOptions = {
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 
   silent: true,
-  org: 'CloudNet',
-  project: 'javascript-nextjs',
+  org: 'headpat',
+  project: 'headpat-web',
   sentryUrl: 'https://sentry.fayevr.dev/',
 
   // Upload a larger set of source maps for prettier stack traces (increases build time)
