@@ -54,6 +54,7 @@ const sentryOptions: SentryBuildOptions = {
   org: 'headpat',
   project: 'headpat-space',
   sentryUrl: 'https://sentry.fayevr.dev',
+  authToken: process.env.SENTRY_AUTH_TOKEN,
 
   // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
