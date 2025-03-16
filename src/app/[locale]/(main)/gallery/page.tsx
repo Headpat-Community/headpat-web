@@ -34,8 +34,6 @@ export async function generateMetadata(props) {
   }
 }
 
-export const runtime = 'edge'
-
 function UploadButton() {
   return (
     <Link href={'/gallery/upload'}>

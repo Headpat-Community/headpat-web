@@ -5,8 +5,6 @@ import Link from 'next/link'
 import { getDict } from 'gt-next/server'
 import { HoverBorderGradient } from '@/components/ui/motion/hover-border-gradient'
 
-export const runtime = 'edge'
-
 export async function generateMetadata({ params }) {
   const paramsResponse = await params
   const meta = await getDict('MainMetadata')

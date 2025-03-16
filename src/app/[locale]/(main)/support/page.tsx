@@ -31,8 +31,6 @@ export async function generateMetadata(props) {
   }
 }
 
-export const runtime = 'edge'
-
 export default function Page() {
   return (
     <PageLayout title={'Support'}>

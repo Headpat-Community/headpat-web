@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation'
 import { getUserData } from '@/utils/server-api/user/getUserData'
 
-export const runtime = 'edge'
 export const dynamic = 'auto'
 
 export default async function Profile() {

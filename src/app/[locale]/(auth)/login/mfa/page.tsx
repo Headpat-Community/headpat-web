@@ -8,8 +8,6 @@ export const metadata = {
   keywords: 'login, account, sign in, register',
 }
 
-export const runtime = 'edge'
-
 export default async function Page() {
   return (
     <>

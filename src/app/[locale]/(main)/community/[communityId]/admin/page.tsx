@@ -4,8 +4,6 @@ import { notFound } from 'next/navigation'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import PageClient from './page.client'
 
-export const runtime = 'edge'
-
 export async function generateMetadata(props: {
   params: Promise<{ communityId: string }>
 }) {

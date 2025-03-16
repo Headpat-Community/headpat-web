@@ -2,8 +2,6 @@ import { createAdminClient } from '@/app/appwrite-session'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-export const runtime = 'edge'
-
 export async function GET(request: NextRequest) {
   const userId = request.nextUrl.searchParams.get('userId')
   const secret = request.nextUrl.searchParams.get('secret')

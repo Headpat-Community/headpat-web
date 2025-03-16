@@ -5,8 +5,6 @@ import Link from 'next/link'
 import PageLayout from '@/components/pageLayout'
 import { getDict } from 'gt-next/server'
 
-export const runtime = 'edge'
-
 export async function generateMetadata(props) {
   const params = await props.params
 

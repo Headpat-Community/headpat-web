@@ -8,8 +8,6 @@ import { getEvent } from '@/utils/server-api/events/getEvent'
 import { getUser } from '@/utils/server-api/account/user'
 import PageClient from './page.client'
 
-export const runtime = 'edge'
-
 export async function generateMetadata(props: {
   params: Promise<{ communityId: string; eventId: string }>
 }) {

@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { createSessionClient } from '@/app/appwrite-session'
 
-export const runtime = 'edge'
-
 export async function POST(request: NextRequest) {
   const { account } = await createSessionClient(request)
   const cookie = await cookies()

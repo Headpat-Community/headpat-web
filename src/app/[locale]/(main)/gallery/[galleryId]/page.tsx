@@ -56,8 +56,6 @@ export async function generateMetadata(props): Promise<Metadata> {
   return metadata
 }
 
-export const runtime = 'edge'
-
 export default async function GalleryPage(props) {
   const params = await props.params
 

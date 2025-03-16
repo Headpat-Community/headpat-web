@@ -1,8 +1,6 @@
 import { User } from 'lucide-react'
 import React from 'react'
 
-export const runtime = 'edge'
-
 export default function ChatPage() {
   return (
     <>

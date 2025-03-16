@@ -1,8 +1,6 @@
 import { createSessionClient } from '@/app/appwrite-session'
 import { NextRequest } from 'next/server'
 
-export const runtime = 'edge'
-
 export async function GET(request: NextRequest) {
   if (
     request.headers

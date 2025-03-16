@@ -5,8 +5,6 @@ import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import sanitize from 'sanitize-html'
 import { Button } from '@/components/ui/button'
 
-export const runtime = 'edge'
-
 export const metadata = {
   title: 'Announcements',
 }

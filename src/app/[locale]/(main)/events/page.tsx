@@ -6,8 +6,6 @@ import ArchivedEvents from '@/components/events/archivedEvents'
 import UpcomingEvents from '@/components/events/upcomingEvents'
 import FeatureAccess from '@/components/FeatureAccess'
 
-export const runtime = 'edge'
-
 export async function generateMetadata(props) {
   const params = await props.params
 

@@ -10,8 +10,6 @@ import sanitizeHtml from 'sanitize-html'
 import { getAvatarImageUrlView } from '@/components/getStorageItem'
 import { Metadata } from 'next'
 
-export const runtime = 'edge'
-
 export async function generateMetadata(props: {
   params: Promise<{ profileUrl: string; locale: string }>
 }): Promise<Metadata> {

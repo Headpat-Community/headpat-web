@@ -1,7 +1,5 @@
 import Client from './page.client'
 
-export const runtime = 'edge'
-
 export const metadata = {
   title: 'Forgot password?',
   description: "Don't remember your password? Reset it here!",

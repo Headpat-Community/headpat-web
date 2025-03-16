@@ -7,8 +7,6 @@ import {
   MainClient,
 } from '@/app/[locale]/(admin)/d&d/page.client'
 
-export const runtime = 'edge'
-
 export default async function Page() {
   const { account } = await createSessionServerClient()
 

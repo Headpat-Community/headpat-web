@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server'
 import { UserData } from '@/utils/types/models'
 import { createSessionServerClient } from '@/app/appwrite-session'
 
-export const runtime = 'edge'
-
 export async function GET() {
   const { databases } = await createSessionServerClient()
   try {

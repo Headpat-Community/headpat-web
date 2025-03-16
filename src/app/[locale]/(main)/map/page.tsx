@@ -2,8 +2,6 @@ import PageLayout from '@/components/pageLayout'
 import PageClient from './page.client'
 import { getDict } from 'gt-next/server'
 
-export const runtime = 'edge'
-
 export async function generateMetadata(props) {
   const params = await props.params
 

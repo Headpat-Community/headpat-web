@@ -6,8 +6,6 @@ export const metadata = {
   title: 'Account Gallery',
 }
 
-export const runtime = 'edge'
-
 export default async function FetchGallery() {
   const { account } = await createSessionServerClient()
   const userData = await account.get()
