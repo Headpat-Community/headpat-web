@@ -114,8 +114,12 @@
     "@types/three": "^0.172.0",
     "eslint": "^9.22.0",
     "eslint-config-next": "^15.2.2",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-compiler": "19.0.0-beta-6fc168f-20241025",
+    "globals": "^16.0.0",
     "prettier": "^3.5.3",
-    "prettier-plugin-tailwindcss": "^0.6.11"
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "typescript-eslint": "^8.26.1"
   }
 }

@@ -5,7 +5,6 @@ import {
   ChatBubbleActionWrapper,
   ChatBubbleAvatar,
   ChatBubbleMessage,
-  ChatBubbleTimestamp,
 } from '@/components/ui/chat/chat-bubble'
 import { ChatMessageList } from '@/components/ui/chat/chat-message-list'
 import { Button } from '@/components/ui/button'
@@ -13,7 +12,7 @@ import { CornerDownLeftIcon, FlagIcon, Trash2Icon, Users } from 'lucide-react'
 import { useUser } from '@/components/contexts/UserContext'
 import { ChatInput } from '@/components/ui/chat/chat-input'
 import { useRealtimeChat } from '@/hooks/useRealtimeChat'
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { databases, functions, storage } from '@/app/appwrite-client'
 import { ExecutionMethod, ID, Query } from 'node-appwrite'
 import { Community, Messaging, UserData } from '@/utils/types/models'

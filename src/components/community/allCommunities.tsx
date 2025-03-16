@@ -36,7 +36,7 @@ export default function AllCommunities() {
     } finally {
       setIsFetching(false)
     }
-  }, [])
+  }, [saveAllCache])
 
   useEffect(() => {
     fetchCommunities().then()

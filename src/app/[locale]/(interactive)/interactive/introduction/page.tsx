@@ -4,12 +4,10 @@ import { ThemeToggle } from '@/components/ThemeToggle'
 import { Separator } from '@/components/ui/separator'
 import { Interactive } from '@/utils/types/models'
 import { createAdminClient } from '@/app/appwrite-session'
-import { unstable_noStore } from 'next/cache'
 
 export const runtime = 'edge'
 
 export default async function IntroductionVotingPage() {
-  unstable_noStore()
   const { databases } = await createAdminClient()
   const voteSystem: Interactive.VotesSystem = await databases.getDocument(
     'interactive',
