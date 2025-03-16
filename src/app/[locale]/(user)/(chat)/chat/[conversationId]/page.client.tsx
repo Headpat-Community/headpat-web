@@ -25,7 +25,7 @@ import {
   getCommunityAvatarUrlPreview,
 } from '@/components/getStorageItem'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 import ReportMessageModal from '@/components/user/moderation/ReportMessageModal'
 import {
   AlertDialog,
@@ -440,14 +440,7 @@ export default function ChatClient({
 
             return (
               <ChatBubble key={message.$id} variant={variant}>
-                <Link
-                  href={{
-                    pathname: '/user/[profileUrl]',
-                    params: {
-                      profileUrl: user?.data?.profileUrl,
-                    },
-                  }}
-                >
+                <Link href={`/user/${user?.data?.profileUrl}`}>
                   <ChatBubbleAvatar
                     src={getUserAvatar(message.senderId)}
                     fallback={user?.data?.displayName?.charAt(0) || '...'}

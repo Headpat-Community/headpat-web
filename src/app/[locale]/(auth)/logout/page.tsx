@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useUser } from '@/components/contexts/UserContext'
-import { useRouter } from '@/i18n/routing'
+import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
 
 export const runtime = 'edge'

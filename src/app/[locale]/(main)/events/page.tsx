@@ -1,5 +1,5 @@
 import PageLayout from '@/components/pageLayout'
-import { getTranslations } from 'next-intl/server'
+import { getDict } from 'gt-next/server'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CurrentEvents from '@/components/events/currentEvents'
 import ArchivedEvents from '@/components/events/archivedEvents'
@@ -13,7 +13,7 @@ export async function generateMetadata(props) {
 
   const { locale } = params
 
-  const meta = await getTranslations({ locale, namespace: 'EventsMetadata' })
+  const meta = await getDict('EventsMetadata')
 
   return {
     title: meta('title'),

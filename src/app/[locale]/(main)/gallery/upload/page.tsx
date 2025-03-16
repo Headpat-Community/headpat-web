@@ -1,7 +1,7 @@
 import PageLayout from '@/components/pageLayout'
 import UploadImage from '@/components/gallery/uploadImage'
 import { getUser } from '@/utils/server-api/account/user'
-import { redirect } from '@/i18n/routing'
+import { redirect } from 'next/link'
 
 export const runtime = 'edge'
 

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { removeFollow } from '@/utils/actions/followers/removeFollow'
 import { toast } from 'sonner'
 import { Separator } from '@/components/ui/separator'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import {
@@ -299,12 +299,7 @@ export default function PageClient({
               <CardDescription>{userData?.status}</CardDescription>
             </div>
             <CardDescription className={'flex pt-4 gap-4 items-center'}>
-              <Link
-                href={{
-                  pathname: '/user/[profileUrl]/following',
-                  params: { profileUrl: userData?.profileUrl },
-                }}
-              >
+              <Link href={`/user/${userData?.profileUrl}/following`}>
                 <Button variant={'link'} className={'p-0'}>
                   {!loading ? (
                     <div className="flex items-center space-x-4">
@@ -324,12 +319,7 @@ export default function PageClient({
                   )}
                 </Button>
               </Link>
-              <Link
-                href={{
-                  pathname: '/user/[profileUrl]/followers',
-                  params: { profileUrl: userData?.profileUrl },
-                }}
-              >
+              <Link href={`/user/${userData?.profileUrl}/followers`}>
                 <Button variant={'link'} className={'p-0'}>
                   {!loading ? (
                     <div className="flex items-center space-x-4">

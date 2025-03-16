@@ -4,7 +4,7 @@ import { createAdminClient } from '@/app/appwrite-session'
 import { Gallery } from '@/utils/types/models'
 import PageLayout from '@/components/pageLayout'
 import { getUser } from '@/utils/server-api/account/user'
-import { redirect } from '@/i18n/routing'
+import { redirect } from 'next/link'
 
 export const runtime = 'edge'
 

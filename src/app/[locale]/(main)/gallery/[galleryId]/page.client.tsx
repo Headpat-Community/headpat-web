@@ -1,5 +1,5 @@
 'use client'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { getGalleryImageUrlView } from '@/components/getStorageItem'
 import PageLayout from '@/components/pageLayout'
@@ -237,7 +237,6 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                               <div className="px-4 py-6 sm:gap-4 sm:px-0 flex items-center">
                                 {image ? (
                                   <Link
-                                    // @ts-ignore
                                     href={getGalleryImageUrlView(
                                       image.galleryId
                                     )}
@@ -262,14 +261,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                 )}
 
                                 {image && current?.$id === image.userId && (
-                                  <Link
-                                    href={{
-                                      pathname: '/account/gallery/[galleryId]',
-                                      params: {
-                                        galleryId: image.$id,
-                                      },
-                                    }}
-                                  >
+                                  <Link href={`/account/gallery/${image.$id}`}>
                                     <Button variant={'outline'}>
                                       Edit image
                                     </Button>

@@ -1,7 +1,7 @@
 'use client'
 import { databases, Query, storage } from '@/app/appwrite-client'
 import { Badge } from '@/components/ui/badge'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 import { isMimeTypeAnimatable } from '@/utils/helpers'
 import { Gallery } from '@/utils/types/models'
 import * as Sentry from '@sentry/nextjs'
@@ -110,13 +110,7 @@ export default function FetchGallery({ enableNsfw }) {
                       {item.nsfw && !enableNsfw && (
                         <div className="absolute inset-0 bg-black opacity-50"></div>
                       )}
-                      <Link
-                        href={{
-                          pathname: '/gallery/[galleryId]',
-                          params: { galleryId: item.$id },
-                        }}
-                        className="relative"
-                      >
+                      <Link href={`/gallery/${item.$id}`} className="relative">
                         {item?.mimeType?.includes('video') && (
                           <div className="relative h-full w-full">
                             <video

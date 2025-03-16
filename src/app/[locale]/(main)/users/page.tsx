@@ -1,14 +1,12 @@
 import PageClient from './page.client'
-import { getTranslations } from 'next-intl/server'
+import { getDict } from 'gt-next/server'
 
 export const runtime = 'edge'
 
-export async function generateMetadata(props) {
-  const params = await props.params
-
-  const { locale } = params
-
-  const meta = await getTranslations({ locale, namespace: 'UsersMetadata' })
+export async function generateMetadata({ params }) {
+  const paramsResponse = await params
+  const { locale } = paramsResponse
+  const meta = await getDict('UsersMetadata')
 
   return {
     title: meta('title'),

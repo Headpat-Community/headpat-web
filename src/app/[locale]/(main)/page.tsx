@@ -1,18 +1,15 @@
 import Image from 'next/image'
 import { ChevronRightIcon } from 'lucide-react'
 import PageLayout from '@/components/pageLayout'
-import { Link } from '@/i18n/routing'
-import { getTranslations } from 'next-intl/server'
+import Link from 'next/link'
+import { getDict } from 'gt-next/server'
 import { HoverBorderGradient } from '@/components/ui/motion/hover-border-gradient'
 
 export const runtime = 'edge'
 
 export async function generateMetadata({ params }) {
   const paramsResponse = await params
-  const meta = await getTranslations({
-    locale: paramsResponse.locale,
-    namespace: 'MainMetadata',
-  })
+  const meta = await getDict('MainMetadata')
 
   return {
     title: meta('title'),
@@ -39,12 +36,8 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default async function Home({ params }) {
-  const paramsResponse = await params
-  const main = await getTranslations({
-    locale: paramsResponse.locale,
-    namespace: 'HomePage',
-  })
+export default async function Home() {
+  const main = await getDict('HomePage')
 
   return (
     <PageLayout title="Home">

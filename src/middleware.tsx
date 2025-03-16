@@ -1,19 +1,17 @@
-import createMiddleware from 'next-intl/middleware'
-import { NextRequest } from 'next/server'
-import { routing } from './i18n/routing'
+import { createNextMiddleware } from 'gt-next/middleware'
 
-const intlMiddleware = createMiddleware(routing)
-
-export function middleware(req: NextRequest) {
-  // @ts-ignore
-  const res = intlMiddleware(req)
-
-  // Set a custom X-Powered-By header
-  res.headers.set('X-Powered-By', 'Headpat')
-
-  return res
-}
+export default createNextMiddleware({
+  prefixDefaultLocale: false,
+})
 
 export const config = {
-  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next (internal files)
+     * - static files
+     */
+    '/((?!api|static|.*\\..*|_next).*)',
+  ],
 }

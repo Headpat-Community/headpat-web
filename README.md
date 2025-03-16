@@ -1,4 +1,4 @@
-# The Headpat Website - Next.js 14
+# The Headpat Website - Next.js 15
 
 ## How to contribute
 
@@ -15,7 +15,7 @@ or `fix/bug-name`). This will help us to keep track of what's going on.
 First, install the dependencies:
 
 ```bash
-pnpm install
+bun install
 ```
 
 ### NOTE:
@@ -25,7 +25,7 @@ Some pages require API Keys to work. If you require an API Key, please contact F
 #### Then, run the development server:
 
 ```bash
-pnpm dev
+bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

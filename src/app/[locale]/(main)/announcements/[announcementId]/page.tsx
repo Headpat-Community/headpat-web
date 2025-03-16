@@ -1,6 +1,6 @@
 import { createAdminClient } from '@/app/appwrite-session'
 import { Announcements } from '@/utils/types/models'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import sanitize from 'sanitize-html'
 import { Button } from '@/components/ui/button'
@@ -46,12 +46,7 @@ export default async function Page(props: {
               <dd className="mt-1 flex items-center text-sm leading-6 sm:col-span-2 sm:mt-0">
                 <Link
                   className="flex items-center text-link hover:text-link/80"
-                  href={{
-                    pathname: '/user/[profileUrl]',
-                    params: {
-                      profileUrl: announcementData?.userData?.profileUrl,
-                    },
-                  }}
+                  href={`/user/${announcementData?.userData?.profileUrl}`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img

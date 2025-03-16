@@ -19,7 +19,7 @@ import {
   InputOTPSlot,
 } from '@/components/ui/input-otp'
 import * as Sentry from '@sentry/nextjs'
-import { useRouter } from '@/i18n/routing'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
 export default function MfaAlert({ mfaList }) {

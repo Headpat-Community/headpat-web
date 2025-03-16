@@ -1,12 +1,9 @@
 import Header from '@/components/header/header-server'
-import { getTranslations } from 'next-intl/server'
+import { getDict } from 'gt-next/server'
 
 export async function generateMetadata({ params }) {
   const paramsResponse = await params
-  const meta = await getTranslations({
-    locale: paramsResponse.locale,
-    namespace: 'MainMetadata',
-  })
+  const meta = await getDict('MainMetadata')
 
   return {
     title: {
@@ -41,10 +38,7 @@ export async function generateMetadata({ params }) {
 
 export default async function LocaleLayout({ children, params }) {
   const paramsResponse = await params
-  const pageNames = await getTranslations({
-    locale: paramsResponse.locale,
-    namespace: 'PageNames',
-  })
+  const pageNames = await getDict('PageNames')
 
   return (
     <div>

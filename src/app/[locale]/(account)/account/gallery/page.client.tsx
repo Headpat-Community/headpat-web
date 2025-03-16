@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Loading from '@/app/loading'
 import { databases, Query, storage } from '@/app/appwrite-client'
 import * as Sentry from '@sentry/nextjs'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 import { toast } from 'sonner'
 
 export default function FetchGallery({ enableNsfw, userId }) {
@@ -91,12 +91,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
                       {item.nsfw && !enableNsfw && (
                         <div className="absolute inset-0 bg-black opacity-50"></div>
                       )}
-                      <Link
-                        href={{
-                          pathname: '/account/gallery/[galleryId]',
-                          params: { galleryId: item.$id },
-                        }}
-                      >
+                      <Link href={`/account/gallery/${item.$id}`}>
                         <Image
                           src={getGalleryImageUrl(item.galleryId)}
                           alt={item.name}

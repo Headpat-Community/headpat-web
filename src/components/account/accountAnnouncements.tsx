@@ -1,7 +1,7 @@
 import { createAdminClient } from '@/app/appwrite-session'
 import { notFound } from 'next/navigation'
 import { Announcements } from '@/utils/types/models'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 
 export default async function AccountAnnouncements() {
   const { databases } = await createAdminClient()
@@ -35,10 +35,7 @@ export default async function AccountAnnouncements() {
                 {announcementData.sideText}
               </p>
               <Link
-                href={{
-                  pathname: '/announcements/[announcementId]',
-                  params: { announcementId: announcementData.$id },
-                }}
+                href={`/announcements/${announcementData.$id}`}
                 className="flex-none rounded-full bg-primary px-3.5 py-1 text-primary-foreground text-sm font-semibold shadow-xs hover:bg-primary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/80"
               >
                 More info <span aria-hidden="true">&rarr;</span>

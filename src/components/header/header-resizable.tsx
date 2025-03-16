@@ -23,10 +23,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { UserData } from '@/utils/types/models'
-import { Link, useRouter } from '@/i18n/routing'
+import Link from 'next/link'
 import { useUser } from '@/components/contexts/UserContext'
 import { databases } from '@/app/appwrite-client'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 const getAvatar = (id: string) => {
   if (!id) return

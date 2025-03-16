@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Textarea } from '@/components/ui/textarea'
-import { useRouter } from '@/i18n/routing'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import imageCompression from 'browser-image-compression'
 import { Button } from '@/components/ui/button'
@@ -205,10 +205,7 @@ export default function UploadPage({ userId }: { userId: string }) {
               toast.success(
                 "Thanks for sharing your image with us. It's now live!"
               )
-              router.push({
-                pathname: `/gallery/[galleryId]`,
-                params: { galleryId: fileDataResponse.$id },
-              })
+              router.push(`/gallery/${fileDataResponse.$id}`)
             },
             function (error) {
               console.log(error) // Failure

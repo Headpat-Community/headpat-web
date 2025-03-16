@@ -1,5 +1,5 @@
 import { Events } from '@/utils/types/models'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { CalendarIcon, ClockIcon, MapPinIcon, UsersIcon } from 'lucide-react'
 
@@ -15,13 +15,7 @@ export default function EventsList({
           <div className="space-y-2">
             <div className="flex justify-between">
               <Link
-                href={{
-                  pathname: '/community/[communityId]/events/[eventId]',
-                  params: {
-                    communityId: event.communityId,
-                    eventId: event.$id,
-                  },
-                }}
+                href={`/community/${event.communityId}/events/${event.$id}`}
               >
                 <h3 className="text-lg font-semibold">{event.title}</h3>
               </Link>

@@ -1,4 +1,5 @@
 import Client from './page.client'
+import { getLocale } from 'gt-next/server'
 
 export const metadata = {
   title: 'Login',
@@ -8,9 +9,8 @@ export const metadata = {
 
 export const runtime = 'edge'
 
-export default async function LoginPage({ params }) {
-  const paramsResponse = await params
-  const locale = paramsResponse.locale
+export default async function LoginPage() {
+  const locale = await getLocale()
   return (
     <>
       <Client locale={locale} />

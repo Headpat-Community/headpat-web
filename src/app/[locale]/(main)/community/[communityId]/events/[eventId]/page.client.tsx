@@ -20,7 +20,7 @@ import PageLayout from '@/components/pageLayout'
 import sanitize from 'sanitize-html'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useUser } from '@/components/contexts/UserContext'
-import { useRouter } from '@/i18n/routing'
+import { useRouter } from 'next/navigation'
 
 export default function PageClient({ eventData, communityData }) {
   const [event, setEvent] =

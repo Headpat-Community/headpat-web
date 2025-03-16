@@ -9,8 +9,7 @@ import { DataCacheProvider } from '@/components/contexts/DataCacheContext'
 import { createSessionServerClient } from './appwrite-session'
 import Maintenance from '@/components/static/maintenance'
 import Script from 'next/script'
-import { getMessages } from 'next-intl/server'
-import { NextIntlClientProvider } from 'next-intl'
+import { getLocale, GTProvider } from 'gt-next/server'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -73,15 +72,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RootLayout({ children }) {
+  const locale = await getLocale()
   const { databases } = await createSessionServerClient()
   const status = await databases
     .getDocument('config', 'status', 'website')
     .catch(() => ({ isMaintenance: true }))
-  const messages = await getMessages()
 
   if (status.isMaintenance) {
     return (
-      <html lang="en" className="h-full" suppressHydrationWarning>
+      <html lang={locale} className="h-full" suppressHydrationWarning>
         <Script
           defer
           src={'https://analytics.fayevr.dev/script.js'}
@@ -107,7 +106,7 @@ export default async function RootLayout({ children }) {
   }
 
   return (
-    <html lang="en" className="h-full" suppressHydrationWarning>
+    <html lang={locale} className="h-full" suppressHydrationWarning>
       <Script
         defer
         src={'https://analytics.fayevr.dev/script.js'}
@@ -125,13 +124,13 @@ export default async function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          <NextIntlClientProvider messages={messages}>
+          <GTProvider>
             <UserProvider>
               <DataCacheProvider>
                 <div className="w-full">{children}</div>
               </DataCacheProvider>
             </UserProvider>
-          </NextIntlClientProvider>
+          </GTProvider>
         </ThemeProvider>
         <SonnerToaster />
       </body>

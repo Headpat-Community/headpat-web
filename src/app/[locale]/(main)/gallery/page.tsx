@@ -1,16 +1,16 @@
 import Client from './page.client'
 import { getUser } from '@/utils/server-api/account/user'
 import PageLayout from '@/components/pageLayout'
-import { Link } from '@/i18n/routing'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { getTranslations } from 'next-intl/server'
+import { getDict } from 'gt-next/server'
 
 export async function generateMetadata(props) {
   const params = await props.params
 
   const { locale } = params
 
-  const meta = await getTranslations({ locale, namespace: 'GalleryMetadata' })
+  const meta = await getDict('GalleryMetadata')
 
   return {
     title: meta('title'),
