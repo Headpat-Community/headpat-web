@@ -1,4 +1,4 @@
-import { redirect } from 'next/link'
+import { redirect } from 'next/navigation'
 import { createSessionServerClient } from '@/app/appwrite-session'
 
 export default async function Layout(props) {
@@ -12,9 +12,9 @@ export default async function Layout(props) {
     return props.children
   } catch (error) {
     if (error.type === 'general_unauthorized_scope') {
-      redirect({ href: '/login', locale })
+      redirect('/login')
     } else {
-      redirect({ href: '/login/mfa', locale })
+      redirect('/login/mfa')
     }
   }
 }

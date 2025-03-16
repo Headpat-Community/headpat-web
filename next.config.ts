@@ -9,13 +9,9 @@ const nextConfig: NextConfig = {
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   compiler: {
     styledComponents: true,
-    //removeConsole: {
-    //exclude: ['error', 'info', 'warn'],
-    //},
   },
   experimental: {
     mdxRs: true,
-    //reactCompiler: true,
   },
   images: {
     deviceSizes: [320, 420, 768, 1024, 1200],
@@ -27,23 +23,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '*.headpat.de',
+        hostname: '*.headpat.space',
       },
       {
         protocol: 'https',
-        hostname: '*.headpat-de.pages.dev',
-      },
-      {
-        protocol: 'https',
-        hostname: '*.headpat-place.pages.dev',
-      },
-      {
-        protocol: 'https',
-        hostname: 'api.fayevr.dev',
-      },
-      {
-        protocol: 'https',
-        hostname: 'placekitten.com',
+        hostname: 'api.headpat.space',
       },
     ],
   },
@@ -61,12 +45,6 @@ const nextConfig: NextConfig = {
   },
 }
 
-const withMDX = createMDX({
-  // Add Markdown plugins here, as desired
-})
-
-// Injected content via Sentry wizard below
-
 const sentryOptions: SentryBuildOptions = {
   // For all available options, see:
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
@@ -74,11 +52,15 @@ const sentryOptions: SentryBuildOptions = {
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
   org: 'headpat',
-  project: 'headpat-web',
+  project: 'headpat-space',
   sentryUrl: 'https://sentry.fayevr.dev/',
 
   // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
+
+  sourcemaps: {
+    deleteSourcemapsAfterUpload: true,
+  },
 
   // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers. (increases server load)
   // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of
@@ -94,12 +76,17 @@ const sentryOptions: SentryBuildOptions = {
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: false,
 }
-
 const sentryNextConfig = withSentryConfig(nextConfig, sentryOptions)
 
-export default withGTConfig(sentryNextConfig, {
+const withMDX = createMDX({
+  // Add Markdown plugins here, as desired
+})
+
+const combinedConfig = withGTConfig(sentryNextConfig, {
   defaultLocale: 'en',
   locales: ['nl', 'de', 'en'],
   runtimeUrl: null,
   loadDictionaryPath: './src/loadDictionary.ts',
 })
+
+export default withMDX(combinedConfig)

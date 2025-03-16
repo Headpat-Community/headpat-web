@@ -1,8 +1,10 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": ["next", "next/core-web-vitals", "prettier"],
   "plugins": ["eslint-plugin-react-compiler"],
   "rules": {
     "react-compiler/react-compiler": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "@next/next/no-async-client-component": "error",
+    "@next/next/no-html-link-for-pages": "error"
   }
 }

@@ -46,7 +46,7 @@ export default function MyCommunities() {
     } finally {
       setIsFetching(false)
     }
-  }, [])
+  }, [saveAllCache])
 
   useEffect(() => {
     if (!current) {
