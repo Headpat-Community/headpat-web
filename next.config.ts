@@ -71,7 +71,8 @@ const sentryOptions: SentryBuildOptions = {
   // For all available options, see:
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 
-  silent: true,
+  // Only print logs for uploading source maps in CI
+  silent: !process.env.CI,
   org: 'headpat',
   project: 'headpat-web',
   sentryUrl: 'https://sentry.fayevr.dev/',
