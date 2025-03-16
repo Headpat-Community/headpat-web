@@ -52,15 +52,13 @@ const sentryOptions: SentryBuildOptions = {
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
   org: 'headpat',
-  project: 'headpat-space',
+  project: 'headpat-place',
   sentryUrl: 'https://sentry.fayevr.dev',
-  //authToken: process.env.SENTRY_AUTH_TOKEN,
 
   // Upload a larger set of source maps for prettier stack traces (increases build time)
-  widenClientFileUpload: false,
+  widenClientFileUpload: true,
 
   sourcemaps: {
-    disable: true,
     deleteSourcemapsAfterUpload: true,
   },
 
