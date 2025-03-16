@@ -3,7 +3,7 @@
 import { createAdminClient } from '@/app/appwrite-session'
 import { headers } from 'next/headers'
 import { OAuthProvider } from 'node-appwrite'
-import { redirect } from 'next/link'
+import { redirect } from 'next/navigation'
 
 export async function signInWithGithub(locale: string) {
   const { account } = await createAdminClient()
@@ -17,7 +17,7 @@ export async function signInWithGithub(locale: string) {
   )
 
   // @ts-ignore
-  return redirect({ href: redirectUrl, locale })
+  return redirect(redirectUrl)
 }
 
 export async function signInWithGoogle(locale: string) {
@@ -31,7 +31,7 @@ export async function signInWithGoogle(locale: string) {
     `${origin}/login?failure=true`
   )
   // @ts-ignore
-  return redirect({ href: redirectUrl, locale })
+  return redirect(redirectUrl)
 }
 
 export async function signInWithDiscord(locale: string) {
@@ -46,7 +46,7 @@ export async function signInWithDiscord(locale: string) {
   )
 
   // @ts-ignore
-  return redirect({ href: redirectUrl, locale })
+  return redirect(redirectUrl)
 }
 
 export async function signInWithSpotify(locale: string) {
@@ -61,7 +61,7 @@ export async function signInWithSpotify(locale: string) {
   )
 
   // @ts-ignore
-  return redirect({ href: redirectUrl, locale })
+  return redirect(redirectUrl)
 }
 
 export async function signInWithTwitch(locale: string) {
@@ -76,7 +76,7 @@ export async function signInWithTwitch(locale: string) {
   )
 
   // @ts-ignore
-  return redirect({ href: redirectUrl, locale })
+  return redirect(redirectUrl)
 }
 
 export async function signInWithMicrosoft(locale: string) {
@@ -91,7 +91,7 @@ export async function signInWithMicrosoft(locale: string) {
   )
 
   // @ts-ignore
-  return redirect({ href: redirectUrl, locale })
+  return redirect(redirectUrl)
 }
 
 export async function signInWithApple(locale: string) {
@@ -106,7 +106,7 @@ export async function signInWithApple(locale: string) {
   )
 
   // @ts-ignore
-  return redirect({ href: redirectUrl, locale })
+  return redirect(redirectUrl)
 }
 
 export async function signInWithEurofurence(locale: string) {
@@ -121,5 +121,5 @@ export async function signInWithEurofurence(locale: string) {
   )
 
   // @ts-ignore
-  return redirect({ href: redirectUrl, locale })
+  return redirect(redirectUrl)
 }

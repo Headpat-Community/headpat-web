@@ -4,7 +4,7 @@ import { createAdminClient } from '@/app/appwrite-session'
 import { Gallery } from '@/utils/types/models'
 import PageLayout from '@/components/pageLayout'
 import { getUser } from '@/utils/server-api/account/user'
-import { redirect } from 'next/link'
+import { redirect } from 'next/navigation'
 
 export const runtime = 'edge'
 
@@ -22,7 +22,7 @@ export default async function AccountSingleGalleryPage(props) {
   try {
     userData = await getUser()
   } catch (error) {
-    return redirect({ href: '/login', locale })
+    return redirect('/login')
   }
 
   const userId = userData?.$id

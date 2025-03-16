@@ -7,7 +7,7 @@ import {
 import { getEvent } from '@/utils/server-api/events/getEvent'
 import { getUser } from '@/utils/server-api/account/user'
 import PageClient from './page.client'
-import { redirect } from 'next/link'
+import { redirect } from 'next/navigation'
 
 export const runtime = 'edge'
 

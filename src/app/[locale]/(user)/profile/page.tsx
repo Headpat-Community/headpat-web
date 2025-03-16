@@ -1,21 +1,13 @@
-import { redirect } from 'next/link'
+import { redirect } from 'next/navigation'
 import { getUserData } from '@/utils/server-api/user/getUserData'
 
 export const runtime = 'edge'
 export const dynamic = 'auto'
 
-export default async function Profile(props) {
-  const params = await props.params
-
-  const { locale } = params
-
+export default async function Profile() {
   const user = await getUserData()
 
-  if (!user?.$id) return redirect({ href: '/login', locale })
+  if (!user?.$id) return redirect('/login')
 
-  redirect({
-    // @ts-ignore
-    href: `/user/${user.profileUrl}`,
-    locale,
-  })
+  redirect(`/user/${user.profileUrl}`)
 }
