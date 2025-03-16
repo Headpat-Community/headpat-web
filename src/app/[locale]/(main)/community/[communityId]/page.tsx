@@ -3,8 +3,6 @@ import PageClient from './page.client'
 import { notFound } from 'next/navigation'
 import { getCommunityAvatarUrlView } from '@/components/getStorageItem'
 
-export const runtime = 'edge'
-
 export async function generateMetadata(props: {
   params: Promise<{ communityId: string }>
 }) {

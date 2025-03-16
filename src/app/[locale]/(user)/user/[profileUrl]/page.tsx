@@ -11,8 +11,6 @@ import { notFound } from 'next/navigation'
 import PageLayout from '@/components/pageLayout'
 import { Metadata } from 'next'
 
-export const runtime = 'edge'
-
 export async function generateMetadata(props: {
   params: Promise<{ profileUrl: string; locale: string }>
 }): Promise<Metadata> {

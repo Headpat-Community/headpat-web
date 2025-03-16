@@ -2,8 +2,6 @@ import { createAdminClient } from '@/app/appwrite-session'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-export const runtime = 'edge'
-
 export async function POST(request: NextRequest) {
   const { account } = await createAdminClient()
   // if POST is not json, return 400

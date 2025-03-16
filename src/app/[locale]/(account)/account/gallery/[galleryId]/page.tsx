@@ -6,8 +6,6 @@ import PageLayout from '@/components/pageLayout'
 import { getUser } from '@/utils/server-api/account/user'
 import { redirect } from 'next/navigation'
 
-export const runtime = 'edge'
-
 export const metadata = {
   title: 'Account Gallery',
 }

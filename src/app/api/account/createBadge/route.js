@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 
-export const runtime = 'edge'
-
 export async function POST(request) {
   const headersList = await headers()
   const cookieHeader = headersList.get('cookie')

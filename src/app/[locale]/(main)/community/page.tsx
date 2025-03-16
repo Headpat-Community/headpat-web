@@ -4,8 +4,6 @@ import PageLayout from '@/components/pageLayout'
 import AllCommunities from '@/components/community/allCommunities'
 import MyCommunities from '@/components/community/myCommunities'
 
-export const runtime = 'edge'
-
 export async function generateMetadata(props) {
   const params = await props.params
 

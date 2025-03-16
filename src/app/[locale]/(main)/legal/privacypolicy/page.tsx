@@ -5,8 +5,6 @@ export const metadata = {
   title: 'Privacy Policy',
 }
 
-export const runtime = 'edge'
-
 export default function PrivacyPolicyPage() {
   return (
     <PageLayout title={'Privacy Policy'}>

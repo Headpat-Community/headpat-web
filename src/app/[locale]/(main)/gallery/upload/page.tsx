@@ -3,8 +3,6 @@ import UploadImage from '@/components/gallery/uploadImage'
 import { getUser } from '@/utils/server-api/account/user'
 import { redirect } from 'next/navigation'
 
-export const runtime = 'edge'
-
 export default async function Page(props) {
   const params = await props.params
 

@@ -9,8 +9,6 @@ import { Query } from '@/app/appwrite-server'
 import sanitizeHtml from 'sanitize-html'
 import { getAvatarImageUrlView } from '@/components/getStorageItem'
 
-export const runtime = 'edge'
-
 export async function generateMetadata(props: {
   params: Promise<{ profileUrl: string; locale: string }>
 }) {

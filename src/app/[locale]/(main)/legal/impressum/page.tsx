@@ -2,8 +2,6 @@ export const metadata = {
   title: 'Impressum',
 }
 
-export const runtime = 'edge'
-
 export default function ImpressumPage() {
   return (
     <>

@@ -4,8 +4,6 @@ import { useUser } from '@/components/contexts/UserContext'
 import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
 
-export const runtime = 'edge'
-
 export default function LogoutPage() {
   const [error, setError] = useState(null)
   const { current, logout } = useUser()

@@ -8,8 +8,6 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
-export const runtime = 'edge'
-
 const ResetPassword = () => {
   const [code, setCode] = useState('')
   const [userId, setUserId] = useState('')

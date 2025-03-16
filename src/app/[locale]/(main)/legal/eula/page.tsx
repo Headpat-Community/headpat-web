@@ -5,8 +5,6 @@ export const metadata = {
   title: 'EULA',
 }
 
-export const runtime = 'edge'
-
 export default function Page() {
   return (
     <PageLayout title={'EULA'}>

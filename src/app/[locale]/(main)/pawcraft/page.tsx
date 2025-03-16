@@ -5,8 +5,6 @@ export const metadata = {
   description: 'Minecraft Vanilla Server mit viel Spaß und Orten zum Erkunden!',
 }
 
-export const runtime = 'edge'
-
 export default function PawcraftPage() {
   return (
     <div className="bg-gray-900">

@@ -1,7 +1,5 @@
 import PageLayout from '@/components/pageLayout'
 
-export const runtime = 'edge'
-
 export const metadata = {
   title: 'Community Profile',
   description: 'Community Profile Description',

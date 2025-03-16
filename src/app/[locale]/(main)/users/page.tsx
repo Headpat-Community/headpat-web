@@ -1,8 +1,6 @@
 import PageClient from './page.client'
 import { getDict } from 'gt-next/server'
 
-export const runtime = 'edge'
-
 export async function generateMetadata({ params }) {
   const paramsResponse = await params
   const { locale } = paramsResponse
