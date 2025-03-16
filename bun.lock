@@ -1241,7 +1241,7 @@
 
     "gsap": ["gsap@3.12.7", "", {}, "sha512-V4GsyVamhmKefvcAKaoy0h6si0xX7ogwBoBSs2CTJwt7luW0oZzC0LhdkyuKV8PJAXr7Yaj8pMjCKD4GJ+eEMg=="],
 
-    "gt-next": ["gt-next@5.2.8", "", { "dependencies": { "@generaltranslation/supported-locales": "^2.0.6", "generaltranslation": "^6.2.1", "gt-react": "^9.2.6" }, "peerDependencies": { "next": ">=13.0.0 <=15.1.7", "react": ">=16.8.0 <20.0.0", "react-dom": ">=16.8.0 <20.0.0" } }, "sha512-Imo10whBsCtOUG/ZkWG7P3bloVXRS60sZuVoMnzCDgdAUv+/WXcLO+BBz3I7y9Rgbl84DNvekMJWGjMuM4eIug=="],
+    "gt-next": ["gt-next@5.2.9", "", { "dependencies": { "@generaltranslation/supported-locales": "^2.0.6", "generaltranslation": "^6.2.1", "gt-react": "^9.2.6" }, "peerDependencies": { "next": ">=13.0.0 <=15.1.7 || >=15.2.2", "react": ">=16.8.0 <20.0.0", "react-dom": ">=16.8.0 <20.0.0" } }, "sha512-J+sUBH2TR/iOE24zyeO+S45VCXz4XpKRU/+ffE6HUWqB3OIIYeQFHmGmC3oyqHIDAbxfJp/MES82L92T5zcDSQ=="],
 
     "gt-react": ["gt-react@9.2.6", "", { "dependencies": { "@generaltranslation/supported-locales": "^2.0.6", "generaltranslation": "^6.2.1" }, "peerDependencies": { "react": ">=16.8.0 <20.0.0", "react-dom": ">=16.8.0 <20.0.0" } }, "sha512-6mzfswABFCxojvNsCh0VzVFeB954EwNxaGKyLau5vnTZmwk3y9T1bgGkf8Fpk/DcJHQMlbnCjyWxK9m5qFgABQ=="],
 
