@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { Account } from '@/utils/types/models'
+import { AccountPrefs, AccountType } from '@/utils/types/models'
 import { account } from '@/app/appwrite-client'
 import { ID } from 'node-appwrite'
 import { SparklesCore } from '../ui/motion/sparkles'
@@ -8,9 +8,9 @@ import { toast } from 'sonner'
 import { useTheme } from 'next-themes'
 
 interface UserContextValue {
-  current: Account.AccountPrefs | null
+  current: AccountPrefs | null
   init: () => Promise<void>
-  setUser: React.Dispatch<React.SetStateAction<Account.AccountType | null>>
+  setUser: React.Dispatch<React.SetStateAction<AccountType | null>>
   login: (email: string, password: string) => Promise<void>
   loginOAuth: (userId: string, secret: string) => Promise<void>
   logout: (redirect: boolean) => Promise<void>
@@ -65,7 +65,7 @@ export function UserProvider(props: any) {
         .catch((err) => {
           toast.error(err.toString())
         })
-    } catch (error) {
+    } catch {
       setUser(null)
     }
   }
@@ -79,7 +79,7 @@ export function UserProvider(props: any) {
     try {
       const loggedIn = await account.get()
       setUser(loggedIn)
-    } catch (error) {
+    } catch {
       setUser(null)
     }
   }

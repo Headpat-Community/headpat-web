@@ -3,15 +3,11 @@ import UploadImage from '@/components/gallery/uploadImage'
 import { getUser } from '@/utils/server-api/account/user'
 import { redirect } from 'next/navigation'
 
-export default async function Page(props) {
-  const params = await props.params
-
-  const { locale } = params
-
+export default async function Page() {
   let user = null
   try {
     user = await getUser()
-  } catch (e) {
+  } catch {
     return redirect('/login')
   }
 

@@ -13,9 +13,6 @@ export const metadata = {
   },
 }
 
-export default async function Page(props) {
-  const params = await props.params
-  const { locale } = params
-
+export default async function Page() {
   return <Client />
 }

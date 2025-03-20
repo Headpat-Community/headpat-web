@@ -31,7 +31,7 @@ export default function UploadPage({ userId }: { userId: string }) {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (event.target.files && event.target.files.length > 0) {
-      let file: any = event.target.files[0]
+      const file = event.target.files[0]
 
       // Handle GIFs and videos separately without compression
       if (file.type.includes('image/gif') || file.type.includes('video')) {
@@ -99,7 +99,7 @@ export default function UploadPage({ userId }: { userId: string }) {
   const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
     if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
-      let file = event.dataTransfer.files[0]
+      const file = event.dataTransfer.files[0]
 
       // Handle GIFs and videos separately without compression
       if (file.type.includes('image/gif') || file.type.includes('video')) {

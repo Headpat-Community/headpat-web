@@ -3,11 +3,11 @@ import { ExecutionMethod } from 'node-appwrite'
 import { useEffect, useState } from 'react'
 import { functions } from '@/app/appwrite-client'
 import { toast } from 'sonner'
-import { Events } from '@/utils/types/models'
 import EventsList from '@/components/events/eventsList'
+import { EventsDocumentsType } from '@/utils/types/models'
 
 export default function ArchivedEvents() {
-  const [events, setEvents] = useState<Events.EventsDocumentsType[]>([])
+  const [events, setEvents] = useState<EventsDocumentsType[]>([])
 
   const fetchEvents = async () => {
     const loadingToast = toast.loading('Loading events...')
@@ -19,9 +19,7 @@ export default function ArchivedEvents() {
         '/events/archived',
         ExecutionMethod.GET
       )
-      const response: Events.EventsDocumentsType[] = JSON.parse(
-        data.responseBody
-      )
+      const response: EventsDocumentsType[] = JSON.parse(data.responseBody)
 
       setEvents(response)
     } catch {

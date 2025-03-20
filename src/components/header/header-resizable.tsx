@@ -12,9 +12,8 @@ import { Nav } from '@/components/header/header-nav'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Nav1, Nav2, Nav3, Nav4, NavFooter } from '@/components/header/data'
 import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { ChevronsUpDown } from 'lucide-react'
+import { BracesIcon, ChevronsUpDown, ServerIcon, UsersIcon } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,12 +21,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { UserData } from '@/utils/types/models'
 import Link from 'next/link'
 import { useUser } from '@/components/contexts/UserContext'
 import { databases } from '@/app/appwrite-client'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { team, TeamSwitcher } from '@/components/TeamSwitcher'
+import { UserDataDocumentsType } from '@/utils/types/models'
 
 const getAvatar = (id: string) => {
   if (!id) return
@@ -49,11 +49,30 @@ export default function SidebarResizable({
   children: React.ReactNode
 }) {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(defaultCollapsed)
-  const [userData, setUserData] =
-    useState<UserData.UserDataDocumentsType | null>(null)
+  const [userData, setUserData] = useState<UserDataDocumentsType | null>(null)
   const [userImage, setUserImage] = useState<string | null>(null)
   const router = useRouter()
   const { current } = useUser()
+
+  const teams: team[] = [
+    {
+      name: 'Place',
+      activeName: 'Headpat Place',
+      logo: UsersIcon,
+      href: 'https://headpat.place',
+    },
+    {
+      name: 'Space',
+      logo: ServerIcon,
+      href: 'https://headpat.space',
+    },
+    {
+      name: 'Developer',
+      logo: BracesIcon,
+      plan: 'Documentation for developers',
+      href: 'https://headpat.dev',
+    },
+  ]
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,12 +80,12 @@ export default function SidebarResizable({
         try {
           await databases
             .getDocument('hp_db', 'userdata', `${current.$id}`)
-            .then((data: UserData.UserDataDocumentsType) => {
+            .then((data: UserDataDocumentsType) => {
               setUserData(data)
               const image = getAvatar(data.avatarId)
               setUserImage(image)
             })
-        } catch (error) {
+        } catch {
           toast.error('Failed to fetch user data')
         }
       }
@@ -121,17 +140,7 @@ export default function SidebarResizable({
                     isCollapsed ? 'h-[52px] justify-center' : 'px-2 ml-2'
                   )}
                 >
-                  <Image
-                    src={'/logos/Headpat_Logo_web_128x128_240518-05.png'}
-                    width={32}
-                    height={32}
-                    alt={'Headpat logo'}
-                    className={'rounded-full'}
-                    draggable={false}
-                  />
-                  <span className={cn('ml-2', isCollapsed && 'hidden')}>
-                    Headpat
-                  </span>
+                  <TeamSwitcher teams={teams} />
                 </div>
               </Link>
               <Separator />

@@ -92,7 +92,7 @@ const withMDX = createMDX({
   // Add Markdown plugins here, as desired
 })
 
-const combinedConfig = withGTConfig(nextConfig, {
+const combinedConfig = withGTConfig(sentryNextConfig, {
   defaultLocale: 'en',
   locales: ['nl', 'de', 'en'],
   runtimeUrl: null,

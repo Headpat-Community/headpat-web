@@ -13,7 +13,7 @@ type InputTagsProps = Omit<InputProps, 'value' | 'onChange'> & {
 }
 
 const InputTags = React.forwardRef<HTMLInputElement, InputTagsProps>(
-  ({ className, value, onChange, maxLength, ...props }, ref) => {
+  ({ className, value, onChange, maxLength = 128, ...props }, ref) => {
     const [pendingDataPoint, setPendingDataPoint] = React.useState('')
 
     React.useEffect(() => {
@@ -76,7 +76,7 @@ const InputTags = React.forwardRef<HTMLInputElement, InputTagsProps>(
           }}
           {...props}
           ref={ref}
-          maxLength={128}
+          maxLength={maxLength}
         />
       </div>
     )

@@ -12,7 +12,11 @@ import { AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { ShieldAlertIcon } from 'lucide-react'
 import { useCallback, useState } from 'react'
-import { Account, Gallery } from '@/utils/types/models'
+import {
+  AccountType,
+  GalleryDocumentsType,
+  GalleryPrefsDocumentsType,
+} from '@/utils/types/models'
 import ReportGalleryModal from '@/components/gallery/moderation/ReportGalleryModal'
 import { ExecutionMethod } from 'node-appwrite'
 import { functions } from '@/app/appwrite-client'
@@ -28,10 +32,10 @@ export default function ModerationModal({
 }: {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
-  image: Gallery.GalleryDocumentsType
-  imagePrefs: Gallery.GalleryPrefsDocumentsType
-  setImagePrefs: (prefs: Gallery.GalleryPrefsDocumentsType) => void
-  current: Account.AccountType
+  image: GalleryDocumentsType
+  imagePrefs: GalleryPrefsDocumentsType
+  setImagePrefs: (prefs: GalleryPrefsDocumentsType) => void
+  current: AccountType
 }) {
   const [reportGalleryModalOpen, setReportGalleryModalOpen] = useState(false)
 
@@ -66,7 +70,7 @@ export default function ModerationModal({
       } else {
         toast.error('Failed to hide image. Please try again later.')
       }
-    } catch (error) {
+    } catch {
       toast.dismiss(loadingToast)
       toast.error(
         `Failed to ${imagePrefs?.isHidden ? 'unhide' : 'hide'} image. Please try again later.`

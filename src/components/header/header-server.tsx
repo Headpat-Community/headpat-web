@@ -1,12 +1,9 @@
 import { cookies } from 'next/headers'
 import SidebarResizable from '@/components/header/header-resizable'
 import MobileNav from '@/components/header/mobile-nav'
+import * as React from 'react'
 
-export default async function HeaderServer({
-  children,
-  locale,
-  ...translations
-}) {
+export default async function HeaderServer({ children, ...translations }) {
   const cookie = await cookies()
   const layout = cookie.get('react-resizable-panels:layout')
   const collapsed = cookie.get('react-resizable-panels:collapsed')

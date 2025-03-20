@@ -1,5 +1,4 @@
 'use client'
-import { UserData } from '@/utils/types/models'
 import { Card } from '@/components/ui/card'
 import Image from 'next/image'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
@@ -9,13 +8,10 @@ import PageLayout from '@/components/pageLayout'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import UserCard from '@/components/user/userCard'
+import { UserDataDocumentsType, UserDataType } from '@/utils/types/models'
 
-export default function ClientPage({
-  userData,
-}: {
-  userData: UserData.UserDataType
-}) {
-  const [users, setUsers] = useState<UserData.UserDataDocumentsType[]>([])
+export default function ClientPage({ userData }: { userData: UserDataType }) {
+  const [users, setUsers] = useState<UserDataDocumentsType[]>([])
   const [isFetching, setIsFetching] = useState<boolean>(true)
   const user = userData.documents[0]
 

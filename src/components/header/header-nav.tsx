@@ -48,7 +48,7 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
                 <Link
                   href={link.href}
                   target={link.target}
-                  onClick={(e) => {
+                  onClick={() => {
                     if (window.innerWidth <= 768) {
                       // 768px is a common breakpoint for mobile devices
                       setIsOpen(false)
@@ -79,7 +79,7 @@ export function Nav({ isCollapsed, links, setIsOpen, translations }: NavProps) {
               key={index}
               href={link.href}
               target={link.target}
-              onClick={(e) => {
+              onClick={() => {
                 if (window.innerWidth <= 768) {
                   // 768px is a common breakpoint for mobile devices
                   setIsOpen(false)

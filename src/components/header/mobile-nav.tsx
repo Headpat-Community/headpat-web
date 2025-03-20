@@ -8,38 +8,50 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '../ui/sheet'
-import { MenuIcon } from 'lucide-react'
+import { BracesIcon, MenuIcon, ServerIcon, UsersIcon } from 'lucide-react'
 import * as React from 'react'
 import { Separator } from '../ui/separator'
 import { Nav1, Nav2, Nav3, Nav4, NavFooter } from '@/components/header/data'
 import { Nav } from '@/components/header/header-nav'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tabs } from '@/components/ui/tabs'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import ChangeLanguage from '@/components/system/changeLanguage'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { useUser } from '@/components/contexts/UserContext'
+import { team, TeamSwitcher } from '@/components/TeamSwitcher'
 
 export default function MobileNav({ translations, children }) {
   const router = useRouter()
   const [isOpen, setIsOpen] = React.useState(false)
   const { current } = useUser()
 
+  const teams: team[] = [
+    {
+      name: 'Place',
+      activeName: 'Headpat Place',
+      logo: UsersIcon,
+      href: 'https://headpat.place',
+    },
+    {
+      name: 'Space',
+      logo: ServerIcon,
+      href: 'https://headpat.space',
+    },
+    {
+      name: 'Developer',
+      logo: BracesIcon,
+      plan: 'Documentation for developers',
+      href: 'https://headpat.dev',
+    },
+  ]
+
   return (
     <>
       <header className={'border-b'}>
         <div className={'flex align-middle justify-between items-center px-2'}>
           <div className={'flex h-[52px] items-center ml-2'}>
-            <Image
-              src={'/logos/Headpat_Logo_web_128x128_240518-05.png'}
-              width={32}
-              height={32}
-              alt={'Headpat logo'}
-              className={'rounded-full'}
-              draggable={false}
-            />
-            <span className={'ml-2'}>Headpat</span>
+            <TeamSwitcher teams={teams} />
           </div>
           <div className={'flex items-center gap-2'}>
             <ChangeLanguage />

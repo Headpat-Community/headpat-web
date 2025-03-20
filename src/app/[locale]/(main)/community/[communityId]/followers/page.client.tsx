@@ -2,16 +2,15 @@
 import { functions } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
 import PageLayout from '@/components/pageLayout'
-import { UserData } from '@/utils/types/models'
 import { Card } from '@/components/ui/card'
 import Image from 'next/image'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import { useCallback, useEffect, useState } from 'react'
 import UserCard from '@/components/user/userCard'
+import { UserDataDocumentsType } from '@/utils/types/models'
 
 export default function PageClient({ communityId }: { communityId: string }) {
-  const [followers, setFollowers] =
-    useState<UserData.UserDataDocumentsType[]>(null)
+  const [followers, setFollowers] = useState<UserDataDocumentsType[]>(null)
   const [isFetching, setIsFetching] = useState<boolean>(true)
 
   const fetchFollowers = useCallback(async () => {
@@ -27,7 +26,7 @@ export default function PageClient({ communityId }: { communityId: string }) {
       const response = JSON.parse(data.responseBody)
       setFollowers(response)
       setIsFetching(false)
-    } catch (error) {
+    } catch {
       // Do nothing
     }
   }, [communityId])
@@ -70,7 +69,7 @@ export default function PageClient({ communityId }: { communityId: string }) {
           'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 3xl:grid-cols-8 5xl:grid-cols-10 gap-4 xl:gap-6 p-4 mx-auto'
         }
       >
-        {followers.map((user: UserData.UserDataDocumentsType) => {
+        {followers.map((user: UserDataDocumentsType) => {
           return (
             <Card className={'border-none h-40 w-40 mx-auto'} key={user.$id}>
               <Card className={'border-none h-40 w-40 mx-auto'} key={user.$id}>

@@ -31,7 +31,7 @@ export default function AllCommunities() {
 
       setCommunities(response)
       saveAllCache('communities', response)
-    } catch (error) {
+    } catch {
       toast.error('Failed to fetch communities. Please try again later.')
     } finally {
       setIsFetching(false)

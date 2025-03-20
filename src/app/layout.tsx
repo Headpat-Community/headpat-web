@@ -10,6 +10,7 @@ import { createSessionServerClient } from './appwrite-session'
 import Maintenance from '@/components/static/maintenance'
 import Script from 'next/script'
 import { getLocale, GTProvider } from 'gt-next/server'
+import { ReactScan } from '@/hooks/useReactScan'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -112,6 +113,7 @@ export default async function RootLayout({ children }) {
         src={'https://analytics.fayevr.dev/script.js'}
         data-website-id="38b87c81-4112-43ce-ba99-b084bab611d6"
       />
+      <ReactScan />
       <body
         className={cn(
           'flex min-h-screen bg-background antialiased',

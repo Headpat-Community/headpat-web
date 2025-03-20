@@ -1,4 +1,4 @@
-import { Community } from '@/utils/types/models'
+import { CommunityDocumentsType } from '@/utils/types/models'
 import { createAdminClient } from '@/app/appwrite-session'
 import { unstable_noStore } from 'next/cache'
 
@@ -9,7 +9,7 @@ import { unstable_noStore } from 'next/cache'
  */
 export async function getCommunity(
   communityId: string
-): Promise<Community.CommunityDocumentsType> {
+): Promise<CommunityDocumentsType> {
   unstable_noStore()
   const { databases } = await createAdminClient()
   return await databases

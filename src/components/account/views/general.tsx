@@ -8,7 +8,7 @@ import MfaAlert from '@/components/account/profile/mfaAlert'
 import * as Sentry from '@sentry/nextjs'
 import { ExecutionMethod, Models } from 'node-appwrite'
 import MfaRecoveryCodes from '@/components/account/profile/mfaRecoveryCodes'
-import { Account, UserData } from '@/utils/types/models'
+import { AccountPrefs, UserDataDocumentsType } from '@/utils/types/models'
 import { useRouter } from 'next/navigation'
 import {
   AlertDialog,
@@ -75,7 +75,7 @@ export default function GeneralAccountView({
   accountData,
   mfaList,
 }: {
-  accountData: Account.AccountPrefs
+  accountData: AccountPrefs
   mfaList: Models.MfaFactors
 }) {
   const [userMe, setUserMe] = useState(accountData)
@@ -108,7 +108,7 @@ export default function GeneralAccountView({
 
   useEffect(() => {
     getDocument('hp_db', 'userdata', accountData.$id)
-      .then((data: UserData.UserDataDocumentsType) => setUserData(data))
+      .then((data: UserDataDocumentsType) => setUserData(data))
       .catch(() => {
         // Sometimes the function is too slow and the data is not created yet
         window.location.reload()
@@ -247,7 +247,7 @@ export default function GeneralAccountView({
       setUser(null)
       toast.success('Account deleted successfully.')
       router.push('/')
-    } catch (error) {
+    } catch {
       toast.error('Failed to delete account.')
     }
   }

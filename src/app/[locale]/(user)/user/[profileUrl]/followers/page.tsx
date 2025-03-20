@@ -4,10 +4,10 @@ import {
   createAdminClient,
   createSessionServerClient,
 } from '@/app/appwrite-session'
-import { UserData } from '@/utils/types/models'
 import { Query } from '@/app/appwrite-server'
 import sanitizeHtml from 'sanitize-html'
 import { getAvatarImageUrlView } from '@/components/getStorageItem'
+import { UserDataType } from '@/utils/types/models'
 
 export async function generateMetadata(props: {
   params: Promise<{ profileUrl: string; locale: string }>
@@ -18,7 +18,7 @@ export async function generateMetadata(props: {
 
   const { databases } = await createSessionServerClient()
   const { users } = await createAdminClient()
-  const userDataResponse: UserData.UserDataType = await databases.listDocuments(
+  const userDataResponse: UserDataType = await databases.listDocuments(
     'hp_db',
     'userdata',
     [Query.equal('profileUrl', profileUrl)]
@@ -63,7 +63,7 @@ export default async function FollowerPage(props: {
 }) {
   const params = await props.params
 
-  const { locale, profileUrl } = params
+  const { profileUrl } = params
 
   const userData = await getUserDataFromProfileUrl(profileUrl)
 

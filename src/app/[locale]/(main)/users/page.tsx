@@ -28,12 +28,6 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default async function Users(props: {
-  params: Promise<{ locale: string }>
-}) {
-  const params = await props.params
-
-  const { locale } = params
-
-  return <PageClient locale={locale} />
+export default async function Users() {
+  return <PageClient />
 }

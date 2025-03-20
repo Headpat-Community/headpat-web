@@ -5,7 +5,7 @@ export default async function FollowerPage(props: {
 }) {
   const params = await props.params
 
-  const { locale, communityId } = params
+  const { communityId } = params
 
   return <PageClient communityId={communityId} />
 }

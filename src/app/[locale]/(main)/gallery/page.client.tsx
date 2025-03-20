@@ -3,17 +3,17 @@ import { databases, Query, storage } from '@/app/appwrite-client'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { isMimeTypeAnimatable } from '@/utils/helpers'
-import { Gallery } from '@/utils/types/models'
 import * as Sentry from '@sentry/nextjs'
 import Image from 'next/image'
 import { ImageFormat } from 'node-appwrite'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { GalleryDocumentsType, GalleryType } from '@/utils/types/models'
 
 export default function FetchGallery({ enableNsfw }) {
-  const [gallery, setGallery] = useState<Gallery.GalleryDocumentsType[]>([])
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
+  const [gallery, setGallery] = useState<GalleryDocumentsType[]>([])
+  //const [currentPage, setCurrentPage] = useState(1)
+  //const [totalPages, setTotalPages] = useState(1)
 
   const getGalleryImageUrl = (
     galleryId: string,
@@ -46,24 +46,24 @@ export default function FetchGallery({ enableNsfw }) {
   useEffect(() => {
     const fetchGalleryData = async () => {
       const pageSize = 500 // Number of items per page
-      const offset = (currentPage - 1) * pageSize // Calculate offset based on current page
+      //const offset = (currentPage - 1) * pageSize // Calculate offset based on current page
       //const filters = !enableNsfw ? `&queries[]=equal("nsfw",false)` : ``
 
       const filters = !enableNsfw
         ? [
             Query.equal('nsfw', false),
             Query.limit(pageSize),
-            Query.offset(offset),
+            //Query.offset(offset),
             Query.orderDesc('$createdAt'),
           ]
         : [
             Query.limit(pageSize),
-            Query.offset(offset),
+            //Query.offset(offset),
             Query.orderDesc('$createdAt'),
           ]
 
       //const apiUrl = `${filters}&queries[]=limit(${pageSize})&queries[]=offset(${offset})`
-      const gallery: Gallery.GalleryType = await databases.listDocuments(
+      const gallery: GalleryType = await databases.listDocuments(
         'hp_db',
         'gallery-images',
         filters
@@ -73,7 +73,7 @@ export default function FetchGallery({ enableNsfw }) {
         //const data: GalleryType = await getGallery(apiUrl)
 
         setGallery(gallery.documents)
-        setTotalPages(gallery.total / pageSize)
+        //setTotalPages(gallery.total / pageSize)
       } catch (error) {
         toast.error(error)
         Sentry.captureException(error)
@@ -84,7 +84,7 @@ export default function FetchGallery({ enableNsfw }) {
       toast.error("You encountered an error. But don't worry, we're on it.")
       Sentry.captureException(error)
     })
-  }, [currentPage, enableNsfw])
+  }, [enableNsfw])
 
   return (
     <div>

@@ -47,7 +47,7 @@ export default async function Gallery() {
   try {
     const accountData = await getUser()
     enableNsfw = accountData?.prefs?.nsfw
-  } catch (e) {
+  } catch {
     // do nothing
   }
 

@@ -1,12 +1,12 @@
-import { Events } from '@/utils/types/models'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { CalendarIcon, ClockIcon, MapPinIcon, UsersIcon } from 'lucide-react'
+import { EventsDocumentsType } from '@/utils/types/models'
 
 export default function EventsList({
   events,
 }: {
-  events: Events.EventsDocumentsType[]
+  events: EventsDocumentsType[]
 }) {
   return (
     <div className="grid gap-4 mx-auto sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">

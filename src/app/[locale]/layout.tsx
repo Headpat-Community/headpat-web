@@ -36,14 +36,12 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default async function LocaleLayout({ children, params }) {
-  const paramsResponse = await params
+export default async function LocaleLayout({ children }) {
   const pageNames = await getDict('PageNames')
 
   return (
     <div>
       <Header
-        locale={paramsResponse.locale}
         home={pageNames('home')}
         chat={pageNames('chat')}
         gallery={pageNames('gallery')}

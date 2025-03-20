@@ -8,7 +8,7 @@ import { databases } from '@/app/appwrite-client'
 import { useEffect, useState } from 'react'
 import UploadAvatar from '@/components/account/uploadAvatar'
 import UploadBanner from '@/components/account/uploadBanner'
-import { Account, UserData } from '@/utils/types/models'
+import { AccountPrefs, UserDataDocumentsType } from '@/utils/types/models'
 import { toast } from 'sonner'
 import { getDocument } from '@/components/api/documents'
 import z from 'zod'
@@ -28,14 +28,14 @@ const schema = z.object({
 export default function FrontpageView({
   accountData,
 }: {
-  accountData: Account.AccountPrefs
+  accountData: AccountPrefs
 }) {
-  const [userData, setUserData] = useState<UserData.UserDataDocumentsType>(null)
+  const [userData, setUserData] = useState<UserDataDocumentsType>(null)
   const [isUploading, setIsUploading] = useState<boolean>(false)
 
   useEffect(() => {
     getDocument('hp_db', 'userdata', accountData.$id).then(
-      (data: UserData.UserDataDocumentsType) => setUserData(data)
+      (data: UserDataDocumentsType) => setUserData(data)
     )
   }, [accountData])
   console.log(userData)

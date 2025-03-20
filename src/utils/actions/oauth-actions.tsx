@@ -5,121 +5,13 @@ import { headers } from 'next/headers'
 import { OAuthProvider } from 'node-appwrite'
 import { redirect } from 'next/navigation'
 
-export async function signInWithGithub(locale: string) {
+export async function signInWithProvider(provider: OAuthProvider) {
   const { account } = await createAdminClient()
-
   const origin = (await headers()).get('origin')
-
   const redirectUrl = await account.createOAuth2Token(
-    OAuthProvider.Github,
+    provider,
     `${origin}/api/user/oauth`,
     `${origin}/login?failure=true`
   )
-
-  // @ts-ignore
-  return redirect(redirectUrl)
-}
-
-export async function signInWithGoogle(locale: string) {
-  const { account } = await createAdminClient()
-
-  const origin = (await headers()).get('origin')
-
-  const redirectUrl = await account.createOAuth2Token(
-    OAuthProvider.Google,
-    `${origin}/api/user/oauth`,
-    `${origin}/login?failure=true`
-  )
-  // @ts-ignore
-  return redirect(redirectUrl)
-}
-
-export async function signInWithDiscord(locale: string) {
-  const { account } = await createAdminClient()
-
-  const origin = (await headers()).get('origin')
-
-  const redirectUrl = await account.createOAuth2Token(
-    OAuthProvider.Discord,
-    `${origin}/api/user/oauth`,
-    `${origin}/login?failure=true`
-  )
-
-  // @ts-ignore
-  return redirect(redirectUrl)
-}
-
-export async function signInWithSpotify(locale: string) {
-  const { account } = await createAdminClient()
-
-  const origin = (await headers()).get('origin')
-
-  const redirectUrl = await account.createOAuth2Token(
-    OAuthProvider.Spotify,
-    `${origin}/api/user/oauth`,
-    `${origin}/login?failure=true`
-  )
-
-  // @ts-ignore
-  return redirect(redirectUrl)
-}
-
-export async function signInWithTwitch(locale: string) {
-  const { account } = await createAdminClient()
-
-  const origin = (await headers()).get('origin')
-
-  const redirectUrl = await account.createOAuth2Token(
-    OAuthProvider.Twitch,
-    `${origin}/api/user/oauth`,
-    `${origin}/login?failure=true`
-  )
-
-  // @ts-ignore
-  return redirect(redirectUrl)
-}
-
-export async function signInWithMicrosoft(locale: string) {
-  const { account } = await createAdminClient()
-
-  const origin = (await headers()).get('origin')
-
-  const redirectUrl = await account.createOAuth2Token(
-    OAuthProvider.Microsoft,
-    `${origin}/api/user/oauth`,
-    `${origin}/login?failure=true`
-  )
-
-  // @ts-ignore
-  return redirect(redirectUrl)
-}
-
-export async function signInWithApple(locale: string) {
-  const { account } = await createAdminClient()
-
-  const origin = (await headers()).get('origin')
-
-  const redirectUrl = await account.createOAuth2Token(
-    OAuthProvider.Apple,
-    `${origin}/api/user/oauth`,
-    `${origin}/login?failure=true`
-  )
-
-  // @ts-ignore
-  return redirect(redirectUrl)
-}
-
-export async function signInWithEurofurence(locale: string) {
-  const { account } = await createAdminClient()
-
-  const origin = (await headers()).get('origin')
-
-  const redirectUrl = await account.createOAuth2Token(
-    OAuthProvider.Oidc,
-    `${origin}/api/user/oauth`,
-    `${origin}/login?failure=true`
-  )
-
-  // @ts-ignore
   return redirect(redirectUrl)
 }

@@ -43,7 +43,7 @@ const ForgotPassword = () => {
           setSuccess(null)
         }, 10000)
       }
-    } catch (error) {
+    } catch {
       //console.log(error);
       setError('E-Mail inkorrekt!')
       setTimeout(() => {

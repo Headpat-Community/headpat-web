@@ -1,5 +1,4 @@
 'use client'
-import { UserData } from '@/utils/types/models'
 import { Card } from '@/components/ui/card'
 import Image from 'next/image'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
@@ -9,16 +8,17 @@ import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import UserCard from '@/components/user/userCard'
 import { useDataCache } from '@/components/contexts/DataCacheContext'
+import { UserDataDocumentsType, UserDataType } from '@/utils/types/models'
 
-export default function ClientPage({ locale }: { locale: string }) {
-  const [users, setUsers] = useState<UserData.UserDataDocumentsType[]>([])
+export default function ClientPage() {
+  const [users, setUsers] = useState<UserDataDocumentsType[]>([])
   const [isFetching, setIsFetching] = useState<boolean>(true)
   const { getAllCache, saveAllCache } = useDataCache()
 
   const fetchUsers = useCallback(
     async (limit: number, offset: number) => {
       setIsFetching(true)
-      const cache = await getAllCache<UserData.UserDataDocumentsType[]>('users')
+      const cache = await getAllCache<UserDataDocumentsType[]>('users')
       const usersMapping = cache.map((item) => item.data) // Assuming each CacheItem has a 'data' property
       if (usersMapping.length > 0) {
         const sortedUsers = usersMapping
@@ -32,7 +32,7 @@ export default function ClientPage({ locale }: { locale: string }) {
         setIsFetching(false)
       }
       try {
-        const response: UserData.UserDataType = await databases.listDocuments(
+        const response: UserDataType = await databases.listDocuments(
           'hp_db',
           'userdata',
           [
@@ -43,7 +43,7 @@ export default function ClientPage({ locale }: { locale: string }) {
         )
         setUsers(response.documents)
         saveAllCache('users', response.documents)
-      } catch (error) {
+      } catch {
         toast.error('Failed to fetch users. Please try again later.')
       } finally {
         setIsFetching(false)

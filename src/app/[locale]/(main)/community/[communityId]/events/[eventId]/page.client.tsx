@@ -1,7 +1,6 @@
 'use client'
 
 import { databases, ExecutionMethod, functions } from '@/app/appwrite-client'
-import { Events } from '@/utils/types/models'
 import React from 'react'
 import { toast } from 'sonner'
 import { getEventImageUrlView } from '@/components/getStorageItem'
@@ -21,11 +20,10 @@ import sanitize from 'sanitize-html'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useUser } from '@/components/contexts/UserContext'
 import { useRouter } from 'next/navigation'
+import { EventsDocumentsType } from '@/utils/types/models'
 
 export default function PageClient({ eventData, communityData }) {
-  const [event, setEvent] =
-    React.useState<Events.EventsDocumentsType>(eventData)
-  const [refreshing, setRefreshing] = React.useState<boolean>(true)
+  const [event, setEvent] = React.useState<EventsDocumentsType>(eventData)
   const { current } = useUser()
   const router = useRouter()
 
@@ -35,14 +33,13 @@ export default function PageClient({ eventData, communityData }) {
 
   const fetchEvents = async () => {
     try {
-      const document: Events.EventsDocumentsType = await databases.getDocument(
+      const document: EventsDocumentsType = await databases.getDocument(
         'hp_db',
         'events',
         `${eventData.$id}`
       )
 
       setEvent(document)
-      setRefreshing(false)
 
       const eventResponse = await functions.createExecution(
         'event-endpoints',
@@ -59,7 +56,6 @@ export default function PageClient({ eventData, communityData }) {
       })
     } catch {
       toast.error('Failed to fetch event data.')
-      setRefreshing(false)
     }
   }
 

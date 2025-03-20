@@ -63,7 +63,7 @@ export default function MfaRecoveryCodes() {
       if (mfaVerifyResult) {
         try {
           recoveryCodesResult = await account.updateMfaRecoveryCodes()
-        } catch (error) {
+        } catch {
           recoveryCodesResult = await account.createMfaRecoveryCodes()
         }
         setRecoveryCodes(recoveryCodesResult.recoveryCodes)

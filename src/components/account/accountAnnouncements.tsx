@@ -1,12 +1,12 @@
 import { createAdminClient } from '@/app/appwrite-session'
 import { notFound } from 'next/navigation'
-import { Announcements } from '@/utils/types/models'
 import Link from 'next/link'
+import { AnnouncementDataType } from '@/utils/types/models'
 
 export default async function AccountAnnouncements() {
   const { databases } = await createAdminClient()
 
-  const announcementDataResponse: Announcements.AnnouncementDataType =
+  const announcementDataResponse: AnnouncementDataType =
     await databases.listDocuments('hp_db', 'announcements')
   const announcementData = announcementDataResponse.documents[0]
 

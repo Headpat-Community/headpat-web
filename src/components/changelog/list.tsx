@@ -15,9 +15,9 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { ChevronDown, ChevronUp, Sparkles, Wrench, Bug } from 'lucide-react'
 import { useState } from 'react'
-import { Changelog } from '@/utils/types/models'
 import { Separator } from '@/components/ui/separator'
 import sanitize from 'sanitize-html'
+import { ChangelogDocumentsType } from '@/utils/types/models'
 
 const ChangeIcon = ({
   type,
@@ -39,7 +39,7 @@ const ChangeIcon = ({
 export default function ListComponent({
   changelogData,
 }: {
-  changelogData: Changelog.ChangelogDocumentsType[]
+  changelogData: ChangelogDocumentsType[]
 }) {
   const [openVersions, setOpenVersions] = useState<string[]>([])
 

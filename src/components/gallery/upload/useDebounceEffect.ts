@@ -7,6 +7,7 @@ export function useDebounceEffect(
 ) {
   useEffect(() => {
     const t = setTimeout(() => {
+      // eslint-disable-next-line prefer-spread
       fn.apply(undefined, deps)
     }, waitTime)
 

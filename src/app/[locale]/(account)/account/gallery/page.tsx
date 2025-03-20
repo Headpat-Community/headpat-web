@@ -11,7 +11,7 @@ export default async function FetchGallery() {
   const userData = await account.get()
 
   const userId = userData?.$id
-  let enableNsfw: boolean = userData?.prefs?.nsfw
+  const enableNsfw = userData?.prefs?.nsfw
 
   return (
     <PageLayout title={'Account Gallery'}>

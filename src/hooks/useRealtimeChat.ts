@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react'
 import { RealtimeResponseEvent } from 'appwrite'
-import { Messaging } from '@/utils/types/models'
 import { client, databases } from '@/app/appwrite-client'
 import { Query } from 'node-appwrite'
+import {
+  MessageConversationsDocumentsType,
+  MessageConversationsType,
+  MessagesDocumentsType,
+} from '@/utils/types/models'
 
 export function useRealtimeChat() {
   const [conversations, setConversations] = useState<
-    Messaging.MessageConversationsDocumentsType[]
+    MessageConversationsDocumentsType[]
   >([])
-  const [messages, setMessages] = useState<Messaging.MessagesDocumentsType[]>(
-    []
-  )
+  const [messages, setMessages] = useState<MessagesDocumentsType[]>([])
 
   useEffect(() => {
     const unsubscribe = client.subscribe(
@@ -45,7 +47,7 @@ export function useRealtimeChat() {
 
   const handleConversationEvent = async (
     events: string[],
-    payload: Messaging.MessageConversationsDocumentsType
+    payload: MessageConversationsDocumentsType
   ) => {
     if (events.some((event) => event.endsWith('.create'))) {
       // Ensure userdata is present
@@ -74,7 +76,7 @@ export function useRealtimeChat() {
 
   const handleMessageEvent = (
     events: string[],
-    payload: Messaging.MessagesDocumentsType
+    payload: MessagesDocumentsType
   ) => {
     setMessages((prevMessages) => {
       let updatedMessages = [...prevMessages]
@@ -99,7 +101,7 @@ export function useRealtimeChat() {
   }
 
   const fetchInitialData = async () => {
-    const initialConversations: Messaging.MessageConversationsType =
+    const initialConversations: MessageConversationsType =
       await databases.listDocuments('hp_db', 'messages-conversations', [
         Query.orderDesc('$updatedAt'),
         Query.limit(500),

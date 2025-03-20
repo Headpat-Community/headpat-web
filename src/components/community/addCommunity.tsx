@@ -84,7 +84,6 @@ export default function AddCommunity({
     } else {
       toast.dismiss(loadingToast)
       toast.success('Community created successfully!')
-      // @ts-ignore
       router.push(`/community/${resultCreate.$id}`)
     }
   }

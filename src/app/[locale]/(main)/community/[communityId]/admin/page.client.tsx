@@ -1,5 +1,4 @@
 'use client'
-import { Community } from '@/utils/types/models'
 import { TabsContent } from '@/components/ui/tabs'
 import CommunityAdminMain from '@/components/community/admin/main'
 import { functions } from '@/app/appwrite-client'
@@ -9,11 +8,12 @@ import NoAccess from '@/components/static/noAccess'
 import { hasAdminPanelAccess } from '@/utils/actions/community/checkRoles'
 import { toast } from 'sonner'
 import CommunityAdminSettings from '@/components/community/admin/settings'
+import { CommunityDocumentsType } from '@/utils/types/models'
 
 export default function PageClient({
   community,
 }: {
-  community: Community.CommunityDocumentsType
+  community: CommunityDocumentsType
 }) {
   const [hasPermission, setHasPermission] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -35,7 +35,7 @@ export default function PageClient({
       }
 
       setHasPermission(await hasAdminPanelAccess(response.roles))
-    } catch (error) {
+    } catch {
       toast.error('Error fetching community data. Please try again later.')
     }
   }, [community.$id])

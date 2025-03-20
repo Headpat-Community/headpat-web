@@ -1,24 +1,15 @@
 'use client'
 import { useEffect, useState } from 'react'
 import {
-  SiGithub,
-  SiDiscord,
   SiApple,
+  SiDiscord,
+  SiGithub,
   SiGoogle,
   SiSpotify,
   SiTwitch,
 } from '@icons-pack/react-simple-icons'
 import { Button } from '@/components/ui/button'
-import {
-  signInWithApple,
-  signInWithDiscord,
-  signInWithEurofurence,
-  signInWithGithub,
-  signInWithGoogle,
-  signInWithMicrosoft,
-  signInWithSpotify,
-  signInWithTwitch,
-} from '@/utils/actions/oauth-actions'
+import { signInWithProvider } from '@/utils/actions/oauth-actions'
 import Link from 'next/link'
 import { account, ID } from '@/app/appwrite-client'
 import PageLayout from '@/components/pageLayout'
@@ -34,8 +25,9 @@ import { useDict } from 'gt-next/client'
 import { useUser } from '@/components/contexts/UserContext'
 import { toastHandling } from '@/utils/toastHandling'
 import { useRouter } from 'next/navigation'
+import { OAuthProvider } from 'node-appwrite'
 
-export default function Login({ locale }) {
+export default function Login() {
   const { init } = useUser()
   const [isRegistering, setIsRegistering] = useState(false)
   const router = useRouter()
@@ -67,7 +59,7 @@ export default function Login({ locale }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // @ts-expect-error
+      // @ts-expect-error: See later
       username: '',
       email: '',
       password: '',
@@ -112,7 +104,7 @@ export default function Login({ locale }) {
           ID.unique(),
           data.email,
           data.password,
-          // @ts-expect-error
+          // @ts-expect-error: See later
           data.username
         )
       }
@@ -166,7 +158,7 @@ export default function Login({ locale }) {
                         <>
                           <FormField
                             control={form.control}
-                            // @ts-expect-error
+                            // @ts-expect-error: See later
                             name="username"
                             render={({ field }) => (
                               <InputField
@@ -207,7 +199,7 @@ export default function Login({ locale }) {
                       {isRegistering && (
                         <FormField
                           control={form.control}
-                          // @ts-expect-error
+                          // @ts-expect-error: See later
                           name="acceptedTerms"
                           render={({ field }) => (
                             <CheckboxField
@@ -253,7 +245,7 @@ export default function Login({ locale }) {
               {/* OAuth Sign-In */}
 
               <div className="mt-6 grid grid-cols-2 gap-4">
-                <form action={() => signInWithDiscord(locale)}>
+                <form action={() => signInWithProvider(OAuthProvider.Discord)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#5865F2] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20">
                     <SiDiscord className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">
@@ -262,7 +254,7 @@ export default function Login({ locale }) {
                   </button>
                 </form>
 
-                <form action={() => signInWithEurofurence(locale)}>
+                <form action={() => signInWithProvider(OAuthProvider.Oidc)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#005953] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20">
                     <Image
                       src={'/logos/eurofurence.webp'}
@@ -277,7 +269,7 @@ export default function Login({ locale }) {
                   </button>
                 </form>
 
-                <form action={() => signInWithGithub(locale)}>
+                <form action={() => signInWithProvider(OAuthProvider.Github)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiGithub className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">
@@ -286,7 +278,7 @@ export default function Login({ locale }) {
                   </button>
                 </form>
 
-                <form action={() => signInWithApple(locale)}>
+                <form action={() => signInWithProvider(OAuthProvider.Apple)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#000000] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiApple className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">
@@ -295,7 +287,7 @@ export default function Login({ locale }) {
                   </button>
                 </form>
 
-                <form action={() => signInWithGoogle(locale)}>
+                <form action={() => signInWithProvider(OAuthProvider.Google)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#131314] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiGoogle className={'h-4'} />
 
@@ -305,7 +297,7 @@ export default function Login({ locale }) {
                   </button>
                 </form>
 
-                <form action={() => signInWithSpotify(locale)}>
+                <form action={() => signInWithProvider(OAuthProvider.Spotify)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#1DB954] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiSpotify className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">
@@ -314,7 +306,9 @@ export default function Login({ locale }) {
                   </button>
                 </form>
 
-                <form action={() => signInWithMicrosoft(locale)}>
+                <form
+                  action={() => signInWithProvider(OAuthProvider.Microsoft)}
+                >
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#01A6F0] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -328,7 +322,7 @@ export default function Login({ locale }) {
                   </button>
                 </form>
 
-                <form action={() => signInWithTwitch(locale)}>
+                <form action={() => signInWithProvider(OAuthProvider.Twitch)}>
                   <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#6441A5] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
                     <SiTwitch className={'h-5'} />
                     <span className="text-sm font-semibold leading-6">

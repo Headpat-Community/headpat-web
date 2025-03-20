@@ -1,5 +1,5 @@
 import { createSessionServerClient } from '@/app/appwrite-session'
-import { UserData } from '@/utils/types/models'
+import { UserDataType, UserProfileDocumentsType } from '@/utils/types/models'
 import { Query } from 'node-appwrite'
 import { getUser } from '@/utils/server-api/account/user'
 import { unstable_noStore } from 'next/cache'
@@ -11,7 +11,7 @@ import { unstable_noStore } from 'next/cache'
  */
 export async function getUserDataFromProfileUrl(
   profileUrl: string
-): Promise<UserData.UserDataType> {
+): Promise<UserDataType> {
   unstable_noStore()
   const { databases } = await createSessionServerClient()
   return await databases
@@ -26,7 +26,7 @@ export async function getUserDataFromProfileUrl(
  * @example
  * const userData = await getUserData()
  */
-export async function getUserData(): Promise<UserData.UserDataDocumentsType> {
+export async function getUserData(): Promise<UserProfileDocumentsType> {
   unstable_noStore()
   const { databases } = await createSessionServerClient()
   const accountData = await getUser()

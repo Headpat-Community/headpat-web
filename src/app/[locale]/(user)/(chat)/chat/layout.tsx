@@ -1,17 +1,12 @@
 'use client'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useRealtimeChat } from '@/hooks/useRealtimeChat'
-import PageLayout from '@/components/pageLayout'
-import {
-  getAvatarImageUrlPreview,
-  getCommunityAvatarUrlPreview,
-} from '@/components/getStorageItem'
-import { useUser } from '@/components/contexts/UserContext'
-import { databases, functions } from '@/app/appwrite-client'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { Menu, Plus, Search, Users } from 'lucide-react'
+import { useRealtimeChat } from '@/hooks/useRealtimeChat'
+import { useUser } from '@/components/contexts/UserContext'
+import { useDataCache } from '@/components/contexts/DataCacheContext'
+import PageLayout from '@/components/pageLayout'
+import { databases, functions } from '@/app/appwrite-client'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import {
@@ -24,39 +19,48 @@ import {
 import { Input } from '@/components/ui/input'
 import { useDebounce } from '@/hooks/useDebounce'
 import { Query } from 'appwrite'
-import { ExecutionMethod } from 'node-appwrite'
-import { Community, Messaging, UserData } from '@/utils/types/models'
 import Link from 'next/link'
 import FeatureAccess from '@/components/FeatureAccess'
-import { useDataCache } from '@/components/contexts/DataCacheContext'
-import { useRouter } from 'next/navigation'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Menu, Plus, Search, Users } from 'lucide-react'
+import { ExecutionMethod } from 'node-appwrite'
+import {
+  CommunityDocumentsType,
+  MessageConversationsDocumentsType,
+  UserDataDocumentsType,
+} from '@/utils/types/models'
+import {
+  getAvatarImageUrlPreview,
+  getCommunityAvatarUrlPreview,
+} from '@/components/getStorageItem'
 
 export default function ChatLayout(props: any) {
   const router = useRouter()
   const { conversations } = useRealtimeChat()
   const { current } = useUser()
   const [displayUsers, setDisplayUsers] = useState<
-    UserData.UserDataDocumentsType | Community.CommunityDocumentsType
+    UserDataDocumentsType | CommunityDocumentsType
   >(null)
   const [isOpen, setIsOpen] = useState(false)
   const { getCache, saveCache } = useDataCache()
 
   const fetchUserData = useCallback(
     async (userId: string) => {
-      const userCache = await getCache<UserData.UserDataDocumentsType>(
-        'users',
-        userId
-      )
+      const userCache = await getCache<UserDataDocumentsType>('users', userId)
       if (userCache) {
         return userCache
       }
 
       try {
-        const userData: UserData.UserDataDocumentsType =
-          await databases.getDocument('hp_db', 'userdata', userId)
+        const userData: UserDataDocumentsType = await databases.getDocument(
+          'hp_db',
+          'userdata',
+          userId
+        )
         saveCache('users', userId, userData)
         return userData
-      } catch (error) {
+      } catch {
         toast.error('Error fetching user data')
         return null
       }
@@ -66,7 +70,7 @@ export default function ChatLayout(props: any) {
 
   const fetchCommunityData = useCallback(
     async (communityId: string) => {
-      const communityCache = await getCache<Community.CommunityDocumentsType>(
+      const communityCache = await getCache<CommunityDocumentsType>(
         'communities',
         communityId
       )
@@ -75,11 +79,11 @@ export default function ChatLayout(props: any) {
       }
 
       try {
-        const communityData: Community.CommunityDocumentsType =
+        const communityData: CommunityDocumentsType =
           await databases.getDocument('hp_db', 'community', communityId)
         saveCache('communities', communityId, communityData)
         return communityData
-      } catch (error) {
+      } catch {
         toast.error('Error fetching community data')
         return null
       }
@@ -123,7 +127,9 @@ export default function ChatLayout(props: any) {
       setDisplayUsers(newDisplayUsers as any)
     }
 
-    updateDisplayUsers().then()
+    if (conversations.length > 0 && current) {
+      updateDisplayUsers()
+    }
   }, [conversations, current, fetchCommunityData, fetchUserData])
 
   if (!current) {
@@ -171,16 +177,13 @@ export default function ChatLayout(props: any) {
   )
 }
 
-// Updated ConversationsList component
 function ConversationsList({
   conversations,
   displayUsers,
   closeSheet,
 }: {
-  conversations: Messaging.MessageConversationsDocumentsType[]
-  displayUsers:
-    | UserData.UserDataDocumentsType
-    | Community.CommunityDocumentsType
+  conversations: MessageConversationsDocumentsType[]
+  displayUsers: UserDataDocumentsType | CommunityDocumentsType
   closeSheet: () => void
 }) {
   const router = useRouter()
@@ -199,7 +202,7 @@ function ConversationsList({
             Query.contains('profileUrl', debouncedSearchTerm),
           ])
           setSearchResults(results.documents)
-        } catch (error) {
+        } catch {
           toast.error('Error searching users')
         } finally {
           setIsLoading(false)
@@ -243,7 +246,7 @@ function ConversationsList({
         router.push(`/chat/${response.$id}`)
       }
       setIsModalOpen(false)
-    } catch (error) {
+    } catch {
       toast.error('Error fetching conversation. Please try again later.')
     }
   }

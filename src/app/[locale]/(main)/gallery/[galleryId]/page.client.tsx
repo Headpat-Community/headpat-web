@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import { getGalleryImageUrlView } from '@/components/getStorageItem'
 import PageLayout from '@/components/pageLayout'
 import { useCallback, useEffect, useState } from 'react'
-import { Gallery, UserData } from '@/utils/types/models'
 import sanitize from 'sanitize-html'
 import { useUser } from '@/components/contexts/UserContext'
 import { databases, functions, storage } from '@/app/appwrite-client'
@@ -15,11 +14,15 @@ import ModerationModal from '@/components/gallery/moderation/ModerationModal'
 import Image from 'next/image'
 import { isMimeTypeAnimatable } from '@/utils/helpers'
 import NoAccessNsfw from '@/components/static/noAccessNsfw'
+import {
+  GalleryDocumentsType,
+  UserDataDocumentsType,
+} from '@/utils/types/models'
 
 export default function PageClient({ galleryId }: { galleryId: string }) {
-  const [image, setImage] = useState<Gallery.GalleryDocumentsType>(null)
+  const [image, setImage] = useState<GalleryDocumentsType>(null)
   const [imagePrefs, setImagePrefs] = useState(null)
-  const [userData, setUserData] = useState<UserData.UserDataDocumentsType>(null)
+  const [userData, setUserData] = useState<UserDataDocumentsType>(null)
   const [moderationModalOpen, setModerationModalOpen] = useState(false)
   const { current } = useUser()
 
@@ -39,8 +42,11 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
       setImage(imageData)
       setImagePrefs(JSON.parse(imagePrefs.responseBody))
 
-      const userData: UserData.UserDataDocumentsType =
-        await databases.getDocument('hp_db', 'userdata', imageData.userId)
+      const userData: UserDataDocumentsType = await databases.getDocument(
+        'hp_db',
+        'userdata',
+        imageData.userId
+      )
       setUserData(userData)
     } catch (error) {
       console.error(error)

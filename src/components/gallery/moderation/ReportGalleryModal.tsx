@@ -14,8 +14,8 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Gallery } from '@/utils/types/models'
 import { reportGalleryImage } from '@/utils/actions/moderation/reportGalleryImage'
+import { GalleryDocumentsType } from '@/utils/types/models'
 
 export default function ReportGalleryModal({
   open,
@@ -24,7 +24,7 @@ export default function ReportGalleryModal({
 }: {
   open: boolean
   setOpen: (open: boolean) => void
-  image: Gallery.GalleryDocumentsType
+  image: GalleryDocumentsType
 }) {
   const [reportReason, setReportReason] = useState<string>('')
   const [otherReason, setOtherReason] = useState<string>('')
@@ -42,7 +42,7 @@ export default function ReportGalleryModal({
         setReportReason('')
         setOtherReason('')
       }
-    } catch (e) {
+    } catch {
       toast.error('Failed to report user. Please try again later.')
     }
   }

@@ -6,7 +6,7 @@ import {
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { CakeIcon, CalendarDays } from 'lucide-react'
-import { UserData } from '@/utils/types/models'
+import { UserDataDocumentsType } from '@/utils/types/models'
 import { formatDate } from '@/components/calculateTimeLeft'
 import React from 'react'
 import Link from 'next/link'
@@ -16,7 +16,7 @@ export default function UserCard({
   isChild,
   children,
 }: {
-  user: UserData.UserDataDocumentsType
+  user: UserDataDocumentsType
   isChild?: boolean
   children: React.ReactNode
 }) {

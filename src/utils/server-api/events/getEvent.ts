@@ -1,4 +1,4 @@
-import { Events } from '@/utils/types/models'
+import { EventsDocumentsType } from '@/utils/types/models'
 import { createSessionServerClient } from '@/app/appwrite-session'
 
 /**
@@ -6,9 +6,7 @@ import { createSessionServerClient } from '@/app/appwrite-session'
  * @example
  * const event = await getEvent()
  */
-export async function getEvent(
-  eventId: string
-): Promise<Events.EventsDocumentsType> {
+export async function getEvent(eventId: string): Promise<EventsDocumentsType> {
   const { databases } = await createSessionServerClient()
   return await databases
     .getDocument('hp_db', 'events', eventId)

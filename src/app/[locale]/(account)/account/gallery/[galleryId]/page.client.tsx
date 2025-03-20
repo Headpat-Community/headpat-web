@@ -6,13 +6,13 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { databases, storage } from '@/app/appwrite-client'
 import * as Sentry from '@sentry/nextjs'
-import { Gallery } from '@/utils/types/models'
 import Link from 'next/link'
 import { getGalleryImageUrlView } from '@/components/getStorageItem'
 import { getDocument } from '@/components/api/documents'
 import { toast } from 'sonner'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useRouter } from 'next/navigation'
+import { GalleryDocumentsType } from '@/utils/types/models'
 
 export default function FetchGallery({ singleGallery, galleryId }) {
   const router = useRouter()
@@ -38,7 +38,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
       )
 
       listDataResponse.then(
-        function (response: Gallery.GalleryDocumentsType) {
+        function (response: GalleryDocumentsType) {
           const documentId = response.$id
           const imageId = response.galleryId
 
@@ -82,7 +82,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
       })
 
       // Handle response and update state accordingly
-    } catch (error) {
+    } catch {
       toast.error('Error', {
         description: "Something went wrong, but don't worry, we are on it!",
       })

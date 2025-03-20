@@ -1,8 +1,8 @@
 import PageClient from './page.client'
 import { Query } from 'node-appwrite'
-import { Gallery } from '@/utils/types/models'
 import { createSessionServerClient } from '@/app/appwrite-session'
 import { Metadata } from 'next'
+import { GalleryType } from '@/utils/types/models'
 
 export async function generateMetadata(props): Promise<Metadata> {
   const params = await props.params
@@ -15,7 +15,7 @@ export async function generateMetadata(props): Promise<Metadata> {
     return `https://api.headpat.place/v1/storage/buckets/gallery/files/${galleryId}/view?project=hp-main`
   }
 
-  const gallery: Gallery.GalleryType = await databases.listDocuments(
+  const gallery: GalleryType = await databases.listDocuments(
     'hp_db',
     'gallery-images',
     [Query.equal('$id', galleryId)]
@@ -59,7 +59,7 @@ export async function generateMetadata(props): Promise<Metadata> {
 export default async function GalleryPage(props) {
   const params = await props.params
 
-  const { galleryId, locale } = params
+  const { galleryId } = params
 
   return <PageClient galleryId={galleryId} />
 }

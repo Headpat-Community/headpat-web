@@ -1,5 +1,4 @@
 'use client'
-import { Community } from '@/utils/types/models'
 import { databases } from '@/app/appwrite-client'
 import { useCallback, useEffect, useState } from 'react'
 import UploadAvatar from '@/components/community/uploadAvatar'
@@ -11,6 +10,7 @@ import { z } from 'zod'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
 import * as Sentry from '@sentry/nextjs'
+import { CommunityDocumentsType } from '@/utils/types/models'
 
 const communitySchema = z.object({
   name: z
@@ -26,15 +26,15 @@ const communitySchema = z.object({
 export default function CommunityAdminMain({
   community,
 }: {
-  community: Community.CommunityDocumentsType
+  community: CommunityDocumentsType
 }) {
   const [isLoading, setIsLoading] = useState(true)
   const [communityData, setCommunityData] =
-    useState<Community.CommunityDocumentsType>(null)
+    useState<CommunityDocumentsType>(null)
   const [isUploading, setIsUploading] = useState(false)
 
   const getCommunity = useCallback(async () => {
-    const data: Community.CommunityDocumentsType = await databases.getDocument(
+    const data: CommunityDocumentsType = await databases.getDocument(
       'hp_db',
       'community',
       community.$id

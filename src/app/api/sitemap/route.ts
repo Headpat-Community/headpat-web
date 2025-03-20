@@ -1,17 +1,17 @@
 import { NextResponse } from 'next/server'
-import { UserData } from '@/utils/types/models'
 import { createSessionServerClient } from '@/app/appwrite-session'
+import { UserDataDocumentsType, UserDataType } from '@/utils/types/models'
 
 export async function GET() {
   const { databases } = await createSessionServerClient()
   try {
-    const users: UserData.UserDataType = await databases.listDocuments(
+    const users: UserDataType = await databases.listDocuments(
       'hp_db',
       'userdata'
     )
 
     const productsMapping = users.documents.map(
-      (user: UserData.UserDataDocumentsType) => ({
+      (user: UserDataDocumentsType) => ({
         url: `${process.env.NEXT_PUBLIC_DOMAIN}/user/${user.profileUrl}`,
         lastModified: user.$updatedAt,
         changeFrequency: 'weekly',
@@ -21,7 +21,7 @@ export async function GET() {
 
     let sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n`
 
-    let currentYear = new Date().getFullYear()
+    const currentYear = new Date().getFullYear()
 
     const mappings = [
       {
@@ -45,7 +45,7 @@ export async function GET() {
       ...productsMapping,
     ]
 
-    for (let mapping of mappings) {
+    for (const mapping of mappings) {
       sitemap += '<url>\n'
       sitemap += `<loc>${mapping.url}</loc>\n`
       if (mapping['news']) {

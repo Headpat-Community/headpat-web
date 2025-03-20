@@ -5,7 +5,7 @@ import {
 import { Query } from '@/app/appwrite-server'
 import { getAvatarImageUrlView } from '@/components/getStorageItem'
 import PageClient from './page.client'
-import { UserData } from '@/utils/types/models'
+import { UserDataType } from '@/utils/types/models'
 import sanitizeHtml from 'sanitize-html'
 import { notFound } from 'next/navigation'
 import PageLayout from '@/components/pageLayout'
@@ -20,7 +20,7 @@ export async function generateMetadata(props: {
 
   const { databases } = await createSessionServerClient()
   const { users } = await createAdminClient()
-  const userDataResponse: UserData.UserDataType = await databases.listDocuments(
+  const userDataResponse: UserDataType = await databases.listDocuments(
     'hp_db',
     'userdata',
     [Query.equal('profileUrl', profileUrl)]
@@ -72,7 +72,7 @@ export default async function UserProfile(props) {
 
   const { databases } = await createSessionServerClient()
 
-  const userDataResponse: UserData.UserDataType = await databases.listDocuments(
+  const userDataResponse: UserDataType = await databases.listDocuments(
     'hp_db',
     'userdata',
     [Query.equal('profileUrl', profileUrl)]

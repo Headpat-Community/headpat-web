@@ -2,19 +2,22 @@
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { databases } from '@/app/appwrite-client'
-import { Config } from '@/utils/types/models'
+import { ConfigFeaturesDocumentsType } from '@/utils/types/models'
 
 export const useFeatureStatus = (feature: string) => {
   const [featureStatus, setFeatureStatus] =
-    useState<Config.ConfigFeaturesDocumentsType>(null)
+    useState<ConfigFeaturesDocumentsType>(null)
 
   useEffect(() => {
     const fetchFeatureStatus = async () => {
       try {
-        const data: Config.ConfigFeaturesDocumentsType =
-          await databases.getDocument('config', 'features', feature)
+        const data: ConfigFeaturesDocumentsType = await databases.getDocument(
+          'config',
+          'features',
+          feature
+        )
         setFeatureStatus(data)
-      } catch (error) {
+      } catch {
         toast.error('Error fetching feature status')
       }
     }

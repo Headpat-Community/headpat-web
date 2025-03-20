@@ -22,21 +22,21 @@ import {
 import Link from 'next/link'
 import { Separator } from '@/components/ui/separator'
 import PageLayout from '@/components/pageLayout'
-import { Community } from '@/utils/types/models'
 import { hasAdminPanelAccess } from '@/utils/actions/community/checkRoles'
 import { useUser } from '@/components/contexts/UserContext'
 import NoAccessNsfw from '@/components/static/noAccessNsfw'
 import { notFound, useRouter } from 'next/navigation'
+import { CommunityDocumentsType } from '@/utils/types/models'
 
 export default function PageClient({
   communityId,
   communityData,
 }: {
   communityId: string
-  communityData: Community.CommunityDocumentsType
+  communityData: CommunityDocumentsType
 }) {
   const [community, setCommunity] =
-    useState<Community.CommunityDocumentsType>(communityData)
+    useState<CommunityDocumentsType>(communityData)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const { current } = useUser()
 
@@ -193,7 +193,7 @@ export function FollowerButton({ displayName, communityId }) {
 
       setIsFollowingState(response.isFollowing)
       setHasPermissions(await hasAdminPanelAccess(response.roles))
-    } catch (error) {
+    } catch {
       // Do nothing
     }
   }, [communityId])

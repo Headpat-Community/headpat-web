@@ -16,7 +16,7 @@ import {
   PencilIcon,
   UserSearchIcon,
 } from 'lucide-react'
-import { Account } from '@/utils/types/models'
+import { AccountPrefs } from '@/utils/types/models'
 import { SiDiscord, SiGithub } from '@icons-pack/react-simple-icons'
 
 export const Nav1 = (translations: any) => [
@@ -78,7 +78,7 @@ export const Nav1 = (translations: any) => [
   },
 ]
 
-export const Nav2 = (account: Account.AccountPrefs, translations: any) => {
+export const Nav2 = (account: AccountPrefs, translations: any) => {
   return [
     {
       title: translations.myprofile,
@@ -140,7 +140,7 @@ export const Nav4 = () => [
   },
 ]
 
-export const NavFooter = (account: Account.AccountPrefs, translations: any) => {
+export const NavFooter = (account: AccountPrefs, translations: any) => {
   const navItems = [
     {
       title: account ? translations.account : translations.login,

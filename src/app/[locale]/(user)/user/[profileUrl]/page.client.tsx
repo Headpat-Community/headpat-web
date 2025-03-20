@@ -30,7 +30,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import sanitizeHtml from 'sanitize-html'
-import { UserData } from '@/utils/types/models'
+import { UserProfileDocumentsType } from '@/utils/types/models'
 import { functions } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
 import PageLayout from '@/components/pageLayout'
@@ -92,12 +92,10 @@ export default function PageClient({
   user,
   userId,
 }: {
-  user: UserData.UserDataDocumentsType
+  user: UserProfileDocumentsType
   userId: string
 }) {
-  const [userData, setUserData] =
-    // @ts-ignore
-    useState<UserData.UserProfileDocumentsType>(user)
+  const [userData, setUserData] = useState<UserProfileDocumentsType>(user)
   const [loading, setLoading] = useState(true)
   const { current } = useUser()
   const { getCache, saveCache } = useDataCache()
@@ -110,9 +108,9 @@ export default function PageClient({
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const cache = await getCache('users', userId)
+      const cache = await getCache<UserProfileDocumentsType>('users', userId)
       if (cache) {
-        setUserData(cache.data as UserData.UserProfileDocumentsType)
+        setUserData(cache.data)
         setLoading(false)
       }
       try {

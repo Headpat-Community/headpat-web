@@ -15,7 +15,6 @@ import { useRealtimeChat } from '@/hooks/useRealtimeChat'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { databases, functions, storage } from '@/app/appwrite-client'
 import { ExecutionMethod, ID, Query } from 'node-appwrite'
-import { Community, Messaging, UserData } from '@/utils/types/models'
 import { useDataCache } from '@/components/contexts/DataCacheContext'
 import { z } from 'zod'
 import { toast } from 'sonner'
@@ -36,6 +35,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import {
+  CommunityDocumentsType,
+  MessageConversationsDocumentsType,
+  MessagesDocumentsType,
+  MessagesType,
+  UserDataDocumentsType,
+} from '@/utils/types/models'
 
 const schema = z.object({
   message: z
@@ -62,12 +68,12 @@ export default function ChatClient({
   const [page, setPage] = useState(0)
   const messageListRef = useRef<HTMLDivElement>(null)
   const [pendingMessages, setPendingMessages] = useState<
-    Messaging.MessagesDocumentsType[]
+    MessagesDocumentsType[]
   >([])
   const [messageText, setMessageText] = useState('')
   const [reportMessageOpen, setReportMessageOpen] = useState(false)
   const [selectedMessage, setSelectedMessage] =
-    useState<Messaging.MessagesDocumentsType | null>(null)
+    useState<MessagesDocumentsType | null>(null)
 
   const fetchMessages = useCallback(
     async (reset = false) => {
@@ -77,15 +83,18 @@ export default function ChatClient({
       const offset = reset ? 0 : page * limit
 
       try {
-        const result = await databases.listDocuments('hp_db', 'messages', [
-          Query.equal('conversationId', conversationId),
-          Query.orderAsc('$createdAt'),
-          Query.limit(limit),
-          Query.offset(offset),
-        ])
+        const result: MessagesType = await databases.listDocuments(
+          'hp_db',
+          'messages',
+          [
+            Query.equal('conversationId', conversationId),
+            Query.orderAsc('$createdAt'),
+            Query.limit(limit),
+            Query.offset(offset),
+          ]
+        )
 
-        const newMessages =
-          result.documents as Messaging.MessagesType['documents']
+        const newMessages = result.documents
 
         // Fetch user data for any new message senders
         const newParticipants = newMessages.map((msg) => msg.senderId)
@@ -117,7 +126,7 @@ export default function ChatClient({
     try {
       await fetchMessages(true)
 
-      const conversationData: Messaging.MessageConversationsDocumentsType =
+      const conversationData: MessageConversationsDocumentsType =
         await databases.getDocument(
           'hp_db',
           'messages-conversations',
@@ -203,7 +212,7 @@ export default function ChatClient({
       schema.parse({ message: messageText, attachments })
 
       // Create a pending message
-      const pendingMessage: Messaging.MessagesDocumentsType = {
+      const pendingMessage: MessagesDocumentsType = {
         $id: `pending_${Date.now()}`,
         body: messageText,
         senderId: current.$id || '',
@@ -281,6 +290,7 @@ export default function ChatClient({
     }
   }
 
+  /*
   const handleAttachmentChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -304,6 +314,7 @@ export default function ChatClient({
       return updatedAttachments
     })
   }
+   */
 
   const handleScroll = useCallback(async () => {
     if (messageListRef.current) {
@@ -316,10 +327,7 @@ export default function ChatClient({
 
   const getUserAvatar = (userId: string) => {
     if (!userId) return undefined
-    const userCache = getCacheSync<UserData.UserDataDocumentsType>(
-      'users',
-      userId
-    )
+    const userCache = getCacheSync<UserDataDocumentsType>('users', userId)
     return getAvatarImageUrlPreview(
       userCache?.data?.avatarId,
       'width=100&height=100'
@@ -328,7 +336,7 @@ export default function ChatClient({
 
   const getConversationAvatar = () => {
     if (communityId) {
-      const communityCache = getCacheSync<Community.CommunityDocumentsType>(
+      const communityCache = getCacheSync<CommunityDocumentsType>(
         'communities',
         communityId
       )
@@ -343,14 +351,14 @@ export default function ChatClient({
 
   const getConversationName = () => {
     if (communityId) {
-      const communityCache = getCacheSync<Community.CommunityDocumentsType>(
+      const communityCache = getCacheSync<CommunityDocumentsType>(
         'communities',
         communityId
       )
 
       return communityCache?.data?.name
     }
-    const userCache = getCacheSync<UserData.UserDataDocumentsType>(
+    const userCache = getCacheSync<UserDataDocumentsType>(
       'users',
       participants.find((id) => id !== current.$id) || ''
     )
@@ -376,7 +384,7 @@ export default function ChatClient({
     }
   }
 
-  const reportMessage = async (message: Messaging.MessagesDocumentsType) => {
+  const reportMessage = async (message: MessagesDocumentsType) => {
     setSelectedMessage(message)
     setReportMessageOpen(true)
   }
@@ -431,7 +439,7 @@ export default function ChatClient({
           {[...messages, ...pendingMessages].map((message) => {
             const variant =
               message.senderId === current.$id ? 'sent' : 'received'
-            const user = getCacheSync<UserData.UserDataDocumentsType>(
+            const user = getCacheSync<UserDataDocumentsType>(
               'users',
               message.senderId
             )

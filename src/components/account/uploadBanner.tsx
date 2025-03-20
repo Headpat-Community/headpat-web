@@ -20,14 +20,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { UserData } from '@/utils/types/models'
 import * as Sentry from '@sentry/nextjs'
 import {
   centerAspectCrop,
   createBlob,
 } from '@/components/gallery/upload/uploadHelper'
-import { unstable_noStore } from 'next/cache'
 import { ID } from 'node-appwrite'
+import { UserDataDocumentsType } from '@/utils/types/models'
 
 export default function UploadBanner({
   isUploading,
@@ -35,7 +34,6 @@ export default function UploadBanner({
   userId,
   userData,
 }) {
-  unstable_noStore()
   const [imgSrc, setImgSrc] = useState('')
   const previewCanvasRef = useRef<HTMLCanvasElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -93,8 +91,11 @@ export default function UploadBanner({
       setIsUploading(true) // Set isUploading to true before making the API call
 
       // Get the user's banner document
-      const bannerDocument: UserData.UserDataDocumentsType =
-        await databases.getDocument('hp_db', 'userdata', userId)
+      const bannerDocument: UserDataDocumentsType = await databases.getDocument(
+        'hp_db',
+        'userdata',
+        userId
+      )
       // If the user already has an banner, delete it
       if (bannerDocument.profileBannerId) {
         // Delete the old banner

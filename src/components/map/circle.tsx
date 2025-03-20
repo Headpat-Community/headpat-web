@@ -40,7 +40,6 @@ function useCircle(props: CircleProps) {
   } = props
 
   const callbacks = useRef<Record<string, (e: unknown) => void>>({})
-  // eslint-disable-next-line react-compiler/react-compiler
   Object.assign(callbacks.current, {
     onClick,
     onDrag,

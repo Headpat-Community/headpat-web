@@ -3,7 +3,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import UserCard from '@/components/user/userCard'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import { formatDate } from '@/components/calculateTimeLeft'
-import { Notifications } from '@/utils/types/models'
 import React from 'react'
 import { ExecutionMethod } from 'node-appwrite'
 import { functions } from '@/app/appwrite-client'
@@ -11,21 +10,20 @@ import { useDataCache } from '@/components/contexts/DataCacheContext'
 import { toast } from 'sonner'
 import { useUser } from '@/components/contexts/UserContext'
 import { useRouter } from 'next/navigation'
+import { NotificationsDocumentsType } from '@/utils/types/models'
 
 export default function PageClient() {
   const router = useRouter()
   const [loading, setLoading] = React.useState(true)
   const [notifications, setNotifications] = React.useState<
-    Notifications.NotificationsDocumentsType[]
+    NotificationsDocumentsType[]
   >([])
   const { current } = useUser()
   const { getAllCache, saveCache } = useDataCache()
 
   const fetchNotifications = React.useCallback(async () => {
     const cache =
-      await getAllCache<Notifications.NotificationsDocumentsType[]>(
-        'notifications'
-      )
+      await getAllCache<NotificationsDocumentsType[]>('notifications')
     const notifications = cache.map((item) => item.data) // Assuming each CacheItem has a 'data' property
     if (notifications.length > 0) {
       setNotifications(notifications.flat()) // Flatten the array if necessary

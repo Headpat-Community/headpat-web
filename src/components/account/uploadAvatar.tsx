@@ -20,15 +20,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { UserData } from '@/utils/types/models'
 import * as Sentry from '@sentry/nextjs'
 import {
   centerAspectCrop,
   createBlob,
 } from '@/components/gallery/upload/uploadHelper'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { unstable_noStore } from 'next/cache'
 import { ID } from 'node-appwrite'
+import { UserDataDocumentsType } from '@/utils/types/models'
 
 export default function UploadAvatar({
   isUploading,
@@ -36,7 +35,6 @@ export default function UploadAvatar({
   userId,
   userData,
 }) {
-  unstable_noStore()
   const [imgSrc, setImgSrc] = useState('')
   const previewCanvasRef = useRef<HTMLCanvasElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -94,8 +92,11 @@ export default function UploadAvatar({
       setIsUploading(true) // Set isUploading to true before making the API call
 
       // Get the user's avatar document
-      const avatarDocument: UserData.UserDataDocumentsType =
-        await databases.getDocument('hp_db', 'userdata', userId)
+      const avatarDocument: UserDataDocumentsType = await databases.getDocument(
+        'hp_db',
+        'userdata',
+        userId
+      )
       // If the user already has an avatar, delete it
       if (avatarDocument.avatarId) {
         // Delete the old avatar

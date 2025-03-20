@@ -1,5 +1,4 @@
 'use client'
-import { Community } from '@/utils/types/models'
 import { databases, functions } from '@/app/appwrite-client'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Label } from '@/components/ui/label'
@@ -21,6 +20,10 @@ import {
 } from '@/components/ui/alert-dialog'
 import { useRouter } from 'next/navigation'
 import { ExecutionMethod } from 'node-appwrite'
+import {
+  CommunityDocumentsType,
+  CommunitySettingsDocumentsType,
+} from '@/utils/types/models'
 
 const communitySchema = z.object({
   isFindable: z.boolean(),
@@ -31,16 +34,19 @@ const communitySchema = z.object({
 export default function CommunityAdminSettings({
   community,
 }: {
-  community: Community.CommunityDocumentsType
+  community: CommunityDocumentsType
 }) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [communitySettings, setCommunitySettings] =
-    useState<Community.CommunitySettingsDocumentsType>(null)
+    useState<CommunitySettingsDocumentsType>(null)
 
   const getSettings = useCallback(async () => {
-    const data: Community.CommunitySettingsDocumentsType =
-      await databases.getDocument('hp_db', 'community-settings', community.$id)
+    const data: CommunitySettingsDocumentsType = await databases.getDocument(
+      'hp_db',
+      'community-settings',
+      community.$id
+    )
     setCommunitySettings(data)
   }, [community.$id])
 

@@ -2,7 +2,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { AdvancedMarker, APIProvider, Map } from '@vis.gl/react-google-maps'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Events, Location, UserData } from '@/utils/types/models'
 import {
   Dialog,
   DialogContent,
@@ -21,17 +20,24 @@ import FiltersModal from '@/components/map/FiltersModal'
 import { Button } from '@/components/ui/button'
 import { FilterIcon, SettingsIcon } from 'lucide-react'
 import SettingsModal from '@/components/map/SettingsModal'
+import {
+  EventsDocumentsType,
+  EventsType,
+  LocationDocumentsType,
+  LocationType,
+  UserDataDocumentsType,
+} from '@/utils/types/models'
 
 type User = {
   lat: number
   long: number
   status: string
   statusColor: string
-  userData: UserData.UserDataDocumentsType
+  userData: UserDataDocumentsType
 }
 
 export default function PageClient() {
-  const [events, setEvents] = useState<Events.EventsType>(null)
+  const [events, setEvents] = useState<EventsType>(null)
   const [filters, setFilters] = useState({
     showEvents: true,
     showUsers: true,
@@ -39,8 +45,7 @@ export default function PageClient() {
   const [friendsLocations, setFriendsLocations] = useState(null)
   const [filtersOpen, setFiltersOpen] = useState<boolean>(false)
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false)
-  const [userStatus, setUserStatus] =
-    useState<Location.LocationDocumentsType>(null)
+  const [userStatus, setUserStatus] = useState<LocationDocumentsType>(null)
 
   const { current } = useUser()
 
@@ -62,7 +67,7 @@ export default function PageClient() {
     try {
       const currentDate = new Date()
 
-      const data: Events.EventsType = await listDocuments('hp_db', 'events', [
+      const data: EventsType = await listDocuments('hp_db', 'events', [
         Query.orderAsc('date'),
         Query.greaterThanEqual('dateUntil', currentDate.toISOString()),
         Query.or([
@@ -72,21 +77,21 @@ export default function PageClient() {
       ])
 
       setEvents(data)
-    } catch (error) {
+    } catch {
       toast('Failed to fetch events. Please try again later.')
     }
   }, [])
 
   const fetchUserLocations = useCallback(async () => {
     try {
-      let query = []
+      const query = []
       /*
        if (current?.$id) {
        query = [Query.notEqual('$id', current?.$id)]
        }
        */
 
-      const data: Location.LocationType = await databases.listDocuments(
+      const data: LocationType = await databases.listDocuments(
         'hp_db',
         'locations',
         query
@@ -96,14 +101,17 @@ export default function PageClient() {
         if (current && current.$id === doc.$id) {
           setUserStatus(doc)
         }
-        const userData: UserData.UserDataDocumentsType =
-          await databases.getDocument('hp_db', 'userdata', doc.$id)
+        const userData: UserDataDocumentsType = await databases.getDocument(
+          'hp_db',
+          'userdata',
+          doc.$id
+        )
         return { ...doc, userData }
       })
 
       const results = await Promise.all(promises)
       setFriendsLocations(results)
-    } catch (error) {
+    } catch {
       toast('Failed to fetch locations. Please try again later.')
     }
   }, [current])
@@ -126,68 +134,61 @@ export default function PageClient() {
               setUserStatus(updatedDocument)
             }
 
-            setFriendsLocations(
-              (prevLocations: Location.LocationDocumentsType[]) => {
-                const existingLocation = prevLocations.find(
-                  (location) => location?.$id === updatedDocument.$id
+            setFriendsLocations((prevLocations: LocationDocumentsType[]) => {
+              const existingLocation = prevLocations.find(
+                (location) => location?.$id === updatedDocument.$id
+              )
+              if (existingLocation) {
+                return prevLocations.map((location) =>
+                  location?.$id === updatedDocument.$id
+                    ? {
+                        ...location,
+                        ...updatedDocument,
+                        userData: location.userData,
+                      }
+                    : location
                 )
-                if (existingLocation) {
-                  return prevLocations.map((location) =>
-                    location?.$id === updatedDocument.$id
-                      ? {
-                          ...location,
-                          ...updatedDocument,
-                          userData: location.userData,
-                        }
-                      : location
-                  )
-                } else {
-                  return [...prevLocations, updatedDocument]
-                }
+              } else {
+                return [...prevLocations, updatedDocument]
               }
-            )
+            })
             break
           case 'delete':
             if (current && updatedDocument.$id === current.$id) {
               setUserStatus(null)
             }
-            setFriendsLocations(
-              (prevLocations: Location.LocationDocumentsType[]) => {
-                return prevLocations.filter(
-                  (location) => location?.$id !== updatedDocument.$id
-                )
-              }
-            )
+            setFriendsLocations((prevLocations: LocationDocumentsType[]) => {
+              return prevLocations.filter(
+                (location) => location?.$id !== updatedDocument.$id
+              )
+            })
             break
           case 'create':
             if (current && updatedDocument.$id === current.$id) {
               setUserStatus(updatedDocument)
             }
 
-            const userData: UserData.UserDataDocumentsType =
-              await databases.getDocument(
-                'hp_db',
-                'userdata',
-                `${updatedDocument.$id}`
-              )
+            const userData: UserDataDocumentsType = await databases.getDocument(
+              'hp_db',
+              'userdata',
+              `${updatedDocument.$id}`
+            )
             const updatedLocationWithUserData = { ...updatedDocument, userData }
 
-            setFriendsLocations(
-              (prevLocations: Location.LocationDocumentsType[]) => {
-                const locationExists = prevLocations.some(
-                  (location) => location?.$id === updatedDocument.$id
+            setFriendsLocations((prevLocations: LocationDocumentsType[]) => {
+              const locationExists = prevLocations.some(
+                (location) => location?.$id === updatedDocument.$id
+              )
+              if (locationExists) {
+                return prevLocations.map((location) =>
+                  location.$id === updatedDocument.$id
+                    ? updatedLocationWithUserData
+                    : location
                 )
-                if (locationExists) {
-                  return prevLocations.map((location) =>
-                    location.$id === updatedDocument.$id
-                      ? updatedLocationWithUserData
-                      : location
-                  )
-                } else {
-                  return [...prevLocations, updatedLocationWithUserData]
-                }
+              } else {
+                return [...prevLocations, updatedLocationWithUserData]
               }
-            )
+            })
             break
           default:
             console.error('Unknown event type:', eventType)
@@ -218,7 +219,7 @@ export default function PageClient() {
     setModalUserOpen(true)
   }
 
-  const polygonClick = (event: Events.EventsDocumentsType) => {
+  const polygonClick = (event: EventsDocumentsType) => {
     setCurrentEvent({
       title: event.title,
       description: event.description,
@@ -228,7 +229,7 @@ export default function PageClient() {
     setModalEventOpen(true)
   }
 
-  const circleClick = (event: Events.EventsDocumentsType) => {
+  const circleClick = (event: EventsDocumentsType) => {
     setCurrentEvent({
       title: event.title,
       description: event.description,
