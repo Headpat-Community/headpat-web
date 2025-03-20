@@ -280,13 +280,9 @@ const ShaderMaterial = ({
   }, [size.width, size.height, source])
 
   return (
-    // @ts-expect-error: See later
     <mesh ref={ref as any}>
-      {/* @ts-expect-error: See later */}
       <planeGeometry args={[2, 2]} />
-      {/* @ts-expect-error: See later */}
       <primitive object={material} attach="material" />
-      {/* @ts-expect-error: See later */}
     </mesh>
   )
 }
