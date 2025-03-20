@@ -2,8 +2,8 @@ import PageLayout from '@/components/pageLayout'
 import ListComponent from '@/components/changelog/list'
 import { getDict } from 'gt-next/server'
 import { createSessionServerClient } from '@/app/appwrite-session'
-import { Changelog } from '@/utils/types/models'
 import { Query } from 'node-appwrite'
+import { ChangelogType } from '@/utils/types/models'
 
 export async function generateMetadata(props) {
   const params = await props.params
@@ -36,7 +36,7 @@ export async function generateMetadata(props) {
 
 export default async function Page() {
   const { databases } = await createSessionServerClient()
-  const changelogData: Changelog.ChangelogType = await databases.listDocuments(
+  const changelogData: ChangelogType = await databases.listDocuments(
     'hp_db',
     'changelog',
     [Query.orderDesc('version')]

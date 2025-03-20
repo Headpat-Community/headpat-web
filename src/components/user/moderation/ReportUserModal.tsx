@@ -12,9 +12,9 @@ import React, { useState } from 'react'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { UserData } from '@/utils/types/models'
 import { toast } from 'sonner'
 import { reportUserProfile } from '@/utils/actions/user/reportUserProfile'
+import { UserDataDocumentsType } from '@/utils/types/models'
 
 export default function ReportUserModal({
   open,
@@ -23,7 +23,7 @@ export default function ReportUserModal({
 }: {
   open: boolean
   setOpen: (open: boolean) => void
-  user: UserData.UserDataDocumentsType
+  user: UserDataDocumentsType
 }) {
   const [reportReason, setReportReason] = useState<string>('')
   const [otherReason, setOtherReason] = useState<string>('')

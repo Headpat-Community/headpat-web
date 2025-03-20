@@ -3,7 +3,6 @@ import Image from 'next/image'
 import { getCommunityAvatarUrlPreview } from '@/components/getStorageItem'
 import Link from 'next/link'
 import { ChevronRight, MessageCircleIcon, UserRoundIcon } from 'lucide-react'
-import { Community } from '@/utils/types/models'
 import { useCallback, useEffect, useState } from 'react'
 import { functions } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
@@ -12,10 +11,10 @@ import { useUser } from '@/components/contexts/UserContext'
 import { Button } from '@/components/ui/button'
 import AddCommunity from '@/components/community/addCommunity'
 import { useDataCache } from '@/components/contexts/DataCacheContext'
+import { CommunityDocumentsType } from '@/utils/types/models'
 
 export default function MyCommunities() {
-  const [communities, setCommunities] =
-    useState<Community.CommunityDocumentsType[]>(null)
+  const [communities, setCommunities] = useState<CommunityDocumentsType[]>(null)
   const [isFetching, setIsFetching] = useState<boolean>(true)
   const { current } = useUser()
   const { saveAllCache } = useDataCache()

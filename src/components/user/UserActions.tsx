@@ -3,7 +3,6 @@ import React, { Suspense, useCallback, useState } from 'react'
 import { removeFollow } from '@/utils/actions/followers/removeFollow'
 import { toast } from 'sonner'
 import { addFollow } from '@/utils/actions/followers/addFollow'
-import { Account, UserData } from '@/utils/types/models'
 import {
   MailIcon,
   ShieldAlertIcon,
@@ -22,18 +21,21 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { blockUser } from '@/utils/actions/user/blockUser'
+import {
+  AccountType,
+  UserDataDocumentsType,
+  UserPrefsDocumentsType,
+} from '@/utils/types/models'
 
 const ReportUserModal = React.lazy(() => import('./moderation/ReportUserModal'))
 
 interface UserActionsProps {
-  userData: UserData.UserDataDocumentsType
-  userPrefs: UserData.UserPrefsDocumentsType
-  setUserPrefs: React.Dispatch<
-    React.SetStateAction<UserData.UserPrefsDocumentsType>
-  >
+  userData: UserDataDocumentsType
+  userPrefs: UserPrefsDocumentsType
+  setUserPrefs: React.Dispatch<React.SetStateAction<UserPrefsDocumentsType>>
   isFollowing: boolean
   setIsFollowing: React.Dispatch<React.SetStateAction<boolean>>
-  current: Account.AccountType | null
+  current: AccountType | null
 }
 
 const UserActions = ({

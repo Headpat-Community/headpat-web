@@ -5,10 +5,10 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import * as Sentry from '@sentry/nextjs'
 import { getDocument } from '@/components/api/documents'
-import { UserData } from '@/utils/types/models'
 import z from 'zod'
 import { databases } from '@/app/appwrite-client'
 import { toast } from 'sonner'
+import { UserDataDocumentsType } from '@/utils/types/models'
 
 const schema = z.object({
   discordname: z
@@ -39,7 +39,7 @@ export default function SocialsView({ accountData }) {
 
   useEffect(() => {
     getDocument('hp_db', 'userdata', accountData.$id).then(
-      (data: UserData.UserDataDocumentsType) => setUserData(data)
+      (data: UserDataDocumentsType) => setUserData(data)
     )
   }, [accountData])
 

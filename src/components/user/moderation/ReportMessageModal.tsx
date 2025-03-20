@@ -12,10 +12,10 @@ import React, { useState } from 'react'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { Messaging } from '@/utils/types/models'
 import { toast } from 'sonner'
 import { functions } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
+import { MessagesDocumentsType } from '@/utils/types/models'
 
 export default function ReportMessageModal({
   open,
@@ -24,7 +24,7 @@ export default function ReportMessageModal({
 }: {
   open: boolean
   setOpen: (open: boolean) => void
-  message: Messaging.MessagesDocumentsType
+  message: MessagesDocumentsType
 }) {
   const [reportReason, setReportReason] = useState<string>('')
   const [otherReason, setOtherReason] = useState<string>('')

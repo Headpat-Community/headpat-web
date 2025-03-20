@@ -20,6 +20,7 @@
     "singleQuote": true
   },
   "dependencies": {
+    "@eslint/eslintrc": "^3.3.0",
     "@googlemaps/markerclusterer": "^2.5.3",
     "@hookform/resolvers": "^3.10.0",
     "@icons-pack/react-simple-icons": "^11.2.0",
@@ -97,10 +98,9 @@
     "recharts": "^2.15.1",
     "require-in-the-middle": "^7.5.2",
     "sanitize-html": "^2.15.0",
-    "sharp": "^0.33.5",
     "sonner": "^1.7.4",
     "tailwind-merge": "^3.0.2",
-    "tailwindcss": "4.0.0",
+    "tailwindcss": "^4.0.14",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.8.2",
     "vaul": "^1.1.2",
@@ -109,8 +109,8 @@
   "devDependencies": {
     "@types/google.maps": "^3.58.1",
     "@types/mdx": "^2.0.13",
-    "@types/node": "22.10.10",
-    "@types/react": "18.3.12",
+    "@types/node": "^22.10.10",
+    "@types/react": "^19.0.12",
     "@types/sanitize-html": "^2.13.0",
     "@types/three": "^0.172.0",
     "eslint": "^9.22.0",
@@ -121,7 +121,7 @@
     "globals": "^16.0.0",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "typescript-eslint": "^8.26.1"
+    "typescript-eslint": "^8.27.0"
   },
   "trustedDependencies": [
     "@sentry/cli",

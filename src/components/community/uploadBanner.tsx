@@ -20,13 +20,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { Community } from '@/utils/types/models'
 import * as Sentry from '@sentry/nextjs'
 import {
   centerAspectCrop,
   createBlob,
 } from '@/components/gallery/upload/uploadHelper'
 import { ExecutionMethod, ID } from 'node-appwrite'
+import { CommunityDocumentsType } from '@/utils/types/models'
 
 export default function UploadBanner({
   isUploading,
@@ -113,7 +113,7 @@ export default function UploadBanner({
       }
 
       // Get the user's banner document
-      const bannerDocument: Community.CommunityDocumentsType =
+      const bannerDocument: CommunityDocumentsType =
         await databases.getDocument('hp_db', 'community', communityData.$id)
       // If the user already has an banner, delete it
       if (bannerDocument.bannerId) {

@@ -128,7 +128,7 @@ export default function ChatLayout(props: any) {
     }
 
     if (conversations.length > 0 && current) {
-      updateDisplayUsers()
+      updateDisplayUsers().then()
     }
   }, [conversations, current, fetchCommunityData, fetchUserData])
 
