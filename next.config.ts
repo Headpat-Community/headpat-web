@@ -51,7 +51,7 @@ const sentryOptions: SentryBuildOptions = {
 
   org: 'headpat',
   project: 'headpat-place',
-  sentryUrl: 'https://sentry.fayevr.dev/',
+  sentryUrl: 'https://sentry.fayevr.dev',
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
