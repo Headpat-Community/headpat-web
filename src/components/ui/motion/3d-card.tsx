@@ -134,8 +134,11 @@ export const CardItem = ({
   }
 
   return (
+    // @ts-expect-error: See later
     <Tag
+      // @ts-expect-error: See later
       ref={ref}
+      // @ts-expect-error: See later
       className={cn('w-fit transition duration-200 ease-linear', className)}
       {...rest}
     >

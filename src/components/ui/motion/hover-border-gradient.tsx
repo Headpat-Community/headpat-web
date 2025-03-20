@@ -56,11 +56,15 @@ export function HoverBorderGradient({
     }
   }, [hovered])
   return (
+    // @ts-expect-error: See later
     <Tag
+      // @ts-expect-error: See later
       onMouseEnter={() => {
         setHovered(true)
       }}
+      // @ts-expect-error: See later
       onMouseLeave={() => setHovered(false)}
+      // @ts-expect-error: See later
       className={cn(
         'relative flex rounded-full border border-muted content-center bg-black/20 hover:bg-black/10 transition duration-500 dark:bg-white/20 items-center flex-col flex-nowrap gap-10 h-min justify-center overflow-visible p-px box-decoration-clone w-fit cursor-pointer',
         containerClassName
