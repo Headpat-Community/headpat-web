@@ -1,9 +1,9 @@
 import { createAdminClient } from '@/app/appwrite-session'
-import { Announcements } from '@/utils/types/models'
 import Link from 'next/link'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import sanitize from 'sanitize-html'
 import { Button } from '@/components/ui/button'
+import { AnnouncementDocumentsType } from '@/utils/types/models'
 
 export const metadata = {
   title: 'Announcements',
@@ -18,7 +18,7 @@ export default async function Page(props: {
 
   const { databases } = await createAdminClient()
 
-  const announcementData: Announcements.AnnouncementDocumentsType =
+  const announcementData: AnnouncementDocumentsType =
     await databases.getDocument('hp_db', 'announcements', announcementId)
 
   const description = sanitize(announcementData?.description)

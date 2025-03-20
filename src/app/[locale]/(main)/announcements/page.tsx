@@ -1,9 +1,9 @@
 import { ChevronRight, MegaphoneIcon } from 'lucide-react'
 import { createAdminClient } from '@/app/appwrite-session'
-import { Announcements } from '@/utils/types/models'
 import Link from 'next/link'
 import PageLayout from '@/components/pageLayout'
 import { getDict } from 'gt-next/server'
+import { AnnouncementDataType } from '@/utils/types/models'
 
 export async function generateMetadata(props) {
   const params = await props.params
@@ -36,7 +36,7 @@ export async function generateMetadata(props) {
 
 export default async function AnnouncementsPage() {
   const { databases } = await createAdminClient()
-  const announcementDataResponse: Announcements.AnnouncementDataType =
+  const announcementDataResponse: AnnouncementDataType =
     await databases.listDocuments('hp_db', 'announcements')
   const announcementData = announcementDataResponse.documents
 
