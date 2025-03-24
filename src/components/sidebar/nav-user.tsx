@@ -34,7 +34,7 @@ const getAvatar = (id: string) => {
 }
 
 export function NavUser() {
-  const { isMobile } = useSidebar()
+  const { isMobile, toggleSidebar } = useSidebar()
   const { userData, current } = useUser()
 
   return (
@@ -91,13 +91,19 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <Link href="/account">
+              <Link
+                href="/account"
+                onClick={isMobile ? toggleSidebar : undefined}
+              >
                 <DropdownMenuItem>
                   <BadgeCheck />
                   Account
                 </DropdownMenuItem>
               </Link>
-              <Link href="/notifications">
+              <Link
+                href="/notifications"
+                onClick={isMobile ? toggleSidebar : undefined}
+              >
                 <DropdownMenuItem>
                   <Bell />
                   Notifications
@@ -105,7 +111,10 @@ export function NavUser() {
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <Link href={current ? '/logout' : '/login'}>
+            <Link
+              href={current ? '/logout' : '/login'}
+              onClick={isMobile ? toggleSidebar : undefined}
+            >
               <DropdownMenuItem>
                 <LogOut />
                 {current ? 'Log out' : 'Log in'}

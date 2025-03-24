@@ -7,7 +7,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar'
+import Link from 'next/link'
 
 export function NavList({
   projects,
@@ -18,16 +20,20 @@ export function NavList({
     icon: LucideIcon
   }[]
 }) {
+  const { toggleSidebar, isMobile } = useSidebar()
   return (
     <SidebarGroup>
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
-              <a href={item.url}>
+              <Link
+                href={item.url}
+                onClick={isMobile ? toggleSidebar : undefined}
+              >
                 <item.icon />
                 <span>{item.name}</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}

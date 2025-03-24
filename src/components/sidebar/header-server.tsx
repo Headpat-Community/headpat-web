@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Separator } from '@radix-ui/react-separator'
 import { SidebarInset, SidebarTrigger } from '../ui/sidebar'
-import { AppSidebar } from '../sidebar/app-sidebar'
+import { AppSidebar } from './app-sidebar'
 import { SidebarProvider } from '../ui/sidebar'
 import { ThemeToggle } from '../ThemeToggle'
 import ChangeLanguage from '../system/changeLanguage'

@@ -1,4 +1,4 @@
-import Header from '@/components/header/header-server'
+import Header from '@/components/sidebar/header-server'
 import { getDict } from 'gt-next/server'
 
 export async function generateMetadata({ params }) {

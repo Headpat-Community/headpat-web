@@ -70,11 +70,8 @@ export function TeamSwitcher({ teams }: { teams: team[] }) {
             </DropdownMenuLabel>
             {teams.map((team) => (
               <Link href={team.href} key={team.name}>
-                <DropdownMenuItem
-                  key={team.name}
-                  className="gap-2 p-2 hover:bg-zinc-900/10 dark:hover:bg-white/10"
-                >
-                  <div className="flex size-6 items-center justify-center rounded-sm border">
+                <DropdownMenuItem key={team.name} className="">
+                  <div className="flex items-center justify-center">
                     <team.logo className="size-4 shrink-0" />
                   </div>
                   {team.name}

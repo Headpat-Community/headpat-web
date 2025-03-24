@@ -11,12 +11,12 @@ import { Skeleton } from '@/components/ui/skeleton'
 import UserCard from '@/components/user/userCard'
 import ModerationModal from '@/components/gallery/moderation/ModerationModal'
 import Image from 'next/image'
-import { isMimeTypeAnimatable } from '@/utils/helpers'
 import NoAccessNsfw from '@/components/static/noAccessNsfw'
 import {
   GalleryDocumentsType,
   UserDataDocumentsType,
 } from '@/utils/types/models'
+import { decode } from 'blurhash'
 
 export default function PageClient({ galleryId }: { galleryId: string }) {
   const [image, setImage] = useState<GalleryDocumentsType>(null)
@@ -67,6 +67,20 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
     return storage.getFileView('gallery', galleryId)
   }
 
+  const getBlurDataURL = (blurHash: string) => {
+    if (!blurHash) return '/images/placeholder-image-color.webp'
+    const pixels = decode(blurHash, 32, 32)
+    const canvas = document.createElement('canvas')
+    canvas.width = 32
+    canvas.height = 32
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return '/images/placeholder-image-color.webp'
+    const imageData = ctx.createImageData(32, 32)
+    imageData.data.set(pixels)
+    ctx.putImageData(imageData, 0, 0)
+    return canvas.toDataURL()
+  }
+
   return (
     <div className="m-4">
       <Button asChild>
@@ -115,7 +129,9 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                           width={1200}
                           height={550}
                           className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
-                          unoptimized={isMimeTypeAnimatable(image?.mimeType)}
+                          unoptimized={true}
+                          placeholder="blur"
+                          blurDataURL={getBlurDataURL(image?.blurHash)}
                         />
                       )}
                     </>

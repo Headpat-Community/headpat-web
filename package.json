@@ -66,6 +66,7 @@
     "@vis.gl/react-google-maps": "^1.5.2",
     "appwrite": "^16.1.0",
     "babel-plugin-react-compiler": "19.0.0-beta-40c6c23-20250301",
+    "blurhash": "^2.0.5",
     "browser-image-compression": "^2.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
