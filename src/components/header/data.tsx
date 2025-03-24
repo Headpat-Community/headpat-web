@@ -28,13 +28,6 @@ export const Nav1 = (translations: any) => [
     href: `/`,
   },
   {
-    title: translations.chat,
-    label: '',
-    icon: MessagesSquareIcon,
-    variant: 'ghost' as const,
-    href: `/chat`,
-  },
-  {
     title: translations.gallery,
     label: '',
     icon: LayoutPanelLeftIcon,
@@ -78,7 +71,7 @@ export const Nav1 = (translations: any) => [
   },
 ]
 
-export const Nav2 = (account: AccountPrefs, translations: any) => {
+export const Nav2 = (translations: any) => {
   return [
     {
       title: translations.myprofile,

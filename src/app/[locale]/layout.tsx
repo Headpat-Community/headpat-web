@@ -36,30 +36,10 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default async function LocaleLayout({ children }) {
-  const pageNames = await getDict('PageNames')
-
+export default function LocaleLayout({ children }) {
   return (
     <div>
-      <Header
-        home={pageNames('home')}
-        chat={pageNames('chat')}
-        gallery={pageNames('gallery')}
-        events={pageNames('events')}
-        map={pageNames('map')}
-        announcements={pageNames('announcements')}
-        notifications={pageNames('notifications')}
-        users={pageNames('users')}
-        myprofile={pageNames('myprofile')}
-        legal={pageNames('legal')}
-        changelog={pageNames('changelog')}
-        communities={pageNames('communities')}
-        account={pageNames('account')}
-        login={pageNames('login')}
-        logout={pageNames('logout')}
-      >
-        {children}
-      </Header>
+      <Header>{children}</Header>
     </div>
   )
 }

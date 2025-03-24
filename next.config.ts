@@ -31,6 +31,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  allowedDevOrigins: ['localhost', 'dev.headpat.place'],
   async rewrites() {
     return [
       {

@@ -35,22 +35,20 @@ export async function generateMetadata(props) {
 
 export default async function Page() {
   return (
-    <PageLayout title={'Communities'}>
-      <Tabs defaultValue="all" className="w-full">
-        <div className="flex flex-col items-center justify-center">
-          <TabsList className="grid w-full sm:max-w-4xl grid-cols-2">
-            <TabsTrigger value="all">All communities</TabsTrigger>
-            <TabsTrigger value="my">My communities</TabsTrigger>
-          </TabsList>
-        </div>
+    <Tabs defaultValue="all" className="w-full">
+      <div className="flex flex-col items-center justify-center">
+        <TabsList className="grid w-full sm:max-w-4xl grid-cols-2">
+          <TabsTrigger value="all">All communities</TabsTrigger>
+          <TabsTrigger value="my">My communities</TabsTrigger>
+        </TabsList>
+      </div>
 
-        <TabsContent value="all">
-          <AllCommunities />
-        </TabsContent>
-        <TabsContent value="my">
-          <MyCommunities />
-        </TabsContent>
-      </Tabs>
-    </PageLayout>
+      <TabsContent value="all">
+        <AllCommunities />
+      </TabsContent>
+      <TabsContent value="my">
+        <MyCommunities />
+      </TabsContent>
+    </Tabs>
   )
 }

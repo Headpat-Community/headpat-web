@@ -12,7 +12,6 @@ import { Button } from '@/components/ui/button'
 import { signInWithProvider } from '@/utils/actions/oauth-actions'
 import Link from 'next/link'
 import { account, ID } from '@/app/appwrite-client'
-import PageLayout from '@/components/pageLayout'
 import { toast } from 'sonner'
 import Image from 'next/image'
 import { Form, FormField } from '@/components/ui/form'
@@ -129,212 +128,206 @@ export default function Login() {
   }
 
   return (
-    <PageLayout title={'Login'}>
-      <div className="flex justify-center items-center">
-        <div className="mx-auto min-w-1/3 rounded-2xl dark:ring-white">
-          <div className={'text-center'}>
-            <h4 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
-              Welcome to Headpat!
-            </h4>
-            <p className="mt-2 text-sm leading-6 text-gray-500">
-              {isRegistering ? 'Already registered?' : 'Not yet registered?'}{' '}
-              <Link
-                href="#"
-                onClick={() => setIsRegistering(!isRegistering)}
-                className="font-semibold text-link hover:text-link/80"
-              >
-                Click here!
-              </Link>
-            </p>
-          </div>
+    <div className="flex justify-center items-center">
+      <div className="mx-auto min-w-1/3 rounded-2xl dark:ring-white">
+        <div className={'text-center'}>
+          <h4 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
+            Welcome to Headpat!
+          </h4>
+          <p className="mt-2 text-sm leading-6 text-gray-500">
+            {isRegistering ? 'Already registered?' : 'Not yet registered?'}{' '}
+            <Link
+              href="#"
+              onClick={() => setIsRegistering(!isRegistering)}
+              className="font-semibold text-link hover:text-link/80"
+            >
+              Click here!
+            </Link>
+          </p>
+        </div>
 
-          <div className="mt-4">
-            <div>
-              <Form {...form}>
-                <form className="space-y-6" onSubmit={handleSubmit(submit)}>
-                  <div key="1" className="mx-auto max-w-4xl p-6 space-y-6">
-                    <div className="space-y-4">
-                      {isRegistering && (
-                        <>
-                          <FormField
-                            control={form.control}
-                            // @ts-expect-error: See later
-                            name="username"
-                            render={({ field }) => (
-                              <InputField
-                                label="Username"
-                                description=""
-                                placeholder=""
-                                field={field}
-                              />
-                            )}
-                          />
-                        </>
-                      )}
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <InputField
-                            label="E-Mail"
-                            description=""
-                            placeholder=""
-                            field={field}
-                          />
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                          <InputField
-                            label="Password"
-                            description=""
-                            placeholder=""
-                            field={field}
-                            type={'password'}
-                          />
-                        )}
-                      />
-                      {isRegistering && (
+        <div className="mt-4">
+          <div>
+            <Form {...form}>
+              <form className="space-y-6" onSubmit={handleSubmit(submit)}>
+                <div key="1" className="mx-auto max-w-4xl p-6 space-y-6">
+                  <div className="space-y-4">
+                    {isRegistering && (
+                      <>
                         <FormField
                           control={form.control}
                           // @ts-expect-error: See later
-                          name="acceptedTerms"
+                          name="username"
                           render={({ field }) => (
-                            <CheckboxField
-                              label="Accept terms and conditions"
+                            <InputField
+                              label="Username"
                               description=""
+                              placeholder=""
                               field={field}
                             />
                           )}
                         />
+                      </>
+                    )}
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <InputField
+                          label="E-Mail"
+                          description=""
+                          placeholder=""
+                          field={field}
+                        />
                       )}
-                      <Button className="w-full">
-                        {isRegistering ? 'Register' : 'Login'}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                        <InputField
+                          label="Password"
+                          description=""
+                          placeholder=""
+                          field={field}
+                          type={'password'}
+                        />
+                      )}
+                    />
+                    {isRegistering && (
+                      <FormField
+                        control={form.control}
+                        // @ts-expect-error: See later
+                        name="acceptedTerms"
+                        render={({ field }) => (
+                          <CheckboxField
+                            label="Accept terms and conditions"
+                            description=""
+                            field={field}
+                          />
+                        )}
+                      />
+                    )}
+                    <Button className="w-full">
+                      {isRegistering ? 'Register' : 'Login'}
+                    </Button>
+                    <Link href={'/forgot-password'}>
+                      <Button
+                        variant={'link'}
+                        type={'button'}
+                        className={'p-0'}
+                      >
+                        Forgot password?
                       </Button>
-                      <Link href={'/forgot-password'}>
-                        <Button
-                          variant={'link'}
-                          type={'button'}
-                          className={'p-0'}
-                        >
-                          Forgot password?
-                        </Button>
-                      </Link>
-                    </div>
+                    </Link>
                   </div>
-                </form>
-              </Form>
+                </div>
+              </form>
+            </Form>
+          </div>
+
+          <div className="mt-8">
+            <div className="relative">
+              <div
+                className="absolute inset-0 flex items-center"
+                aria-hidden="true"
+              >
+                <div className="w-full border-t border-gray-200" />
+              </div>
+              <div className="relative flex justify-center text-sm font-medium leading-6">
+                <span className="rounded-xl bg-white px-6 text-gray-900">
+                  Or continue with
+                </span>
+              </div>
             </div>
+            {/* OAuth Sign-In */}
 
-            <div className="mt-8">
-              <div className="relative">
-                <div
-                  className="absolute inset-0 flex items-center"
-                  aria-hidden="true"
-                >
-                  <div className="w-full border-t border-gray-200" />
-                </div>
-                <div className="relative flex justify-center text-sm font-medium leading-6">
-                  <span className="rounded-xl bg-white px-6 text-gray-900">
-                    Or continue with
+            <div className="mt-6 grid grid-cols-2 gap-4">
+              <form action={() => signInWithProvider(OAuthProvider.Discord)}>
+                <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#5865F2] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20">
+                  <SiDiscord className={'h-5'} />
+                  <span className="text-sm font-semibold leading-6">
+                    Discord
                   </span>
-                </div>
-              </div>
-              {/* OAuth Sign-In */}
+                </button>
+              </form>
 
-              <div className="mt-6 grid grid-cols-2 gap-4">
-                <form action={() => signInWithProvider(OAuthProvider.Discord)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#5865F2] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20">
-                    <SiDiscord className={'h-5'} />
-                    <span className="text-sm font-semibold leading-6">
-                      Discord
-                    </span>
-                  </button>
-                </form>
+              <form action={() => signInWithProvider(OAuthProvider.Oidc)}>
+                <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#005953] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20">
+                  <Image
+                    src={'/logos/eurofurence.webp'}
+                    alt={'Eurofurence Logo'}
+                    className={'rounded-xl'}
+                    width={20}
+                    height={20}
+                  />
+                  <span className="text-sm font-semibold leading-6">
+                    Eurofurence
+                  </span>
+                </button>
+              </form>
 
-                <form action={() => signInWithProvider(OAuthProvider.Oidc)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#005953] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0] dark:border-white/20">
-                    <Image
-                      src={'/logos/eurofurence.webp'}
-                      alt={'Eurofurence Logo'}
-                      className={'rounded-xl'}
-                      width={20}
-                      height={20}
-                    />
-                    <span className="text-sm font-semibold leading-6">
-                      Eurofurence
-                    </span>
-                  </button>
-                </form>
+              <form action={() => signInWithProvider(OAuthProvider.Github)}>
+                <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                  <SiGithub className={'h-5'} />
+                  <span className="text-sm font-semibold leading-6">
+                    GitHub
+                  </span>
+                </button>
+              </form>
 
-                <form action={() => signInWithProvider(OAuthProvider.Github)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
-                    <SiGithub className={'h-5'} />
-                    <span className="text-sm font-semibold leading-6">
-                      GitHub
-                    </span>
-                  </button>
-                </form>
+              <form action={() => signInWithProvider(OAuthProvider.Apple)}>
+                <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#000000] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                  <SiApple className={'h-5'} />
+                  <span className="text-sm font-semibold leading-6">Apple</span>
+                </button>
+              </form>
 
-                <form action={() => signInWithProvider(OAuthProvider.Apple)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#000000] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
-                    <SiApple className={'h-5'} />
-                    <span className="text-sm font-semibold leading-6">
-                      Apple
-                    </span>
-                  </button>
-                </form>
+              <form action={() => signInWithProvider(OAuthProvider.Google)}>
+                <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#131314] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                  <SiGoogle className={'h-4'} />
 
-                <form action={() => signInWithProvider(OAuthProvider.Google)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#131314] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
-                    <SiGoogle className={'h-4'} />
+                  <span className="text-sm font-semibold leading-6">
+                    Google
+                  </span>
+                </button>
+              </form>
 
-                    <span className="text-sm font-semibold leading-6">
-                      Google
-                    </span>
-                  </button>
-                </form>
+              <form action={() => signInWithProvider(OAuthProvider.Spotify)}>
+                <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#1DB954] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                  <SiSpotify className={'h-5'} />
+                  <span className="text-sm font-semibold leading-6">
+                    Spotify
+                  </span>
+                </button>
+              </form>
 
-                <form action={() => signInWithProvider(OAuthProvider.Spotify)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#1DB954] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
-                    <SiSpotify className={'h-5'} />
-                    <span className="text-sm font-semibold leading-6">
-                      Spotify
-                    </span>
-                  </button>
-                </form>
+              <form action={() => signInWithProvider(OAuthProvider.Microsoft)}>
+                <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#01A6F0] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={'/logos/Microsoft_logo.svg.png'}
+                    alt={'Microsoft'}
+                    className={'h-5'}
+                  />
+                  <span className="text-sm font-semibold leading-6">
+                    Microsoft
+                  </span>
+                </button>
+              </form>
 
-                <form
-                  action={() => signInWithProvider(OAuthProvider.Microsoft)}
-                >
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#01A6F0] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={'/logos/Microsoft_logo.svg.png'}
-                      alt={'Microsoft'}
-                      className={'h-5'}
-                    />
-                    <span className="text-sm font-semibold leading-6">
-                      Microsoft
-                    </span>
-                  </button>
-                </form>
-
-                <form action={() => signInWithProvider(OAuthProvider.Twitch)}>
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#6441A5] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
-                    <SiTwitch className={'h-5'} />
-                    <span className="text-sm font-semibold leading-6">
-                      Twitch
-                    </span>
-                  </button>
-                </form>
-              </div>
+              <form action={() => signInWithProvider(OAuthProvider.Twitch)}>
+                <button className="flex w-full items-center justify-center gap-3 rounded-md border border-black/20 bg-[#6441A5] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#24292F] dark:border-white/20">
+                  <SiTwitch className={'h-5'} />
+                  <span className="text-sm font-semibold leading-6">
+                    Twitch
+                  </span>
+                </button>
+              </form>
             </div>
           </div>
         </div>
       </div>
-    </PageLayout>
+    </div>
   )
 }

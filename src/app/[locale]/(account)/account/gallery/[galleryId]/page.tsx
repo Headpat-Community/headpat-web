@@ -1,7 +1,6 @@
 import Client from './page.client'
 import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/app/appwrite-session'
-import PageLayout from '@/components/pageLayout'
 import { getUser } from '@/utils/server-api/account/user'
 import { redirect } from 'next/navigation'
 import { GalleryDocumentsType } from '@/utils/types/models'
@@ -48,9 +47,5 @@ export default async function AccountSingleGalleryPage(props) {
     return notFound()
   }
 
-  return (
-    <PageLayout title={'Account Gallery'}>
-      <Client singleGallery={singleGallery} galleryId={galleryId} />
-    </PageLayout>
-  )
+  return <Client singleGallery={singleGallery} galleryId={galleryId} />
 }

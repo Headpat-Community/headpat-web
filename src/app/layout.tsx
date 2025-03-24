@@ -93,14 +93,16 @@ export default async function RootLayout({ children }) {
             inter.className
           )}
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Maintenance />
-          </ThemeProvider>
+          <DataCacheProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Maintenance />
+            </ThemeProvider>
+          </DataCacheProvider>
         </body>
       </html>
     )
@@ -113,27 +115,29 @@ export default async function RootLayout({ children }) {
         src={'https://analytics.fayevr.dev/script.js'}
         data-website-id="38b87c81-4112-43ce-ba99-b084bab611d6"
       />
+      {/*
       <ReactScan />
+      */}
       <body
         className={cn(
           'flex min-h-screen bg-background antialiased',
           inter.className
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <GTProvider>
-            <UserProvider>
-              <DataCacheProvider>
+        <DataCacheProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <GTProvider>
+              <UserProvider>
                 <div className="w-full">{children}</div>
-              </DataCacheProvider>
-            </UserProvider>
-          </GTProvider>
-        </ThemeProvider>
+              </UserProvider>
+            </GTProvider>
+          </ThemeProvider>
+        </DataCacheProvider>
         <SonnerToaster />
       </body>
     </html>
