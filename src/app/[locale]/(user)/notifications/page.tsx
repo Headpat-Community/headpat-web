@@ -1,4 +1,3 @@
-import PageLayout from '@/components/pageLayout'
 import { getDict } from 'gt-next/server'
 import PageClient from './page.client'
 
@@ -32,9 +31,5 @@ export async function generateMetadata(props) {
 }
 
 export default async function Page() {
-  return (
-    <PageLayout title={'Notifications'}>
-      <PageClient />
-    </PageLayout>
-  )
+  return <PageClient />
 }

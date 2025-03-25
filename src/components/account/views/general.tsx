@@ -142,7 +142,6 @@ export default function GeneralAccountView({
       await account.updatePassword(values.newpassword, values.password)
       toast.success('Password updated successfully.')
     } catch (error) {
-      console.log(error.type)
       if (error.type === 'general_argument_invalid') {
         toast.error(
           'Password must be at least 8 characters long and cannot be a common password.'

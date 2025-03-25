@@ -1,6 +1,5 @@
 import Client from './page.client'
 import { getUser } from '@/utils/server-api/account/user'
-import PageLayout from '@/components/pageLayout'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { getDict } from 'gt-next/server'
@@ -51,9 +50,5 @@ export default async function Gallery() {
     // do nothing
   }
 
-  return (
-    <PageLayout title={'Gallery'} middleComponent={<UploadButton />}>
-      <Client enableNsfw={enableNsfw || false} />
-    </PageLayout>
-  )
+  return <Client enableNsfw={enableNsfw || false} />
 }

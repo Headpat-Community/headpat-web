@@ -359,6 +359,10 @@ export interface GalleryDocumentsType extends Models.Document {
    * The file extension/mimetype of the gallery item.
    */
   mimeType: string
+  /**
+   * The blurhash string for the image.
+   */
+  blurHash?: string
 }
 
 /**

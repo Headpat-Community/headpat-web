@@ -41,16 +41,14 @@ export default async function Page(props: {
   const community = await getCommunity(communityId)
 
   return (
-    <PageLayout title={`${community.name} Admin`}>
-      <Tabs defaultValue="general" className="w-full">
-        <div className="flex flex-col items-center justify-center">
-          <TabsList className="grid w-full sm:max-w-4xl grid-cols-2">
-            <TabsTrigger value="general">General</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-          </TabsList>
-        </div>
-        <PageClient community={community} />
-      </Tabs>
-    </PageLayout>
+    <Tabs defaultValue="general" className="w-full">
+      <div className="flex flex-col items-center justify-center">
+        <TabsList className="grid w-full sm:max-w-4xl grid-cols-2">
+          <TabsTrigger value="general">General</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
+        </TabsList>
+      </div>
+      <PageClient community={community} />
+    </Tabs>
   )
 }

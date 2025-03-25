@@ -8,7 +8,6 @@ import PageClient from './page.client'
 import { UserDataType } from '@/utils/types/models'
 import sanitizeHtml from 'sanitize-html'
 import { notFound } from 'next/navigation'
-import PageLayout from '@/components/pageLayout'
 import { Metadata } from 'next'
 
 export async function generateMetadata(props: {
@@ -83,13 +82,9 @@ export default async function UserProfile(props) {
   }
 
   return (
-    <PageLayout
-      title={`${userDataResponse.documents[0].displayName || 'Someone'}'s profile`}
-    >
-      <PageClient
-        user={userDataResponse.documents[0]}
-        userId={userDataResponse.documents[0].$id}
-      />
-    </PageLayout>
+    <PageClient
+      user={userDataResponse.documents[0]}
+      userId={userDataResponse.documents[0].$id}
+    />
   )
 }

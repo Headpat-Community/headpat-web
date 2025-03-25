@@ -1,6 +1,5 @@
 import Client from './page.client'
 import { createSessionServerClient } from '@/app/appwrite-session'
-import PageLayout from '@/components/pageLayout'
 
 export const metadata = {
   title: 'Account Gallery',
@@ -13,9 +12,5 @@ export default async function FetchGallery() {
   const userId = userData?.$id
   const enableNsfw = userData?.prefs?.nsfw
 
-  return (
-    <PageLayout title={'Account Gallery'}>
-      <Client enableNsfw={enableNsfw || false} userId={userId} />
-    </PageLayout>
-  )
+  return <Client enableNsfw={enableNsfw || false} userId={userId} />
 }

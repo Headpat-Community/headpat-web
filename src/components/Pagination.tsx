@@ -9,6 +9,12 @@ import {
   PaginationEllipsis,
 } from '@/components/ui/pagination'
 
+interface PaginationComponentProps {
+  totalPages: number
+  currentPage: number
+  handleInputChange: (e: { target: { name: string; value: number } }) => void
+}
+
 /**
  * Pagination component
  */
@@ -16,18 +22,18 @@ export default function PaginationComponent({
   totalPages,
   currentPage,
   handleInputChange,
-}) {
+}: PaginationComponentProps) {
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1)
 
   return (
     <div className="flex justify-center items-center my-4">
       <Pagination>
         <PaginationContent>
-          Page:
           {currentPage > 1 && (
             <PaginationItem>
               <PaginationLink
                 href="#"
+                size="default"
                 onClick={() =>
                   handleInputChange({
                     target: { name: 'page', value: 1 },
@@ -42,6 +48,7 @@ export default function PaginationComponent({
             <PaginationItem>
               <PaginationPrevious
                 href={'#'}
+                size="default"
                 onClick={() =>
                   handleInputChange({
                     target: { name: 'page', value: currentPage - 1 },
@@ -61,6 +68,7 @@ export default function PaginationComponent({
                 <PaginationItem key={page}>
                   <PaginationLink
                     href="#"
+                    size="default"
                     className={`mx-2 px-4 py-2 rounded-lg ${
                       page === currentPage ? 'bg-db text-white' : ''
                     }`}
@@ -84,6 +92,7 @@ export default function PaginationComponent({
             <PaginationItem>
               <PaginationNext
                 href={'#'}
+                size="default"
                 onClick={() =>
                   handleInputChange({
                     target: { name: 'page', value: currentPage + 1 },
@@ -96,6 +105,7 @@ export default function PaginationComponent({
             <PaginationItem>
               <PaginationLink
                 href="#"
+                size="default"
                 onClick={() =>
                   handleInputChange({
                     target: { name: 'page', value: totalPages },

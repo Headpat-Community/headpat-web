@@ -1,4 +1,3 @@
-import PageLayout from '@/components/pageLayout'
 import ListComponent from '@/components/changelog/list'
 import { getDict } from 'gt-next/server'
 import { createSessionServerClient } from '@/app/appwrite-session'
@@ -41,9 +40,5 @@ export default async function Page() {
     'changelog',
     [Query.orderDesc('version')]
   )
-  return (
-    <PageLayout title={'Changelog'}>
-      <ListComponent changelogData={changelogData.documents} />
-    </PageLayout>
-  )
+  return <ListComponent changelogData={changelogData.documents} />
 }

@@ -9,10 +9,10 @@ import {
 } from '@/lib/indexeddb-utils'
 
 const DB_NAME = 'HeadpatCache'
-const DB_VERSION = 3 // Increment this when changing the schema
+const DB_VERSION = 4 // Increment this when changing the schema
 const CACHE_EXPIRATION_TIME = 24 * 60 * 60 * 1000 // 24 hours
 
-const STORE_NAMES = ['users', 'communities', 'notifications']
+const STORE_NAMES = ['users', 'communities', 'notifications', 'messages']
 
 type DataCacheContextType = {
   getCache: <T>(storeName: string, key: string) => Promise<CacheItem<T> | null>
@@ -168,7 +168,7 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
         saveAllCache,
       }}
     >
-      {loading ? <div>Loading...</div> : children}
+      {loading ? null : children}
     </DataCacheContext.Provider>
   )
 }

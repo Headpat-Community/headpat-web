@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 import imageCompression from 'browser-image-compression'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
+import { encode } from 'blurhash'
 
 export default function UploadPage({ userId }: { userId: string }) {
   const [isUploading, setIsUploading] = useState(false)
@@ -18,6 +19,7 @@ export default function UploadPage({ userId }: { userId: string }) {
   const router = useRouter()
   const [selectedFileInput, setSelectedFileInput] = useState<string>(null)
   const [selectedFile, setSelectedFile] = useState<File>(null)
+  const [blurHash, setBlurHash] = useState<string>(null)
   const fileInputRef = useRef(null)
   const [data, setData] = useState({
     name: '',
@@ -26,6 +28,42 @@ export default function UploadPage({ userId }: { userId: string }) {
   })
 
   const maxSizeInBytes = 8 * 1024 * 1024 // 8 MB
+
+  const generateBlurHash = async (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image()
+      img.onload = () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        if (!ctx) {
+          reject(new Error('Could not get canvas context'))
+          return
+        }
+
+        // Set canvas size to a small value for blurhash
+        canvas.width = 32
+        canvas.height = 32
+
+        // Draw and scale image to fit canvas
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+
+        // Get image data
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+
+        // Generate blurhash
+        const hash = encode(
+          imageData.data,
+          canvas.width,
+          canvas.height,
+          4, // componentX
+          4 // componentY
+        )
+        resolve(hash)
+      }
+      img.onerror = reject
+      img.src = URL.createObjectURL(file)
+    })
+  }
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -81,6 +119,10 @@ export default function UploadPage({ userId }: { userId: string }) {
           type: finalFile.type,
           lastModified: file.lastModified,
         })
+
+        // Generate blurhash for the image
+        const hash = await generateBlurHash(newFile)
+        setBlurHash(hash)
 
         setSelectedFileInput(imgSrc)
         setSelectedFile(newFile)
@@ -150,6 +192,10 @@ export default function UploadPage({ userId }: { userId: string }) {
           lastModified: file.lastModified,
         })
 
+        // Generate blurhash for the image
+        const hash = await generateBlurHash(newFile)
+        setBlurHash(hash)
+
         setSelectedFileInput(imgSrc)
         setSelectedFile(newFile)
       } catch (error) {
@@ -197,6 +243,7 @@ export default function UploadPage({ userId }: { userId: string }) {
               galleryId: fileDataResponse.$id,
               mimeType: fileDataResponse.mimeType,
               userId: userId,
+              blurHash: blurHash, // Add blurhash to the document
             }
           )
 

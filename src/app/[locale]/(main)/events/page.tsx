@@ -1,4 +1,3 @@
-import PageLayout from '@/components/pageLayout'
 import { getDict } from 'gt-next/server'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CurrentEvents from '@/components/events/currentEvents'
@@ -37,28 +36,26 @@ export async function generateMetadata(props) {
 
 export default async function Page() {
   return (
-    <PageLayout title={'Events'}>
-      <FeatureAccess featureName={'events'}>
-        <Tabs defaultValue="current" className="p-4">
-          <div className="flex flex-col items-center justify-center">
-            <TabsList className="grid w-full sm:max-w-4xl grid-cols-3">
-              <TabsTrigger value="current">Current</TabsTrigger>
-              <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
-              <TabsTrigger value="archived">Archived</TabsTrigger>
-            </TabsList>
-          </div>
+    <FeatureAccess featureName={'events'}>
+      <Tabs defaultValue="current" className="p-4">
+        <div className="flex flex-col items-center justify-center">
+          <TabsList className="grid w-full sm:max-w-4xl grid-cols-3">
+            <TabsTrigger value="current">Current</TabsTrigger>
+            <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
+            <TabsTrigger value="archived">Archived</TabsTrigger>
+          </TabsList>
+        </div>
 
-          <TabsContent value="current">
-            <CurrentEvents />
-          </TabsContent>
-          <TabsContent value="upcoming">
-            <UpcomingEvents />
-          </TabsContent>
-          <TabsContent value="archived">
-            <ArchivedEvents />
-          </TabsContent>
-        </Tabs>
-      </FeatureAccess>
-    </PageLayout>
+        <TabsContent value="current">
+          <CurrentEvents />
+        </TabsContent>
+        <TabsContent value="upcoming">
+          <UpcomingEvents />
+        </TabsContent>
+        <TabsContent value="archived">
+          <ArchivedEvents />
+        </TabsContent>
+      </Tabs>
+    </FeatureAccess>
   )
 }
