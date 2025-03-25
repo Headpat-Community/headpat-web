@@ -44,6 +44,19 @@ const nextConfig: NextConfig = {
       },
     ]
   },
+  async headers() {
+    return [
+      {
+        source: '/',
+        headers: [
+          {
+            key: 'x-powered-by',
+            value: 'Headpat',
+          },
+        ],
+      },
+    ]
+  },
 }
 
 const sentryOptions: SentryBuildOptions = {
