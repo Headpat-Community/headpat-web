@@ -5,7 +5,7 @@ import { SentryBuildOptions, withSentryConfig } from '@sentry/nextjs'
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  poweredByHeader: true,
+  poweredByHeader: false,
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   compiler: {
     styledComponents: true,
