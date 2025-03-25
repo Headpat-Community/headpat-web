@@ -14,7 +14,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { decode } from 'blurhash'
 import React from 'react'
 import { useHeader } from '@/components/sidebar/header-client'
-import { UploadButton } from './upload-button'
+import { UploadButton } from '@/components/gallery/upload-button'
 
 export default function FetchGallery({ enableNsfw }) {
   const router = useRouter()
@@ -26,6 +26,7 @@ export default function FetchGallery({ enableNsfw }) {
   })
   const [totalPages, setTotalPages] = useState(1)
   const [sortType, setSortType] = useState<'newest' | 'random'>('newest')
+  const [seenItems, setSeenItems] = useState<Set<string>>(new Set())
   const pageSize = 48 // Number of items per page
   const { addHeaderComponent, removeHeaderComponent } = useHeader()
 
@@ -123,41 +124,77 @@ export default function FetchGallery({ enableNsfw }) {
       if (sortType === 'newest') {
         filters.push(Query.orderDesc('$createdAt'))
       } else if (sortType === 'random') {
-        // For random sorting, we'll use a combination of queries
-        // First get all IDs, then randomly select from them
-        const allGallery = await databases.listDocuments(
+        // Get total count first
+        const totalCount = await databases.listDocuments(
           'hp_db',
           'gallery-images',
-          [Query.limit(1000)] // Remove orderDesc for true randomness
+          [Query.limit(1)]
         )
+        setTotalPages(Math.ceil(totalCount.total / pageSize))
 
-        // Get previously seen image IDs based on current page
-        const previouslySeenIds = gallery
-          .slice(0, (currentPage - 1) * pageSize)
-          .map((item) => item.$id)
-
-        // Add notEqual queries for each previously seen ID using Query.and
-        if (previouslySeenIds.length > 0) {
-          const notEqualQueries = previouslySeenIds.map((id) =>
-            Query.notEqual('$id', id)
+        // If we're on page 1, fetch and shuffle all items
+        if (currentPage === 1) {
+          setSeenItems(new Set()) // Reset seen items when going back to page 1
+          const allGallery = await databases.listDocuments(
+            'hp_db',
+            'gallery-images',
+            [Query.limit(1000)]
           )
-          filters.push(Query.and(notEqualQueries))
+          const allDocuments =
+            allGallery.documents as unknown as GalleryDocumentsType[]
+          const shuffled = [...allDocuments].sort(() => Math.random() - 0.5)
+
+          // Store the first page and seen items
+          const firstPage = shuffled.slice(0, pageSize)
+          setGallery(firstPage)
+          setSeenItems(new Set(firstPage.map((item) => item.$id)))
+          return
         }
 
-        // Get a new set of random images excluding previously seen ones
-        const randomGallery = await databases.listDocuments(
+        // For subsequent pages, fetch items we haven't seen yet
+        const unseenFilters = [...filters]
+        if (seenItems.size > 0) {
+          // Create an array of notEqual queries for each seen item
+          const notEqualQueries = Array.from(seenItems).map((id) =>
+            Query.notEqual('$id', id)
+          )
+          // Add all notEqual queries using Query.and
+          unseenFilters.push(Query.and(notEqualQueries))
+        }
+
+        const newGallery = await databases.listDocuments(
           'hp_db',
           'gallery-images',
-          [...filters, Query.limit(pageSize)] // Remove orderDesc here too
+          unseenFilters
         )
 
-        // Randomly shuffle the new documents
-        const shuffled =
-          randomGallery.documents as unknown as GalleryDocumentsType[]
-        const selected = shuffled.sort(() => Math.random() - 0.5)
+        // If we've seen all items, reset seen items and fetch from the beginning
+        if (newGallery.documents.length === 0) {
+          setSeenItems(new Set())
+          const allGallery = await databases.listDocuments(
+            'hp_db',
+            'gallery-images',
+            [Query.limit(1000)]
+          )
+          const allDocuments =
+            allGallery.documents as unknown as GalleryDocumentsType[]
+          const shuffled = [...allDocuments].sort(() => Math.random() - 0.5)
+          const pageItems = shuffled.slice(0, pageSize)
+          setGallery(pageItems)
+          setSeenItems(new Set(pageItems.map((item) => item.$id)))
+          return
+        }
 
-        setGallery(selected)
-        setTotalPages(Math.ceil(allGallery.total / pageSize))
+        const newDocuments =
+          newGallery.documents as unknown as GalleryDocumentsType[]
+        const shuffled = [...newDocuments].sort(() => Math.random() - 0.5)
+        const pageItems = shuffled.slice(0, pageSize)
+
+        // Update seen items and gallery
+        setGallery(pageItems)
+        setSeenItems(
+          (prev) => new Set([...prev, ...pageItems.map((item) => item.$id)])
+        )
         return
       }
 
@@ -181,6 +218,11 @@ export default function FetchGallery({ enableNsfw }) {
       Sentry.captureException(error)
     })
   }, [enableNsfw, currentPage, sortType])
+
+  // Reset seen items when changing sort type
+  useEffect(() => {
+    setSeenItems(new Set())
+  }, [sortType])
 
   // Add header component
   useEffect(() => {

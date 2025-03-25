@@ -51,7 +51,7 @@ export function NavUser() {
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
-                  {userData?.displayName || userData?.$id}
+                  {userData?.displayName || userData?.$id || 'Login'}
                 </span>
                 <span className="truncate text-xs">{userData?.email}</span>
               </div>
@@ -77,7 +77,7 @@ export function NavUser() {
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">
-                    {userData?.displayName || userData?.$id}
+                    {userData?.displayName || userData?.$id || 'Login'}
                   </span>
                   <span className="truncate text-xs">{userData?.email}</span>
                 </div>
