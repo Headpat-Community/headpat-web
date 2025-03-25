@@ -1,4 +1,4 @@
-import Header from '@/components/sidebar/header-server'
+import HeaderClient from '@/components/sidebar/header-client'
 import { getDict } from 'gt-next/server'
 
 export async function generateMetadata({ params }) {
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }) {
 export default function LocaleLayout({ children }) {
   return (
     <div>
-      <Header>{children}</Header>
+      <HeaderClient>{children}</HeaderClient>
     </div>
   )
 }

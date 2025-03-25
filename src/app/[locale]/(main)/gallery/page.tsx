@@ -1,19 +1,13 @@
-import Client from './page.client'
-import { getUser } from '@/utils/server-api/account/user'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { getDict } from 'gt-next/server'
+import { Metadata } from 'next'
+import PageClient from './page.client'
 
-export async function generateMetadata(props) {
+export async function generateMetadata(props): Promise<Metadata> {
   const params = await props.params
-
   const { locale } = params
 
-  const meta = await getDict('GalleryMetadata')
-
-  return {
-    title: meta('title'),
-    description: meta('description'),
+  const metadata: Metadata = {
+    title: 'Gallery',
+    description: 'Browse and share images in the Headpat Gallery',
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/gallery`,
       languages: {
@@ -23,32 +17,18 @@ export async function generateMetadata(props) {
       },
     },
     openGraph: {
-      title: meta('title'),
-      description: meta('description'),
+      title: 'Gallery',
+      description: 'Browse and share images in the Headpat Gallery',
       siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
       locale: locale,
       type: 'website',
     },
     metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
   }
+
+  return metadata
 }
 
-function UploadButton() {
-  return (
-    <Link href={'/gallery/upload'}>
-      <Button>Upload</Button>
-    </Link>
-  )
-}
-
-export default async function Gallery() {
-  let enableNsfw = false
-  try {
-    const accountData = await getUser()
-    enableNsfw = accountData?.prefs?.nsfw
-  } catch {
-    // do nothing
-  }
-
-  return <Client enableNsfw={enableNsfw || false} />
+export default function GalleryPage() {
+  return <PageClient enableNsfw={true} />
 }

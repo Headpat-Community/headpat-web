@@ -4,8 +4,12 @@ import * as React from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { XIcon } from 'lucide-react'
-import { Input, type InputProps } from './input'
+import { Input } from './input'
 import { cn } from '@/lib/utils'
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  className?: string
+}
 
 type InputTagsProps = Omit<InputProps, 'value' | 'onChange'> & {
   value: string[]

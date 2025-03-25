@@ -12,15 +12,22 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import PaginationComponent from '@/components/Pagination'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { decode } from 'blurhash'
+import React from 'react'
+import { useHeader } from '@/components/sidebar/header-client'
+import { UploadButton } from './upload-button'
 
 export default function FetchGallery({ enableNsfw }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [gallery, setGallery] = useState<GalleryDocumentsType[]>([])
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(() => {
+    const page = searchParams.get('page')
+    return page ? parseInt(page, 10) : 1
+  })
   const [totalPages, setTotalPages] = useState(1)
   const [sortType, setSortType] = useState<'newest' | 'random'>('newest')
   const pageSize = 48 // Number of items per page
+  const { addHeaderComponent, removeHeaderComponent } = useHeader()
 
   // Initialize state from URL parameters
   useEffect(() => {
@@ -106,7 +113,7 @@ export default function FetchGallery({ enableNsfw }) {
     const fetchGalleryData = async () => {
       const offset = (currentPage - 1) * pageSize
 
-      let filters = []
+      const filters = []
       if (!enableNsfw) {
         filters.push(Query.equal('nsfw', false))
       }
@@ -174,6 +181,13 @@ export default function FetchGallery({ enableNsfw }) {
       Sentry.captureException(error)
     })
   }, [enableNsfw, currentPage, sortType])
+
+  // Add header component
+  useEffect(() => {
+    const uploadButton = <UploadButton key="gallery-upload-button" />
+    addHeaderComponent(uploadButton)
+    return () => removeHeaderComponent(uploadButton)
+  }, [addHeaderComponent, removeHeaderComponent])
 
   return (
     <div>
