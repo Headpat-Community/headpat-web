@@ -15,7 +15,7 @@ or `fix/bug-name`). This will help us to keep track of what's going on.
 First, install the dependencies:
 
 ```bash
-bun install
+pnpm install
 ```
 
 ### NOTE:
@@ -25,7 +25,7 @@ Some pages require API Keys to work. If you require an API Key, please contact F
 #### Then, run the development server:
 
 ```bash
-bun dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
