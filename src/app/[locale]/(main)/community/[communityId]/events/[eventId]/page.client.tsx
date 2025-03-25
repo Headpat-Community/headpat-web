@@ -15,7 +15,6 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import PageLayout from '@/components/pageLayout'
 import sanitize from 'sanitize-html'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useUser } from '@/components/contexts/UserContext'

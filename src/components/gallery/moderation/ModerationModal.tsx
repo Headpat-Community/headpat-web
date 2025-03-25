@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button'
 import { ShieldAlertIcon } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import {
-  AccountType,
+  AccountPrefs,
   GalleryDocumentsType,
   GalleryPrefsDocumentsType,
 } from '@/utils/types/models'
@@ -35,7 +35,7 @@ export default function ModerationModal({
   image: GalleryDocumentsType
   imagePrefs: GalleryPrefsDocumentsType
   setImagePrefs: (prefs: GalleryPrefsDocumentsType) => void
-  current: AccountType
+  current: AccountPrefs
 }) {
   const [reportGalleryModalOpen, setReportGalleryModalOpen] = useState(false)
 

@@ -1,6 +1,5 @@
 'use client'
 import { useEffect } from 'react'
-import PageLayout from '@/components/pageLayout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DownloadIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'

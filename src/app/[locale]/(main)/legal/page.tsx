@@ -1,7 +1,6 @@
 import { Paperclip } from 'lucide-react'
 import Link from 'next/link'
 import { getDict } from 'gt-next/server'
-import PageLayout from '@/components/pageLayout'
 
 export async function generateMetadata(props) {
   const params = await props.params

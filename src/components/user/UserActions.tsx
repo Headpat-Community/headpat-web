@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { blockUser } from '@/utils/actions/user/blockUser'
 import {
-  AccountType,
+  AccountPrefs,
   UserDataDocumentsType,
   UserPrefsDocumentsType,
 } from '@/utils/types/models'
@@ -35,7 +35,7 @@ interface UserActionsProps {
   setUserPrefs: React.Dispatch<React.SetStateAction<UserPrefsDocumentsType>>
   isFollowing: boolean
   setIsFollowing: React.Dispatch<React.SetStateAction<boolean>>
-  current: AccountType | null
+  current: AccountPrefs | null
 }
 
 const UserActions = ({

@@ -1,4 +1,3 @@
-import PageLayout from '@/components/pageLayout'
 import { getCommunity } from '@/utils/server-api/communities/getCommunity'
 import { notFound } from 'next/navigation'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'

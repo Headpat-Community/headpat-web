@@ -1,6 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getDict } from 'gt-next/server'
-import PageLayout from '@/components/pageLayout'
 import AllCommunities from '@/components/community/allCommunities'
 import MyCommunities from '@/components/community/myCommunities'
 

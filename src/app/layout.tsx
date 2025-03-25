@@ -115,9 +115,7 @@ export default async function RootLayout({ children }) {
         src={'https://analytics.fayevr.dev/script.js'}
         data-website-id="38b87c81-4112-43ce-ba99-b084bab611d6"
       />
-      {/*
       <ReactScan />
-      */}
       <body
         className={cn(
           'flex min-h-screen bg-background antialiased',

@@ -33,7 +33,6 @@ import sanitizeHtml from 'sanitize-html'
 import { UserProfileDocumentsType } from '@/utils/types/models'
 import { functions } from '@/app/appwrite-client'
 import { ExecutionMethod } from 'node-appwrite'
-import PageLayout from '@/components/pageLayout'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useUser } from '@/components/contexts/UserContext'
 import { useDataCache } from '@/components/contexts/DataCacheContext'
@@ -136,9 +135,7 @@ export default function PageClient({
   }, [getCache, saveCache, userId])
 
   if (!userData) {
-    return (
-      <PageLayout title={'Loading user...'}>Loading, please wait.</PageLayout>
-    )
+    return <>Loading, please wait.</>
   }
 
   const today = formatDayMonth(new Date())

@@ -1,10 +1,6 @@
 'use client'
 import React from 'react'
-import {
-  AccountPrefs,
-  AccountType,
-  UserDataDocumentsType,
-} from '@/utils/types/models'
+import { AccountPrefs, UserDataDocumentsType } from '@/utils/types/models'
 import { account, databases } from '@/app/appwrite-client'
 import { ID } from 'node-appwrite'
 import { toast } from 'sonner'

@@ -60,7 +60,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
   const descriptionSanitized = description.replace(/\n/g, '<br />')
 
   // if (!image) {
-  //   return <PageLayout title={'Gallery'}>Loading...</PageLayout>
+  //   return <>Loading...</>
   // }
 
   const getImageUrl = (galleryId: string) => {
