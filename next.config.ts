@@ -4,6 +4,7 @@ import { withGTConfig } from 'gt-next/config'
 import { SentryBuildOptions, withSentryConfig } from '@sentry/nextjs'
 
 const nextConfig: NextConfig = {
+  //output: 'standalone', // for kubernetes deployment
   reactStrictMode: true,
   poweredByHeader: false,
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
