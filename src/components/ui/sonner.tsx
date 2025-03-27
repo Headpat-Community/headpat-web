@@ -15,11 +15,11 @@ const Toaster = ({ ...props }: ToasterProps) => {
           toast:
             'p-4 rounded-md w-fit min-w-[360px] max-w-[420px] flex items-center gap-3 relative text-sm',
           error:
-            'border border-destructive text-destructive-foreground bg-gradient-to-r from-destructive via-black to-black items-center',
+            'border border-destructive text-destructive-foreground bg-linear-to-r from-destructive via-black to-black items-center',
           success:
-            'border border-success dark:text-foreground text-background bg-gradient-to-r from-success via-black to-black items-center',
+            'border border-primary dark:text-foreground text-background bg-linear-to-r from-primary via-black to-black items-center',
           loading:
-            'border dark:border-muted dark:text-foreground text-background bg-gradient-to-r from-loading via-black to-black items-center',
+            'border dark:border-muted dark:text-foreground text-background bg-linear-to-r from-loading via-black to-black items-center',
         },
       }}
       icons={{
