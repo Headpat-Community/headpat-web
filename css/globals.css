@@ -42,6 +42,8 @@
 
   --color-link: var(--link);
 
+  --color-loading: var(--loading);
+
   --min-width-0: 0;
   --min-width-44: 11rem;
   --min-width-1\/4: 25%;
@@ -199,6 +201,7 @@
   --chart-5: hsl(160 100% 5%);
   --code-block: hsl(160 100% 15%);
   --link: hsl(155 100% 25%);
+  --loading: hsl(240 3.7% 40.9%);
   --sidebar: hsl(0 0% 98%);
   --sidebar-foreground: hsl(240 5.3% 26.1%);
   --sidebar-primary: hsl(240 5.9% 10%);
@@ -239,6 +242,7 @@
   --chart-5: hsl(160 100% 5%);
   --code-block: hsl(160 100% 15%);
   --link: hsl(155 100% 35%);
+  --loading: hsl(240 3.7% 15.9%);
   --sidebar: hsl(240 5.9% 10%);
   --sidebar-foreground: hsl(240 4.8% 95.9%);
   --sidebar-primary: hsl(224.3 76.3% 48%);
