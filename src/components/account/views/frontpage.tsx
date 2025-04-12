@@ -47,7 +47,6 @@ export default function FrontpageView({
       // Validate the entire communitySettings object
       schema.parse(userData)
     } catch (error) {
-      console.log(error.errors[0])
       toast.error(error.errors[0].message)
       return
     }

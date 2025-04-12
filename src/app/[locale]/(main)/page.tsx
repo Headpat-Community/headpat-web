@@ -20,12 +20,12 @@ export async function generateMetadata({ params }) {
       },
     },
     icons: {
-      icon: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
+      icon: '/logos/hp_logo_x512.webp',
     },
     openGraph: {
       title: meta('title'),
       description: meta('description'),
-      images: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
+      images: '/logos/hp_logo_x512.webp',
       locale: paramsResponse.locale,
       type: 'website',
     },

@@ -62,6 +62,7 @@ export function UserProvider(props: any) {
         })
         .then(async () => {
           setUser(null)
+          setUserData(null)
         })
         .catch((err) => {
           toast.error(err.toString())
@@ -78,8 +79,16 @@ export function UserProvider(props: any) {
 
   async function init() {
     try {
+      // Check if the user is logged in
       const loggedIn: AccountPrefs = await account.get()
       setUser(loggedIn)
+      // Get the user data from the database
+      const userData: UserDataDocumentsType = await databases.getDocument(
+        'hp_db',
+        'userdata',
+        loggedIn.$id
+      )
+      setUserData(userData)
       return loggedIn
     } catch {
       setUser(null)

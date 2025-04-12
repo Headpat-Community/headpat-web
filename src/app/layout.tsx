@@ -40,17 +40,17 @@ export async function generateMetadata(): Promise<Metadata> {
       title: 'Headpat',
       description:
         'Headpat is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
-      images: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
+      images: '/logos/hp_logo_x512.webp',
     },
     icons: {
-      icon: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
-      apple: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
+      icon: '/logos/hp_logo_x512.webp',
+      apple: '/logos/hp_logo_x512.webp',
     },
     openGraph: {
       title: 'Headpat',
       description:
         'Headpat is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
-      images: '/logos/Headpat_Logo_web_1024x1024_240518-02.png',
+      images: '/logos/hp_logo_x512.webp',
       type: 'website',
     },
     appLinks: {

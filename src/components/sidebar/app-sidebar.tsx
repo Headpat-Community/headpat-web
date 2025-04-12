@@ -3,7 +3,6 @@
 import {
   BadgeHelpIcon,
   BellIcon,
-  BracesIcon,
   CalendarIcon,
   FileCheckIcon,
   FileIcon,
@@ -13,9 +12,7 @@ import {
   MapIcon,
   MegaphoneIcon,
   PencilIcon,
-  ServerIcon,
   UserSearchIcon,
-  UsersIcon,
 } from 'lucide-react'
 import * as React from 'react'
 
@@ -32,9 +29,17 @@ import { useDict } from 'gt-next/client'
 import { NavList } from './nav-list'
 import { TeamSwitcher } from './team-switcher'
 import { Separator } from '../ui/separator'
+import { useTheme } from 'next-themes'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pageNames = useDict('PageNames')
+  const { theme, systemTheme } = useTheme()
+
+  const getLogo = (name: string) => {
+    const isDarkMode =
+      theme === 'dark' || (theme === 'system' && systemTheme === 'dark')
+    return `/logos/${name}_${isDarkMode ? 'dark' : 'light'}_x250.webp`
+  }
 
   const data = {
     navMain: [
@@ -119,18 +124,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
         name: 'Place',
         activeName: 'Headpat Place',
-        logo: UsersIcon,
+        logo: getLogo('place'),
         href: 'https://headpat.place',
       },
       {
         name: 'Space',
-        logo: ServerIcon,
+        logo: getLogo('space'),
         href: 'https://headpat.space',
       },
       {
         name: 'Developer',
-        logo: BracesIcon,
-        plan: 'Documentation for developers',
+        logo: getLogo('developer'),
         href: 'https://headpat.dev',
       },
     ],

@@ -225,7 +225,7 @@ export default function UploadBanner({
           <img
             src={
               getBannerImageUrl(communityData?.bannerId) ||
-              '/logos/Headpat_Logo_web_512x512_240518-03.png'
+              '/logos/hp_logo_x512.webp'
             }
             alt="Banner"
             className="h-24 w-24 flex-none rounded-lg object-cover"

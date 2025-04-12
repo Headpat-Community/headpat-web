@@ -16,7 +16,7 @@ export async function generateMetadata(props: {
     return notFound()
   }
 
-  let avatarUrl = '/logos/Headpat_Logo_web_1024x1024_240518-02.png'
+  let avatarUrl = '/logos/hp_logo_x512.webp'
   if (community.avatarId) {
     avatarUrl = getCommunityAvatarUrlView(community.avatarId)
   }

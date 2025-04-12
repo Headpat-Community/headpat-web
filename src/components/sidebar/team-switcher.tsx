@@ -18,11 +18,12 @@ import {
 } from '@/components/ui/sidebar'
 import Link from 'next/link'
 import Image from 'next/image'
+
 export type team = {
   name: string
   activeName?: string
-  logo: React.ComponentType<React.SVGProps<SVGSVGElement>>
-  activeLogo?: React.ComponentType
+  logo: string
+  activeLogo?: string
   plan?: string
   href: string
 }
@@ -41,19 +42,12 @@ export function TeamSwitcher({ teams }: { teams: team[] }) {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Image
-                src={'/logos/Headpat_Logo_web_128x128_240518-05.png'}
-                width={32}
-                height={32}
-                alt={'Headpat logo'}
-                className={'rounded-full'}
+                src={activeTeam.logo}
+                width={150}
+                height={30}
+                alt={'Headpat Place logo'}
                 draggable={false}
               />
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">
-                  {activeTeam.activeName}
-                </span>
-                <span className="truncate text-xs">{activeTeam.plan}</span>
-              </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
@@ -66,16 +60,26 @@ export function TeamSwitcher({ teams }: { teams: team[] }) {
             <DropdownMenuLabel className="text-muted-foreground text-xs">
               Teams
             </DropdownMenuLabel>
-            {teams.map((team) => (
-              <Link href={team.href} key={team.name}>
-                <DropdownMenuItem key={team.name} className="">
-                  <div className="flex items-center justify-center">
-                    <team.logo className="size-4 shrink-0" />
-                  </div>
-                  {team.name}
-                </DropdownMenuItem>
-              </Link>
-            ))}
+            {teams
+              .filter((team) => team.name !== activeTeam.name)
+              .map((team) => (
+                <Link href={team.href} key={team.name}>
+                  <DropdownMenuItem
+                    key={team.name}
+                    className="focus:bg-muted focus-visible:ring-0"
+                  >
+                    <div className="flex items-center justify-center">
+                      <Image
+                        src={team.logo}
+                        width={150}
+                        height={30}
+                        alt={`${team.name} logo`}
+                        draggable={false}
+                      />
+                    </div>
+                  </DropdownMenuItem>
+                </Link>
+              ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

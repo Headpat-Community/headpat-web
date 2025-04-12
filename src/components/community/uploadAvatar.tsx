@@ -211,7 +211,7 @@ export default function UploadAvatar({
           <img
             src={
               getAvatarImageUrl(communityData?.avatarId) ||
-              '/logos/Headpat_Logo_web_512x512_240518-03.png'
+              '/logos/hp_logo_x512.webp'
             }
             alt="Avatar"
             className="h-24 w-24 flex-none rounded-lg object-cover"
