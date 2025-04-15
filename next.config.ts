@@ -11,6 +11,19 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
   },
+  turbopack: {
+    resolveExtensions: [
+      ".ts",
+      ".tsx",
+      ".js",
+      ".jsx",
+      ".json",
+      ".css",
+      ".scss",
+      ".md",
+      ".mdx",
+    ],
+  },
   experimental: {
     mdxRs: true,
   },
