@@ -58,7 +58,7 @@ export function TeamSwitcher({ teams }: { teams: team[] }) {
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-muted-foreground text-xs">
-              Teams
+              Sites
             </DropdownMenuLabel>
             {teams
               .filter((team) => team.name !== activeTeam.name)
