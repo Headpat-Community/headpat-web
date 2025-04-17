@@ -17,8 +17,10 @@ Sentry.init({
     }),
   ],
 
-  // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
-  tracesSampleRate: 1,
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
+  tracesSampleRate: 0.5,
+  // profilesSampleRate is relative to tracesSampleRate.
+  profilesSampleRate: 0.5,
 
   // Define how likely Replay events are sampled.
   // This sets the sample rate to be 10%. You may want this to be 100% while
