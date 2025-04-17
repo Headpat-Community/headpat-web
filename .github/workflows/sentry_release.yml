@@ -1,0 +1,30 @@
+name: Create Sentry release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Get package version
+        id: package_version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+      
+      - name: Create Sentry release
+        uses: getsentry/action-release@v3
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
+          release: ${{ steps.package_version.outputs.version }}
