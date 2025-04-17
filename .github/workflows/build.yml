@@ -1,12 +1,7 @@
 name: Build and Push Next.js to Harbor
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build-and-push:

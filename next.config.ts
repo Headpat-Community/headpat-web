@@ -13,15 +13,15 @@ const nextConfig: NextConfig = {
   },
   turbopack: {
     resolveExtensions: [
-      ".ts",
-      ".tsx",
-      ".js",
-      ".jsx",
-      ".json",
-      ".css",
-      ".scss",
-      ".md",
-      ".mdx",
+      '.ts',
+      '.tsx',
+      '.js',
+      '.jsx',
+      '.json',
+      '.css',
+      '.scss',
+      '.md',
+      '.mdx',
     ],
   },
   experimental: {
@@ -77,8 +77,8 @@ const sentryOptions: SentryBuildOptions = {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
-  org: 'headpat',
-  project: 'headpat-place',
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,

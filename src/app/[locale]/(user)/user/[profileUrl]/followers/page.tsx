@@ -1,9 +1,6 @@
 import { getUserDataFromProfileUrl } from '@/utils/server-api/user/getUserData'
 import ClientPage from './page.client'
-import {
-  createAdminClient,
-  createSessionServerClient,
-} from '@/app/appwrite-session'
+import { createSessionServerClient } from '@/app/appwrite-session'
 import { Query } from '@/app/appwrite-server'
 import sanitizeHtml from 'sanitize-html'
 import { getAvatarImageUrlView } from '@/components/getStorageItem'
@@ -17,7 +14,6 @@ export async function generateMetadata(props: {
   const { profileUrl, locale } = params
 
   const { databases } = await createSessionServerClient()
-  const { users } = await createAdminClient()
   const userDataResponse: UserDataType = await databases.listDocuments(
     'hp_db',
     'userdata',
