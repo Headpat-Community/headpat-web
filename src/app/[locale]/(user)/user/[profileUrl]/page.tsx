@@ -24,7 +24,7 @@ export async function generateMetadata(props: {
     'userdata',
     [Query.equal('profileUrl', profileUrl)]
   )
-  const userAccountResponse = await users.get(userDataResponse.documents[0].$id)
+  const userAccountResponse = await users.get(userDataResponse.documents?.[0]?.$id)
   const indexingEnabled: boolean = userAccountResponse?.prefs?.indexingEnabled
 
   if (userDataResponse.total === 0) {

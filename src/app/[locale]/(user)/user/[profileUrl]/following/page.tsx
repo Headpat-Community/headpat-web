@@ -27,9 +27,6 @@ export async function generateMetadata(props: {
   const userData = userDataResponse.documents[0]
   const sanitizedBio = sanitizeHtml(userData?.bio)
 
-  const userAccountResponse = await users.get(userDataResponse.documents[0].$id)
-  const indexingEnabled: boolean = userAccountResponse?.prefs?.indexingEnabled
-
   return {
     title: userData.displayName || userData?.profileUrl,
     description: sanitizedBio || '',
@@ -52,8 +49,8 @@ export async function generateMetadata(props: {
       type: 'profile',
     },
     robots: {
-      index: indexingEnabled,
-      follow: indexingEnabled,
+      index: false,
+      follow: false,
     },
     metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
   }
