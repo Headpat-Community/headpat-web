@@ -3,25 +3,37 @@ import { databases } from '@/app/appwrite-client'
 import { useCallback, useEffect, useState } from 'react'
 import UploadAvatar from '@/components/community/uploadAvatar'
 import UploadBanner from '@/components/community/uploadBanner'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { z } from 'zod'
-import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
 import * as Sentry from '@sentry/nextjs'
 import { CommunityDocumentsType } from '@/utils/types/models'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Form, FormField } from '@/components/ui/form'
+import InputField from '@/components/fields/InputField'
+import TextareaField from '@/components/fields/TextareaField'
 
-const communitySchema = z.object({
+const formSchema = z.object({
   name: z
     .string()
     .min(4, 'Name must be 4 characters or more')
-    .max(64, 'Name must be 64 characters or less'),
+    .max(32, 'Name must be 32 characters or less'),
   description: z
     .string()
-    .max(4096, 'Description must be 4096 characters or less'),
-  status: z.string().max(24, 'Status must be 24 characters or less'),
+    .trim()
+    .max(4096, 'Description must be 4096 characters or less')
+    .nullable()
+    .transform((val) => (val === '' ? null : val)),
+  status: z
+    .string()
+    .trim()
+    .max(24, 'Status must be 24 characters or less')
+    .nullable()
+    .transform((val) => (val === '' ? null : val)),
 })
+
+type FormValues = z.infer<typeof formSchema>
 
 export default function CommunityAdminMain({
   community,
@@ -30,8 +42,19 @@ export default function CommunityAdminMain({
 }) {
   const [isLoading, setIsLoading] = useState(true)
   const [communityData, setCommunityData] =
-    useState<CommunityDocumentsType>(null)
+    useState<CommunityDocumentsType | null>(null)
   const [isUploading, setIsUploading] = useState(false)
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      description: '',
+      status: '',
+    },
+  })
+
+  console.log(form.getValues())
 
   const getCommunity = useCallback(async () => {
     const data: CommunityDocumentsType = await databases.getDocument(
@@ -40,30 +63,32 @@ export default function CommunityAdminMain({
       community.$id
     )
     setCommunityData(data)
-  }, [community.$id])
+    // Update form values when we get the data
+    form.reset({
+      name: data.name,
+      description: data.description,
+      status: data.status,
+    })
+  }, [community.$id, form])
 
   useEffect(() => {
     getCommunity().then(() => setIsLoading(false))
   }, [community, getCommunity])
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
-
-    const result = communitySchema.safeParse(communityData)
-    if (!result.success) {
-      result.error.errors.forEach((err) => {
-        toast.error(err.message)
-      })
-      return
-    }
-
+  const onSubmit = async (values: FormValues) => {
     const loadingToast = toast.loading('Updating community data...')
     try {
-      await databases.updateDocument('hp_db', 'community', community.$id, {
-        name: communityData.name,
-        description: communityData.description,
-        status: communityData.status,
-      })
+      const dataToUpdate = {
+        name: values.name,
+        description: values.description || null,
+        status: values.status || null,
+      }
+      await databases.updateDocument(
+        'hp_db',
+        'community',
+        community.$id,
+        dataToUpdate
+      )
       toast.success('Community data updated successfully.')
     } catch (error) {
       Sentry.captureException(error)
@@ -88,106 +113,78 @@ export default function CommunityAdminMain({
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="md:col-span-2">
-            <UploadAvatar
-              isUploading={isUploading}
-              setIsUploading={setIsUploading}
-              communityData={communityData}
-            />
-            <div className={'my-4'} />
-            <UploadBanner
-              isUploading={isUploading}
-              setIsUploading={setIsUploading}
-              communityData={communityData}
-            />
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="md:col-span-2"
+            >
+              <UploadAvatar
+                isUploading={isUploading}
+                setIsUploading={setIsUploading}
+                communityData={communityData}
+              />
+              <div className={'my-4'} />
+              <UploadBanner
+                isUploading={isUploading}
+                setIsUploading={setIsUploading}
+                communityData={communityData}
+              />
 
-            <div className="mt-12 grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6">
-              <div className="col-span-full">
-                <Label htmlFor="name">Display Name</Label>
-                <div className="relative mt-2">
-                  <Input
-                    id="name"
+              <div className="mt-12 grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6">
+                <div className="col-span-full">
+                  <FormField
+                    control={form.control}
                     name="name"
-                    type="text"
-                    value={communityData ? communityData.name : ''}
-                    onChange={(e) => {
-                      if (e.target.value.length <= 32) {
-                        setCommunityData({
-                          ...communityData,
-                          name: e.target.value,
-                        })
-                      }
-                    }}
-                    maxLength={32}
+                    render={({ field }) => (
+                      <InputField
+                        label="Display Name"
+                        description="The name of your community"
+                        placeholder="Enter community name"
+                        field={field}
+                        maxLength={32}
+                      />
+                    )}
                   />
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
-                    <span className="select-none">
-                      {communityData ? communityData.name?.length : 0}
-                    </span>
-                    <span className="select-none text-gray-400">/{32}</span>
-                  </div>
                 </div>
-              </div>
 
-              <div className="col-span-full">
-                <Label htmlFor="description">Description</Label>
-                <div className="relative mt-2">
-                  <Textarea
-                    id="description"
+                <div className="col-span-full">
+                  <FormField
+                    control={form.control}
                     name="description"
-                    value={communityData ? communityData.description : ''}
-                    onChange={(e) => {
-                      if (e.target.value.length <= 32) {
-                        setCommunityData({
-                          ...communityData,
-                          description: e.target.value,
-                        })
-                      }
-                    }}
-                    className="resize-none"
-                    maxLength={4096}
+                    render={({ field }) => (
+                      <TextareaField
+                        label="Description"
+                        description="Describe your community"
+                        placeholder="Enter community description"
+                        field={field}
+                        resizable={false}
+                      />
+                    )}
                   />
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
-                    <span className="select-none">
-                      {communityData ? communityData.description?.length : 0}
-                    </span>
-                    <span className="select-none text-gray-400">/{4096}</span>
-                  </div>
                 </div>
-              </div>
 
-              <div className="col-span-full">
-                <Label htmlFor="status">Status</Label>
-                <div className="relative mt-2">
-                  <Input
-                    id="status"
+                <div className="col-span-full">
+                  <FormField
+                    control={form.control}
                     name="status"
-                    type="text"
-                    value={communityData ? communityData.status : ''}
-                    onChange={(e) => {
-                      if (e.target.value.length <= 24) {
-                        setCommunityData({
-                          ...communityData,
-                          status: e.target.value,
-                        })
-                      }
-                    }}
-                    maxLength={24}
+                    render={({ field }) => (
+                      <InputField
+                        label="Status"
+                        description="Current status of your community"
+                        placeholder="Enter community status"
+                        field={field}
+                        maxLength={24}
+                      />
+                    )}
                   />
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
-                    <span className="select-none">
-                      {communityData ? communityData.status?.length : 0}
-                    </span>
-                    <span className="select-none text-gray-400">/{24}</span>
-                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="mt-8 flex">
-              <Button type="submit">Save</Button>
-            </div>
-          </form>
+              <div className="mt-8 flex">
+                <Button type="submit">Save</Button>
+              </div>
+            </form>
+          </Form>
         </div>
       </div>
     </>
