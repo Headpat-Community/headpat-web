@@ -173,30 +173,38 @@ export default function PageClient({ eventData, communityData }) {
             event.attendees !== undefined ? (
               <span>
                 Capacity: {event.visitorCapacity || 'unlimited'} attendees (
-                {event.attendees || 0} registered)
+                {event.attendees || 0} interested)
               </span>
             ) : (
               <Skeleton className={'h-6 w-48'} />
             )}
           </div>
-          <div className="flex items-center space-x-2">
-            <LinkIcon className="h-5 w-5 text-gray-500" />
-            {event?.website && (
-              <Link
-                href={event?.website}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {event?.website || 'No website provided'}
-              </Link>
-            )}
-          </div>
-          <div className="flex items-center space-x-2">
-            <Tag className="h-5 w-5 text-gray-500" />
-            <div className="flex flex-wrap gap-2">
-              <Badge variant="secondary">{event.label}</Badge>
+          {event?.website && (
+            <div className="flex items-center space-x-2">
+              <LinkIcon className="h-5 w-5 text-gray-500" />
+              {event?.website && (
+                <Link
+                  href={event?.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {event?.website || 'No website provided'}
+                </Link>
+              )}
             </div>
-          </div>
+          )}
+          {event?.tags && event?.tags.length > 0 && (
+            <div className="flex items-center space-x-2">
+              <Tag className="h-5 w-5 text-gray-500" />
+              <div className="flex flex-wrap gap-2">
+                {event?.tags.map((tag) => (
+                  <Badge key={tag} variant="secondary">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         <div className="mt-6">
           <h4 className="text-2xl font-semibold mb-2">About this event</h4>
