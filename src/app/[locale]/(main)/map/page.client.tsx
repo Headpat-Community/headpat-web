@@ -260,13 +260,11 @@ export default function PageClient() {
       >
         <DialogContent>
           <DialogTitle>{currentEvent?.title}</DialogTitle>
-          <DialogDescription>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: sanitizedDescription || 'Nothing here yet!',
-              }}
-            />
-          </DialogDescription>
+          <DialogDescription
+            dangerouslySetInnerHTML={{
+              __html: sanitizedDescription || 'Nothing here yet!',
+            }}
+          />
           <div>Start: {formatDateLocale(new Date(currentEvent?.date))}</div>
           <div>
             Until: {formatDateLocale(new Date(currentEvent?.dateUntil))}
@@ -283,13 +281,15 @@ export default function PageClient() {
       />
 
       {/* Settings dialog */}
-      <SettingsModal
-        openModal={settingsOpen}
-        setOpenModal={setSettingsOpen}
-        userStatus={userStatus}
-        setUserStatus={setUserStatus}
-        current={current}
-      />
+      {userStatus && (
+        <SettingsModal
+          openModal={settingsOpen}
+          setOpenModal={setSettingsOpen}
+          userStatus={userStatus}
+          setUserStatus={setUserStatus}
+          current={current}
+        />
+      )}
 
       <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}>
         <Map
