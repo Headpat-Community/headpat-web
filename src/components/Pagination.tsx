@@ -70,7 +70,7 @@ export default function PaginationComponent({
                     href="#"
                     size="default"
                     className={`mx-2 px-4 py-2 rounded-lg ${
-                      page === currentPage ? 'bg-db text-white' : ''
+                      page === currentPage ? 'bg-primary text-white' : ''
                     }`}
                     onClick={() =>
                       handleInputChange({
