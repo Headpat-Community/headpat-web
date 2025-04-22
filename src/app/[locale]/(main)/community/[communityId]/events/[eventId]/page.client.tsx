@@ -8,6 +8,7 @@ import {
   CalendarCheck2Icon,
   CalendarClockIcon,
   FolderPenIcon,
+  LinkIcon,
   MapPin,
   Tag,
   Users,
@@ -20,6 +21,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useUser } from '@/components/contexts/UserContext'
 import { useRouter } from 'next/navigation'
 import { EventsDocumentsType } from '@/utils/types/models'
+import Link from 'next/link'
 
 export default function PageClient({ eventData, communityData }) {
   const [event, setEvent] = React.useState<EventsDocumentsType>(eventData)
@@ -119,7 +121,7 @@ export default function PageClient({ eventData, communityData }) {
   const isEventEnded = new Date(event.dateUntil) < new Date()
 
   return (
-    <div className="grid md:grid-cols-3 gap-6">
+    <div className="grid md:grid-cols-3 gap-6 p-4">
       <div className="md:col-span-2">
         {event.images && event.images.length > 0 && (
           <div className="aspect-video mb-4">
@@ -175,6 +177,18 @@ export default function PageClient({ eventData, communityData }) {
               </span>
             ) : (
               <Skeleton className={'h-6 w-48'} />
+            )}
+          </div>
+          <div className="flex items-center space-x-2">
+            <LinkIcon className="h-5 w-5 text-gray-500" />
+            {event?.website && (
+              <Link
+                href={event?.website}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {event?.website || 'No website provided'}
+              </Link>
             )}
           </div>
           <div className="flex items-center space-x-2">
