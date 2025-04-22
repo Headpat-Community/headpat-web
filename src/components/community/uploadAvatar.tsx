@@ -214,13 +214,13 @@ export default function UploadAvatar({
               '/logos/hp_logo_x512.webp'
             }
             alt="Avatar"
-            className="h-24 w-24 flex-none rounded-lg object-cover"
+            className="size-24 flex-none rounded-lg object-cover"
           />
           <div className={'space-y-2'}>
             <Input
               ref={fileInputRef}
               accept="image/*"
-              className="rounded-md px-3 py-2 text-sm font-semibold shadow-xs ring-1 ring-black/10 hover:bg-white/20 dark:ring-white/10"
+              className="rounded-md ring-1 ring-black/10 hover:bg-white/20 dark:ring-white/10"
               type="file"
               onChange={onSelectFile}
             />
