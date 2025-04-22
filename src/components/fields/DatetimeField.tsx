@@ -42,7 +42,7 @@ const DatetimeField: React.FC<DatetimeFieldProps> = ({
         <HoverCard openDelay={100} closeDelay={50}>
           <HoverCardTrigger>
             <span className="ml-2 text-gray-500">
-              <Info className="inline-block h-4 w-4" />
+              <Info className="inline-block size-4" />
             </span>
           </HoverCardTrigger>
           <HoverCardContent>{description}</HoverCardContent>
@@ -55,7 +55,7 @@ const DatetimeField: React.FC<DatetimeFieldProps> = ({
               variant="outline"
               className="min-w-[100px] w-full justify-start text-left font-normal"
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
+              <CalendarIcon className="mr-2 size-4" />
               {field.value ? (
                 format(new Date(field.value), 'PPP')
               ) : (
