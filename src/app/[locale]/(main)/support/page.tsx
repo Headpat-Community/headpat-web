@@ -32,7 +32,7 @@ export async function generateMetadata(props) {
 
 export default function Page() {
   return (
-    <div className="mx-auto mb-4 mt-8 max-w-7xl">
+    <div className="mx-auto mb-4 mt-8 max-w-7xl p-4">
       <div className="px-4 sm:px-0">
         <h3 className="text-base font-semibold leading-7">
           Do you require help?

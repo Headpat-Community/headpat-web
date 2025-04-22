@@ -33,7 +33,7 @@ export async function generateMetadata(props) {
 
 export default function LegalPage() {
   return (
-    <div className="mx-auto mb-4 mt-8 max-w-7xl">
+    <div className="mx-auto mb-4 mt-8 max-w-7xl p-4">
       <div className="px-4 sm:px-0">
         <h3 className="text-base font-semibold leading-7">Legal Information</h3>
         <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">

@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function PawcraftPage() {
   return (
-    <div className="bg-gray-900">
+    <div className="bg-gray-900 p-4">
       <div className="relative isolate z-0">
         <div
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
