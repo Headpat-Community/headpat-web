@@ -347,8 +347,8 @@ export default function GeneralAccountView({
                   render={({ field }) => (
                     <FormItem className="flex items-center col-span-full">
                       <div className="mt-2 w-full">
-                        <div className="flex rounded-md bg-background border border-input focus-within:border-primary">
-                          <span className="flex select-none items-center pl-3 text-gray-400 sm:text-sm">
+                        <div className="flex rounded-md border border-input focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px]">
+                          <span className="flex select-none items-center pl-3 text-gray-400 sm:text-sm dark:bg-input/30">
                             headpat.place/user/
                           </span>
                           <FormControl>
@@ -358,7 +358,7 @@ export default function GeneralAccountView({
                               id="profileurl"
                               required
                               placeholder={userData ? userData.profileUrl : ''}
-                              className="flex-1 w-full min-w-0 rounded-none rounded-r-md border-0 focus:ring-0 sm:text-sm pl-1"
+                              className="flex-1 w-full min-w-0 rounded-none rounded-r-md border-0 focus:ring-0 sm:text-sm pl-1 !ring-0"
                             />
                           </FormControl>
                         </div>
