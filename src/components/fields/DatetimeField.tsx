@@ -20,9 +20,9 @@ interface DatetimeFieldProps {
   label: string
   description: string
   field: any
-  fromYear?: number
-  toYear?: number
-  captionLayout?: 'buttons' | 'dropdown' | 'dropdown-buttons'
+  fromYear?: Date
+  toYear?: Date
+  captionLayout?: 'dropdown' | 'label' | 'dropdown-months' | 'dropdown-years'
   mode?: 'default' | 'multiple' | 'range' | 'single'
 }
 
@@ -65,13 +65,14 @@ const DatetimeField: React.FC<DatetimeFieldProps> = ({
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
             <Calendar
+              // @ts-expect-error: Dynamic mode
               mode={mode}
               selected={field.value ? new Date(field.value) : undefined}
-              // @ts-expect-error
+              // @ts-expect-error: Dynamic mode
               onSelect={field.value ? new Date(field.value) : undefined}
-              initialFocus
-              fromYear={fromYear}
-              toYear={toYear}
+              autoFocus
+              startMonth={fromYear}
+              endMonth={toYear}
               captionLayout={captionLayout}
             />
           </PopoverContent>

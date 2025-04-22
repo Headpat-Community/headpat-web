@@ -73,7 +73,7 @@ const ComboBoxField: React.FC<ComboBoxFieldProps> = ({
           <Controller
             control={field.control}
             name={field.name}
-            render={({ field: controllerField }) => (
+            render={() => (
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                   <Button
