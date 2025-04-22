@@ -17,9 +17,9 @@ import {
 } from '@/components/ui/popover'
 import {
   FormControl,
+  FormItem,
   FormLabel,
   FormMessage,
-  FormItem,
 } from '@/components/ui/form'
 import {
   HoverCard,
@@ -42,7 +42,16 @@ const ComboBoxField: React.FC<ComboBoxFieldProps> = ({
   field,
 }) => {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState('')
+  const [selectedValue, setSelectedValue] = React.useState<string>(
+    field.value || ''
+  )
+
+  const handleSelect = (currentValue: string) => {
+    const newValue = currentValue === selectedValue ? '' : currentValue
+    setSelectedValue(newValue)
+    field.onChange(newValue)
+    setOpen(false)
+  }
 
   return (
     <FormItem>
@@ -53,7 +62,7 @@ const ComboBoxField: React.FC<ComboBoxFieldProps> = ({
             <HoverCard openDelay={100} closeDelay={50}>
               <HoverCardTrigger>
                 <span className="ml-2 text-gray-500">
-                  <Info className="inline-block size-4" />
+                  <Info className="inline-block h-4 w-4" />
                 </span>
               </HoverCardTrigger>
               <HoverCardContent>{description}</HoverCardContent>
@@ -73,8 +82,9 @@ const ComboBoxField: React.FC<ComboBoxFieldProps> = ({
                     aria-expanded={open}
                     className="w-[200px] justify-between"
                   >
-                    {value
-                      ? options.find((option) => option.value === value)?.label
+                    {selectedValue
+                      ? options.find((option) => option.value === selectedValue)
+                          ?.label
                       : 'Select an option...'}
                     <ChevronsUpDown className="opacity-50" />
                   </Button>
@@ -92,19 +102,13 @@ const ComboBoxField: React.FC<ComboBoxFieldProps> = ({
                           <CommandItem
                             key={option.value}
                             value={option.value}
-                            onSelect={(currentValue) => {
-                              setValue(
-                                currentValue === value ? '' : currentValue
-                              )
-                              controllerField.onChange(currentValue)
-                              setOpen(false)
-                            }}
+                            onSelect={() => handleSelect(option.value)}
                           >
                             {option.label}
                             <Check
                               className={cn(
                                 'ml-auto',
-                                value === option.value
+                                selectedValue === option.value
                                   ? 'opacity-100'
                                   : 'opacity-0'
                               )}

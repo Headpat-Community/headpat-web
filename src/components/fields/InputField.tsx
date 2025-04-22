@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   FormControl,
   FormLabel,
@@ -20,6 +20,7 @@ interface InputFieldProps {
   field: any
   type?: string
   maxLength?: number
+  className?: string
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -29,17 +30,10 @@ const InputField: React.FC<InputFieldProps> = ({
   field,
   type = 'text',
   maxLength,
+  className,
 }) => {
-  const [inputValue, setInputValue] = useState<string>(field.value || '')
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setInputValue(value)
-    field.onChange(value)
-  }
-
   return (
-    <FormItem>
+    <FormItem className={className}>
       {label && (
         <FormLabel>
           {label || 'Label'}
@@ -47,7 +41,7 @@ const InputField: React.FC<InputFieldProps> = ({
             <HoverCard openDelay={100} closeDelay={50}>
               <HoverCardTrigger>
                 <span className="ml-2 text-gray-500">
-                  <Info className="inline-block size-4" />
+                  <Info className="inline-block h-4 w-4" />
                 </span>
               </HoverCardTrigger>
               <HoverCardContent>{description}</HoverCardContent>
@@ -59,8 +53,8 @@ const InputField: React.FC<InputFieldProps> = ({
         <Input
           type={type}
           placeholder={placeholder}
-          value={inputValue}
-          onChange={handleChange}
+          value={field.value} // Bind the value directly from `field.value`
+          onChange={field.onChange} // Use `field.onChange` directly
           maxLength={maxLength}
         />
       </FormControl>

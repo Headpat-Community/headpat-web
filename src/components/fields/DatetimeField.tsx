@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   FormControl,
   FormItem,
@@ -20,20 +20,21 @@ interface DatetimeFieldProps {
   label: string
   description: string
   field: any
+  fromYear?: number
+  toYear?: number
+  captionLayout?: 'buttons' | 'dropdown' | 'dropdown-buttons'
+  mode?: 'default' | 'multiple' | 'range' | 'single'
 }
 
 const DatetimeField: React.FC<DatetimeFieldProps> = ({
   label,
   description,
   field,
+  fromYear,
+  toYear,
+  captionLayout,
+  mode = 'single',
 }) => {
-  const [datetimeValue, setDatetimeValue] = useState(field.value || '')
-
-  const handleChange = (e: string) => {
-    setDatetimeValue(e)
-    field.onChange(e)
-  }
-
   return (
     <FormItem>
       <FormLabel>{label}</FormLabel>
@@ -41,7 +42,7 @@ const DatetimeField: React.FC<DatetimeFieldProps> = ({
         <HoverCard openDelay={100} closeDelay={50}>
           <HoverCardTrigger>
             <span className="ml-2 text-gray-500">
-              <Info className="inline-block size-4" />
+              <Info className="inline-block h-4 w-4" />
             </span>
           </HoverCardTrigger>
           <HoverCardContent>{description}</HoverCardContent>
@@ -52,11 +53,11 @@ const DatetimeField: React.FC<DatetimeFieldProps> = ({
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="min-w-[230px] w-full justify-start text-left font-normal mt-2"
+              className="min-w-[100px] w-full justify-start text-left font-normal"
             >
-              <CalendarIcon className="mr-2 size-4" />
-              {datetimeValue ? (
-                format(datetimeValue, 'PPP')
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {field.value ? (
+                format(new Date(field.value), 'PPP')
               ) : (
                 <span>Pick a date</span>
               )}
@@ -64,10 +65,14 @@ const DatetimeField: React.FC<DatetimeFieldProps> = ({
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
             <Calendar
-              mode="single"
-              selected={datetimeValue}
-              onSelect={(date) => handleChange(date.toISOString())}
-              autoFocus
+              mode={mode}
+              selected={field.value ? new Date(field.value) : undefined}
+              // @ts-expect-error
+              onSelect={field.value ? new Date(field.value) : undefined}
+              initialFocus
+              fromYear={fromYear}
+              toYear={toYear}
+              captionLayout={captionLayout}
             />
           </PopoverContent>
         </Popover>

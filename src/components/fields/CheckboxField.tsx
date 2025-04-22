@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   FormControl,
   FormLabel,
@@ -12,7 +12,6 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
-import { CheckedState } from '@radix-ui/react-checkbox'
 
 interface CheckboxFieldProps {
   label: string
@@ -25,13 +24,6 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
   description,
   field,
 }) => {
-  const [checked, setChecked] = useState<CheckedState>(field.value || false)
-
-  const handleChange = (e: CheckedState) => {
-    setChecked(e)
-    field.onChange(e)
-  }
-
   return (
     <FormItem>
       <div className="flex flex-col gap-3">
@@ -41,7 +33,7 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
             <HoverCard openDelay={100} closeDelay={50}>
               <HoverCardTrigger>
                 <span className="ml-2 text-gray-500">
-                  <Info className="inline-block size-4" />
+                  <Info className="inline-block h-4 w-4" />
                 </span>
               </HoverCardTrigger>
               <HoverCardContent>{description}</HoverCardContent>
@@ -50,8 +42,8 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
         </FormLabel>
         <FormControl>
           <Checkbox
-            checked={checked}
-            onCheckedChange={(e) => handleChange(e)}
+            checked={field.value || false} // Directly use the form value
+            onCheckedChange={(e) => field.onChange(e)}
           />
         </FormControl>
         <FormMessage />

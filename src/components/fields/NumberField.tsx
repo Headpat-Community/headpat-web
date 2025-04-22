@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   FormControl,
   FormItem,
@@ -29,16 +29,12 @@ const NumberField: React.FC<NumberFieldProps> = ({
   placeholder,
   field,
 }) => {
-  const parseValue = (value: any): number =>
-    value === undefined || value === '' ? 0 : Number(value)
-
-  const [inputValue, setInputValue] = useState<number>(parseValue(field.value))
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value)
     if (!isNaN(value)) {
-      setInputValue(value)
-      field.onChange(value) // Update the form value
+      field.onChange(value) // Directly update the form value
+    } else if (e.target.value === '') {
+      field.onChange(0) // Optionally clear the field value
     }
   }
 
@@ -50,7 +46,7 @@ const NumberField: React.FC<NumberFieldProps> = ({
           <HoverCard openDelay={100} closeDelay={50}>
             <HoverCardTrigger>
               <span className="ml-2 text-gray-500">
-                <Info className="inline-block size-4" />
+                <Info className="inline-block h-4 w-4" />
               </span>
             </HoverCardTrigger>
             <HoverCardContent>{description}</HoverCardContent>
@@ -60,7 +56,7 @@ const NumberField: React.FC<NumberFieldProps> = ({
       <FormControl>
         <Input
           placeholder={placeholder}
-          value={inputValue}
+          value={field.value === 0 ? '' : field.value} // Display empty string if value is 0
           onChange={handleChange}
           type={'number'}
         />
