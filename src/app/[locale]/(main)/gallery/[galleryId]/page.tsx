@@ -3,6 +3,7 @@ import { Query } from 'node-appwrite'
 import { createSessionServerClient } from '@/app/appwrite-session'
 import { Metadata } from 'next'
 import { GalleryType } from '@/utils/types/models'
+import { notFound } from 'next/navigation'
 
 export async function generateMetadata(props): Promise<Metadata> {
   const params = await props.params
@@ -21,10 +22,14 @@ export async function generateMetadata(props): Promise<Metadata> {
     [Query.equal('$id', galleryId)]
   )
 
-  const isNsfw = gallery.documents[0].nsfw
+  if (gallery.documents.length === 0) {
+    return notFound()
+  }
+
+  const isNsfw = gallery.documents[0]?.nsfw
 
   const metadata: Metadata = {
-    title: gallery.documents[0].name,
+    title: gallery.documents[0]?.name,
     description: gallery.documents[0].longText,
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/gallery/${galleryId}`,
