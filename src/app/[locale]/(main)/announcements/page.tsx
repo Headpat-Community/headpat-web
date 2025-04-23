@@ -3,6 +3,7 @@ import { createAdminClient } from '@/app/appwrite-session'
 import Link from 'next/link'
 import { getDict } from 'gt-next/server'
 import { AnnouncementDataType } from '@/utils/types/models'
+import * as Sentry from '@sentry/nextjs'
 
 export async function generateMetadata(props) {
   const params = await props.params
@@ -35,9 +36,14 @@ export async function generateMetadata(props) {
 
 export default async function AnnouncementsPage() {
   const { databases } = await createAdminClient()
-  const announcementDataResponse: AnnouncementDataType =
-    await databases.listDocuments('hp_db', 'announcements')
-  const announcementData = announcementDataResponse.documents
+  let announcementData: AnnouncementDataType['documents'] = []
+  try {
+    const announcementDataResponse: AnnouncementDataType =
+      await databases.listDocuments('hp_db', 'announcements')
+    announcementData = announcementDataResponse.documents
+  } catch (error) {
+    Sentry.captureException(error)
+  }
 
   return (
     <ul
