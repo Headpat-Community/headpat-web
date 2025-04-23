@@ -31,7 +31,7 @@
   },
   "HomePage": {
     "checkapp": "Check out our app!",
-    "description1": "The Headpat Community is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.",
+    "description1": "Headpat Place is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.",
     "description2": "Join us to share your moments, discover events, connect with communities, explore locations, and so much more!",
     "latestupdates": "Latest updates",
     "showoffwithconfidence": "Show off with confidence"
@@ -45,8 +45,8 @@
     "title": "Map Locations"
   },
   "MainMetadata": {
-    "description": "The Headpat Community is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.",
-    "title": "Headpat Community"
+    "description": "Headpat Place is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.",
+    "title": "Headpat Place"
   },
   "NotificationsMetadata": {
     "description": "See all your notifications here.",

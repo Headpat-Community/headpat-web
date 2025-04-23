@@ -31,7 +31,7 @@
   },
   "HomePage": {
     "checkapp": "Schau dir unsere App an!",
-    "description1": "Die Headpat Community ist eine Online-Community für soziale Medien. Wir bieten unseren Mitgliedern freiwillig eine Plattform zum Verbinden, Austauschen und Ausdrücken an.",
+    "description1": "Headpat Place ist eine Online-Community für soziale Medien. Wir bieten unseren Mitgliedern freiwillig eine Plattform zum Verbinden, Austauschen und Ausdrücken an.",
     "description2": "Begleiten Sie uns, um Ihre Momente zu teilen, Veranstaltungen zu entdecken, sich mit Gemeinschaften zu verbinden, Orte zu erkunden und vieles mehr!",
     "latestupdates": "Neueste Updates",
     "showoffwithconfidence": "Zeige mit Selbstvertrauen"
@@ -45,8 +45,8 @@
     "title": "Kartenstandorte"
   },
   "MainMetadata": {
-    "description": "Die Headpat Community ist eine Online-Community für soziale Medien. Wir bieten unseren Mitgliedern freiwillig eine Plattform zum Verbinden, Austauschen und Ausdrücken an.",
-    "title": "Headpat Community"
+    "description": "Headpat Place ist eine Online-Community für soziale Medien. Wir bieten unseren Mitgliedern freiwillig eine Plattform zum Verbinden, Austauschen und Ausdrücken an.",
+    "title": "Headpat Place"
   },
   "NotificationsMetadata": {
     "description": "Hier findest du alle Benachrichtigungen.",

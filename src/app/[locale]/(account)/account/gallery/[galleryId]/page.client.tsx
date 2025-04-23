@@ -101,7 +101,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={getGalleryImageUrlView(singleGallery.galleryId)}
-          alt={singleGallery.name || 'Headpat Community Image'}
+          alt={singleGallery.name || 'Headpat Place Image'}
           className={`imgsinglegallery max-h-[1000px] object-contain rounded-lg`}
         />
       </div>
