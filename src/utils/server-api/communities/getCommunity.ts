@@ -1,6 +1,5 @@
 import { CommunityDocumentsType } from '@/utils/types/models'
 import { createAdminClient } from '@/app/appwrite-session'
-import { unstable_noStore } from 'next/cache'
 
 /**
  * This function is used to get a community by id

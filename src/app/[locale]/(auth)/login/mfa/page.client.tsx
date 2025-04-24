@@ -9,13 +9,11 @@ import {
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { account } from '@/app/appwrite-client'
-import { unstable_noStore } from 'next/cache'
 import { getMfaFactors } from '@/utils/server-api/account/user'
 import { AuthenticationFactor } from 'node-appwrite'
 import { toast } from 'sonner'
 
 export default function MfaPageClient() {
-  unstable_noStore()
   const router = useRouter()
   const [challengeId, setChallengeId] = useState('')
   const [needsMfa, setNeedsMfa] = useState(false)
