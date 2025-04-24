@@ -123,17 +123,6 @@ export default function PageClient({ eventData, communityData }) {
   return (
     <div className="grid md:grid-cols-3 gap-6 p-4">
       <div className="md:col-span-2">
-        {event.images && event.images.length > 0 && (
-          <div className="aspect-video mb-4">
-            <img
-              src={getEventImageUrlView(event.images[0])}
-              alt={event.title}
-              className={
-                'rounded-md object-cover max-w-[1200px] max-h-[250px] mt-8 lg:mt-0 w-full h-auto'
-              }
-            />
-          </div>
-        )}
         <div className="space-y-4">
           <div className="flex items-center space-x-2">
             <FolderPenIcon className="h-5 w-5 text-gray-500" />
@@ -215,6 +204,33 @@ export default function PageClient({ eventData, communityData }) {
             }}
           />
         </div>
+        {event.images && event.images.length > 0 && (
+          <div className="mt-8 space-y-4">
+            <h4 className="text-2xl font-semibold mb-2">Event Images</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {event.images.map((image, index) => {
+                const imageUrl = image.match(
+                  /^(https?:\/\/|[a-zA-Z0-9-]+\.[a-zA-Z]{2,})/
+                )
+                  ? image.startsWith('http')
+                    ? image
+                    : `https://${image}`
+                  : getEventImageUrlView(image)
+                return (
+                  <div key={index} className="aspect-video">
+                    <Link href={imageUrl} target="_blank">
+                      <img
+                        src={imageUrl}
+                        alt={`${event.title} - Image ${index + 1}`}
+                        className="rounded-md object-contain"
+                      />
+                    </Link>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
       </div>
       <div>
         <Card className="bg-background shadow-lg rounded-lg p-6 sticky top-4">
