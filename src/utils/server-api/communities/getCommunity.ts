@@ -10,7 +10,6 @@ import { unstable_noStore } from 'next/cache'
 export async function getCommunity(
   communityId: string
 ): Promise<CommunityDocumentsType> {
-  unstable_noStore()
   const { databases } = await createAdminClient()
   return await databases
     .getDocument('hp_db', 'community', communityId)

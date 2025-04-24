@@ -7,10 +7,11 @@ import {
 import { getEvent } from '@/utils/server-api/events/getEvent'
 import { getUser } from '@/utils/server-api/account/user'
 import PageClient from './page.client'
+import { Metadata } from 'next'
 
 export async function generateMetadata(props: {
   params: Promise<{ communityId: string; eventId: string }>
-}) {
+}): Promise<Metadata> {
   const params = await props.params
 
   const { communityId, eventId } = params
@@ -23,19 +24,35 @@ export async function generateMetadata(props: {
     return notFound()
   }
 
-  const eventImageUrl = getEventImageUrlView(event?.images[0])
+  let imageUrl = null
+  if (event?.images && event?.images.length > 0) {
+    imageUrl = event?.images[0].match(
+      /^(https?:\/\/|[a-zA-Z0-9-]+\.[a-zA-Z]{2,})/
+    )
+      ? event?.images[0].startsWith('http')
+        ? event?.images[0]
+        : `https://${event?.images[0]}`
+      : getEventImageUrlView(event?.images[0])
+  }
+
   const avatarUrl = getCommunityAvatarUrlView(community?.avatarId)
 
   return {
     title: event?.title || 'Event',
     description: event?.description,
     icons: {
-      icon: eventImageUrl || avatarUrl,
+      icon: imageUrl || avatarUrl,
     },
     openGraph: {
       title: event?.title || 'Event',
       description: event?.description,
-      images: eventImageUrl || avatarUrl,
+      images: imageUrl || avatarUrl,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: event?.title || 'Event',
+      description: event?.description,
+      images: imageUrl || avatarUrl,
     },
   }
 }

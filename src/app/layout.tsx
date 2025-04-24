@@ -16,43 +16,6 @@ const inter = Inter({ subsets: ['latin'] })
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'App',
-    description:
-      'Headpat is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
-    keywords: [
-      'headpat',
-      'community',
-      'social',
-      'network',
-      'furry',
-      'fandom',
-      'headpawties',
-      'gallery',
-      'location sharing',
-      'find friends',
-      'fluffy',
-      'social media platform',
-      'online community',
-      'furry social network',
-    ],
-    twitter: {
-      card: 'summary_large_image',
-      title: 'Headpat',
-      description:
-        'Headpat is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
-      images: '/logos/hp_logo_x512.webp',
-    },
-    icons: {
-      icon: '/logos/hp_logo_x512.webp',
-      apple: '/logos/hp_logo_x512.webp',
-    },
-    openGraph: {
-      title: 'Headpat',
-      description:
-        'Headpat is an online social media community. We voluntarily offer our members a platform for connecting, exchanging and expressing.',
-      images: '/logos/hp_logo_x512.webp',
-      type: 'website',
-    },
     appLinks: {
       android: {
         url: 'https://play.google.com/store/apps/details?id=com.headpat.app',
@@ -68,7 +31,6 @@ export async function generateMetadata(): Promise<Metadata> {
       'google-play-app': 'app-id=com.headpat.app',
     },
     generator: 'Headpat',
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
   }
 }
 
