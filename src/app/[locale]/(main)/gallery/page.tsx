@@ -30,5 +30,5 @@ export async function generateMetadata(props): Promise<Metadata> {
 }
 
 export default function GalleryPage() {
-  return <PageClient enableNsfw={true} />
+  return <PageClient />
 }

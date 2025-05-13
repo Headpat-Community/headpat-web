@@ -15,10 +15,12 @@ import { decode } from 'blurhash'
 import React from 'react'
 import { useHeader } from '@/components/sidebar/header-client'
 import { UploadButton } from '@/components/gallery/upload-button'
+import { useUser } from '@/components/contexts/UserContext'
 
-export default function FetchGallery({ enableNsfw }) {
+export default function FetchGallery() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { current } = useUser()
   const [gallery, setGallery] = useState<GalleryDocumentsType[]>([])
   const [currentPage, setCurrentPage] = useState(() => {
     const page = searchParams.get('page')
@@ -115,7 +117,7 @@ export default function FetchGallery({ enableNsfw }) {
       const offset = (currentPage - 1) * pageSize
 
       const filters = []
-      if (!enableNsfw) {
+      if (!current?.prefs?.nsfw) {
         filters.push(Query.equal('nsfw', false))
       }
       filters.push(Query.limit(pageSize))
@@ -138,7 +140,9 @@ export default function FetchGallery({ enableNsfw }) {
           const allGallery = await databases.listDocuments(
             'hp_db',
             'gallery-images',
-            [Query.limit(1000)]
+            !current?.prefs?.nsfw
+              ? [Query.equal('nsfw', false), Query.limit(1000)]
+              : [Query.limit(1000)]
           )
           const allDocuments =
             allGallery.documents as unknown as GalleryDocumentsType[]
@@ -174,7 +178,9 @@ export default function FetchGallery({ enableNsfw }) {
           const allGallery = await databases.listDocuments(
             'hp_db',
             'gallery-images',
-            [Query.limit(1000)]
+            !current?.prefs?.nsfw
+              ? [Query.equal('nsfw', false), Query.limit(1000)]
+              : [Query.limit(1000)]
           )
           const allDocuments =
             allGallery.documents as unknown as GalleryDocumentsType[]
@@ -217,7 +223,7 @@ export default function FetchGallery({ enableNsfw }) {
       toast.error("You encountered an error. But don't worry, we're on it.")
       Sentry.captureException(error)
     })
-  }, [enableNsfw, currentPage, sortType])
+  }, [current?.prefs?.nsfw, currentPage, sortType])
 
   // Reset seen items when changing sort type
   useEffect(() => {
@@ -263,10 +269,10 @@ export default function FetchGallery({ enableNsfw }) {
                       {item && (
                         <div
                           className={`h-64 w-64 ${
-                            item.nsfw && !enableNsfw ? 'relative' : ''
+                            item.nsfw && !current?.prefs?.nsfw ? 'relative' : ''
                           }`}
                         >
-                          {item.nsfw && !enableNsfw && (
+                          {item.nsfw && !current?.prefs?.nsfw && (
                             <div className="absolute inset-0 bg-black opacity-50"></div>
                           )}
                           <Link
@@ -346,10 +352,10 @@ export default function FetchGallery({ enableNsfw }) {
                       {item && (
                         <div
                           className={`h-64 w-64 ${
-                            item.nsfw && !enableNsfw ? 'relative' : ''
+                            item.nsfw && !current?.prefs?.nsfw ? 'relative' : ''
                           }`}
                         >
-                          {item.nsfw && !enableNsfw && (
+                          {item.nsfw && !current?.prefs?.nsfw && (
                             <div className="absolute inset-0 bg-black opacity-50"></div>
                           )}
                           <Link
