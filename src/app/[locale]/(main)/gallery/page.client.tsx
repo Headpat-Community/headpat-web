@@ -223,7 +223,7 @@ export default function FetchGallery() {
       toast.error("You encountered an error. But don't worry, we're on it.")
       Sentry.captureException(error)
     })
-  }, [current?.prefs?.nsfw, currentPage, sortType])
+  }, [current, currentPage, sortType])
 
   // Reset seen items when changing sort type
   useEffect(() => {
