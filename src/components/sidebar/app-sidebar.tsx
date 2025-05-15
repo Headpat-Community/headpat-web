@@ -12,6 +12,7 @@ import {
   MapIcon,
   MegaphoneIcon,
   PencilIcon,
+  RocketIcon,
   UserSearchIcon,
 } from 'lucide-react'
 import * as React from 'react'
@@ -154,6 +155,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
+        <Separator />
+        <span className="text-sm text-muted-foreground text-center">
+          0.8.8 <RocketIcon className="inline-block size-4" />
+        </span>
+        <Separator />
         <NavUser />
       </SidebarFooter>
     </Sidebar>

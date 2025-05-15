@@ -322,6 +322,7 @@ export default function UploadPage({ userId }: { userId: string }) {
                   </div>
                   <input
                     ref={fileInputRef}
+                    aria-label="Gallery upload"
                     id="file-upload"
                     name="file-upload"
                     type="file"
