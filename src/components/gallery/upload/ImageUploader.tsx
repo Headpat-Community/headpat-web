@@ -110,7 +110,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
             setIsUploading(false)
             return
           }
-        } catch (err) {
+        } catch {
           toast.error('Pre-upload check failed.')
           setIsUploading(false)
           return
@@ -126,7 +126,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       setImgSrc('')
       setOpen(false)
       if (fileInputRef.current) fileInputRef.current.value = ''
-    } catch (error) {
+    } catch {
       toast.error('Failed to upload image.')
     } finally {
       setIsUploading(false)

@@ -17,7 +17,7 @@ export default function UploadAvatar({
     return storage.getFileView('community-avatars', `${avatarId}`)
   }
 
-  const handleBeforeUpload = async (file: File) => {
+  const handleBeforeUpload = async () => {
     // Pre-upload function call
     const data = await functions.createExecution(
       'community-endpoints',
@@ -39,10 +39,7 @@ export default function UploadAvatar({
     }
   }
 
-  const handleAfterUpload = async (
-    fileId: string,
-    _file: File
-  ): Promise<void> => {
+  const handleAfterUpload = async (fileId: string): Promise<void> => {
     try {
       // Get the community document
       const avatarDocument: CommunityDocumentsType =

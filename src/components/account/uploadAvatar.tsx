@@ -20,7 +20,7 @@ export default function UploadAvatar({
   }
 
   // onAfterUpload callback for ImageUploader
-  const handleAfterUpload = async (fileId: string, _file: File) => {
+  const handleAfterUpload = async (fileId: string) => {
     try {
       // Get the user's avatar document
       const avatarDocument: UserDataDocumentsType = await databases.getDocument(

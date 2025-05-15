@@ -17,7 +17,7 @@ export default function UploadBanner({
     return storage.getFileView('banners', `${bannerId}`)
   }
 
-  const handleAfterUpload = async (fileId: string, _file: File) => {
+  const handleAfterUpload = async (fileId: string) => {
     try {
       // Get the user's banner document
       const bannerDocument: UserDataDocumentsType = await databases.getDocument(
