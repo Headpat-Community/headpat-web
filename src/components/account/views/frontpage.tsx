@@ -38,7 +38,6 @@ export default function FrontpageView({
       (data: UserDataDocumentsType) => setUserData(data)
     )
   }, [accountData])
-  console.log(userData)
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()

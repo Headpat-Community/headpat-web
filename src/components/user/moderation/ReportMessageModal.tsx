@@ -45,7 +45,7 @@ export default function ReportMessageModal({
         ExecutionMethod.POST
       )
       const response = JSON.parse(data.responseBody)
-      console.log(response)
+
       setOpen(false)
       if (response.type === 'report_success') {
         toast.success('Success', {

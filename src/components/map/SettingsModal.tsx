@@ -53,7 +53,6 @@ export default function SettingsModal({
   })
 
   const onSubmit = async (values: SettingsFormValues) => {
-    console.log(values)
     try {
       await databases.updateDocument('hp_db', 'locations', current.$id, {
         status: values.status,

@@ -21,7 +21,7 @@ const ForgotPassword = () => {
           url: `${process.env.NEXT_PUBLIC_DOMAIN}/i/reset-password`,
         }),
       })
-      //console.log("User authenticated successfully");
+
       if (response.status === 400) {
         setError(`E-Mail inkorrekt!`)
         setTimeout(() => {

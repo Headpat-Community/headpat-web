@@ -54,8 +54,6 @@ export default function CommunityAdminMain({
     },
   })
 
-  console.log(form.getValues())
-
   const getCommunity = useCallback(async () => {
     const data: CommunityDocumentsType = await databases.getDocument(
       'hp_db',
