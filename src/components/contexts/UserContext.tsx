@@ -52,7 +52,7 @@ export function UserProvider(props: any) {
   async function logout(redirect: boolean) {
     try {
       fetch(`/api/user/logoutUser?redirect=${redirect}`, {
-        method: 'POST',
+        method: 'POST'
       })
         .then((response) => {
           if (!response.ok) {
@@ -108,7 +108,7 @@ export function UserProvider(props: any) {
         saveCache('users', loggedIn.$id, {
           ...userData,
           displayName: userData.displayName || userData.$id,
-          avatarId: userData.avatarId || null,
+          avatarId: userData.avatarId || null
         })
       }
     })
@@ -125,7 +125,7 @@ export function UserProvider(props: any) {
         login,
         loginOAuth,
         logout,
-        register,
+        register
       }}
     >
       {props.children}

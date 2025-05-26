@@ -10,7 +10,7 @@ export default function UploadBanner({
   isUploading,
   setIsUploading,
   userId,
-  userData,
+  userData
 }) {
   const getBannerImageUrl = (bannerId: string) => {
     if (!bannerId) return undefined
@@ -35,7 +35,7 @@ export default function UploadBanner({
       }
       // Update the user's bannerId
       await databases.updateDocument('hp_db', 'userdata', userId, {
-        profileBannerId: fileId,
+        profileBannerId: fileId
       })
       toast.success('Your banner has been uploaded successfully.')
     } catch (error) {

@@ -6,7 +6,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { account, avatars } from '@/app/appwrite-client'
@@ -16,7 +16,7 @@ import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
-  InputOTPSlot,
+  InputOTPSlot
 } from '@/components/ui/input-otp'
 import * as Sentry from '@sentry/nextjs'
 import { useRouter } from 'next/navigation'

@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 
 export const TracingBeam = ({
   children,
-  className,
+  className
 }: {
   children: React.ReactNode
   className?: string
@@ -13,7 +13,7 @@ export const TracingBeam = ({
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ['start start', 'end start'],
+    offset: ['start start', 'end start']
   })
 
   const contentRef = useRef<HTMLDivElement>(null)
@@ -29,14 +29,14 @@ export const TracingBeam = ({
     useTransform(scrollYProgress, [0, 0.8], [50, svgHeight]),
     {
       stiffness: 500,
-      damping: 90,
+      damping: 90
     }
   )
   const y2 = useSpring(
     useTransform(scrollYProgress, [0, 1], [50, svgHeight - 200]),
     {
       stiffness: 500,
-      damping: 90,
+      damping: 90
     }
   )
 
@@ -49,26 +49,26 @@ export const TracingBeam = ({
         <motion.div
           transition={{
             duration: 0.2,
-            delay: 0.5,
+            delay: 0.5
           }}
           animate={{
             boxShadow:
               scrollYProgress.get() > 0
                 ? 'none'
-                : 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+                : 'rgba(0, 0, 0, 0.24) 0px 3px 8px'
           }}
           className="ml-[27px] size-4 rounded-full border border-netural-200 shadow-xs flex items-center justify-center"
         >
           <motion.div
             transition={{
               duration: 0.2,
-              delay: 0.5,
+              delay: 0.5
             }}
             animate={{
               backgroundColor:
                 scrollYProgress.get() > 0 ? 'white' : 'var(--emerald-500)',
               borderColor:
-                scrollYProgress.get() > 0 ? 'white' : 'var(--emerald-600)',
+                scrollYProgress.get() > 0 ? 'white' : 'var(--emerald-600)'
             }}
             className="h-2 w-2  rounded-full border border-neutral-300 bg-white"
           />
@@ -86,7 +86,7 @@ export const TracingBeam = ({
             stroke="#9091A0"
             strokeOpacity="0.16"
             transition={{
-              duration: 10,
+              duration: 10
             }}
           ></motion.path>
           <motion.path
@@ -96,7 +96,7 @@ export const TracingBeam = ({
             strokeWidth="1.25"
             className="motion-reduce:hidden"
             transition={{
-              duration: 10,
+              duration: 10
             }}
           ></motion.path>
           <defs>

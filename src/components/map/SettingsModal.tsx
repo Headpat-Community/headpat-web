@@ -6,7 +6,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from '@/components/ui/alert-dialog'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
@@ -22,7 +22,7 @@ import * as Sentry from '@sentry/nextjs'
 
 const settingsFormSchema = z.object({
   status: z.string().max(40, 'Status must be less than 40 characters'),
-  statusColor: z.enum(['red', 'green']),
+  statusColor: z.enum(['red', 'green'])
 })
 
 type SettingsFormValues = z.infer<typeof settingsFormSchema>
@@ -40,7 +40,7 @@ export default function SettingsModal({
   setOpenModal,
   userStatus,
   setUserStatus,
-  current,
+  current
 }: SettingsModalProps) {
   const defaultStatusColor = userStatus?.statusColor === 'red' ? 'red' : 'green'
 
@@ -48,20 +48,20 @@ export default function SettingsModal({
     resolver: zodResolver(settingsFormSchema),
     defaultValues: {
       status: userStatus?.status,
-      statusColor: defaultStatusColor,
-    },
+      statusColor: defaultStatusColor
+    }
   })
 
   const onSubmit = async (values: SettingsFormValues) => {
     try {
       await databases.updateDocument('hp_db', 'locations', current.$id, {
         status: values.status,
-        statusColor: values.statusColor,
+        statusColor: values.statusColor
       })
       setUserStatus({
         ...userStatus,
         status: values.status,
-        statusColor: values.statusColor,
+        statusColor: values.statusColor
       })
       setOpenModal(false)
     } catch (e) {

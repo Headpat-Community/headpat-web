@@ -51,7 +51,7 @@ function Calendar({
         range_middle:
           'aria-selected:bg-accent aria-selected:text-accent-foreground',
         hidden: 'invisible',
-        ...classNames,
+        ...classNames
       }}
       {...props}
     />

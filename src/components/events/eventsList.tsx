@@ -4,7 +4,7 @@ import { CalendarIcon, ClockIcon, MapPinIcon, UsersIcon } from 'lucide-react'
 import { EventsDocumentsType } from '@/utils/types/models'
 
 export default function EventsList({
-  events,
+  events
 }: {
   events: EventsDocumentsType[]
 }) {
@@ -29,7 +29,7 @@ export default function EventsList({
                 {new Date(event.date).toLocaleDateString(undefined, {
                   year: 'numeric',
                   month: 'long',
-                  day: 'numeric',
+                  day: 'numeric'
                 })}
               </span>
             </div>
@@ -38,12 +38,12 @@ export default function EventsList({
               <span>
                 {new Date(event.date).toLocaleTimeString(undefined, {
                   hour: '2-digit',
-                  minute: '2-digit',
+                  minute: '2-digit'
                 })}
                 {' - '}
                 {new Date(event.dateUntil).toLocaleTimeString(undefined, {
                   hour: '2-digit',
-                  minute: '2-digit',
+                  minute: '2-digit'
                 })}
               </span>
             </div>

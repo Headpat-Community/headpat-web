@@ -20,8 +20,8 @@ export async function GET(request) {
         'Content-Type': 'application/json',
         'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
         'X-Appwrite-Response-Format': '1.4.0',
-        Cookie: cookieHeader,
-      },
+        Cookie: cookieHeader
+      }
     })
 
     if (!response.ok) {

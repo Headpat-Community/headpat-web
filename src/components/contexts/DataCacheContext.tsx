@@ -5,7 +5,7 @@ import {
   getAllFromDb,
   getFromDb,
   openDb,
-  saveToDb,
+  saveToDb
 } from '@/lib/indexeddb-utils'
 
 const DB_NAME = 'HeadpatCache'
@@ -34,7 +34,7 @@ const DataCacheContext = createContext<DataCacheContextType | undefined>(
 )
 
 export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
+  children
 }) => {
   const [db, setDb] = React.useState<IDBDatabase | null>(null)
   const [cacheData, setCacheData] = useState<Record<string, any>>({})
@@ -88,7 +88,7 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
       ) {
         setCacheData((prev) => ({
           ...prev,
-          [`${storeName}-${key}`]: cachedData,
+          [`${storeName}-${key}`]: cachedData
         }))
         return cachedData
       }
@@ -130,7 +130,7 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
       await saveToDb(db, storeName, { id: key, ...cacheItem })
       setCacheData((prev) => ({
         ...prev,
-        [`${storeName}-${key}`]: cacheItem,
+        [`${storeName}-${key}`]: cacheItem
       }))
     },
     [db, waitForDb]
@@ -165,7 +165,7 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
         removeCache,
         getCacheSync,
         getAllCache,
-        saveAllCache,
+        saveAllCache
       }}
     >
       {loading ? null : children}

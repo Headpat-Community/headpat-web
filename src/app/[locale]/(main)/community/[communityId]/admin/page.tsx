@@ -20,13 +20,13 @@ export async function generateMetadata(props: {
     title: community?.name || 'Community Admin',
     description: community?.description,
     icons: {
-      icon: '/logos/hp_logo_x512.webp',
+      icon: '/logos/hp_logo_x512.webp'
     },
     openGraph: {
       title: community?.name || 'Community Admin',
       description: community?.description,
-      images: '/logos/hp_logo_x512.webp',
-    },
+      images: '/logos/hp_logo_x512.webp'
+    }
   }
 }
 

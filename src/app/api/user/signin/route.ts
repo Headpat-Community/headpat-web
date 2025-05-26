@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
         sameSite: 'strict',
         expires: new Date(session.expire),
         path: '/',
-        domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
+        domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN
       }
     )
 

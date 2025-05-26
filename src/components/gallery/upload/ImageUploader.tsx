@@ -13,7 +13,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from '@/components/ui/alert-dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { centerAspectCrop, createBlob } from './uploadHelper'
@@ -49,7 +49,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   label,
   description,
   recommendedResolution,
-  defaultImage = '/logos/hp_logo_x512.webp',
+  defaultImage = '/logos/hp_logo_x512.webp'
 }) => {
   const [imgSrc, setImgSrc] = useState('')
   const previewCanvasRef = useRef<HTMLCanvasElement>(null)
@@ -218,7 +218,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                       alt="Crop me"
                       src={imgSrc}
                       style={{
-                        transform: `scale(${scale}) rotate(${rotate}deg)`,
+                        transform: `scale(${scale}) rotate(${rotate}deg)`
                       }}
                       onLoad={onImageLoad}
                     />
@@ -232,7 +232,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                         border: '1px solid black',
                         objectFit: 'contain',
                         width: completedCrop.width,
-                        height: completedCrop.height,
+                        height: completedCrop.height
                       }}
                     />
                   </div>

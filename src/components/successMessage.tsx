@@ -1,5 +1,5 @@
 export default function ErrorMessage({
-  attentionSuccess,
+  attentionSuccess
 }: {
   attentionSuccess: string
 }) {

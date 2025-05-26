@@ -10,7 +10,7 @@ import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import {
   getAvatarImageUrlView,
-  getBannerImageUrlPreview,
+  getBannerImageUrlPreview
 } from '@/components/getStorageItem'
 import { cn } from '@/lib/utils'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
@@ -20,14 +20,14 @@ import {
   SiFuraffinity,
   SiTelegram,
   SiTwitch,
-  SiX,
+  SiX
 } from '@icons-pack/react-simple-icons'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/components/ui/card'
 import sanitizeHtml from 'sanitize-html'
 import { UserProfileDocumentsType } from '@/utils/types/models'
@@ -89,7 +89,7 @@ function FollowerButton({ displayName, followerId, isFollowing }) {
 
 export default function PageClient({
   user,
-  userId,
+  userId
 }: {
   user: UserProfileDocumentsType
   userId: string
@@ -191,7 +191,7 @@ export default function PageClient({
                   userData.furaffinityname ||
                   userData.X_name ||
                   userData.twitchname
-                ),
+                )
               })}
               fill={true}
               priority={true}
@@ -360,7 +360,7 @@ export default function PageClient({
               <div className={'flex flex-wrap items-center'}>
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: bioWithLineBreaks || 'Nothing here yet!',
+                    __html: bioWithLineBreaks || 'Nothing here yet!'
                   }}
                 />
               </div>

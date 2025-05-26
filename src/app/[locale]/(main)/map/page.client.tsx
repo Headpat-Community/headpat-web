@@ -6,7 +6,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogTitle,
+  DialogTitle
 } from '@/components/ui/dialog'
 import { formatDateLocale } from '@/components/calculateTimeLeft'
 import { listDocuments } from '@/components/api/documents'
@@ -25,7 +25,7 @@ import {
   EventsType,
   LocationDocumentsType,
   LocationType,
-  UserDataDocumentsType,
+  UserDataDocumentsType
 } from '@/utils/types/models'
 
 type User = {
@@ -40,7 +40,7 @@ export default function PageClient() {
   const [events, setEvents] = useState<EventsType>(null)
   const [filters, setFilters] = useState({
     showEvents: true,
-    showUsers: true,
+    showUsers: true
   })
   const [friendsLocations, setFriendsLocations] = useState(null)
   const [filtersOpen, setFiltersOpen] = useState<boolean>(false)
@@ -52,13 +52,13 @@ export default function PageClient() {
   const [currentUser, setCurrentUser] = useState({
     title: 'Nothing selected..',
     status: '',
-    description: 'Please select a user on the map.',
+    description: 'Please select a user on the map.'
   })
   const [currentEvent, setCurrentEvent] = useState({
     title: 'Nothing selected..',
     description: 'Please select an event on the map.',
     date: '',
-    dateUntil: '',
+    dateUntil: ''
   })
   const [modalUserOpen, setModalUserOpen] = useState<boolean>(false)
   const [modalEventOpen, setModalEventOpen] = useState<boolean>(false)
@@ -72,8 +72,8 @@ export default function PageClient() {
         Query.greaterThanEqual('dateUntil', currentDate.toISOString()),
         Query.or([
           Query.equal('locationZoneMethod', 'circle'),
-          Query.equal('locationZoneMethod', 'polygon'),
-        ]),
+          Query.equal('locationZoneMethod', 'polygon')
+        ])
       ])
 
       setEvents(data)
@@ -144,7 +144,7 @@ export default function PageClient() {
                     ? {
                         ...location,
                         ...updatedDocument,
-                        userData: location.userData,
+                        userData: location.userData
                       }
                     : location
                 )
@@ -214,7 +214,7 @@ export default function PageClient() {
     setCurrentUser({
       title: user.userData?.displayName,
       status: user.status,
-      description: user.userData?.bio,
+      description: user.userData?.bio
     })
     setModalUserOpen(true)
   }
@@ -224,7 +224,7 @@ export default function PageClient() {
       title: event.title,
       description: event.description,
       date: event.date,
-      dateUntil: event.dateUntil,
+      dateUntil: event.dateUntil
     })
     setModalEventOpen(true)
   }
@@ -234,7 +234,7 @@ export default function PageClient() {
       title: event.title,
       description: event.description,
       date: event.date,
-      dateUntil: event.dateUntil,
+      dateUntil: event.dateUntil
     })
     setModalEventOpen(true)
   }
@@ -262,7 +262,7 @@ export default function PageClient() {
           <DialogTitle>{currentEvent?.title}</DialogTitle>
           <DialogDescription
             dangerouslySetInnerHTML={{
-              __html: sanitizedDescription || 'Nothing here yet!',
+              __html: sanitizedDescription || 'Nothing here yet!'
             }}
           />
           <div>Start: {formatDateLocale(new Date(currentEvent?.date))}</div>
@@ -311,7 +311,7 @@ export default function PageClient() {
                     <Avatar
                       style={{
                         borderWidth: 2,
-                        borderColor: user?.statusColor,
+                        borderColor: user?.statusColor
                       }}
                     >
                       <AvatarImage
@@ -353,7 +353,7 @@ export default function PageClient() {
                     key={index}
                     center={{
                       lat: centerLatitude,
-                      lng: centerLongitude,
+                      lng: centerLongitude
                     }}
                     radius={event?.circleRadius} // specify the radius here
                     fillColor="rgba(100, 200, 200, 0.5)" // optional, fill color of the circle
@@ -386,7 +386,7 @@ export default function PageClient() {
             top: 160,
             right: 30,
             borderRadius: 50,
-            overflow: 'hidden',
+            overflow: 'hidden'
           }}
         >
           <Button

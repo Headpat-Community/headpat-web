@@ -14,7 +14,7 @@ export const HeaderContext = React.createContext<{
   removeHeaderComponent: (component: React.ReactNode) => void
 }>({
   addHeaderComponent: () => {},
-  removeHeaderComponent: () => {},
+  removeHeaderComponent: () => {}
 })
 
 // Create a provider component

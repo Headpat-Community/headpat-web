@@ -4,6 +4,6 @@ export function isMimeTypeAnimatable(mimeType: string) {
     'image/apng',
     'image/webp',
     'image/svg+xml',
-    'video/x-mng',
+    'video/x-mng'
   ].includes(mimeType)
 }

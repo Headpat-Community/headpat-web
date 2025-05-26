@@ -2,7 +2,7 @@ import Client from './page.client'
 import { createSessionServerClient } from '@/app/appwrite-session'
 
 export const metadata = {
-  title: 'Account Gallery',
+  title: 'Account Gallery'
 }
 
 export default async function FetchGallery() {

@@ -2,7 +2,7 @@ import { getCommunity } from '@/utils/server-api/communities/getCommunity'
 import { notFound } from 'next/navigation'
 import {
   getCommunityAvatarUrlView,
-  getEventImageUrlView,
+  getEventImageUrlView
 } from '@/components/getStorageItem'
 import { getEvent } from '@/utils/server-api/events/getEvent'
 import { getUser } from '@/utils/server-api/account/user'
@@ -41,19 +41,19 @@ export async function generateMetadata(props: {
     title: event?.title || 'Event',
     description: event?.description,
     icons: {
-      icon: imageUrl || avatarUrl,
+      icon: imageUrl || avatarUrl
     },
     openGraph: {
       title: event?.title || 'Event',
       description: event?.description,
-      images: imageUrl || avatarUrl,
+      images: imageUrl || avatarUrl
     },
     twitter: {
       card: 'summary_large_image',
       title: event?.title || 'Event',
       description: event?.description,
-      images: imageUrl || avatarUrl,
-    },
+      images: imageUrl || avatarUrl
+    }
   }
 }
 

@@ -13,17 +13,17 @@ export async function generateMetadata(props): Promise<Metadata> {
       languages: {
         en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/gallery`,
         de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/gallery`,
-        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/gallery`,
-      },
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/gallery`
+      }
     },
     openGraph: {
       title: 'Gallery',
       description: 'Browse and share images in the Headpat Gallery',
       siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
       locale: locale,
-      type: 'website',
+      type: 'website'
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN)
   }
 
   return metadata

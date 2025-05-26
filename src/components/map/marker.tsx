@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {
   AdvancedMarker,
   InfoWindow,
-  useAdvancedMarkerRef,
+  useAdvancedMarkerRef
 } from '@vis.gl/react-google-maps'
 
 export const MarkerWithInfowindow = () => {

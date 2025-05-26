@@ -22,11 +22,11 @@ const schema = z.object({
     .max(32, 'Display Name: Max length is 32'),
   birthday: z.string().max(32, 'Max length is 32').nullable(),
   pronouns: z.string().max(16, 'Pronouns: Max length is 16').nullable(),
-  location: z.string().max(48, 'Location: Max length is 48').nullable(),
+  location: z.string().max(48, 'Location: Max length is 48').nullable()
 })
 
 export default function FrontpageView({
-  accountData,
+  accountData
 }: {
   accountData: AccountPrefs
 }) {
@@ -63,7 +63,7 @@ export default function FrontpageView({
           displayName: userData.displayName,
           birthday: new Date(userData.birthday).toISOString().split('T')[0],
           pronouns: userData.pronouns,
-          location: userData.location,
+          location: userData.location
         }
       )
 
@@ -127,7 +127,7 @@ export default function FrontpageView({
                       if (e.target.value.length <= 32) {
                         setUserData({
                           ...userData,
-                          displayName: e.target.value,
+                          displayName: e.target.value
                         })
                       }
                     }}
@@ -178,7 +178,7 @@ export default function FrontpageView({
                       if (e.target.value.length <= 16) {
                         setUserData({
                           ...userData,
-                          pronouns: e.target.value,
+                          pronouns: e.target.value
                         })
                       }
                     }}
@@ -234,7 +234,7 @@ export default function FrontpageView({
                       if (e.target.value.length <= 48) {
                         setUserData({
                           ...userData,
-                          location: e.target.value,
+                          location: e.target.value
                         })
                       }
                     }}

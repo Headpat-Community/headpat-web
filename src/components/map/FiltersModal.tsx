@@ -7,7 +7,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from '@/components/ui/alert-dialog'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
@@ -16,7 +16,7 @@ export default function FiltersModal({
   openModal,
   setOpenModal,
   filters,
-  setFilters,
+  setFilters
 }) {
   return (
     <AlertDialog onOpenChange={setOpenModal} open={openModal}>
@@ -35,7 +35,7 @@ export default function FiltersModal({
               onCheckedChange={() =>
                 setFilters((prev) => ({
                   ...prev,
-                  showEvents: !prev.showEvents,
+                  showEvents: !prev.showEvents
                 }))
               }
             />
@@ -44,7 +44,7 @@ export default function FiltersModal({
               onClick={() => {
                 setFilters((prev) => ({
                   ...prev,
-                  showEvents: !prev.showEvents,
+                  showEvents: !prev.showEvents
                 }))
               }}
             >
@@ -58,7 +58,7 @@ export default function FiltersModal({
               onCheckedChange={() =>
                 setFilters((prev) => ({
                   ...prev,
-                  showUsers: !prev.showUsers,
+                  showUsers: !prev.showUsers
                 }))
               }
             />
@@ -67,7 +67,7 @@ export default function FiltersModal({
               onClick={() =>
                 setFilters((prev) => ({
                   ...prev,
-                  showUsers: !prev.showUsers,
+                  showUsers: !prev.showUsers
                 }))
               }
             >

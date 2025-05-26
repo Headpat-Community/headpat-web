@@ -6,7 +6,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from '@/components/ui/alert-dialog'
 import { AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
@@ -15,7 +15,7 @@ import { useCallback, useState } from 'react'
 import {
   AccountPrefs,
   GalleryDocumentsType,
-  GalleryPrefsDocumentsType,
+  GalleryPrefsDocumentsType
 } from '@/utils/types/models'
 import ReportGalleryModal from '@/components/gallery/moderation/ReportGalleryModal'
 import { ExecutionMethod } from 'node-appwrite'
@@ -28,7 +28,7 @@ export default function ModerationModal({
   image,
   imagePrefs,
   setImagePrefs,
-  current,
+  current
 }: {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
@@ -53,7 +53,7 @@ export default function ModerationModal({
         'gallery-endpoints',
         JSON.stringify({
           galleryId: image.$id,
-          isHidden: !imagePrefs?.isHidden,
+          isHidden: !imagePrefs?.isHidden
         }),
         false,
         `/gallery/prefs`,

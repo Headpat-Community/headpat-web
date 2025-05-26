@@ -6,7 +6,7 @@ import { ClipboardIcon } from 'lucide-react'
 export const ButtonsCard = ({
   children,
   className,
-  onClick,
+  onClick
 }: {
   children?: React.ReactNode
   className?: string

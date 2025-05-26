@@ -34,7 +34,7 @@ const ResetPassword = () => {
       userId: userId,
       secret: code,
       password: password,
-      passwordAgain: confirmPassword,
+      passwordAgain: confirmPassword
     })
 
     const response = await resetPassword(body)

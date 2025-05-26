@@ -4,7 +4,7 @@ import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
-  InputOTPSlot,
+  InputOTPSlot
 } from '@/components/ui/input-otp'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'

@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import Image from 'next/image'
 import {
   getCommunityAvatarUrlView,
-  getCommunityBannerUrlPreview,
+  getCommunityBannerUrlPreview
 } from '@/components/getStorageItem'
 import { cn } from '@/lib/utils'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
@@ -17,7 +17,7 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/components/ui/card'
 import Link from 'next/link'
 import { Separator } from '@/components/ui/separator'
@@ -29,7 +29,7 @@ import { CommunityDocumentsType } from '@/utils/types/models'
 
 export default function PageClient({
   communityId,
-  communityData,
+  communityData
 }: {
   communityId: string
   communityData: CommunityDocumentsType

@@ -8,7 +8,7 @@ export async function generateMetadata({ params }) {
   return {
     title: {
       default: meta('title'),
-      template: `%s - Headpat`,
+      template: `%s - Headpat`
     },
     description: meta('description'),
     keywords: [
@@ -20,19 +20,19 @@ export async function generateMetadata({ params }) {
       'fandom',
       'headpawties',
       'gallery',
-      'location sharing',
+      'location sharing'
     ],
     icons: {
-      icon: '/logos/hp_logo_x512.webp',
+      icon: '/logos/hp_logo_x512.webp'
     },
     openGraph: {
       title: meta('title'),
       description: meta('description'),
       images: '/logos/hp_logo_x512.webp',
       locale: paramsResponse.locale,
-      type: 'website',
+      type: 'website'
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN)
   }
 }
 

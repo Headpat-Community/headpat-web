@@ -6,11 +6,11 @@ import {
   motion,
   useMotionValue,
   useSpring,
-  useTransform,
+  useTransform
 } from 'framer-motion'
 
 export const AnimatedTooltip = ({
-  items,
+  items
 }: {
   items: {
     id: number
@@ -57,14 +57,14 @@ export const AnimatedTooltip = ({
                   transition: {
                     type: 'spring',
                     stiffness: 260,
-                    damping: 10,
-                  },
+                    damping: 10
+                  }
                 }}
                 exit={{ opacity: 0, y: 20, scale: 0.6 }}
                 style={{
                   translateX: translateX,
                   rotate: rotate,
-                  whiteSpace: 'nowrap',
+                  whiteSpace: 'nowrap'
                 }}
                 className="absolute -top-16 -left-1/2 translate-x-1/2 flex text-xs  flex-col items-center justify-center rounded-md bg-black z-50 shadow-xl px-4 py-2"
               >

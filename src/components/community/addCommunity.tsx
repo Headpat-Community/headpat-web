@@ -8,7 +8,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
 import React from 'react'
 import { Input } from '@/components/ui/input'
@@ -32,11 +32,11 @@ const communitySchema = z.object({
     .string()
     .max(4096, 'Description must be 4096 characters or less'),
   isPrivate: z.boolean(),
-  nsfw: z.boolean(),
+  nsfw: z.boolean()
 })
 
 export default function AddCommunity({
-  children,
+  children
 }: {
   children: React.ReactNode
 }) {
@@ -45,7 +45,7 @@ export default function AddCommunity({
     name: '',
     description: '',
     isPrivate: false,
-    nsfw: false,
+    nsfw: false
   })
   const [isSubmitting, setIsSubmitting] = React.useState(false)
 
@@ -93,7 +93,7 @@ export default function AddCommunity({
       name: '',
       description: '',
       isPrivate: false,
-      nsfw: false,
+      nsfw: false
     })
   }
 
@@ -131,7 +131,7 @@ export default function AddCommunity({
               onChange={(e) =>
                 setCommunityData((prev) => ({
                   ...prev,
-                  description: e.target.value,
+                  description: e.target.value
                 }))
               }
             />
@@ -143,7 +143,7 @@ export default function AddCommunity({
               onCheckedChange={() => {
                 setCommunityData((prev) => ({
                   ...prev,
-                  isPrivate: !prev.isPrivate,
+                  isPrivate: !prev.isPrivate
                 }))
               }}
             />

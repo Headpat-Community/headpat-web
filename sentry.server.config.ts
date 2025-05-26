@@ -15,5 +15,5 @@ Sentry.init({
   debug: false,
 
   // Spotlight (https://spotlightjs.com)
-  spotlight: process.env.SENTRY_SPOTLIGHT === 'true',
+  spotlight: process.env.SENTRY_SPOTLIGHT === 'true'
 })

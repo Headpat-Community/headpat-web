@@ -3,7 +3,7 @@ import {
   useContext,
   useEffect,
   useImperativeHandle,
-  useRef,
+  useRef
 } from 'react'
 
 import { GoogleMapsContext, useMapsLibrary } from '@vis.gl/react-google-maps'
@@ -51,7 +51,7 @@ function usePolyline(props: PolylineProps) {
     onDragStart,
     onDragEnd,
     onMouseOver,
-    onMouseOut,
+    onMouseOut
   })
 
   const geometryLibrary = useMapsLibrary('geometry')
@@ -113,7 +113,7 @@ function usePolyline(props: PolylineProps) {
       ['dragstart', 'onDragStart'],
       ['dragend', 'onDragEnd'],
       ['mouseover', 'onMouseOver'],
-      ['mouseout', 'onMouseOut'],
+      ['mouseout', 'onMouseOut']
     ].forEach(([eventName, eventCallback]) => {
       gme.addListener(polyline, eventName, (e: google.maps.MapMouseEvent) => {
         const callback = callbacks.current[eventCallback]

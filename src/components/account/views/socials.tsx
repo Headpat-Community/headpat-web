@@ -30,7 +30,7 @@ const schema = z.object({
   twitchname: z
     .string()
     .max(32, 'Twitch name must be 32 characters or less')
-    .nullable(),
+    .nullable()
 })
 
 export default function SocialsView({ accountData }) {
@@ -62,7 +62,7 @@ export default function SocialsView({ accountData }) {
         telegramname: userData.telegramname,
         furaffinityname: userData.furaffinityname,
         X_name: userData.X_name,
-        twitchname: userData.twitchname,
+        twitchname: userData.twitchname
       })
 
       toast.success('User data saved successfully.')
@@ -100,7 +100,7 @@ export default function SocialsView({ accountData }) {
                       if (e.target.value.length <= 32) {
                         setUserData({
                           ...userData,
-                          discordname: e.target.value,
+                          discordname: e.target.value
                         })
                       }
                     }} // Update state when the input changes, only if the length is less than or equal to 32
@@ -133,7 +133,7 @@ export default function SocialsView({ accountData }) {
                       if (e.target.value.length <= 32) {
                         setUserData({
                           ...userData,
-                          telegramname: e.target.value,
+                          telegramname: e.target.value
                         })
                       }
                     }} // Update state when the input changes, only if the length is less than or equal to 32
@@ -161,7 +161,7 @@ export default function SocialsView({ accountData }) {
                       if (e.target.value.length <= 32) {
                         setUserData({
                           ...userData,
-                          furaffinityname: e.target.value,
+                          furaffinityname: e.target.value
                         })
                       }
                     }} // Update state when the input changes, only if the length is less than or equal to 32
@@ -194,7 +194,7 @@ export default function SocialsView({ accountData }) {
                       if (e.target.value.length <= 32) {
                         setUserData({
                           ...userData,
-                          X_name: e.target.value,
+                          X_name: e.target.value
                         })
                       }
                     }} // Update state when the input changes, only if the length is less than or equal to 32
@@ -222,7 +222,7 @@ export default function SocialsView({ accountData }) {
                       if (e.target.value.length <= 32) {
                         setUserData({
                           ...userData,
-                          twitchname: e.target.value,
+                          twitchname: e.target.value
                         })
                       }
                     }} // Update state when the input changes, only if the length is less than or equal to 32

@@ -8,7 +8,7 @@ interface CursorPosition {
 }
 
 export default function HighlightEffect({
-  highlightColor,
+  highlightColor
 }: {
   highlightColor: string
 }) {
@@ -21,7 +21,7 @@ export default function HighlightEffect({
       const rect = event.currentTarget.getBoundingClientRect()
       setCursorPosition({
         x: event.clientX - rect.left,
-        y: event.clientY - rect.top,
+        y: event.clientY - rect.top
       })
     },
     []
@@ -43,7 +43,7 @@ export default function HighlightEffect({
           style={{
             left: cursorPosition.x - 128,
             top: cursorPosition.y - 128,
-            background: `radial-gradient(circle, ${highlightColor} 0%, rgba(0,0,0,0) 70%)`,
+            background: `radial-gradient(circle, ${highlightColor} 0%, rgba(0,0,0,0) 70%)`
           }}
         />
       )}

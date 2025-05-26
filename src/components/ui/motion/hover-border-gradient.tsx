@@ -41,7 +41,7 @@ export function HoverBorderGradient({
     BOTTOM:
       'radial-gradient(20.7% 50% at 50% 100%, hsl(155, 100%, 50%) 0%, rgba(255, 255, 255, 0) 100%)',
     RIGHT:
-      'radial-gradient(16.2% 41.199999999999996% at 100% 50%, hsl(155, 100%, 50%) 0%, rgba(255, 255, 255, 0) 100%)',
+      'radial-gradient(16.2% 41.199999999999996% at 100% 50%, hsl(155, 100%, 50%) 0%, rgba(255, 255, 255, 0) 100%)'
   }
 
   const highlight =
@@ -87,13 +87,13 @@ export function HoverBorderGradient({
           filter: 'blur(2px)',
           position: 'absolute',
           width: '100%',
-          height: '100%',
+          height: '100%'
         }}
         initial={{ background: movingMap[direction] }}
         animate={{
           background: hovered
             ? [movingMap[direction], highlight]
-            : movingMap[direction],
+            : movingMap[direction]
         }}
         transition={{ ease: 'linear', duration: duration ?? 1 }}
       />

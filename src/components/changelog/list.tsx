@@ -5,12 +5,12 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/components/ui/card'
 import {
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger,
+  CollapsibleTrigger
 } from '@/components/ui/collapsible'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { ChevronDown, ChevronUp, Sparkles, Wrench, Bug } from 'lucide-react'
@@ -20,7 +20,7 @@ import sanitize from 'sanitize-html'
 import { ChangelogDocumentsType } from '@/utils/types/models'
 
 const ChangeIcon = ({
-  type,
+  type
 }: {
   type: 'feature' | 'improvement' | 'bugfix'
 }) => {
@@ -37,7 +37,7 @@ const ChangeIcon = ({
 }
 
 export default function ListComponent({
-  changelogData,
+  changelogData
 }: {
   changelogData: ChangelogDocumentsType[]
 }) {
@@ -99,7 +99,7 @@ export default function ListComponent({
                               {
                                 month: 'short',
                                 day: 'numeric',
-                                year: 'numeric',
+                                year: 'numeric'
                               }
                             )}
                           </CardDescription>
@@ -120,7 +120,7 @@ export default function ListComponent({
                   <CardContent>
                     <div
                       dangerouslySetInnerHTML={{
-                        __html: sanitizeDescription(release.description),
+                        __html: sanitizeDescription(release.description)
                       }}
                     />
                     <div className="space-y-4 mt-6">
@@ -148,7 +148,7 @@ export default function ListComponent({
                                       <div
                                         className="ml-2"
                                         dangerouslySetInnerHTML={{
-                                          __html: sanitizeDescription(change),
+                                          __html: sanitizeDescription(change)
                                         }}
                                       />
                                     </li>
@@ -165,7 +165,7 @@ export default function ListComponent({
                                       <div
                                         className="ml-2"
                                         dangerouslySetInnerHTML={{
-                                          __html: sanitizeDescription(change),
+                                          __html: sanitizeDescription(change)
                                         }}
                                       />
                                     </li>
@@ -184,7 +184,7 @@ export default function ListComponent({
                                       <div
                                         className="ml-2"
                                         dangerouslySetInnerHTML={{
-                                          __html: sanitizeDescription(change),
+                                          __html: sanitizeDescription(change)
                                         }}
                                       />
                                     </li>

@@ -13,9 +13,9 @@ export async function emailVerification(requestBody: any) {
         'Content-Type': 'application/json',
         'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
         'X-Appwrite-Response-Format': '1.4.0',
-        Cookie: cookieHeader,
+        Cookie: cookieHeader
       },
-      body: JSON.stringify(requestBody),
+      body: JSON.stringify(requestBody)
     }
   )
 
@@ -35,9 +35,9 @@ export async function resetPassword(requestBody: any) {
       headers: {
         'Content-Type': 'application/json',
         'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
-        'X-Appwrite-Response-Format': '1.4.0',
+        'X-Appwrite-Response-Format': '1.4.0'
       },
-      body: JSON.stringify(requestBody),
+      body: JSON.stringify(requestBody)
     }
   )
 

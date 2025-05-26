@@ -37,7 +37,7 @@ export default function ClientPage() {
           [
             Query.orderDesc('$createdAt'),
             Query.limit(limit),
-            Query.offset(offset),
+            Query.offset(offset)
           ]
         )
         setUsers(response.documents)

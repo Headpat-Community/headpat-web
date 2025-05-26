@@ -19,18 +19,18 @@ export async function generateMetadata(): Promise<Metadata> {
     appLinks: {
       android: {
         url: 'https://play.google.com/store/apps/details?id=com.headpat.app',
-        package: 'com.headpat.app',
+        package: 'com.headpat.app'
       },
       ios: {
         url: 'https://apps.apple.com/app/headpat/id6502715063',
-        app_store_id: '6502715063',
-      },
+        app_store_id: '6502715063'
+      }
     },
     other: {
       'apple-itunes-app': 'app-id=6502715063',
-      'google-play-app': 'app-id=com.headpat.app',
+      'google-play-app': 'app-id=com.headpat.app'
     },
-    generator: 'Headpat',
+    generator: 'Headpat'
   }
 }
 

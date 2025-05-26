@@ -18,7 +18,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
 import { getDocument } from '@/components/api/documents'
 import { toast } from 'sonner'
@@ -32,13 +32,13 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormMessage,
+  FormMessage
 } from '@/components/ui/form'
 import InputField from '@/components/fields/InputField'
 import {
   HoverCard,
   HoverCardContent,
-  HoverCardTrigger,
+  HoverCardTrigger
 } from '@/components/ui/hover-card'
 import { Info } from 'lucide-react'
 
@@ -48,14 +48,14 @@ const emailFormSchema = z.object({
     .string()
     .trim()
     .min(8, 'Password must be at least 8 characters long.')
-    .max(128, 'Password must be at most 128 characters long.'),
+    .max(128, 'Password must be at most 128 characters long.')
 })
 
 const profileUrlFormSchema = z.object({
   profileUrl: z
     .string()
     .trim()
-    .min(2, 'Profile URL must be at least 3 characters long.'),
+    .min(2, 'Profile URL must be at least 3 characters long.')
 })
 
 const passwordFormSchema = z.object({
@@ -68,12 +68,12 @@ const passwordFormSchema = z.object({
     .string()
     .trim()
     .min(8, 'Password must be at least 8 characters long.')
-    .max(264, 'Password must be at most 264 characters long.'),
+    .max(264, 'Password must be at most 264 characters long.')
 })
 
 export default function GeneralAccountView({
   accountData,
-  mfaList,
+  mfaList
 }: {
   accountData: AccountPrefs
   mfaList: Models.MfaFactors
@@ -87,23 +87,23 @@ export default function GeneralAccountView({
     resolver: zodResolver(emailFormSchema),
     defaultValues: {
       email: '',
-      password: '',
-    },
+      password: ''
+    }
   })
 
   const profileUrlForm = useForm<z.infer<typeof profileUrlFormSchema>>({
     resolver: zodResolver(profileUrlFormSchema),
     defaultValues: {
-      profileUrl: '',
-    },
+      profileUrl: ''
+    }
   })
 
   const passwordForm = useForm<z.infer<typeof passwordFormSchema>>({
     resolver: zodResolver(passwordFormSchema),
     defaultValues: {
       password: '',
-      newpassword: '',
-    },
+      newpassword: ''
+    }
   })
 
   useEffect(() => {
@@ -121,7 +121,7 @@ export default function GeneralAccountView({
       toast.success('E-Mail updated successfully.')
       setUserData((prevUserData: any) => ({
         ...prevUserData,
-        email: userData.email,
+        email: userData.email
       }))
     } catch (error) {
       if (error.type == 'user_invalid_credentials') {
@@ -155,7 +155,7 @@ export default function GeneralAccountView({
         toast.error('Failed to update password. Please try again.')
         passwordForm.reset({
           password: '',
-          newpassword: '',
+          newpassword: ''
         })
       }
     }
@@ -167,15 +167,15 @@ export default function GeneralAccountView({
     try {
       await account.updatePrefs({
         ...prefs,
-        nsfw: checked,
+        nsfw: checked
       })
       toast.success('NSFW updated successfully.')
       setUserMe((prevUserData: any) => ({
         ...prevUserData,
         prefs: {
           ...prevUserData.prefs,
-          nsfw: checked,
-        },
+          nsfw: checked
+        }
       }))
       router.refresh()
     } catch (error) {
@@ -191,15 +191,15 @@ export default function GeneralAccountView({
     try {
       await account.updatePrefs({
         ...prefs,
-        indexingEnabled: checked,
+        indexingEnabled: checked
       })
       toast.success('Indexing updated successfully.')
       setUserMe((prevUserData: any) => ({
         ...prevUserData,
         prefs: {
           ...prevUserData.prefs,
-          indexingEnabled: checked,
-        },
+          indexingEnabled: checked
+        }
       }))
       router.refresh()
     } catch (error) {
@@ -217,7 +217,7 @@ export default function GeneralAccountView({
       'userdata',
       userMe?.$id,
       {
-        profileUrl: values.profileUrl,
+        profileUrl: values.profileUrl
       }
     )
 

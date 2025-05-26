@@ -11,7 +11,7 @@ import {
   LinkIcon,
   MapPin,
   Tag,
-  Users,
+  Users
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
@@ -53,7 +53,7 @@ export default function PageClient({ eventData, communityData }) {
       setEvent({
         ...document,
         attendees: event?.attendees,
-        isAttending: event?.isAttending,
+        isAttending: event?.isAttending
       })
     } catch {
       toast.error('Failed to fetch event data.')
@@ -76,7 +76,7 @@ export default function PageClient({ eventData, communityData }) {
           attendees: Array.isArray(prev.attendees)
             ? prev.attendees
             : prev.attendees + 1,
-          isAttending: true,
+          isAttending: true
         }))
       } else if (event.type === 'event_ended') {
         toast.error('Event has ended.')
@@ -104,7 +104,7 @@ export default function PageClient({ eventData, communityData }) {
           attendees: Array.isArray(prev.attendees)
             ? prev.attendees
             : prev.attendees - 1,
-          isAttending: false,
+          isAttending: false
         }))
       } else if (event.type === 'event_ended') {
         toast.error('Event has ended.')
@@ -136,7 +136,7 @@ export default function PageClient({ eventData, communityData }) {
                 month: '2-digit',
                 year: 'numeric',
                 hour: '2-digit',
-                minute: '2-digit',
+                minute: '2-digit'
               })}
             </span>
           </div>
@@ -148,7 +148,7 @@ export default function PageClient({ eventData, communityData }) {
                 month: '2-digit',
                 year: 'numeric',
                 hour: '2-digit',
-                minute: '2-digit',
+                minute: '2-digit'
               })}
             </span>
           </div>
@@ -200,7 +200,7 @@ export default function PageClient({ eventData, communityData }) {
           <div
             className="text-muted-foreground"
             dangerouslySetInnerHTML={{
-              __html: descriptionSanitized || 'Nothing here yet!',
+              __html: descriptionSanitized || 'Nothing here yet!'
             }}
           />
         </div>

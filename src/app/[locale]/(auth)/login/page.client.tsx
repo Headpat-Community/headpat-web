@@ -6,7 +6,7 @@ import {
   SiGithub,
   SiGoogle,
   SiSpotify,
-  SiTwitch,
+  SiTwitch
 } from '@icons-pack/react-simple-icons'
 import { Button } from '@/components/ui/button'
 import { signInWithProvider } from '@/utils/actions/oauth-actions'
@@ -41,8 +41,8 @@ export default function Login() {
       .min(8, zodTranslations('MinPasswordLength'))
       .max(256, zodTranslations('MaxPasswordLength')),
     acceptedTerms: z.boolean().refine((value) => value === true, {
-      message: zodTranslations('AcceptedTerms'),
-    }),
+      message: zodTranslations('AcceptedTerms')
+    })
   })
 
   const loginSchema = z.object({
@@ -51,7 +51,7 @@ export default function Login() {
       .string()
       .trim()
       .min(8, zodTranslations('MinPasswordLength'))
-      .max(256, zodTranslations('MaxPasswordLength')),
+      .max(256, zodTranslations('MaxPasswordLength'))
   })
 
   const formSchema = isRegistering ? registerSchema : loginSchema
@@ -62,8 +62,8 @@ export default function Login() {
       username: '',
       email: '',
       password: '',
-      acceptedTerms: false,
-    },
+      acceptedTerms: false
+    }
   })
   const { handleSubmit } = form
 
@@ -85,14 +85,14 @@ export default function Login() {
       400: 'Invalid E-Mail or password provided.',
       401: 'E-Mail or Password incorrect.',
       409: 'E-Mail already in use.',
-      429: 'Too many requests, please try again later.',
+      429: 'Too many requests, please try again later.'
     }
 
     const signIn = async () => {
       const response = await fetch('/api/user/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: data.email, password: data.password }),
+        body: JSON.stringify({ email: data.email, password: data.password })
       })
       return response.json()
     }

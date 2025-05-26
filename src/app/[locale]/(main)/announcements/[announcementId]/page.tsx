@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { AnnouncementDocumentsType } from '@/utils/types/models'
 
 export const metadata = {
-  title: 'Announcements',
+  title: 'Announcements'
 }
 
 export default async function Page(props: {
@@ -109,7 +109,7 @@ export default async function Page(props: {
               <dd className="mb-4 mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: descriptionSanitized || 'Nothing here yet!',
+                    __html: descriptionSanitized || 'Nothing here yet!'
                   }}
                 />
               </dd>

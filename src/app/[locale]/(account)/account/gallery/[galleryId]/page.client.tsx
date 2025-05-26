@@ -23,7 +23,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
     nsfw: singleGallery?.nsfw,
     createdAt: singleGallery?.$createdAt,
     modifiedAt: singleGallery?.$updatedAt,
-    longText: singleGallery?.longText,
+    longText: singleGallery?.longText
   })
 
   const deleteImage = async () => {
@@ -46,7 +46,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
           databases.deleteDocument('hp_db', 'gallery-images', documentId)
 
           toast.success('Success', {
-            description: 'Image successfully deleted! Sending you back...',
+            description: 'Image successfully deleted! Sending you back...'
           })
           setTimeout(() => {
             router.push('/gallery')
@@ -56,14 +56,14 @@ export default function FetchGallery({ singleGallery, galleryId }) {
           console.error(error)
           Sentry.captureException(error)
           toast.error('Error', {
-            description: "Something went wrong, but don't worry, we are on it!",
+            description: "Something went wrong, but don't worry, we are on it!"
           })
           setIsDeleting(false)
         }
       )
     } catch (error) {
       toast.error('Error', {
-        description: "You encountered an error. But don't worry, we're on it.",
+        description: "You encountered an error. But don't worry, we're on it."
       })
       Sentry.captureException(error)
       setIsDeleting(false)
@@ -78,18 +78,18 @@ export default function FetchGallery({ singleGallery, galleryId }) {
       await databases.updateDocument('hp_db', 'gallery-images', galleryId, {
         name: userData.name,
         longText: userData.longText,
-        nsfw: userData.nsfw,
+        nsfw: userData.nsfw
       })
 
       // Handle response and update state accordingly
     } catch {
       toast.error('Error', {
-        description: "Something went wrong, but don't worry, we are on it!",
+        description: "Something went wrong, but don't worry, we are on it!"
       })
       setIsUploading(false)
     } finally {
       toast.success('Image updated', {
-        description: 'Your image info has been updated successfully!',
+        description: 'Your image info has been updated successfully!'
       })
       setIsUploading(false)
     }
@@ -129,7 +129,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
                 onChange={(e) =>
                   setUserData({
                     ...userData,
-                    name: e.target.value,
+                    name: e.target.value
                   })
                 }
               />
@@ -169,7 +169,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
                 onCheckedChange={(e) =>
                   setUserData({
                     ...userData,
-                    nsfw: e,
+                    nsfw: e
                   })
                 }
               />
@@ -187,7 +187,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
                 onChange={(e) =>
                   setUserData({
                     ...userData,
-                    longText: e.target.value,
+                    longText: e.target.value
                   })
                 }
               />

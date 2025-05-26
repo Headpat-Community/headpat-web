@@ -13,7 +13,7 @@ import {
   MegaphoneIcon,
   PencilIcon,
   RocketIcon,
-  UserSearchIcon,
+  UserSearchIcon
 } from 'lucide-react'
 import * as React from 'react'
 
@@ -23,7 +23,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarHeader,
+  SidebarHeader
 } from '@/components/ui/sidebar'
 import { SiDiscord, SiGithub } from '@icons-pack/react-simple-icons'
 import { useDict } from 'gt-next/client'
@@ -47,98 +47,98 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
         name: pageNames('home'),
         url: '/',
-        icon: HomeIcon,
+        icon: HomeIcon
       },
       {
         name: pageNames('gallery'),
         url: '/gallery',
-        icon: LayoutPanelLeftIcon,
+        icon: LayoutPanelLeftIcon
       },
       {
         name: pageNames('announcements'),
         url: '/announcements',
-        icon: MegaphoneIcon,
+        icon: MegaphoneIcon
       },
       {
         name: pageNames('notifications'),
         url: '/notifications',
-        icon: BellIcon,
+        icon: BellIcon
       },
       {
         name: pageNames('events'),
         url: '/events',
-        icon: CalendarIcon,
+        icon: CalendarIcon
       },
       {
         name: pageNames('map'),
         url: '/map',
-        icon: MapIcon,
+        icon: MapIcon
       },
       {
         name: pageNames('users'),
         url: '/users',
-        icon: UserSearchIcon,
-      },
+        icon: UserSearchIcon
+      }
     ],
     secondMain: [
       {
         name: pageNames('myprofile'),
         url: '/profile',
-        icon: FileIcon,
+        icon: FileIcon
       },
       {
         name: pageNames('communities'),
         url: '/community',
-        icon: HeartHandshakeIcon,
-      },
+        icon: HeartHandshakeIcon
+      }
     ],
     navSecondary: [
       {
         title: 'Discord',
         url: 'https://discord.gg/EaQTEKRg2A',
-        icon: SiDiscord,
+        icon: SiDiscord
       },
       {
         title: 'GitHub',
         url: 'https://github.com/headpat-community/',
-        icon: SiGithub,
-      },
+        icon: SiGithub
+      }
     ],
     thirdMain: [
       {
         name: pageNames('legal'),
         url: '/legal',
-        icon: FileCheckIcon,
+        icon: FileCheckIcon
       },
       {
         name: 'Support',
         url: '/support',
-        icon: BadgeHelpIcon,
+        icon: BadgeHelpIcon
       },
       {
         name: pageNames('changelog'),
         url: '/changelog',
-        icon: PencilIcon,
-      },
+        icon: PencilIcon
+      }
     ],
     teams: [
       {
         name: 'Place',
         activeName: 'Headpat Place',
         logo: getLogo('place'),
-        href: 'https://headpat.place',
+        href: 'https://headpat.place'
       },
       {
         name: 'Space',
         logo: getLogo('space'),
-        href: 'https://headpat.space',
+        href: 'https://headpat.space'
       },
       {
         name: 'Developer',
         logo: getLogo('developer'),
-        href: 'https://headpat.dev',
-      },
-    ],
+        href: 'https://headpat.dev'
+      }
+    ]
   }
 
   return (
