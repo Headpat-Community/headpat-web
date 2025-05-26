@@ -1,4 +1,4 @@
-# The Headpat Website - Next.js 15
+# Headpat.Place - Next.js 15
 
 ## How to contribute
 
@@ -21,6 +21,7 @@ pnpm install
 ### NOTE:
 
 Some pages require API Keys to work. If you require an API Key, please contact Faye at faye@headpat.place.
+In the future, I will setup a docker compose so you can use the backend locally.
 
 #### Then, run the development server:
 

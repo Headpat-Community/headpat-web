@@ -45,3 +45,6 @@ next-env.d.ts
 # Sentry Config File
 .sentryclirc
 .env.sentry-build-plugin
+
+# OpenNext
+.open-next
