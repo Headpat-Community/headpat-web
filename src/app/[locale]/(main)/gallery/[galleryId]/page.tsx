@@ -36,25 +36,25 @@ export async function generateMetadata(props): Promise<Metadata> {
       languages: {
         en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/gallery/${galleryId}`,
         de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/gallery/${galleryId}`,
-        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/gallery/${galleryId}`,
-      },
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/gallery/${galleryId}`
+      }
     },
     openGraph: {
       title: gallery.documents[0].name,
       description: gallery.documents[0].longText,
       siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
       locale: locale,
-      type: 'website',
+      type: 'website'
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN)
   }
 
   if (!isNsfw) {
     metadata.openGraph.images = [
       {
         url: getImageUrl(galleryId),
-        alt: gallery.documents[0].name,
-      },
+        alt: gallery.documents[0].name
+      }
     ]
   }
 

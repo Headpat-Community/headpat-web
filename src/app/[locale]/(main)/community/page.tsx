@@ -18,17 +18,17 @@ export async function generateMetadata(props) {
       languages: {
         en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/community`,
         de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/community`,
-        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/community`,
-      },
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/community`
+      }
     },
     openGraph: {
       title: meta('title'),
       description: meta('description'),
       siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
       locale: locale,
-      type: 'website',
+      type: 'website'
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN)
   }
 }
 

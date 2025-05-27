@@ -8,9 +8,9 @@ export async function generateMetadata() {
       "The page you're looking for doesn't exist, has been moved or you have no access to it.",
     openGraph: {
       title: 'Page Not Found',
-      type: 'website',
+      type: 'website'
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN)
   }
 }
 

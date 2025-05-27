@@ -3,13 +3,13 @@ import {
   FormControl,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@/components/ui/form'
 import { CalendarIcon, Info } from 'lucide-react'
 import {
   HoverCard,
   HoverCardContent,
-  HoverCardTrigger,
+  HoverCardTrigger
 } from '@/components/ui/hover-card'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Button } from '../ui/button'
@@ -33,7 +33,7 @@ const DatetimeField: React.FC<DatetimeFieldProps> = ({
   fromYear,
   toYear,
   captionLayout,
-  mode = 'single',
+  mode = 'single'
 }) => {
   return (
     <FormItem>

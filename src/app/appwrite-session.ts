@@ -9,7 +9,7 @@ import {
   Messaging,
   Locale,
   Avatars,
-  Users,
+  Users
 } from 'node-appwrite'
 import { headers } from 'next/headers'
 
@@ -54,7 +54,7 @@ export async function createSessionServerClient() {
     },
     get avatars() {
       return new Avatars(client)
-    },
+    }
   }
 }
 
@@ -95,7 +95,7 @@ export async function createSessionClient(request: any) {
     },
     get avatars() {
       return new Avatars(client)
-    },
+    }
   }
 }
 
@@ -132,6 +132,6 @@ export async function createAdminClient() {
     },
     get users() {
       return new Users(client)
-    },
+    }
   }
 }

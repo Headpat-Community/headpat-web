@@ -12,7 +12,7 @@ export default function ClientPage() {
   const {
     data: users,
     isLoading,
-    isError,
+    isError
   } = useQuery<UserDataDocumentsType[]>({
     queryKey: ['users'],
     queryFn: async () => {
@@ -31,7 +31,7 @@ export default function ClientPage() {
     staleTime: 300 * 1000, // 5 minutes
     refetchOnMount: true,
     refetchOnWindowFocus: true,
-    refetchOnReconnect: true,
+    refetchOnReconnect: true
   })
 
   if (isLoading) {

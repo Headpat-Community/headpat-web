@@ -3,7 +3,7 @@ import {
   useContext,
   useEffect,
   useImperativeHandle,
-  useRef,
+  useRef
 } from 'react'
 
 import { GoogleMapsContext, useMapsLibrary } from '@vis.gl/react-google-maps'
@@ -51,7 +51,7 @@ function usePolygon(props: PolygonProps) {
     onDragStart,
     onDragEnd,
     onMouseOver,
-    onMouseOut,
+    onMouseOut
   })
 
   const geometryLibrary = useMapsLibrary('geometry')
@@ -115,7 +115,7 @@ function usePolygon(props: PolygonProps) {
       ['dragstart', 'onDragStart'],
       ['dragend', 'onDragEnd'],
       ['mouseover', 'onMouseOver'],
-      ['mouseout', 'onMouseOut'],
+      ['mouseout', 'onMouseOut']
     ].forEach(([eventName, eventCallback]) => {
       gme.addListener(polygon, eventName, (e: google.maps.MapMouseEvent) => {
         const callback = callbacks.current[eventCallback]

@@ -5,7 +5,7 @@ import {
   LineChart,
   Menu,
   Package,
-  Users,
+  Users
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -15,7 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { ThemeToggle } from '@/components/ThemeToggle'

@@ -3,7 +3,7 @@ import {
   useContext,
   useEffect,
   useImperativeHandle,
-  useRef,
+  useRef
 } from 'react'
 
 import type { Ref } from 'react'
@@ -48,7 +48,7 @@ function useCircle(props: CircleProps) {
     onMouseOver,
     onMouseOut,
     onRadiusChanged,
-    onCenterChanged,
+    onCenterChanged
   })
 
   const circleRef = useRef<google.maps.Circle | null>(null)
@@ -111,7 +111,7 @@ function useCircle(props: CircleProps) {
       ['dragstart', 'onDragStart'],
       ['dragend', 'onDragEnd'],
       ['mouseover', 'onMouseOver'],
-      ['mouseout', 'onMouseOut'],
+      ['mouseout', 'onMouseOut']
     ].forEach(([eventName, eventCallback]) => {
       gme.addListener(circle, eventName, (e: google.maps.MapMouseEvent) => {
         const callback = callbacks.current[eventCallback]

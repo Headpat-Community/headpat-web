@@ -4,12 +4,11 @@ import { withGTConfig } from 'gt-next/config'
 import { SentryBuildOptions, withSentryConfig } from '@sentry/nextjs'
 
 const nextConfig: NextConfig = {
-  //output: 'standalone', // for kubernetes deployment
   reactStrictMode: true,
   poweredByHeader: false,
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   compiler: {
-    styledComponents: true,
+    styledComponents: true
   },
   turbopack: {
     resolveExtensions: [
@@ -21,11 +20,11 @@ const nextConfig: NextConfig = {
       '.css',
       '.scss',
       '.md',
-      '.mdx',
-    ],
+      '.mdx'
+    ]
   },
   experimental: {
-    mdxRs: true,
+    mdxRs: true
   },
   images: {
     deviceSizes: [320, 420, 768, 1024, 1200],
@@ -33,29 +32,29 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '*.headpat.place',
+        hostname: '*.headpat.place'
       },
       {
         protocol: 'https',
-        hostname: '*.headpat.space',
+        hostname: '*.headpat.space'
       },
       {
         protocol: 'https',
-        hostname: 'api.headpat.space',
-      },
-    ],
+        hostname: 'api.headpat.space'
+      }
+    ]
   },
-  allowedDevOrigins: ['localhost', 'dev.headpat.place'],
+  allowedDevOrigins: ['localhost', 'dev.headpat.place', 'mac.headpat.place'],
   async rewrites() {
     return [
       {
         source: '/register',
-        destination: '/login',
+        destination: '/login'
       },
       {
         source: '/sitemap.xml',
-        destination: '/api/sitemap',
-      },
+        destination: '/api/sitemap'
+      }
     ]
   },
   async headers() {
@@ -65,12 +64,12 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'x-powered-by',
-            value: 'Headpat',
-          },
-        ],
-      },
+            value: 'Headpat'
+          }
+        ]
+      }
     ]
-  },
+  }
 }
 
 const sentryOptions: SentryBuildOptions = {
@@ -90,12 +89,12 @@ const sentryOptions: SentryBuildOptions = {
   widenClientFileUpload: true,
 
   sourcemaps: {
-    deleteSourcemapsAfterUpload: true,
+    deleteSourcemapsAfterUpload: true
   },
 
   // Automatically annotate React components to show their full name in breadcrumbs and session replay
   reactComponentAnnotation: {
-    enabled: true,
+    enabled: true
   },
 
   // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
@@ -111,7 +110,7 @@ const sentryOptions: SentryBuildOptions = {
   // See the following for more information:
   // https://docs.sentry.io/product/crons/
   // https://vercel.com/docs/cron-jobs
-  automaticVercelMonitors: false,
+  automaticVercelMonitors: false
 }
 
 const sentryNextConfig = withSentryConfig(nextConfig, sentryOptions)
@@ -124,7 +123,7 @@ const combinedConfig = withGTConfig(sentryNextConfig, {
   defaultLocale: 'en',
   locales: ['nl', 'de', 'en'],
   runtimeUrl: null,
-  loadDictionaryPath: './src/loadDictionary.ts',
+  loadDictionaryPath: './src/loadDictionary.ts'
 })
 
 export default withMDX(combinedConfig)

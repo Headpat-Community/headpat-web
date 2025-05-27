@@ -7,7 +7,7 @@ import {
   MailIcon,
   ShieldAlertIcon,
   UserMinusIcon,
-  UserPlusIcon,
+  UserPlusIcon
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -18,13 +18,13 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
 import { blockUser } from '@/utils/actions/user/blockUser'
 import {
   AccountPrefs,
   UserDataDocumentsType,
-  UserPrefsDocumentsType,
+  UserPrefsDocumentsType
 } from '@/utils/types/models'
 
 const ReportUserModal = React.lazy(() => import('./moderation/ReportUserModal'))
@@ -44,7 +44,7 @@ const UserActions = ({
   setUserPrefs,
   isFollowing,
   setIsFollowing,
-  current,
+  current
 }: UserActionsProps) => {
   const [moderationModalOpen, setModerationModalOpen] = useState(false)
   const [reportUserModalOpen, setReportUserModalOpen] = useState(false)
@@ -76,7 +76,7 @@ const UserActions = ({
     setModerationModalOpen(false)
     blockUser({
       userId: userData?.$id,
-      isBlocked: !userPrefs?.isBlocked,
+      isBlocked: !userPrefs?.isBlocked
     }).then((response) => {
       setUserPrefs(response)
       toast.success(

@@ -3,7 +3,7 @@ import React from 'react'
 
 export const Highlight = ({
   children,
-  className,
+  className
 }: {
   children: React.ReactNode
   className?: string

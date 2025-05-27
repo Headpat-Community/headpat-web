@@ -19,17 +19,17 @@ export async function generateMetadata(props) {
       languages: {
         en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/changelog`,
         de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/changelog`,
-        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/changelog`,
-      },
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/changelog`
+      }
     },
     openGraph: {
       title: meta('title'),
       description: meta('description'),
       siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
       locale: locale,
-      type: 'website',
+      type: 'website'
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN)
   }
 }
 

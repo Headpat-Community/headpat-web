@@ -10,7 +10,7 @@ import { ImageUploader } from '../gallery/upload/ImageUploader'
 export default function UploadBanner({
   isUploading,
   setIsUploading,
-  communityData,
+  communityData
 }) {
   const getBannerImageUrl = (bannerId: string) => {
     if (!bannerId) return undefined
@@ -54,7 +54,7 @@ export default function UploadBanner({
       }
       // Update the community's bannerId
       await databases.updateDocument('hp_db', 'community', communityData.$id, {
-        bannerId: fileId,
+        bannerId: fileId
       })
       toast.success('Your banner has been uploaded successfully.')
       // Post-upload function call

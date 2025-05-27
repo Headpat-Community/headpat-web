@@ -19,8 +19,8 @@ export async function generateMetadata({ params }) {
       description: meta('description'),
       siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
       locale: paramsResponse.locale,
-      type: 'website',
-    },
+      type: 'website'
+    }
   }
 }
 

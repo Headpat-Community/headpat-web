@@ -27,28 +27,28 @@ export async function generateMetadata(props: {
     title: userData.displayName || userData?.profileUrl,
     description: sanitizedBio || '',
     icons: {
-      icon: getAvatarImageUrlView(userData.avatarId),
+      icon: getAvatarImageUrlView(userData.avatarId)
     },
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/user/${profileUrl}`,
       languages: {
         en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/user/${profileUrl}`,
         de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/user/${profileUrl}`,
-        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/user/${profileUrl}`,
-      },
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/user/${profileUrl}`
+      }
     },
     openGraph: {
       title: userData.displayName || userData?.profileUrl,
       description: sanitizedBio || '',
       images: getAvatarImageUrlView(userData.avatarId),
       locale: locale,
-      type: 'profile',
+      type: 'profile'
     },
     robots: {
       index: false,
-      follow: false,
+      follow: false
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN)
   }
 }
 

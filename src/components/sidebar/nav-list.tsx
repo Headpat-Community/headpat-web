@@ -7,12 +7,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
+  useSidebar
 } from '@/components/ui/sidebar'
 import Link from 'next/link'
 
 export function NavList({
-  projects,
+  projects
 }: {
   projects: {
     name: string

@@ -13,8 +13,8 @@ Sentry.init({
     Sentry.replayIntegration({
       // Additional Replay configuration goes in here, for example:
       maskAllText: true,
-      blockAllMedia: true,
-    }),
+      blockAllMedia: true
+    })
   ],
 
   // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
@@ -34,7 +34,7 @@ Sentry.init({
   debug: false,
 
   // Spotlight (https://spotlightjs.com)
-  spotlight: process.env.SENTRY_SPOTLIGHT === 'true',
+  spotlight: process.env.SENTRY_SPOTLIGHT === 'true'
 })
 
-export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart

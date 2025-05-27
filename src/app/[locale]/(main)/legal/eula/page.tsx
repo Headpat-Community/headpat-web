@@ -1,7 +1,7 @@
 import Eula from './eula.mdx'
 
 export const metadata = {
-  title: 'EULA',
+  title: 'EULA'
 }
 
 export default function Page() {

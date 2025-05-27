@@ -19,13 +19,13 @@ const Toaster = ({ ...props }: ToasterProps) => {
           success:
             'border border-primary dark:text-foreground text-background bg-linear-to-r from-primary via-black to-black items-center',
           loading:
-            'border dark:border-muted dark:text-foreground text-background bg-linear-to-r from-loading via-black to-black items-center',
-        },
+            'border dark:border-muted dark:text-foreground text-background bg-linear-to-r from-loading via-black to-black items-center'
+        }
       }}
       icons={{
         error: <AlertCircle className="size-4" />,
         success: <CheckCircle className="size-4" />,
-        loading: <Loader2 className="size-4 animate-spin" />,
+        loading: <Loader2 className="size-4 animate-spin" />
       }}
       {...props}
     />

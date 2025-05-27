@@ -11,7 +11,7 @@ export default function UploadAvatar({
   isUploading,
   setIsUploading,
   userId,
-  userData,
+  userData
 }) {
   // Helper to get avatar image URL
   const getAvatarImageUrl = (avatarId: string) => {
@@ -39,7 +39,7 @@ export default function UploadAvatar({
       }
       // Update the user's avatarId
       await databases.updateDocument('hp_db', 'userdata', userId, {
-        avatarId: fileId,
+        avatarId: fileId
       })
       toast.success('Your avatar has been uploaded successfully.')
     } catch (error) {

@@ -19,9 +19,9 @@ export async function POST(request) {
           request.headers.get('Content-Type') || 'multipart/form-data',
         'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
         'X-Appwrite-Response-Format': '1.4.0',
-        Cookie: cookieHeader,
+        Cookie: cookieHeader
       },
-      body: requestData,
+      body: requestData
     })
 
     if (!uploadImage.ok) {

@@ -17,17 +17,17 @@ export async function generateMetadata(props) {
       languages: {
         en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/legal`,
         de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/legal`,
-        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/legal`,
-      },
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/legal`
+      }
     },
     openGraph: {
       title: meta('title'),
       description: meta('description'),
       siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
       locale: locale,
-      type: 'website',
+      type: 'website'
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN)
   }
 }
 

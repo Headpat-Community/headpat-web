@@ -1,5 +1,5 @@
 export default function ErrorMessage({
-  attentionError,
+  attentionError
 }: {
   attentionError: string
 }) {

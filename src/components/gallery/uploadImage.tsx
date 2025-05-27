@@ -24,7 +24,7 @@ export default function UploadPage({ userId }: { userId: string }) {
   const [data, setData] = useState({
     name: '',
     longText: '',
-    nsfw: false,
+    nsfw: false
   })
 
   const maxSizeInBytes = 8 * 1024 * 1024 // 8 MB
@@ -94,7 +94,7 @@ export default function UploadPage({ userId }: { userId: string }) {
           useWebWorker: true,
           onProgress: (progress) => {
             setProgress(progress)
-          },
+          }
         })
 
         // Then check the size
@@ -117,7 +117,7 @@ export default function UploadPage({ userId }: { userId: string }) {
         // Convert Blob back to a File object
         const newFile = new File([finalFile], file.name, {
           type: finalFile.type,
-          lastModified: file.lastModified,
+          lastModified: file.lastModified
         })
 
         // Generate blurhash for the image
@@ -166,7 +166,7 @@ export default function UploadPage({ userId }: { userId: string }) {
           useWebWorker: true,
           onProgress: (progress) => {
             setProgress(progress)
-          },
+          }
         })
 
         // Then check the size
@@ -189,7 +189,7 @@ export default function UploadPage({ userId }: { userId: string }) {
         // Convert Blob back to a File object
         const newFile = new File([finalFile], file.name, {
           type: finalFile.type,
-          lastModified: file.lastModified,
+          lastModified: file.lastModified
         })
 
         // Generate blurhash for the image
@@ -243,7 +243,7 @@ export default function UploadPage({ userId }: { userId: string }) {
               galleryId: fileDataResponse.$id,
               mimeType: fileDataResponse.mimeType,
               userId: userId,
-              blurHash: blurHash, // Add blurhash to the document
+              blurHash: blurHash // Add blurhash to the document
             }
           )
 

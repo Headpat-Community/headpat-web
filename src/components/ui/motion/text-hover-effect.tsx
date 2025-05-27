@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 
 export const TextHoverEffect = ({
   text,
-  duration,
+  duration
 }: {
   text: string
   duration?: number
@@ -22,7 +22,7 @@ export const TextHoverEffect = ({
       const cyPercentage = ((cursor.y - svgRect.top) / svgRect.height) * 100
       setMaskPosition({
         cx: `${cxPercentage}%`,
-        cy: `${cyPercentage}%`,
+        cy: `${cyPercentage}%`
       })
     }
   }, [cursor])
@@ -107,11 +107,11 @@ export const TextHoverEffect = ({
         initial={{ strokeDashoffset: 1000, strokeDasharray: 1000 }}
         animate={{
           strokeDashoffset: 0,
-          strokeDasharray: 1000,
+          strokeDasharray: 1000
         }}
         transition={{
           duration: 4,
-          ease: 'easeInOut',
+          ease: 'easeInOut'
         }}
       >
         {text}

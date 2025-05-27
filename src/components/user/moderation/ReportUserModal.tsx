@@ -6,7 +6,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from '@/components/ui/alert-dialog'
 import React, { useState } from 'react'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -19,7 +19,7 @@ import { UserDataDocumentsType } from '@/utils/types/models'
 export default function ReportUserModal({
   open,
   setOpen,
-  user,
+  user
 }: {
   open: boolean
   setOpen: (open: boolean) => void
@@ -32,12 +32,12 @@ export default function ReportUserModal({
     try {
       const data = await reportUserProfile({
         reportedUserId: user.$id,
-        reason: reportReason === 'Other' ? otherReason : reportReason,
+        reason: reportReason === 'Other' ? otherReason : reportReason
       })
       setOpen(false)
       if (data.type === 'report_success') {
         toast.success('Success', {
-          description: 'Thanks for keeping the community safe!',
+          description: 'Thanks for keeping the community safe!'
         })
         setReportReason('')
         setOtherReason('')
@@ -117,7 +117,7 @@ export default function ReportUserModal({
 
 function RadioGroupItemWithLabel({
   value,
-  onLabelPress,
+  onLabelPress
 }: {
   value: string
   onLabelPress: () => void

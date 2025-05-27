@@ -10,7 +10,7 @@ type ToastHandlingProps = {
 
 export function toastHandling({
   response,
-  category,
+  category
 }: ToastHandlingProps): void {
   switch (category) {
     case 'account':

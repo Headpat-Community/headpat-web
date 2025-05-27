@@ -29,7 +29,7 @@ const ResetPassword = () => {
 
     const body = {
       userId: userId,
-      secret: code,
+      secret: code
     }
 
     const response = await emailVerification(body)

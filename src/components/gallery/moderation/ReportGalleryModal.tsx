@@ -9,7 +9,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from '@/components/ui/alert-dialog'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Input } from '@/components/ui/input'
@@ -20,7 +20,7 @@ import { GalleryDocumentsType } from '@/utils/types/models'
 export default function ReportGalleryModal({
   open,
   setOpen,
-  image,
+  image
 }: {
   open: boolean
   setOpen: (open: boolean) => void
@@ -33,7 +33,7 @@ export default function ReportGalleryModal({
     try {
       const data = await reportGalleryImage({
         reportedGalleryId: image.$id,
-        reason: reportReason === 'Other' ? otherReason : reportReason,
+        reason: reportReason === 'Other' ? otherReason : reportReason
       })
 
       setOpen(false)
@@ -118,7 +118,7 @@ export default function ReportGalleryModal({
 
 function RadioGroupItemWithLabel({
   value,
-  onLabelPress,
+  onLabelPress
 }: {
   value: string
   onLabelPress: () => void

@@ -8,7 +8,7 @@ export const Card = React.memo(
     card,
     index,
     hovered,
-    setHovered,
+    setHovered
   }: {
     card: any
     index: number

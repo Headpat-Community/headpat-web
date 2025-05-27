@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 import { GalleryDocumentsType } from '@/utils/types/models'
 
 export const metadata = {
-  title: 'Account Gallery',
+  title: 'Account Gallery'
 }
 
 export default async function AccountSingleGalleryPage(props) {

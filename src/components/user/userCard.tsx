@@ -1,7 +1,7 @@
 import {
   HoverCard,
   HoverCardContent,
-  HoverCardTrigger,
+  HoverCardTrigger
 } from '@/components/ui/hover-card'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -14,7 +14,7 @@ import Link from 'next/link'
 export default function UserCard({
   user,
   isChild,
-  children,
+  children
 }: {
   user: UserDataDocumentsType
   isChild?: boolean

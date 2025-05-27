@@ -14,7 +14,7 @@ import Image from 'next/image'
 import NoAccessNsfw from '@/components/static/noAccessNsfw'
 import {
   GalleryDocumentsType,
-  UserDataDocumentsType,
+  UserDataDocumentsType
 } from '@/utils/types/models'
 import { decode } from 'blurhash'
 import { captureException } from '@sentry/nextjs'
@@ -37,7 +37,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
           false,
           `/gallery/prefs?galleryId=${galleryId}`,
           ExecutionMethod.GET
-        ),
+        )
       ])
       // Step 2: Fetch user data using userId from image
       const userData: UserDataDocumentsType = await databases.getDocument(
@@ -205,7 +205,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                       month: '2-digit',
                                       year: 'numeric',
                                       hour: '2-digit',
-                                      minute: '2-digit',
+                                      minute: '2-digit'
                                     }
                                   )
                                 ) : (
@@ -226,7 +226,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                       month: '2-digit',
                                       year: 'numeric',
                                       hour: '2-digit',
-                                      minute: '2-digit',
+                                      minute: '2-digit'
                                     }
                                   )
                                 ) : (
@@ -260,7 +260,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                     dangerouslySetInnerHTML={{
                                       __html:
                                         descriptionSanitized ||
-                                        'No description provided.',
+                                        'No description provided.'
                                     }}
                                   />
                                 ) : (

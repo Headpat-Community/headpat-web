@@ -8,7 +8,7 @@ import {
   Functions,
   Messaging,
   Locale,
-  Avatars,
+  Avatars
 } from 'appwrite'
 
 export const client = new Client()

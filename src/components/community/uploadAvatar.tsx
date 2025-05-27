@@ -10,7 +10,7 @@ import { CommunityDocumentsType } from '@/utils/types/models'
 export default function UploadAvatar({
   isUploading,
   setIsUploading,
-  communityData,
+  communityData
 }) {
   const getAvatarImageUrl = (avatarId: string) => {
     if (!avatarId) return undefined
@@ -54,7 +54,7 @@ export default function UploadAvatar({
       }
       // Update the community's avatarId
       await databases.updateDocument('hp_db', 'community', communityData.$id, {
-        avatarId: fileId,
+        avatarId: fileId
       })
       toast.success('Your avatar has been uploaded successfully.')
       // Post-upload function call

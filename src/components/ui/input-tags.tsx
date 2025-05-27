@@ -24,7 +24,7 @@ const InputTags = React.forwardRef<HTMLInputElement, InputTagsProps>(
       if (pendingDataPoint.includes(',')) {
         const newDataPoints = new Set([
           ...value,
-          ...pendingDataPoint.split(',').map((chunk) => chunk.trim()),
+          ...pendingDataPoint.split(',').map((chunk) => chunk.trim())
         ])
         onChange(Array.from(newDataPoints))
         setPendingDataPoint('')

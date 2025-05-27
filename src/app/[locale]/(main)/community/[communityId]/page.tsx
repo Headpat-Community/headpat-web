@@ -25,13 +25,13 @@ export async function generateMetadata(props: {
     title: community?.name || 'Community',
     description: community?.description,
     icons: {
-      icon: avatarUrl,
+      icon: avatarUrl
     },
     openGraph: {
       title: community?.name || 'Community',
       description: community?.description,
-      images: avatarUrl,
-    },
+      images: avatarUrl
+    }
   }
 }
 

@@ -15,7 +15,7 @@ export async function GET() {
         url: `${process.env.NEXT_PUBLIC_DOMAIN}/user/${user.profileUrl}`,
         lastModified: user.$updatedAt,
         changeFrequency: 'weekly',
-        priority: 0.5,
+        priority: 0.5
       })
     )
 
@@ -28,21 +28,21 @@ export async function GET() {
         url: `${process.env.NEXT_PUBLIC_DOMAIN}`,
         lastModified: currentYear + '-01-01T00:00:00.000+00:00',
         changeFrequency: 'yearly',
-        priority: 1,
+        priority: 1
       },
       {
         url: `${process.env.NEXT_PUBLIC_DOMAIN}/gallery`,
         lastModified: currentYear + '-01-01T00:00:00.000+00:00',
         changeFrequency: 'yearly',
-        priority: 1,
+        priority: 1
       },
       {
         url: `${process.env.NEXT_PUBLIC_DOMAIN}/pawcraft`,
         lastModified: currentYear + '-01-01T00:00:00.000+00:00',
         changeFrequency: 'yearly',
-        priority: 1,
+        priority: 1
       },
-      ...productsMapping,
+      ...productsMapping
     ]
 
     for (const mapping of mappings) {
@@ -68,7 +68,7 @@ export async function GET() {
 
     return new NextResponse(sitemap, {
       status: 200,
-      headers: { 'Content-Type': 'text/xml' },
+      headers: { 'Content-Type': 'text/xml' }
     })
   } catch (error) {
     return NextResponse.json(error.message, { status: 500 })

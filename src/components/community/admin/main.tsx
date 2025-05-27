@@ -30,13 +30,13 @@ const formSchema = z.object({
     .trim()
     .max(24, 'Status must be 24 characters or less')
     .nullable()
-    .transform((val) => (val === '' ? null : val)),
+    .transform((val) => (val === '' ? null : val))
 })
 
 type FormValues = z.infer<typeof formSchema>
 
 export default function CommunityAdminMain({
-  community,
+  community
 }: {
   community: CommunityDocumentsType
 }) {
@@ -50,8 +50,8 @@ export default function CommunityAdminMain({
     defaultValues: {
       name: '',
       description: '',
-      status: '',
-    },
+      status: ''
+    }
   })
 
   const getCommunity = useCallback(async () => {
@@ -65,7 +65,7 @@ export default function CommunityAdminMain({
     form.reset({
       name: data.name,
       description: data.description,
-      status: data.status,
+      status: data.status
     })
   }, [community.$id, form])
 
@@ -79,7 +79,7 @@ export default function CommunityAdminMain({
       const dataToUpdate = {
         name: values.name,
         description: values.description || null,
-        status: values.status || null,
+        status: values.status || null
       }
       await databases.updateDocument(
         'hp_db',

@@ -6,7 +6,7 @@ export default function PageLayout({
   children,
   title,
   middleComponent = null,
-  className = '',
+  className = ''
 }) {
   return (
     <>

@@ -11,7 +11,7 @@ import CommunityAdminSettings from '@/components/community/admin/settings'
 import { CommunityDocumentsType } from '@/utils/types/models'
 
 export default function PageClient({
-  community,
+  community
 }: {
   community: CommunityDocumentsType
 }) {

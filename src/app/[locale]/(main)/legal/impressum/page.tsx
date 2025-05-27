@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Impressum',
+  title: 'Impressum'
 }
 
 export default function ImpressumPage() {

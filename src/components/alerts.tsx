@@ -21,7 +21,7 @@ export function ErrorMessage({ attentionError }: { attentionError: string }) {
 }
 
 export function SuccessMessage({
-  attentionSuccess,
+  attentionSuccess
 }: {
   attentionSuccess: string
 }) {

@@ -10,7 +10,7 @@ import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import {
   getAvatarImageUrlView,
-  getBannerImageUrlPreview,
+  getBannerImageUrlPreview
 } from '@/components/getStorageItem'
 import { cn } from '@/lib/utils'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
@@ -20,14 +20,14 @@ import {
   SiFuraffinity,
   SiTelegram,
   SiTwitch,
-  SiX,
+  SiX
 } from '@icons-pack/react-simple-icons'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/components/ui/card'
 import sanitizeHtml from 'sanitize-html'
 import { UserProfileDocumentsType } from '@/utils/types/models'
@@ -100,13 +100,13 @@ export default function PageClient({ userId }: { userId: string }) {
           databases.getDocument('hp_db', 'userdata', userId),
           databases.listDocuments('hp_db', 'followers', [
             Query.equal('followerId', userId),
-            Query.limit(1),
+            Query.limit(1)
           ]),
           databases.listDocuments('hp_db', 'followers', [
             Query.equal('userId', userId),
-            Query.limit(1),
+            Query.limit(1)
           ]),
-          databases.getDocument('hp_db', 'userprefs', userId).catch(() => null),
+          databases.getDocument('hp_db', 'userprefs', userId).catch(() => null)
         ]
 
         // Only add isFollowingResponse if user is logged in
@@ -118,8 +118,8 @@ export default function PageClient({ userId }: { userId: string }) {
             databases.listDocuments('hp_db', 'followers', [
               Query.and([
                 Query.equal('userId', current.$id),
-                Query.equal('followerId', userId),
-              ]),
+                Query.equal('followerId', userId)
+              ])
             ])
           )
         }
@@ -133,7 +133,7 @@ export default function PageClient({ userId }: { userId: string }) {
           followers,
           following,
           maybeIsFollowingResponse,
-          prefs,
+          prefs
         ] = results
 
         if (current?.$id) {
@@ -148,7 +148,7 @@ export default function PageClient({ userId }: { userId: string }) {
           followersCount: followers.total,
           followingCount: following.total,
           prefs: prefs,
-          isFollowing,
+          isFollowing
         }
 
         return combinedData
@@ -162,7 +162,7 @@ export default function PageClient({ userId }: { userId: string }) {
     staleTime: 300 * 1000, // 5 minutes
     refetchOnMount: true,
     refetchOnWindowFocus: true,
-    refetchOnReconnect: true,
+    refetchOnReconnect: true
   })
 
   if (isLoading || !userData) {
@@ -228,7 +228,7 @@ export default function PageClient({ userId }: { userId: string }) {
                   userData.furaffinityname ||
                   userData.X_name ||
                   userData.twitchname
-                ),
+                )
               })}
               fill={true}
               priority={true}
@@ -389,7 +389,7 @@ export default function PageClient({ userId }: { userId: string }) {
               <div className={'flex flex-wrap items-center'}>
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: bioWithLineBreaks || 'Nothing here yet!',
+                    __html: bioWithLineBreaks || 'Nothing here yet!'
                   }}
                 />
               </div>

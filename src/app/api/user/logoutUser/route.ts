@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
       secure: true,
       httpOnly: true,
-      expires: new Date(0),
+      expires: new Date(0)
     })
 
     if (redirect) {

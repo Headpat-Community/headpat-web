@@ -6,7 +6,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from '@/components/ui/alert-dialog'
 import React, { useState } from 'react'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -20,7 +20,7 @@ import { MessagesDocumentsType } from '@/utils/types/models'
 export default function ReportMessageModal({
   open,
   setOpen,
-  message,
+  message
 }: {
   open: boolean
   setOpen: (open: boolean) => void
@@ -35,7 +35,7 @@ export default function ReportMessageModal({
         reportedMessageId: message.$id,
         conversationId: message.conversationId,
         message: message.body,
-        reason: reportReason === 'Other' ? otherReason : reportReason,
+        reason: reportReason === 'Other' ? otherReason : reportReason
       }
       const data = await functions.createExecution(
         'moderation-endpoints',
@@ -49,7 +49,7 @@ export default function ReportMessageModal({
       setOpen(false)
       if (response.type === 'report_success') {
         toast.success('Success', {
-          description: 'Thanks for keeping the community safe!',
+          description: 'Thanks for keeping the community safe!'
         })
         setReportReason('')
         setOtherReason('')
@@ -143,7 +143,7 @@ export default function ReportMessageModal({
 
 function RadioGroupItemWithLabel({
   value,
-  onLabelPress,
+  onLabelPress
 }: {
   value: string
   onLabelPress: () => void

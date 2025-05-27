@@ -16,23 +16,23 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTrigger,
+  AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
 import { useRouter } from 'next/navigation'
 import { ExecutionMethod } from 'node-appwrite'
 import {
   CommunityDocumentsType,
-  CommunitySettingsDocumentsType,
+  CommunitySettingsDocumentsType
 } from '@/utils/types/models'
 
 const communitySchema = z.object({
   isFindable: z.boolean(),
   hasPublicPage: z.boolean(),
-  nsfw: z.boolean(),
+  nsfw: z.boolean()
 })
 
 export default function CommunityAdminSettings({
-  community,
+  community
 }: {
   community: CommunityDocumentsType
 }) {
@@ -74,12 +74,12 @@ export default function CommunityAdminSettings({
         {
           isFindable: communitySettings.isFindable,
           hasPublicPage: communitySettings.hasPublicPage,
-          nsfw: communitySettings.nsfw,
+          nsfw: communitySettings.nsfw
         }
       )
 
       await databases.updateDocument('hp_db', 'community', community.$id, {
-        communitySettings: 'headpat-official',
+        communitySettings: 'headpat-official'
       })
       toast.success('Community settings updated successfully.')
     } catch (error) {
@@ -152,7 +152,7 @@ export default function CommunityAdminSettings({
                   onCheckedChange={() =>
                     setCommunitySettings((prev) => ({
                       ...prev,
-                      isFindable: !prev.isFindable,
+                      isFindable: !prev.isFindable
                     }))
                   }
                 />
@@ -161,7 +161,7 @@ export default function CommunityAdminSettings({
                   onClick={() => {
                     setCommunitySettings((prev) => ({
                       ...prev,
-                      isFindable: !prev.isFindable,
+                      isFindable: !prev.isFindable
                     }))
                   }}
                 >
@@ -176,7 +176,7 @@ export default function CommunityAdminSettings({
                   onCheckedChange={() =>
                     setCommunitySettings((prev) => ({
                       ...prev,
-                      hasPublicPage: !prev.hasPublicPage,
+                      hasPublicPage: !prev.hasPublicPage
                     }))
                   }
                 />
@@ -185,7 +185,7 @@ export default function CommunityAdminSettings({
                   onClick={() => {
                     setCommunitySettings((prev) => ({
                       ...prev,
-                      hasPublicPage: !prev.hasPublicPage,
+                      hasPublicPage: !prev.hasPublicPage
                     }))
                   }}
                 >
@@ -200,7 +200,7 @@ export default function CommunityAdminSettings({
                   onCheckedChange={() =>
                     setCommunitySettings((prev) => ({
                       ...prev,
-                      nsfw: !prev.nsfw,
+                      nsfw: !prev.nsfw
                     }))
                   }
                 />
@@ -209,7 +209,7 @@ export default function CommunityAdminSettings({
                   onClick={() => {
                     setCommunitySettings((prev) => ({
                       ...prev,
-                      nsfw: !prev.nsfw,
+                      nsfw: !prev.nsfw
                     }))
                   }}
                 >

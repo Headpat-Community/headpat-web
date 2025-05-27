@@ -8,9 +8,9 @@ export const metadata = {
     languages: {
       en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/forgot-password`,
       de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/forgot-password`,
-      nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/forgot-password`,
-    },
-  },
+      nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/forgot-password`
+    }
+  }
 }
 
 export default async function Page() {
