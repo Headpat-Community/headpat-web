@@ -115,72 +115,72 @@ export interface UserDataDocumentsType extends Models.Document {
   /**
    * The avatar ID of the user.
    */
-  avatarId: string | null
+  avatarId?: string | null
   /**
    * The banner ID of the user.
    */
-  profileBannerId: string | null
+  profileBannerId?: string | null
   /**
    * The user's status.
    */
-  status: string | null
+  status?: string | null
   /**
    * The user's display name.
    */
-  displayName: string
+  displayName?: string
   /**
    * The user's bio.
    */
-  bio: string | null
+  bio?: string | null
   /**
    * The user's birthday.
    * @example '2000-01-01T00:00:00:000Z'
    */
-  birthday: string | null
+  birthday?: string | null
   /**
    * The user's profile URL.
    */
-  profileUrl: string
+  profileUrl?: string
   /**
    * The user's pronouns.
    */
-  pronouns: string | null
+  pronouns?: string | null
   /**
    * The user's discord username. (Not the ID)
    */
-  discordname: string | null
+  discordname?: string | null
   /**
    * The user's telegram name.
    */
-  telegramname: string | null
+  telegramname?: string | null
   /**
    * The user's furaffinity name.
    */
-  furaffinityname: string | null
+  furaffinityname?: string | null
   /**
    * The user's x/twitter name.
    */
-  X_name: string | null
+  X_name?: string | null
   /**
    * The user's twitch name.
    */
-  twitchname: string | null
+  twitchname?: string | null
   /**
    * The user's location.
    */
-  location: string | null
+  location?: string | null
   /**
    * The user's badges.
    */
-  badges: string[]
+  badges?: string[]
   /**
    * The user's followers count.
    */
-  followersCount: number
+  followersCount?: number
   /**
    * The user's following count.
    */
-  followingCount: number
+  followingCount?: number
 }
 
 /**
@@ -191,8 +191,8 @@ export interface UserProfileDocumentsType extends UserDataDocumentsType {
   /**
    * The user ID of the user.
    */
-  prefs: UserPrefsDocumentsType
-  isFollowing: boolean
+  prefs?: UserPrefsDocumentsType
+  isFollowing?: boolean
 }
 
 /**
@@ -286,7 +286,6 @@ export interface AnnouncementDataType {
 /**
  * This data is returned from the API within the `documents` array.
  * @see AnnouncementDataType
- * @see UserDataType
  * @interface
  * @since 2.0.0
  */

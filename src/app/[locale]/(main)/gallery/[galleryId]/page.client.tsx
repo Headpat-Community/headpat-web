@@ -17,17 +17,19 @@ import {
   UserDataDocumentsType,
 } from '@/utils/types/models'
 import { decode } from 'blurhash'
+import { captureException } from '@sentry/nextjs'
+import { useQuery } from '@tanstack/react-query'
 
 export default function PageClient({ galleryId }: { galleryId: string }) {
-  const [image, setImage] = useState<GalleryDocumentsType>(null)
-  const [imagePrefs, setImagePrefs] = useState(null)
-  const [userData, setUserData] = useState<UserDataDocumentsType>(null)
   const [moderationModalOpen, setModerationModalOpen] = useState(false)
   const { current } = useUser()
 
-  const fetchGallery = useCallback(async () => {
-    try {
-      const [imageData, imagePrefs]: any = await Promise.all([
+  // Single query for image, prefs, and userData
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['gallery-full', galleryId],
+    queryFn: async () => {
+      // Step 1: Fetch image and prefs in parallel
+      const [image, imagePrefsRaw]: [any, any] = await Promise.all([
         databases.getDocument('hp_db', 'gallery-images', `${galleryId}`),
         functions.createExecution(
           'gallery-endpoints',
@@ -37,31 +39,36 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
           ExecutionMethod.GET
         ),
       ])
-
-      setImage(imageData)
-      setImagePrefs(JSON.parse(imagePrefs.responseBody))
-
+      // Step 2: Fetch user data using userId from image
       const userData: UserDataDocumentsType = await databases.getDocument(
         'hp_db',
         'userdata',
-        imageData.userId
+        image.userId
       )
-      setUserData(userData)
-    } catch (error) {
-      console.error(error)
-    }
-  }, [galleryId])
+      return {
+        image,
+        imagePrefs: JSON.parse(imagePrefsRaw.responseBody),
+        userData,
+      }
+    },
+    enabled: !!galleryId,
+    staleTime: 300 * 1000,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+  })
 
+  const image = data?.image
+  const imagePrefs = data?.imagePrefs
+  const userData = data?.userData
+
+  const [localImagePrefs, setLocalImagePrefs] = useState(imagePrefs)
   useEffect(() => {
-    fetchGallery().then()
-  }, [fetchGallery, galleryId])
+    if (data?.imagePrefs) setLocalImagePrefs(data.imagePrefs)
+  }, [data?.imagePrefs])
 
   const description = sanitize(image?.longText)
   const descriptionSanitized = description.replace(/\n/g, '<br />')
-
-  // if (!image) {
-  //   return <>Loading...</>
-  // }
 
   const getImageUrl = (galleryId: string) => {
     return storage.getFileView('gallery', galleryId)
@@ -79,6 +86,13 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
     imageData.data.set(pixels)
     ctx.putImageData(imageData, 0, 0)
     return canvas.toDataURL()
+  }
+
+  if (isLoading) {
+    return <Skeleton className={'h-96 w-96'} />
+  }
+  if (isError) {
+    return <div className="p-4">Failed to load gallery image.</div>
   }
 
   return (
@@ -272,8 +286,8 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                   isOpen={moderationModalOpen}
                                   setIsOpen={setModerationModalOpen}
                                   image={image}
-                                  imagePrefs={imagePrefs}
-                                  setImagePrefs={setImagePrefs}
+                                  imagePrefs={localImagePrefs}
+                                  setImagePrefs={setLocalImagePrefs}
                                   current={current}
                                 />
                               )}

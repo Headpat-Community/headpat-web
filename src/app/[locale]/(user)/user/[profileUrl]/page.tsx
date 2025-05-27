@@ -83,10 +83,5 @@ export default async function UserProfile(props) {
     return notFound()
   }
 
-  return (
-    <PageClient
-      user={userDataResponse.documents[0]}
-      userId={userDataResponse.documents[0].$id}
-    />
-  )
+  return <PageClient userId={userDataResponse.documents[0].$id} />
 }

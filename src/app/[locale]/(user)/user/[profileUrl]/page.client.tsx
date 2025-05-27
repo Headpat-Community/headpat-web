@@ -1,7 +1,7 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { addFollow } from '@/utils/actions/followers/addFollow'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { removeFollow } from '@/utils/actions/followers/removeFollow'
 import { toast } from 'sonner'
 import { Separator } from '@/components/ui/separator'
@@ -31,11 +31,12 @@ import {
 } from '@/components/ui/card'
 import sanitizeHtml from 'sanitize-html'
 import { UserProfileDocumentsType } from '@/utils/types/models'
-import { functions } from '@/app/appwrite-client'
-import { ExecutionMethod } from 'node-appwrite'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useUser } from '@/components/contexts/UserContext'
-import { useDataCache } from '@/components/contexts/DataCacheContext'
+import { useQuery } from '@tanstack/react-query'
+import { databases } from '@/app/appwrite-client'
+import { Query } from 'node-appwrite'
+import * as Sentry from '@sentry/nextjs'
 
 function FollowerButton({ displayName, followerId, isFollowing }) {
   const [isFollowingState, setIsFollowingState] = useState(isFollowing || false)
@@ -87,56 +88,92 @@ function FollowerButton({ displayName, followerId, isFollowing }) {
   )
 }
 
-export default function PageClient({
-  user,
-  userId,
-}: {
-  user: UserProfileDocumentsType
-  userId: string
-}) {
-  const [userData, setUserData] = useState<UserProfileDocumentsType>(user)
-  const [loading, setLoading] = useState(true)
+export default function PageClient({ userId }: { userId: string }) {
   const { current } = useUser()
-  const { getCache, saveCache } = useDataCache()
+
+  const { data: userData, isLoading } = useQuery<UserProfileDocumentsType>({
+    queryKey: ['user', userId],
+    queryFn: async () => {
+      try {
+        // Prepare the queries
+        const queries = [
+          databases.getDocument('hp_db', 'userdata', userId),
+          databases.listDocuments('hp_db', 'followers', [
+            Query.equal('followerId', userId),
+            Query.limit(1),
+          ]),
+          databases.listDocuments('hp_db', 'followers', [
+            Query.equal('userId', userId),
+            Query.limit(1),
+          ]),
+          databases.getDocument('hp_db', 'userprefs', userId).catch(() => null),
+        ]
+
+        // Only add isFollowingResponse if user is logged in
+        let isFollowingResponse = { total: 0 }
+        if (current?.$id) {
+          queries.splice(
+            3,
+            0, // insert before prefs
+            databases.listDocuments('hp_db', 'followers', [
+              Query.and([
+                Query.equal('userId', current.$id),
+                Query.equal('followerId', userId),
+              ]),
+            ])
+          )
+        }
+
+        // Await all queries
+        const results = await Promise.all(queries)
+
+        // Destructure results based on whether isFollowingResponse was included
+        const [
+          userData,
+          followers,
+          following,
+          maybeIsFollowingResponse,
+          prefs,
+        ] = results
+
+        if (current?.$id) {
+          isFollowingResponse = maybeIsFollowingResponse
+        }
+
+        const isFollowing = isFollowingResponse.total > 0 ? true : false
+
+        // Combine the data
+        const combinedData: UserProfileDocumentsType = {
+          ...userData,
+          followersCount: followers.total,
+          followingCount: following.total,
+          prefs: prefs,
+          isFollowing,
+        }
+
+        return combinedData
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+        Sentry.captureException(error)
+        throw error
+      }
+    },
+    enabled: !!userId,
+    staleTime: 300 * 1000, // 5 minutes
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+  })
+
+  if (isLoading || !userData) {
+    return <>Loading, please wait.</>
+  }
 
   const formatDate = (date: Date) =>
     date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')
 
   const formatDayMonth = (date: Date) =>
     date.toLocaleDateString('en-GB').slice(0, 5).replace(/-/g, '.')
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const cache = await getCache<UserProfileDocumentsType>('users', userId)
-      if (cache) {
-        setUserData(cache.data)
-        setLoading(false)
-      }
-      try {
-        const data = await functions.createExecution(
-          'user-endpoints',
-          '',
-          false,
-          `/user/profile?userId=${userId}`,
-          ExecutionMethod.GET
-        )
-
-        const parsedData = JSON.parse(data.responseBody)
-        setUserData(parsedData)
-        saveCache('users', userId, parsedData)
-      } catch (error) {
-        console.error('Error fetching user data:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchUserData().then()
-  }, [getCache, saveCache, userId])
-
-  if (!userData) {
-    return <>Loading, please wait.</>
-  }
 
   const today = formatDayMonth(new Date())
   const birthday = userData?.birthday
@@ -280,7 +317,7 @@ export default function PageClient({
                 {userData.displayName}
               </CardTitle>
               {current?.$id !== userData?.$id &&
-                (!loading && userData.isFollowing !== undefined ? (
+                (userData.isFollowing !== undefined ? (
                   <FollowerButton
                     displayName={userData?.displayName}
                     followerId={userData.$id}
@@ -296,41 +333,33 @@ export default function PageClient({
             <CardDescription className={'flex pt-4 gap-4 items-center'}>
               <Link href={`/user/${userData?.profileUrl}/following`}>
                 <Button variant={'link'} className={'p-0'}>
-                  {!loading ? (
+                  {userData.followingCount !== undefined ? (
                     <div className="flex items-center space-x-4">
                       <span className={'flex gap-1'}>
-                        {userData.followingCount !== undefined ? (
-                          <span className={'font-bold text-foreground'}>
-                            {userData.followingCount}
-                          </span>
-                        ) : (
-                          <Skeleton className="h-4 w-[50px]" />
-                        )}{' '}
+                        <span className={'font-bold text-foreground'}>
+                          {userData.followingCount}
+                        </span>{' '}
                         Following
                       </span>
                     </div>
                   ) : (
-                    <Skeleton className="h-4 w-[200px]" />
+                    <Skeleton className="h-4 w-[50px]" />
                   )}
                 </Button>
               </Link>
               <Link href={`/user/${userData?.profileUrl}/followers`}>
                 <Button variant={'link'} className={'p-0'}>
-                  {!loading ? (
+                  {userData.followersCount !== undefined ? (
                     <div className="flex items-center space-x-4">
                       <span className={'flex gap-1'}>
-                        {userData.followersCount !== undefined ? (
-                          <span className={'font-bold text-foreground'}>
-                            {userData.followersCount}
-                          </span>
-                        ) : (
-                          <Skeleton className="h-4 w-[50px]" />
-                        )}{' '}
+                        <span className={'font-bold text-foreground'}>
+                          {userData.followersCount}
+                        </span>{' '}
                         Followers
                       </span>
                     </div>
                   ) : (
-                    <Skeleton className="h-4 w-[200px]" />
+                    <Skeleton className="h-4 w-[50px]" />
                   )}
                 </Button>
               </Link>

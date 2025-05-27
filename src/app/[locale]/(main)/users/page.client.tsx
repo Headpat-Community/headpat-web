@@ -3,59 +3,38 @@ import { Card } from '@/components/ui/card'
 import Image from 'next/image'
 import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
 import { databases, Query } from '@/app/appwrite-client'
-import { useCallback, useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import UserCard from '@/components/user/userCard'
-import { useDataCache } from '@/components/contexts/DataCacheContext'
 import { UserDataDocumentsType, UserDataType } from '@/utils/types/models'
 
 export default function ClientPage() {
-  const [users, setUsers] = useState<UserDataDocumentsType[]>([])
-  const [isFetching, setIsFetching] = useState<boolean>(true)
-  const { getAllCache, saveAllCache } = useDataCache()
-
-  const fetchUsers = useCallback(
-    async (limit: number, offset: number) => {
-      setIsFetching(true)
-      const cache = await getAllCache<UserDataDocumentsType[]>('users')
-      const usersMapping = cache.map((item) => item.data) // Assuming each CacheItem has a 'data' property
-      if (usersMapping.length > 0) {
-        const sortedUsers = usersMapping
-          .flat()
-          .sort(
-            (a, b) =>
-              new Date(b.$createdAt).getTime() -
-              new Date(a.$createdAt).getTime()
-          )
-        setUsers(sortedUsers)
-        setIsFetching(false)
-      }
+  const {
+    data: users,
+    isLoading,
+    isError,
+  } = useQuery<UserDataDocumentsType[]>({
+    queryKey: ['users'],
+    queryFn: async () => {
       try {
         const response: UserDataType = await databases.listDocuments(
           'hp_db',
           'userdata',
-          [
-            Query.orderDesc('$createdAt'),
-            Query.limit(limit),
-            Query.offset(offset),
-          ]
+          [Query.orderDesc('$createdAt'), Query.limit(250), Query.offset(0)]
         )
-        setUsers(response.documents)
-        saveAllCache('users', response.documents)
+        return response.documents
       } catch {
         toast.error('Failed to fetch users. Please try again later.')
-      } finally {
-        setIsFetching(false)
+        return []
       }
     },
-    [getAllCache, saveAllCache]
-  )
+    staleTime: 300 * 1000, // 5 minutes
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+  })
 
-  useEffect(() => {
-    fetchUsers(250, 0).then()
-  }, [fetchUsers])
-
-  if (isFetching && users.length === 0) {
+  if (isLoading) {
     return (
       <div className={'flex flex-1 justify-center items-center h-full'}>
         <div className={'p-4 gap-6 text-center'}>
@@ -65,7 +44,7 @@ export default function ClientPage() {
     )
   }
 
-  if (!isFetching && users.length === 0) {
+  if (isError || !users || users.length === 0) {
     return (
       <div className={'flex flex-1 justify-center items-center h-full'}>
         <div className={'p-4 gap-6 text-center'}>
