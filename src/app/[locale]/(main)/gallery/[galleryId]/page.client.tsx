@@ -1,24 +1,23 @@
 'use client'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { getGalleryImageUrlView } from '@/components/getStorageItem'
-import { useCallback, useEffect, useState } from 'react'
-import sanitize from 'sanitize-html'
-import { useUser } from '@/components/contexts/UserContext'
 import { databases, functions, storage } from '@/app/appwrite-client'
-import { ExecutionMethod } from 'node-appwrite'
+import { useUser } from '@/components/contexts/UserContext'
+import ModerationModal from '@/components/gallery/moderation/ModerationModal'
+import { getGalleryImageUrlView } from '@/components/getStorageItem'
+import NoAccessNsfw from '@/components/static/noAccessNsfw'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import UserCard from '@/components/user/userCard'
-import ModerationModal from '@/components/gallery/moderation/ModerationModal'
-import Image from 'next/image'
-import NoAccessNsfw from '@/components/static/noAccessNsfw'
 import {
   GalleryDocumentsType,
   UserDataDocumentsType
 } from '@/utils/types/models'
-import { decode } from 'blurhash'
-import { captureException } from '@sentry/nextjs'
 import { useQuery } from '@tanstack/react-query'
+import { decode } from 'blurhash'
+import Image from 'next/image'
+import Link from 'next/link'
+import { ExecutionMethod } from 'node-appwrite'
+import { useEffect, useState } from 'react'
+import sanitize from 'sanitize-html'
 
 export default function PageClient({ galleryId }: { galleryId: string }) {
   const [moderationModalOpen, setModerationModalOpen] = useState(false)
@@ -29,7 +28,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
     queryKey: ['gallery-full', galleryId],
     queryFn: async () => {
       // Step 1: Fetch image and prefs in parallel
-      const [image, imagePrefsRaw]: [any, any] = await Promise.all([
+      const [image, imagePrefsRaw] = await Promise.all([
         databases.getDocument('hp_db', 'gallery-images', `${galleryId}`),
         functions.createExecution(
           'gallery-endpoints',
@@ -285,7 +284,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                 <ModerationModal
                                   isOpen={moderationModalOpen}
                                   setIsOpen={setModerationModalOpen}
-                                  image={image}
+                                  image={image as GalleryDocumentsType}
                                   imagePrefs={localImagePrefs}
                                   setImagePrefs={setLocalImagePrefs}
                                   current={current}
