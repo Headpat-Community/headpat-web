@@ -91,10 +91,6 @@ function FollowerButton({ displayName, followerId, isFollowing }) {
 export default function PageClient({ userId }: { userId: string }) {
   const { current } = useUser()
 
-  if (!userId) {
-    return null
-  }
-
   const { data: userData, isLoading } = useQuery<UserProfileDocumentsType>({
     queryKey: ['user', userId],
     queryFn: async () => {
@@ -168,6 +164,10 @@ export default function PageClient({ userId }: { userId: string }) {
     refetchOnWindowFocus: true,
     refetchOnReconnect: true
   })
+
+  if (!userId) {
+    return null
+  }
 
   if (isLoading || !userData) {
     return <>Loading, please wait.</>
