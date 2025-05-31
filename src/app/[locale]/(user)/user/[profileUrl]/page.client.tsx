@@ -165,10 +165,6 @@ export default function PageClient({ userId }: { userId: string }) {
     refetchOnReconnect: true
   })
 
-  if (!userId) {
-    return null
-  }
-
   if (isLoading || !userData) {
     return <>Loading, please wait.</>
   }

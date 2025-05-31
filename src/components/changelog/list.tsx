@@ -64,6 +64,20 @@ export default function ListComponent({
     )
   }
 
+  // Sort changelogData by version (descending, latest first)
+  function compareVersions(a: ChangelogDocumentsType, b: ChangelogDocumentsType) {
+    const pa = a.version.split('.').map(Number)
+    const pb = b.version.split('.').map(Number)
+    for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+      const na = pa[i] || 0
+      const nb = pb[i] || 0
+      if (na > nb) return -1 // descending order
+      if (na < nb) return 1
+    }
+    return 0
+  }
+  const sortedChangelogData = [...changelogData].sort(compareVersions)
+
   const sanitizeDescription = (text: string) => {
     const description = sanitize(text)
     return description.replace(/\n/g, '<br />')
@@ -73,7 +87,7 @@ export default function ListComponent({
     <div className="container mx-auto py-10">
       <ScrollArea className="h-[calc(100vh-12rem)] pr-4">
         <div className="space-y-6">
-          {changelogData.map((release) => (
+          {sortedChangelogData.map((release) => (
             <Card key={release.$id}>
               <CardHeader>
                 <Collapsible open={openVersions.includes(release.$id)}>
