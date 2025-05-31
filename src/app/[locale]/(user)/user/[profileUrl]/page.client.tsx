@@ -1,27 +1,13 @@
 'use client'
-import { Button } from '@/components/ui/button'
-import { addFollow } from '@/utils/actions/followers/addFollow'
-import { useState } from 'react'
-import { removeFollow } from '@/utils/actions/followers/removeFollow'
-import { toast } from 'sonner'
-import { Separator } from '@/components/ui/separator'
-import Link from 'next/link'
-import { ChevronRight } from 'lucide-react'
-import Image from 'next/image'
+import { databases } from '@/app/appwrite-client'
+import { useUser } from '@/components/contexts/UserContext'
 import {
   getAvatarImageUrlView,
   getBannerImageUrlPreview
 } from '@/components/getStorageItem'
-import { cn } from '@/lib/utils'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Badge } from '@/components/ui/badge'
-import {
-  SiDiscord,
-  SiFuraffinity,
-  SiTelegram,
-  SiTwitch,
-  SiX
-} from '@icons-pack/react-simple-icons'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -29,14 +15,28 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import sanitizeHtml from 'sanitize-html'
-import { UserProfileDocumentsType } from '@/utils/types/models'
+import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useUser } from '@/components/contexts/UserContext'
-import { useQuery } from '@tanstack/react-query'
-import { databases } from '@/app/appwrite-client'
-import { Query } from 'node-appwrite'
+import { cn } from '@/lib/utils'
+import { addFollow } from '@/utils/actions/followers/addFollow'
+import { removeFollow } from '@/utils/actions/followers/removeFollow'
+import { UserProfileDocumentsType } from '@/utils/types/models'
+import {
+  SiDiscord,
+  SiFuraffinity,
+  SiTelegram,
+  SiTwitch,
+  SiX
+} from '@icons-pack/react-simple-icons'
 import * as Sentry from '@sentry/nextjs'
+import { useQuery } from '@tanstack/react-query'
+import { ChevronRight } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { Query } from 'node-appwrite'
+import { useState } from 'react'
+import sanitizeHtml from 'sanitize-html'
+import { toast } from 'sonner'
 
 function FollowerButton({ displayName, followerId, isFollowing }) {
   const [isFollowingState, setIsFollowingState] = useState(isFollowing || false)
@@ -90,6 +90,10 @@ function FollowerButton({ displayName, followerId, isFollowing }) {
 
 export default function PageClient({ userId }: { userId: string }) {
   const { current } = useUser()
+
+  if (!userId) {
+    return null
+  }
 
   const { data: userData, isLoading } = useQuery<UserProfileDocumentsType>({
     queryKey: ['user', userId],
@@ -246,67 +250,67 @@ export default function PageClient({ userId }: { userId: string }) {
             userData.furaffinityname ||
             userData.X_name ||
             userData.twitchname) && (
-            <Card className="border-border rounded-t-none">
-              <CardContent className="p-4">
-                <ul>
-                  {userData.discordname && (
-                    <>
+              <Card className="border-border rounded-t-none">
+                <CardContent className="p-4">
+                  <ul>
+                    {userData.discordname && (
+                      <>
+                        <ListSocialItem
+                          IconComponent={SiDiscord}
+                          userData={userData.discordname}
+                          link={'#'}
+                        />
+                        {(userData.telegramname ||
+                          userData.furaffinityname ||
+                          userData.X_name ||
+                          userData.twitchname) && <Separator />}
+                      </>
+                    )}
+                    {userData.telegramname && (
+                      <>
+                        <ListSocialItem
+                          IconComponent={SiTelegram}
+                          userData={userData.telegramname}
+                          link={`https://t.me/${userData.telegramname}`}
+                        />
+                        {(userData.furaffinityname ||
+                          userData.X_name ||
+                          userData.twitchname) && <Separator />}
+                      </>
+                    )}
+                    {userData.furaffinityname && (
+                      <>
+                        <ListSocialItem
+                          IconComponent={SiFuraffinity}
+                          userData={userData.furaffinityname}
+                          link={`https://www.furaffinity.net/user/${userData.furaffinityname}`}
+                        />
+                        {(userData.X_name || userData.twitchname) && (
+                          <Separator />
+                        )}
+                      </>
+                    )}
+                    {userData.X_name && (
+                      <>
+                        <ListSocialItem
+                          IconComponent={SiX}
+                          userData={userData.X_name}
+                          link={`https://x.com/${userData.X_name}`}
+                        />
+                        {userData.twitchname && <Separator />}
+                      </>
+                    )}
+                    {userData.twitchname && (
                       <ListSocialItem
-                        IconComponent={SiDiscord}
-                        userData={userData.discordname}
-                        link={'#'}
+                        IconComponent={SiTwitch}
+                        userData={userData.twitchname}
+                        link={`https://www.twitch.tv/${userData.twitchname}`}
                       />
-                      {(userData.telegramname ||
-                        userData.furaffinityname ||
-                        userData.X_name ||
-                        userData.twitchname) && <Separator />}
-                    </>
-                  )}
-                  {userData.telegramname && (
-                    <>
-                      <ListSocialItem
-                        IconComponent={SiTelegram}
-                        userData={userData.telegramname}
-                        link={`https://t.me/${userData.telegramname}`}
-                      />
-                      {(userData.furaffinityname ||
-                        userData.X_name ||
-                        userData.twitchname) && <Separator />}
-                    </>
-                  )}
-                  {userData.furaffinityname && (
-                    <>
-                      <ListSocialItem
-                        IconComponent={SiFuraffinity}
-                        userData={userData.furaffinityname}
-                        link={`https://www.furaffinity.net/user/${userData.furaffinityname}`}
-                      />
-                      {(userData.X_name || userData.twitchname) && (
-                        <Separator />
-                      )}
-                    </>
-                  )}
-                  {userData.X_name && (
-                    <>
-                      <ListSocialItem
-                        IconComponent={SiX}
-                        userData={userData.X_name}
-                        link={`https://x.com/${userData.X_name}`}
-                      />
-                      {userData.twitchname && <Separator />}
-                    </>
-                  )}
-                  {userData.twitchname && (
-                    <ListSocialItem
-                      IconComponent={SiTwitch}
-                      userData={userData.twitchname}
-                      link={`https://www.twitch.tv/${userData.twitchname}`}
-                    />
-                  )}
-                </ul>
-              </CardContent>
-            </Card>
-          )}
+                    )}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
         </div>
 
         {/* Center */}
