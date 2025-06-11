@@ -1,96 +1,49 @@
-name: Build and Push Next.js to Harbor
+name: Build and Push Docker Image
 
 on:
   workflow_dispatch:
+    inputs:
+      app:
+        description: 'App to build and push'
+        required: true
 
 jobs:
   build-and-push:
-    name: Build and Push Docker Image
     runs-on: ubuntu-latest
-    env: # Env variables needed during build
-      NODE_ENV: production
-      NEXT_PUBLIC_DOMAIN: "https://headpat.place"
-      NEXT_PUBLIC_COOKIE_DOMAIN: "headpat.place"
-      NEXT_PUBLIC_API_URL: "https://api.headpat.place"
-      NEXT_PUBLIC_APPWRITE_PROJECT_ID: hp-main
-      APPWRITE_API_KEY: ${{secrets.APPWRITE_API_KEY}}
-      NEXT_PUBLIC_GOOGLE_MAPS_KEY: ${{secrets.NEXT_PUBLIC_GOOGLE_MAPS_KEY}}
-      SENTRY_URL: ${{secrets.SENTRY_URL}}
-      SENTRY_AUTH_TOKEN: ${{secrets.SENTRY_AUTH_TOKEN}}
-
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 10
-          run_install: false
-
-      - name: Install Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
-      - name: Get version from package.json
+      - name: Extract version from package.json
         id: get_version
-        run: echo "VERSION=$(jq -r .version package.json)" >> $GITHUB_ENV
+        run: |
+          VERSION=$(jq -r .version package.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      # Prepare the Docker image
       - name: Log in to Harbor Registry
         uses: docker/login-action@v3
         with:
-          registry: harbor.fayevr.dev
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          registry: ${{ secrets.HARBOR_REGISTRY }}
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
 
-      - name: Build Docker Image
+      - name: Build and push Docker image
         run: |
-          echo "FROM node:20-alpine AS base" > Dockerfile
-          echo "FROM base AS deps" >> Dockerfile
-          echo "RUN apk add --no-cache libc6-compat" >> Dockerfile
-          echo "WORKDIR /app" >> Dockerfile
-          echo "COPY package.json pnpm-lock.yaml ./" >> Dockerfile
-          echo "RUN corepack enable pnpm && pnpm i --frozen-lockfile" >> Dockerfile
-          echo "FROM base AS builder" >> Dockerfile
-          echo "WORKDIR /app" >> Dockerfile
-
-          echo "ARG NEXT_PUBLIC_DOMAIN_BACKEND" >> Dockerfile
-          echo "ARG NEXT_PUBLIC_PROJECT_ID" >> Dockerfile
-          echo "ARG API_KEY" >> Dockerfile
-          echo "ENV NEXT_PUBLIC_DOMAIN_BACKEND=$NEXT_PUBLIC_DOMAIN_BACKEND" >> Dockerfile
-          echo "ENV NEXT_PUBLIC_PROJECT_ID=$NEXT_PUBLIC_PROJECT_ID" >> Dockerfile
-          echo "ENV API_KEY=$API_KEY" >> Dockerfile
-
-          echo "COPY --from=deps /app/node_modules ./node_modules" >> Dockerfile
-          echo "COPY . ." >> Dockerfile
-          echo "RUN corepack enable pnpm && pnpm run build" >> Dockerfile
-          echo "FROM base AS runner" >> Dockerfile
-          echo "WORKDIR /app" >> Dockerfile
-          echo "ENV NODE_ENV=production" >> Dockerfile
-          echo "RUN addgroup --system --gid 1001 nodejs" >> Dockerfile
-          echo "RUN adduser --system --uid 1001 nextjs" >> Dockerfile
-          echo "COPY --from=builder /app/public ./public" >> Dockerfile
-          echo "COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./" >> Dockerfile
-          echo "COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static" >> Dockerfile
-          echo "USER nextjs" >> Dockerfile
-          echo "EXPOSE 3000" >> Dockerfile
-          echo "ENV PORT=3000" >> Dockerfile
-          echo "CMD [\"node\", \"server.js\"]" >> Dockerfile
-
           docker build \
-          --build-arg NODE_ENV=$NODE_ENV \
-          --build-arg NEXT_PUBLIC_DOMAIN=$NEXT_PUBLIC_DOMAIN \
-          --build-arg NEXT_PUBLIC_COOKIE_DOMAIN=$NEXT_PUBLIC_COOKIE_DOMAIN \
-          --build-arg NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
-          --build-arg NEXT_PUBLIC_APPWRITE_PROJECT_ID=$NEXT_PUBLIC_APPWRITE_PROJECT_ID \
-          --build-arg APPWRITE_API_KEY=$APPWRITE_API_KEY \
-          --build-arg NEXT_PUBLIC_GOOGLE_MAPS_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_KEY \
-          --build-arg SENTRY_URL=$SENTRY_URL \
-          --build-arg SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN \
-          -t harbor.fayevr.dev/fleet/headpat.place:${{ env.VERSION }} .
-
-      # Push the Docker image to Harbor
-      - name: Push Docker Image
-        run: docker push harbor.fayevr.dev/fleet/headpat.place:${{ env.VERSION }}
+            --build-arg NEXT_PUBLIC_DOMAIN=${{ secrets.NEXT_PUBLIC_DOMAIN }} \
+            --build-arg NEXT_PUBLIC_COOKIE_DOMAIN=${{ secrets.NEXT_PUBLIC_COOKIE_DOMAIN }} \
+            --build-arg NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} \
+            --build-arg NEXT_PUBLIC_APPWRITE_PROJECT_ID=${{ secrets.NEXT_PUBLIC_APPWRITE_PROJECT_ID }} \
+            --build-arg NEXT_PUBLIC_GOOGLE_MAPS_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAPS_KEY }} \
+            --build-arg NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }} \
+            --build-arg SENTRY_URL=${{ secrets.SENTRY_URL }} \
+            --build-arg SENTRY_PROJECT=${{ secrets.SENTRY_PROJECT }} \
+            --build-arg SENTRY_ORG=${{ secrets.SENTRY_ORG }} \
+            --build-arg SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} \
+            -t ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-place:${{ steps.get_version.outputs.version }} -f Dockerfile .
+          docker push ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-place:${{ steps.get_version.outputs.version }}
