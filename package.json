@@ -9,10 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write .",
-    "preview": "opennextjs-cloudflare build && wrangler dev",
-    "deploy": "opennextjs-cloudflare build && wrangler deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "format": "prettier --write ."
   },
   "description": "Headpat.place is a social media platform for the next generation.",
   "readme": "README.md",
@@ -30,7 +27,6 @@
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^15.3.1",
-    "@opennextjs/cloudflare": "^1.1.0",
     "@radix-ui/react-accordion": "^1.2.7",
     "@radix-ui/react-alert-dialog": "^1.1.10",
     "@radix-ui/react-aspect-ratio": "^1.1.4",
@@ -128,9 +124,5 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "typescript-eslint": "^8.31.0",
     "wrangler": "^4.18.0"
-  },
-  "trustedDependencies": [
-    "@sentry/cli",
-    "@tsparticles/engine"
-  ]
+  }
 }

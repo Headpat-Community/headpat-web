@@ -128,6 +128,3 @@ const combinedConfig = withGTConfig(sentryNextConfig, {
 })
 
 export default withMDX(combinedConfig)
-
-import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare'
-initOpenNextCloudflareForDev()
