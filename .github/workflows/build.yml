@@ -2,10 +2,6 @@ name: Build and Push Docker Image
 
 on:
   workflow_dispatch:
-    inputs:
-      app:
-        description: 'App to build and push'
-        required: true
 
 jobs:
   build-and-push:
@@ -45,5 +41,7 @@ jobs:
             --build-arg SENTRY_PROJECT=${{ secrets.SENTRY_PROJECT }} \
             --build-arg SENTRY_ORG=${{ secrets.SENTRY_ORG }} \
             --build-arg SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} \
-            -t ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-place:${{ steps.get_version.outputs.version }} -f Dockerfile .
+            -t ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-place:${{ steps.get_version.outputs.version }} \
+            -t ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-place:latest \
+            -f Dockerfile .
           docker push ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-place:${{ steps.get_version.outputs.version }}
