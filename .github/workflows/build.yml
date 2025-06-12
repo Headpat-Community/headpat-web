@@ -45,3 +45,4 @@ jobs:
             -t ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-place:latest \
             -f Dockerfile .
           docker push ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-place:${{ steps.get_version.outputs.version }}
+          docker push ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-place:latest
