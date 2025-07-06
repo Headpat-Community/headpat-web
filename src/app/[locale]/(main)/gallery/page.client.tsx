@@ -232,7 +232,9 @@ export default function FetchGallery() {
 
   // Add header component
   useEffect(() => {
-    const uploadButton = <UploadButton key="gallery-upload-button" />
+    const uploadButton = (
+      <UploadButton current={current} key="gallery-upload-button" />
+    )
     addHeaderComponent(uploadButton)
     return () => removeHeaderComponent(uploadButton)
   }, [addHeaderComponent, removeHeaderComponent])
