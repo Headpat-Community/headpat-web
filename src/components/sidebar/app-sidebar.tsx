@@ -26,14 +26,14 @@ import {
   SidebarHeader
 } from '@/components/ui/sidebar'
 import { SiDiscord, SiGithub } from '@icons-pack/react-simple-icons'
-import { useDict } from 'gt-next/client'
+import { useTranslations } from 'gt-next/client'
+import { useTheme } from 'next-themes'
+import { Separator } from '../ui/separator'
 import { NavList } from './nav-list'
 import { TeamSwitcher } from './team-switcher'
-import { Separator } from '../ui/separator'
-import { useTheme } from 'next-themes'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const pageNames = useDict('PageNames')
+  const pageNames = useTranslations('PageNames')
   const { theme, systemTheme } = useTheme()
 
   const getLogo = (name: string) => {

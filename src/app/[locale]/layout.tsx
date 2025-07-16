@@ -1,9 +1,9 @@
 import HeaderClient from '@/components/sidebar/header-client'
-import { getDict } from 'gt-next/server'
+import { getTranslations } from 'gt-next/server'
 
 export async function generateMetadata({ params }) {
   const paramsResponse = await params
-  const meta = await getDict('MainMetadata')
+  const meta = await getTranslations('MainMetadata')
 
   return {
     title: {
