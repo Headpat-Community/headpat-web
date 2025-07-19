@@ -1,7 +1,7 @@
 import { ChevronRight, MegaphoneIcon } from 'lucide-react'
 import { createAdminClient } from '@/app/appwrite-session'
 import Link from 'next/link'
-import { getDict } from 'gt-next/server'
+import { getTranslations } from 'gt-next/server'
 import { AnnouncementDataType } from '@/utils/types/models'
 import * as Sentry from '@sentry/nextjs'
 
@@ -10,7 +10,7 @@ export async function generateMetadata(props) {
 
   const { locale } = params
 
-  const meta = await getDict('AnnouncementsMetadata')
+  const meta = await getTranslations('AnnouncementsMetadata')
 
   return {
     title: meta('title'),

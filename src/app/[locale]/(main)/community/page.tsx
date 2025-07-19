@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { getDict } from 'gt-next/server'
+import { getTranslations } from 'gt-next/server'
 import AllCommunities from '@/components/community/allCommunities'
 import MyCommunities from '@/components/community/myCommunities'
 
@@ -8,7 +8,7 @@ export async function generateMetadata(props) {
 
   const { locale } = params
 
-  const meta = await getDict('CommunitiesMetadata')
+  const meta = await getTranslations('CommunitiesMetadata')
 
   return {
     title: meta('title'),

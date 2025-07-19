@@ -20,21 +20,33 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import InputField from '@/components/fields/InputField'
 import CheckboxField from '@/components/fields/CheckboxField'
-import { useDict } from 'gt-next/client'
+import { useTranslations } from 'gt-next/client'
 import { useUser } from '@/components/contexts/UserContext'
 import { toastHandling } from '@/utils/toastHandling'
 import { useRouter } from 'next/navigation'
 import { OAuthProvider } from 'node-appwrite'
 
+type LoginFormData = {
+  email: string
+  password: string
+}
+
+type RegisterFormData = {
+  username: string
+  email: string
+  password: string
+  acceptedTerms: boolean
+}
+
 export default function Login() {
   const { init } = useUser()
   const [isRegistering, setIsRegistering] = useState(false)
   const router = useRouter()
-  const zodTranslations = useDict('Zod.Login')
+  const zodTranslations = useTranslations('Zod.Login')
 
   const registerSchema = z.object({
     username: z.string().trim().min(3, zodTranslations('MinUsernameLength')),
-    email: z.string().trim().email(zodTranslations('InvalidEmail')),
+    email: z.email(zodTranslations('InvalidEmail').trim()),
     password: z
       .string()
       .trim()
@@ -46,7 +58,7 @@ export default function Login() {
   })
 
   const loginSchema = z.object({
-    email: z.string().trim().email(zodTranslations('InvalidEmail')),
+    email: z.email(zodTranslations('InvalidEmail').trim()),
     password: z
       .string()
       .trim()
@@ -54,18 +66,23 @@ export default function Login() {
       .max(256, zodTranslations('MaxPasswordLength'))
   })
 
-  const formSchema = isRegistering ? registerSchema : loginSchema
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const loginForm = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      // @ts-expect-error: See later
+      email: '',
+      password: ''
+    }
+  })
+
+  const registerForm = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
       username: '',
       email: '',
       password: '',
       acceptedTerms: false
     }
   })
-  const { handleSubmit } = form
 
   useEffect(() => {
     const checkAccount = async () => {
@@ -80,7 +97,7 @@ export default function Login() {
     checkAccount().then()
   }, [router])
 
-  const submit = async (data: z.infer<typeof formSchema>) => {
+  const submitLogin = async (data: LoginFormData) => {
     const errorCodes = {
       400: 'Invalid E-Mail or password provided.',
       401: 'E-Mail or Password incorrect.',
@@ -98,15 +115,6 @@ export default function Login() {
     }
 
     try {
-      if (isRegistering) {
-        await account.create(
-          ID.unique(),
-          data.email,
-          data.password,
-          // @ts-expect-error: See later
-          data.username
-        )
-      }
       const response = await signIn()
 
       const errorMessage =
@@ -126,6 +134,163 @@ export default function Login() {
       }
     }
   }
+
+  const submitRegister = async (data: RegisterFormData) => {
+    const errorCodes = {
+      400: 'Invalid E-Mail or password provided.',
+      401: 'E-Mail or Password incorrect.',
+      409: 'E-Mail already in use.',
+      429: 'Too many requests, please try again later.'
+    }
+
+    const signIn = async () => {
+      const response = await fetch('/api/user/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: data.email, password: data.password })
+      })
+      return response.json()
+    }
+
+    try {
+      await account.create(
+        ID.unique(),
+        data.email,
+        data.password,
+        data.username
+      )
+      const response = await signIn()
+
+      const errorMessage =
+        toastHandling[response.error] || errorCodes[response.status]
+      if (errorMessage) {
+        toast.error(errorMessage)
+        return
+      }
+
+      await init()
+      toast.success('Logged in successfully.')
+      router.push('/account')
+    } catch (error) {
+      const errorMessage = toastHandling[error] || errorCodes[error.code]
+      if (errorMessage) {
+        toast.error(errorMessage)
+      }
+    }
+  }
+
+  const renderLoginForm = () => (
+    <Form {...loginForm}>
+      <form
+        className="space-y-6"
+        onSubmit={loginForm.handleSubmit(submitLogin)}
+      >
+        <div key="1" className="mx-auto max-w-4xl p-6 space-y-6">
+          <div className="space-y-4">
+            <FormField
+              control={loginForm.control}
+              name="email"
+              render={({ field }) => (
+                <InputField
+                  label="E-Mail"
+                  description=""
+                  placeholder=""
+                  field={field}
+                />
+              )}
+            />
+            <FormField
+              control={loginForm.control}
+              name="password"
+              render={({ field }) => (
+                <InputField
+                  label="Password"
+                  description=""
+                  placeholder=""
+                  field={field}
+                  type={'password'}
+                />
+              )}
+            />
+            <Button className="w-full">Login</Button>
+            <Link href={'/forgot-password'}>
+              <Button variant={'link'} type={'button'} className={'p-0'}>
+                Forgot password?
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </form>
+    </Form>
+  )
+
+  const renderRegisterForm = () => (
+    <Form {...registerForm}>
+      <form
+        className="space-y-6"
+        onSubmit={registerForm.handleSubmit(submitRegister)}
+      >
+        <div key="1" className="mx-auto max-w-4xl p-6 space-y-6">
+          <div className="space-y-4">
+            <FormField
+              control={registerForm.control}
+              name="username"
+              render={({ field }) => (
+                <InputField
+                  label="Username"
+                  description=""
+                  placeholder=""
+                  field={field}
+                />
+              )}
+            />
+            <FormField
+              control={registerForm.control}
+              name="email"
+              render={({ field }) => (
+                <InputField
+                  label="E-Mail"
+                  description=""
+                  placeholder=""
+                  field={field}
+                />
+              )}
+            />
+            <FormField
+              control={registerForm.control}
+              name="password"
+              render={({ field }) => (
+                <InputField
+                  label="Password"
+                  description=""
+                  placeholder=""
+                  field={field}
+                  type={'password'}
+                />
+              )}
+            />
+            <FormField
+              control={registerForm.control}
+              name="acceptedTerms"
+              render={({ field }) => (
+                <CheckboxField
+                  label="Accept terms and conditions"
+                  description=""
+                  field={field}
+                />
+              )}
+            />
+            <Button className="w-full">Register</Button>
+            <Link href={'/forgot-password'}>
+              <Button variant={'link'} type={'button'} className={'p-0'}>
+                Forgot password?
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </form>
+    </Form>
+  )
 
   return (
     <div className="flex justify-center items-center">
@@ -147,84 +312,7 @@ export default function Login() {
         </div>
 
         <div className="mt-4">
-          <div>
-            <Form {...form}>
-              <form className="space-y-6" onSubmit={handleSubmit(submit)}>
-                <div key="1" className="mx-auto max-w-4xl p-6 space-y-6">
-                  <div className="space-y-4">
-                    {isRegistering && (
-                      <>
-                        <FormField
-                          control={form.control}
-                          // @ts-expect-error: See later
-                          name="username"
-                          render={({ field }) => (
-                            <InputField
-                              label="Username"
-                              description=""
-                              placeholder=""
-                              field={field}
-                            />
-                          )}
-                        />
-                      </>
-                    )}
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <InputField
-                          label="E-Mail"
-                          description=""
-                          placeholder=""
-                          field={field}
-                        />
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="password"
-                      render={({ field }) => (
-                        <InputField
-                          label="Password"
-                          description=""
-                          placeholder=""
-                          field={field}
-                          type={'password'}
-                        />
-                      )}
-                    />
-                    {isRegistering && (
-                      <FormField
-                        control={form.control}
-                        // @ts-expect-error: See later
-                        name="acceptedTerms"
-                        render={({ field }) => (
-                          <CheckboxField
-                            label="Accept terms and conditions"
-                            description=""
-                            field={field}
-                          />
-                        )}
-                      />
-                    )}
-                    <Button className="w-full">
-                      {isRegistering ? 'Register' : 'Login'}
-                    </Button>
-                    <Link href={'/forgot-password'}>
-                      <Button
-                        variant={'link'}
-                        type={'button'}
-                        className={'p-0'}
-                      >
-                        Forgot password?
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </form>
-            </Form>
-          </div>
+          <div>{isRegistering ? renderRegisterForm() : renderLoginForm()}</div>
 
           <div className="mt-8">
             <div className="relative">

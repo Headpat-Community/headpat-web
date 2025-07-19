@@ -12,10 +12,17 @@ or `fix/bug-name`). This will help us to keep track of what's going on.
 
 ## How to run the website locally
 
-First, install the dependencies:
+First, install bun:
 
 ```bash
-pnpm install
+macOS/Linux: curl -fsSL https://bun.com/install | bash
+Windows: powershell -c "irm bun.sh/install.ps1|iex"
+```
+
+Now, install the packages:
+
+```bash
+bun install
 ```
 
 ### NOTE:
@@ -26,7 +33,7 @@ In the future, I will setup a docker compose so you can use the backend locally.
 #### Then, run the development server:
 
 ```bash
-pnpm dev
+bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

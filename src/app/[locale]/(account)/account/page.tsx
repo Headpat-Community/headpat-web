@@ -5,11 +5,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import GeneralAccountView from '@/components/account/views/general'
 import FrontpageView from '@/components/account/views/frontpage'
 import SocialsView from '@/components/account/views/socials'
-import { getDict } from 'gt-next/server'
+import { getTranslations } from 'gt-next/server'
 
 export async function generateMetadata({ params }) {
   const paramsResponse = await params
-  const meta = await getDict('AccountMetadata')
+  const meta = await getTranslations('AccountMetadata')
 
   return {
     title: 'Account Settings',
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }) {
 export default async function AccountSettings() {
   const mfaList = await getMfaList()
   const accountData = await getUser()
-  const translations = await getDict('Account')
+  const translations = await getTranslations('Account')
 
   return (
     <Suspense fallback={<Loading />}>

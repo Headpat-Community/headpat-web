@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import { ChevronRightIcon } from 'lucide-react'
 import Link from 'next/link'
-import { getDict } from 'gt-next/server'
+import { getTranslations } from 'gt-next/server'
 import { HoverBorderGradient } from '@/components/ui/motion/hover-border-gradient'
 
 export async function generateMetadata({ params }) {
   const paramsResponse = await params
-  const meta = await getDict('MainMetadata')
+  const meta = await getTranslations('MainMetadata')
 
   return {
     title: meta('title'),
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Home() {
-  const main = await getDict('HomePage')
+  const main = await getTranslations('HomePage')
 
   return (
     <div className="">

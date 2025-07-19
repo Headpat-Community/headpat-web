@@ -43,7 +43,7 @@ import {
 import { Info } from 'lucide-react'
 
 const emailFormSchema = z.object({
-  email: z.string().email().trim(),
+  email: z.email().trim(),
   password: z
     .string()
     .trim()
