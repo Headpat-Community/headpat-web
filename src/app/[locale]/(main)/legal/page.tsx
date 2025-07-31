@@ -31,23 +31,22 @@ export async function generateMetadata(props) {
   }
 }
 
-export default function LegalPage() {
+export default async function LegalPage() {
+  const t = await getDict('LegalPage')
   return (
     <div className="mx-auto mb-4 mt-8 max-w-7xl p-4">
       <div className="px-4 sm:px-0">
-        <h3 className="text-base font-semibold leading-7">Legal Information</h3>
+        <h3 className="text-base font-semibold leading-7">{t('legalInfo')}</h3>
         <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
-          All the legal information about our website and app.
+          {t('legalInfoDescription')}
         </p>
       </div>
       <div className="mt-6 border-t border-gray-100">
         <dl className="divide-y divide-gray-100">
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6">About</dt>
+            <dt className="text-sm font-medium leading-6">{t('about')}</dt>
             <dd className="mt-1 text-sm leading-6 text-black/80 dark:text-white/80 sm:col-span-2 sm:mt-0">
-              Here you can download all the legal documents that are related to
-              the use of our website or app. If you have any questions, please
-              contact us at{' '}
+              {t('aboutDescription')}{' '}
               <Link
                 className="text-link hover:text-link/80"
                 href="mailto:help@headpat.place"
@@ -58,7 +57,9 @@ export default function LegalPage() {
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6">Attachments</dt>
+            <dt className="text-sm font-medium leading-6">
+              {t('attachments')}
+            </dt>
             <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
               <ul
                 role="list"
@@ -71,7 +72,9 @@ export default function LegalPage() {
                       aria-hidden="true"
                     />
                     <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                      <span className="truncate font-medium">Impressum</span>
+                      <span className="truncate font-medium">
+                        {t('impressum')}
+                      </span>
                     </div>
                   </div>
                   <div className="ml-4 shrink-0">
@@ -79,7 +82,7 @@ export default function LegalPage() {
                       href={'/legal/impressum'}
                       className="font-medium text-link hover:text-link/80"
                     >
-                      View
+                      {t('view')}
                     </Link>
                   </div>
                 </li>
@@ -91,7 +94,7 @@ export default function LegalPage() {
                     />
                     <div className="ml-4 flex min-w-0 flex-1 gap-2">
                       <span className="truncate font-medium">
-                        Terms of Service
+                        {t('termsOfService')}
                       </span>
                       <span className="shrink-0 text-gray-400">PDF</span>
                     </div>
@@ -101,7 +104,7 @@ export default function LegalPage() {
                       href={'/legal/termsofservice.pdf'}
                       className="font-medium text-link hover:text-link/80"
                     >
-                      View
+                      {t('view')}
                     </Link>
                   </div>
                 </li>
@@ -113,7 +116,7 @@ export default function LegalPage() {
                     />
                     <div className="ml-4 flex min-w-0 flex-1 gap-2">
                       <span className="truncate font-medium">
-                        Privacy Policy
+                        {t('privacyPolicy')}
                       </span>
                     </div>
                   </div>
@@ -122,7 +125,7 @@ export default function LegalPage() {
                       href={'/legal/privacypolicy'}
                       className="font-medium text-link hover:text-link/80"
                     >
-                      View
+                      {t('view')}
                     </Link>
                   </div>
                 </li>
@@ -133,7 +136,7 @@ export default function LegalPage() {
                       aria-hidden="true"
                     />
                     <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                      <span className="truncate font-medium">EULA</span>
+                      <span className="truncate font-medium">{t('eula')}</span>
                     </div>
                   </div>
                   <div className="ml-4 shrink-0">
@@ -141,27 +144,7 @@ export default function LegalPage() {
                       href={'/legal/eula'}
                       className="font-medium text-link hover:text-link/80"
                     >
-                      View
-                    </Link>
-                  </div>
-                </li>
-                <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                  <div className="flex w-0 flex-1 items-center">
-                    <Paperclip
-                      className="h-5 w-5 shrink-0 text-gray-400"
-                      aria-hidden="true"
-                    />
-                    <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                      <span className="truncate font-medium">Disclaimer</span>
-                      <span className="shrink-0 text-gray-400">PDF</span>
-                    </div>
-                  </div>
-                  <div className="ml-4 shrink-0">
-                    <Link
-                      href={'/legal/disclaimer.pdf'}
-                      className="font-medium text-link hover:text-link/80"
-                    >
-                      View
+                      {t('view')}
                     </Link>
                   </div>
                 </li>
@@ -173,7 +156,29 @@ export default function LegalPage() {
                     />
                     <div className="ml-4 flex min-w-0 flex-1 gap-2">
                       <span className="truncate font-medium">
-                        Acceptable Use
+                        {t('disclaimer')}
+                      </span>
+                      <span className="shrink-0 text-gray-400">PDF</span>
+                    </div>
+                  </div>
+                  <div className="ml-4 shrink-0">
+                    <Link
+                      href={'/legal/disclaimer.pdf'}
+                      className="font-medium text-link hover:text-link/80"
+                    >
+                      {t('view')}
+                    </Link>
+                  </div>
+                </li>
+                <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                  <div className="flex w-0 flex-1 items-center">
+                    <Paperclip
+                      className="h-5 w-5 shrink-0 text-gray-400"
+                      aria-hidden="true"
+                    />
+                    <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                      <span className="truncate font-medium">
+                        {t('acceptableUse')}
                       </span>
                       <span className="shrink-0 text-gray-400">PDF</span>
                     </div>
@@ -183,53 +188,7 @@ export default function LegalPage() {
                       href={'/legal/acceptableuse.pdf'}
                       className="font-medium text-link hover:text-link/80"
                     >
-                      View
-                    </Link>
-                  </div>
-                </li>
-                {/*<li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                    <div className="flex w-0 flex-1 items-center">
-                      <PaperClipIcon
-                        className="h-5 w-5 shrink-0 text-gray-400"
-                        aria-hidden="true"
-                      />
-                      <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                        <span className="truncate font-medium">
-                          Return Policy
-                        </span>
-                        <span className="shrink-0 text-gray-400">
-                          PDF
-                        </span>
-                      </div>
-                    </div>
-                    <div className="ml-4 shrink-0">
-                      <Link
-                        href="/legal/returnpolicy.pdf"
-                        className="font-medium text-link hover:text-link/80"
-                      >
-                        View
-                      </Link>
-                    </div>
-                  </li>*/}
-                <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                  <div className="flex w-0 flex-1 items-center">
-                    <Paperclip
-                      className="h-5 w-5 shrink-0 text-gray-400"
-                      aria-hidden="true"
-                    />
-                    <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                      <span className="truncate font-medium">
-                        Shipping Policy
-                      </span>
-                      <span className="shrink-0 text-gray-400">PDF</span>
-                    </div>
-                  </div>
-                  <div className="ml-4 shrink-0">
-                    <Link
-                      href={'/legal/returnpolicy.pdf'}
-                      className="font-medium text-link hover:text-link/80"
-                    >
-                      View
+                      {t('view')}
                     </Link>
                   </div>
                 </li>

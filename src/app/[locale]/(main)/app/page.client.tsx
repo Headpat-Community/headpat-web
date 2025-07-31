@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DownloadIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { useDict } from 'gt-next/client'
 
 interface DeviceType {
   model?: string
@@ -28,6 +29,8 @@ const isMobileDevice = async () => {
 }
 
 export default function PageClient() {
+  const t = useDict('AppPage')
+
   useEffect(() => {
     const fetchDevice = async () => {
       await isMobileDevice()
@@ -40,13 +43,12 @@ export default function PageClient() {
     <div className="grid md:grid-cols-2 gap-6 p-6">
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">Google Play</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            {t('googlePlay')}
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground mb-4">
-            Download Headpat for your Android device and start patting heads
-            today!
-          </p>
+          <p className="text-muted-foreground mb-4">{t('downloadAndroid')}</p>
           <Link
             href={
               'https://play.google.com/store/apps/details?id=com.headpat.app'
@@ -54,7 +56,7 @@ export default function PageClient() {
             target={'_blank'}
           >
             <Button className="w-full mt-4 bg-gray-800 hover:bg-gray-700 text-white">
-              <DownloadIcon className="mr-2 size-4" /> Get it on Google Play
+              <DownloadIcon className="mr-2 size-4" /> {t('getItOnGooglePlay')}
             </Button>
           </Link>
         </CardContent>
@@ -62,19 +64,16 @@ export default function PageClient() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">iOS</CardTitle>
+          <CardTitle className="flex items-center gap-2">{t('ios')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground mb-4">
-            Experience Headpat on your iPhone or iPad. Available on the App
-            Store.
-          </p>
+          <p className="text-muted-foreground mb-4">{t('downloadIOS')}</p>
           <Link
             href={'https://apps.apple.com/app/headpat/id6502715063'}
             target={'_blank'}
           >
             <Button className="w-full mt-4 bg-gray-800 hover:bg-gray-700 text-white">
-              <DownloadIcon className="mr-2 size-4" /> Download on the App Store
+              <DownloadIcon className="mr-2 size-4" /> {t('downloadOnAppStore')}
             </Button>
           </Link>
         </CardContent>

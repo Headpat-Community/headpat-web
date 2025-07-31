@@ -18,10 +18,12 @@ import Link from 'next/link'
 import { ExecutionMethod } from 'node-appwrite'
 import { useEffect, useState } from 'react'
 import sanitize from 'sanitize-html'
+import { useDict } from 'gt-next/client'
 
 export default function PageClient({ galleryId }: { galleryId: string }) {
   const [moderationModalOpen, setModerationModalOpen] = useState(false)
   const { current } = useUser()
+  const t = useDict('GalleryPage')
 
   // Single query for image, prefs, and userData
   const { data, isLoading, isError } = useQuery({
@@ -47,14 +49,14 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
       return {
         image,
         imagePrefs: JSON.parse(imagePrefsRaw.responseBody),
-        userData,
+        userData
       }
     },
     enabled: !!galleryId,
     staleTime: 300 * 1000,
     refetchOnMount: true,
     refetchOnWindowFocus: true,
-    refetchOnReconnect: true,
+    refetchOnReconnect: true
   })
 
   const image = data?.image
@@ -91,13 +93,13 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
     return <Skeleton className={'h-96 w-96'} />
   }
   if (isError) {
-    return <div className="p-4">Failed to load gallery image.</div>
+    return <div className="p-4">{t('failedToLoad')}</div>
   }
 
   return (
     <div className="m-4">
       <Button asChild>
-        <Link href={'/gallery'}>&larr; Go back</Link>
+        <Link href={'/gallery'}>&larr; {t('goBack')}</Link>
       </Button>
       <div className="flex flex-wrap items-center justify-center gap-4 p-8">
         <div>
@@ -109,13 +111,13 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                 {image ? (
                   imagePrefs?.isHidden ? (
                     <div className="imgsinglegallery mx-auto h-[550px] w-96 max-w-full rounded-lg object-contain">
-                      This image is hidden.
+                      {t('imageHidden')}
                       <Button
                         onClick={() => setModerationModalOpen(true)}
                         variant={'outline'}
                         className={'flex mt-4'}
                       >
-                        Show image
+                        {t('showImage')}
                       </Button>
                     </div>
                   ) : (
@@ -158,18 +160,18 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                       <div className="ml-4">
                         <div className="mt-4 px-4 sm:px-0">
                           <h3 className="text-base font-semibold leading-7">
-                            Image information
+                            {t('imageInfo')}
                           </h3>
                         </div>
                         <div className="mt-4 border-t border-black/10 dark:border-white/10">
                           <dl className="divide-y divide-black/10 dark:divide-white/10">
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                               <dt className="text-sm font-medium leading-6">
-                                Title
+                                {t('title')}
                               </dt>
                               <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
                                 {image ? (
-                                  image.name || 'No title provided.'
+                                  image.name || t('noTitle')
                                 ) : (
                                   <Skeleton className={'h-4 w-[100px]'} />
                                 )}
@@ -177,7 +179,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                               <dt className="text-sm font-medium leading-6">
-                                User:
+                                {t('user')}
                               </dt>
                               <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
                                 {userData ? (
@@ -193,20 +195,11 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                               <dt className="text-sm font-medium leading-6">
-                                Created at
+                                {t('createdAt')}
                               </dt>
                               <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
                                 {image ? (
-                                  new Date(image.$createdAt).toLocaleString(
-                                    'en-GB',
-                                    {
-                                      day: '2-digit',
-                                      month: '2-digit',
-                                      year: 'numeric',
-                                      hour: '2-digit',
-                                      minute: '2-digit'
-                                    }
-                                  )
+                                  new Date(image.$createdAt).toLocaleString()
                                 ) : (
                                   <Skeleton className={'h-4 w-[100px]'} />
                                 )}

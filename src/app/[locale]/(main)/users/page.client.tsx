@@ -7,8 +7,10 @@ import { useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import UserCard from '@/components/user/userCard'
 import { UserDataDocumentsType, UserDataType } from '@/utils/types/models'
+import { useDict } from 'gt-next/client'
 
 export default function ClientPage() {
+  const t = useDict('UsersPage')
   const {
     data: users,
     isLoading,
@@ -38,7 +40,7 @@ export default function ClientPage() {
     return (
       <div className={'flex flex-1 justify-center items-center h-full'}>
         <div className={'p-4 gap-6 text-center'}>
-          <h1 className={'text-2xl font-semibold'}>Loading...</h1>
+          <h1 className={'text-2xl font-semibold'}>{t('loading')}</h1>
         </div>
       </div>
     )
@@ -48,10 +50,8 @@ export default function ClientPage() {
     return (
       <div className={'flex flex-1 justify-center items-center h-full'}>
         <div className={'p-4 gap-6 text-center'}>
-          <h1 className={'text-2xl font-semibold'}>No users!</h1>
-          <p className={'text-muted-foreground'}>
-            There are no users to show at the moment.
-          </p>
+          <h1 className={'text-2xl font-semibold'}>{t('noUsers')}</h1>
+          <p className={'text-muted-foreground'}>{t('noUsersDescription')}</p>
         </div>
       </div>
     )

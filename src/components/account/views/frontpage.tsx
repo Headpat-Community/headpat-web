@@ -5,12 +5,13 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { databases } from '@/app/appwrite-client'
-import { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import UploadAvatar from '@/components/account/uploadAvatar'
 import UploadBanner from '@/components/account/uploadBanner'
 import { AccountPrefs, UserDataDocumentsType } from '@/utils/types/models'
 import { toast } from 'sonner'
 import { getDocument } from '@/components/api/documents'
+import { useQuery } from '@tanstack/react-query'
 import z from 'zod'
 
 const schema = z.object({
@@ -30,21 +31,32 @@ export default function FrontpageView({
 }: {
   accountData: AccountPrefs
 }) {
-  const [userData, setUserData] = useState<UserDataDocumentsType>(null)
   const [isUploading, setIsUploading] = useState<boolean>(false)
+  const [localUserData, setLocalUserData] =
+    useState<UserDataDocumentsType>(null)
 
-  useEffect(() => {
-    getDocument('hp_db', 'userdata', accountData.$id).then(
-      (data: UserDataDocumentsType) => setUserData(data)
-    )
-  }, [accountData])
+  const { data: userData, isLoading } = useQuery<UserDataDocumentsType>({
+    queryKey: ['userdata', accountData.$id],
+    queryFn: async () => {
+      return await getDocument('hp_db', 'userdata', accountData.$id)
+    },
+    staleTime: 0, // Always fetch fresh data
+    enabled: !!accountData.$id
+  })
+
+  // Update local state when userData is loaded
+  React.useEffect(() => {
+    if (userData) {
+      setLocalUserData(userData)
+    }
+  }, [userData])
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
 
     try {
       // Validate the entire communitySettings object
-      schema.parse(userData)
+      schema.parse(localUserData)
     } catch (error) {
       toast.error(error.errors[0].message)
       return
@@ -53,17 +65,34 @@ export default function FrontpageView({
     try {
       setIsUploading(true)
 
+      // Convert DD/MM/YYYY to ISO date format for database storage
+      let birthdayForDB = null
+      if (localUserData.birthday) {
+        const dateParts = localUserData.birthday.split('/')
+        if (dateParts.length === 3) {
+          const [day, month, year] = dateParts
+          const date = new Date(
+            parseInt(year),
+            parseInt(month) - 1,
+            parseInt(day)
+          )
+          if (!isNaN(date.getTime())) {
+            birthdayForDB = date.toISOString().split('T')[0]
+          }
+        }
+      }
+
       const promise = databases.updateDocument(
         'hp_db',
         'userdata',
         accountData.$id,
         {
-          status: userData.status,
-          bio: userData.bio,
-          displayName: userData.displayName,
-          birthday: new Date(userData.birthday).toISOString().split('T')[0],
-          pronouns: userData.pronouns,
-          location: userData.location
+          status: localUserData.status,
+          bio: localUserData.bio,
+          displayName: localUserData.displayName,
+          birthday: birthdayForDB,
+          pronouns: localUserData.pronouns,
+          location: localUserData.location
         }
       )
 
@@ -86,6 +115,33 @@ export default function FrontpageView({
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="divide-y divide-black/5 dark:divide-white/5">
+        <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+          <div>
+            <h4 className="text-base font-semibold leading-7">
+              Frontpage Settings
+            </h4>
+            <p className="mt-1 text-sm leading-6 text-gray-900 dark:text-gray-400">
+              Here you can change your public profile settings.
+            </p>
+          </div>
+          <div className="md:col-span-2">
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white mx-auto mb-4"></div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Loading...
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="divide-y divide-black/5 dark:divide-white/5">
@@ -104,14 +160,14 @@ export default function FrontpageView({
               isUploading={isUploading}
               setIsUploading={setIsUploading}
               userId={accountData && accountData.$id}
-              userData={userData}
+              userData={localUserData}
             />
             <div className={'my-4'} />
             <UploadBanner
               isUploading={isUploading}
               setIsUploading={setIsUploading}
               userId={accountData && accountData.$id}
-              userData={userData}
+              userData={localUserData}
             />
 
             <div className="mt-12 grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6">
@@ -122,11 +178,11 @@ export default function FrontpageView({
                     id="displayname"
                     name="displayname"
                     type="text"
-                    value={userData?.displayName || ''}
+                    value={localUserData?.displayName || ''}
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
-                        setUserData({
-                          ...userData,
+                        setLocalUserData({
+                          ...localUserData,
                           displayName: e.target.value
                         })
                       }
@@ -135,7 +191,7 @@ export default function FrontpageView({
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData?.displayName?.length || 0}
+                      {localUserData?.displayName?.length || 0}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>
                   </div>
@@ -149,17 +205,20 @@ export default function FrontpageView({
                     id="status"
                     name="status"
                     type="text"
-                    value={userData?.status || ''}
+                    value={localUserData?.status || ''}
                     onChange={(e) => {
                       if (e.target.value.length <= 24) {
-                        setUserData({ ...userData, status: e.target.value })
+                        setLocalUserData({
+                          ...localUserData,
+                          status: e.target.value
+                        })
                       }
                     }}
                     maxLength={24}
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData?.status?.length || 0}
+                      {localUserData?.status?.length || 0}
                     </span>
                     <span className="select-none text-gray-400">/{24}</span>
                   </div>
@@ -173,11 +232,11 @@ export default function FrontpageView({
                     id="pronouns"
                     name="pronouns"
                     type="text"
-                    value={userData?.pronouns || ''}
+                    value={localUserData?.pronouns || ''}
                     onChange={(e) => {
                       if (e.target.value.length <= 16) {
-                        setUserData({
-                          ...userData,
+                        setLocalUserData({
+                          ...localUserData,
                           pronouns: e.target.value
                         })
                       }
@@ -186,7 +245,7 @@ export default function FrontpageView({
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData?.pronouns?.length || 0}
+                      {localUserData?.pronouns?.length || 0}
                     </span>
                     <span className="select-none text-gray-400">/{16}</span>
                   </div>
@@ -199,16 +258,33 @@ export default function FrontpageView({
                   <Input
                     id="birthday"
                     name="birthday"
-                    type="date"
+                    type="text"
+                    placeholder="DD/MM/YYYY"
                     value={
-                      !isNaN(Date.parse(userData?.birthday))
-                        ? new Date(userData?.birthday)
-                            .toISOString()
-                            .split('T')[0]
-                        : '01-01-1900T00:00:00'
+                      localUserData?.birthday &&
+                      !isNaN(Date.parse(localUserData?.birthday))
+                        ? new Date(localUserData?.birthday).toLocaleDateString(
+                            'en-GB',
+                            {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric'
+                            }
+                          )
+                        : ''
                     }
                     onChange={(e) => {
-                      setUserData({ ...userData, birthday: e.target.value })
+                      const value = e.target.value
+                      // Allow only digits and forward slashes
+                      const cleaned = value.replace(/[^\d/]/g, '')
+                      // Basic DD/MM/YYYY format validation
+                      const dateRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+                      if (cleaned === '' || dateRegex.test(cleaned)) {
+                        setLocalUserData({
+                          ...localUserData,
+                          birthday: cleaned
+                        })
+                      }
                     }}
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
@@ -229,11 +305,11 @@ export default function FrontpageView({
                     id="location"
                     name="location"
                     type="text"
-                    value={userData?.location || ''}
+                    value={localUserData?.location || ''}
                     onChange={(e) => {
                       if (e.target.value.length <= 48) {
-                        setUserData({
-                          ...userData,
+                        setLocalUserData({
+                          ...localUserData,
                           location: e.target.value
                         })
                       }
@@ -242,7 +318,7 @@ export default function FrontpageView({
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
                     <span className="select-none">
-                      {userData?.location?.length || 0}
+                      {localUserData?.location?.length || 0}
                     </span>
                     <span className="select-none text-gray-400">/{48}</span>
                   </div>
@@ -260,17 +336,20 @@ export default function FrontpageView({
                   <Textarea
                     id="bio"
                     name="bio"
-                    value={userData?.bio || ''}
+                    value={localUserData?.bio || ''}
                     onChange={(e) => {
                       if (e.target.value.length <= 2048) {
-                        setUserData({ ...userData, bio: e.target.value })
+                        setLocalUserData({
+                          ...localUserData,
+                          bio: e.target.value
+                        })
                       }
                     }}
                     maxLength={2048}
                   />
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-end pb-2 pr-4 text-sm leading-5">
                     <span className="select-none">
-                      {userData?.bio?.length || 0}
+                      {localUserData?.bio?.length || 0}
                     </span>
                     <span className="select-none text-gray-400">/{2048}</span>
                   </div>

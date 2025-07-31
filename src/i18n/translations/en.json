@@ -87,5 +87,62 @@
       "AcceptedTerms": "You must accept the terms and conditions",
       "InvalidEmail": "Invalid email address"
     }
+  },
+  "AppPage": {
+    "googlePlay": "Google Play",
+    "downloadAndroid": "Download Headpat for your Android device and start patting heads today!",
+    "getItOnGooglePlay": "Get it on Google Play",
+    "ios": "iOS",
+    "downloadIOS": "Experience Headpat on your iPhone or iPad. Available on the App Store.",
+    "downloadOnAppStore": "Download on the App Store"
+  },
+  "GalleryPage": {
+    "newest": "Newest",
+    "random": "Random",
+    "loading": "Loading...",
+    "noUsers": "No users!",
+    "noUsersDescription": "There are no users to show at the moment.",
+    "goBack": "Go back",
+    "imageInfo": "Image information",
+    "title": "Title",
+    "user": "User:",
+    "createdAt": "Created at",
+    "noTitle": "No title provided.",
+    "failedToLoad": "Failed to load gallery image.",
+    "showImage": "Show image",
+    "imageHidden": "This image is hidden.",
+    "active": "Active",
+    "inactive": "Inactive",
+    "validUntil": "Valid until"
+  },
+  "UsersPage": {
+    "loading": "Loading...",
+    "noUsers": "No users!",
+    "noUsersDescription": "There are no users to show at the moment."
+  },
+  "SupportPage": {
+    "helpTitle": "Do you require help?",
+    "helpDescription": "Check below for all the ways you can get in touch with us.",
+    "discord": "Discord",
+    "discordDescription": "Join our Discord server and ask for help by creating a ticket at",
+    "email": "E-Mail",
+    "emailDescription": "Sending us an E-Mail will get you the support you need, however it might take 24-48 hours. If you require faster help, please send us a message via Discord. Our E-Mail is",
+    "github": "GitHub",
+    "githubDescription": "Did you know that our App & Website are both open-source? What if I told you that you can help us create something big! Come and look around in our GitHub:"
+  },
+  "LegalPage": {
+    "legalInfo": "Legal Information",
+    "legalInfoDescription": "All the legal information about our website and app.",
+    "about": "About",
+    "aboutDescription": "Here you can download all the legal documents that are related to the use of our website or app. If you have any questions, please contact us at",
+    "attachments": "Attachments",
+    "impressum": "Impressum",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "eula": "EULA",
+    "disclaimer": "Disclaimer",
+    "acceptableUse": "Acceptable Use",
+    "returnPolicy": "Return Policy",
+    "view": "View"
   }
 }

@@ -16,6 +16,7 @@ import React from 'react'
 import { useHeader } from '@/components/sidebar/header-client'
 import { UploadButton } from '@/components/gallery/upload-button'
 import { useUser } from '@/components/contexts/UserContext'
+import { useDict } from 'gt-next/client'
 
 export default function FetchGallery() {
   const router = useRouter()
@@ -31,6 +32,7 @@ export default function FetchGallery() {
   const [seenItems, setSeenItems] = useState<Set<string>>(new Set())
   const pageSize = 48 // Number of items per page
   const { addHeaderComponent, removeHeaderComponent } = useHeader()
+  const t = useDict('GalleryPage')
 
   // Initialize state from URL parameters
   useEffect(() => {
@@ -249,8 +251,8 @@ export default function FetchGallery() {
       >
         <div className="flex flex-col items-center justify-center">
           <TabsList className="grid w-full sm:max-w-4xl grid-cols-2">
-            <TabsTrigger value="newest">Newest</TabsTrigger>
-            <TabsTrigger value="random">Random</TabsTrigger>
+            <TabsTrigger value="newest">{t('newest')}</TabsTrigger>
+            <TabsTrigger value="random">{t('random')}</TabsTrigger>
           </TabsList>
         </div>
 
