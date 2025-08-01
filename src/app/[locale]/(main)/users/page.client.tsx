@@ -7,10 +7,10 @@ import { useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import UserCard from '@/components/user/userCard'
 import { UserDataDocumentsType, UserDataType } from '@/utils/types/models'
-import { useDict } from 'gt-next/client'
+import { useTranslations } from 'gt-next/client'
 
 export default function ClientPage() {
-  const t = useDict('UsersPage')
+  const t = useTranslations('UsersPage')
   const {
     data: users,
     isLoading,

@@ -18,12 +18,12 @@ import Link from 'next/link'
 import { ExecutionMethod } from 'node-appwrite'
 import { useEffect, useState } from 'react'
 import sanitize from 'sanitize-html'
-import { useDict } from 'gt-next/client'
+import { useTranslations } from 'gt-next/client'
 
 export default function PageClient({ galleryId }: { galleryId: string }) {
   const [moderationModalOpen, setModerationModalOpen] = useState(false)
   const { current } = useUser()
-  const t = useDict('GalleryPage')
+  const t = useTranslations('GalleryPage')
 
   // Single query for image, prefs, and userData
   const { data, isLoading, isError } = useQuery({

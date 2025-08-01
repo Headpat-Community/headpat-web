@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DownloadIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { useDict } from 'gt-next/client'
+import { useTranslations } from 'gt-next/client'
 
 interface DeviceType {
   model?: string
@@ -29,7 +29,7 @@ const isMobileDevice = async () => {
 }
 
 export default function PageClient() {
-  const t = useDict('AppPage')
+  const t = useTranslations('AppPage')
 
   useEffect(() => {
     const fetchDevice = async () => {

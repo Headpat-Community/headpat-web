@@ -32,7 +32,7 @@ export async function generateMetadata(props) {
 }
 
 export default async function LegalPage() {
-  const t = await getDict('LegalPage')
+  const t = await getTranslations('LegalPage')
   return (
     <div className="mx-auto mb-4 mt-8 max-w-7xl p-4">
       <div className="px-4 sm:px-0">

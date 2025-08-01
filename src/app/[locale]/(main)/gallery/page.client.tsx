@@ -1,22 +1,21 @@
 'use client'
 import { databases, Query, storage } from '@/app/appwrite-client'
-import { Badge } from '@/components/ui/badge'
-import Link from 'next/link'
-import * as Sentry from '@sentry/nextjs'
-import Image from 'next/image'
-import { ImageFormat } from 'node-appwrite'
-import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
-import { GalleryDocumentsType, GalleryType } from '@/utils/types/models'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import PaginationComponent from '@/components/Pagination'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { decode } from 'blurhash'
-import React from 'react'
-import { useHeader } from '@/components/sidebar/header-client'
-import { UploadButton } from '@/components/gallery/upload-button'
 import { useUser } from '@/components/contexts/UserContext'
-import { useDict } from 'gt-next/client'
+import { UploadButton } from '@/components/gallery/upload-button'
+import PaginationComponent from '@/components/Pagination'
+import { useHeader } from '@/components/sidebar/header-client'
+import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { GalleryDocumentsType, GalleryType } from '@/utils/types/models'
+import { captureException } from '@sentry/nextjs'
+import { ImageFormat } from 'appwrite'
+import { decode } from 'blurhash'
+import { useTranslations } from 'gt-next/client'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 export default function FetchGallery() {
   const router = useRouter()
@@ -32,7 +31,7 @@ export default function FetchGallery() {
   const [seenItems, setSeenItems] = useState<Set<string>>(new Set())
   const pageSize = 48 // Number of items per page
   const { addHeaderComponent, removeHeaderComponent } = useHeader()
-  const t = useDict('GalleryPage')
+  const t = useTranslations('GalleryPage')
 
   // Initialize state from URL parameters
   useEffect(() => {
@@ -217,13 +216,13 @@ export default function FetchGallery() {
         setTotalPages(Math.ceil(gallery.total / pageSize))
       } catch (error) {
         toast.error(error)
-        Sentry.captureException(error)
+        captureException(error)
       }
     }
 
     fetchGalleryData().catch((error) => {
       toast.error("You encountered an error. But don't worry, we're on it.")
-      Sentry.captureException(error)
+      captureException(error)
     })
   }, [current, currentPage, sortType])
 
