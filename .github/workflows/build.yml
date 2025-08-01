@@ -37,8 +37,8 @@ jobs:
             --build-arg SENTRY_PROJECT=${{ secrets.SENTRY_PROJECT }} \
             --build-arg SENTRY_ORG=${{ secrets.SENTRY_ORG }} \
             --build-arg SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} \
-            -t ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-space:${{ steps.get_version.outputs.version }} \
-            -t ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-space:latest \
+            -t ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-place:${{ steps.get_version.outputs.version }} \
+            -t ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-place:latest \
             -f Dockerfile .
-          docker push ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-space:${{ steps.get_version.outputs.version }}
-          docker push ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-space:latest
+          docker push ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-place:${{ steps.get_version.outputs.version }}
+          docker push ${{ secrets.HARBOR_REGISTRY }}/fleet/headpat-place:latest
