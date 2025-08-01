@@ -53,9 +53,10 @@ export default function AddCommunity({
     setIsSubmitting(true)
     const result = communitySchema.safeParse(communityData)
     if (!result.success) {
-      result.error.errors.forEach((err) => {
+      result.error.issues.forEach((err) => {
         toast.error(err.message)
       })
+      setIsSubmitting(false)
       return
     }
 

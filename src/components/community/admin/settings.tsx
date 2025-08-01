@@ -59,7 +59,7 @@ export default function CommunityAdminSettings({
 
     const result = communitySchema.safeParse(communitySettings)
     if (!result.success) {
-      result.error.errors.forEach((err) => {
+      result.error.issues.forEach((err) => {
         toast.error(err.message)
       })
       return
