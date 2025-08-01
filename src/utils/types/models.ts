@@ -463,6 +463,26 @@ export interface EventsDocumentsType extends Models.Document {
    * Images of the event.
    */
   images: string[]
+  /**
+   * If user is attending the event.
+   */
+  isAttending: boolean
+  /**
+   * Tags of the event.
+   */
+  tags: string[]
+  /**
+   * The website of the event.
+   */
+  website: string
+  /**
+   * If the event is paid.
+   */
+  isPaid: boolean
+  /**
+   * The pricing of the event.
+   */
+  pricing: string[]
 }
 
 export interface CommunityType {

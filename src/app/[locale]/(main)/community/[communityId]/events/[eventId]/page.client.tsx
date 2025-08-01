@@ -246,7 +246,7 @@ export default function PageClient({ eventData, communityData }) {
                     <div className="flex items-center">
                       <span>
                         {event.pricing.length > 1 ? 'Starting at ' : ''}
-                        {event.pricing[0].split(';')[0]} {event.currency}€
+                        {event.pricing[0].split(';')[0]}€
                       </span>
                     </div>
                   ) : (
