@@ -38,9 +38,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }) {
   const locale = await getLocale()
   const { databases } = await createSessionServerClient()
-  const status = await databases.getDocument('config', 'status', 'website')
-
-  console.log(status)
+  const status = await databases
+    .getDocument('config', 'status', 'website')
+    .catch(() => ({ isMaintenance: true }))
 
   if (status.isMaintenance) {
     return (
