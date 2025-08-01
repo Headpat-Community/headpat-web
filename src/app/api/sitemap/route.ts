@@ -3,8 +3,9 @@ import { createSessionServerClient } from '@/app/appwrite-session'
 import { UserDataDocumentsType, UserDataType } from '@/utils/types/models'
 
 export async function GET() {
-  const { databases } = await createSessionServerClient()
   try {
+    const { databases } = await createSessionServerClient()
+
     const users: UserDataType = await databases.listDocuments(
       'hp_db',
       'userdata'
@@ -71,6 +72,10 @@ export async function GET() {
       headers: { 'Content-Type': 'text/xml' }
     })
   } catch (error) {
-    return NextResponse.json(error.message, { status: 500 })
+    console.error('Sitemap generation error:', error)
+    return NextResponse.json(
+      { error: 'Failed to generate sitemap' },
+      { status: 500 }
+    )
   }
 }

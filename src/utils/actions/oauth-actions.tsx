@@ -6,12 +6,24 @@ import { OAuthProvider } from 'node-appwrite'
 import { redirect } from 'next/navigation'
 
 export async function signInWithProvider(provider: OAuthProvider) {
-  const { account } = await createAdminClient()
-  const origin = (await headers()).get('origin')
-  const redirectUrl = await account.createOAuth2Token(
-    provider,
-    `${origin}/api/user/oauth`,
-    `${origin}/login?failure=true`
-  )
-  return redirect(redirectUrl)
+  try {
+    const { account } = await createAdminClient()
+    const origin = (await headers()).get('origin')
+
+    if (!origin) {
+      throw new Error('Origin header not found')
+    }
+
+    const redirectUrl = await account.createOAuth2Token(
+      provider,
+      `${origin}/api/user/oauth`,
+      `${origin}/login?failure=true`
+    )
+
+    return redirect(redirectUrl)
+  } catch (error) {
+    console.error('OAuth sign-in error:', error)
+    // Fallback redirect to login page with error
+    return redirect('/login?error=oauth_failed')
+  }
 }

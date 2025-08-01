@@ -1,5 +1,6 @@
 import { DataCacheProvider } from '@/components/contexts/DataCacheContext'
 import { UserProvider } from '@/components/contexts/UserContext'
+import ErrorBoundary from '@/components/errorBoundary'
 import { TanQueryClientProvider } from '@/components/init/tanstackQuery'
 import Maintenance from '@/components/static/maintenance'
 import { Toaster as SonnerToaster } from '@/components/ui/sonner'
@@ -64,7 +65,9 @@ export default async function RootLayout({ children }) {
                 enableSystem
                 disableTransitionOnChange
               >
-                <Maintenance />
+                <ErrorBoundary>
+                  <Maintenance />
+                </ErrorBoundary>
               </ThemeProvider>
             </DataCacheProvider>
           </TanQueryClientProvider>
@@ -97,7 +100,9 @@ export default async function RootLayout({ children }) {
             >
               <GTProvider>
                 <UserProvider>
-                  <div className="w-full">{children}</div>
+                  <ErrorBoundary>
+                    <div className="w-full">{children}</div>
+                  </ErrorBoundary>
                 </UserProvider>
               </GTProvider>
             </ThemeProvider>
