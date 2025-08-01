@@ -643,4 +643,8 @@ export interface ChangelogDocumentsType extends Models.Document {
    * If the change is a draft
    */
   draft: boolean
+  /**
+   * The type of the change
+   */
+  type: 'web' | 'app'
 }
