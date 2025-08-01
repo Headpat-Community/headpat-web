@@ -59,7 +59,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
     refetchOnReconnect: true
   })
 
-  const image = data?.image
+  const image = data?.image as unknown as GalleryDocumentsType
   const imagePrefs = data?.imagePrefs
   const userData = data?.userData
 
@@ -277,7 +277,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                 <ModerationModal
                                   isOpen={moderationModalOpen}
                                   setIsOpen={setModerationModalOpen}
-                                  image={image as GalleryDocumentsType}
+                                  image={image}
                                   imagePrefs={localImagePrefs}
                                   setImagePrefs={setLocalImagePrefs}
                                   current={current}

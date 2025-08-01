@@ -53,7 +53,6 @@ export function NavUser() {
                 <span className="truncate font-medium">
                   {userData?.displayName || userData?.$id || 'Login'}
                 </span>
-                <span className="truncate text-xs">{userData?.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -79,7 +78,6 @@ export function NavUser() {
                   <span className="truncate font-medium">
                     {userData?.displayName || userData?.$id || 'Login'}
                   </span>
-                  <span className="truncate text-xs">{userData?.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
