@@ -26,6 +26,7 @@ import {
   UserDataDocumentsType,
   UserPrefsDocumentsType
 } from '@/utils/types/models'
+import { useQueryClient } from '@tanstack/react-query'
 
 const ReportUserModal = React.lazy(() => import('./moderation/ReportUserModal'))
 
@@ -48,20 +49,35 @@ const UserActions = ({
 }: UserActionsProps) => {
   const [moderationModalOpen, setModerationModalOpen] = useState(false)
   const [reportUserModalOpen, setReportUserModalOpen] = useState(false)
+  const queryClient = useQueryClient()
 
   const handleFollow = useCallback(() => {
     if (isFollowing) {
       removeFollow(userData?.$id).then(() => {
         setIsFollowing(false)
         toast.success(`You have unfollowed ${userData?.displayName}.`)
+        // Invalidate the user query to refetch fresh data
+        queryClient.invalidateQueries({ queryKey: ['user', userData?.$id] })
+        // Also invalidate the users list to update follower counts
+        queryClient.invalidateQueries({ queryKey: ['users'] })
       })
     } else {
       addFollow(userData?.$id).then(() => {
         setIsFollowing(true)
         toast.success(`You are now following ${userData?.displayName}.`)
+        // Invalidate the user query to refetch fresh data
+        queryClient.invalidateQueries({ queryKey: ['user', userData?.$id] })
+        // Also invalidate the users list to update follower counts
+        queryClient.invalidateQueries({ queryKey: ['users'] })
       })
     }
-  }, [isFollowing, setIsFollowing, userData?.$id, userData?.displayName])
+  }, [
+    isFollowing,
+    setIsFollowing,
+    userData?.$id,
+    userData?.displayName,
+    queryClient
+  ])
 
   const handleMessage = useCallback(() => {
     toast('Ha! You thought this was a real button!')

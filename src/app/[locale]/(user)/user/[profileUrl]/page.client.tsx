@@ -29,7 +29,7 @@ import {
   SiX
 } from '@icons-pack/react-simple-icons'
 import * as Sentry from '@sentry/nextjs'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -40,6 +40,7 @@ import { toast } from 'sonner'
 
 function FollowerButton({ displayName, followerId, isFollowing }) {
   const [isFollowingState, setIsFollowingState] = useState(isFollowing || false)
+  const queryClient = useQueryClient()
 
   const handleFollow = async () => {
     const data = await addFollow(followerId)
@@ -57,6 +58,10 @@ function FollowerButton({ displayName, followerId, isFollowing }) {
     } else {
       toast.success(`You have followed ${displayName}`)
       setIsFollowingState(true)
+      // Invalidate the user query to refetch fresh data
+      queryClient.invalidateQueries({ queryKey: ['user', followerId] })
+      // Also invalidate the users list to update follower counts
+      queryClient.invalidateQueries({ queryKey: ['users'] })
     }
   }
 
@@ -76,6 +81,10 @@ function FollowerButton({ displayName, followerId, isFollowing }) {
     } else {
       toast.success(`You have unfollowed ${displayName}`)
       setIsFollowingState(false)
+      // Invalidate the user query to refetch fresh data
+      queryClient.invalidateQueries({ queryKey: ['user', followerId] })
+      // Also invalidate the users list to update follower counts
+      queryClient.invalidateQueries({ queryKey: ['users'] })
     }
   }
 
@@ -246,67 +255,67 @@ export default function PageClient({ userId }: { userId: string }) {
             userData.furaffinityname ||
             userData.X_name ||
             userData.twitchname) && (
-              <Card className="border-border rounded-t-none">
-                <CardContent className="p-4">
-                  <ul>
-                    {userData.discordname && (
-                      <>
-                        <ListSocialItem
-                          IconComponent={SiDiscord}
-                          userData={userData.discordname}
-                          link={'#'}
-                        />
-                        {(userData.telegramname ||
-                          userData.furaffinityname ||
-                          userData.X_name ||
-                          userData.twitchname) && <Separator />}
-                      </>
-                    )}
-                    {userData.telegramname && (
-                      <>
-                        <ListSocialItem
-                          IconComponent={SiTelegram}
-                          userData={userData.telegramname}
-                          link={`https://t.me/${userData.telegramname}`}
-                        />
-                        {(userData.furaffinityname ||
-                          userData.X_name ||
-                          userData.twitchname) && <Separator />}
-                      </>
-                    )}
-                    {userData.furaffinityname && (
-                      <>
-                        <ListSocialItem
-                          IconComponent={SiFuraffinity}
-                          userData={userData.furaffinityname}
-                          link={`https://www.furaffinity.net/user/${userData.furaffinityname}`}
-                        />
-                        {(userData.X_name || userData.twitchname) && (
-                          <Separator />
-                        )}
-                      </>
-                    )}
-                    {userData.X_name && (
-                      <>
-                        <ListSocialItem
-                          IconComponent={SiX}
-                          userData={userData.X_name}
-                          link={`https://x.com/${userData.X_name}`}
-                        />
-                        {userData.twitchname && <Separator />}
-                      </>
-                    )}
-                    {userData.twitchname && (
+            <Card className="border-border rounded-t-none">
+              <CardContent className="p-4">
+                <ul>
+                  {userData.discordname && (
+                    <>
                       <ListSocialItem
-                        IconComponent={SiTwitch}
-                        userData={userData.twitchname}
-                        link={`https://www.twitch.tv/${userData.twitchname}`}
+                        IconComponent={SiDiscord}
+                        userData={userData.discordname}
+                        link={'#'}
                       />
-                    )}
-                  </ul>
-                </CardContent>
-              </Card>
-            )}
+                      {(userData.telegramname ||
+                        userData.furaffinityname ||
+                        userData.X_name ||
+                        userData.twitchname) && <Separator />}
+                    </>
+                  )}
+                  {userData.telegramname && (
+                    <>
+                      <ListSocialItem
+                        IconComponent={SiTelegram}
+                        userData={userData.telegramname}
+                        link={`https://t.me/${userData.telegramname}`}
+                      />
+                      {(userData.furaffinityname ||
+                        userData.X_name ||
+                        userData.twitchname) && <Separator />}
+                    </>
+                  )}
+                  {userData.furaffinityname && (
+                    <>
+                      <ListSocialItem
+                        IconComponent={SiFuraffinity}
+                        userData={userData.furaffinityname}
+                        link={`https://www.furaffinity.net/user/${userData.furaffinityname}`}
+                      />
+                      {(userData.X_name || userData.twitchname) && (
+                        <Separator />
+                      )}
+                    </>
+                  )}
+                  {userData.X_name && (
+                    <>
+                      <ListSocialItem
+                        IconComponent={SiX}
+                        userData={userData.X_name}
+                        link={`https://x.com/${userData.X_name}`}
+                      />
+                      {userData.twitchname && <Separator />}
+                    </>
+                  )}
+                  {userData.twitchname && (
+                    <ListSocialItem
+                      IconComponent={SiTwitch}
+                      userData={userData.twitchname}
+                      link={`https://www.twitch.tv/${userData.twitchname}`}
+                    />
+                  )}
+                </ul>
+              </CardContent>
+            </Card>
+          )}
         </div>
 
         {/* Center */}
