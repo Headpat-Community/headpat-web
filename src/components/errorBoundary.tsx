@@ -23,11 +23,7 @@ class ErrorBoundary extends React.Component<
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    // Handle stream errors gracefully
-    if (
-      error?.message?.includes('Stream is already ended') ||
-      error?.code === 'ERR_STREAM_ALREADY_FINISHED'
-    ) {
+    if (error?.message?.includes('Stream is already ended')) {
       console.error('Stream error caught by boundary:', error)
       return { hasError: true, error }
     }
