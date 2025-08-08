@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createSessionServerClient } from '@/app/appwrite-session'
 import { UserDataDocumentsType, UserDataType } from '@/utils/types/models'
 
+// Cache sitemap for 10 minutes to lower memory/CPU pressure on bursts
 export async function GET() {
   try {
     const { databases } = await createSessionServerClient()
@@ -69,7 +70,10 @@ export async function GET() {
 
     return new NextResponse(sitemap, {
       status: 200,
-      headers: { 'Content-Type': 'text/xml' }
+      headers: {
+        'Content-Type': 'text/xml',
+        'Cache-Control': 'public, max-age=0, s-maxage=600, stale-while-revalidate=300'
+      }
     })
   } catch (error) {
     console.error('Sitemap generation error:', error)

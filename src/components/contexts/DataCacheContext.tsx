@@ -59,8 +59,13 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [])
 
   const waitForDb = useCallback(async () => {
-    while (loading) {
+    if (!loading) return
+    // Avoid unbounded busy-wait: race loading flag with a timeout
+    let attempts = 0
+    while (loading && attempts < 200) {
+      // max ~10s wait
       await new Promise((resolve) => setTimeout(resolve, 50))
+      attempts += 1
     }
   }, [loading])
 
