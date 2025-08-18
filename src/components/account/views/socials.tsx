@@ -30,6 +30,10 @@ const schema = z.object({
   twitchname: z
     .string()
     .max(32, 'Twitch name must be 32 characters or less')
+    .nullable(),
+  blueskyname: z
+    .string()
+    .max(32, 'Bluesky name must be 32 characters or less')
     .nullable()
 })
 
@@ -62,7 +66,8 @@ export default function SocialsView({ accountData }) {
         telegramname: userData.telegramname,
         furaffinityname: userData.furaffinityname,
         X_name: userData.X_name,
-        twitchname: userData.twitchname
+        twitchname: userData.twitchname,
+        blueskyname: userData.blueskyname
       })
 
       toast.success('User data saved successfully.')
@@ -232,6 +237,34 @@ export default function SocialsView({ accountData }) {
                     <span className="select-none">
                       {userData ? userData.twitchname?.length : 0}
                       {/* Check if userData.twitchname is defined before accessing its length property */}
+                    </span>
+                    <span className="select-none text-gray-400">/{32}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="sm:col-span-6">
+                <Label htmlFor="blueskyname">Bluesky</Label>
+                <div className="relative mt-2">
+                  <Input
+                    type="text"
+                    name="blueskyname"
+                    id="blueskyname"
+                    value={userData ? userData.blueskyname : ''} // Set the value from state
+                    onChange={(e) => {
+                      if (e.target.value.length <= 32) {
+                        setUserData({
+                          ...userData,
+                          blueskyname: e.target.value
+                        })
+                      }
+                    }} // Update state when the input changes, only if the length is less than or equal to 32
+                    maxLength={32} // Limit the maximum number of characters to 32
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                    <span className="select-none">
+                      {userData ? userData.blueskyname?.length : 0}
+                      {/* Check if userData.blueskyname is defined before accessing its length property */}
                     </span>
                     <span className="select-none text-gray-400">/{32}</span>
                   </div>

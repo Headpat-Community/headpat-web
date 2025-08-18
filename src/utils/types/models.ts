@@ -166,6 +166,10 @@ export interface UserDataDocumentsType extends Models.Document {
    */
   twitchname?: string | null
   /**
+   * The user's bluesky name.
+   */
+  blueskyname?: string | null
+  /**
    * The user's location.
    */
   location?: string | null
