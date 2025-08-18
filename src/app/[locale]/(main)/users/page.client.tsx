@@ -12,7 +12,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
-const USERS_PER_PAGE = 50 // Reduced from 250 to improve performance
+const USERS_PER_PAGE = 56 // Reduced from 250 to improve performance
 
 export default function ClientPage() {
   const t = useTranslations('UsersPage')
