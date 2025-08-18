@@ -8,68 +8,98 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { CakeIcon, CalendarDays } from 'lucide-react'
 import { UserDataDocumentsType } from '@/utils/types/models'
 import { formatDate } from '@/components/calculateTimeLeft'
-import React from 'react'
+import React, { useMemo, memo } from 'react'
 import Link from 'next/link'
 
-export default function UserCard({
-  user,
-  isChild,
-  children
-}: {
+interface UserCardProps {
   user: UserDataDocumentsType
   isChild?: boolean
   children: React.ReactNode
-}) {
-  const today = formatDate(new Date())
-  const birthday = user?.birthday
-    ? formatDate(new Date(user?.birthday))
-    : '01/01/1900'
+}
 
-  const isBirthday = birthday !== '01/01/1900' && birthday === today
+function UserCardComponent({ user, isChild, children }: UserCardProps) {
+  // Memoize expensive date calculations
+  const { isBirthday, joinedDate } = useMemo(() => {
+    const today = formatDate(new Date())
+    const birthday = user?.birthday
+      ? formatDate(new Date(user?.birthday))
+      : '01/01/1900'
+    const isBirthday = birthday !== '01/01/1900' && birthday === today
+    const joinedDate = formatDate(new Date(user?.$createdAt))
+
+    return { isBirthday, joinedDate }
+  }, [user?.birthday, user?.$createdAt])
+
+  // Memoize avatar image URL
+  const avatarImageUrl = useMemo(() => {
+    return (
+      getAvatarImageUrlPreview(user?.avatarId, 'width=250&height=250') || null
+    )
+  }, [user?.avatarId])
+
+  // Memoize user display name initial
+  const userInitial = useMemo(() => {
+    return user?.displayName?.charAt(0).toUpperCase() || '?'
+  }, [user?.displayName])
+
+  // Memoize the hover card content to prevent unnecessary re-renders
+  const hoverCardContent = useMemo(
+    () => (
+      <HoverCardContent className="w-80">
+        <div className="flex space-x-4">
+          <Avatar>
+            <AvatarImage src={avatarImageUrl} alt={user?.displayName} />
+            <AvatarFallback>{userInitial}</AvatarFallback>
+          </Avatar>
+          <div className="space-y-1">
+            <h4 className="text-sm font-semibold">{`${user?.displayName}`}</h4>
+            <p className="text-sm flex-wrap">{user?.status}</p>
+            {isBirthday && (
+              <div className="flex items-center pt-2">
+                <CakeIcon className="mr-2 size-4 opacity-70" />{' '}
+                <span className="text-xs text-muted-foreground">
+                  Today is my birthday!
+                </span>
+              </div>
+            )}
+            <div className="flex items-center pt-2">
+              <CalendarDays className="mr-2 size-4 opacity-70" />{' '}
+              <span className="text-xs text-muted-foreground">
+                Joined {joinedDate}
+              </span>
+            </div>
+          </div>
+        </div>
+      </HoverCardContent>
+    ),
+    [
+      user?.displayName,
+      user?.status,
+      isBirthday,
+      joinedDate,
+      avatarImageUrl,
+      userInitial
+    ]
+  )
+
+  // Memoize the link to prevent unnecessary re-renders
+  const userLink = useMemo(
+    () => `/user/${user?.profileUrl}`,
+    [user?.profileUrl]
+  )
 
   return (
     <HoverCard openDelay={200} closeDelay={100}>
-      <Link href={`/user/${user?.profileUrl}`}>
+      <Link href={userLink}>
         <HoverCardTrigger {...(isChild ? { asChild: true } : {})}>
           {children}
         </HoverCardTrigger>
-        <HoverCardContent className="w-80">
-          <div className="flex space-x-4">
-            <Avatar>
-              <AvatarImage
-                src={
-                  getAvatarImageUrlPreview(
-                    user?.avatarId,
-                    'width=250&height=250'
-                  ) || null
-                }
-                alt={user?.displayName}
-              />
-              <AvatarFallback>
-                {user?.displayName?.charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <div className="space-y-1">
-              <h4 className="text-sm font-semibold">{`${user?.displayName}`}</h4>
-              <p className="text-sm flex-wrap">{user?.status}</p>
-              {isBirthday && (
-                <div className="flex items-center pt-2">
-                  <CakeIcon className="mr-2 size-4 opacity-70" />{' '}
-                  <span className="text-xs text-muted-foreground">
-                    Today is my birthday!
-                  </span>
-                </div>
-              )}
-              <div className="flex items-center pt-2">
-                <CalendarDays className="mr-2 size-4 opacity-70" />{' '}
-                <span className="text-xs text-muted-foreground">
-                  Joined {formatDate(new Date(user?.$createdAt))}
-                </span>
-              </div>
-            </div>
-          </div>
-        </HoverCardContent>
+        {hoverCardContent}
       </Link>
     </HoverCard>
   )
 }
+
+const UserCard = memo(UserCardComponent)
+
+export default UserCard

@@ -3,7 +3,10 @@ import {
   useContext,
   useEffect,
   useImperativeHandle,
-  useRef
+  useRef,
+  useCallback,
+  useMemo,
+  memo
 } from 'react'
 
 import { GoogleMapsContext, useMapsLibrary } from '@vis.gl/react-google-maps'
@@ -32,6 +35,16 @@ export type PolylineProps = google.maps.PolylineOptions &
 
 export type PolylineRef = Ref<google.maps.Polyline | null>
 
+// Memoized event mapping to prevent recreation
+const EVENT_MAPPINGS = [
+  ['click', 'onClick'],
+  ['drag', 'onDrag'],
+  ['dragstart', 'onDragStart'],
+  ['dragend', 'onDragEnd'],
+  ['mouseover', 'onMouseOver'],
+  ['mouseout', 'onMouseOut']
+] as const
+
 function usePolyline(props: PolylineProps) {
   const {
     onClick,
@@ -44,19 +57,28 @@ function usePolyline(props: PolylineProps) {
     ...polylineOptions
   } = props
 
-  const callbacks = useRef<Record<string, (e: unknown) => void>>({})
-  Object.assign(callbacks.current, {
-    onClick,
-    onDrag,
-    onDragStart,
-    onDragEnd,
-    onMouseOver,
-    onMouseOut
-  })
+  // Memoize callbacks to prevent unnecessary re-renders
+  const callbacks = useMemo(
+    () => ({
+      onClick,
+      onDrag,
+      onDragStart,
+      onDragEnd,
+      onMouseOver,
+      onMouseOut
+    }),
+    [onClick, onDrag, onDragStart, onDragEnd, onMouseOver, onMouseOut]
+  )
 
   const geometryLibrary = useMapsLibrary('geometry')
   const map = useContext(GoogleMapsContext)?.map
   const polylineRef = useRef<google.maps.Polyline | null>(null)
+
+  // Memoize decoded path to prevent unnecessary recalculations
+  const decodedPath = useMemo(() => {
+    if (!encodedPath || !geometryLibrary) return null
+    return geometryLibrary.encoding.decodePath(encodedPath)
+  }, [encodedPath, geometryLibrary])
 
   // Initialize the polyline instance only once after the component mounts
   useEffect(() => {
@@ -69,7 +91,7 @@ function usePolyline(props: PolylineProps) {
     }
   }, [])
 
-  // Update polyline options
+  // Update polyline options with memoized dependencies
   useEffect(() => {
     const polyline = polylineRef.current
     if (!polyline) return
@@ -77,13 +99,12 @@ function usePolyline(props: PolylineProps) {
     polyline.setOptions(polylineOptions)
   }, [polylineOptions])
 
-  // Update the path with the encodedPath
+  // Update the path with the decoded path
   useEffect(() => {
     const polyline = polylineRef.current
-    if (!polyline || !encodedPath || !geometryLibrary) return
-    const path = geometryLibrary.encoding.decodePath(encodedPath)
-    polyline.setPath(path)
-  }, [encodedPath, geometryLibrary])
+    if (!polyline || !decodedPath) return
+    polyline.setPath(decodedPath)
+  }, [decodedPath])
 
   // Attach the polyline to the map
   useEffect(() => {
@@ -101,22 +122,19 @@ function usePolyline(props: PolylineProps) {
     }
   }, [map])
 
-  // Attach event handlers
-  useEffect(() => {
+  // Memoized event handler setup to prevent unnecessary re-attachments
+  const setupEventHandlers = useCallback(() => {
     const polyline = polylineRef.current
     if (!polyline) return
 
     const gme = google.maps.event
-    ;[
-      ['click', 'onClick'],
-      ['drag', 'onDrag'],
-      ['dragstart', 'onDragStart'],
-      ['dragend', 'onDragEnd'],
-      ['mouseover', 'onMouseOver'],
-      ['mouseout', 'onMouseOut']
-    ].forEach(([eventName, eventCallback]) => {
+
+    // Setup event listeners
+    EVENT_MAPPINGS.forEach(([eventName, eventCallback]) => {
       gme.addListener(polyline, eventName, (e: google.maps.MapMouseEvent) => {
-        const callback = callbacks.current[eventCallback]
+        const callback = callbacks[eventCallback as keyof typeof callbacks] as
+          | ((e: google.maps.MapMouseEvent) => void)
+          | undefined
         if (callback) callback(e)
       })
     })
@@ -124,7 +142,12 @@ function usePolyline(props: PolylineProps) {
     return () => {
       gme.clearInstanceListeners(polyline)
     }
-  }, [polylineOptions])
+  }, [callbacks])
+
+  // Attach event handlers
+  useEffect(() => {
+    return setupEventHandlers()
+  }, [setupEventHandlers])
 
   return polylineRef
 }
@@ -132,12 +155,14 @@ function usePolyline(props: PolylineProps) {
 /**
  * Component to render a polyline on a map
  */
-export const Polyline = forwardRef((props: PolylineProps, ref: PolylineRef) => {
-  const polylineRef = usePolyline(props)
+export const Polyline = memo(
+  forwardRef((props: PolylineProps, ref: PolylineRef) => {
+    const polylineRef = usePolyline(props)
 
-  useImperativeHandle(ref, () => polylineRef.current, [polylineRef])
+    useImperativeHandle(ref, () => polylineRef.current, [polylineRef])
 
-  return null
-})
+    return null
+  })
+)
 
 Polyline.displayName = 'Polyline'

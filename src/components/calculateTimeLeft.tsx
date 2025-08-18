@@ -1,3 +1,26 @@
+// Constants for time calculations (avoid repeated calculations)
+const MILLISECONDS_PER_SECOND = 1000
+const MILLISECONDS_PER_MINUTE = MILLISECONDS_PER_SECOND * 60
+const MILLISECONDS_PER_HOUR = MILLISECONDS_PER_MINUTE * 60
+const MILLISECONDS_PER_DAY = MILLISECONDS_PER_HOUR * 24
+
+// Cache for time calculations to avoid repeated operations
+const timeCalculationCache = new Map<string, string>()
+
+// Cache for date formatting to avoid repeated operations
+const dateFormatCache = new Map<string, string>()
+
+// Cleanup function to prevent memory leaks
+export const clearTimeCalculationCache = () => {
+  timeCalculationCache.clear()
+  dateFormatCache.clear()
+}
+
+// Utility function for efficient date formatting
+const formatDateComponent = (value: number): string => {
+  return value.toString().padStart(2, '0')
+}
+
 export const calculateTimeLeft = (
   eventDate: string,
   eventEndDate: string,
@@ -6,82 +29,135 @@ export const calculateTimeLeft = (
   const now = new Date()
   const eventStart = new Date(eventDate)
   const eventEnd = new Date(eventEndDate)
+
+  // Calculate time differences once
   const upcomingTime = eventStart.getTime() - now.getTime()
   const differenceInTime = eventEnd.getTime() - now.getTime()
-
   const timeLeft = upcoming ? upcomingTime : differenceInTime
+
+  // Early return for ended events
+  if (differenceInTime < 0) {
+    return 'Event has ended'
+  }
+
+  // Cache key for this calculation
+  const cacheKey = `${timeLeft}_${upcoming}`
+
+  // Check cache first
+  if (timeCalculationCache.has(cacheKey)) {
+    return timeCalculationCache.get(cacheKey)!
+  }
+
+  let result: string
 
   if (now < eventStart) {
     // Event hasn't started yet
-    if (differenceInTime < 0) {
-      return 'Event has ended'
+    if (timeLeft > MILLISECONDS_PER_DAY) {
+      const days = Math.ceil(timeLeft / MILLISECONDS_PER_DAY)
+      result = `${days} days left`
+    } else if (timeLeft > MILLISECONDS_PER_HOUR) {
+      const hours = Math.ceil(timeLeft / MILLISECONDS_PER_HOUR)
+      result = `${hours} hours left`
     } else {
-      const differenceInDays = Math.ceil(timeLeft / (1000 * 3600 * 24))
-      const differenceInHours = Math.ceil(timeLeft / (1000 * 3600))
-      const differenceInMinutes = Math.ceil(timeLeft / (1000 * 60))
-
-      if (differenceInDays > 1) {
-        return `${differenceInDays} days left`
-      } else if (differenceInHours > 1) {
-        return `${differenceInHours} hours left`
-      } else {
-        return `${differenceInMinutes} minutes left`
-      }
+      const minutes = Math.ceil(timeLeft / MILLISECONDS_PER_MINUTE)
+      result = `${minutes} minutes left`
     }
   } else {
     // Event has started, but not ended
-    if (timeLeft < 0) {
-      return 'Event has ended'
+    if (timeLeft > MILLISECONDS_PER_DAY) {
+      const days = Math.ceil(timeLeft / MILLISECONDS_PER_DAY)
+      result = `${days} days until end`
+    } else if (timeLeft > MILLISECONDS_PER_HOUR) {
+      const hours = Math.ceil(timeLeft / MILLISECONDS_PER_HOUR)
+      result = `${hours} hours until end`
     } else {
-      const differenceInDays = Math.ceil(timeLeft / (1000 * 3600 * 24))
-      const differenceInHours = Math.ceil(timeLeft / (1000 * 3600))
-      const differenceInMinutes = Math.ceil(timeLeft / (1000 * 60))
-
-      if (differenceInDays > 1) {
-        return `${differenceInDays} days until end`
-      } else if (differenceInHours > 1) {
-        return `${differenceInHours} hours until end`
-      } else {
-        return `${differenceInMinutes} minutes until end`
-      }
+      const minutes = Math.ceil(timeLeft / MILLISECONDS_PER_MINUTE)
+      result = `${minutes} minutes until end`
     }
   }
+
+  // Cache the result (limit cache size to prevent memory leaks)
+  if (timeCalculationCache.size > 100) {
+    const firstKey = timeCalculationCache.keys().next().value
+    timeCalculationCache.delete(firstKey)
+  }
+  timeCalculationCache.set(cacheKey, result)
+
+  return result
 }
 
 export const formatDate = (date: Date) => {
-  const day = date.getDate().toString().padStart(2, '0')
-  const month = (date.getMonth() + 1).toString().padStart(2, '0') // Months are 0-based in JavaScript
+  // Create cache key for this date
+  const cacheKey = date.getTime().toString()
+
+  // Check cache first
+  if (dateFormatCache.has(cacheKey)) {
+    return dateFormatCache.get(cacheKey)!
+  }
+
+  // Use more efficient date formatting
+  const day = date.getDate()
+  const month = date.getMonth() + 1 // Months are 0-based in JavaScript
   const year = date.getFullYear()
-  const hours = date.getHours().toString().padStart(2, '0')
-  const minutes = date.getMinutes().toString().padStart(2, '0')
-  return `${day}.${month}.${year} @ ${hours}:${minutes}`
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
+
+  // Use utility function for consistent formatting
+  const result = `${formatDateComponent(day)}.${formatDateComponent(month)}.${year} @ ${formatDateComponent(hours)}:${formatDateComponent(minutes)}`
+
+  // Cache the result (limit cache size to prevent memory leaks)
+  if (dateFormatCache.size > 100) {
+    const firstKey = dateFormatCache.keys().next().value
+    dateFormatCache.delete(firstKey)
+  }
+  dateFormatCache.set(cacheKey, result)
+
+  return result
 }
 
 export const formatDateLocale = (date: Date) => {
-  // Format the date
-  const day = date.getDate().toString().padStart(2, '0')
-  const month = (date.getMonth() + 1).toString().padStart(2, '0') // Months are 0-based in JavaScript
-  const year = date.getFullYear()
-  const hours = date.getHours().toString().padStart(2, '0')
-  const minutes = date.getMinutes().toString().padStart(2, '0')
+  // Create cache key for this date
+  const cacheKey = `locale_${date.getTime().toString()}`
 
-  // Get the timezone offset in hours and minutes
+  // Check cache first
+  if (dateFormatCache.has(cacheKey)) {
+    return dateFormatCache.get(cacheKey)!
+  }
+
+  // Format the date more efficiently
+  const day = date.getDate()
+  const month = date.getMonth() + 1 // Months are 0-based in JavaScript
+  const year = date.getFullYear()
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
+
+  // Get the timezone offset more efficiently
   const timezoneOffset = -date.getTimezoneOffset() // In minutes
   const offsetHours = Math.floor(timezoneOffset / 60)
-    .toString()
-    .padStart(2, '0')
-  const offsetMinutes = (timezoneOffset % 60).toString().padStart(2, '0')
+  const offsetMinutes = timezoneOffset % 60
   const offsetSign = timezoneOffset >= 0 ? '+' : '-'
 
-  // Combine the formatted date with the timezone offset
-  return `${day}.${month}.${year} @ ${hours}:${minutes} GMT${offsetSign}${offsetHours}:${offsetMinutes}`
+  // Combine the formatted date with the timezone offset using utility function
+  const result = `${formatDateComponent(day)}.${formatDateComponent(month)}.${year} @ ${formatDateComponent(hours)}:${formatDateComponent(minutes)} GMT${offsetSign}${formatDateComponent(offsetHours)}:${formatDateComponent(offsetMinutes)}`
+
+  // Cache the result (limit cache size to prevent memory leaks)
+  if (dateFormatCache.size > 100) {
+    const firstKey = dateFormatCache.keys().next().value
+    dateFormatCache.delete(firstKey)
+  }
+  dateFormatCache.set(cacheKey, result)
+
+  return result
 }
 
 export const timeSince = (date: string) => {
   const now = new Date()
   const past = new Date(date)
-  const secondsPast = Math.floor((now.getTime() - past.getTime()) / 1000)
+  const secondsPast = Math.floor(
+    (now.getTime() - past.getTime()) / MILLISECONDS_PER_SECOND
+  )
 
+  // Use constants for better performance
   if (secondsPast < 60) {
     return `${secondsPast} seconds ago`
   }
@@ -98,8 +174,8 @@ export const timeSince = (date: string) => {
 }
 
 export const calculateBirthday = (date: Date) => {
-  const day = date.getDate().toString().padStart(2, '0')
-  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const day = date.getDate()
+  const month = date.getMonth() + 1
   const year = date.getFullYear()
-  return `${day}.${month}.${year}`
+  return `${formatDateComponent(day)}.${formatDateComponent(month)}.${year}`
 }

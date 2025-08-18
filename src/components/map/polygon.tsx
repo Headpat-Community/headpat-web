@@ -3,7 +3,10 @@ import {
   useContext,
   useEffect,
   useImperativeHandle,
-  useRef
+  useRef,
+  useCallback,
+  useMemo,
+  memo
 } from 'react'
 
 import { GoogleMapsContext, useMapsLibrary } from '@vis.gl/react-google-maps'
@@ -32,6 +35,16 @@ export type PolygonProps = google.maps.PolygonOptions &
 
 export type PolygonRef = Ref<google.maps.Polygon | null>
 
+// Memoized event mapping to prevent recreation
+const EVENT_MAPPINGS = [
+  ['click', 'onClick'],
+  ['drag', 'onDrag'],
+  ['dragstart', 'onDragStart'],
+  ['dragend', 'onDragEnd'],
+  ['mouseover', 'onMouseOver'],
+  ['mouseout', 'onMouseOut']
+] as const
+
 function usePolygon(props: PolygonProps) {
   const {
     onClick,
@@ -44,19 +57,28 @@ function usePolygon(props: PolygonProps) {
     ...polygonOptions
   } = props
 
-  const callbacks = useRef<Record<string, (e: unknown) => void>>({})
-  Object.assign(callbacks.current, {
-    onClick,
-    onDrag,
-    onDragStart,
-    onDragEnd,
-    onMouseOver,
-    onMouseOut
-  })
+  // Memoize callbacks to prevent unnecessary re-renders
+  const callbacks = useMemo(
+    () => ({
+      onClick,
+      onDrag,
+      onDragStart,
+      onDragEnd,
+      onMouseOver,
+      onMouseOut
+    }),
+    [onClick, onDrag, onDragStart, onDragEnd, onMouseOver, onMouseOut]
+  )
 
   const geometryLibrary = useMapsLibrary('geometry')
   const map = useContext(GoogleMapsContext)?.map
   const polygonRef = useRef<google.maps.Polygon | null>(null)
+
+  // Memoize decoded paths to prevent unnecessary recalculations
+  const decodedPaths = useMemo(() => {
+    if (!encodedPaths || !geometryLibrary) return null
+    return encodedPaths.map((path) => geometryLibrary.encoding.decodePath(path))
+  }, [encodedPaths, geometryLibrary])
 
   // Initialize the polygon instance only once after the component mounts
   useEffect(() => {
@@ -69,6 +91,7 @@ function usePolygon(props: PolygonProps) {
     }
   }, [])
 
+  // Update polygon options with memoized dependencies
   useEffect(() => {
     const polygon = polygonRef.current
     if (!polygon) return
@@ -77,15 +100,12 @@ function usePolygon(props: PolygonProps) {
     polygon.setOptions(polygonOptions)
   }, [polygonOptions])
 
-  // Update the path with the encodedPaths
+  // Update the path with the decoded paths
   useEffect(() => {
     const polygon = polygonRef.current
-    if (!polygon || !encodedPaths || !geometryLibrary) return
-    const paths = encodedPaths.map((path) =>
-      geometryLibrary.encoding.decodePath(path)
-    )
-    polygon.setPaths(paths)
-  }, [encodedPaths, geometryLibrary])
+    if (!polygon || !decodedPaths) return
+    polygon.setPaths(decodedPaths)
+  }, [decodedPaths])
 
   // Attach the polygon to the map
   useEffect(() => {
@@ -103,22 +123,19 @@ function usePolygon(props: PolygonProps) {
     }
   }, [map])
 
-  // Attach event handlers
-  useEffect(() => {
+  // Memoized event handler setup to prevent unnecessary re-attachments
+  const setupEventHandlers = useCallback(() => {
     const polygon = polygonRef.current
     if (!polygon) return
 
     const gme = google.maps.event
-    ;[
-      ['click', 'onClick'],
-      ['drag', 'onDrag'],
-      ['dragstart', 'onDragStart'],
-      ['dragend', 'onDragEnd'],
-      ['mouseover', 'onMouseOver'],
-      ['mouseout', 'onMouseOut']
-    ].forEach(([eventName, eventCallback]) => {
+
+    // Setup event listeners
+    EVENT_MAPPINGS.forEach(([eventName, eventCallback]) => {
       gme.addListener(polygon, eventName, (e: google.maps.MapMouseEvent) => {
-        const callback = callbacks.current[eventCallback]
+        const callback = callbacks[eventCallback as keyof typeof callbacks] as
+          | ((e: google.maps.MapMouseEvent) => void)
+          | undefined
         if (callback) callback(e)
       })
     })
@@ -126,7 +143,12 @@ function usePolygon(props: PolygonProps) {
     return () => {
       gme.clearInstanceListeners(polygon)
     }
-  }, [polygonOptions])
+  }, [callbacks])
+
+  // Attach event handlers
+  useEffect(() => {
+    return setupEventHandlers()
+  }, [setupEventHandlers])
 
   return polygonRef
 }
@@ -134,12 +156,14 @@ function usePolygon(props: PolygonProps) {
 /**
  * Component to render a polygon on a map
  */
-export const Polygon = forwardRef((props: PolygonProps, ref: PolygonRef) => {
-  const polygonRef = usePolygon(props)
+export const Polygon = memo(
+  forwardRef((props: PolygonProps, ref: PolygonRef) => {
+    const polygonRef = usePolygon(props)
 
-  useImperativeHandle(ref, () => polygonRef.current, [polygonRef])
+    useImperativeHandle(ref, () => polygonRef.current, [polygonRef])
 
-  return null
-})
+    return null
+  })
+)
 
 Polygon.displayName = 'Polygon'

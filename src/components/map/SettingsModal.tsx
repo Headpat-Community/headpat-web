@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useCallback, useMemo, memo } from 'react'
 import {
   AlertDialog,
   AlertDialogContent,
@@ -35,40 +35,98 @@ interface SettingsModalProps {
   current: { $id: string }
 }
 
-export default function SettingsModal({
+// Memoized form fields to prevent unnecessary re-renders
+const StatusFormField = memo(function StatusFormField({
+  control
+}: {
+  control: any
+}) {
+  return (
+    <FormField
+      control={control}
+      name="status"
+      render={({ field }) => (
+        <InputField
+          label="Status"
+          description="Your current status"
+          placeholder="What are you up to?"
+          field={field}
+          maxLength={40}
+        />
+      )}
+    />
+  )
+})
+
+const StatusColorFormField = memo(function StatusColorFormField({
+  control
+}: {
+  control: any
+}) {
+  return (
+    <FormField
+      control={control}
+      name="statusColor"
+      render={({ field }) => (
+        <div className="flex items-center gap-2">
+          <Switch
+            id="doNotDisturb"
+            checked={field.value === 'red'}
+            onCheckedChange={(checked) =>
+              field.onChange(checked ? 'red' : 'green')
+            }
+          />
+          <Label htmlFor="doNotDisturb">Do not disturb</Label>
+        </div>
+      )}
+    />
+  )
+})
+
+const SettingsModal = memo(function SettingsModal({
   openModal,
   setOpenModal,
   userStatus,
   setUserStatus,
   current
 }: SettingsModalProps) {
-  const defaultStatusColor = userStatus?.statusColor === 'red' ? 'red' : 'green'
+  // Memoize default values to prevent unnecessary recalculations
+  const defaultValues = useMemo(
+    () => ({
+      status: userStatus?.status || '',
+      statusColor: (userStatus?.statusColor === 'red' ? 'red' : 'green') as
+        | 'red'
+        | 'green'
+    }),
+    [userStatus?.status, userStatus?.statusColor]
+  )
 
   const form = useForm<SettingsFormValues>({
     resolver: zodResolver(settingsFormSchema),
-    defaultValues: {
-      status: userStatus?.status,
-      statusColor: defaultStatusColor
-    }
+    defaultValues
   })
 
-  const onSubmit = async (values: SettingsFormValues) => {
-    try {
-      await databases.updateDocument('hp_db', 'locations', current.$id, {
-        status: values.status,
-        statusColor: values.statusColor
-      })
-      setUserStatus({
-        ...userStatus,
-        status: values.status,
-        statusColor: values.statusColor
-      })
-      setOpenModal(false)
-    } catch (e) {
-      console.error(e)
-      Sentry.captureException(e)
-    }
-  }
+  // Memoize form submission handler to prevent unnecessary re-renders
+  const onSubmit = useCallback(
+    async (values: SettingsFormValues) => {
+      try {
+        await databases.updateDocument('hp_db', 'locations', current.$id, {
+          status: values.status,
+          statusColor: values.statusColor
+        })
+        setUserStatus({
+          ...userStatus,
+          status: values.status,
+          statusColor: values.statusColor
+        })
+        setOpenModal(false)
+      } catch (e) {
+        console.error(e)
+        Sentry.captureException(e)
+      }
+    },
+    [current.$id, setUserStatus, setOpenModal, userStatus]
+  )
 
   return (
     <AlertDialog onOpenChange={setOpenModal} open={openModal}>
@@ -82,35 +140,8 @@ export default function SettingsModal({
         </AlertDialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="status"
-              render={({ field }) => (
-                <InputField
-                  label="Status"
-                  description="Your current status"
-                  placeholder="What are you up to?"
-                  field={field}
-                  maxLength={40}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="statusColor"
-              render={({ field }) => (
-                <div className="flex items-center gap-2">
-                  <Switch
-                    id="doNotDisturb"
-                    checked={field.value === 'red'}
-                    onCheckedChange={(checked) =>
-                      field.onChange(checked ? 'red' : 'green')
-                    }
-                  />
-                  <Label htmlFor="doNotDisturb">Do not disturb</Label>
-                </div>
-              )}
-            />
+            <StatusFormField control={form.control} />
+            <StatusColorFormField control={form.control} />
             <AlertDialogFooter>
               <Button type="submit">Apply</Button>
             </AlertDialogFooter>
@@ -119,4 +150,6 @@ export default function SettingsModal({
       </AlertDialogContent>
     </AlertDialog>
   )
-}
+})
+
+export default SettingsModal

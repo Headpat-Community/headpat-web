@@ -1,5 +1,12 @@
 'use client'
-import React, { createContext, useCallback, useContext, useState } from 'react'
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+  useMemo,
+  useRef
+} from 'react'
 import {
   deleteFromDb,
   getAllFromDb,
@@ -12,7 +19,12 @@ const DB_NAME = 'HeadpatCache'
 const DB_VERSION = 4 // Increment this when changing the schema
 const CACHE_EXPIRATION_TIME = 24 * 60 * 60 * 1000 // 24 hours
 
-const STORE_NAMES = ['users', 'communities', 'notifications', 'messages']
+const STORE_NAMES = [
+  'users',
+  'communities',
+  'notifications',
+  'messages'
+] as const
 
 type DataCacheContextType = {
   getCache: <T>(storeName: string, key: string) => Promise<CacheItem<T> | null>
@@ -40,34 +52,75 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
   const [cacheData, setCacheData] = useState<Record<string, any>>({})
   const [loading, setLoading] = useState(true)
 
-  React.useEffect(() => {
-    const initDb = async <T,>() => {
-      const database = await openDb(DB_NAME, DB_VERSION, STORE_NAMES)
+  // Use ref to prevent unnecessary re-renders when updating cache data
+  const cacheDataRef = useRef(cacheData)
+  cacheDataRef.current = cacheData
+
+  // Memoize store names to prevent recreation
+  const storeNamesArray = useMemo(() => [...STORE_NAMES], [])
+
+  // Memoized database initialization to prevent unnecessary re-runs
+  const initDb = useCallback(async () => {
+    try {
+      const database = await openDb(DB_NAME, DB_VERSION, storeNamesArray)
       setDb(database)
 
       const allCacheData: Record<string, any> = {}
-      for (const storeName of STORE_NAMES) {
-        const storeData = await getAllFromDb<CacheItem<T>>(database, storeName)
-        storeData.forEach((item) => {
-          allCacheData[`${storeName}-${item.id}`] = item
-        })
-      }
+
+      // Process all stores in parallel for better performance
+      const storePromises = storeNamesArray.map(async (storeName) => {
+        const storeData = await getAllFromDb<CacheItem<any>>(
+          database,
+          storeName
+        )
+        return storeData.map((item) => ({
+          key: `${storeName}-${item.id}`,
+          item
+        }))
+      })
+
+      const allStoreResults = await Promise.all(storePromises)
+
+      // Combine all results efficiently
+      allStoreResults.flat().forEach(({ key, item }) => {
+        allCacheData[key] = item
+      })
+
       setCacheData(allCacheData)
       setLoading(false)
+    } catch (error) {
+      console.error('Failed to initialize database:', error)
+      setLoading(false)
     }
-    initDb().then()
-  }, [])
+  }, [storeNamesArray])
 
+  React.useEffect(() => {
+    initDb()
+  }, [initDb])
+
+  // Memoized wait function to prevent recreation
   const waitForDb = useCallback(async () => {
     if (!loading) return
+
     // Avoid unbounded busy-wait: race loading flag with a timeout
     let attempts = 0
-    while (loading && attempts < 200) {
-      // max ~10s wait
+    const maxAttempts = 200 // max ~10s wait
+
+    while (loading && attempts < maxAttempts) {
       await new Promise((resolve) => setTimeout(resolve, 50))
       attempts += 1
     }
+
+    if (attempts >= maxAttempts) {
+      console.warn('Database initialization timeout')
+    }
   }, [loading])
+
+  // Memoized cache key generator to prevent string concatenation on every call
+  const getCacheKey = useCallback(
+    (storeName: string, key: string) => `${storeName}-${key}`,
+    []
+  )
 
   const getAllCache = useCallback(
     async <T,>(storeName: string): Promise<CacheItem<T>[]> => {
@@ -85,22 +138,28 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
     ): Promise<CacheItem<T> | null> => {
       await waitForDb()
       if (!db) return null
+
       const cachedData = await getFromDb<CacheItem<T>>(db, storeName, key)
 
       if (
         cachedData &&
         Date.now() - cachedData.timestamp < CACHE_EXPIRATION_TIME
       ) {
+        const cacheKey = getCacheKey(storeName, key)
         setCacheData((prev) => ({
           ...prev,
-          [`${storeName}-${key}`]: cachedData
+          [cacheKey]: cachedData
         }))
         return cachedData
       }
-      await deleteFromDb(db, storeName, key)
+
+      // Clean up expired cache
+      if (cachedData) {
+        await deleteFromDb(db, storeName, key)
+      }
       return null
     },
-    [db, waitForDb]
+    [db, waitForDb, getCacheKey]
   )
 
   const saveAllCache = useCallback(
@@ -108,22 +167,38 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
       await waitForDb()
       if (!db) return
 
-      const cache = data.reduce((acc, item) => {
-        acc[item['$id']] = { data: item, timestamp: Date.now() }
-        return acc
-      }, {})
+      const currentTime = Date.now()
 
-      await Promise.all(
-        Object.entries(cache).map(async ([key, cacheItem]) => {
-          if (typeof cacheItem === 'object' && cacheItem !== null) {
-            await saveToDb(db, storeName, { id: key, ...cacheItem })
+      // Create cache items efficiently
+      const cacheItems = data.map((item) => ({
+        id: (item as any)['$id'],
+        data: item,
+        timestamp: currentTime
+      }))
+
+      // Save to database in parallel for better performance
+      const savePromises = cacheItems.map(async (cacheItem) => {
+        if (cacheItem.id) {
+          await saveToDb(db, storeName, cacheItem)
+        }
+      })
+
+      await Promise.all(savePromises)
+
+      // Update local cache efficiently
+      const newCacheData = cacheItems.reduce(
+        (acc, item) => {
+          if (item.id) {
+            acc[getCacheKey(storeName, item.id)] = item
           }
-        })
+          return acc
+        },
+        {} as Record<string, any>
       )
 
-      setCacheData((prev) => ({ ...prev, ...cache }))
+      setCacheData((prev) => ({ ...prev, ...newCacheData }))
     },
-    [db, waitForDb]
+    [db, waitForDb, getCacheKey]
   )
 
   const saveCache = useCallback(
@@ -131,48 +206,60 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
       await waitForDb()
       if (!db) return
 
-      const cacheItem = { data, timestamp: Date.now() }
-      await saveToDb(db, storeName, { id: key, ...cacheItem })
+      const currentTime = Date.now()
+      const cacheItem = { id: key, data, timestamp: currentTime }
+
+      await saveToDb(db, storeName, cacheItem)
+
+      const cacheKey = getCacheKey(storeName, key)
       setCacheData((prev) => ({
         ...prev,
-        [`${storeName}-${key}`]: cacheItem
+        [cacheKey]: cacheItem
       }))
     },
-    [db, waitForDb]
+    [db, waitForDb, getCacheKey]
   )
 
   const removeCache = useCallback(
     async (storeName: string, key: string) => {
       await waitForDb()
       if (!db) return
+
       await deleteFromDb(db, storeName, key)
+
+      const cacheKey = getCacheKey(storeName, key)
       setCacheData((prev) => {
         const newData = { ...prev }
-        delete newData[`${storeName}-${key}`]
+        delete newData[cacheKey]
         return newData
       })
     },
-    [db, waitForDb]
+    [db, waitForDb, getCacheKey]
   )
 
   const getCacheSync = useCallback(
     <T,>(storeName: string, key: string): CacheItem<T> | null => {
-      return cacheData[`${storeName}-${key}`] || null
+      const cacheKey = getCacheKey(storeName, key)
+      return cacheDataRef.current[cacheKey] || null
     },
-    [cacheData]
+    [getCacheKey]
+  )
+
+  // Memoize context value to prevent unnecessary re-renders
+  const contextValue = useMemo(
+    () => ({
+      getCache,
+      saveCache,
+      removeCache,
+      getCacheSync,
+      getAllCache,
+      saveAllCache
+    }),
+    [getCache, saveCache, removeCache, getCacheSync, getAllCache, saveAllCache]
   )
 
   return (
-    <DataCacheContext.Provider
-      value={{
-        getCache,
-        saveCache,
-        removeCache,
-        getCacheSync,
-        getAllCache,
-        saveAllCache
-      }}
-    >
+    <DataCacheContext.Provider value={contextValue}>
       {loading ? null : children}
     </DataCacheContext.Provider>
   )

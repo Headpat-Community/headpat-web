@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useCallback, memo } from 'react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,12 +12,77 @@ import {
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 
-export default function FiltersModal({
+interface FiltersModalProps {
+  openModal: boolean
+  setOpenModal: (open: boolean) => void
+  filters: {
+    showEvents: boolean
+    showUsers: boolean
+  }
+  setFilters: React.Dispatch<
+    React.SetStateAction<{
+      showEvents: boolean
+      showUsers: boolean
+    }>
+  >
+}
+
+// Memoized filter toggle handlers to prevent unnecessary re-renders
+const FilterToggleHandlers = memo(function FilterToggleHandlers({
+  filters,
+  setFilters
+}: {
+  filters: { showEvents: boolean; showUsers: boolean }
+  setFilters: React.Dispatch<
+    React.SetStateAction<{ showEvents: boolean; showUsers: boolean }>
+  >
+}) {
+  const handleEventsToggle = useCallback(() => {
+    setFilters((prev) => ({
+      ...prev,
+      showEvents: !prev.showEvents
+    }))
+  }, [setFilters])
+
+  const handleUsersToggle = useCallback(() => {
+    setFilters((prev) => ({
+      ...prev,
+      showUsers: !prev.showUsers
+    }))
+  }, [setFilters])
+
+  return (
+    <div className={'space-y-4'}>
+      <div className="flex items-center gap-2">
+        <Switch
+          id={'showEvents'}
+          checked={filters.showEvents}
+          onCheckedChange={handleEventsToggle}
+        />
+        <Label id={'showEvents'} onClick={handleEventsToggle}>
+          Show events
+        </Label>
+      </div>
+      <div className="flex items-center gap-2">
+        <Switch
+          id={'showMutuals'}
+          checked={filters.showUsers}
+          onCheckedChange={handleUsersToggle}
+        />
+        <Label id={'showMutuals'} onClick={handleUsersToggle}>
+          Show Users
+        </Label>
+      </div>
+    </div>
+  )
+})
+
+const FiltersModal = memo(function FiltersModal({
   openModal,
   setOpenModal,
   filters,
   setFilters
-}) {
+}: FiltersModalProps) {
   return (
     <AlertDialog onOpenChange={setOpenModal} open={openModal}>
       <AlertDialogContent>
@@ -27,58 +92,13 @@ export default function FiltersModal({
             Please select the filters you want to apply.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <div className={'space-y-4'}>
-          <div className="flex items-center gap-2">
-            <Switch
-              id={'showEvents'}
-              checked={filters.showEvents}
-              onCheckedChange={() =>
-                setFilters((prev) => ({
-                  ...prev,
-                  showEvents: !prev.showEvents
-                }))
-              }
-            />
-            <Label
-              id={'showEvents'}
-              onClick={() => {
-                setFilters((prev) => ({
-                  ...prev,
-                  showEvents: !prev.showEvents
-                }))
-              }}
-            >
-              Show events
-            </Label>
-          </div>
-          <div className="flex items-center gap-2">
-            <Switch
-              id={'showMutuals'}
-              checked={filters.showUsers}
-              onCheckedChange={() =>
-                setFilters((prev) => ({
-                  ...prev,
-                  showUsers: !prev.showUsers
-                }))
-              }
-            />
-            <Label
-              id={'showMutuals'}
-              onClick={() =>
-                setFilters((prev) => ({
-                  ...prev,
-                  showUsers: !prev.showUsers
-                }))
-              }
-            >
-              Show Users
-            </Label>
-          </div>
-        </div>
+        <FilterToggleHandlers filters={filters} setFilters={setFilters} />
         <AlertDialogFooter>
           <AlertDialogAction>Close</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   )
-}
+})
+
+export default FiltersModal

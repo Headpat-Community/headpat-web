@@ -34,15 +34,25 @@ import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Query } from 'node-appwrite'
-import { useState } from 'react'
+import { useState, useEffect, useCallback, memo } from 'react'
 import sanitizeHtml from 'sanitize-html'
 import { toast } from 'sonner'
 
-function FollowerButton({ displayName, followerId, isFollowing }) {
+interface FollowerButtonProps {
+  displayName: string
+  followerId: string
+  isFollowing: boolean
+}
+
+const FollowerButton = memo(function FollowerButton({
+  displayName,
+  followerId,
+  isFollowing
+}: FollowerButtonProps) {
   const [isFollowingState, setIsFollowingState] = useState(isFollowing || false)
   const queryClient = useQueryClient()
 
-  const handleFollow = async () => {
+  const handleFollow = useCallback(async () => {
     const data = await addFollow(followerId)
 
     if (data.type === 'addfollow_missing_id') {
@@ -63,9 +73,9 @@ function FollowerButton({ displayName, followerId, isFollowing }) {
       // Also invalidate the users list to update follower counts
       queryClient.invalidateQueries({ queryKey: ['users'] })
     }
-  }
+  }, [followerId, displayName, queryClient])
 
-  const handleUnfollow = async () => {
+  const handleUnfollow = useCallback(async () => {
     const data = await removeFollow(followerId)
 
     if (data.type === 'removefollow_missing_id') {
@@ -86,7 +96,7 @@ function FollowerButton({ displayName, followerId, isFollowing }) {
       // Also invalidate the users list to update follower counts
       queryClient.invalidateQueries({ queryKey: ['users'] })
     }
-  }
+  }, [followerId, displayName, queryClient])
 
   return (
     <>
@@ -95,17 +105,26 @@ function FollowerButton({ displayName, followerId, isFollowing }) {
       </Button>
     </>
   )
-}
+})
 
 export default function PageClient({ userId }: { userId: string }) {
   const { current } = useUser()
+  const queryClient = useQueryClient()
+
+  // Cleanup effect to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      // Clean up queries when component unmounts
+      queryClient.removeQueries({ queryKey: ['user', userId, current?.$id] })
+    }
+  }, [queryClient, userId, current?.$id])
 
   const { data: userData, isLoading } = useQuery<UserProfileDocumentsType>({
-    queryKey: ['user', userId],
+    queryKey: ['user', userId, current?.$id],
     queryFn: async () => {
       try {
-        // Prepare the queries
-        const queries = [
+        // Base queries that are always needed
+        const baseQueries = [
           databases.getDocument('hp_db', 'userdata', userId),
           databases.listDocuments('hp_db', 'followers', [
             Query.equal('followerId', userId),
@@ -114,16 +133,16 @@ export default function PageClient({ userId }: { userId: string }) {
           databases.listDocuments('hp_db', 'followers', [
             Query.equal('userId', userId),
             Query.limit(1)
-          ]),
-          databases.getDocument('hp_db', 'userprefs', userId).catch(() => null)
+          ])
         ]
 
-        // Only add isFollowingResponse if user is logged in
+        // Only fetch userprefs if current user is logged in
+        let userPrefs = null
         let isFollowingResponse = { total: 0 }
+
         if (current?.$id) {
-          queries.splice(
-            3,
-            0, // insert before prefs
+          // Add isFollowing query for logged-in users
+          baseQueries.push(
             databases.listDocuments('hp_db', 'followers', [
               Query.and([
                 Query.equal('userId', current.$id),
@@ -131,32 +150,41 @@ export default function PageClient({ userId }: { userId: string }) {
               ])
             ])
           )
+
+          // Only fetch userprefs if viewing own profile or if needed for moderation
+          if (current.$id === userId) {
+            baseQueries.push(
+              databases
+                .getDocument('hp_db', 'userprefs', userId)
+                .catch(() => null)
+            )
+          }
         }
 
-        // Await all queries
-        const results = await Promise.all(queries)
+        // Execute all queries
+        const results = await Promise.all(baseQueries)
 
-        // Destructure results based on whether isFollowingResponse was included
-        const [
-          userData,
-          followers,
-          following,
-          maybeIsFollowingResponse,
-          prefs
-        ] = results
+        // Destructure results based on query count
+        const userData = results[0] as any
+        const followers = results[1] as any
+        const following = results[2] as any
 
         if (current?.$id) {
-          isFollowingResponse = maybeIsFollowingResponse
+          isFollowingResponse = results[3] as any
+          // userprefs is only included if viewing own profile
+          if (current.$id === userId && results.length > 4) {
+            userPrefs = results[4]
+          }
         }
 
-        const isFollowing = isFollowingResponse.total > 0 ? true : false
+        const isFollowing = isFollowingResponse.total > 0
 
         // Combine the data
         const combinedData: UserProfileDocumentsType = {
           ...userData,
           followersCount: followers.total,
           followingCount: following.total,
-          prefs: prefs,
+          prefs: userPrefs,
           isFollowing
         }
 
@@ -169,9 +197,12 @@ export default function PageClient({ userId }: { userId: string }) {
     },
     enabled: !!userId,
     staleTime: 300 * 1000, // 5 minutes
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
-    refetchOnReconnect: true
+    refetchOnMount: false, // Prevent unnecessary refetches
+    refetchOnWindowFocus: false, // Prevent refetch on window focus
+    refetchOnReconnect: false, // Prevent refetch on reconnect
+    gcTime: 600 * 1000, // 10 minutes garbage collection time
+    retry: 2, // Limit retry attempts
+    retryDelay: 1000 // 1 second delay between retries
   })
 
   if (isLoading || !userData) {
@@ -410,12 +441,20 @@ export default function PageClient({ userId }: { userId: string }) {
   )
 }
 
-const ListSocialItem = ({ IconComponent, userData, link }) => {
-  const handleCopy = () => {
+const ListSocialItem = memo(function ListSocialItem({
+  IconComponent,
+  userData,
+  link
+}: {
+  IconComponent: any
+  userData: string
+  link: string
+}) {
+  const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(userData).then(() => {
       toast.success('Copied to clipboard!')
     })
-  }
+  }, [userData])
 
   const isCopy = link === '#'
 
@@ -455,4 +494,4 @@ const ListSocialItem = ({ IconComponent, userData, link }) => {
       )}
     </li>
   )
-}
+})

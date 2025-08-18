@@ -311,6 +311,10 @@ function SidebarInset({ className, ...props }: React.ComponentProps<'main'>) {
       className={cn(
         'bg-background relative flex w-full flex-1 flex-col',
         'md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2',
+        // Add left margin when sidebar is open to prevent content overflow
+        'md:ml-[var(--sidebar-width)] md:peer-data-[state=collapsed]:ml-[var(--sidebar-width-icon)]',
+        // Prevent horizontal overflow and constrain width
+        'overflow-x-hidden max-w-[calc(100vw-var(--sidebar-width))] md:peer-data-[state=collapsed]:max-w-[calc(100vw-var(--sidebar-width-icon))]',
         className
       )}
       {...props}

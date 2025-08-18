@@ -3,7 +3,10 @@ import {
   useContext,
   useEffect,
   useImperativeHandle,
-  useRef
+  useRef,
+  useCallback,
+  useMemo,
+  memo
 } from 'react'
 
 import type { Ref } from 'react'
@@ -24,6 +27,16 @@ export type CircleProps = google.maps.CircleOptions & CircleEventProps
 
 export type CircleRef = Ref<google.maps.Circle | null>
 
+// Memoized event mapping to prevent recreation
+const EVENT_MAPPINGS = [
+  ['click', 'onClick'],
+  ['drag', 'onDrag'],
+  ['dragstart', 'onDragStart'],
+  ['dragend', 'onDragEnd'],
+  ['mouseover', 'onMouseOver'],
+  ['mouseout', 'onMouseOut']
+] as const
+
 function useCircle(props: CircleProps) {
   const {
     onClick,
@@ -39,20 +52,44 @@ function useCircle(props: CircleProps) {
     ...circleOptions
   } = props
 
-  const callbacks = useRef<Record<string, (e: unknown) => void>>({})
-  Object.assign(callbacks.current, {
-    onClick,
-    onDrag,
-    onDragStart,
-    onDragEnd,
-    onMouseOver,
-    onMouseOut,
-    onRadiusChanged,
-    onCenterChanged
-  })
+  // Memoize callbacks to prevent unnecessary re-renders
+  const callbacks = useMemo(
+    () => ({
+      onClick,
+      onDrag,
+      onDragStart,
+      onDragEnd,
+      onMouseOver,
+      onMouseOut,
+      onRadiusChanged,
+      onCenterChanged
+    }),
+    [
+      onClick,
+      onDrag,
+      onDragStart,
+      onDragEnd,
+      onMouseOver,
+      onMouseOut,
+      onRadiusChanged,
+      onCenterChanged
+    ]
+  )
 
   const circleRef = useRef<google.maps.Circle | null>(null)
   const map = useContext(GoogleMapsContext)?.map
+
+  // Memoize center comparison to prevent unnecessary updates
+  const shouldUpdateCenter = useMemo(() => {
+    if (!center || !circleRef.current) return false
+    return !latLngEquals(center, circleRef.current.getCenter())
+  }, [center])
+
+  // Memoize radius comparison to prevent unnecessary updates
+  const shouldUpdateRadius = useMemo(() => {
+    if (radius === undefined || !circleRef.current) return false
+    return radius !== circleRef.current.getRadius()
+  }, [radius])
 
   // Initialize the circle instance only once after the component mounts
   useEffect(() => {
@@ -65,6 +102,7 @@ function useCircle(props: CircleProps) {
     }
   }, [])
 
+  // Update circle options with memoized dependencies
   useEffect(() => {
     const circle = circleRef.current
     if (!circle) return
@@ -72,16 +110,16 @@ function useCircle(props: CircleProps) {
     // Update circle options
     circle.setOptions(circleOptions)
 
-    // Update center
-    if (center && !latLngEquals(center, circle.getCenter())) {
+    // Update center only if needed
+    if (shouldUpdateCenter && center) {
       circle.setCenter(center)
     }
 
-    // Update radius
-    if (radius !== undefined && radius !== circle.getRadius()) {
-      circle.setRadius(radius)
+    // Update radius only if needed
+    if (shouldUpdateRadius) {
+      circle.setRadius(radius!)
     }
-  }, [center, radius, circleOptions])
+  }, [circleOptions, shouldUpdateCenter, shouldUpdateRadius, center, radius])
 
   // Attach to the map when available
   useEffect(() => {
@@ -99,38 +137,43 @@ function useCircle(props: CircleProps) {
     }
   }, [map])
 
-  // Attach and re-attach event handlers when properties change
-  useEffect(() => {
+  // Memoized event handler setup to prevent unnecessary re-attachments
+  const setupEventHandlers = useCallback(() => {
     const circle = circleRef.current
     if (!circle) return
 
     const gme = google.maps.event
-    ;[
-      ['click', 'onClick'],
-      ['drag', 'onDrag'],
-      ['dragstart', 'onDragStart'],
-      ['dragend', 'onDragEnd'],
-      ['mouseover', 'onMouseOver'],
-      ['mouseout', 'onMouseOut']
-    ].forEach(([eventName, eventCallback]) => {
+
+    // Setup event listeners
+    EVENT_MAPPINGS.forEach(([eventName, eventCallback]) => {
       gme.addListener(circle, eventName, (e: google.maps.MapMouseEvent) => {
-        const callback = callbacks.current[eventCallback]
+        const callback = callbacks[eventCallback as keyof typeof callbacks] as
+          | ((e: google.maps.MapMouseEvent) => void)
+          | undefined
         if (callback) callback(e)
       })
     })
+
+    // Setup property change listeners
     gme.addListener(circle, 'radius_changed', () => {
       const newRadius = circle.getRadius()
-      callbacks.current.onRadiusChanged?.(newRadius)
+      callbacks.onRadiusChanged?.(newRadius)
     })
+
     gme.addListener(circle, 'center_changed', () => {
       const newCenter = circle.getCenter()
-      callbacks.current.onCenterChanged?.(newCenter)
+      callbacks.onCenterChanged?.(newCenter)
     })
 
     return () => {
       gme.clearInstanceListeners(circle)
     }
-  }, [circleOptions])
+  }, [callbacks])
+
+  // Attach and re-attach event handlers when properties change
+  useEffect(() => {
+    return setupEventHandlers()
+  }, [setupEventHandlers])
 
   return circleRef
 }
@@ -138,12 +181,14 @@ function useCircle(props: CircleProps) {
 /**
  * Component to render a circle on a map
  */
-export const Circle = forwardRef((props: CircleProps, ref: CircleRef) => {
-  const circleRef = useCircle(props)
+export const Circle = memo(
+  forwardRef((props: CircleProps, ref: CircleRef) => {
+    const circleRef = useCircle(props)
 
-  useImperativeHandle(ref, () => circleRef.current)
+    useImperativeHandle(ref, () => circleRef.current, [circleRef])
 
-  return null
-})
+    return null
+  })
+)
 
 Circle.displayName = 'Circle'

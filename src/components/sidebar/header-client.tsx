@@ -54,7 +54,7 @@ function HeaderProvider({ children }: { children: React.ReactNode }) {
             </>
           )}
         </header>
-        <div>{children}</div>
+        <div className="p-4">{children}</div>
       </SidebarInset>
     </HeaderContext.Provider>
   )
