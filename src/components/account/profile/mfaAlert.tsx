@@ -6,30 +6,30 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger
-} from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
-import { account, avatars } from '@/app/appwrite-client'
-import { AuthenticationFactor, AuthenticatorType } from 'appwrite'
-import { useState } from 'react'
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import { account, avatars } from "@/app/appwrite-client"
+import { AuthenticationFactor, AuthenticatorType } from "appwrite"
+import { useState } from "react"
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
-  InputOTPSlot
-} from '@/components/ui/input-otp'
-import * as Sentry from '@sentry/nextjs'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
+import * as Sentry from "@sentry/nextjs"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 export default function MfaAlert({ mfaList }) {
   const [open, setOpen] = useState<boolean>(false)
-  const [mfaMode, setMfaMode] = useState<string>('')
-  const [qrCodeImage, setQrCodeImage] = useState<string>('')
+  const [mfaMode, setMfaMode] = useState<string>("")
+  const [qrCodeImage, setQrCodeImage] = useState<string>("")
   const router = useRouter()
 
   const handleMfaAdd = async (mfaMode: string) => {
-    if (mfaMode === 'totp') {
+    if (mfaMode === "totp") {
       const mfaRequestResult = await account.createMfaAuthenticator(
         AuthenticatorType.Totp
       )
@@ -37,7 +37,7 @@ export default function MfaAlert({ mfaList }) {
       setQrCodeImage(qrCodeImage)
     }
 
-    setMfaMode('totpEnable')
+    setMfaMode("totpEnable")
   }
 
   const handleMfaDelete = async (code: string) => {
@@ -51,7 +51,7 @@ export default function MfaAlert({ mfaList }) {
         AuthenticatorType.Totp
       )
       if (mfaDeleteResult) {
-        toast.success('You have successfully disabled 2FA.')
+        toast.success("You have successfully disabled 2FA.")
         await account.updateMFA(false)
         setOpen(false)
         router.refresh()
@@ -71,16 +71,16 @@ export default function MfaAlert({ mfaList }) {
       )
 
       if (mfaVerifyResult) {
-        toast.success('You have successfully enabled 2FA.')
+        toast.success("You have successfully enabled 2FA.")
         await account.updateMFA(true)
         router.refresh()
       }
 
-      setMfaMode('totpFinished')
+      setMfaMode("totpFinished")
       setOpen(false)
     } catch (error) {
       if (error.code === 401) {
-        toast.error('The code you entered is invalid. Please try again.')
+        toast.error("The code you entered is invalid. Please try again.")
       }
     }
   }
@@ -91,8 +91,8 @@ export default function MfaAlert({ mfaList }) {
 
   const handleClose = () => {
     setOpen(false)
-    setMfaMode('')
-    setQrCodeImage('')
+    setMfaMode("")
+    setQrCodeImage("")
   }
 
   return (
@@ -101,7 +101,7 @@ export default function MfaAlert({ mfaList }) {
       onOpenChange={(isOpen) => !isOpen && handleClose()}
     >
       <AlertDialogTrigger asChild>
-        <Button type="submit" variant={'outline'} onClick={() => setOpen(true)}>
+        <Button type="submit" variant={"outline"} onClick={() => setOpen(true)}>
           Click to manage 2FA
         </Button>
       </AlertDialogTrigger>
@@ -111,17 +111,17 @@ export default function MfaAlert({ mfaList }) {
             <AlertDialogTitle>
               You are about to enable 2FA, great!
             </AlertDialogTitle>
-            <p className={'text-sm text-muted-foreground'}>
-              {mfaMode === 'totpEnable'
-                ? 'Please scan the QR code with your authenticator app and enter the code to enable 2FA.'
-                : 'To enable 2FA, please select one of the following options.'}
+            <p className={"text-muted-foreground text-sm"}>
+              {mfaMode === "totpEnable"
+                ? "Please scan the QR code with your authenticator app and enter the code to enable 2FA."
+                : "To enable 2FA, please select one of the following options."}
             </p>
-            <div className={'flex flex-col'}>
+            <div className={"flex flex-col"}>
               {!mfaMode && (
                 <Button
-                  className={'mt-4'}
+                  className={"mt-4"}
                   onClick={async () => {
-                    await handleMfaAdd('totp')
+                    await handleMfaAdd("totp")
                   }}
                 >
                   Enable 2FA
@@ -129,12 +129,12 @@ export default function MfaAlert({ mfaList }) {
               )}
             </div>
             <div>
-              {mfaMode === 'totpEnable' && (
+              {mfaMode === "totpEnable" && (
                 <>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={qrCodeImage}
-                    className={'h-64 w-auto mb-4'}
+                    className={"mb-4 h-64 w-auto"}
                     alt="QR Code"
                   />
 
@@ -163,8 +163,8 @@ export default function MfaAlert({ mfaList }) {
                   </InputOTP>
                 </>
               )}
-              {mfaMode === 'totpFinished' && (
-                <p className={'text-sm text-muted-foreground'}>
+              {mfaMode === "totpFinished" && (
+                <p className={"text-muted-foreground text-sm"}>
                   2FA has been enabled. Would you like to show your recovery
                   codes?
                 </p>
@@ -173,7 +173,7 @@ export default function MfaAlert({ mfaList }) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel asChild>
-              <Button variant={'outline'}>Close</Button>
+              <Button variant={"outline"}>Close</Button>
             </AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -188,18 +188,18 @@ export default function MfaAlert({ mfaList }) {
               You can disable 2FA by entering your 2FA code after clicking the
               button below.
             </AlertDialogDescription>
-            <div className={'flex flex-col'}>
+            <div className={"flex flex-col"}>
               {!mfaMode && (
                 <Button
-                  className={'mt-4'}
-                  onClick={() => setMfaMode('totpDisable')}
+                  className={"mt-4"}
+                  onClick={() => setMfaMode("totpDisable")}
                 >
                   Disable 2FA
                 </Button>
               )}
             </div>
             <div>
-              {mfaMode === 'totpDisable' && (
+              {mfaMode === "totpDisable" && (
                 <>
                   <InputOTP
                     maxLength={6}
@@ -230,7 +230,7 @@ export default function MfaAlert({ mfaList }) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel asChild>
-              <Button variant={'outline'} onClick={handleClose}>
+              <Button variant={"outline"} onClick={handleClose}>
                 Close
               </Button>
             </AlertDialogCancel>

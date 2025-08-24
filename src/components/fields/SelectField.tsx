@@ -1,25 +1,25 @@
-import React from 'react'
+import React from "react"
 import {
   FormControl,
   FormLabel,
   FormMessage,
-  FormItem
-} from '@/components/ui/form'
+  FormItem,
+} from "@/components/ui/form"
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
+  SelectValue,
+} from "@/components/ui/select"
 import {
   HoverCard,
   HoverCardContent,
-  HoverCardTrigger
-} from '@/components/ui/hover-card'
-import { Info } from 'lucide-react'
-import { Controller } from 'react-hook-form'
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import { Info } from "lucide-react"
+import { Controller } from "react-hook-form"
 
 interface SelectFieldProps {
   label: string
@@ -32,7 +32,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
   label,
   description,
   options,
-  field
+  field,
 }) => {
   return (
     <FormItem>
@@ -57,8 +57,8 @@ const SelectField: React.FC<SelectFieldProps> = ({
             <Select
               value={
                 Array.isArray(controllerField.value)
-                  ? ''
-                  : controllerField.value || ''
+                  ? ""
+                  : controllerField.value || ""
               }
               onValueChange={controllerField.onChange}
             >

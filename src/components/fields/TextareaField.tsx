@@ -1,17 +1,17 @@
-import React from 'react'
+import React from "react"
 import {
   FormControl,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form'
-import { Textarea } from '@/components/ui/textarea'
-import { GlobeIcon, Info } from 'lucide-react'
+  FormMessage,
+} from "@/components/ui/form"
+import { Textarea } from "@/components/ui/textarea"
+import { GlobeIcon, Info } from "lucide-react"
 import {
   HoverCard,
   HoverCardContent,
-  HoverCardTrigger
-} from '@/components/ui/hover-card'
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
 
 interface TextareaFieldProps {
   label: string
@@ -27,11 +27,11 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
   description,
   placeholder,
   field,
-  resizable
+  resizable,
 }) => {
   return (
     <FormItem>
-      <div className={'flex items-center justify-between'}>
+      <div className={"flex items-center justify-between"}>
         <FormLabel>
           {label}
           {description && (
@@ -50,9 +50,9 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
       <FormControl>
         <Textarea
           placeholder={placeholder}
-          value={field.value || ''}
+          value={field.value || ""}
           onChange={(e) => field.onChange(e.target.value)}
-          className={`${resizable ? null : 'resize-none'}`}
+          className={`${resizable ? null : "resize-none"}`}
         />
       </FormControl>
       <FormMessage />

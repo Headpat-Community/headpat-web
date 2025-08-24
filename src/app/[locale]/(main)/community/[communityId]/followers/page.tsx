@@ -1,4 +1,4 @@
-import PageClient from './page.client'
+import PageClient from "./page.client"
 
 export default async function FollowerPage(props: {
   params: Promise<{ locale: string; communityId: string }>

@@ -6,28 +6,28 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
-} from '@/components/ui/alert-dialog'
-import React, { useState } from 'react'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { toast } from 'sonner'
-import { functions } from '@/app/appwrite-client'
-import { ExecutionMethod } from 'node-appwrite'
-import { MessagesDocumentsType } from '@/utils/types/models'
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import React, { useState } from "react"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { toast } from "sonner"
+import { functions } from "@/app/appwrite-client"
+import { ExecutionMethod } from "node-appwrite"
+import type { MessagesDocumentsType } from "@/utils/types/models"
 
 export default function ReportMessageModal({
   open,
   setOpen,
-  message
+  message,
 }: {
   open: boolean
   setOpen: (open: boolean) => void
   message: MessagesDocumentsType
 }) {
-  const [reportReason, setReportReason] = useState<string>('')
-  const [otherReason, setOtherReason] = useState<string>('')
+  const [reportReason, setReportReason] = useState<string>("")
+  const [otherReason, setOtherReason] = useState<string>("")
 
   const reportUser = async () => {
     try {
@@ -35,10 +35,10 @@ export default function ReportMessageModal({
         reportedMessageId: message.$id,
         conversationId: message.conversationId,
         message: message.body,
-        reason: reportReason === 'Other' ? otherReason : reportReason
+        reason: reportReason === "Other" ? otherReason : reportReason,
       }
       const data = await functions.createExecution(
-        'moderation-endpoints',
+        "moderation-endpoints",
         JSON.stringify(body),
         false,
         `/moderation/report/message`,
@@ -47,18 +47,18 @@ export default function ReportMessageModal({
       const response = JSON.parse(data.responseBody)
 
       setOpen(false)
-      if (response.type === 'report_success') {
-        toast.success('Success', {
-          description: 'Thanks for keeping the community safe!'
+      if (response.type === "report_success") {
+        toast.success("Success", {
+          description: "Thanks for keeping the community safe!",
         })
-        setReportReason('')
-        setOtherReason('')
-      } else if (response.type === 'report_error') {
-        toast.error('An error occurred while reporting the message')
+        setReportReason("")
+        setOtherReason("")
+      } else if (response.type === "report_error") {
+        toast.error("An error occurred while reporting the message")
       }
     } catch (e) {
       console.error(e)
-      toast.error('An error occurred while reporting the message')
+      toast.error("An error occurred while reporting the message")
     }
   }
 
@@ -70,14 +70,14 @@ export default function ReportMessageModal({
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogContent className={'w-full'}>
+      <AlertDialogContent className={"w-full"}>
         <AlertDialogHeader>
           <AlertDialogTitle>Report message</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogDescription>
           What is the reason for reporting this message?
         </AlertDialogDescription>
-        <div className={'z-50'}>
+        <div className={"z-50"}>
           <RadioGroup
             value={reportReason}
             onValueChange={setReportReason}
@@ -85,37 +85,37 @@ export default function ReportMessageModal({
           >
             <RadioGroupItemWithLabel
               value="Hate speech or discrimination"
-              onLabelPress={onLabelPress('Hate speech or discrimination')}
+              onLabelPress={onLabelPress("Hate speech or discrimination")}
             />
             <RadioGroupItemWithLabel
               value="Harassment or bullying"
-              onLabelPress={onLabelPress('Harassment or bullying')}
+              onLabelPress={onLabelPress("Harassment or bullying")}
             />
             <RadioGroupItemWithLabel
               value="Explicit sexual content"
-              onLabelPress={onLabelPress('Explicit sexual content')}
+              onLabelPress={onLabelPress("Explicit sexual content")}
             />
             <RadioGroupItemWithLabel
               value="Violence or threats"
-              onLabelPress={onLabelPress('Violence or threats')}
+              onLabelPress={onLabelPress("Violence or threats")}
             />
             <RadioGroupItemWithLabel
               value="Spam or scam"
-              onLabelPress={onLabelPress('Spam or scam')}
+              onLabelPress={onLabelPress("Spam or scam")}
             />
             <RadioGroupItemWithLabel
               value="Personal information"
-              onLabelPress={onLabelPress('Personal information')}
+              onLabelPress={onLabelPress("Personal information")}
             />
             <RadioGroupItemWithLabel
               value="Impersonation"
-              onLabelPress={onLabelPress('Impersonation')}
+              onLabelPress={onLabelPress("Impersonation")}
             />
             <RadioGroupItemWithLabel
               value="Other"
-              onLabelPress={onLabelPress('Other')}
+              onLabelPress={onLabelPress("Other")}
             />
-            {reportReason === 'Other' && (
+            {reportReason === "Other" && (
               <Input
                 placeholder="Please specify"
                 value={otherReason}
@@ -126,10 +126,10 @@ export default function ReportMessageModal({
         </div>
         <AlertDialogFooter>
           <AlertDialogAction
-            className={'bg-destructive'}
+            className={"bg-destructive"}
             onClick={reportUser}
             disabled={
-              !reportReason || (reportReason === 'Other' && !otherReason)
+              !reportReason || (reportReason === "Other" && !otherReason)
             }
           >
             Report
@@ -143,13 +143,13 @@ export default function ReportMessageModal({
 
 function RadioGroupItemWithLabel({
   value,
-  onLabelPress
+  onLabelPress,
 }: {
   value: string
   onLabelPress: () => void
 }) {
   return (
-    <div className={'flex gap-2 items-center'}>
+    <div className={"flex items-center gap-2"}>
       <RadioGroupItem aria-labelledby={`label-for-${value}`} value={value} />
       <Label id={`label-for-${value}`} onClick={onLabelPress}>
         {value}

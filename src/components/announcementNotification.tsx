@@ -1,7 +1,7 @@
-import { createAdminClient } from '@/app/appwrite-session'
-import { notFound } from 'next/navigation'
-import Link from 'next/link'
-import { AnnouncementDataType } from '@/utils/types/models'
+import { createAdminClient } from "@/app/appwrite-session"
+import { notFound } from "next/navigation"
+import Link from "next/link"
+import type { AnnouncementDataType } from "@/utils/types/models"
 
 // Cache for announcement data to prevent repeated fetches
 const announcementCache = new Map<string, { data: any; timestamp: number }>()
@@ -11,7 +11,7 @@ export default async function AnnouncementNotification() {
   const { databases } = await createAdminClient()
 
   // Check cache first
-  const cacheKey = 'announcements'
+  const cacheKey = "announcements"
   const cached = announcementCache.get(cacheKey)
   const now = Date.now()
 
@@ -21,13 +21,13 @@ export default async function AnnouncementNotification() {
     announcementData = cached.data
   } else {
     const announcementDataResponse: AnnouncementDataType =
-      await databases.listDocuments('hp_db', 'announcements')
+      await databases.listDocuments("hp_db", "announcements")
     announcementData = announcementDataResponse.documents[0]
 
     // Update cache
     announcementCache.set(cacheKey, {
       data: announcementData,
-      timestamp: now
+      timestamp: now,
     })
 
     // Clean up old cache entries to prevent memory leaks
@@ -58,10 +58,10 @@ export default async function AnnouncementNotification() {
           aria-hidden="true"
         >
           <div
-            className="aspect-577/310 w-[36.0625rem] bg-linear-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
+            className="aspect-577/310 bg-linear-to-r w-[36.0625rem] from-[#ff80b5] to-[#9089fc] opacity-30"
             style={{
               clipPath:
-                'polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)'
+                "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)",
             }}
           />
         </div>
@@ -70,10 +70,10 @@ export default async function AnnouncementNotification() {
           aria-hidden="true"
         >
           <div
-            className="aspect-577/310 w-[36.0625rem] bg-linear-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
+            className="aspect-577/310 bg-linear-to-r w-[36.0625rem] from-[#ff80b5] to-[#9089fc] opacity-30"
             style={{
               clipPath:
-                'polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)'
+                "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)",
             }}
           />
         </div>
@@ -91,7 +91,7 @@ export default async function AnnouncementNotification() {
           </p>
           <Link
             href={`/announcements/${announcementData.$id}`}
-            className="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-xs hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+            className="shadow-xs flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
           >
             More info <span aria-hidden="true">&rarr;</span>
           </Link>

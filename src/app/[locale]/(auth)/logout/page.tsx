@@ -1,27 +1,27 @@
-'use client'
-import { useEffect, useState } from 'react'
-import { useUser } from '@/components/contexts/UserContext'
-import { useRouter } from 'next/navigation'
-import { useSearchParams } from 'next/navigation'
+"use client"
+import { useEffect, useState } from "react"
+import { useUser } from "@/components/contexts/UserContext"
+import { useRouter } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 
 export default function LogoutPage() {
   const [error, setError] = useState(null)
   const { current, logout } = useUser()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirect = searchParams.get('redirect') !== 'false'
+  const redirect = searchParams.get("redirect") !== "false"
 
   useEffect(() => {
     if (!current) {
       if (redirect) {
-        router.push('/')
+        router.push("/")
       }
       return
     }
     logout(redirect)
       .then(() => {
         if (redirect) {
-          router.push('/')
+          router.push("/")
         }
       })
       .catch((error) => {

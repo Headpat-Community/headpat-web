@@ -1,42 +1,42 @@
-'use client'
-import { databases } from '@/app/appwrite-client'
-import { useUser } from '@/components/contexts/UserContext'
+"use client"
+import { databases } from "@/app/appwrite-client"
+import { useUser } from "@/components/contexts/UserContext"
 import {
   getAvatarImageUrlView,
-  getBannerImageUrlPreview
-} from '@/components/getStorageItem'
-import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+  getBannerImageUrlPreview,
+} from "@/components/getStorageItem"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import { Skeleton } from '@/components/ui/skeleton'
-import { cn } from '@/lib/utils'
-import { addFollow } from '@/utils/actions/followers/addFollow'
-import { removeFollow } from '@/utils/actions/followers/removeFollow'
-import { UserProfileDocumentsType } from '@/utils/types/models'
+  CardTitle,
+} from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+import { Skeleton } from "@/components/ui/skeleton"
+import { cn } from "@/lib/utils"
+import { addFollow } from "@/utils/actions/followers/addFollow"
+import { removeFollow } from "@/utils/actions/followers/removeFollow"
+import type { UserProfileDocumentsType } from "@/utils/types/models"
 import {
   SiDiscord,
   SiFuraffinity,
   SiTelegram,
   SiTwitch,
-  SiX
-} from '@icons-pack/react-simple-icons'
-import * as Sentry from '@sentry/nextjs'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { ChevronRight } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { Query } from 'node-appwrite'
-import { useState, useEffect, useCallback, memo } from 'react'
-import sanitizeHtml from 'sanitize-html'
-import { toast } from 'sonner'
+  SiX,
+} from "@icons-pack/react-simple-icons"
+import * as Sentry from "@sentry/nextjs"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { ChevronRight } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { Query } from "node-appwrite"
+import { useState, useEffect, useCallback, memo } from "react"
+import sanitizeHtml from "sanitize-html"
+import { toast } from "sonner"
 
 interface FollowerButtonProps {
   displayName: string
@@ -47,7 +47,7 @@ interface FollowerButtonProps {
 const FollowerButton = memo(function FollowerButton({
   displayName,
   followerId,
-  isFollowing
+  isFollowing,
 }: FollowerButtonProps) {
   const [isFollowingState, setIsFollowingState] = useState(isFollowing || false)
   const queryClient = useQueryClient()
@@ -55,53 +55,53 @@ const FollowerButton = memo(function FollowerButton({
   const handleFollow = useCallback(async () => {
     const data = await addFollow(followerId)
 
-    if (data.type === 'addfollow_missing_id') {
-      return toast.error('No user ID provided')
-    } else if (data.type === 'addfollow_unauthorized') {
-      return toast.error('You must be logged in to follow users')
-    } else if (data.type === 'addfollow_same_user') {
-      return toast.error('You cannot follow yourself')
-    } else if (data.type === 'addfollow_already_following') {
-      return toast.error('You are already following this user')
-    } else if (data.type === 'addfollow_delete_error') {
-      return toast.error('There was an error following this user.')
+    if (data.type === "addfollow_missing_id") {
+      return toast.error("No user ID provided")
+    } else if (data.type === "addfollow_unauthorized") {
+      return toast.error("You must be logged in to follow users")
+    } else if (data.type === "addfollow_same_user") {
+      return toast.error("You cannot follow yourself")
+    } else if (data.type === "addfollow_already_following") {
+      return toast.error("You are already following this user")
+    } else if (data.type === "addfollow_delete_error") {
+      return toast.error("There was an error following this user.")
     } else {
       toast.success(`You have followed ${displayName}`)
       setIsFollowingState(true)
       // Invalidate the user query to refetch fresh data
-      queryClient.invalidateQueries({ queryKey: ['user', followerId] })
+      queryClient.invalidateQueries({ queryKey: ["user", followerId] })
       // Also invalidate the users list to update follower counts
-      queryClient.invalidateQueries({ queryKey: ['users'] })
+      queryClient.invalidateQueries({ queryKey: ["users"] })
     }
   }, [followerId, displayName, queryClient])
 
   const handleUnfollow = useCallback(async () => {
     const data = await removeFollow(followerId)
 
-    if (data.type === 'removefollow_missing_id') {
-      return toast.error('No user ID provided')
-    } else if (data.type === 'removefollow_unauthorized') {
-      return toast.error('You must be logged in to follow users')
-    } else if (data.type === 'removefollow_same_user') {
-      return toast.error('You cannot unfollow yourself')
-    } else if (data.type === 'removefollow_not_following') {
-      return toast.error('You are not following this user')
-    } else if (data.type === 'removefollow_delete_error') {
-      return toast.error('There was an error unfollowing this user.')
+    if (data.type === "removefollow_missing_id") {
+      return toast.error("No user ID provided")
+    } else if (data.type === "removefollow_unauthorized") {
+      return toast.error("You must be logged in to follow users")
+    } else if (data.type === "removefollow_same_user") {
+      return toast.error("You cannot unfollow yourself")
+    } else if (data.type === "removefollow_not_following") {
+      return toast.error("You are not following this user")
+    } else if (data.type === "removefollow_delete_error") {
+      return toast.error("There was an error unfollowing this user.")
     } else {
       toast.success(`You have unfollowed ${displayName}`)
       setIsFollowingState(false)
       // Invalidate the user query to refetch fresh data
-      queryClient.invalidateQueries({ queryKey: ['user', followerId] })
+      queryClient.invalidateQueries({ queryKey: ["user", followerId] })
       // Also invalidate the users list to update follower counts
-      queryClient.invalidateQueries({ queryKey: ['users'] })
+      queryClient.invalidateQueries({ queryKey: ["users"] })
     }
   }, [followerId, displayName, queryClient])
 
   return (
     <>
       <Button onClick={isFollowingState ? handleUnfollow : handleFollow}>
-        {isFollowingState ? 'Unfollow' : 'Follow'}
+        {isFollowingState ? "Unfollow" : "Follow"}
       </Button>
     </>
   )
@@ -115,25 +115,25 @@ export default function PageClient({ userId }: { userId: string }) {
   useEffect(() => {
     return () => {
       // Clean up queries when component unmounts
-      queryClient.removeQueries({ queryKey: ['user', userId, current?.$id] })
+      queryClient.removeQueries({ queryKey: ["user", userId, current?.$id] })
     }
   }, [queryClient, userId, current?.$id])
 
   const { data: userData, isLoading } = useQuery<UserProfileDocumentsType>({
-    queryKey: ['user', userId, current?.$id],
+    queryKey: ["user", userId, current?.$id],
     queryFn: async () => {
       try {
         // Base queries that are always needed
         const baseQueries = [
-          databases.getDocument('hp_db', 'userdata', userId),
-          databases.listDocuments('hp_db', 'followers', [
-            Query.equal('followerId', userId),
-            Query.limit(1)
+          databases.getDocument("hp_db", "userdata", userId),
+          databases.listDocuments("hp_db", "followers", [
+            Query.equal("followerId", userId),
+            Query.limit(1),
           ]),
-          databases.listDocuments('hp_db', 'followers', [
-            Query.equal('userId', userId),
-            Query.limit(1)
-          ])
+          databases.listDocuments("hp_db", "followers", [
+            Query.equal("userId", userId),
+            Query.limit(1),
+          ]),
         ]
 
         // Only fetch userprefs if current user is logged in
@@ -143,11 +143,11 @@ export default function PageClient({ userId }: { userId: string }) {
         if (current?.$id) {
           // Add isFollowing query for logged-in users
           baseQueries.push(
-            databases.listDocuments('hp_db', 'followers', [
+            databases.listDocuments("hp_db", "followers", [
               Query.and([
-                Query.equal('userId', current.$id),
-                Query.equal('followerId', userId)
-              ])
+                Query.equal("userId", current.$id),
+                Query.equal("followerId", userId),
+              ]),
             ])
           )
 
@@ -155,7 +155,7 @@ export default function PageClient({ userId }: { userId: string }) {
           if (current.$id === userId) {
             baseQueries.push(
               databases
-                .getDocument('hp_db', 'userprefs', userId)
+                .getDocument("hp_db", "userprefs", userId)
                 .catch(() => null)
             )
           }
@@ -185,12 +185,12 @@ export default function PageClient({ userId }: { userId: string }) {
           followersCount: followers.total,
           followingCount: following.total,
           prefs: userPrefs,
-          isFollowing
+          isFollowing,
         }
 
         return combinedData
       } catch (error) {
-        console.error('Error fetching user data:', error)
+        console.error("Error fetching user data:", error)
         Sentry.captureException(error)
         throw error
       }
@@ -202,7 +202,7 @@ export default function PageClient({ userId }: { userId: string }) {
     refetchOnReconnect: false, // Prevent refetch on reconnect
     gcTime: 600 * 1000, // 10 minutes garbage collection time
     retry: 2, // Limit retry attempts
-    retryDelay: 1000 // 1 second delay between retries
+    retryDelay: 1000, // 1 second delay between retries
   })
 
   if (isLoading || !userData) {
@@ -210,35 +210,35 @@ export default function PageClient({ userId }: { userId: string }) {
   }
 
   const formatDate = (date: Date) =>
-    date.toLocaleDateString('en-GB').slice(0, 10).replace(/-/g, '.')
+    date.toLocaleDateString("en-GB").slice(0, 10).replace(/-/g, ".")
 
   const formatDayMonth = (date: Date) =>
-    date.toLocaleDateString('en-GB').slice(0, 5).replace(/-/g, '.')
+    date.toLocaleDateString("en-GB").slice(0, 5).replace(/-/g, ".")
 
   const today = formatDayMonth(new Date())
   const birthday = userData?.birthday
     ? formatDate(new Date(userData.birthday))
-    : '01/01/1900'
+    : "01/01/1900"
 
   const isBirthday = birthday === today
 
   const sanitizedBio = sanitizeHtml(userData?.bio)
-  const bioWithLineBreaks = sanitizedBio.replace(/\n/g, '<br />')
+  const bioWithLineBreaks = sanitizedBio.replace(/\n/g, "<br />")
 
   return (
-    <main className={'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'}>
+    <main className={"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"}>
       {/* Header */}
       {userData.profileBannerId && (
-        <header className={'p-0 py-4'}>
+        <header className={"p-0 py-4"}>
           <div>
             <Image
               src={getBannerImageUrlPreview(
                 userData.profileBannerId,
-                'width=1200&height=250&output=webp'
+                "width=1200&height=250&output=webp"
               )}
-              alt={'User Banner'}
+              alt={"User Banner"}
               className={
-                'rounded-md object-cover max-w-[1200px] max-h-[250px] w-full h-auto'
+                "h-auto max-h-[250px] w-full max-w-[1200px] rounded-md object-cover"
               }
               width={1200}
               height={250}
@@ -251,31 +251,31 @@ export default function PageClient({ userId }: { userId: string }) {
       {/* Grid */}
       <div
         className={cn(
-          'grid grid-cols-1 sm:grid-cols-2 gap-y-8 lg:grid-cols-3 lg:gap-x-8',
-          userData.profileBannerId ? 'mt-0' : 'mt-8'
+          "grid grid-cols-1 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8",
+          userData.profileBannerId ? "mt-0" : "mt-8"
         )}
       >
         {/* Left */}
-        <div className={'col-span-1 lg:col-span-1'}>
+        <div className={"col-span-1 lg:col-span-1"}>
           <AspectRatio ratio={1}>
             <Image
               src={getAvatarImageUrlView(userData.avatarId)}
-              alt={'User Avatar'}
-              className={cn('object-contain rounded-t-xl', {
-                'rounded-b-xl': !(
+              alt={"User Avatar"}
+              className={cn("rounded-t-xl object-contain", {
+                "rounded-b-xl": !(
                   userData.discordname ||
                   userData.telegramname ||
                   userData.furaffinityname ||
                   userData.X_name ||
                   userData.twitchname
-                )
+                ),
               })}
               fill={true}
               priority={true}
               unoptimized
             />
             {isBirthday && (
-              <Badge className="absolute top-0 right-0 rounded-t rounded-b-none w-full justify-center">
+              <Badge className="absolute right-0 top-0 w-full justify-center rounded-b-none rounded-t">
                 It&apos;s my birthday!
               </Badge>
             )}
@@ -294,7 +294,7 @@ export default function PageClient({ userId }: { userId: string }) {
                       <ListSocialItem
                         IconComponent={SiDiscord}
                         userData={userData.discordname}
-                        link={'#'}
+                        link={"#"}
                       />
                       {(userData.telegramname ||
                         userData.furaffinityname ||
@@ -350,10 +350,10 @@ export default function PageClient({ userId }: { userId: string }) {
         </div>
 
         {/* Center */}
-        <Card className={'col-span-1 lg:col-span-2 border-none'}>
+        <Card className={"col-span-1 border-none lg:col-span-2"}>
           <CardHeader>
-            <div className={'grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-0'}>
-              <CardTitle className={'col-span-1'}>
+            <div className={"grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-0"}>
+              <CardTitle className={"col-span-1"}>
                 {userData.displayName}
               </CardTitle>
               {current?.$id !== userData?.$id &&
@@ -367,18 +367,18 @@ export default function PageClient({ userId }: { userId: string }) {
                   <Skeleton className="h-8 w-full" />
                 ))}
             </div>
-            <div className={'grid grid-cols-2'}>
+            <div className={"grid grid-cols-2"}>
               <CardDescription>{userData?.status}</CardDescription>
             </div>
-            <CardDescription className={'flex pt-4 gap-4 items-center'}>
+            <CardDescription className={"flex items-center gap-4 pt-4"}>
               <Link href={`/user/${userData?.profileUrl}/following`}>
-                <Button variant={'link'} className={'p-0'}>
+                <Button variant={"link"} className={"p-0"}>
                   {userData.followingCount !== undefined ? (
                     <div className="flex items-center space-x-4">
-                      <span className={'flex gap-1'}>
-                        <span className={'font-bold text-foreground'}>
+                      <span className={"flex gap-1"}>
+                        <span className={"text-foreground font-bold"}>
                           {userData.followingCount}
-                        </span>{' '}
+                        </span>{" "}
                         Following
                       </span>
                     </div>
@@ -388,13 +388,13 @@ export default function PageClient({ userId }: { userId: string }) {
                 </Button>
               </Link>
               <Link href={`/user/${userData?.profileUrl}/followers`}>
-                <Button variant={'link'} className={'p-0'}>
+                <Button variant={"link"} className={"p-0"}>
                   {userData.followersCount !== undefined ? (
                     <div className="flex items-center space-x-4">
-                      <span className={'flex gap-1'}>
-                        <span className={'font-bold text-foreground'}>
+                      <span className={"flex gap-1"}>
+                        <span className={"text-foreground font-bold"}>
                           {userData.followersCount}
-                        </span>{' '}
+                        </span>{" "}
                         Followers
                       </span>
                     </div>
@@ -405,31 +405,31 @@ export default function PageClient({ userId }: { userId: string }) {
               </Link>
             </CardDescription>
           </CardHeader>
-          <Separator className={'mb-6'} />
+          <Separator className={"mb-6"} />
           <CardContent>
-            <div className={'grid grid-cols-2 mx-auto gap-4'}>
+            <div className={"mx-auto grid grid-cols-2 gap-4"}>
               {userData?.pronouns && (
                 <>
-                  <div className={'col-span-1'}>Pronouns</div>
-                  <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
+                  <div className={"col-span-1"}>Pronouns</div>
+                  <div className="col-span-1 rounded-md border px-4 py-3 font-mono text-sm">
                     {userData?.pronouns}
                   </div>
                 </>
               )}
-              {birthday !== '01/01/1900' && (
+              {birthday !== "01/01/1900" && (
                 <>
-                  <div className={'col-span-1'}>Birthday</div>
-                  <div className="rounded-md border px-4 py-3 font-mono text-sm col-span-1">
+                  <div className={"col-span-1"}>Birthday</div>
+                  <div className="col-span-1 rounded-md border px-4 py-3 font-mono text-sm">
                     {birthday}
                   </div>
                 </>
               )}
             </div>
-            <div className={'border border-ring p-8 rounded-xl mt-8'}>
-              <div className={'flex flex-wrap items-center'}>
+            <div className={"border-ring mt-8 rounded-xl border p-8"}>
+              <div className={"flex flex-wrap items-center"}>
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: bioWithLineBreaks || 'Nothing here yet!'
+                    __html: bioWithLineBreaks || "Nothing here yet!",
                   }}
                 />
               </div>
@@ -444,7 +444,7 @@ export default function PageClient({ userId }: { userId: string }) {
 const ListSocialItem = memo(function ListSocialItem({
   IconComponent,
   userData,
-  link
+  link,
 }: {
   IconComponent: any
   userData: string
@@ -452,22 +452,22 @@ const ListSocialItem = memo(function ListSocialItem({
 }) {
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(userData).then(() => {
-      toast.success('Copied to clipboard!')
+      toast.success("Copied to clipboard!")
     })
   }, [userData])
 
-  const isCopy = link === '#'
+  const isCopy = link === "#"
 
   return (
     <li>
       {isCopy ? (
         <button
           onClick={handleCopy}
-          className="relative flex items-center space-x-4 py-4 px-2 w-full rounded-md"
+          className="relative flex w-full items-center space-x-4 rounded-md px-2 py-4"
         >
-          <div className={'min-w-0 flex-auto'}>
+          <div className={"min-w-0 flex-auto"}>
             <div className="flex items-center gap-x-3">
-              <div className={'flex-none rounded-full p-1'}>
+              <div className={"flex-none rounded-full p-1"}>
                 <IconComponent />
               </div>
               <span>{userData}</span>
@@ -478,12 +478,12 @@ const ListSocialItem = memo(function ListSocialItem({
       ) : (
         <Link
           href={link}
-          className="relative flex items-center space-x-4 py-4 px-2"
-          target={'_blank'}
+          className="relative flex items-center space-x-4 px-2 py-4"
+          target={"_blank"}
         >
-          <div className={'min-w-0 flex-auto'}>
+          <div className={"min-w-0 flex-auto"}>
             <div className="flex items-center gap-x-3">
-              <div className={'flex-none rounded-full p-1'}>
+              <div className={"flex-none rounded-full p-1"}>
                 <IconComponent />
               </div>
               <span>{userData}</span>

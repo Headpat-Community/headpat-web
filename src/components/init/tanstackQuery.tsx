@@ -1,7 +1,7 @@
-'use client'
-import { QueryClient } from '@tanstack/react-query'
-import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
-import { createIDBPersister } from '@/lib/reactQueryIndexedDbPersister'
+"use client"
+import { QueryClient } from "@tanstack/react-query"
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client"
+import { createIDBPersister } from "@/lib/reactQueryIndexedDbPersister"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -12,7 +12,7 @@ const queryClient = new QueryClient({
   },
 })
 
-const persister = createIDBPersister('tanstack-query')
+const persister = createIDBPersister("tanstack-query")
 
 export const TanQueryClientProvider = ({
   children,

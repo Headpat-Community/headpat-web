@@ -1,17 +1,17 @@
-import React from 'react'
+import React from "react"
 import {
   FormControl,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Info } from 'lucide-react'
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Info } from "lucide-react"
 import {
   HoverCard,
   HoverCardContent,
-  HoverCardTrigger
-} from '@/components/ui/hover-card'
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
 
 interface NumberFieldProps {
   label: string
@@ -27,19 +27,19 @@ const NumberField: React.FC<NumberFieldProps> = ({
   label,
   description,
   placeholder,
-  field
+  field,
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value)
     if (!isNaN(value)) {
       field.onChange(value) // Directly update the form value
-    } else if (e.target.value === '') {
+    } else if (e.target.value === "") {
       field.onChange(0) // Optionally clear the field value
     }
   }
 
   return (
-    <FormItem className={'pb-2'}>
+    <FormItem className={"pb-2"}>
       <FormLabel>
         {label}
         {description && (
@@ -56,9 +56,9 @@ const NumberField: React.FC<NumberFieldProps> = ({
       <FormControl>
         <Input
           placeholder={placeholder}
-          value={field.value === 0 ? '' : field.value} // Display empty string if value is 0
+          value={field.value === 0 ? "" : field.value} // Display empty string if value is 0
           onChange={handleChange}
-          type={'number'}
+          type={"number"}
         />
       </FormControl>
       <FormMessage />

@@ -1,7 +1,7 @@
-import { getCommunity } from '@/utils/server-api/communities/getCommunity'
-import { notFound } from 'next/navigation'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import PageClient from './page.client'
+import { getCommunity } from "@/utils/server-api/communities/getCommunity"
+import { notFound } from "next/navigation"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import PageClient from "./page.client"
 
 export async function generateMetadata(props: {
   params: Promise<{ communityId: string }>
@@ -17,16 +17,16 @@ export async function generateMetadata(props: {
   }
 
   return {
-    title: community?.name || 'Community Admin',
+    title: community?.name || "Community Admin",
     description: community?.description,
     icons: {
-      icon: '/logos/hp_logo_x512.webp'
+      icon: "/logos/hp_logo_x512.webp",
     },
     openGraph: {
-      title: community?.name || 'Community Admin',
+      title: community?.name || "Community Admin",
       description: community?.description,
-      images: '/logos/hp_logo_x512.webp'
-    }
+      images: "/logos/hp_logo_x512.webp",
+    },
   }
 }
 
@@ -42,7 +42,7 @@ export default async function Page(props: {
   return (
     <Tabs defaultValue="general" className="w-full">
       <div className="flex flex-col items-center justify-center">
-        <TabsList className="grid w-full sm:max-w-4xl grid-cols-2">
+        <TabsList className="grid w-full grid-cols-2 sm:max-w-4xl">
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>

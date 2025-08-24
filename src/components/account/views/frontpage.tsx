@@ -1,33 +1,33 @@
-'use client'
-import * as Sentry from '@sentry/nextjs'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { databases } from '@/app/appwrite-client'
-import React, { useState } from 'react'
-import UploadAvatar from '@/components/account/uploadAvatar'
-import UploadBanner from '@/components/account/uploadBanner'
-import { AccountPrefs, UserDataDocumentsType } from '@/utils/types/models'
-import { toast } from 'sonner'
-import { getDocument } from '@/components/api/documents'
-import { useQuery } from '@tanstack/react-query'
-import z from 'zod'
+"use client"
+import * as Sentry from "@sentry/nextjs"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { databases } from "@/app/appwrite-client"
+import React, { useState } from "react"
+import UploadAvatar from "@/components/account/uploadAvatar"
+import UploadBanner from "@/components/account/uploadBanner"
+import type { AccountPrefs, UserDataDocumentsType } from "@/utils/types/models"
+import { toast } from "sonner"
+import { getDocument } from "@/components/api/documents"
+import { useQuery } from "@tanstack/react-query"
+import z from "zod"
 
 const schema = z.object({
-  status: z.string().max(24, 'Status: Max length is 24'),
-  bio: z.string().max(2048, 'Bio: Max length is 2048').nullable(),
+  status: z.string().max(24, "Status: Max length is 24"),
+  bio: z.string().max(2048, "Bio: Max length is 2048").nullable(),
   displayName: z
     .string()
-    .min(3, 'Display Name should be at least 3 characters')
-    .max(32, 'Display Name: Max length is 32'),
-  birthday: z.string().max(32, 'Max length is 32').nullable(),
-  pronouns: z.string().max(16, 'Pronouns: Max length is 16').nullable(),
-  location: z.string().max(48, 'Location: Max length is 48').nullable()
+    .min(3, "Display Name should be at least 3 characters")
+    .max(32, "Display Name: Max length is 32"),
+  birthday: z.string().max(32, "Max length is 32").nullable(),
+  pronouns: z.string().max(16, "Pronouns: Max length is 16").nullable(),
+  location: z.string().max(48, "Location: Max length is 48").nullable(),
 })
 
 export default function FrontpageView({
-  accountData
+  accountData,
 }: {
   accountData: AccountPrefs
 }) {
@@ -36,12 +36,12 @@ export default function FrontpageView({
     useState<UserDataDocumentsType>(null)
 
   const { data: userData, isLoading } = useQuery<UserDataDocumentsType>({
-    queryKey: ['userdata', accountData.$id],
+    queryKey: ["userdata", accountData.$id],
     queryFn: async () => {
-      return await getDocument('hp_db', 'userdata', accountData.$id)
+      return await getDocument("hp_db", "userdata", accountData.$id)
     },
     staleTime: 0, // Always fetch fresh data
-    enabled: !!accountData.$id
+    enabled: !!accountData.$id,
   })
 
   // Update local state when userData is loaded
@@ -68,7 +68,7 @@ export default function FrontpageView({
       // Convert DD/MM/YYYY to ISO date format for database storage
       let birthdayForDB = null
       if (localUserData.birthday) {
-        const dateParts = localUserData.birthday.split('/')
+        const dateParts = localUserData.birthday.split("/")
         if (dateParts.length === 3) {
           const [day, month, year] = dateParts
           const date = new Date(
@@ -77,14 +77,14 @@ export default function FrontpageView({
             parseInt(day)
           )
           if (!isNaN(date.getTime())) {
-            birthdayForDB = date.toISOString().split('T')[0]
+            birthdayForDB = date.toISOString().split("T")[0]
           }
         }
       }
 
       const promise = databases.updateDocument(
-        'hp_db',
-        'userdata',
+        "hp_db",
+        "userdata",
         accountData.$id,
         {
           status: localUserData.status,
@@ -92,26 +92,26 @@ export default function FrontpageView({
           displayName: localUserData.displayName,
           birthday: birthdayForDB,
           pronouns: localUserData.pronouns,
-          location: localUserData.location
+          location: localUserData.location,
         }
       )
 
       promise.then(
         function () {
           setIsUploading(false)
-          toast.success('Your data has been uploaded successfully.')
+          toast.success("Your data has been uploaded successfully.")
         },
         function (error) {
           console.log(error) // Failure
           setIsUploading(false)
-          toast.error('Failed to upload data.')
+          toast.error("Failed to upload data.")
         }
       )
     } catch (error) {
       setIsUploading(false)
       console.error(error)
       Sentry.captureException(error)
-      toast.error('Failed to upload data.')
+      toast.error("Failed to upload data.")
     }
   }
 
@@ -128,9 +128,9 @@ export default function FrontpageView({
             </p>
           </div>
           <div className="md:col-span-2">
-            <div className="flex items-center justify-center h-64">
+            <div className="flex h-64 items-center justify-center">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white mx-auto mb-4"></div>
+                <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900 dark:border-white"></div>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Loading...
                 </p>
@@ -162,7 +162,7 @@ export default function FrontpageView({
               userId={accountData && accountData.$id}
               userData={localUserData}
             />
-            <div className={'my-4'} />
+            <div className={"my-4"} />
             <UploadBanner
               isUploading={isUploading}
               setIsUploading={setIsUploading}
@@ -178,12 +178,12 @@ export default function FrontpageView({
                     id="displayname"
                     name="displayname"
                     type="text"
-                    value={localUserData?.displayName || ''}
+                    value={localUserData?.displayName || ""}
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setLocalUserData({
                           ...localUserData,
-                          displayName: e.target.value
+                          displayName: e.target.value,
                         })
                       }
                     }}
@@ -205,12 +205,12 @@ export default function FrontpageView({
                     id="status"
                     name="status"
                     type="text"
-                    value={localUserData?.status || ''}
+                    value={localUserData?.status || ""}
                     onChange={(e) => {
                       if (e.target.value.length <= 24) {
                         setLocalUserData({
                           ...localUserData,
-                          status: e.target.value
+                          status: e.target.value,
                         })
                       }
                     }}
@@ -232,12 +232,12 @@ export default function FrontpageView({
                     id="pronouns"
                     name="pronouns"
                     type="text"
-                    value={localUserData?.pronouns || ''}
+                    value={localUserData?.pronouns || ""}
                     onChange={(e) => {
                       if (e.target.value.length <= 16) {
                         setLocalUserData({
                           ...localUserData,
-                          pronouns: e.target.value
+                          pronouns: e.target.value,
                         })
                       }
                     }}
@@ -264,25 +264,25 @@ export default function FrontpageView({
                       localUserData?.birthday &&
                       !isNaN(Date.parse(localUserData?.birthday))
                         ? new Date(localUserData?.birthday).toLocaleDateString(
-                            'en-GB',
+                            "en-GB",
                             {
-                              day: '2-digit',
-                              month: '2-digit',
-                              year: 'numeric'
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
                             }
                           )
-                        : ''
+                        : ""
                     }
                     onChange={(e) => {
                       const value = e.target.value
                       // Allow only digits and forward slashes
-                      const cleaned = value.replace(/[^\d/]/g, '')
+                      const cleaned = value.replace(/[^\d/]/g, "")
                       // Basic DD/MM/YYYY format validation
                       const dateRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
-                      if (cleaned === '' || dateRegex.test(cleaned)) {
+                      if (cleaned === "" || dateRegex.test(cleaned)) {
                         setLocalUserData({
                           ...localUserData,
-                          birthday: cleaned
+                          birthday: cleaned,
                         })
                       }
                     }}
@@ -305,12 +305,12 @@ export default function FrontpageView({
                     id="location"
                     name="location"
                     type="text"
-                    value={localUserData?.location || ''}
+                    value={localUserData?.location || ""}
                     onChange={(e) => {
                       if (e.target.value.length <= 48) {
                         setLocalUserData({
                           ...localUserData,
-                          location: e.target.value
+                          location: e.target.value,
                         })
                       }
                     }}
@@ -336,12 +336,12 @@ export default function FrontpageView({
                   <Textarea
                     id="bio"
                     name="bio"
-                    value={localUserData?.bio || ''}
+                    value={localUserData?.bio || ""}
                     onChange={(e) => {
                       if (e.target.value.length <= 2048) {
                         setLocalUserData({
                           ...localUserData,
-                          bio: e.target.value
+                          bio: e.target.value,
                         })
                       }
                     }}

@@ -1,6 +1,6 @@
-'use client'
-import { databases } from '@/app/appwrite-client'
-import { Models } from 'node-appwrite'
+"use client"
+import { databases } from "@/app/appwrite-client"
+import type { Models } from "node-appwrite"
 
 /**
  * Get a document

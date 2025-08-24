@@ -1,9 +1,9 @@
-'use client'
+"use client"
 
-import { databases, ExecutionMethod, functions } from '@/app/appwrite-client'
-import React from 'react'
-import { toast } from 'sonner'
-import { getEventImageUrlView } from '@/components/getStorageItem'
+import { databases, ExecutionMethod, functions } from "@/app/appwrite-client"
+import React from "react"
+import { toast } from "sonner"
+import { getEventImageUrlView } from "@/components/getStorageItem"
 import {
   CalendarCheck2Icon,
   CalendarClockIcon,
@@ -11,17 +11,17 @@ import {
   LinkIcon,
   MapPin,
   Tag,
-  Users
-} from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import sanitize from 'sanitize-html'
-import { Skeleton } from '@/components/ui/skeleton'
-import { useUser } from '@/components/contexts/UserContext'
-import { useRouter } from 'next/navigation'
-import { EventsDocumentsType } from '@/utils/types/models'
-import Link from 'next/link'
+  Users,
+} from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import sanitize from "sanitize-html"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useUser } from "@/components/contexts/UserContext"
+import { useRouter } from "next/navigation"
+import type { EventsDocumentsType } from "@/utils/types/models"
+import Link from "next/link"
 
 export default function PageClient({ eventData, communityData }) {
   const [event, setEvent] = React.useState<EventsDocumentsType>(eventData)
@@ -35,16 +35,16 @@ export default function PageClient({ eventData, communityData }) {
   const fetchEvents = async () => {
     try {
       const document: EventsDocumentsType = await databases.getDocument(
-        'hp_db',
-        'events',
+        "hp_db",
+        "events",
         `${eventData.$id}`
       )
 
       setEvent(document)
 
       const eventResponse = await functions.createExecution(
-        'event-endpoints',
-        '',
+        "event-endpoints",
+        "",
         false,
         `/event/attendees?eventId=${eventData.$id}`,
         ExecutionMethod.GET
@@ -53,75 +53,75 @@ export default function PageClient({ eventData, communityData }) {
       setEvent({
         ...document,
         attendees: event?.attendees,
-        isAttending: event?.isAttending
+        isAttending: event?.isAttending,
       })
     } catch {
-      toast.error('Failed to fetch event data.')
+      toast.error("Failed to fetch event data.")
     }
   }
 
   const attendEvent = async () => {
     try {
       const eventResponse = await functions.createExecution(
-        'event-endpoints',
-        '',
+        "event-endpoints",
+        "",
         false,
         `/event/attendee?eventId=${eventData.$id}`,
         ExecutionMethod.POST
       )
       const event = JSON.parse(eventResponse.responseBody)
-      if (event.type === 'event_attendee_add_success') {
+      if (event.type === "event_attendee_add_success") {
         setEvent((prev) => ({
           ...prev,
           attendees: Array.isArray(prev.attendees)
             ? prev.attendees
             : prev.attendees + 1,
-          isAttending: true
+          isAttending: true,
         }))
-      } else if (event.type === 'event_ended') {
-        toast.error('Event has ended.')
+      } else if (event.type === "event_ended") {
+        toast.error("Event has ended.")
       } else {
-        toast.error('Failed to attend event.')
+        toast.error("Failed to attend event.")
       }
     } catch {
-      toast.error('Failed to fetch event data.')
+      toast.error("Failed to fetch event data.")
     }
   }
 
   const unattendEvent = async () => {
     try {
       const eventResponse = await functions.createExecution(
-        'event-endpoints',
-        '',
+        "event-endpoints",
+        "",
         false,
         `/event/attendee?eventId=${eventData.$id}`,
         ExecutionMethod.DELETE
       )
       const event = JSON.parse(eventResponse.responseBody)
-      if (event.type === 'event_attendee_remove_success') {
+      if (event.type === "event_attendee_remove_success") {
         setEvent((prev) => ({
           ...prev,
           attendees: Array.isArray(prev.attendees)
             ? prev.attendees
             : prev.attendees - 1,
-          isAttending: false
+          isAttending: false,
         }))
-      } else if (event.type === 'event_ended') {
-        toast.error('Event has ended.')
+      } else if (event.type === "event_ended") {
+        toast.error("Event has ended.")
       } else {
-        toast.error('Failed to unattend event.')
+        toast.error("Failed to unattend event.")
       }
     } catch {
-      toast.error('Failed to fetch event data.')
+      toast.error("Failed to fetch event data.")
     }
   }
 
   const description = sanitize(event?.description)
-  const descriptionSanitized = description.replace(/\n/g, '<br />')
+  const descriptionSanitized = description.replace(/\n/g, "<br />")
   const isEventEnded = new Date(event.dateUntil) < new Date()
 
   return (
-    <div className="grid md:grid-cols-3 gap-6 p-4">
+    <div className="grid gap-6 p-4 md:grid-cols-3">
       <div className="md:col-span-2">
         <div className="space-y-4">
           <div className="flex items-center space-x-2">
@@ -131,24 +131,24 @@ export default function PageClient({ eventData, communityData }) {
           <div className="flex items-center space-x-2">
             <CalendarClockIcon className="h-5 w-5 text-gray-500" />
             <span>
-              {new Date(event.date).toLocaleString('en-GB', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
+              {new Date(event.date).toLocaleString("en-GB", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
               })}
             </span>
           </div>
           <div className="flex items-center space-x-2">
             <CalendarCheck2Icon className="h-5 w-5 text-gray-500" />
             <span>
-              {new Date(event.dateUntil).toLocaleString('en-GB', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
+              {new Date(event.dateUntil).toLocaleString("en-GB", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
               })}
             </span>
           </div>
@@ -161,11 +161,11 @@ export default function PageClient({ eventData, communityData }) {
             {event.visitorCapacity !== undefined &&
             event.attendees !== undefined ? (
               <span>
-                Capacity: {event.visitorCapacity || 'unlimited'} attendees (
+                Capacity: {event.visitorCapacity || "unlimited"} attendees (
                 {event.attendees || 0} interested)
               </span>
             ) : (
-              <Skeleton className={'h-6 w-48'} />
+              <Skeleton className={"h-6 w-48"} />
             )}
           </div>
           {event?.website && (
@@ -177,7 +177,7 @@ export default function PageClient({ eventData, communityData }) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {event?.website || 'No website provided'}
+                  {event?.website || "No website provided"}
                 </Link>
               )}
             </div>
@@ -196,23 +196,23 @@ export default function PageClient({ eventData, communityData }) {
           )}
         </div>
         <div className="mt-6">
-          <h4 className="text-2xl font-semibold mb-2">About this event</h4>
+          <h4 className="mb-2 text-2xl font-semibold">About this event</h4>
           <div
             className="text-muted-foreground"
             dangerouslySetInnerHTML={{
-              __html: descriptionSanitized || 'Nothing here yet!'
+              __html: descriptionSanitized || "Nothing here yet!",
             }}
           />
         </div>
         {event.images && event.images.length > 0 && (
           <div className="mt-8 space-y-4">
-            <h4 className="text-2xl font-semibold mb-2">Event Images</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h4 className="mb-2 text-2xl font-semibold">Event Images</h4>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {event.images.map((image, index) => {
                 const imageUrl = image.match(
                   /^(https?:\/\/|[a-zA-Z0-9-]+\.[a-zA-Z]{2,})/
                 )
-                  ? image.startsWith('http')
+                  ? image.startsWith("http")
                     ? image
                     : `https://${image}`
                   : getEventImageUrlView(image)
@@ -233,8 +233,8 @@ export default function PageClient({ eventData, communityData }) {
         )}
       </div>
       <div>
-        <Card className="bg-background shadow-lg rounded-lg p-6 sticky top-4">
-          <CardTitle className="text-2xl font-semibold mb-4">
+        <Card className="bg-background sticky top-4 rounded-lg p-6 shadow-lg">
+          <CardTitle className="mb-4 text-2xl font-semibold">
             Event Details
           </CardTitle>
           <CardContent>
@@ -245,8 +245,8 @@ export default function PageClient({ eventData, communityData }) {
                   {event.isPaid ? (
                     <div className="flex items-center">
                       <span>
-                        {event.pricing.length > 1 ? 'Starting at ' : ''}
-                        {event.pricing[0].split(';')[0]}€
+                        {event.pricing.length > 1 ? "Starting at " : ""}
+                        {event.pricing[0].split(";")[0]}€
                       </span>
                     </div>
                   ) : (
@@ -260,10 +260,10 @@ export default function PageClient({ eventData, communityData }) {
               </div>
             </div>
             <Button
-              className="w-full mt-6"
+              className="mt-6 w-full"
               onClick={
                 !current
-                  ? () => router.push('/login')
+                  ? () => router.push("/login")
                   : isEventEnded
                     ? null
                     : event.isAttending
@@ -273,14 +273,14 @@ export default function PageClient({ eventData, communityData }) {
               disabled={isEventEnded}
             >
               {!current
-                ? 'Sign in to attend'
+                ? "Sign in to attend"
                 : isEventEnded
-                  ? 'This event has ended'
+                  ? "This event has ended"
                   : event.isAttending
-                    ? 'Unattend this event'
+                    ? "Unattend this event"
                     : event?.attendees === 0
-                      ? 'Be the first to attend!'
-                      : 'Attend this event!'}
+                      ? "Be the first to attend!"
+                      : "Attend this event!"}
             </Button>
           </CardContent>
         </Card>

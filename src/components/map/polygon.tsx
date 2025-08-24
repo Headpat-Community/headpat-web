@@ -6,12 +6,12 @@ import {
   useRef,
   useCallback,
   useMemo,
-  memo
-} from 'react'
+  memo,
+} from "react"
 
-import { GoogleMapsContext, useMapsLibrary } from '@vis.gl/react-google-maps'
+import { GoogleMapsContext, useMapsLibrary } from "@vis.gl/react-google-maps"
 
-import type { Ref } from 'react'
+import type { Ref } from "react"
 
 type PolygonEventProps = {
   onClick?: (e: google.maps.MapMouseEvent) => void
@@ -37,12 +37,12 @@ export type PolygonRef = Ref<google.maps.Polygon | null>
 
 // Memoized event mapping to prevent recreation
 const EVENT_MAPPINGS = [
-  ['click', 'onClick'],
-  ['drag', 'onDrag'],
-  ['dragstart', 'onDragStart'],
-  ['dragend', 'onDragEnd'],
-  ['mouseover', 'onMouseOver'],
-  ['mouseout', 'onMouseOut']
+  ["click", "onClick"],
+  ["drag", "onDrag"],
+  ["dragstart", "onDragStart"],
+  ["dragend", "onDragEnd"],
+  ["mouseover", "onMouseOver"],
+  ["mouseout", "onMouseOut"],
 ] as const
 
 function usePolygon(props: PolygonProps) {
@@ -65,12 +65,12 @@ function usePolygon(props: PolygonProps) {
       onDragStart,
       onDragEnd,
       onMouseOver,
-      onMouseOut
+      onMouseOut,
     }),
     [onClick, onDrag, onDragStart, onDragEnd, onMouseOver, onMouseOut]
   )
 
-  const geometryLibrary = useMapsLibrary('geometry')
+  const geometryLibrary = useMapsLibrary("geometry")
   const map = useContext(GoogleMapsContext)?.map
   const polygonRef = useRef<google.maps.Polygon | null>(null)
 
@@ -112,7 +112,7 @@ function usePolygon(props: PolygonProps) {
     const polygon = polygonRef.current
     if (!map || !polygon) {
       if (map === undefined)
-        console.error('<Polygon> has to be inside a Map component.')
+        console.error("<Polygon> has to be inside a Map component.")
       return
     }
 
@@ -166,4 +166,4 @@ export const Polygon = memo(
   })
 )
 
-Polygon.displayName = 'Polygon'
+Polygon.displayName = "Polygon"

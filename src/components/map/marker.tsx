@@ -1,26 +1,26 @@
-import React, { useState, useCallback, memo } from 'react'
+import React, { useState, useCallback, memo } from "react"
 import {
   AdvancedMarker,
   InfoWindow,
-  useAdvancedMarkerRef
-} from '@vis.gl/react-google-maps'
+  useAdvancedMarkerRef,
+} from "@vis.gl/react-google-maps"
 
 // Memoized marker position to prevent unnecessary recalculations
 const MARKER_POSITION = { lat: 28, lng: -82 } as const
 
 // Memoized marker title to prevent recreation
-const MARKER_TITLE = 'AdvancedMarker that opens an Infowindow when clicked.'
+const MARKER_TITLE = "AdvancedMarker that opens an Infowindow when clicked."
 
 // Memoized info window content to prevent recreation
 const InfoWindowContent = memo(() => (
   <>
-    This is an example for the{' '}
-    <code style={{ whiteSpace: 'nowrap' }}>&lt;AdvancedMarker /&gt;</code>{' '}
+    This is an example for the{" "}
+    <code style={{ whiteSpace: "nowrap" }}>&lt;AdvancedMarker /&gt;</code>{" "}
     combined with an Infowindow.
   </>
 ))
 
-InfoWindowContent.displayName = 'InfoWindowContent'
+InfoWindowContent.displayName = "InfoWindowContent"
 
 export const MarkerWithInfowindow = memo(function MarkerWithInfowindow() {
   const [infowindowOpen, setInfowindowOpen] = useState(true)
@@ -49,7 +49,7 @@ export const MarkerWithInfowindow = memo(function MarkerWithInfowindow() {
           anchor={marker}
           maxWidth={200}
           onCloseClick={handleCloseClick}
-          className={'text-black'}
+          className={"text-black"}
         >
           <InfoWindowContent />
         </InfoWindow>

@@ -1,21 +1,21 @@
-'use client'
-import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
-import { ErrorMessage } from '@/components/alerts'
-import { emailVerification } from '@/utils/actions/user-actions'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+"use client"
+import React, { useState, useEffect } from "react"
+import Image from "next/image"
+import { ErrorMessage } from "@/components/alerts"
+import { emailVerification } from "@/utils/actions/user-actions"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 const ResetPassword = () => {
-  const [code, setCode] = useState('')
-  const [userId, setUserId] = useState('')
-  const [error, setError] = useState('')
+  const [code, setCode] = useState("")
+  const [userId, setUserId] = useState("")
+  const [error, setError] = useState("")
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
-    const userIdParam = urlParams.get('userId')
-    const codeParam = urlParams.get('secret')
+    const userIdParam = urlParams.get("userId")
+    const codeParam = urlParams.get("secret")
     if (userIdParam) {
       setUserId(userIdParam)
     }
@@ -29,12 +29,12 @@ const ResetPassword = () => {
 
     const body = {
       userId: userId,
-      secret: code
+      secret: code,
     }
 
     const response = await emailVerification(body)
     if (!response) {
-      setError('Fehler, bitte versuche es später erneut oder kontaktiere uns.')
+      setError("Fehler, bitte versuche es später erneut oder kontaktiere uns.")
     }
   }
 

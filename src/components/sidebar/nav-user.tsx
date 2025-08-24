@@ -1,8 +1,8 @@
-'use client'
+"use client"
 
-import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from 'lucide-react'
+import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from "lucide-react"
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,16 +10,16 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar
-} from '@/components/ui/sidebar'
-import { useUser } from '@/components/contexts/UserContext'
-import Link from 'next/link'
+  useSidebar,
+} from "@/components/ui/sidebar"
+import { useUser } from "@/components/contexts/UserContext"
+import Link from "next/link"
 
 const getAvatar = (id: string) => {
   if (!id) return
@@ -46,12 +46,12 @@ export function NavUser() {
                   alt={userData?.displayName || userData?.$id}
                 />
                 <AvatarFallback className="rounded-lg">
-                  {userData?.displayName?.charAt(0) || 'HI'}
+                  {userData?.displayName?.charAt(0) || "HI"}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
-                  {userData?.displayName || userData?.$id || 'Login'}
+                  {userData?.displayName || userData?.$id || "Login"}
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -59,7 +59,7 @@ export function NavUser() {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            side={isMobile ? 'bottom' : 'right'}
+            side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
           >
@@ -71,12 +71,12 @@ export function NavUser() {
                     alt={userData?.displayName || userData?.$id}
                   />
                   <AvatarFallback className="rounded-lg">
-                    {userData?.displayName?.charAt(0) || 'HI'}
+                    {userData?.displayName?.charAt(0) || "HI"}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">
-                    {userData?.displayName || userData?.$id || 'Login'}
+                    {userData?.displayName || userData?.$id || "Login"}
                   </span>
                 </div>
               </div>
@@ -104,12 +104,12 @@ export function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <Link
-              href={current ? '/logout' : '/login'}
+              href={current ? "/logout" : "/login"}
               onClick={isMobile ? toggleSidebar : undefined}
             >
               <DropdownMenuItem>
                 <LogOut />
-                {current ? 'Log out' : 'Log in'}
+                {current ? "Log out" : "Log in"}
               </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>

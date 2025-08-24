@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -6,21 +6,21 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
-} from '@/components/ui/alert-dialog'
-import { AlertDialogTrigger } from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
-import { ShieldAlertIcon } from 'lucide-react'
-import { useCallback, useState } from 'react'
-import {
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { AlertDialogTrigger } from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import { ShieldAlertIcon } from "lucide-react"
+import { useCallback, useState } from "react"
+import type {
   AccountPrefs,
   GalleryDocumentsType,
-  GalleryPrefsDocumentsType
-} from '@/utils/types/models'
-import ReportGalleryModal from '@/components/gallery/moderation/ReportGalleryModal'
-import { ExecutionMethod } from 'node-appwrite'
-import { functions } from '@/app/appwrite-client'
-import { toast } from 'sonner'
+  GalleryPrefsDocumentsType,
+} from "@/utils/types/models"
+import ReportGalleryModal from "@/components/gallery/moderation/ReportGalleryModal"
+import { ExecutionMethod } from "node-appwrite"
+import { functions } from "@/app/appwrite-client"
+import { toast } from "sonner"
 
 export default function ModerationModal({
   isOpen,
@@ -28,7 +28,7 @@ export default function ModerationModal({
   image,
   imagePrefs,
   setImagePrefs,
-  current
+  current,
 }: {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
@@ -46,14 +46,14 @@ export default function ModerationModal({
 
   const handleHide = async () => {
     const loadingToast = toast.loading(
-      `${imagePrefs?.isHidden ? 'Unhiding' : 'Hiding'} image...`
+      `${imagePrefs?.isHidden ? "Unhiding" : "Hiding"} image...`
     )
     try {
       const data = await functions.createExecution(
-        'gallery-endpoints',
+        "gallery-endpoints",
         JSON.stringify({
           galleryId: image.$id,
-          isHidden: !imagePrefs?.isHidden
+          isHidden: !imagePrefs?.isHidden,
         }),
         false,
         `/gallery/prefs`,
@@ -63,17 +63,17 @@ export default function ModerationModal({
       toast.dismiss(loadingToast)
       if (response.code === 200) {
         toast.success(
-          `${imagePrefs?.isHidden ? 'Unhidden' : 'Hidden'} image successfully`
+          `${imagePrefs?.isHidden ? "Unhidden" : "Hidden"} image successfully`
         )
         setImagePrefs({ ...imagePrefs, isHidden: !imagePrefs?.isHidden })
         setIsOpen(false)
       } else {
-        toast.error('Failed to hide image. Please try again later.')
+        toast.error("Failed to hide image. Please try again later.")
       }
     } catch {
       toast.dismiss(loadingToast)
       toast.error(
-        `Failed to ${imagePrefs?.isHidden ? 'unhide' : 'hide'} image. Please try again later.`
+        `Failed to ${imagePrefs?.isHidden ? "unhide" : "hide"} image. Please try again later.`
       )
     }
   }
@@ -87,11 +87,11 @@ export default function ModerationModal({
       />
       <AlertDialog onOpenChange={setIsOpen} open={isOpen}>
         <AlertDialogTrigger asChild>
-          <Button className={'text-center'} variant={'destructive'}>
-            <ShieldAlertIcon color={'white'} />
+          <Button className={"text-center"} variant={"destructive"}>
+            <ShieldAlertIcon color={"white"} />
           </Button>
         </AlertDialogTrigger>
-        <AlertDialogContent className={'w-full'}>
+        <AlertDialogContent className={"w-full"}>
           <AlertDialogHeader>
             <AlertDialogTitle>Moderation</AlertDialogTitle>
             {current?.$id ? (
@@ -99,20 +99,20 @@ export default function ModerationModal({
                 <AlertDialogDescription>
                   What would you like to do?
                 </AlertDialogDescription>
-                <div className={'flex-row space-y-4'}>
+                <div className={"flex-row space-y-4"}>
                   <Button
-                    className={'text-center flex w-full items-center'}
-                    variant={'destructive'}
+                    className={"flex w-full items-center text-center"}
+                    variant={"destructive"}
                     onClick={handleReport}
                   >
                     Report
                   </Button>
                   <Button
-                    className={'text-center flex w-full items-center'}
-                    variant={'destructive'}
+                    className={"flex w-full items-center text-center"}
+                    variant={"destructive"}
                     onClick={handleHide}
                   >
-                    {imagePrefs?.isHidden ? 'Unhide' : 'Hide'}
+                    {imagePrefs?.isHidden ? "Unhide" : "Hide"}
                   </Button>
                 </div>
               </>
@@ -122,7 +122,7 @@ export default function ModerationModal({
               </AlertDialogDescription>
             )}
           </AlertDialogHeader>
-          <AlertDialogFooter className={'mt-8'}>
+          <AlertDialogFooter className={"mt-8"}>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>

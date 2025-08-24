@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo } from "react"
 
 // Memoized SVG component to prevent unnecessary re-renders
 const SeparatorDot = memo(() => (
@@ -11,14 +11,14 @@ const SeparatorDot = memo(() => (
   </svg>
 ))
 
-SeparatorDot.displayName = 'SeparatorDot'
+SeparatorDot.displayName = "SeparatorDot"
 
 interface ErrorMessageProps {
   attentionError: string
 }
 
 export const ErrorMessage = memo(function ErrorMessage({
-  attentionError
+  attentionError,
 }: ErrorMessageProps) {
   return (
     <div className="fixed inset-x-0 bottom-0 z-40">
@@ -38,7 +38,7 @@ interface SuccessMessageProps {
 }
 
 export const SuccessMessage = memo(function SuccessMessage({
-  attentionSuccess
+  attentionSuccess,
 }: SuccessMessageProps) {
   return (
     <div className="fixed inset-x-0 bottom-0 z-50">

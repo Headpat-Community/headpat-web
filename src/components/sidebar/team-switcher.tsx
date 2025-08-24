@@ -1,23 +1,23 @@
-'use client'
+"use client"
 
-import * as React from 'react'
-import { ChevronsUpDown } from 'lucide-react'
+import * as React from "react"
+import { ChevronsUpDown } from "lucide-react"
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar
-} from '@/components/ui/sidebar'
-import Link from 'next/link'
-import Image from 'next/image'
+  useSidebar,
+} from "@/components/ui/sidebar"
+import Link from "next/link"
+import Image from "next/image"
 
 export type team = {
   name: string
@@ -45,7 +45,7 @@ export function TeamSwitcher({ teams }: { teams: team[] }) {
                 src={activeTeam.logo}
                 width={150}
                 height={30}
-                alt={'Headpat Place logo'}
+                alt={"Headpat Place logo"}
                 draggable={false}
               />
               <ChevronsUpDown className="ml-auto" />
@@ -54,7 +54,7 @@ export function TeamSwitcher({ teams }: { teams: team[] }) {
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
             align="start"
-            side={isMobile ? 'bottom' : 'right'}
+            side={isMobile ? "bottom" : "right"}
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-muted-foreground text-xs">

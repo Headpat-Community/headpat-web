@@ -2,19 +2,19 @@
 // The config you add here will be used whenever a users loads a page in their browser.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-import * as Sentry from '@sentry/nextjs'
+import * as Sentry from "@sentry/nextjs"
 
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  enabled: process.env.NODE_ENV === 'production',
+  enabled: process.env.NODE_ENV === "production",
 
   // Add optional integrations for additional features
   integrations: [
     Sentry.replayIntegration({
       // Additional Replay configuration goes in here, for example:
       maskAllText: true,
-      blockAllMedia: true
-    })
+      blockAllMedia: true,
+    }),
   ],
 
   // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
@@ -34,7 +34,7 @@ Sentry.init({
   debug: false,
 
   // Spotlight (https://spotlightjs.com)
-  spotlight: process.env.SENTRY_SPOTLIGHT === 'true'
+  spotlight: process.env.SENTRY_SPOTLIGHT === "true",
 })
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart

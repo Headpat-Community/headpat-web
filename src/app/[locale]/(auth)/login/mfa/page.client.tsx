@@ -1,31 +1,31 @@
-'use client'
-import * as Sentry from '@sentry/nextjs'
+"use client"
+import * as Sentry from "@sentry/nextjs"
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
-  InputOTPSlot
-} from '@/components/ui/input-otp'
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { account } from '@/app/appwrite-client'
-import { getMfaFactors } from '@/utils/server-api/account/user'
-import { AuthenticationFactor } from 'node-appwrite'
-import { toast } from 'sonner'
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { account } from "@/app/appwrite-client"
+import { getMfaFactors } from "@/utils/server-api/account/user"
+import { AuthenticationFactor } from "node-appwrite"
+import { toast } from "sonner"
 
 export default function MfaPageClient() {
   const router = useRouter()
-  const [challengeId, setChallengeId] = useState('')
+  const [challengeId, setChallengeId] = useState("")
   const [needsMfa, setNeedsMfa] = useState(false)
 
   useEffect(() => {
     const checkMfa = async () => {
       try {
         await account.get()
-        router.push('/account')
+        router.push("/account")
       } catch (error) {
-        if (error.type === 'general_unauthorized_scope') {
-          router.push('/login')
+        if (error.type === "general_unauthorized_scope") {
+          router.push("/login")
         } else {
           setNeedsMfa(true)
         }
@@ -54,9 +54,9 @@ export default function MfaPageClient() {
     try {
       await account.updateMfaChallenge(challengeId, otp)
 
-      router.replace('/account')
+      router.replace("/account")
     } catch (error) {
-      if (error.type === 'user_invalid_token') {
+      if (error.type === "user_invalid_token") {
         toast.error(
           "Incorrect code. Please try again. If you're having trouble, please contact support."
         )
@@ -71,11 +71,11 @@ export default function MfaPageClient() {
 
   if (!needsMfa) {
     return (
-      <div className="flex flex-1 justify-center items-center absolute inset-0">
-        <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:ring-white">
+      <div className="absolute inset-0 flex flex-1 items-center justify-center">
+        <div className="min-w-1/3 mx-auto mt-14 rounded-2xl p-8 dark:ring-white">
           <div className="mt-10">
             <div>
-              <div className={'text-center'}>
+              <div className={"text-center"}>
                 <h4 className="mt-8 text-2xl font-bold leading-9 tracking-tight">
                   Loading...
                 </h4>
@@ -87,8 +87,8 @@ export default function MfaPageClient() {
     )
   } else {
     return (
-      <div className="flex flex-1 justify-center items-center absolute inset-0">
-        <div className="mx-auto mt-14 min-w-1/3 rounded-2xl p-8 dark:ring-white">
+      <div className="absolute inset-0 flex flex-1 items-center justify-center">
+        <div className="min-w-1/3 mx-auto mt-14 rounded-2xl p-8 dark:ring-white">
           <div className="mt-10">
             <div className="flex flex-col items-center justify-center text-center">
               <div>

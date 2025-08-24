@@ -6,54 +6,54 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger
-} from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
-import { account } from '@/app/appwrite-client'
-import { AuthenticationFactor } from 'appwrite'
-import { useState } from 'react'
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import { account } from "@/app/appwrite-client"
+import { AuthenticationFactor } from "appwrite"
+import { useState } from "react"
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
-  InputOTPSlot
-} from '@/components/ui/input-otp'
-import * as Sentry from '@sentry/nextjs'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { ShieldAlertIcon } from 'lucide-react'
-import { toast } from 'sonner'
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
+import * as Sentry from "@sentry/nextjs"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "@/components/ui/separator"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { ShieldAlertIcon } from "lucide-react"
+import { toast } from "sonner"
 
 export default function MfaRecoveryCodes() {
   const [open, setOpen] = useState<boolean>(false)
-  const [mfaMode, setMfaMode] = useState<string>('needsChallenge')
-  const [challengeId, setChallengeId] = useState<string>('')
+  const [mfaMode, setMfaMode] = useState<string>("needsChallenge")
+  const [challengeId, setChallengeId] = useState<string>("")
   const [recoveryCodes, setRecoveryCodes] = useState<string[]>([])
 
   const handleStartChallenge = async () => {
-    if (mfaMode === 'needsChallenge') {
+    if (mfaMode === "needsChallenge") {
       try {
         const mfaRequestResult = await account.createMfaChallenge(
           AuthenticationFactor.Totp
         )
 
         setChallengeId(mfaRequestResult.$id)
-        setMfaMode('challengeStarted')
+        setMfaMode("challengeStarted")
       } catch (error) {
-        if (error.type === 'general_rate_limit_exceeded') {
+        if (error.type === "general_rate_limit_exceeded") {
           toast.error(
-            'You have exceeded the rate limit for this action. Please try again later.'
+            "You have exceeded the rate limit for this action. Please try again later."
           )
         } else {
-          toast.error('Failed to start MFA challenge. Please try again later.')
+          toast.error("Failed to start MFA challenge. Please try again later.")
         }
       }
     }
   }
 
   const handleGetRecoveryCodes = async (code: string) => {
-    if (mfaMode === 'challengeStarted') {
+    if (mfaMode === "challengeStarted") {
       const mfaVerifyResult = await account.updateMfaChallenge(
         challengeId,
         code
@@ -67,17 +67,17 @@ export default function MfaRecoveryCodes() {
           recoveryCodesResult = await account.createMfaRecoveryCodes()
         }
         setRecoveryCodes(recoveryCodesResult.recoveryCodes)
-        setMfaMode('hasRecoveryCodes')
+        setMfaMode("hasRecoveryCodes")
       } else {
-        toast.error('Invalid code. Please try again.')
+        toast.error("Invalid code. Please try again.")
       }
     }
   }
 
   const handleClose = () => {
     setOpen(false)
-    setMfaMode('needsChallenge')
-    setChallengeId('')
+    setMfaMode("needsChallenge")
+    setChallengeId("")
     setRecoveryCodes([])
   }
 
@@ -90,7 +90,7 @@ export default function MfaRecoveryCodes() {
         <AlertDialogTrigger asChild>
           <Button
             type="submit"
-            variant={'outline'}
+            variant={"outline"}
             onClick={() => {
               setOpen(true)
               handleStartChallenge().catch((error) => {
@@ -119,15 +119,15 @@ export default function MfaRecoveryCodes() {
                 save these new ones.
               </AlertDescription>
             </Alert>
-            <div className={'flex flex-col'}>
-              {mfaMode === 'challengeStarted' && (
+            <div className={"flex flex-col"}>
+              {mfaMode === "challengeStarted" && (
                 <p>
                   Please enter the 6-digit code from your authenticator app.
                 </p>
               )}
             </div>
             <div>
-              {mfaMode === 'challengeStarted' && (
+              {mfaMode === "challengeStarted" && (
                 <>
                   <InputOTP
                     maxLength={6}
@@ -154,7 +154,7 @@ export default function MfaRecoveryCodes() {
                   </InputOTP>
                 </>
               )}
-              {mfaMode === 'hasRecoveryCodes' && (
+              {mfaMode === "hasRecoveryCodes" && (
                 <ScrollArea className="h-72 w-48 rounded-md border">
                   <div className="p-4">
                     <h4 className="mb-4 text-sm font-medium leading-none">
@@ -173,7 +173,7 @@ export default function MfaRecoveryCodes() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel asChild>
-              <Button variant={'outline'}>Close</Button>
+              <Button variant={"outline"}>Close</Button>
             </AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>

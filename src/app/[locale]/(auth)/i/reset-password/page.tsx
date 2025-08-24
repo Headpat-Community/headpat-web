@@ -1,24 +1,24 @@
-'use client'
-import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
-import { ErrorMessage } from '@/components/alerts'
-import { resetPassword } from '@/utils/actions/user-actions'
-import Link from 'next/link'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+"use client"
+import React, { useState, useEffect } from "react"
+import Image from "next/image"
+import { ErrorMessage } from "@/components/alerts"
+import { resetPassword } from "@/utils/actions/user-actions"
+import Link from "next/link"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 const ResetPassword = () => {
-  const [code, setCode] = useState('')
-  const [userId, setUserId] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState('')
+  const [code, setCode] = useState("")
+  const [userId, setUserId] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [error, setError] = useState("")
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
-    const userIdParam = urlParams.get('userId')
-    const codeParam = urlParams.get('secret')
+    const userIdParam = urlParams.get("userId")
+    const codeParam = urlParams.get("secret")
     if (userIdParam) {
       setUserId(userIdParam)
     }
@@ -34,7 +34,7 @@ const ResetPassword = () => {
       userId: userId,
       secret: code,
       password: password,
-      passwordAgain: confirmPassword
+      passwordAgain: confirmPassword,
     })
 
     const response = await resetPassword(body)
@@ -43,17 +43,17 @@ const ResetPassword = () => {
         `Incorrect credentials or already made account! We tried everything, It's just not possible.`
       )
       setTimeout(() => {
-        setError('')
+        setError("")
       }, 5000)
     } else if (response === 429) {
-      setError('Too many requests!')
+      setError("Too many requests!")
       setTimeout(() => {
-        setError('')
+        setError("")
       }, 5000)
     } else if (response === 500) {
-      setError('Server error!')
+      setError("Server error!")
       setTimeout(() => {
-        setError('')
+        setError("")
       }, 5000)
     }
   }
@@ -137,8 +137,8 @@ const ResetPassword = () => {
               </Button>
             </div>
             <div>
-              <Button variant={'destructive'} asChild className="w-full">
-                <Link href={'/register'}>Create account &rarr;</Link>
+              <Button variant={"destructive"} asChild className="w-full">
+                <Link href={"/register"}>Create account &rarr;</Link>
               </Button>
             </div>
           </form>

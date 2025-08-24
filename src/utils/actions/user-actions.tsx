@@ -1,21 +1,21 @@
-'use server'
-import { headers } from 'next/headers'
+"use server"
+import { headers } from "next/headers"
 
 export async function emailVerification(requestBody: any) {
   const headersList = await headers()
-  const cookieHeader = headersList.get('cookie')
+  const cookieHeader = headersList.get("cookie")
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/v1/account/verification`,
     {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
-        'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
-        'X-Appwrite-Response-Format': '1.4.0',
-        Cookie: cookieHeader
+        "Content-Type": "application/json",
+        "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+        "X-Appwrite-Response-Format": "1.4.0",
+        Cookie: cookieHeader,
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(requestBody),
     }
   )
 
@@ -31,13 +31,13 @@ export async function resetPassword(requestBody: any) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/v1/account/recovery`,
     {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
-        'X-Appwrite-Project': `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
-        'X-Appwrite-Response-Format': '1.4.0'
+        "Content-Type": "application/json",
+        "X-Appwrite-Project": `${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
+        "X-Appwrite-Response-Format": "1.4.0",
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(requestBody),
     }
   )
 

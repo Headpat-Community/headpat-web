@@ -1,49 +1,49 @@
-'use client'
-import { Badge } from '@/components/ui/badge'
+"use client"
+import { Badge } from "@/components/ui/badge"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from '@/components/ui/card'
+  CardTitle,
+} from "@/components/ui/card"
 import {
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger
-} from '@/components/ui/collapsible'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ChevronDown, ChevronUp, Sparkles, Wrench, Bug } from 'lucide-react'
-import { useState } from 'react'
-import { Separator } from '@/components/ui/separator'
-import sanitize from 'sanitize-html'
-import { ChangelogDocumentsType } from '@/utils/types/models'
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ChevronDown, ChevronUp, Sparkles, Wrench, Bug } from "lucide-react"
+import { useState } from "react"
+import { Separator } from "@/components/ui/separator"
+import sanitize from "sanitize-html"
+import type { ChangelogDocumentsType } from "@/utils/types/models"
 
 const ChangeIcon = ({
-  type
+  type,
 }: {
-  type: 'feature' | 'improvement' | 'bugfix'
+  type: "feature" | "improvement" | "bugfix"
 }) => {
   switch (type) {
-    case 'feature':
-      return <Sparkles className="size-4 mt-1 text-blue-500" />
-    case 'improvement':
-      return <Wrench className="size-4 mt-1 text-green-500" />
-    case 'bugfix':
-      return <Bug className="size-4 mt-1 text-red-500" />
+    case "feature":
+      return <Sparkles className="mt-1 size-4 text-blue-500" />
+    case "improvement":
+      return <Wrench className="mt-1 size-4 text-green-500" />
+    case "bugfix":
+      return <Bug className="mt-1 size-4 text-red-500" />
     default:
       return null
   }
 }
 
 export default function ListComponent({
-  changelogData
+  changelogData,
 }: {
   changelogData: ChangelogDocumentsType[]
 }) {
   const [openVersions, setOpenVersions] = useState<string[]>([])
-  const [activeTab, setActiveTab] = useState<'web' | 'app'>('web')
+  const [activeTab, setActiveTab] = useState<"web" | "app">("web")
 
   const toggleVersion = (version: string) => {
     setOpenVersions((prev) =>
@@ -55,10 +55,10 @@ export default function ListComponent({
 
   if (!changelogData || changelogData.length === 0) {
     return (
-      <div className={'flex flex-1 justify-center items-center h-full'}>
-        <div className={'p-4 gap-6 text-center'}>
-          <h1 className={'text-2xl font-semibold'}>Oh no!</h1>
-          <p className={'text-muted-foreground'}>
+      <div className={"flex h-full flex-1 items-center justify-center"}>
+        <div className={"gap-6 p-4 text-center"}>
+          <h1 className={"text-2xl font-semibold"}>Oh no!</h1>
+          <p className={"text-muted-foreground"}>
             Sorry, there are no updates available at the moment.
           </p>
         </div>
@@ -71,8 +71,8 @@ export default function ListComponent({
     a: ChangelogDocumentsType,
     b: ChangelogDocumentsType
   ) {
-    const pa = a.version.split('.').map(Number)
-    const pb = b.version.split('.').map(Number)
+    const pa = a.version.split(".").map(Number)
+    const pb = b.version.split(".").map(Number)
     for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
       const na = pa[i] || 0
       const nb = pb[i] || 0
@@ -84,12 +84,12 @@ export default function ListComponent({
   const sortedChangelogData = [...changelogData].sort(compareVersions)
 
   // Filter changelog data by type
-  const webChangelog = sortedChangelogData.filter((item) => item.type === 'web')
-  const appChangelog = sortedChangelogData.filter((item) => item.type === 'app')
+  const webChangelog = sortedChangelogData.filter((item) => item.type === "web")
+  const appChangelog = sortedChangelogData.filter((item) => item.type === "app")
 
   const sanitizeDescription = (text: string) => {
     const description = sanitize(text)
-    return description.replace(/\n/g, '<br />')
+    return description.replace(/\n/g, "<br />")
   }
 
   const renderChangelogList = (changelogList: ChangelogDocumentsType[]) => (
@@ -106,20 +106,20 @@ export default function ListComponent({
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle className="flex text-2xl items-center">
+                        <CardTitle className="flex items-center text-2xl">
                           <Badge
                             variant="outline"
-                            className={`mr-2 ${release.draft ? 'border-red-500' : ''}`}
+                            className={`mr-2 ${release.draft ? "border-red-500" : ""}`}
                           >
-                            {release.draft ? 'Draft' : `v${release.version}`}
+                            {release.draft ? "Draft" : `v${release.version}`}
                           </Badge>
                           {release.title}
                         </CardTitle>
                         <CardDescription>
-                          {new Date(release.date).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric'
+                          {new Date(release.date).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
                           })}
                         </CardDescription>
                       </div>
@@ -139,14 +139,14 @@ export default function ListComponent({
                 <CardContent>
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: sanitizeDescription(release.description)
+                      __html: sanitizeDescription(release.description),
                     }}
                   />
-                  <div className="space-y-4 mt-6">
-                    {release.type === 'web' ? (
+                  <div className="mt-6 space-y-4">
+                    {release.type === "web" ? (
                       <div>
                         <h4>Web</h4>
-                        <Separator className={'my-2'} />
+                        <Separator className={"my-2"} />
                         <ul className="space-y-2">
                           {release.bugfixesWeb.length > 0 && <h5>Bugfixes</h5>}
                           {release.bugfixesWeb.map(
@@ -156,7 +156,7 @@ export default function ListComponent({
                                 <div
                                   className="ml-2"
                                   dangerouslySetInnerHTML={{
-                                    __html: sanitizeDescription(change)
+                                    __html: sanitizeDescription(change),
                                   }}
                                 />
                               </li>
@@ -170,7 +170,7 @@ export default function ListComponent({
                                 <div
                                   className="ml-2"
                                   dangerouslySetInnerHTML={{
-                                    __html: sanitizeDescription(change)
+                                    __html: sanitizeDescription(change),
                                   }}
                                 />
                               </li>
@@ -186,7 +186,7 @@ export default function ListComponent({
                                 <div
                                   className="ml-2"
                                   dangerouslySetInnerHTML={{
-                                    __html: sanitizeDescription(change)
+                                    __html: sanitizeDescription(change),
                                   }}
                                 />
                               </li>
@@ -197,7 +197,7 @@ export default function ListComponent({
                     ) : (
                       <div>
                         <h4>App</h4>
-                        <Separator className={'my-2'} />
+                        <Separator className={"my-2"} />
                         <ul className="space-y-2">
                           {release.bugfixesApp.length > 0 && <h5>Bugfixes</h5>}
                           {release.bugfixesApp.map(
@@ -207,7 +207,7 @@ export default function ListComponent({
                                 <div
                                   className="ml-2"
                                   dangerouslySetInnerHTML={{
-                                    __html: sanitizeDescription(change)
+                                    __html: sanitizeDescription(change),
                                   }}
                                 />
                               </li>
@@ -221,7 +221,7 @@ export default function ListComponent({
                                 <div
                                   className="ml-2"
                                   dangerouslySetInnerHTML={{
-                                    __html: sanitizeDescription(change)
+                                    __html: sanitizeDescription(change),
                                   }}
                                 />
                               </li>
@@ -237,7 +237,7 @@ export default function ListComponent({
                                 <div
                                   className="ml-2"
                                   dangerouslySetInnerHTML={{
-                                    __html: sanitizeDescription(change)
+                                    __html: sanitizeDescription(change),
                                   }}
                                 />
                               </li>
@@ -260,7 +260,7 @@ export default function ListComponent({
     <div className="container mx-auto py-10">
       <Tabs
         value={activeTab}
-        onValueChange={(value) => setActiveTab(value as 'web' | 'app')}
+        onValueChange={(value) => setActiveTab(value as "web" | "app")}
         className="w-full"
       >
         <TabsList className="grid w-full grid-cols-2">
@@ -271,10 +271,10 @@ export default function ListComponent({
           {webChangelog.length > 0 ? (
             renderChangelogList(webChangelog)
           ) : (
-            <div className={'flex flex-1 justify-center items-center h-full'}>
-              <div className={'p-4 gap-6 text-center'}>
-                <h1 className={'text-2xl font-semibold'}>No Web Updates</h1>
-                <p className={'text-muted-foreground'}>
+            <div className={"flex h-full flex-1 items-center justify-center"}>
+              <div className={"gap-6 p-4 text-center"}>
+                <h1 className={"text-2xl font-semibold"}>No Web Updates</h1>
+                <p className={"text-muted-foreground"}>
                   No web updates available at the moment.
                 </p>
               </div>
@@ -285,10 +285,10 @@ export default function ListComponent({
           {appChangelog.length > 0 ? (
             renderChangelogList(appChangelog)
           ) : (
-            <div className={'flex flex-1 justify-center items-center h-full'}>
-              <div className={'p-4 gap-6 text-center'}>
-                <h1 className={'text-2xl font-semibold'}>No Mobile Updates</h1>
-                <p className={'text-muted-foreground'}>
+            <div className={"flex h-full flex-1 items-center justify-center"}>
+              <div className={"gap-6 p-4 text-center"}>
+                <h1 className={"text-2xl font-semibold"}>No Mobile Updates</h1>
+                <p className={"text-muted-foreground"}>
                   No mobile updates available at the moment.
                 </p>
               </div>

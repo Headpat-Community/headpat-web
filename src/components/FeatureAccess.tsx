@@ -1,10 +1,11 @@
-'use client'
-import { ReactNode, useMemo, useCallback, memo } from 'react'
-import { useFeatureStatus } from '@/hooks/useFeatureStatus'
-import { useUser } from '@/components/contexts/UserContext'
-import { useRouter } from 'next/navigation'
-import Maintenance from '@/components/static/maintenance'
-import NoAccess from '@/components/static/noAccess'
+"use client"
+import type { ReactNode } from "react"
+import { useMemo, useCallback, memo } from "react"
+import { useFeatureStatus } from "@/hooks/useFeatureStatus"
+import { useUser } from "@/components/contexts/UserContext"
+import { useRouter } from "next/navigation"
+import Maintenance from "@/components/static/maintenance"
+import NoAccess from "@/components/static/noAccess"
 
 interface FeatureAccessProps {
   featureName: string
@@ -13,7 +14,7 @@ interface FeatureAccessProps {
 
 const FeatureAccess = memo(function FeatureAccess({
   featureName,
-  children
+  children,
 }: FeatureAccessProps) {
   const featureStatus = useFeatureStatus(featureName)
   const { current } = useUser()
@@ -29,40 +30,40 @@ const FeatureAccess = memo(function FeatureAccess({
         hasAccess: false,
         shouldRedirect: false,
         showMaintenance: false,
-        showNoAccess: false
+        showNoAccess: false,
       }
 
-    const isDev = userLabels.includes('dev')
-    const isStaff = userLabels.includes('staff') || isDev
+    const isDev = userLabels.includes("dev")
+    const isStaff = userLabels.includes("staff") || isDev
     const hasFeatureBeta = userLabels.includes(`${featureName}Beta`) || isDev
 
     // Early access check
-    if (featureStatus.type === 'earlyaccess' && !hasFeatureBeta) {
+    if (featureStatus.type === "earlyaccess" && !hasFeatureBeta) {
       return {
         hasAccess: false,
         shouldRedirect: false,
         showMaintenance: false,
-        showNoAccess: true
+        showNoAccess: true,
       }
     }
 
     // Staff access check
-    if (featureStatus.type === 'staff' && !isStaff) {
+    if (featureStatus.type === "staff" && !isStaff) {
       return {
         hasAccess: false,
         shouldRedirect: false,
         showMaintenance: false,
-        showNoAccess: true
+        showNoAccess: true,
       }
     }
 
     // Dev access check
-    if (featureStatus.type === 'dev' && !isDev) {
+    if (featureStatus.type === "dev" && !isDev) {
       return {
         hasAccess: false,
         shouldRedirect: false,
         showMaintenance: false,
-        showNoAccess: true
+        showNoAccess: true,
       }
     }
 
@@ -72,17 +73,17 @@ const FeatureAccess = memo(function FeatureAccess({
         hasAccess: false,
         shouldRedirect: false,
         showMaintenance: true,
-        showNoAccess: false
+        showNoAccess: false,
       }
     }
 
     // Public access check
-    if (featureStatus.type !== 'public' && !current) {
+    if (featureStatus.type !== "public" && !current) {
       return {
         hasAccess: false,
         shouldRedirect: true,
         showMaintenance: false,
-        showNoAccess: false
+        showNoAccess: false,
       }
     }
 
@@ -90,14 +91,14 @@ const FeatureAccess = memo(function FeatureAccess({
       hasAccess: true,
       shouldRedirect: false,
       showMaintenance: false,
-      showNoAccess: false
+      showNoAccess: false,
     }
   }, [featureStatus, userLabels, featureName, current])
 
   // Memoize redirect handler to prevent unnecessary re-renders
   const handleRedirect = useCallback(() => {
     if (accessChecks.shouldRedirect) {
-      router.push('/login')
+      router.push("/login")
     }
   }, [accessChecks.shouldRedirect, router])
 

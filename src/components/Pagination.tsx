@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import {
   Pagination,
   PaginationContent,
@@ -6,9 +6,9 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-  PaginationEllipsis
-} from '@/components/ui/pagination'
-import { useMemo, useCallback, memo } from 'react'
+  PaginationEllipsis,
+} from "@/components/ui/pagination"
+import { useMemo, useCallback, memo } from "react"
 
 interface PaginationComponentProps {
   totalPages: number
@@ -22,7 +22,7 @@ interface PaginationComponentProps {
 const PaginationComponent = memo(function PaginationComponent({
   totalPages,
   currentPage,
-  handleInputChange
+  handleInputChange,
 }: PaginationComponentProps) {
   // Memoize page numbers to prevent unnecessary recalculations
   const pageNumbers = useMemo(
@@ -49,7 +49,7 @@ const PaginationComponent = memo(function PaginationComponent({
   const handlePageChange = useCallback(
     (page: number) => {
       handleInputChange({
-        target: { name: 'page', value: page }
+        target: { name: "page", value: page },
       })
     },
     [handleInputChange]
@@ -81,7 +81,7 @@ const PaginationComponent = memo(function PaginationComponent({
     pageNumbers.length > 5 && currentPage < totalPages - 1
 
   return (
-    <div className="flex justify-center items-center my-4">
+    <div className="my-4 flex items-center justify-center">
       <Pagination>
         <PaginationContent>
           {showFirstPage && (
@@ -94,7 +94,7 @@ const PaginationComponent = memo(function PaginationComponent({
           {showPreviousPage && (
             <PaginationItem>
               <PaginationPrevious
-                href={'#'}
+                href={"#"}
                 size="default"
                 onClick={handlePreviousPage}
               />
@@ -106,8 +106,8 @@ const PaginationComponent = memo(function PaginationComponent({
               <PaginationLink
                 href="#"
                 size="default"
-                className={`mx-2 px-4 py-2 rounded-lg ${
-                  page === currentPage ? 'bg-primary text-white' : ''
+                className={`mx-2 rounded-lg px-4 py-2 ${
+                  page === currentPage ? "bg-primary text-white" : ""
                 }`}
                 onClick={() => handlePageChange(page)}
               >
@@ -119,7 +119,7 @@ const PaginationComponent = memo(function PaginationComponent({
           {showNextPage && (
             <PaginationItem>
               <PaginationNext
-                href={'#'}
+                href={"#"}
                 size="default"
                 onClick={handleNextPage}
               />

@@ -1,16 +1,16 @@
-'use client'
-import React, { useEffect, useState } from 'react'
+"use client"
+import React, { useEffect, useState } from "react"
 
-import { motion } from 'framer-motion'
-import { cn } from '@/lib/utils'
+import { motion } from "framer-motion"
+import { cn } from "@/lib/utils"
 
-type Direction = 'TOP' | 'LEFT' | 'BOTTOM' | 'RIGHT'
+type Direction = "TOP" | "LEFT" | "BOTTOM" | "RIGHT"
 
 export function HoverBorderGradient({
   children,
   containerClassName,
   className,
-  as: Tag = 'button',
+  as: Tag = "button",
   duration = 1,
   clockwise = true,
   ...props
@@ -24,10 +24,10 @@ export function HoverBorderGradient({
   } & React.HTMLAttributes<HTMLElement>
 >) {
   const [hovered, setHovered] = useState<boolean>(false)
-  const [direction, setDirection] = useState<Direction>('TOP')
+  const [direction, setDirection] = useState<Direction>("TOP")
 
   const rotateDirection = (currentDirection: Direction): Direction => {
-    const directions: Direction[] = ['TOP', 'LEFT', 'BOTTOM', 'RIGHT']
+    const directions: Direction[] = ["TOP", "LEFT", "BOTTOM", "RIGHT"]
     const currentIndex = directions.indexOf(currentDirection)
     const nextIndex = clockwise
       ? (currentIndex - 1 + directions.length) % directions.length
@@ -36,16 +36,16 @@ export function HoverBorderGradient({
   }
 
   const movingMap: Record<Direction, string> = {
-    TOP: 'radial-gradient(20.7% 50% at 50% 0%, hsl(155, 100%, 50%) 0%, rgba(255, 255, 255, 0) 100%)',
-    LEFT: 'radial-gradient(16.6% 43.1% at 0% 50%, hsl(155, 100%, 50%) 0%, rgba(255, 255, 255, 0) 100%)',
+    TOP: "radial-gradient(20.7% 50% at 50% 0%, hsl(155, 100%, 50%) 0%, rgba(255, 255, 255, 0) 100%)",
+    LEFT: "radial-gradient(16.6% 43.1% at 0% 50%, hsl(155, 100%, 50%) 0%, rgba(255, 255, 255, 0) 100%)",
     BOTTOM:
-      'radial-gradient(20.7% 50% at 50% 100%, hsl(155, 100%, 50%) 0%, rgba(255, 255, 255, 0) 100%)',
+      "radial-gradient(20.7% 50% at 50% 100%, hsl(155, 100%, 50%) 0%, rgba(255, 255, 255, 0) 100%)",
     RIGHT:
-      'radial-gradient(16.2% 41.199999999999996% at 100% 50%, hsl(155, 100%, 50%) 0%, rgba(255, 255, 255, 0) 100%)'
+      "radial-gradient(16.2% 41.199999999999996% at 100% 50%, hsl(155, 100%, 50%) 0%, rgba(255, 255, 255, 0) 100%)",
   }
 
   const highlight =
-    'radial-gradient(75% 181.15942028985506% at 50% 50%, hsl(155, 100%, 50%) 0%, rgba(255, 255, 255, 0) 100%)'
+    "radial-gradient(75% 181.15942028985506% at 50% 50%, hsl(155, 100%, 50%) 0%, rgba(255, 255, 255, 0) 100%)"
 
   useEffect(() => {
     if (!hovered) {
@@ -66,14 +66,14 @@ export function HoverBorderGradient({
       onMouseLeave={() => setHovered(false)}
       // @ts-expect-error: See later
       className={cn(
-        'relative flex rounded-full border border-muted content-center bg-black/20 hover:bg-black/10 transition duration-500 dark:bg-white/20 items-center flex-col flex-nowrap gap-10 h-min justify-center overflow-visible p-px box-decoration-clone w-fit cursor-pointer',
+        "border-muted relative flex h-min w-fit cursor-pointer flex-col flex-nowrap content-center items-center justify-center gap-10 overflow-visible rounded-full border bg-black/20 box-decoration-clone p-px transition duration-500 hover:bg-black/10 dark:bg-white/20",
         containerClassName
       )}
       {...props}
     >
       <div
         className={cn(
-          'w-auto text-white z-10 bg-black px-4 py-1 rounded-[inherit]',
+          "z-10 w-auto rounded-[inherit] bg-black px-4 py-1 text-white",
           className
         )}
       >
@@ -81,23 +81,23 @@ export function HoverBorderGradient({
       </div>
       <motion.div
         className={cn(
-          'flex-none inset-0 overflow-hidden absolute z-0 rounded-[inherit]'
+          "absolute inset-0 z-0 flex-none overflow-hidden rounded-[inherit]"
         )}
         style={{
-          filter: 'blur(2px)',
-          position: 'absolute',
-          width: '100%',
-          height: '100%'
+          filter: "blur(2px)",
+          position: "absolute",
+          width: "100%",
+          height: "100%",
         }}
         initial={{ background: movingMap[direction] }}
         animate={{
           background: hovered
             ? [movingMap[direction], highlight]
-            : movingMap[direction]
+            : movingMap[direction],
         }}
-        transition={{ ease: 'linear', duration: duration ?? 1 }}
+        transition={{ ease: "linear", duration: duration ?? 1 }}
       />
-      <div className="bg-black absolute z-1 flex-none inset-[2px] rounded-[100px]" />
+      <div className="z-1 absolute inset-[2px] flex-none rounded-[100px] bg-black" />
     </Tag>
   )
 }

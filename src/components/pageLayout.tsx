@@ -1,7 +1,8 @@
-import { ThemeToggle } from '@/components/ThemeToggle'
-import { Separator } from '@/components/ui/separator'
-import ChangeLanguage from '@/components/system/changeLanguage'
-import { memo, ReactNode } from 'react'
+import { ThemeToggle } from "@/components/ThemeToggle"
+import { Separator } from "@/components/ui/separator"
+import ChangeLanguage from "@/components/system/changeLanguage"
+import type { ReactNode } from "react"
+import { memo } from "react"
 
 interface PageLayoutProps {
   children: ReactNode
@@ -13,17 +14,17 @@ interface PageLayoutProps {
 // Memoized header component to prevent unnecessary re-renders
 const PageHeader = memo(function PageHeader({
   title,
-  middleComponent
+  middleComponent,
 }: {
   title?: string
   middleComponent?: ReactNode
 }) {
   return (
-    <div className={'relative z-50'}>
-      <div className="flex flex-row items-center px-4 py-1.5 justify-between align-middle">
-        <h3 className="text-xl font-bold">{title || 'Undefined'}</h3>
+    <div className={"relative z-50"}>
+      <div className="flex flex-row items-center justify-between px-4 py-1.5 align-middle">
+        <h3 className="text-xl font-bold">{title || "Undefined"}</h3>
         {middleComponent}
-        <div className={'align-middle gap-2 hidden md:flex'}>
+        <div className={"hidden gap-2 align-middle md:flex"}>
           <ChangeLanguage />
           <ThemeToggle />
         </div>
@@ -36,7 +37,7 @@ const PageHeader = memo(function PageHeader({
 // Memoized content wrapper to prevent unnecessary re-renders
 const PageContent = memo(function PageContent({
   children,
-  className
+  className,
 }: {
   children: ReactNode
   className?: string
@@ -48,7 +49,7 @@ const PageLayout = memo(function PageLayout({
   children,
   title,
   middleComponent = null,
-  className = ''
+  className = "",
 }: PageLayoutProps) {
   return (
     <>

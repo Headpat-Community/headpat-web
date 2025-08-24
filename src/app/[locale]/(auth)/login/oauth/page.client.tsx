@@ -1,5 +1,5 @@
-'use client'
-import { useEffect } from 'react'
+"use client"
+import { useEffect } from "react"
 
 /**
  * This is needed, because the website is faster than it's setting the cookie...
@@ -8,16 +8,16 @@ import { useEffect } from 'react'
 export default function LoadingPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
-      window.location.href = '/account'
+      window.location.href = "/account"
     }, 1000)
 
     return () => clearTimeout(timer)
   }, [])
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex h-screen flex-col items-center justify-center">
       <h1 className="text-2xl font-bold">Please wait...</h1>
-      <p className="text-base text-muted-foreground">
+      <p className="text-muted-foreground text-base">
         Cookies are not fast enough!
       </p>
     </div>

@@ -1,29 +1,29 @@
-'use client'
+"use client"
 import React, {
   createContext,
   useCallback,
   useContext,
   useState,
   useMemo,
-  useRef
-} from 'react'
+  useRef,
+} from "react"
 import {
   deleteFromDb,
   getAllFromDb,
   getFromDb,
   openDb,
-  saveToDb
-} from '@/lib/indexeddb-utils'
+  saveToDb,
+} from "@/lib/indexeddb-utils"
 
-const DB_NAME = 'HeadpatCache'
+const DB_NAME = "HeadpatCache"
 const DB_VERSION = 4 // Increment this when changing the schema
 const CACHE_EXPIRATION_TIME = 24 * 60 * 60 * 1000 // 24 hours
 
 const STORE_NAMES = [
-  'users',
-  'communities',
-  'notifications',
-  'messages'
+  "users",
+  "communities",
+  "notifications",
+  "messages",
 ] as const
 
 type DataCacheContextType = {
@@ -46,7 +46,7 @@ const DataCacheContext = createContext<DataCacheContextType | undefined>(
 )
 
 export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
-  children
+  children,
 }) => {
   const [db, setDb] = React.useState<IDBDatabase | null>(null)
   const [cacheData, setCacheData] = useState<Record<string, any>>({})
@@ -75,7 +75,7 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
         )
         return storeData.map((item) => ({
           key: `${storeName}-${item.id}`,
-          item
+          item,
         }))
       })
 
@@ -89,7 +89,7 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
       setCacheData(allCacheData)
       setLoading(false)
     } catch (error) {
-      console.error('Failed to initialize database:', error)
+      console.error("Failed to initialize database:", error)
       setLoading(false)
     }
   }, [storeNamesArray])
@@ -112,7 +112,7 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     if (attempts >= maxAttempts) {
-      console.warn('Database initialization timeout')
+      console.warn("Database initialization timeout")
     }
   }, [loading])
 
@@ -148,7 +148,7 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
         const cacheKey = getCacheKey(storeName, key)
         setCacheData((prev) => ({
           ...prev,
-          [cacheKey]: cachedData
+          [cacheKey]: cachedData,
         }))
         return cachedData
       }
@@ -171,9 +171,9 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
 
       // Create cache items efficiently
       const cacheItems = data.map((item) => ({
-        id: (item as any)['$id'],
+        id: (item as any)["$id"],
         data: item,
-        timestamp: currentTime
+        timestamp: currentTime,
       }))
 
       // Save to database in parallel for better performance
@@ -214,7 +214,7 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
       const cacheKey = getCacheKey(storeName, key)
       setCacheData((prev) => ({
         ...prev,
-        [cacheKey]: cacheItem
+        [cacheKey]: cacheItem,
       }))
     },
     [db, waitForDb, getCacheKey]
@@ -253,7 +253,7 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
       removeCache,
       getCacheSync,
       getAllCache,
-      saveAllCache
+      saveAllCache,
     }),
     [getCache, saveCache, removeCache, getCacheSync, getAllCache, saveAllCache]
   )
@@ -268,7 +268,7 @@ export const DataCacheProvider: React.FC<{ children: React.ReactNode }> = ({
 export const useDataCache = () => {
   const context = useContext(DataCacheContext)
   if (!context) {
-    throw new Error('useDataCache must be used within a DataCacheProvider')
+    throw new Error("useDataCache must be used within a DataCacheProvider")
   }
   return context
 }

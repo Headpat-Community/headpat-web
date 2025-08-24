@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import {
   Client,
   Account,
@@ -8,8 +8,8 @@ import {
   Functions,
   Messaging,
   Locale,
-  Avatars
-} from 'appwrite'
+  Avatars,
+} from "appwrite"
 
 export const client = new Client()
   .setEndpoint(`${process.env.NEXT_PUBLIC_API_URL}/v1`)
@@ -24,4 +24,4 @@ export const messaging: Messaging = new Messaging(client)
 export const locale: Locale = new Locale(client)
 export const avatars: Avatars = new Avatars(client)
 
-export { ExecutionMethod, ID, Query } from 'appwrite'
+export { ExecutionMethod, ID, Query } from "appwrite"

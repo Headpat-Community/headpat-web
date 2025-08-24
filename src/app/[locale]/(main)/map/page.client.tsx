@@ -1,32 +1,32 @@
-'use client'
-import React, { useCallback, useEffect, useState } from 'react'
-import { AdvancedMarker, APIProvider, Map } from '@vis.gl/react-google-maps'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+"use client"
+import React, { useCallback, useEffect, useState } from "react"
+import { AdvancedMarker, APIProvider, Map } from "@vis.gl/react-google-maps"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogTitle
-} from '@/components/ui/dialog'
-import { formatDateLocale } from '@/components/calculateTimeLeft'
-import { listDocuments } from '@/components/api/documents'
-import { toast } from 'sonner'
-import { client, databases, Query } from '@/app/appwrite-client'
-import { Polygon } from '@/components/map/polygon'
-import { Circle } from '@/components/map/circle'
-import sanitizeHtml from 'sanitize-html'
-import { useUser } from '@/components/contexts/UserContext'
-import FiltersModal from '@/components/map/FiltersModal'
-import { Button } from '@/components/ui/button'
-import { FilterIcon, SettingsIcon } from 'lucide-react'
-import SettingsModal from '@/components/map/SettingsModal'
-import {
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { formatDateLocale } from "@/components/calculateTimeLeft"
+import { listDocuments } from "@/components/api/documents"
+import { toast } from "sonner"
+import { client, databases, Query } from "@/app/appwrite-client"
+import { Polygon } from "@/components/map/polygon"
+import { Circle } from "@/components/map/circle"
+import sanitizeHtml from "sanitize-html"
+import { useUser } from "@/components/contexts/UserContext"
+import FiltersModal from "@/components/map/FiltersModal"
+import { Button } from "@/components/ui/button"
+import { FilterIcon, SettingsIcon } from "lucide-react"
+import SettingsModal from "@/components/map/SettingsModal"
+import type {
   EventsDocumentsType,
   EventsType,
   LocationDocumentsType,
   LocationType,
-  UserDataDocumentsType
-} from '@/utils/types/models'
+  UserDataDocumentsType,
+} from "@/utils/types/models"
 
 type User = {
   lat: number
@@ -40,7 +40,7 @@ export default function PageClient() {
   const [events, setEvents] = useState<EventsType>(null)
   const [filters, setFilters] = useState({
     showEvents: true,
-    showUsers: true
+    showUsers: true,
   })
   const [friendsLocations, setFriendsLocations] = useState(null)
   const [filtersOpen, setFiltersOpen] = useState<boolean>(false)
@@ -50,15 +50,15 @@ export default function PageClient() {
   const { current } = useUser()
 
   const [currentUser, setCurrentUser] = useState({
-    title: 'Nothing selected..',
-    status: '',
-    description: 'Please select a user on the map.'
+    title: "Nothing selected..",
+    status: "",
+    description: "Please select a user on the map.",
   })
   const [currentEvent, setCurrentEvent] = useState({
-    title: 'Nothing selected..',
-    description: 'Please select an event on the map.',
-    date: '',
-    dateUntil: ''
+    title: "Nothing selected..",
+    description: "Please select an event on the map.",
+    date: "",
+    dateUntil: "",
   })
   const [modalUserOpen, setModalUserOpen] = useState<boolean>(false)
   const [modalEventOpen, setModalEventOpen] = useState<boolean>(false)
@@ -67,18 +67,18 @@ export default function PageClient() {
     try {
       const currentDate = new Date()
 
-      const data: EventsType = await listDocuments('hp_db', 'events', [
-        Query.orderAsc('date'),
-        Query.greaterThanEqual('dateUntil', currentDate.toISOString()),
+      const data: EventsType = await listDocuments("hp_db", "events", [
+        Query.orderAsc("date"),
+        Query.greaterThanEqual("dateUntil", currentDate.toISOString()),
         Query.or([
-          Query.equal('locationZoneMethod', 'circle'),
-          Query.equal('locationZoneMethod', 'polygon')
-        ])
+          Query.equal("locationZoneMethod", "circle"),
+          Query.equal("locationZoneMethod", "polygon"),
+        ]),
       ])
 
       setEvents(data)
     } catch {
-      toast('Failed to fetch events. Please try again later.')
+      toast("Failed to fetch events. Please try again later.")
     }
   }, [])
 
@@ -92,8 +92,8 @@ export default function PageClient() {
        */
 
       const data: LocationType = await databases.listDocuments(
-        'hp_db',
-        'locations',
+        "hp_db",
+        "locations",
         query
       )
 
@@ -102,8 +102,8 @@ export default function PageClient() {
           setUserStatus(doc)
         }
         const userData: UserDataDocumentsType = await databases.getDocument(
-          'hp_db',
-          'userdata',
+          "hp_db",
+          "userdata",
           doc.$id
         )
         return { ...doc, userData }
@@ -112,7 +112,7 @@ export default function PageClient() {
       const results = await Promise.all(promises)
       setFriendsLocations(results)
     } catch {
-      toast('Failed to fetch locations. Please try again later.')
+      toast("Failed to fetch locations. Please try again later.")
     }
   }, [current])
 
@@ -123,13 +123,13 @@ export default function PageClient() {
 
   const handleSubscribedEvents = useCallback(() => {
     return client.subscribe(
-      ['databases.hp_db.collections.locations.documents'],
+      ["databases.hp_db.collections.locations.documents"],
       async (response) => {
-        const eventType = response.events[0].split('.').pop()
+        const eventType = response.events[0].split(".").pop()
         const updatedDocument: any = response.payload
 
         switch (eventType) {
-          case 'update':
+          case "update":
             if (current && updatedDocument.$id === current.$id) {
               setUserStatus(updatedDocument)
             }
@@ -144,7 +144,7 @@ export default function PageClient() {
                     ? {
                         ...location,
                         ...updatedDocument,
-                        userData: location.userData
+                        userData: location.userData,
                       }
                     : location
                 )
@@ -153,7 +153,7 @@ export default function PageClient() {
               }
             })
             break
-          case 'delete':
+          case "delete":
             if (current && updatedDocument.$id === current.$id) {
               setUserStatus(null)
             }
@@ -163,14 +163,14 @@ export default function PageClient() {
               )
             })
             break
-          case 'create':
+          case "create":
             if (current && updatedDocument.$id === current.$id) {
               setUserStatus(updatedDocument)
             }
 
             const userData: UserDataDocumentsType = await databases.getDocument(
-              'hp_db',
-              'userdata',
+              "hp_db",
+              "userdata",
               `${updatedDocument.$id}`
             )
             const updatedLocationWithUserData = { ...updatedDocument, userData }
@@ -191,7 +191,7 @@ export default function PageClient() {
             })
             break
           default:
-            console.error('Unknown event type:', eventType)
+            console.error("Unknown event type:", eventType)
         }
       }
     )
@@ -214,7 +214,7 @@ export default function PageClient() {
     setCurrentUser({
       title: user.userData?.displayName,
       status: user.status,
-      description: user.userData?.bio
+      description: user.userData?.bio,
     })
     setModalUserOpen(true)
   }
@@ -224,7 +224,7 @@ export default function PageClient() {
       title: event.title,
       description: event.description,
       date: event.date,
-      dateUntil: event.dateUntil
+      dateUntil: event.dateUntil,
     })
     setModalEventOpen(true)
   }
@@ -234,7 +234,7 @@ export default function PageClient() {
       title: event.title,
       description: event.description,
       date: event.date,
-      dateUntil: event.dateUntil
+      dateUntil: event.dateUntil,
     })
     setModalEventOpen(true)
   }
@@ -242,7 +242,7 @@ export default function PageClient() {
   const sanitizedDescription = sanitizeHtml(currentEvent?.description)
 
   return (
-    <div className={'h-[90vh] w-full'}>
+    <div className={"h-[90vh] w-full"}>
       <Dialog
         open={modalUserOpen}
         onOpenChange={(open) => setModalUserOpen(open)}
@@ -262,7 +262,7 @@ export default function PageClient() {
           <DialogTitle>{currentEvent?.title}</DialogTitle>
           <DialogDescription
             dangerouslySetInnerHTML={{
-              __html: sanitizedDescription || 'Nothing here yet!'
+              __html: sanitizedDescription || "Nothing here yet!",
             }}
           />
           <div>Start: {formatDateLocale(new Date(currentEvent?.date))}</div>
@@ -293,10 +293,10 @@ export default function PageClient() {
 
       <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}>
         <Map
-          mapId={'bf51a910020fa25a'}
+          mapId={"bf51a910020fa25a"}
           defaultZoom={3}
           defaultCenter={{ lat: 12, lng: 0 }}
-          gestureHandling={'greedy'}
+          gestureHandling={"greedy"}
           disableDefaultUI
         >
           {filters.showUsers &&
@@ -311,7 +311,7 @@ export default function PageClient() {
                     <Avatar
                       style={{
                         borderWidth: 2,
-                        borderColor: user?.statusColor
+                        borderColor: user?.statusColor,
                       }}
                     >
                       <AvatarImage
@@ -320,7 +320,7 @@ export default function PageClient() {
                       <AvatarFallback>
                         {user?.userData?.displayName
                           ? user?.userData?.displayName.charAt(0)
-                          : 'U'}
+                          : "U"}
                       </AvatarFallback>
                     </Avatar>
                   </AdvancedMarker>
@@ -329,9 +329,9 @@ export default function PageClient() {
             })}
           {filters.showEvents &&
             events?.documents.map((event, index) => {
-              if (event?.locationZoneMethod === 'polygon') {
+              if (event?.locationZoneMethod === "polygon") {
                 const coords = event?.coordinates.map((coord) => {
-                  const [lat, lng] = coord.split(',').map(Number)
+                  const [lat, lng] = coord.split(",").map(Number)
                   return { lat, lng }
                 })
                 return (
@@ -343,17 +343,17 @@ export default function PageClient() {
                     onClick={() => polygonClick(event)}
                   />
                 )
-              } else if (event?.locationZoneMethod === 'circle') {
+              } else if (event?.locationZoneMethod === "circle") {
                 // Assuming the first coordinate is the center of the circle
                 const [centerLatitude, centerLongitude] = event?.coordinates[0]
-                  .split(',')
+                  .split(",")
                   .map(Number)
                 return (
                   <Circle
                     key={index}
                     center={{
                       lat: centerLatitude,
-                      lng: centerLongitude
+                      lng: centerLongitude,
                     }}
                     radius={event?.circleRadius} // specify the radius here
                     fillColor="rgba(100, 200, 200, 0.5)" // optional, fill color of the circle
@@ -367,35 +367,35 @@ export default function PageClient() {
       </APIProvider>
       <div
         className={
-          'absolute top-[110px] sm:top-20 right-4 sm:right-8 rounded-full overflow-hidden'
+          "absolute right-4 top-[110px] overflow-hidden rounded-full sm:right-8 sm:top-20"
         }
       >
         <Button
           className={
-            'justify-center items-center bg-white h-14 w-14 rounded-full shadow-sm'
+            "h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm"
           }
           onClick={() => setFiltersOpen(true)}
         >
-          <FilterIcon size={24} color={'black'} />
+          <FilterIcon size={24} color={"black"} />
         </Button>
       </div>
       {userStatus && (
         <div
           style={{
-            position: 'absolute',
+            position: "absolute",
             top: 160,
             right: 30,
             borderRadius: 50,
-            overflow: 'hidden'
+            overflow: "hidden",
           }}
         >
           <Button
             className={
-              'justify-center items-center bg-white h-14 w-14 rounded-full shadow-sm'
+              "h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm"
             }
             onClick={() => setSettingsOpen(true)}
           >
-            <SettingsIcon size={24} color={'black'} />
+            <SettingsIcon size={24} color={"black"} />
           </Button>
         </div>
       )}

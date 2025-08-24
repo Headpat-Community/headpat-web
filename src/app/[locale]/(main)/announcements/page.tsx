@@ -1,45 +1,45 @@
-import { ChevronRight, MegaphoneIcon } from 'lucide-react'
-import { createAdminClient } from '@/app/appwrite-session'
-import Link from 'next/link'
-import { getTranslations } from 'gt-next/server'
-import { AnnouncementDataType } from '@/utils/types/models'
-import * as Sentry from '@sentry/nextjs'
+import { ChevronRight, MegaphoneIcon } from "lucide-react"
+import { createAdminClient } from "@/app/appwrite-session"
+import Link from "next/link"
+import { getTranslations } from "gt-next/server"
+import type { AnnouncementDataType } from "@/utils/types/models"
+import * as Sentry from "@sentry/nextjs"
 
 export async function generateMetadata(props) {
   const params = await props.params
 
   const { locale } = params
 
-  const meta = await getTranslations('AnnouncementsMetadata')
+  const meta = await getTranslations("AnnouncementsMetadata")
 
   return {
-    title: meta('title'),
-    description: meta('description'),
+    title: meta("title"),
+    description: meta("description"),
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/announcements`,
       languages: {
         en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/announcements`,
         de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/announcements`,
-        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/announcements`
-      }
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/announcements`,
+      },
     },
     openGraph: {
-      title: meta('title'),
-      description: meta('description'),
+      title: meta("title"),
+      description: meta("description"),
       siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
       locale: locale,
-      type: 'website'
+      type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN)
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
   }
 }
 
 export default async function AnnouncementsPage() {
   const { databases } = await createAdminClient()
-  let announcementData: AnnouncementDataType['documents'] = []
+  let announcementData: AnnouncementDataType["documents"] = []
   try {
     const announcementDataResponse: AnnouncementDataType =
-      await databases.listDocuments('hp_db', 'announcements')
+      await databases.listDocuments("hp_db", "announcements")
     announcementData = announcementDataResponse.documents
   } catch (error) {
     Sentry.captureException(error)
@@ -48,17 +48,17 @@ export default async function AnnouncementsPage() {
   return (
     <ul
       role="list"
-      className="mx-8 lg:mx-auto mb-4 mt-8 max-w-4xl divide-y divide-gray-100 overflow-hidden shadow-xs ring-1 ring-black/95 dark:ring-white/95 sm:rounded-xl"
+      className="shadow-xs mx-8 mb-4 mt-8 max-w-4xl divide-y divide-gray-100 overflow-hidden ring-1 ring-black/95 sm:rounded-xl lg:mx-auto dark:ring-white/95"
     >
       {announcementData &&
         announcementData.map((announcement) => {
           return (
             <li
               key={announcement.$id}
-              className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50/90 dark:hover:bg-gray-50/10 sm:px-6"
+              className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50/90 sm:px-6 dark:hover:bg-gray-50/10"
             >
               <div className="flex min-w-0 gap-x-4">
-                <MegaphoneIcon className={'h-12'} />
+                <MegaphoneIcon className={"h-12"} />
                 <div className="min-w-0 flex-auto">
                   <p className="text-sm font-semibold leading-6">
                     <Link href={`/announcements/${announcement.$id}`}>
@@ -76,7 +76,7 @@ export default async function AnnouncementsPage() {
                   {announcement.validUntil ? (
                     <>
                       <p className="mt-1 text-xs leading-5 text-black/80 dark:text-white/80">
-                        Valid until{' '}
+                        Valid until{" "}
                         <time
                           dateTime={new Date(
                             announcement.validUntil

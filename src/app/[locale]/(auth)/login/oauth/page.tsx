@@ -1,9 +1,9 @@
-import OAuthLogin from './page.client'
+import OAuthLogin from "./page.client"
 
 export const metadata = {
-  title: 'Login',
-  description: 'Login or Register to your account.',
-  keywords: 'login, account, sign in, register'
+  title: "Login",
+  description: "Login or Register to your account.",
+  keywords: "login, account, sign in, register",
 }
 
 export default async function Page() {

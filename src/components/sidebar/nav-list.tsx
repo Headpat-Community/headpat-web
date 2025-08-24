@@ -1,18 +1,18 @@
-'use client'
+"use client"
 
-import { type LucideIcon } from 'lucide-react'
+import type { LucideIcon } from "lucide-react"
 
 import {
   SidebarGroup,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar
-} from '@/components/ui/sidebar'
-import Link from 'next/link'
+  useSidebar,
+} from "@/components/ui/sidebar"
+import Link from "next/link"
 
 export function NavList({
-  projects
+  projects,
 }: {
   projects: {
     name: string

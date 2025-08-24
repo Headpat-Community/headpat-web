@@ -1,13 +1,13 @@
-import { getCommunity } from '@/utils/server-api/communities/getCommunity'
-import { notFound } from 'next/navigation'
+import { getCommunity } from "@/utils/server-api/communities/getCommunity"
+import { notFound } from "next/navigation"
 import {
   getCommunityAvatarUrlView,
-  getEventImageUrlView
-} from '@/components/getStorageItem'
-import { getEvent } from '@/utils/server-api/events/getEvent'
-import { getUser } from '@/utils/server-api/account/user'
-import PageClient from './page.client'
-import { Metadata } from 'next'
+  getEventImageUrlView,
+} from "@/components/getStorageItem"
+import { getEvent } from "@/utils/server-api/events/getEvent"
+import { getUser } from "@/utils/server-api/account/user"
+import PageClient from "./page.client"
+import type { Metadata } from "next"
 
 export async function generateMetadata(props: {
   params: Promise<{ communityId: string; eventId: string }>
@@ -29,7 +29,7 @@ export async function generateMetadata(props: {
     imageUrl = event?.images[0].match(
       /^(https?:\/\/|[a-zA-Z0-9-]+\.[a-zA-Z]{2,})/
     )
-      ? event?.images[0].startsWith('http')
+      ? event?.images[0].startsWith("http")
         ? event?.images[0]
         : `https://${event?.images[0]}`
       : getEventImageUrlView(event?.images[0])
@@ -38,22 +38,22 @@ export async function generateMetadata(props: {
   const avatarUrl = getCommunityAvatarUrlView(community?.avatarId)
 
   return {
-    title: event?.title || 'Event',
+    title: event?.title || "Event",
     description: event?.description,
     icons: {
-      icon: imageUrl || avatarUrl
+      icon: imageUrl || avatarUrl,
     },
     openGraph: {
-      title: event?.title || 'Event',
+      title: event?.title || "Event",
       description: event?.description,
-      images: imageUrl || avatarUrl
+      images: imageUrl || avatarUrl,
     },
     twitter: {
-      card: 'summary_large_image',
-      title: event?.title || 'Event',
+      card: "summary_large_image",
+      title: event?.title || "Event",
       description: event?.description,
-      images: imageUrl || avatarUrl
-    }
+      images: imageUrl || avatarUrl,
+    },
   }
 }
 

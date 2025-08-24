@@ -1,12 +1,12 @@
-'use client'
-import React from 'react'
-import { cn } from '@/lib/utils'
-import { ClipboardIcon } from 'lucide-react'
+"use client"
+import React from "react"
+import { cn } from "@/lib/utils"
+import { ClipboardIcon } from "lucide-react"
 
 export const ButtonsCard = ({
   children,
   className,
-  onClick
+  onClick,
 }: {
   children?: React.ReactNode
   className?: string
@@ -16,12 +16,12 @@ export const ButtonsCard = ({
     <div
       onClick={onClick}
       className={cn(
-        'h-60 w-full bg-white rounded-xl border border-neutral-100 dark:bg-black dark:border-white/[0.2] hover:border-neutral-200 group/btn overflow-hidden relative flex items-center justify-center',
+        "group/btn relative flex h-60 w-full items-center justify-center overflow-hidden rounded-xl border border-neutral-100 bg-white hover:border-neutral-200 dark:border-white/[0.2] dark:bg-black",
         className
       )}
     >
-      <div className="absolute inset-0 dark:bg-dot-white/[0.1] bg-dot-black/[0.1]" />
-      <ClipboardIcon className="absolute top-2 right-2 text-neutral-300 group-hover/btn:block hidden size-4 transition duration-200" />
+      <div className="dark:bg-dot-white/[0.1] bg-dot-black/[0.1] absolute inset-0" />
+      <ClipboardIcon className="absolute right-2 top-2 hidden size-4 text-neutral-300 transition duration-200 group-hover/btn:block" />
       <div className="relative z-40">{children}</div>
     </div>
   )

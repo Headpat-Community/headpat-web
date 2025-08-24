@@ -1,21 +1,21 @@
-'use client'
-import { Card } from '@/components/ui/card'
-import Image from 'next/image'
-import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
-import { databases, Query } from '@/app/appwrite-client'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
-import UserCard from '@/components/user/userCard'
-import { UserDataDocumentsType, UserDataType } from '@/utils/types/models'
-import { useTranslations } from 'gt-next/client'
-import { useState, useEffect, useCallback, useMemo } from 'react'
-import { Button } from '@/components/ui/button'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+"use client"
+import { Card } from "@/components/ui/card"
+import Image from "next/image"
+import { getAvatarImageUrlPreview } from "@/components/getStorageItem"
+import { databases, Query } from "@/app/appwrite-client"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
+import UserCard from "@/components/user/userCard"
+import type { UserDataDocumentsType, UserDataType } from "@/utils/types/models"
+import { useTranslations } from "gt-next/client"
+import { useState, useEffect, useCallback, useMemo } from "react"
+import { Button } from "@/components/ui/button"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 const USERS_PER_PAGE = 56 // Reduced from 250 to improve performance
 
 export default function ClientPage() {
-  const t = useTranslations('UsersPage')
+  const t = useTranslations("UsersPage")
   const queryClient = useQueryClient()
   const [currentPage, setCurrentPage] = useState(0)
   const [totalUsers, setTotalUsers] = useState(0)
@@ -24,25 +24,25 @@ export default function ClientPage() {
   useEffect(() => {
     return () => {
       // Clean up queries when component unmounts
-      queryClient.removeQueries({ queryKey: ['users'] })
+      queryClient.removeQueries({ queryKey: ["users"] })
     }
   }, [queryClient])
 
   const {
     data: users,
     isLoading,
-    isError
+    isError,
   } = useQuery<UserDataDocumentsType[]>({
-    queryKey: ['users', currentPage],
+    queryKey: ["users", currentPage],
     queryFn: async () => {
       try {
         const response: UserDataType = await databases.listDocuments(
-          'hp_db',
-          'userdata',
+          "hp_db",
+          "userdata",
           [
-            Query.orderDesc('$createdAt'),
+            Query.orderDesc("$createdAt"),
             Query.limit(USERS_PER_PAGE),
-            Query.offset(currentPage * USERS_PER_PAGE)
+            Query.offset(currentPage * USERS_PER_PAGE),
           ]
         )
 
@@ -53,8 +53,8 @@ export default function ClientPage() {
 
         return response.documents
       } catch (error) {
-        console.error('Error fetching users:', error)
-        toast.error('Failed to fetch users. Please try again later.')
+        console.error("Error fetching users:", error)
+        toast.error("Failed to fetch users. Please try again later.")
         return []
       }
     },
@@ -64,7 +64,7 @@ export default function ClientPage() {
     refetchOnReconnect: false, // Prevent refetch on reconnect
     gcTime: 600 * 1000, // 10 minutes garbage collection time
     retry: 2, // Limit retry attempts
-    retryDelay: 1000 // 1 second delay between retries
+    retryDelay: 1000, // 1 second delay between retries
   })
 
   // Memoize pagination calculations
@@ -77,7 +77,7 @@ export default function ClientPage() {
       totalPages,
       hasNextPage,
       hasPrevPage,
-      currentPage: currentPage + 1
+      currentPage: currentPage + 1,
     }
   }, [currentPage, totalUsers])
 
@@ -97,30 +97,30 @@ export default function ClientPage() {
     return (
       <div
         className={
-          'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 5xl:grid-cols-10 gap-4 xl:gap-6 p-4 mx-auto'
+          "5xl:grid-cols-10 mx-auto grid grid-cols-2 gap-4 p-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 xl:gap-6 2xl:grid-cols-8"
         }
       >
         {users.map((user) => (
-          <Card className={'border-none h-40 w-40 mx-auto'} key={user.$id}>
+          <Card className={"mx-auto h-40 w-40 border-none"} key={user.$id}>
             <UserCard user={user} isChild>
-              <div className={'h-full w-full'}>
+              <div className={"h-full w-full"}>
                 {user.avatarId ? (
                   <Image
                     src={
                       getAvatarImageUrlPreview(
                         user.avatarId,
-                        'width=250&height=250'
+                        "width=250&height=250"
                       ) || null
                     }
                     alt={user.displayName}
-                    className="object-cover rounded-md"
+                    className="rounded-md object-cover"
                     width={250}
                     height={250}
                     loading="lazy" // Add lazy loading for better performance
                   />
                 ) : (
-                  <div className="h-full w-full bg-gray-200 rounded-md flex items-center justify-center text-wrap truncate">
-                    <p className="px-2 text-gray-400 text-center truncate">
+                  <div className="flex h-full w-full items-center justify-center truncate text-wrap rounded-md bg-gray-200">
+                    <p className="truncate px-2 text-center text-gray-400">
                       {user.displayName}
                     </p>
                   </div>
@@ -135,9 +135,9 @@ export default function ClientPage() {
 
   if (isLoading) {
     return (
-      <div className={'flex flex-1 justify-center items-center h-full'}>
-        <div className={'p-4 gap-6 text-center'}>
-          <h1 className={'text-2xl font-semibold'}>{t('loading')}</h1>
+      <div className={"flex h-full flex-1 items-center justify-center"}>
+        <div className={"gap-6 p-4 text-center"}>
+          <h1 className={"text-2xl font-semibold"}>{t("loading")}</h1>
         </div>
       </div>
     )
@@ -145,10 +145,10 @@ export default function ClientPage() {
 
   if (isError || !users || users.length === 0) {
     return (
-      <div className={'flex flex-1 justify-center items-center h-full'}>
-        <div className={'p-4 gap-6 text-center'}>
-          <h1 className={'text-2xl font-semibold'}>{t('noUsers')}</h1>
-          <p className={'text-muted-foreground'}>{t('noUsersDescription')}</p>
+      <div className={"flex h-full flex-1 items-center justify-center"}>
+        <div className={"gap-6 p-4 text-center"}>
+          <h1 className={"text-2xl font-semibold"}>{t("noUsers")}</h1>
+          <p className={"text-muted-foreground"}>{t("noUsersDescription")}</p>
         </div>
       </div>
     )
@@ -161,18 +161,18 @@ export default function ClientPage() {
 
       {/* Pagination */}
       {paginationInfo.totalPages > 1 && (
-        <div className="flex justify-center items-center space-x-4 pb-6">
+        <div className="flex items-center justify-center space-x-4 pb-6">
           <Button
             onClick={handlePrevPage}
             disabled={!paginationInfo.hasPrevPage}
             variant="outline"
             size="sm"
           >
-            <ChevronLeft className="h-4 w-4 mr-2" />
+            <ChevronLeft className="mr-2 h-4 w-4" />
             Previous
           </Button>
 
-          <span className="text-sm text-muted-foreground">
+          <span className="text-muted-foreground text-sm">
             Page {paginationInfo.currentPage} of {paginationInfo.totalPages}
           </span>
 
@@ -183,7 +183,7 @@ export default function ClientPage() {
             size="sm"
           >
             Next
-            <ChevronRight className="h-4 w-4 ml-2" />
+            <ChevronRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
       )}

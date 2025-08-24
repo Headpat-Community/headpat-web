@@ -1,20 +1,20 @@
-import React from 'react'
+import React from "react"
 import {
   FormControl,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form'
-import { CalendarIcon, Info } from 'lucide-react'
+  FormMessage,
+} from "@/components/ui/form"
+import { CalendarIcon, Info } from "lucide-react"
 import {
   HoverCard,
   HoverCardContent,
-  HoverCardTrigger
-} from '@/components/ui/hover-card'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { Button } from '../ui/button'
-import { Calendar } from '../ui/calendar'
-import { format } from 'date-fns'
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import { Button } from "../ui/button"
+import { Calendar } from "../ui/calendar"
+import { format } from "date-fns"
 
 interface DatetimeFieldProps {
   label: string
@@ -22,8 +22,8 @@ interface DatetimeFieldProps {
   field: any
   fromYear?: Date
   toYear?: Date
-  captionLayout?: 'dropdown' | 'label' | 'dropdown-months' | 'dropdown-years'
-  mode?: 'default' | 'multiple' | 'range' | 'single'
+  captionLayout?: "dropdown" | "label" | "dropdown-months" | "dropdown-years"
+  mode?: "default" | "multiple" | "range" | "single"
 }
 
 const DatetimeField: React.FC<DatetimeFieldProps> = ({
@@ -33,7 +33,7 @@ const DatetimeField: React.FC<DatetimeFieldProps> = ({
   fromYear,
   toYear,
   captionLayout,
-  mode = 'single'
+  mode = "single",
 }) => {
   return (
     <FormItem>
@@ -53,11 +53,11 @@ const DatetimeField: React.FC<DatetimeFieldProps> = ({
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="min-w-[100px] w-full justify-start text-left font-normal"
+              className="w-full min-w-[100px] justify-start text-left font-normal"
             >
               <CalendarIcon className="mr-2 size-4" />
               {field.value ? (
-                format(new Date(field.value), 'PPP')
+                format(new Date(field.value), "PPP")
               ) : (
                 <span>Pick a date</span>
               )}

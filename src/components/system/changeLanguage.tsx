@@ -1,30 +1,30 @@
-'use client'
+"use client"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
-} from '../ui/dropdown-menu'
-import { Button } from '../ui/button'
-import * as React from 'react'
-import { GlobeIcon } from 'lucide-react'
-import { usePathname, useRouter } from 'next/navigation'
-import { useMemo, useCallback, memo } from 'react'
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu"
+import { Button } from "../ui/button"
+import * as React from "react"
+import { GlobeIcon } from "lucide-react"
+import { usePathname, useRouter } from "next/navigation"
+import { useMemo, useCallback, memo } from "react"
 
 // Memoized language data to prevent recreation on every render
 const LANGUAGES = [
   {
-    name: 'en',
-    fullName: 'English'
+    name: "en",
+    fullName: "English",
   },
   {
-    name: 'de',
-    fullName: 'Deutsch'
+    name: "de",
+    fullName: "Deutsch",
   },
   {
-    name: 'nl',
-    fullName: 'Nederlands'
-  }
+    name: "nl",
+    fullName: "Nederlands",
+  },
 ] as const
 
 // Memoized known language codes to prevent recalculation
@@ -38,7 +38,7 @@ const ChangeLanguage = memo(function ChangeLanguage() {
   const pathname = usePathname()
 
   // Memoize path parts to prevent unnecessary string splitting
-  const pathParts = useMemo(() => pathname.split('/'), [pathname])
+  const pathParts = useMemo(() => pathname.split("/"), [pathname])
 
   // Memoize language detection to prevent recalculation
   const currentLanguage = useMemo(() => {
@@ -63,7 +63,7 @@ const ChangeLanguage = memo(function ChangeLanguage() {
       }
 
       // Join the parts back into a new URL
-      const newUrl = newPathParts.join('/')
+      const newUrl = newPathParts.join("/")
 
       // Update the browser's URL and refresh the page
       router.push(newUrl)
@@ -89,7 +89,7 @@ const ChangeLanguage = memo(function ChangeLanguage() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className={'ml-2'}>
+        <Button variant="ghost" size="icon" className={"ml-2"}>
           <GlobeIcon className="size-4" aria-description="Change language" />
           <span className="sr-only">Change language</span>
         </Button>

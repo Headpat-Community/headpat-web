@@ -1,6 +1,6 @@
 export const getAvatarImageUrlView = (
   galleryId: string,
-  defaultImage: string = '/logos/hp_logo_x512.webp'
+  defaultImage: string = "/logos/hp_logo_x512.webp"
 ) => {
   if (!galleryId) {
     return defaultImage
@@ -47,7 +47,7 @@ export const getGalleryImageUrlPreview = (
 
 export const getCommunityAvatarUrlView = (
   galleryId: string,
-  defaultImage: string = '/logos/hp_logo_x512.webp'
+  defaultImage: string = "/logos/hp_logo_x512.webp"
 ) => {
   if (!galleryId) {
     return defaultImage
@@ -58,7 +58,7 @@ export const getCommunityAvatarUrlView = (
 export const getCommunityAvatarUrlPreview = (
   galleryId: string,
   attributes: string,
-  defaultImage: string = '/logos/hp_logo_x512.webp'
+  defaultImage: string = "/logos/hp_logo_x512.webp"
 ) => {
   if (!galleryId) {
     return defaultImage
@@ -74,7 +74,7 @@ export const getCommunityBannerUrlView = (galleryId: string) => {
 export const getCommunityBannerUrlPreview = (
   galleryId: string,
   attributes: string,
-  defaultImage: string = '/logos/hp_logo_x512.webp'
+  defaultImage: string = "/logos/hp_logo_x512.webp"
 ) => {
   if (!galleryId) return defaultImage
   return `${process.env.NEXT_PUBLIC_API_URL}/v1/storage/buckets/community-banners/files/${galleryId}/preview?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}&${attributes}`

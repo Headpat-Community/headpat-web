@@ -1,15 +1,15 @@
 import {
   HoverCard,
   HoverCardContent,
-  HoverCardTrigger
-} from '@/components/ui/hover-card'
-import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { CakeIcon, CalendarDays } from 'lucide-react'
-import { UserDataDocumentsType } from '@/utils/types/models'
-import { formatDate } from '@/components/calculateTimeLeft'
-import React, { useMemo, memo } from 'react'
-import Link from 'next/link'
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import { getAvatarImageUrlPreview } from "@/components/getStorageItem"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { CakeIcon, CalendarDays } from "lucide-react"
+import type { UserDataDocumentsType } from "@/utils/types/models"
+import { formatDate } from "@/components/calculateTimeLeft"
+import React, { useMemo, memo } from "react"
+import Link from "next/link"
 
 interface UserCardProps {
   user: UserDataDocumentsType
@@ -23,8 +23,8 @@ function UserCardComponent({ user, isChild, children }: UserCardProps) {
     const today = formatDate(new Date())
     const birthday = user?.birthday
       ? formatDate(new Date(user?.birthday))
-      : '01/01/1900'
-    const isBirthday = birthday !== '01/01/1900' && birthday === today
+      : "01/01/1900"
+    const isBirthday = birthday !== "01/01/1900" && birthday === today
     const joinedDate = formatDate(new Date(user?.$createdAt))
 
     return { isBirthday, joinedDate }
@@ -33,13 +33,13 @@ function UserCardComponent({ user, isChild, children }: UserCardProps) {
   // Memoize avatar image URL
   const avatarImageUrl = useMemo(() => {
     return (
-      getAvatarImageUrlPreview(user?.avatarId, 'width=250&height=250') || null
+      getAvatarImageUrlPreview(user?.avatarId, "width=250&height=250") || null
     )
   }, [user?.avatarId])
 
   // Memoize user display name initial
   const userInitial = useMemo(() => {
-    return user?.displayName?.charAt(0).toUpperCase() || '?'
+    return user?.displayName?.charAt(0).toUpperCase() || "?"
   }, [user?.displayName])
 
   // Memoize the hover card content to prevent unnecessary re-renders
@@ -53,18 +53,18 @@ function UserCardComponent({ user, isChild, children }: UserCardProps) {
           </Avatar>
           <div className="space-y-1">
             <h4 className="text-sm font-semibold">{`${user?.displayName}`}</h4>
-            <p className="text-sm flex-wrap">{user?.status}</p>
+            <p className="flex-wrap text-sm">{user?.status}</p>
             {isBirthday && (
               <div className="flex items-center pt-2">
-                <CakeIcon className="mr-2 size-4 opacity-70" />{' '}
-                <span className="text-xs text-muted-foreground">
+                <CakeIcon className="mr-2 size-4 opacity-70" />{" "}
+                <span className="text-muted-foreground text-xs">
                   Today is my birthday!
                 </span>
               </div>
             )}
             <div className="flex items-center pt-2">
-              <CalendarDays className="mr-2 size-4 opacity-70" />{' '}
-              <span className="text-xs text-muted-foreground">
+              <CalendarDays className="mr-2 size-4 opacity-70" />{" "}
+              <span className="text-muted-foreground text-xs">
                 Joined {joinedDate}
               </span>
             </div>
@@ -78,7 +78,7 @@ function UserCardComponent({ user, isChild, children }: UserCardProps) {
       isBirthday,
       joinedDate,
       avatarImageUrl,
-      userInitial
+      userInitial,
     ]
   )
 

@@ -18,7 +18,7 @@ export const clearTimeCalculationCache = () => {
 
 // Utility function for efficient date formatting
 const formatDateComponent = (value: number): string => {
-  return value.toString().padStart(2, '0')
+  return value.toString().padStart(2, "0")
 }
 
 export const calculateTimeLeft = (
@@ -37,7 +37,7 @@ export const calculateTimeLeft = (
 
   // Early return for ended events
   if (differenceInTime < 0) {
-    return 'Event has ended'
+    return "Event has ended"
   }
 
   // Cache key for this calculation
@@ -135,7 +135,7 @@ export const formatDateLocale = (date: Date) => {
   const timezoneOffset = -date.getTimezoneOffset() // In minutes
   const offsetHours = Math.floor(timezoneOffset / 60)
   const offsetMinutes = timezoneOffset % 60
-  const offsetSign = timezoneOffset >= 0 ? '+' : '-'
+  const offsetSign = timezoneOffset >= 0 ? "+" : "-"
 
   // Combine the formatted date with the timezone offset using utility function
   const result = `${formatDateComponent(day)}.${formatDateComponent(month)}.${year} @ ${formatDateComponent(hours)}:${formatDateComponent(minutes)} GMT${offsetSign}${formatDateComponent(offsetHours)}:${formatDateComponent(offsetMinutes)}`

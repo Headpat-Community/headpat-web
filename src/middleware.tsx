@@ -1,14 +1,14 @@
-import { createNextMiddleware } from 'gt-next/middleware'
+import { createNextMiddleware } from "gt-next/middleware"
 
 const middleware = createNextMiddleware({
-  prefixDefaultLocale: false
+  prefixDefaultLocale: false,
 })
 
 export default function middlewareWrapper(request: any) {
   try {
     return middleware(request)
   } catch (error) {
-    console.error('Middleware error:', error)
+    console.error("Middleware error:", error)
     throw error
   }
 }
@@ -21,6 +21,6 @@ export const config = {
      * - _next (internal files)
      * - static files
      */
-    '/((?!api|static|.*\\..*|_next).*)'
-  ]
+    "/((?!api|static|.*\\..*|_next).*)",
+  ],
 }

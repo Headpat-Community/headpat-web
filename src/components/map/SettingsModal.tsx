@@ -1,28 +1,28 @@
-'use client'
-import React, { useCallback, useMemo, memo } from 'react'
+"use client"
+import React, { useCallback, useMemo, memo } from "react"
 import {
   AlertDialog,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
-} from '@/components/ui/alert-dialog'
-import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
-import { databases } from '@/app/appwrite-client'
-import { LocationDocumentsType } from '@/utils/types/models'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
-import { Form, FormField } from '@/components/ui/form'
-import InputField from '@/components/fields/InputField'
-import { Button } from '../ui/button'
-import * as Sentry from '@sentry/nextjs'
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+import { databases } from "@/app/appwrite-client"
+import type { LocationDocumentsType } from "@/utils/types/models"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import { Form, FormField } from "@/components/ui/form"
+import InputField from "@/components/fields/InputField"
+import { Button } from "../ui/button"
+import * as Sentry from "@sentry/nextjs"
 
 const settingsFormSchema = z.object({
-  status: z.string().max(40, 'Status must be less than 40 characters'),
-  statusColor: z.enum(['red', 'green'])
+  status: z.string().max(40, "Status must be less than 40 characters"),
+  statusColor: z.enum(["red", "green"]),
 })
 
 type SettingsFormValues = z.infer<typeof settingsFormSchema>
@@ -37,7 +37,7 @@ interface SettingsModalProps {
 
 // Memoized form fields to prevent unnecessary re-renders
 const StatusFormField = memo(function StatusFormField({
-  control
+  control,
 }: {
   control: any
 }) {
@@ -59,7 +59,7 @@ const StatusFormField = memo(function StatusFormField({
 })
 
 const StatusColorFormField = memo(function StatusColorFormField({
-  control
+  control,
 }: {
   control: any
 }) {
@@ -71,9 +71,9 @@ const StatusColorFormField = memo(function StatusColorFormField({
         <div className="flex items-center gap-2">
           <Switch
             id="doNotDisturb"
-            checked={field.value === 'red'}
+            checked={field.value === "red"}
             onCheckedChange={(checked) =>
-              field.onChange(checked ? 'red' : 'green')
+              field.onChange(checked ? "red" : "green")
             }
           />
           <Label htmlFor="doNotDisturb">Do not disturb</Label>
@@ -88,36 +88,36 @@ const SettingsModal = memo(function SettingsModal({
   setOpenModal,
   userStatus,
   setUserStatus,
-  current
+  current,
 }: SettingsModalProps) {
   // Memoize default values to prevent unnecessary recalculations
   const defaultValues = useMemo(
     () => ({
-      status: userStatus?.status || '',
-      statusColor: (userStatus?.statusColor === 'red' ? 'red' : 'green') as
-        | 'red'
-        | 'green'
+      status: userStatus?.status || "",
+      statusColor: (userStatus?.statusColor === "red" ? "red" : "green") as
+        | "red"
+        | "green",
     }),
     [userStatus?.status, userStatus?.statusColor]
   )
 
   const form = useForm<SettingsFormValues>({
     resolver: zodResolver(settingsFormSchema),
-    defaultValues
+    defaultValues,
   })
 
   // Memoize form submission handler to prevent unnecessary re-renders
   const onSubmit = useCallback(
     async (values: SettingsFormValues) => {
       try {
-        await databases.updateDocument('hp_db', 'locations', current.$id, {
+        await databases.updateDocument("hp_db", "locations", current.$id, {
           status: values.status,
-          statusColor: values.statusColor
+          statusColor: values.statusColor,
         })
         setUserStatus({
           ...userStatus,
           status: values.status,
-          statusColor: values.statusColor
+          statusColor: values.statusColor,
         })
         setOpenModal(false)
       } catch (e) {

@@ -1,9 +1,9 @@
-import PageClient from './page.client'
-import { Query } from 'node-appwrite'
-import { createSessionServerClient } from '@/app/appwrite-session'
-import { Metadata } from 'next'
-import { GalleryType } from '@/utils/types/models'
-import { notFound } from 'next/navigation'
+import PageClient from "./page.client"
+import { Query } from "node-appwrite"
+import { createSessionServerClient } from "@/app/appwrite-session"
+import type { Metadata } from "next"
+import type { GalleryType } from "@/utils/types/models"
+import { notFound } from "next/navigation"
 
 export async function generateMetadata(props): Promise<Metadata> {
   const params = await props.params
@@ -17,9 +17,9 @@ export async function generateMetadata(props): Promise<Metadata> {
   }
 
   const gallery: GalleryType = await databases.listDocuments(
-    'hp_db',
-    'gallery-images',
-    [Query.equal('$id', galleryId)]
+    "hp_db",
+    "gallery-images",
+    [Query.equal("$id", galleryId)]
   )
 
   if (gallery.documents.length === 0) {
@@ -36,25 +36,25 @@ export async function generateMetadata(props): Promise<Metadata> {
       languages: {
         en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/gallery/${galleryId}`,
         de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/gallery/${galleryId}`,
-        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/gallery/${galleryId}`
-      }
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/gallery/${galleryId}`,
+      },
     },
     openGraph: {
       title: gallery.documents[0].name,
       description: gallery.documents[0].longText,
       siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
       locale: locale,
-      type: 'website'
+      type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN)
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
   }
 
   if (!isNsfw) {
     metadata.openGraph.images = [
       {
         url: getImageUrl(galleryId),
-        alt: gallery.documents[0].name
-      }
+        alt: gallery.documents[0].name,
+      },
     ]
   }
 

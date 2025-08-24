@@ -1,38 +1,38 @@
-import HeaderClient from '@/components/sidebar/header-client'
-import { getTranslations } from 'gt-next/server'
+import HeaderClient from "@/components/sidebar/header-client"
+import { getTranslations } from "gt-next/server"
 
 export async function generateMetadata({ params }) {
   const paramsResponse = await params
-  const meta = await getTranslations('MainMetadata')
+  const meta = await getTranslations("MainMetadata")
 
   return {
     title: {
-      default: meta('title'),
-      template: `%s - Headpat`
+      default: meta("title"),
+      template: `%s - Headpat`,
     },
-    description: meta('description'),
+    description: meta("description"),
     keywords: [
-      'headpat',
-      'community',
-      'social',
-      'network',
-      'furry',
-      'fandom',
-      'headpawties',
-      'gallery',
-      'location sharing'
+      "headpat",
+      "community",
+      "social",
+      "network",
+      "furry",
+      "fandom",
+      "headpawties",
+      "gallery",
+      "location sharing",
     ],
     icons: {
-      icon: '/logos/hp_logo_x512.webp'
+      icon: "/logos/hp_logo_x512.webp",
     },
     openGraph: {
-      title: meta('title'),
-      description: meta('description'),
-      images: '/logos/hp_logo_x512.webp',
+      title: meta("title"),
+      description: meta("description"),
+      images: "/logos/hp_logo_x512.webp",
       locale: paramsResponse.locale,
-      type: 'website'
+      type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN)
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
   }
 }
 

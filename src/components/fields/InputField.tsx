@@ -1,17 +1,17 @@
-import React from 'react'
+import React from "react"
 import {
   FormControl,
   FormLabel,
   FormMessage,
-  FormItem
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Info } from 'lucide-react'
+  FormItem,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Info } from "lucide-react"
 import {
   HoverCard,
   HoverCardContent,
-  HoverCardTrigger
-} from '@/components/ui/hover-card'
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
 
 interface InputFieldProps {
   label: string
@@ -28,15 +28,15 @@ const InputField: React.FC<InputFieldProps> = ({
   description,
   placeholder,
   field,
-  type = 'text',
+  type = "text",
   maxLength,
-  className
+  className,
 }) => {
   return (
     <FormItem className={className}>
       {label && (
         <FormLabel>
-          {label || 'Label'}
+          {label || "Label"}
           {description && (
             <HoverCard openDelay={100} closeDelay={50}>
               <HoverCardTrigger>

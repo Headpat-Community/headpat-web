@@ -1,7 +1,7 @@
-'use server'
-import { createSessionServerClient } from '@/app/appwrite-session'
-import { Models } from 'node-appwrite'
-import { AccountPrefs } from '@/utils/types/models'
+"use server"
+import { createSessionServerClient } from "@/app/appwrite-session"
+import type { Models } from "node-appwrite"
+import type { AccountPrefs } from "@/utils/types/models"
 
 /**
  * This function is used to get the user.

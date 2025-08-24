@@ -1,18 +1,18 @@
-'use client'
-import { useState } from 'react'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { databases, storage } from '@/app/appwrite-client'
-import * as Sentry from '@sentry/nextjs'
-import Link from 'next/link'
-import { getGalleryImageUrlView } from '@/components/getStorageItem'
-import { getDocument } from '@/components/api/documents'
-import { toast } from 'sonner'
-import { Checkbox } from '@/components/ui/checkbox'
-import { useRouter } from 'next/navigation'
-import { GalleryDocumentsType } from '@/utils/types/models'
+"use client"
+import { useState } from "react"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { databases, storage } from "@/app/appwrite-client"
+import * as Sentry from "@sentry/nextjs"
+import Link from "next/link"
+import { getGalleryImageUrlView } from "@/components/getStorageItem"
+import { getDocument } from "@/components/api/documents"
+import { toast } from "sonner"
+import { Checkbox } from "@/components/ui/checkbox"
+import { useRouter } from "next/navigation"
+import type { GalleryDocumentsType } from "@/utils/types/models"
 
 export default function FetchGallery({ singleGallery, galleryId }) {
   const router = useRouter()
@@ -23,7 +23,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
     nsfw: singleGallery?.nsfw,
     createdAt: singleGallery?.$createdAt,
     modifiedAt: singleGallery?.$updatedAt,
-    longText: singleGallery?.longText
+    longText: singleGallery?.longText,
   })
 
   const deleteImage = async () => {
@@ -32,8 +32,8 @@ export default function FetchGallery({ singleGallery, galleryId }) {
       setIsDeleting(true)
 
       const listDataResponse = getDocument(
-        'hp_db',
-        'gallery-images',
+        "hp_db",
+        "gallery-images",
         `${galleryId}`
       )
 
@@ -42,28 +42,28 @@ export default function FetchGallery({ singleGallery, galleryId }) {
           const documentId = response.$id
           const imageId = response.galleryId
 
-          storage.deleteFile('gallery', imageId)
-          databases.deleteDocument('hp_db', 'gallery-images', documentId)
+          storage.deleteFile("gallery", imageId)
+          databases.deleteDocument("hp_db", "gallery-images", documentId)
 
-          toast.success('Success', {
-            description: 'Image successfully deleted! Sending you back...'
+          toast.success("Success", {
+            description: "Image successfully deleted! Sending you back...",
           })
           setTimeout(() => {
-            router.push('/gallery')
+            router.push("/gallery")
           }, 3000)
         },
         function (error) {
           console.error(error)
           Sentry.captureException(error)
-          toast.error('Error', {
-            description: "Something went wrong, but don't worry, we are on it!"
+          toast.error("Error", {
+            description: "Something went wrong, but don't worry, we are on it!",
           })
           setIsDeleting(false)
         }
       )
     } catch (error) {
-      toast.error('Error', {
-        description: "You encountered an error. But don't worry, we're on it."
+      toast.error("Error", {
+        description: "You encountered an error. But don't worry, we're on it.",
       })
       Sentry.captureException(error)
       setIsDeleting(false)
@@ -75,21 +75,21 @@ export default function FetchGallery({ singleGallery, galleryId }) {
 
     try {
       // Make the PATCH request
-      await databases.updateDocument('hp_db', 'gallery-images', galleryId, {
+      await databases.updateDocument("hp_db", "gallery-images", galleryId, {
         name: userData.name,
         longText: userData.longText,
-        nsfw: userData.nsfw
+        nsfw: userData.nsfw,
       })
 
       // Handle response and update state accordingly
     } catch {
-      toast.error('Error', {
-        description: "Something went wrong, but don't worry, we are on it!"
+      toast.error("Error", {
+        description: "Something went wrong, but don't worry, we are on it!",
       })
       setIsUploading(false)
     } finally {
-      toast.success('Image updated', {
-        description: 'Your image info has been updated successfully!'
+      toast.success("Image updated", {
+        description: "Your image info has been updated successfully!",
       })
       setIsUploading(false)
     }
@@ -101,12 +101,12 @@ export default function FetchGallery({ singleGallery, galleryId }) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={getGalleryImageUrlView(singleGallery.galleryId)}
-          alt={singleGallery.name || 'Headpat Place Image'}
-          className={`imgsinglegallery max-h-[1000px] object-contain rounded-lg`}
+          alt={singleGallery.name || "Headpat Place Image"}
+          className={`imgsinglegallery max-h-[1000px] rounded-lg object-contain`}
         />
       </div>
 
-      <div className="mt-2 mb-12">
+      <div className="mb-12 mt-2">
         <h4 className="text-base font-semibold leading-7 text-white">
           Information
         </h4>
@@ -129,7 +129,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
                 onChange={(e) =>
                   setUserData({
                     ...userData,
-                    name: e.target.value
+                    name: e.target.value,
                   })
                 }
               />
@@ -140,8 +140,8 @@ export default function FetchGallery({ singleGallery, galleryId }) {
             <Label htmlFor="createdAt">Created at</Label>
             <div className="mt-2">
               <Input
-                type={'date'}
-                value={new Date(userData.createdAt).toISOString().split('T')[0]}
+                type={"date"}
+                value={new Date(userData.createdAt).toISOString().split("T")[0]}
                 disabled
               />
             </div>
@@ -151,9 +151,9 @@ export default function FetchGallery({ singleGallery, galleryId }) {
             <Label htmlFor="modifiedAt">Last updated</Label>
             <div className="mt-2">
               <Input
-                type={'date'}
+                type={"date"}
                 value={
-                  new Date(userData.modifiedAt).toISOString().split('T')[0]
+                  new Date(userData.modifiedAt).toISOString().split("T")[0]
                 }
                 disabled
               />
@@ -169,7 +169,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
                 onCheckedChange={(e) =>
                   setUserData({
                     ...userData,
-                    nsfw: e
+                    nsfw: e,
                   })
                 }
               />
@@ -182,12 +182,12 @@ export default function FetchGallery({ singleGallery, galleryId }) {
               <Textarea
                 id="longtext"
                 name="longtext"
-                value={userData.longText || ''}
+                value={userData.longText || ""}
                 maxLength={256}
                 onChange={(e) =>
                   setUserData({
                     ...userData,
-                    longText: e.target.value
+                    longText: e.target.value,
                   })
                 }
               />
@@ -195,9 +195,9 @@ export default function FetchGallery({ singleGallery, galleryId }) {
           </div>
         </div>
 
-        <div className="mt-6 flex items-center gap-x-6 justify-between">
+        <div className="mt-6 flex items-center justify-between gap-x-6">
           <div className="flex items-center gap-x-6">
-            <Button variant={'link'} asChild>
+            <Button variant={"link"} asChild>
               <Link
                 href={`/gallery/${galleryId}`}
                 className="text-sm font-semibold leading-6 text-white"
@@ -214,15 +214,15 @@ export default function FetchGallery({ singleGallery, galleryId }) {
               disabled={isUploading || isDeleting}
               onClick={updateImage}
             >
-              {isUploading ? 'Uploading...' : 'Save'}{' '}
+              {isUploading ? "Uploading..." : "Save"}{" "}
             </Button>
             <Button
               type="button"
-              variant={'destructive'}
+              variant={"destructive"}
               disabled={isDeleting || isUploading}
               onClick={deleteImage}
             >
-              {isDeleting ? 'Deleting...' : 'Delete'}{' '}
+              {isDeleting ? "Deleting..." : "Delete"}{" "}
             </Button>
           </div>
         </div>

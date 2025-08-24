@@ -1,44 +1,44 @@
-import { Suspense } from 'react'
-import Loading from '../../../loading'
-import { getMfaList, getUser } from '@/utils/server-api/account/user'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import GeneralAccountView from '@/components/account/views/general'
-import FrontpageView from '@/components/account/views/frontpage'
-import SocialsView from '@/components/account/views/socials'
-import { getTranslations } from 'gt-next/server'
+import { Suspense } from "react"
+import Loading from "../../../loading"
+import { getMfaList, getUser } from "@/utils/server-api/account/user"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import GeneralAccountView from "@/components/account/views/general"
+import FrontpageView from "@/components/account/views/frontpage"
+import SocialsView from "@/components/account/views/socials"
+import { getTranslations } from "gt-next/server"
 
 export async function generateMetadata({ params }) {
   const paramsResponse = await params
-  const meta = await getTranslations('AccountMetadata')
+  const meta = await getTranslations("AccountMetadata")
 
   return {
-    title: 'Account Settings',
-    description: meta('description'),
+    title: "Account Settings",
+    description: meta("description"),
     openGraph: {
-      title: meta('title'),
-      description: meta('description'),
+      title: meta("title"),
+      description: meta("description"),
       siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
       locale: paramsResponse.locale,
-      type: 'website'
-    }
+      type: "website",
+    },
   }
 }
 
 export default async function AccountSettings() {
   const mfaList = await getMfaList()
   const accountData = await getUser()
-  const translations = await getTranslations('Account')
+  const translations = await getTranslations("Account")
 
   return (
     <Suspense fallback={<Loading />}>
       <Tabs defaultValue="general" className="w-full">
         <div className="flex flex-col items-center justify-center">
-          <TabsList className="grid w-full sm:max-w-4xl grid-cols-3">
-            <TabsTrigger value="general">{translations('general')}</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 sm:max-w-4xl">
+            <TabsTrigger value="general">{translations("general")}</TabsTrigger>
             <TabsTrigger value="frontpage">
-              {translations('frontpage')}
+              {translations("frontpage")}
             </TabsTrigger>
-            <TabsTrigger value="socials">{translations('socials')}</TabsTrigger>
+            <TabsTrigger value="socials">{translations("socials")}</TabsTrigger>
           </TabsList>
         </div>
 

@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 export default function NoAccess() {
   return (
@@ -7,11 +7,11 @@ export default function NoAccess() {
       <div className="m-auto flex h-full w-full flex-col items-center justify-center gap-2">
         <h1 className="text-[7rem] font-bold leading-tight">401</h1>
         <span className="font-medium">Unauthorized</span>
-        <p className="text-center text-muted-foreground">
+        <p className="text-muted-foreground text-center">
           You don&apos;t have the required permissions to access this page.
         </p>
         <div className="mt-6 flex gap-4">
-          <Link href={'.'}>
+          <Link href={"."}>
             <Button variant="outline">Go back</Button>
           </Link>
         </div>

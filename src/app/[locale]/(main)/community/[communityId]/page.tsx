@@ -1,11 +1,11 @@
-import { getCommunity } from '@/utils/server-api/communities/getCommunity'
-import PageClient from './page.client'
-import { notFound } from 'next/navigation'
-import { getCommunityAvatarUrlView } from '@/components/getStorageItem'
+import { getCommunity } from "@/utils/server-api/communities/getCommunity"
+import PageClient from "./page.client"
+import { notFound } from "next/navigation"
+import { getCommunityAvatarUrlView } from "@/components/getStorageItem"
 
 // Constants to prevent recreation
-const DEFAULT_AVATAR = '/logos/hp_logo_x512.webp'
-const DEFAULT_TITLE = 'Community not found'
+const DEFAULT_AVATAR = "/logos/hp_logo_x512.webp"
+const DEFAULT_TITLE = "Community not found"
 
 export async function generateMetadata(props: {
   params: Promise<{ communityId: string }>
@@ -32,27 +32,27 @@ export async function generateMetadata(props: {
       title,
       description,
       icons: {
-        icon: avatarUrl
+        icon: avatarUrl,
       },
       openGraph: {
         title,
         description,
-        images: avatarUrl
-      }
+        images: avatarUrl,
+      },
     }
   } catch (error) {
-    console.error('Failed to generate metadata for community:', error)
+    console.error("Failed to generate metadata for community:", error)
     return {
       title: DEFAULT_TITLE,
-      description: 'Community not found',
+      description: "Community not found",
       icons: {
-        icon: DEFAULT_AVATAR
+        icon: DEFAULT_AVATAR,
       },
       openGraph: {
         title: DEFAULT_TITLE,
-        description: 'Community not found',
-        images: DEFAULT_AVATAR
-      }
+        description: "Community not found",
+        images: DEFAULT_AVATAR,
+      },
     }
   }
 }
@@ -72,7 +72,7 @@ export default async function Page(props: {
 
     return <PageClient communityId={communityId} communityData={community} />
   } catch (error) {
-    console.error('Failed to load community page:', error)
+    console.error("Failed to load community page:", error)
     return notFound()
   }
 }

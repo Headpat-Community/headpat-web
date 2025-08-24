@@ -1,13 +1,13 @@
-import { createSessionClient } from '@/app/appwrite-session'
-import { NextRequest } from 'next/server'
+import { createSessionClient } from "@/app/appwrite-session"
+import type { NextRequest } from "next/server"
 
 export async function GET(request: NextRequest) {
   if (
     request.headers
-      .get('referer')
+      .get("referer")
       ?.includes(process.env.NEXT_PUBLIC_DOMAIN as string)
   ) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 })
+    return Response.json({ error: "Unauthorized" }, { status: 401 })
   }
   const { account } = await createSessionClient(request)
 

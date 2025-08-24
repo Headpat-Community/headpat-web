@@ -12,12 +12,12 @@ export const openDb = async (
       // Dynamically create object stores if they don't exist
       storeNames.forEach((storeName) => {
         if (!db.objectStoreNames.contains(storeName)) {
-          db.createObjectStore(storeName, { keyPath: 'id' }) // 'id' is the keyPath for each store
+          db.createObjectStore(storeName, { keyPath: "id" }) // 'id' is the keyPath for each store
         }
       })
     }
 
-    request.onerror = () => reject(new Error('IndexedDB open failed'))
+    request.onerror = () => reject(new Error("IndexedDB open failed"))
     request.onsuccess = (e: any) => resolve(e.target.result)
   })
 }
@@ -28,11 +28,11 @@ export const getFromDb = async <T>(
   key: string
 ): Promise<T | null> => {
   return new Promise<T | null>((resolve, reject) => {
-    const transaction = db.transaction(storeName, 'readonly')
+    const transaction = db.transaction(storeName, "readonly")
     const store = transaction.objectStore(storeName)
     const request = store.get(key)
 
-    request.onerror = () => reject(new Error('IndexedDB read failed'))
+    request.onerror = () => reject(new Error("IndexedDB read failed"))
     request.onsuccess = () => resolve(request.result ? request.result : null)
   })
 }
@@ -42,7 +42,7 @@ export const getAllFromDb = async <T>(
   storeName: string
 ): Promise<T[]> => {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(storeName, 'readonly')
+    const transaction = db.transaction(storeName, "readonly")
     const store = transaction.objectStore(storeName)
     const request = store.getAll()
 
@@ -62,11 +62,11 @@ export const saveToDb = async <T>(
   data: T
 ) => {
   return new Promise<void>((resolve, reject) => {
-    const transaction = db.transaction(storeName, 'readwrite')
+    const transaction = db.transaction(storeName, "readwrite")
     const store = transaction.objectStore(storeName)
     const request = store.put(data)
 
-    request.onerror = () => reject(new Error('IndexedDB save failed'))
+    request.onerror = () => reject(new Error("IndexedDB save failed"))
     request.onsuccess = () => resolve()
   })
 }
@@ -77,11 +77,11 @@ export const deleteFromDb = async (
   key: string
 ) => {
   return new Promise<void>((resolve, reject) => {
-    const transaction = db.transaction(storeName, 'readwrite')
+    const transaction = db.transaction(storeName, "readwrite")
     const store = transaction.objectStore(storeName)
     const request = store.delete(key)
 
-    request.onerror = () => reject(new Error('IndexedDB delete failed'))
+    request.onerror = () => reject(new Error("IndexedDB delete failed"))
     request.onsuccess = () => resolve()
   })
 }

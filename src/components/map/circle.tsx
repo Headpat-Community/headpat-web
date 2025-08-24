@@ -6,11 +6,11 @@ import {
   useRef,
   useCallback,
   useMemo,
-  memo
-} from 'react'
+  memo,
+} from "react"
 
-import type { Ref } from 'react'
-import { GoogleMapsContext, latLngEquals } from '@vis.gl/react-google-maps'
+import type { Ref } from "react"
+import { GoogleMapsContext, latLngEquals } from "@vis.gl/react-google-maps"
 
 type CircleEventProps = {
   onClick?: (e: google.maps.MapMouseEvent) => void
@@ -19,8 +19,8 @@ type CircleEventProps = {
   onDragEnd?: (e: google.maps.MapMouseEvent) => void
   onMouseOver?: (e: google.maps.MapMouseEvent) => void
   onMouseOut?: (e: google.maps.MapMouseEvent) => void
-  onRadiusChanged?: (r: ReturnType<google.maps.Circle['getRadius']>) => void
-  onCenterChanged?: (p: ReturnType<google.maps.Circle['getCenter']>) => void
+  onRadiusChanged?: (r: ReturnType<google.maps.Circle["getRadius"]>) => void
+  onCenterChanged?: (p: ReturnType<google.maps.Circle["getCenter"]>) => void
 }
 
 export type CircleProps = google.maps.CircleOptions & CircleEventProps
@@ -29,12 +29,12 @@ export type CircleRef = Ref<google.maps.Circle | null>
 
 // Memoized event mapping to prevent recreation
 const EVENT_MAPPINGS = [
-  ['click', 'onClick'],
-  ['drag', 'onDrag'],
-  ['dragstart', 'onDragStart'],
-  ['dragend', 'onDragEnd'],
-  ['mouseover', 'onMouseOver'],
-  ['mouseout', 'onMouseOut']
+  ["click", "onClick"],
+  ["drag", "onDrag"],
+  ["dragstart", "onDragStart"],
+  ["dragend", "onDragEnd"],
+  ["mouseover", "onMouseOver"],
+  ["mouseout", "onMouseOut"],
 ] as const
 
 function useCircle(props: CircleProps) {
@@ -62,7 +62,7 @@ function useCircle(props: CircleProps) {
       onMouseOver,
       onMouseOut,
       onRadiusChanged,
-      onCenterChanged
+      onCenterChanged,
     }),
     [
       onClick,
@@ -72,7 +72,7 @@ function useCircle(props: CircleProps) {
       onMouseOver,
       onMouseOut,
       onRadiusChanged,
-      onCenterChanged
+      onCenterChanged,
     ]
   )
 
@@ -126,7 +126,7 @@ function useCircle(props: CircleProps) {
     const circle = circleRef.current
     if (!map || !circle) {
       if (map === undefined)
-        console.error('<Circle> has to be inside a Map component.')
+        console.error("<Circle> has to be inside a Map component.")
       return
     }
 
@@ -155,12 +155,12 @@ function useCircle(props: CircleProps) {
     })
 
     // Setup property change listeners
-    gme.addListener(circle, 'radius_changed', () => {
+    gme.addListener(circle, "radius_changed", () => {
       const newRadius = circle.getRadius()
       callbacks.onRadiusChanged?.(newRadius)
     })
 
-    gme.addListener(circle, 'center_changed', () => {
+    gme.addListener(circle, "center_changed", () => {
       const newCenter = circle.getCenter()
       callbacks.onCenterChanged?.(newCenter)
     })
@@ -191,4 +191,4 @@ export const Circle = memo(
   })
 )
 
-Circle.displayName = 'Circle'
+Circle.displayName = "Circle"

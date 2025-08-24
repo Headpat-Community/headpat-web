@@ -1,12 +1,12 @@
-'use client'
+"use client"
 
-import * as React from 'react'
-import { Separator } from '@radix-ui/react-separator'
-import { SidebarInset, SidebarTrigger } from '../ui/sidebar'
-import { AppSidebar } from './app-sidebar'
-import { SidebarProvider } from '../ui/sidebar'
-import { ThemeToggle } from '../ThemeToggle'
-import ChangeLanguage from '../system/changeLanguage'
+import * as React from "react"
+import { Separator } from "@radix-ui/react-separator"
+import { SidebarInset, SidebarTrigger } from "../ui/sidebar"
+import { AppSidebar } from "./app-sidebar"
+import { SidebarProvider } from "../ui/sidebar"
+import { ThemeToggle } from "../ThemeToggle"
+import ChangeLanguage from "../system/changeLanguage"
 
 // Create a context for header components
 export const HeaderContext = React.createContext<{
@@ -14,7 +14,7 @@ export const HeaderContext = React.createContext<{
   removeHeaderComponent: (component: React.ReactNode) => void
 }>({
   addHeaderComponent: () => {},
-  removeHeaderComponent: () => {}
+  removeHeaderComponent: () => {},
 })
 
 // Create a provider component
@@ -76,7 +76,7 @@ export default function HeaderClient({ children }: HeaderClientProps) {
 export function useHeader() {
   const context = React.useContext(HeaderContext)
   if (!context) {
-    throw new Error('useHeader must be used within a HeaderProvider')
+    throw new Error("useHeader must be used within a HeaderProvider")
   }
   return context
 }

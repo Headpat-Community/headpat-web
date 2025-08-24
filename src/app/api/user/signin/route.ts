@@ -1,15 +1,16 @@
-import { createAdminClient } from '@/app/appwrite-session'
-import { cookies } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
+import { createAdminClient } from "@/app/appwrite-session"
+import { cookies } from "next/headers"
+import type { NextRequest } from "next/server"
+import { NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
   const { account } = await createAdminClient()
   // if POST is not json, return 400
-  if (request.headers.get('content-type') !== 'application/json') {
-    return NextResponse.json({ error: 'Invalid content type', status: 400 })
+  if (request.headers.get("content-type") !== "application/json") {
+    return NextResponse.json({ error: "Invalid content type", status: 400 })
   }
   if (!request.body) {
-    return NextResponse.json({ error: 'No body provided', status: 400 })
+    return NextResponse.json({ error: "No body provided", status: 400 })
   }
   const { email, password } = await request.json()
 
@@ -22,10 +23,10 @@ export async function POST(request: NextRequest) {
       {
         httpOnly: true,
         secure: true,
-        sameSite: 'strict',
+        sameSite: "strict",
         expires: new Date(session.expire),
-        path: '/',
-        domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN
+        path: "/",
+        domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
       }
     )
 

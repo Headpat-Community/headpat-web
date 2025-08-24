@@ -1,13 +1,13 @@
-import { get, set, del, createStore } from 'idb-keyval'
-import {
+import { get, set, del, createStore } from "idb-keyval"
+import type {
   PersistedClient,
   Persister,
-} from '@tanstack/react-query-persist-client'
+} from "@tanstack/react-query-persist-client"
 
 export function createIDBPersister(
-  idbValidKey: IDBValidKey = 'tanstack-query',
-  dbName = 'HeadpatPlaceQuery',
-  storeName = 'tan-query'
+  idbValidKey: IDBValidKey = "tanstack-query",
+  dbName = "HeadpatPlaceQuery",
+  storeName = "tan-query"
 ): Persister {
   const customStore = createStore(dbName, storeName)
   return {

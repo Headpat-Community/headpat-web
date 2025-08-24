@@ -1,21 +1,21 @@
-'use client'
-import { databases, Query, storage } from '@/app/appwrite-client'
-import { useUser } from '@/components/contexts/UserContext'
-import { UploadButton } from '@/components/gallery/upload-button'
-import PaginationComponent from '@/components/Pagination'
-import { useHeader } from '@/components/sidebar/header-client'
-import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { GalleryDocumentsType, GalleryType } from '@/utils/types/models'
-import { captureException } from '@sentry/nextjs'
-import { ImageFormat } from 'appwrite'
-import { decode } from 'blurhash'
-import { useTranslations } from 'gt-next/client'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+"use client"
+import { databases, Query, storage } from "@/app/appwrite-client"
+import { useUser } from "@/components/contexts/UserContext"
+import { UploadButton } from "@/components/gallery/upload-button"
+import PaginationComponent from "@/components/Pagination"
+import { useHeader } from "@/components/sidebar/header-client"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import type { GalleryDocumentsType, GalleryType } from "@/utils/types/models"
+import { captureException } from "@sentry/nextjs"
+import { ImageFormat } from "appwrite"
+import { decode } from "blurhash"
+import { useTranslations } from "gt-next/client"
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter, useSearchParams } from "next/navigation"
+import React, { useEffect, useState } from "react"
+import { toast } from "sonner"
 
 export default function FetchGallery() {
   const router = useRouter()
@@ -23,20 +23,20 @@ export default function FetchGallery() {
   const { current } = useUser()
   const [gallery, setGallery] = useState<GalleryDocumentsType[]>([])
   const [currentPage, setCurrentPage] = useState(() => {
-    const page = searchParams.get('page')
+    const page = searchParams.get("page")
     return page ? parseInt(page, 10) : 1
   })
   const [totalPages, setTotalPages] = useState(1)
-  const [sortType, setSortType] = useState<'newest' | 'random'>('newest')
+  const [sortType, setSortType] = useState<"newest" | "random">("newest")
   const [seenItems, setSeenItems] = useState<Set<string>>(new Set())
   const pageSize = 48 // Number of items per page
   const { addHeaderComponent, removeHeaderComponent } = useHeader()
-  const t = useTranslations('GalleryPage')
+  const t = useTranslations("GalleryPage")
 
   // Initialize state from URL parameters
   useEffect(() => {
-    const page = searchParams.get('page')
-    const sort = searchParams.get('sort')
+    const page = searchParams.get("page")
+    const sort = searchParams.get("sort")
 
     if (page) {
       const pageNum = parseInt(page)
@@ -45,15 +45,15 @@ export default function FetchGallery() {
       }
     }
 
-    if (sort && (sort === 'newest' || sort === 'random')) {
+    if (sort && (sort === "newest" || sort === "random")) {
       setSortType(sort)
     }
   }, [searchParams])
 
   const updateUrl = (page: number, sort: string) => {
     const params = new URLSearchParams(searchParams.toString())
-    params.set('page', page.toString())
-    params.set('sort', sort)
+    params.set("page", page.toString())
+    params.set("sort", sort)
     router.push(`?${params.toString()}`)
   }
 
@@ -66,7 +66,7 @@ export default function FetchGallery() {
   }
 
   const handleSortChange = (value: string) => {
-    setSortType(value as 'newest' | 'random')
+    setSortType(value as "newest" | "random")
     setCurrentPage(1) // Reset to first page when changing sort
     updateUrl(1, value)
   }
@@ -78,7 +78,7 @@ export default function FetchGallery() {
     if (!galleryId) return
 
     return storage.getFilePreview(
-      'gallery',
+      "gallery",
       `${galleryId}`,
       256,
       256,
@@ -96,17 +96,17 @@ export default function FetchGallery() {
 
   const getVideoUrl = (galleryId: string) => {
     if (!galleryId) return
-    return storage.getFileView('gallery', `${galleryId}`)
+    return storage.getFileView("gallery", `${galleryId}`)
   }
 
   const getBlurDataURL = (blurHash: string) => {
-    if (!blurHash) return '/images/placeholder-image-color.webp'
+    if (!blurHash) return "/images/placeholder-image-color.webp"
     const pixels = decode(blurHash, 32, 32)
-    const canvas = document.createElement('canvas')
+    const canvas = document.createElement("canvas")
     canvas.width = 32
     canvas.height = 32
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return '/images/placeholder-image-color.webp'
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return "/images/placeholder-image-color.webp"
     const imageData = ctx.createImageData(32, 32)
     imageData.data.set(pixels)
     ctx.putImageData(imageData, 0, 0)
@@ -119,18 +119,18 @@ export default function FetchGallery() {
 
       const filters = []
       if (!current?.prefs?.nsfw) {
-        filters.push(Query.equal('nsfw', false))
+        filters.push(Query.equal("nsfw", false))
       }
       filters.push(Query.limit(pageSize))
       filters.push(Query.offset(offset))
 
-      if (sortType === 'newest') {
-        filters.push(Query.orderDesc('$createdAt'))
-      } else if (sortType === 'random') {
+      if (sortType === "newest") {
+        filters.push(Query.orderDesc("$createdAt"))
+      } else if (sortType === "random") {
         // Get total count first
         const totalCount = await databases.listDocuments(
-          'hp_db',
-          'gallery-images',
+          "hp_db",
+          "gallery-images",
           [Query.limit(1)]
         )
         setTotalPages(Math.ceil(totalCount.total / pageSize))
@@ -139,10 +139,10 @@ export default function FetchGallery() {
         if (currentPage === 1) {
           setSeenItems(new Set()) // Reset seen items when going back to page 1
           const allGallery = await databases.listDocuments(
-            'hp_db',
-            'gallery-images',
+            "hp_db",
+            "gallery-images",
             !current?.prefs?.nsfw
-              ? [Query.equal('nsfw', false), Query.limit(1000)]
+              ? [Query.equal("nsfw", false), Query.limit(1000)]
               : [Query.limit(1000)]
           )
           const allDocuments =
@@ -161,15 +161,15 @@ export default function FetchGallery() {
         if (seenItems.size > 0) {
           // Create an array of notEqual queries for each seen item
           const notEqualQueries = Array.from(seenItems).map((id) =>
-            Query.notEqual('$id', id)
+            Query.notEqual("$id", id)
           )
           // Add all notEqual queries using Query.and
           unseenFilters.push(Query.and(notEqualQueries))
         }
 
         const newGallery = await databases.listDocuments(
-          'hp_db',
-          'gallery-images',
+          "hp_db",
+          "gallery-images",
           unseenFilters
         )
 
@@ -177,10 +177,10 @@ export default function FetchGallery() {
         if (newGallery.documents.length === 0) {
           setSeenItems(new Set())
           const allGallery = await databases.listDocuments(
-            'hp_db',
-            'gallery-images',
+            "hp_db",
+            "gallery-images",
             !current?.prefs?.nsfw
-              ? [Query.equal('nsfw', false), Query.limit(1000)]
+              ? [Query.equal("nsfw", false), Query.limit(1000)]
               : [Query.limit(1000)]
           )
           const allDocuments =
@@ -207,8 +207,8 @@ export default function FetchGallery() {
 
       try {
         const gallery: GalleryType = await databases.listDocuments(
-          'hp_db',
-          'gallery-images',
+          "hp_db",
+          "gallery-images",
           filters
         )
 
@@ -249,9 +249,9 @@ export default function FetchGallery() {
         onValueChange={handleSortChange}
       >
         <div className="flex flex-col items-center justify-center">
-          <TabsList className="grid w-full sm:max-w-4xl grid-cols-2">
-            <TabsTrigger value="newest">{t('newest')}</TabsTrigger>
-            <TabsTrigger value="random">{t('random')}</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 sm:max-w-4xl">
+            <TabsTrigger value="newest">{t("newest")}</TabsTrigger>
+            <TabsTrigger value="random">{t("random")}</TabsTrigger>
           </TabsList>
         </div>
 
@@ -260,7 +260,7 @@ export default function FetchGallery() {
             <ul className="flex flex-wrap items-center justify-center gap-4 p-8">
               {gallery &&
                 gallery.map((item) => {
-                  const format = item.mimeType?.split('/').pop()
+                  const format = item.mimeType?.split("/").pop()
                   const imageFormat = format
                     ? (ImageFormat[
                         format.charAt(0).toUpperCase() + format.slice(1)
@@ -272,7 +272,7 @@ export default function FetchGallery() {
                       {item && (
                         <div
                           className={`h-64 w-64 ${
-                            item.nsfw && !current?.prefs?.nsfw ? 'relative' : ''
+                            item.nsfw && !current?.prefs?.nsfw ? "relative" : ""
                           }`}
                         >
                           {item.nsfw && !current?.prefs?.nsfw && (
@@ -282,7 +282,7 @@ export default function FetchGallery() {
                             href={`/gallery/${item.$id}`}
                             className="relative"
                           >
-                            {item?.mimeType?.includes('video') && (
+                            {item?.mimeType?.includes("video") && (
                               <div className="relative h-full w-full">
                                 <video
                                   className="h-full w-full object-cover"
@@ -306,8 +306,8 @@ export default function FetchGallery() {
                                 item.galleryId,
                                 imageFormat
                               )}
-                              alt={item.name || 'Gallery Image'}
-                              className={`h-full max-h-[600px] w-full max-w-[600px] object-cover rounded-lg`}
+                              alt={item.name || "Gallery Image"}
+                              className={`h-full max-h-[600px] w-full max-w-[600px] rounded-lg object-cover`}
                               width={256}
                               height={256}
                               quality={90}
@@ -317,9 +317,9 @@ export default function FetchGallery() {
                               placeholder="blur"
                               blurDataURL={getBlurDataURL(item.blurHash)}
                             />
-                            {(item.mimeType === 'image/gif' ||
-                              item.mimeType.includes('video')) && (
-                              <Badge className="absolute top-0 -translate-y-1/2 left-2 bg-secondary border-primary uppercase">
+                            {(item.mimeType === "image/gif" ||
+                              item.mimeType.includes("video")) && (
+                              <Badge className="bg-secondary border-primary absolute left-2 top-0 -translate-y-1/2 uppercase">
                                 {imageFormat}
                               </Badge>
                             )}
@@ -343,7 +343,7 @@ export default function FetchGallery() {
             <ul className="flex flex-wrap items-center justify-center gap-4 p-8">
               {gallery &&
                 gallery.map((item) => {
-                  const format = item.mimeType?.split('/').pop()
+                  const format = item.mimeType?.split("/").pop()
                   const imageFormat = format
                     ? (ImageFormat[
                         format.charAt(0).toUpperCase() + format.slice(1)
@@ -355,7 +355,7 @@ export default function FetchGallery() {
                       {item && (
                         <div
                           className={`h-64 w-64 ${
-                            item.nsfw && !current?.prefs?.nsfw ? 'relative' : ''
+                            item.nsfw && !current?.prefs?.nsfw ? "relative" : ""
                           }`}
                         >
                           {item.nsfw && !current?.prefs?.nsfw && (
@@ -365,7 +365,7 @@ export default function FetchGallery() {
                             href={`/gallery/${item.$id}`}
                             className="relative"
                           >
-                            {item?.mimeType?.includes('video') && (
+                            {item?.mimeType?.includes("video") && (
                               <div className="relative h-full w-full">
                                 <video
                                   className="h-full w-full object-cover"
@@ -389,8 +389,8 @@ export default function FetchGallery() {
                                 item.galleryId,
                                 imageFormat
                               )}
-                              alt={item.name || 'Gallery Image'}
-                              className={`h-full max-h-[600px] w-full max-w-[600px] object-cover rounded-lg`}
+                              alt={item.name || "Gallery Image"}
+                              className={`h-full max-h-[600px] w-full max-w-[600px] rounded-lg object-cover`}
                               width={256}
                               height={256}
                               quality={90}
@@ -400,9 +400,9 @@ export default function FetchGallery() {
                               placeholder="blur"
                               blurDataURL={getBlurDataURL(item.blurHash)}
                             />
-                            {(item.mimeType === 'image/gif' ||
-                              item.mimeType.includes('video')) && (
-                              <Badge className="absolute top-0 -translate-y-1/2 left-2 bg-secondary border-primary uppercase">
+                            {(item.mimeType === "image/gif" ||
+                              item.mimeType.includes("video")) && (
+                              <Badge className="bg-secondary border-primary absolute left-2 top-0 -translate-y-1/2 uppercase">
                                 {imageFormat}
                               </Badge>
                             )}

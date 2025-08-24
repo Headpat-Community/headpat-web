@@ -1,17 +1,17 @@
-import React from 'react'
+import React from "react"
 import {
   FormControl,
   FormLabel,
   FormMessage,
-  FormItem
-} from '@/components/ui/form'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Info } from 'lucide-react'
+  FormItem,
+} from "@/components/ui/form"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Info } from "lucide-react"
 import {
   HoverCard,
   HoverCardContent,
-  HoverCardTrigger
-} from '@/components/ui/hover-card'
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
 
 interface CheckboxFieldProps {
   label: string
@@ -22,13 +22,13 @@ interface CheckboxFieldProps {
 const CheckboxField: React.FC<CheckboxFieldProps> = ({
   label,
   description,
-  field
+  field,
 }) => {
   return (
     <FormItem>
       <div className="flex flex-col gap-3">
         <FormLabel>
-          {label || 'Label'}
+          {label || "Label"}
           {description && (
             <HoverCard openDelay={100} closeDelay={50}>
               <HoverCardTrigger>

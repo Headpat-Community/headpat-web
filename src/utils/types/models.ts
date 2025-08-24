@@ -1,4 +1,4 @@
-import { Models } from 'node-appwrite'
+import type { Models } from "node-appwrite"
 
 export interface FunctionResponse {
   error: string
@@ -46,13 +46,13 @@ export interface MessagesDocumentsType extends Models.Document {
    * The message type.
    */
   messageType:
-    | 'text'
-    | 'location'
-    | 'contact'
-    | 'sticker'
-    | 'reply'
-    | 'forward'
-    | 'file'
+    | "text"
+    | "location"
+    | "contact"
+    | "sticker"
+    | "reply"
+    | "forward"
+    | "file"
   /**
    * Attachment IDs of the message.
    */
@@ -440,7 +440,7 @@ export interface EventsDocumentsType extends Models.Document {
   /**
    * The location zone method.
    */
-  locationZoneMethod: 'polygon' | 'circle' | 'virtual'
+  locationZoneMethod: "polygon" | "circle" | "virtual"
   /**
    * The location zone coordinates.
    * Only if the locationZoneMethod is set to 'polygon' or 'circle'!
@@ -580,7 +580,7 @@ export interface NotificationsDocumentsType extends Models.Document {
   /**
    * The date the notification was created.
    */
-  type: 'newFollower' | 'newMessage' | 'newEvent' | 'newAnnouncement'
+  type: "newFollower" | "newMessage" | "newEvent" | "newAnnouncement"
   /**
    * The user data of the user
    */
@@ -594,7 +594,7 @@ export interface ConfigFeaturesType {
 
 export interface ConfigFeaturesDocumentsType extends Models.Document {
   isEnabled: boolean
-  type: 'public' | 'earlyaccess' | 'staff' | 'dev'
+  type: "public" | "earlyaccess" | "staff" | "dev"
 }
 
 export interface ChangelogType {
@@ -650,5 +650,5 @@ export interface ChangelogDocumentsType extends Models.Document {
   /**
    * The type of the change
    */
-  type: 'web' | 'app'
+  type: "web" | "app"
 }

@@ -1,30 +1,30 @@
-import PageClient from './page.client'
-import { getTranslations } from 'gt-next/server'
+import PageClient from "./page.client"
+import { getTranslations } from "gt-next/server"
 
 export async function generateMetadata({ params }) {
   const paramsResponse = await params
   const { locale } = paramsResponse
-  const meta = await getTranslations('UsersMetadata')
+  const meta = await getTranslations("UsersMetadata")
 
   return {
-    title: meta('title'),
-    description: meta('description'),
+    title: meta("title"),
+    description: meta("description"),
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/users`,
       languages: {
         en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/users`,
         de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/users`,
-        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/users`
-      }
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/users`,
+      },
     },
     openGraph: {
-      title: meta('title'),
-      description: meta('description'),
+      title: meta("title"),
+      description: meta("description"),
       siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
       locale: locale,
-      type: 'website'
+      type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN)
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
   }
 }
 

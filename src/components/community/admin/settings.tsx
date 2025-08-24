@@ -1,13 +1,13 @@
-'use client'
-import { databases, functions } from '@/app/appwrite-client'
-import React, { useCallback, useEffect, useState } from 'react'
-import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
-import { z } from 'zod'
-import { toast } from 'sonner'
-import * as Sentry from '@sentry/nextjs'
-import { Switch } from '@/components/ui/switch'
-import { Separator } from '@/components/ui/separator'
+"use client"
+import { databases, functions } from "@/app/appwrite-client"
+import React, { useCallback, useEffect, useState } from "react"
+import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
+import { z } from "zod"
+import { toast } from "sonner"
+import * as Sentry from "@sentry/nextjs"
+import { Switch } from "@/components/ui/switch"
+import { Separator } from "@/components/ui/separator"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,23 +16,23 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTrigger
-} from '@/components/ui/alert-dialog'
-import { useRouter } from 'next/navigation'
-import { ExecutionMethod } from 'node-appwrite'
-import {
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { useRouter } from "next/navigation"
+import { ExecutionMethod } from "node-appwrite"
+import type {
   CommunityDocumentsType,
-  CommunitySettingsDocumentsType
-} from '@/utils/types/models'
+  CommunitySettingsDocumentsType,
+} from "@/utils/types/models"
 
 const communitySchema = z.object({
   isFindable: z.boolean(),
   hasPublicPage: z.boolean(),
-  nsfw: z.boolean()
+  nsfw: z.boolean(),
 })
 
 export default function CommunityAdminSettings({
-  community
+  community,
 }: {
   community: CommunityDocumentsType
 }) {
@@ -43,8 +43,8 @@ export default function CommunityAdminSettings({
 
   const getSettings = useCallback(async () => {
     const data: CommunitySettingsDocumentsType = await databases.getDocument(
-      'hp_db',
-      'community-settings',
+      "hp_db",
+      "community-settings",
       community.$id
     )
     setCommunitySettings(data)
@@ -65,62 +65,62 @@ export default function CommunityAdminSettings({
       return
     }
 
-    const loadingToast = toast.loading('Updating community data...')
+    const loadingToast = toast.loading("Updating community data...")
     try {
       await databases.updateDocument(
-        'hp_db',
-        'community-settings',
+        "hp_db",
+        "community-settings",
         community.$id,
         {
           isFindable: communitySettings.isFindable,
           hasPublicPage: communitySettings.hasPublicPage,
-          nsfw: communitySettings.nsfw
+          nsfw: communitySettings.nsfw,
         }
       )
 
-      await databases.updateDocument('hp_db', 'community', community.$id, {
-        communitySettings: 'headpat-official'
+      await databases.updateDocument("hp_db", "community", community.$id, {
+        communitySettings: "headpat-official",
       })
-      toast.success('Community settings updated successfully.')
+      toast.success("Community settings updated successfully.")
     } catch (error) {
       Sentry.captureException(error)
-      toast.error('Error updating community data. Please try again later.')
+      toast.error("Error updating community data. Please try again later.")
     } finally {
       toast.dismiss(loadingToast)
     }
   }
 
   const handleDelete = async () => {
-    const loadingToast = toast.loading('Deleting community...')
+    const loadingToast = toast.loading("Deleting community...")
     try {
       const data = await functions.createExecution(
-        'community-endpoints',
-        '',
+        "community-endpoints",
+        "",
         false,
         `/community?communityId=${community.$id}`,
         ExecutionMethod.DELETE
       )
       const response = JSON.parse(data.responseBody)
 
-      if (response.type === 'community_delete_missing_id') {
-        toast.error('Community ID is missing')
+      if (response.type === "community_delete_missing_id") {
+        toast.error("Community ID is missing")
         return
-      } else if (response.type === 'unauthorized') {
-        toast.error('Unauthorized')
+      } else if (response.type === "unauthorized") {
+        toast.error("Unauthorized")
         return
-      } else if (response.type === 'community_delete_no_permission') {
-        toast.error('No permission')
+      } else if (response.type === "community_delete_no_permission") {
+        toast.error("No permission")
         return
-      } else if (response.type === 'community_delete_error') {
-        toast.error('Failed to delete community')
+      } else if (response.type === "community_delete_error") {
+        toast.error("Failed to delete community")
         return
-      } else if (response.type === 'community_deleted') {
-        router.push('/community')
-        toast.success('Community deleted successfully.')
+      } else if (response.type === "community_deleted") {
+        router.push("/community")
+        toast.success("Community deleted successfully.")
         return
       }
     } catch (error) {
-      toast.error('Failed to delete community. Please try again later.')
+      toast.error("Failed to delete community. Please try again later.")
       Sentry.captureException(error)
     } finally {
       toast.dismiss(loadingToast)
@@ -147,21 +147,21 @@ export default function CommunityAdminSettings({
             <div className="mt-12 gap-x-6 space-y-8 sm:max-w-full">
               <div className="flex items-center gap-2">
                 <Switch
-                  id={'isFindable'}
+                  id={"isFindable"}
                   checked={communitySettings?.isFindable}
                   onCheckedChange={() =>
                     setCommunitySettings((prev) => ({
                       ...prev,
-                      isFindable: !prev.isFindable
+                      isFindable: !prev.isFindable,
                     }))
                   }
                 />
                 <Label
-                  id={'isFindable'}
+                  id={"isFindable"}
                   onClick={() => {
                     setCommunitySettings((prev) => ({
                       ...prev,
-                      isFindable: !prev.isFindable
+                      isFindable: !prev.isFindable,
                     }))
                   }}
                 >
@@ -171,21 +171,21 @@ export default function CommunityAdminSettings({
 
               <div className="flex items-center gap-2">
                 <Switch
-                  id={'hasPublicPage'}
+                  id={"hasPublicPage"}
                   checked={communitySettings?.hasPublicPage}
                   onCheckedChange={() =>
                     setCommunitySettings((prev) => ({
                       ...prev,
-                      hasPublicPage: !prev.hasPublicPage
+                      hasPublicPage: !prev.hasPublicPage,
                     }))
                   }
                 />
                 <Label
-                  id={'hasPublicPage'}
+                  id={"hasPublicPage"}
                   onClick={() => {
                     setCommunitySettings((prev) => ({
                       ...prev,
-                      hasPublicPage: !prev.hasPublicPage
+                      hasPublicPage: !prev.hasPublicPage,
                     }))
                   }}
                 >
@@ -195,21 +195,21 @@ export default function CommunityAdminSettings({
 
               <div className="flex items-center gap-2">
                 <Switch
-                  id={'nsfw'}
+                  id={"nsfw"}
                   checked={communitySettings?.nsfw}
                   onCheckedChange={() =>
                     setCommunitySettings((prev) => ({
                       ...prev,
-                      nsfw: !prev.nsfw
+                      nsfw: !prev.nsfw,
                     }))
                   }
                 />
                 <Label
-                  id={'nsfw'}
+                  id={"nsfw"}
                   onClick={() => {
                     setCommunitySettings((prev) => ({
                       ...prev,
-                      nsfw: !prev.nsfw
+                      nsfw: !prev.nsfw,
                     }))
                   }}
                 >
@@ -222,38 +222,38 @@ export default function CommunityAdminSettings({
               <Button type="submit">Save</Button>
             </div>
 
-            <Separator className={'my-4'} />
+            <Separator className={"my-4"} />
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant={'destructive'}>Delete community</Button>
+                <Button variant={"destructive"}>Delete community</Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>Are you sure?</AlertDialogHeader>
                 <AlertDialogDescription>
-                  <span className={'text-destructive'}>Warning:</span> This
+                  <span className={"text-destructive"}>Warning:</span> This
                   action is irreversible. All data will be lost.
                 </AlertDialogDescription>
-                <div className={'flex-col'}>
-                  <div className={'mb-2'}>
+                <div className={"flex-col"}>
+                  <div className={"mb-2"}>
                     The following will be deleted:
                     <div>
-                      <span className={'text-destructive'}>•</span> Your
+                      <span className={"text-destructive"}>•</span> Your
                       community
                     </div>
                     <div>
-                      <span className={'text-destructive'}>•</span> Community
+                      <span className={"text-destructive"}>•</span> Community
                       posts
                     </div>
                     <div>
-                      <span className={'text-destructive'}>•</span> Community
+                      <span className={"text-destructive"}>•</span> Community
                       followers
                     </div>
                     <div>
-                      <span className={'text-destructive'}>•</span> Community
+                      <span className={"text-destructive"}>•</span> Community
                       settings
                     </div>
                     <div>
-                      <span className={'text-destructive'}>•</span> Everything
+                      <span className={"text-destructive"}>•</span> Everything
                       else that is associated with your community
                     </div>
                   </div>
@@ -267,10 +267,10 @@ export default function CommunityAdminSettings({
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
-                    className={'bg-destructive'}
+                    className={"bg-destructive"}
                     onClick={handleDelete}
                   >
-                    <span className={'text-white'}>Confirm deletion</span>
+                    <span className={"text-white"}>Confirm deletion</span>
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>

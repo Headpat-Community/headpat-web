@@ -1,30 +1,30 @@
-import React from 'react'
+import React from "react"
 import {
   FormControl,
   FormLabel,
   FormMessage,
-  FormItem
-} from '@/components/ui/form'
+  FormItem,
+} from "@/components/ui/form"
 import {
   Popover,
   PopoverTrigger,
-  PopoverContent
-} from '@/components/ui/popover'
+  PopoverContent,
+} from "@/components/ui/popover"
 import {
   Command,
   CommandInput,
   CommandList,
   CommandItem,
-  CommandGroup
-} from '@/components/ui/command'
+  CommandGroup,
+} from "@/components/ui/command"
 import {
   HoverCard,
   HoverCardContent,
-  HoverCardTrigger
-} from '@/components/ui/hover-card'
-import { Check, ChevronsUpDown, Info } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import { Check, ChevronsUpDown, Info } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 interface CommandSelectFieldProps {
   label: string
@@ -40,7 +40,7 @@ const CommandSelectField: React.FC<CommandSelectFieldProps> = ({
   label,
   description,
   options,
-  field
+  field,
 }) => {
   return (
     <FormItem>
@@ -64,7 +64,7 @@ const CommandSelectField: React.FC<CommandSelectFieldProps> = ({
               <Button variant="outline" className="w-[300px] justify-between">
                 {field.value.length > 0
                   ? `${field.value.length} languages selected`
-                  : 'Select languages...'}
+                  : "Select languages..."}
                 <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
@@ -72,7 +72,7 @@ const CommandSelectField: React.FC<CommandSelectFieldProps> = ({
               <Command>
                 <CommandInput
                   placeholder="Search options..."
-                  className={'focus:ring-0 focus:border-0 border-0'}
+                  className={"border-0 focus:border-0 focus:ring-0"}
                 />
                 <CommandList>
                   <CommandGroup>
@@ -90,10 +90,10 @@ const CommandSelectField: React.FC<CommandSelectFieldProps> = ({
                       >
                         <Check
                           className={cn(
-                            'mr-2 h-4 w-4',
+                            "mr-2 h-4 w-4",
                             field.value.includes(option.value)
-                              ? 'opacity-100'
-                              : 'opacity-0'
+                              ? "opacity-100"
+                              : "opacity-0"
                           )}
                         />
                         {option.label}

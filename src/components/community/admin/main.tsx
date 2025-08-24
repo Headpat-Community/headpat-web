@@ -1,42 +1,42 @@
-'use client'
-import { databases } from '@/app/appwrite-client'
-import { useCallback, useEffect, useState } from 'react'
-import UploadAvatar from '@/components/community/uploadAvatar'
-import UploadBanner from '@/components/community/uploadBanner'
-import { Button } from '@/components/ui/button'
-import { z } from 'zod'
-import { toast } from 'sonner'
-import * as Sentry from '@sentry/nextjs'
-import { CommunityDocumentsType } from '@/utils/types/models'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Form, FormField } from '@/components/ui/form'
-import InputField from '@/components/fields/InputField'
-import TextareaField from '@/components/fields/TextareaField'
+"use client"
+import { databases } from "@/app/appwrite-client"
+import { useCallback, useEffect, useState } from "react"
+import UploadAvatar from "@/components/community/uploadAvatar"
+import UploadBanner from "@/components/community/uploadBanner"
+import { Button } from "@/components/ui/button"
+import { z } from "zod"
+import { toast } from "sonner"
+import * as Sentry from "@sentry/nextjs"
+import type { CommunityDocumentsType } from "@/utils/types/models"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Form, FormField } from "@/components/ui/form"
+import InputField from "@/components/fields/InputField"
+import TextareaField from "@/components/fields/TextareaField"
 
 const formSchema = z.object({
   name: z
     .string()
-    .min(4, 'Name must be 4 characters or more')
-    .max(32, 'Name must be 32 characters or less'),
+    .min(4, "Name must be 4 characters or more")
+    .max(32, "Name must be 32 characters or less"),
   description: z
     .string()
     .trim()
-    .max(4096, 'Description must be 4096 characters or less')
+    .max(4096, "Description must be 4096 characters or less")
     .nullable()
-    .transform((val) => (val === '' ? null : val)),
+    .transform((val) => (val === "" ? null : val)),
   status: z
     .string()
     .trim()
-    .max(24, 'Status must be 24 characters or less')
+    .max(24, "Status must be 24 characters or less")
     .nullable()
-    .transform((val) => (val === '' ? null : val))
+    .transform((val) => (val === "" ? null : val)),
 })
 
 type FormValues = z.infer<typeof formSchema>
 
 export default function CommunityAdminMain({
-  community
+  community,
 }: {
   community: CommunityDocumentsType
 }) {
@@ -48,16 +48,16 @@ export default function CommunityAdminMain({
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      description: '',
-      status: ''
-    }
+      name: "",
+      description: "",
+      status: "",
+    },
   })
 
   const getCommunity = useCallback(async () => {
     const data: CommunityDocumentsType = await databases.getDocument(
-      'hp_db',
-      'community',
+      "hp_db",
+      "community",
       community.$id
     )
     setCommunityData(data)
@@ -65,7 +65,7 @@ export default function CommunityAdminMain({
     form.reset({
       name: data.name,
       description: data.description,
-      status: data.status
+      status: data.status,
     })
   }, [community.$id, form])
 
@@ -74,23 +74,23 @@ export default function CommunityAdminMain({
   }, [community, getCommunity])
 
   const onSubmit = async (values: FormValues) => {
-    const loadingToast = toast.loading('Updating community data...')
+    const loadingToast = toast.loading("Updating community data...")
     try {
       const dataToUpdate = {
         name: values.name,
         description: values.description || null,
-        status: values.status || null
+        status: values.status || null,
       }
       await databases.updateDocument(
-        'hp_db',
-        'community',
+        "hp_db",
+        "community",
         community.$id,
         dataToUpdate
       )
-      toast.success('Community data updated successfully.')
+      toast.success("Community data updated successfully.")
     } catch (error) {
       Sentry.captureException(error)
-      toast.error('Error updating community data. Please try again later.')
+      toast.error("Error updating community data. Please try again later.")
     } finally {
       toast.dismiss(loadingToast)
     }
@@ -121,7 +121,7 @@ export default function CommunityAdminMain({
                 setIsUploading={setIsUploading}
                 communityData={communityData}
               />
-              <div className={'my-4'} />
+              <div className={"my-4"} />
               <UploadBanner
                 isUploading={isUploading}
                 setIsUploading={setIsUploading}

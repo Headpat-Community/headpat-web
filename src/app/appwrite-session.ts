@@ -1,4 +1,4 @@
-'use server'
+"use server"
 import {
   Client,
   Account,
@@ -9,14 +9,14 @@ import {
   Messaging,
   Locale,
   Avatars,
-  Users
-} from 'node-appwrite'
-import { headers } from 'next/headers'
+  Users,
+} from "node-appwrite"
+import { headers } from "next/headers"
 
 export async function createSessionServerClient() {
   const headersList = await headers()
-  const cookieHeader = headersList.get('cookie')
-  const cookies = cookieHeader ? cookieHeader.split('; ') : []
+  const cookieHeader = headersList.get("cookie")
+  const cookies = cookieHeader ? cookieHeader.split("; ") : []
   const sessionCookie = cookies.find((cookie) =>
     cookie.startsWith(
       `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
@@ -24,10 +24,10 @@ export async function createSessionServerClient() {
   )
   const client = new Client()
     .setEndpoint(`${process.env.NEXT_PUBLIC_API_URL}/v1`)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!)
 
   if (sessionCookie) {
-    client.setSession(sessionCookie.split('=')[1])
+    client.setSession(sessionCookie.split("=")[1])
   }
 
   return {
@@ -54,14 +54,14 @@ export async function createSessionServerClient() {
     },
     get avatars() {
       return new Avatars(client)
-    }
+    },
   }
 }
 
 export async function createSessionClient(request: any) {
   const client = new Client()
     .setEndpoint(`${process.env.NEXT_PUBLIC_API_URL}/v1`)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!)
 
   const session = request.cookies.get(
     `a_session_${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`
@@ -95,15 +95,15 @@ export async function createSessionClient(request: any) {
     },
     get avatars() {
       return new Avatars(client)
-    }
+    },
   }
 }
 
 export async function createAdminClient() {
   const client = new Client()
     .setEndpoint(`${process.env.NEXT_PUBLIC_API_URL}/v1`)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
-    .setKey(process.env.APPWRITE_API_KEY)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!)
+    .setKey(process.env.APPWRITE_API_KEY!)
 
   return {
     get account() {
@@ -132,6 +132,6 @@ export async function createAdminClient() {
     },
     get users() {
       return new Users(client)
-    }
+    },
   }
 }

@@ -1,15 +1,16 @@
-'use client'
-import React, { useEffect, useState } from 'react'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Checkbox } from '@/components/ui/checkbox'
-import MfaAlert from '@/components/account/profile/mfaAlert'
-import * as Sentry from '@sentry/nextjs'
-import { ExecutionMethod, Models } from 'node-appwrite'
-import MfaRecoveryCodes from '@/components/account/profile/mfaRecoveryCodes'
-import { AccountPrefs, UserDataDocumentsType } from '@/utils/types/models'
-import { useRouter } from 'next/navigation'
+"use client"
+import React, { useEffect, useState } from "react"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
+import MfaAlert from "@/components/account/profile/mfaAlert"
+import * as Sentry from "@sentry/nextjs"
+import type { Models } from "node-appwrite"
+import { ExecutionMethod } from "node-appwrite"
+import MfaRecoveryCodes from "@/components/account/profile/mfaRecoveryCodes"
+import type { AccountPrefs, UserDataDocumentsType } from "@/utils/types/models"
+import { useRouter } from "next/navigation"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,62 +19,62 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogTitle,
-  AlertDialogTrigger
-} from '@/components/ui/alert-dialog'
-import { getDocument } from '@/components/api/documents'
-import { toast } from 'sonner'
-import { useUser } from '@/components/contexts/UserContext'
-import { account, databases, functions } from '@/app/appwrite-client'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { getDocument } from "@/components/api/documents"
+import { toast } from "sonner"
+import { useUser } from "@/components/contexts/UserContext"
+import { account, databases, functions } from "@/app/appwrite-client"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormMessage
-} from '@/components/ui/form'
-import InputField from '@/components/fields/InputField'
+  FormMessage,
+} from "@/components/ui/form"
+import InputField from "@/components/fields/InputField"
 import {
   HoverCard,
   HoverCardContent,
-  HoverCardTrigger
-} from '@/components/ui/hover-card'
-import { Info } from 'lucide-react'
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import { Info } from "lucide-react"
 
 const emailFormSchema = z.object({
   email: z.email().trim(),
   password: z
     .string()
     .trim()
-    .min(8, 'Password must be at least 8 characters long.')
-    .max(128, 'Password must be at most 128 characters long.')
+    .min(8, "Password must be at least 8 characters long.")
+    .max(128, "Password must be at most 128 characters long."),
 })
 
 const profileUrlFormSchema = z.object({
   profileUrl: z
     .string()
     .trim()
-    .min(2, 'Profile URL must be at least 3 characters long.')
+    .min(2, "Profile URL must be at least 3 characters long."),
 })
 
 const passwordFormSchema = z.object({
   password: z
     .string()
     .trim()
-    .min(8, 'Password must be at least 8 characters long.')
-    .max(264, 'Password must be at most 264 characters long.'),
+    .min(8, "Password must be at least 8 characters long.")
+    .max(264, "Password must be at most 264 characters long."),
   newpassword: z
     .string()
     .trim()
-    .min(8, 'Password must be at least 8 characters long.')
-    .max(264, 'Password must be at most 264 characters long.')
+    .min(8, "Password must be at least 8 characters long.")
+    .max(264, "Password must be at most 264 characters long."),
 })
 
 export default function GeneralAccountView({
   accountData,
-  mfaList
+  mfaList,
 }: {
   accountData: AccountPrefs
   mfaList: Models.MfaFactors
@@ -86,28 +87,28 @@ export default function GeneralAccountView({
   const emailForm = useForm<z.infer<typeof emailFormSchema>>({
     resolver: zodResolver(emailFormSchema),
     defaultValues: {
-      email: '',
-      password: ''
-    }
+      email: "",
+      password: "",
+    },
   })
 
   const profileUrlForm = useForm<z.infer<typeof profileUrlFormSchema>>({
     resolver: zodResolver(profileUrlFormSchema),
     defaultValues: {
-      profileUrl: ''
-    }
+      profileUrl: "",
+    },
   })
 
   const passwordForm = useForm<z.infer<typeof passwordFormSchema>>({
     resolver: zodResolver(passwordFormSchema),
     defaultValues: {
-      password: '',
-      newpassword: ''
-    }
+      password: "",
+      newpassword: "",
+    },
   })
 
   useEffect(() => {
-    getDocument('hp_db', 'userdata', accountData.$id)
+    getDocument("hp_db", "userdata", accountData.$id)
       .then((data: UserDataDocumentsType) => setUserData(data))
       .catch(() => {
         // Sometimes the function is too slow and the data is not created yet
@@ -118,18 +119,18 @@ export default function GeneralAccountView({
   const handleEmailChange = async (values: z.infer<typeof emailFormSchema>) => {
     try {
       await account.updateEmail(values.email, values.password)
-      toast.success('E-Mail updated successfully.')
+      toast.success("E-Mail updated successfully.")
       setUserData((prevUserData: any) => ({
         ...prevUserData,
-        email: userData.email
+        email: userData.email,
       }))
     } catch (error) {
-      if (error.type == 'user_invalid_credentials') {
+      if (error.type == "user_invalid_credentials") {
         toast.error("Password doesn't match.")
-      } else if (error.type == 'user_target_already_exists') {
-        toast.error('Account already exists with this email.')
+      } else if (error.type == "user_target_already_exists") {
+        toast.error("Account already exists with this email.")
       } else {
-        toast.error('Failed to update email. Please try again.')
+        toast.error("Failed to update email. Please try again.")
         Sentry.captureException(error)
       }
     }
@@ -140,22 +141,22 @@ export default function GeneralAccountView({
   ) => {
     try {
       await account.updatePassword(values.newpassword, values.password)
-      toast.success('Password updated successfully.')
+      toast.success("Password updated successfully.")
     } catch (error) {
-      if (error.type === 'general_argument_invalid') {
+      if (error.type === "general_argument_invalid") {
         toast.error(
-          'Password must be at least 8 characters long and cannot be a common password.'
+          "Password must be at least 8 characters long and cannot be a common password."
         )
         return
       } else if (error.code === 400) {
         toast.error(error.message)
-      } else if (error.type === 'user_invalid_credentials') {
+      } else if (error.type === "user_invalid_credentials") {
         toast.error("Password doesn't match.")
       } else {
-        toast.error('Failed to update password. Please try again.')
+        toast.error("Failed to update password. Please try again.")
         passwordForm.reset({
-          password: '',
-          newpassword: ''
+          password: "",
+          newpassword: "",
         })
       }
     }
@@ -167,20 +168,20 @@ export default function GeneralAccountView({
     try {
       await account.updatePrefs({
         ...prefs,
-        nsfw: checked
+        nsfw: checked,
       })
-      toast.success('NSFW updated successfully.')
+      toast.success("NSFW updated successfully.")
       setUserMe((prevUserData: any) => ({
         ...prevUserData,
         prefs: {
           ...prevUserData.prefs,
-          nsfw: checked
-        }
+          nsfw: checked,
+        },
       }))
       router.refresh()
     } catch (error) {
       if (error) {
-        toast.error('Failed to update NSFW. Please try again.')
+        toast.error("Failed to update NSFW. Please try again.")
       }
     }
   }
@@ -191,20 +192,20 @@ export default function GeneralAccountView({
     try {
       await account.updatePrefs({
         ...prefs,
-        indexingEnabled: checked
+        indexingEnabled: checked,
       })
-      toast.success('Indexing updated successfully.')
+      toast.success("Indexing updated successfully.")
       setUserMe((prevUserData: any) => ({
         ...prevUserData,
         prefs: {
           ...prevUserData.prefs,
-          indexingEnabled: checked
-        }
+          indexingEnabled: checked,
+        },
       }))
       router.refresh()
     } catch (error) {
       if (error) {
-        toast.error('Failed to update indexing. Please try again.')
+        toast.error("Failed to update indexing. Please try again.")
       }
     }
   }
@@ -213,41 +214,41 @@ export default function GeneralAccountView({
     values: z.infer<typeof profileUrlFormSchema>
   ) => {
     const promise = await databases.updateDocument(
-      'hp_db',
-      'userdata',
+      "hp_db",
+      "userdata",
       userMe?.$id,
       {
-        profileUrl: values.profileUrl
+        profileUrl: values.profileUrl,
       }
     )
 
-    if (promise.type === 'document_invalid_structure') {
-      toast.error('Invalid structure.')
-    } else if (promise.type === 'document_missing_data') {
-      toast.error('Missing data.')
-    } else if (promise.type === 'document_update_conflict') {
-      toast('Cloud is newer than your local data. Please refresh.')
+    if (promise.type === "document_invalid_structure") {
+      toast.error("Invalid structure.")
+    } else if (promise.type === "document_missing_data") {
+      toast.error("Missing data.")
+    } else if (promise.type === "document_update_conflict") {
+      toast("Cloud is newer than your local data. Please refresh.")
     } else {
-      toast.success('Profile URL updated successfully.')
+      toast.success("Profile URL updated successfully.")
     }
   }
 
   const deleteAccountButton = async () => {
     try {
       await functions.createExecution(
-        'user-endpoints',
-        '',
+        "user-endpoints",
+        "",
         true,
-        '/deleteAccount',
+        "/deleteAccount",
         ExecutionMethod.DELETE
       )
       await account.deleteSessions()
 
       setUser(null)
-      toast.success('Account deleted successfully.')
-      router.push('/')
+      toast.success("Account deleted successfully.")
+      router.push("/")
     } catch {
-      toast.error('Failed to delete account.')
+      toast.error("Failed to delete account.")
     }
   }
 
@@ -291,11 +292,11 @@ export default function GeneralAccountView({
                       name="password"
                       render={({ field }) => (
                         <InputField
-                          label={'Password'}
-                          description={'Your current password.'}
-                          placeholder={''}
+                          label={"Password"}
+                          description={"Your current password."}
+                          placeholder={""}
                           field={field}
-                          type={'password'}
+                          type={"password"}
                         />
                       )}
                     />
@@ -304,7 +305,7 @@ export default function GeneralAccountView({
               </div>
 
               <div className="mt-8 flex">
-                <Button type="submit" variant={'outline'}>
+                <Button type="submit" variant={"outline"}>
                   Save
                 </Button>
               </div>
@@ -334,7 +335,7 @@ export default function GeneralAccountView({
                         <Info className="inline-block size-4" />
                       </span>
                     </HoverCardTrigger>
-                    <HoverCardContent className={'w-96'}>
+                    <HoverCardContent className={"w-96"}>
                       This action cannot be undone. This will change your
                       profile URL to the one you entered. We will not redirect
                       the old URL to the new one.
@@ -345,10 +346,10 @@ export default function GeneralAccountView({
                   control={profileUrlForm.control}
                   name="profileUrl"
                   render={({ field }) => (
-                    <FormItem className="flex items-center col-span-full">
+                    <FormItem className="col-span-full flex items-center">
                       <div className="mt-2 w-full">
-                        <div className="flex rounded-md border border-input focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px]">
-                          <span className="flex select-none items-center pl-3 text-gray-400 sm:text-sm dark:bg-input/30">
+                        <div className="border-input focus-within:border-ring focus-within:ring-ring/50 flex rounded-md border focus-within:ring-[3px]">
+                          <span className="dark:bg-input/30 flex select-none items-center pl-3 text-gray-400 sm:text-sm">
                             headpat.place/user/
                           </span>
                           <FormControl>
@@ -357,8 +358,8 @@ export default function GeneralAccountView({
                               type="text"
                               id="profileurl"
                               required
-                              placeholder={userData ? userData.profileUrl : ''}
-                              className="flex-1 w-full min-w-0 rounded-none rounded-r-md border-0 focus:ring-0 sm:text-sm pl-1 !ring-0"
+                              placeholder={userData ? userData.profileUrl : ""}
+                              className="w-full min-w-0 flex-1 rounded-none rounded-r-md border-0 pl-1 !ring-0 focus:ring-0 sm:text-sm"
                             />
                           </FormControl>
                         </div>
@@ -369,7 +370,7 @@ export default function GeneralAccountView({
                 />
 
                 <div className="mt-8 flex">
-                  <Button type="submit" variant={'outline'}>
+                  <Button type="submit" variant={"outline"}>
                     Save
                   </Button>
                 </div>
@@ -400,11 +401,11 @@ export default function GeneralAccountView({
                     name="password"
                     render={({ field }) => (
                       <InputField
-                        label={'Current password'}
-                        description={'Your current password.'}
-                        placeholder={''}
+                        label={"Current password"}
+                        description={"Your current password."}
+                        placeholder={""}
                         field={field}
-                        type={'password'}
+                        type={"password"}
                       />
                     )}
                   />
@@ -415,17 +416,17 @@ export default function GeneralAccountView({
                     name="newpassword"
                     render={({ field }) => (
                       <InputField
-                        label={'New password'}
-                        description={'Your new password.'}
-                        placeholder={''}
+                        label={"New password"}
+                        description={"Your new password."}
+                        placeholder={""}
                         field={field}
-                        type={'password'}
+                        type={"password"}
                       />
                     )}
                   />
                 </div>
                 <div className="col-span-full">
-                  <Button type="submit" variant={'outline'}>
+                  <Button type="submit" variant={"outline"}>
                     Save
                   </Button>
                 </div>
@@ -456,7 +457,7 @@ export default function GeneralAccountView({
             <p className="mt-1 text-sm leading-6 text-gray-400">
               Checking this box will enable NSFW content. 18+ only.
             </p>
-            <p className="text-sm leading-6 text-destructive">
+            <p className="text-destructive text-sm leading-6">
               Anyone under the age of 18 caught having NSFW enabled will be
               suspended.
             </p>
@@ -509,7 +510,7 @@ export default function GeneralAccountView({
             <div className="col-span-full">
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button type={'button'} variant={'destructive'}>
+                  <Button type={"button"} variant={"destructive"}>
                     Delete Account
                   </Button>
                 </AlertDialogTrigger>
@@ -525,7 +526,7 @@ export default function GeneralAccountView({
                     <AlertDialogAction asChild>
                       <Button
                         className={
-                          'bg-destructive text-destructive-foreground hover:bg-destructive/90'
+                          "bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         }
                         onClick={deleteAccountButton}
                       >

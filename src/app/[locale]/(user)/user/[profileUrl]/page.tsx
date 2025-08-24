@@ -1,14 +1,14 @@
 import {
   createAdminClient,
-  createSessionServerClient
-} from '@/app/appwrite-session'
-import { Query } from '@/app/appwrite-server'
-import { getAvatarImageUrlView } from '@/components/getStorageItem'
-import PageClient from './page.client'
-import { UserDataType } from '@/utils/types/models'
-import sanitizeHtml from 'sanitize-html'
-import { notFound } from 'next/navigation'
-import { Metadata } from 'next'
+  createSessionServerClient,
+} from "@/app/appwrite-session"
+import { Query } from "@/app/appwrite-server"
+import { getAvatarImageUrlView } from "@/components/getStorageItem"
+import PageClient from "./page.client"
+import type { UserDataType } from "@/utils/types/models"
+import sanitizeHtml from "sanitize-html"
+import { notFound } from "next/navigation"
+import type { Metadata } from "next"
 
 export async function generateMetadata(props: {
   params: Promise<{ profileUrl: string; locale: string }>
@@ -20,9 +20,9 @@ export async function generateMetadata(props: {
   const { databases } = await createSessionServerClient()
   const { users } = await createAdminClient()
   const userDataResponse: UserDataType = await databases.listDocuments(
-    'hp_db',
-    'userdata',
-    [Query.equal('profileUrl', profileUrl)]
+    "hp_db",
+    "userdata",
+    [Query.equal("profileUrl", profileUrl)]
   )
   const userAccountResponse = await users.get(
     userDataResponse.documents?.[0]?.$id
@@ -41,28 +41,28 @@ export async function generateMetadata(props: {
     description: sanitizedBio,
     icons: {
       icon: getAvatarImageUrlView(userData?.avatarId),
-      apple: getAvatarImageUrlView(userData?.avatarId)
+      apple: getAvatarImageUrlView(userData?.avatarId),
     },
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/user/${profileUrl}`,
       languages: {
         en: `${process.env.NEXT_PUBLIC_DOMAIN}/en/user/${profileUrl}`,
         de: `${process.env.NEXT_PUBLIC_DOMAIN}/de/user/${profileUrl}`,
-        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/user/${profileUrl}`
-      }
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl/user/${profileUrl}`,
+      },
     },
     openGraph: {
       title: userData.displayName || userData?.profileUrl,
       description: sanitizedBio,
       images: getAvatarImageUrlView(userData.avatarId),
       locale: locale,
-      type: 'profile'
+      type: "profile",
     },
     robots: {
       index: indexingEnabled,
-      follow: indexingEnabled
+      follow: indexingEnabled,
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN)
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
   }
 }
 
@@ -74,9 +74,9 @@ export default async function UserProfile(props) {
   const { databases } = await createSessionServerClient()
 
   const userDataResponse: UserDataType = await databases.listDocuments(
-    'hp_db',
-    'userdata',
-    [Query.equal('profileUrl', profileUrl)]
+    "hp_db",
+    "userdata",
+    [Query.equal("profileUrl", profileUrl)]
   )
 
   if (userDataResponse.total === 0) {

@@ -1,5 +1,5 @@
-'use client'
-import { centerCrop, makeAspectCrop } from 'react-image-crop'
+"use client"
+import { centerCrop, makeAspectCrop } from "react-image-crop"
 
 export function centerAspectCrop(
   mediaWidth: number,
@@ -9,8 +9,8 @@ export function centerAspectCrop(
   return centerCrop(
     makeAspectCrop(
       {
-        unit: '%',
-        width: 90
+        unit: "%",
+        width: 90,
       },
       aspect,
       mediaWidth,
@@ -23,7 +23,7 @@ export function centerAspectCrop(
 
 export async function getCroppedImageBlob(
   canvas: HTMLCanvasElement,
-  type: string = 'image/png'
+  type: string = "image/png"
 ): Promise<Blob> {
   return new Promise((resolve, reject) => {
     canvas.toBlob(
@@ -31,7 +31,7 @@ export async function getCroppedImageBlob(
         if (blob) {
           resolve(blob)
         } else {
-          reject(new Error('Canvas is empty'))
+          reject(new Error("Canvas is empty"))
         }
       },
       `${type}`,
@@ -49,19 +49,19 @@ export async function createBlob(
   const image = imgRef.current
   const previewCanvas = previewCanvasRef.current
   if (!image || !previewCanvas || !completedCrop) {
-    throw new Error('Crop canvas does not exist')
+    throw new Error("Crop canvas does not exist")
   }
 
   const scaleX = image.naturalWidth / image.width
   const scaleY = image.naturalHeight / image.height
 
-  const offscreen = document.createElement('canvas')
+  const offscreen = document.createElement("canvas")
   offscreen.width = completedCrop.width * scaleX
   offscreen.height = completedCrop.height * scaleY
-  const ctx = offscreen.getContext('2d')
+  const ctx = offscreen.getContext("2d")
 
   if (!ctx) {
-    throw new Error('No 2d context')
+    throw new Error("No 2d context")
   }
 
   ctx.drawImage(

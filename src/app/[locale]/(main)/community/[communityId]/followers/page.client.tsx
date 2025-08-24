@@ -1,12 +1,12 @@
-'use client'
-import { functions } from '@/app/appwrite-client'
-import { ExecutionMethod } from 'node-appwrite'
-import { Card } from '@/components/ui/card'
-import Image from 'next/image'
-import { getAvatarImageUrlPreview } from '@/components/getStorageItem'
-import { useCallback, useEffect, useState } from 'react'
-import UserCard from '@/components/user/userCard'
-import { UserDataDocumentsType } from '@/utils/types/models'
+"use client"
+import { functions } from "@/app/appwrite-client"
+import { ExecutionMethod } from "node-appwrite"
+import { Card } from "@/components/ui/card"
+import Image from "next/image"
+import { getAvatarImageUrlPreview } from "@/components/getStorageItem"
+import { useCallback, useEffect, useState } from "react"
+import UserCard from "@/components/user/userCard"
+import type { UserDataDocumentsType } from "@/utils/types/models"
 
 export default function PageClient({ communityId }: { communityId: string }) {
   const [followers, setFollowers] = useState<UserDataDocumentsType[]>(null)
@@ -15,8 +15,8 @@ export default function PageClient({ communityId }: { communityId: string }) {
   const fetchFollowers = useCallback(async () => {
     try {
       const data = await functions.createExecution(
-        'community-endpoints',
-        '',
+        "community-endpoints",
+        "",
         false,
         `/community/followers?communityId=${communityId}`, // You can specify a static limit here if desired
         ExecutionMethod.GET
@@ -36,9 +36,9 @@ export default function PageClient({ communityId }: { communityId: string }) {
 
   if (isFetching || !followers) {
     return (
-      <div className={'flex flex-1 justify-center items-center h-full'}>
-        <div className={'p-4 gap-6 text-center'}>
-          <h1 className={'text-2xl font-semibold'}>Loading...</h1>
+      <div className={"flex h-full flex-1 items-center justify-center"}>
+        <div className={"gap-6 p-4 text-center"}>
+          <h1 className={"text-2xl font-semibold"}>Loading...</h1>
         </div>
       </div>
     )
@@ -46,10 +46,10 @@ export default function PageClient({ communityId }: { communityId: string }) {
 
   if (followers.length === 0) {
     return (
-      <div className={'flex flex-1 justify-center items-center h-full'}>
-        <div className={'p-4 gap-6 text-center'}>
-          <h1 className={'text-2xl font-semibold'}>No followers found</h1>
-          <p className={'text-muted-foreground'}>
+      <div className={"flex h-full flex-1 items-center justify-center"}>
+        <div className={"gap-6 p-4 text-center"}>
+          <h1 className={"text-2xl font-semibold"}>No followers found</h1>
+          <p className={"text-muted-foreground"}>
             They don&apos;t have any followers yet.
           </p>
         </div>
@@ -60,31 +60,31 @@ export default function PageClient({ communityId }: { communityId: string }) {
   return (
     <div
       className={
-        'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 3xl:grid-cols-8 5xl:grid-cols-10 gap-4 xl:gap-6 p-4 mx-auto'
+        "3xl:grid-cols-8 5xl:grid-cols-10 mx-auto grid grid-cols-2 gap-4 p-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 xl:gap-6 2xl:grid-cols-7"
       }
     >
       {followers.map((user: UserDataDocumentsType) => {
         return (
-          <Card className={'border-none h-40 w-40 mx-auto'} key={user.$id}>
-            <Card className={'border-none h-40 w-40 mx-auto'} key={user.$id}>
+          <Card className={"mx-auto h-40 w-40 border-none"} key={user.$id}>
+            <Card className={"mx-auto h-40 w-40 border-none"} key={user.$id}>
               <UserCard user={user} isChild>
-                <div className={'h-full w-full'}>
+                <div className={"h-full w-full"}>
                   {user.avatarId ? (
                     <Image
                       src={
                         getAvatarImageUrlPreview(
                           user.avatarId,
-                          'width=250&height=250'
+                          "width=250&height=250"
                         ) || null
                       }
                       alt={user.displayName}
-                      className="object-cover rounded-md"
+                      className="rounded-md object-cover"
                       width={1000}
                       height={1000}
                     />
                   ) : (
-                    <div className="h-full w-full bg-gray-200 rounded-md flex items-center justify-center text-wrap truncate">
-                      <p className="text-gray-400 text-center">
+                    <div className="flex h-full w-full items-center justify-center truncate text-wrap rounded-md bg-gray-200">
+                      <p className="text-center text-gray-400">
                         {user.displayName}
                       </p>
                     </div>

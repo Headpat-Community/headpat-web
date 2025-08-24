@@ -1,10 +1,10 @@
-'use client'
-import { useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { DownloadIcon } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { useTranslations } from 'gt-next/client'
+"use client"
+import { useEffect } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { DownloadIcon } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { useTranslations } from "gt-next/client"
 
 interface DeviceType {
   model?: string
@@ -13,23 +13,23 @@ interface DeviceType {
 }
 
 const isMobileDevice = async () => {
-  const deviceType: DeviceType = await fetch('/api/device').then((res) =>
+  const deviceType: DeviceType = await fetch("/api/device").then((res) =>
     res.json()
   )
 
-  if (deviceType.type === 'mobile') {
-    if (deviceType.vendor === 'Apple') {
-      window.location.href = 'https://apps.apple.com/app/headpat/id6502715063'
-    } else if (deviceType.vendor === 'Google') {
+  if (deviceType.type === "mobile") {
+    if (deviceType.vendor === "Apple") {
+      window.location.href = "https://apps.apple.com/app/headpat/id6502715063"
+    } else if (deviceType.vendor === "Google") {
       window.location.href =
-        'https://play.google.com/store/apps/details?id=com.headpat.app'
+        "https://play.google.com/store/apps/details?id=com.headpat.app"
     }
   }
-  return 'unknown'
+  return "unknown"
 }
 
 export default function PageClient() {
-  const t = useTranslations('AppPage')
+  const t = useTranslations("AppPage")
 
   useEffect(() => {
     const fetchDevice = async () => {
@@ -40,23 +40,23 @@ export default function PageClient() {
   }, [])
 
   return (
-    <div className="grid md:grid-cols-2 gap-6 p-6">
+    <div className="grid gap-6 p-6 md:grid-cols-2">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            {t('googlePlay')}
+            {t("googlePlay")}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground mb-4">{t('downloadAndroid')}</p>
+          <p className="text-muted-foreground mb-4">{t("downloadAndroid")}</p>
           <Link
             href={
-              'https://play.google.com/store/apps/details?id=com.headpat.app'
+              "https://play.google.com/store/apps/details?id=com.headpat.app"
             }
-            target={'_blank'}
+            target={"_blank"}
           >
-            <Button className="w-full mt-4 bg-gray-800 hover:bg-gray-700 text-white">
-              <DownloadIcon className="mr-2 size-4" /> {t('getItOnGooglePlay')}
+            <Button className="mt-4 w-full bg-gray-800 text-white hover:bg-gray-700">
+              <DownloadIcon className="mr-2 size-4" /> {t("getItOnGooglePlay")}
             </Button>
           </Link>
         </CardContent>
@@ -64,16 +64,16 @@ export default function PageClient() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">{t('ios')}</CardTitle>
+          <CardTitle className="flex items-center gap-2">{t("ios")}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground mb-4">{t('downloadIOS')}</p>
+          <p className="text-muted-foreground mb-4">{t("downloadIOS")}</p>
           <Link
-            href={'https://apps.apple.com/app/headpat/id6502715063'}
-            target={'_blank'}
+            href={"https://apps.apple.com/app/headpat/id6502715063"}
+            target={"_blank"}
           >
-            <Button className="w-full mt-4 bg-gray-800 hover:bg-gray-700 text-white">
-              <DownloadIcon className="mr-2 size-4" /> {t('downloadOnAppStore')}
+            <Button className="mt-4 w-full bg-gray-800 text-white hover:bg-gray-700">
+              <DownloadIcon className="mr-2 size-4" /> {t("downloadOnAppStore")}
             </Button>
           </Link>
         </CardContent>

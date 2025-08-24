@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Impressum'
+  title: "Impressum",
 }
 
 export default function ImpressumPage() {
@@ -18,7 +18,7 @@ export default function ImpressumPage() {
           </h1>
           <br />
           <p>
-            Only on request:{' '}
+            Only on request:{" "}
             <a href="mailto:help@headpat.place">help@headpat.place</a>
           </p>
           <br />
@@ -37,7 +37,7 @@ export default function ImpressumPage() {
           </h1>
           <p>
             The European Commission provides a platform for online dispute
-            resolution, available here:{' '}
+            resolution, available here:{" "}
             <a
               className="text-link hover:text-link/80"
               href="https://ec.europa.eu/consumers/odr/"

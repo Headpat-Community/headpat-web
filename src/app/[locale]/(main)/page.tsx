@@ -1,40 +1,40 @@
-import Image from 'next/image'
-import { ChevronRightIcon } from 'lucide-react'
-import Link from 'next/link'
-import { getTranslations } from 'gt-next/server'
-import { HoverBorderGradient } from '@/components/ui/motion/hover-border-gradient'
+import Image from "next/image"
+import { ChevronRightIcon } from "lucide-react"
+import Link from "next/link"
+import { getTranslations } from "gt-next/server"
+import { HoverBorderGradient } from "@/components/ui/motion/hover-border-gradient"
 
 export async function generateMetadata({ params }) {
   const paramsResponse = await params
-  const meta = await getTranslations('MainMetadata')
+  const meta = await getTranslations("MainMetadata")
 
   return {
-    title: meta('title'),
-    description: meta('description'),
+    title: meta("title"),
+    description: meta("description"),
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/`,
       languages: {
         en: `${process.env.NEXT_PUBLIC_DOMAIN}/en`,
         de: `${process.env.NEXT_PUBLIC_DOMAIN}/de`,
-        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl`
-      }
+        nl: `${process.env.NEXT_PUBLIC_DOMAIN}/nl`,
+      },
     },
     icons: {
-      icon: '/logos/hp_logo_x512.webp'
+      icon: "/logos/hp_logo_x512.webp",
     },
     openGraph: {
-      title: meta('title'),
-      description: meta('description'),
-      images: '/logos/hp_logo_x512.webp',
+      title: meta("title"),
+      description: meta("description"),
+      images: "/logos/hp_logo_x512.webp",
       locale: paramsResponse.locale,
-      type: 'website'
+      type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN)
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
   }
 }
 
 export default async function Home() {
-  const main = await getTranslations('HomePage')
+  const main = await getTranslations("HomePage")
 
   return (
     <div className="">
@@ -82,38 +82,38 @@ export default async function Home() {
             <div
               style={{
                 clipPath:
-                  'polygon(73.6% 51.7%, 91.7% 11.8%, 100% 46.4%, 97.4% 82.2%, 92.5% 84.9%, 75.7% 64%, 55.3% 47.5%, 46.5% 49.4%, 45% 62.9%, 50.3% 87.2%, 21.3% 64.1%, 0.1% 100%, 5.4% 51.1%, 21.4% 63.9%, 58.9% 0.2%, 73.6% 51.7%)'
+                  "polygon(73.6% 51.7%, 91.7% 11.8%, 100% 46.4%, 97.4% 82.2%, 92.5% 84.9%, 75.7% 64%, 55.3% 47.5%, 46.5% 49.4%, 45% 62.9%, 50.3% 87.2%, 21.3% 64.1%, 0.1% 100%, 5.4% 51.1%, 21.4% 63.9%, 58.9% 0.2%, 73.6% 51.7%)",
               }}
-              className="aspect-1108/632 w-[69.25rem] bg-linear-to-r from-[#80caff] to-[#4f46e5] opacity-20"
+              className="aspect-1108/632 bg-linear-to-r w-[69.25rem] from-[#80caff] to-[#4f46e5] opacity-20"
             />
           </div>
           <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-40 lg:flex lg:px-8 lg:pt-40">
             <div className="mx-auto max-w-2xl shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8">
-              <div className="mt-24 sm:mt-32 lg:mt-16 flex space-x-6 items-center">
+              <div className="mt-24 flex items-center space-x-6 sm:mt-32 lg:mt-16">
                 <Link href="/app">
                   <HoverBorderGradient
                     containerClassName="rounded-full"
                     as="button"
-                    className="bg-background text-black dark:text-white flex items-center"
+                    className="bg-background flex items-center text-black dark:text-white"
                   >
-                    <span>{main('checkapp')}</span>
+                    <span>{main("checkapp")}</span>
                   </HoverBorderGradient>
                 </Link>
                 <Link href="/changelog">
-                  <span className="inline-flex items-center space-x-2 text-sm font-medium leading-6 text-muted-foreground hover:text-muted-foreground/90">
-                    <span>{main('latestupdates')}</span>
+                  <span className="text-muted-foreground hover:text-muted-foreground/90 inline-flex items-center space-x-2 text-sm font-medium leading-6">
+                    <span>{main("latestupdates")}</span>
                     <ChevronRightIcon aria-hidden="true" className="h-5 w-5" />
                   </span>
                 </Link>
               </div>
               <h1 className="mt-10 text-4xl font-bold tracking-tight sm:text-6xl">
-                {main('showoffwithconfidence')}
+                {main("showoffwithconfidence")}
               </h1>
-              <p className="mt-6 text-lg leading-8 text-muted-foreground">
-                {main('description1')}
+              <p className="text-muted-foreground mt-6 text-lg leading-8">
+                {main("description1")}
               </p>
-              <p className="mt-6 text-lg leading-8 text-muted-foreground">
-                {main('description2')}
+              <p className="text-muted-foreground mt-6 text-lg leading-8">
+                {main("description2")}
               </p>
             </div>
             <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
@@ -121,13 +121,13 @@ export default async function Home() {
                 <Image
                   alt="App screenshot"
                   src={
-                    'https://api.headpat.place/v1/storage/buckets/main-storage/files/headpat_frontpage/view?project=hp-main'
+                    "https://api.headpat.place/v1/storage/buckets/main-storage/files/headpat_frontpage/view?project=hp-main"
                   }
                   draggable={false}
                   priority
                   width={512}
                   height={598}
-                  className="w-[30rem] md:w-[50rem] lg:w-[76rem] rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
+                  className="w-[30rem] rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10 md:w-[50rem] lg:w-[76rem]"
                 />
               </div>
             </div>

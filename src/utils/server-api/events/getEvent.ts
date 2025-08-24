@@ -1,5 +1,5 @@
-import { EventsDocumentsType } from '@/utils/types/models'
-import { createSessionServerClient } from '@/app/appwrite-session'
+import type { EventsDocumentsType } from "@/utils/types/models"
+import { createSessionServerClient } from "@/app/appwrite-session"
 
 /**
  * This function is used to get the event data
@@ -9,7 +9,7 @@ import { createSessionServerClient } from '@/app/appwrite-session'
 export async function getEvent(eventId: string): Promise<EventsDocumentsType> {
   const { databases } = await createSessionServerClient()
   return await databases
-    .getDocument('hp_db', 'events', eventId)
+    .getDocument("hp_db", "events", eventId)
     .catch((error) => {
       return JSON.parse(JSON.stringify(error))
     })

@@ -1,40 +1,40 @@
-'use client'
-import { useEffect, useState } from 'react'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import * as Sentry from '@sentry/nextjs'
-import { getDocument } from '@/components/api/documents'
-import z from 'zod'
-import { databases } from '@/app/appwrite-client'
-import { toast } from 'sonner'
-import { UserDataDocumentsType } from '@/utils/types/models'
+"use client"
+import { useEffect, useState } from "react"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import * as Sentry from "@sentry/nextjs"
+import { getDocument } from "@/components/api/documents"
+import z from "zod"
+import { databases } from "@/app/appwrite-client"
+import { toast } from "sonner"
+import type { UserDataDocumentsType } from "@/utils/types/models"
 
 const schema = z.object({
   discordname: z
     .string()
-    .max(32, 'Discord name must be 32 characters or less')
+    .max(32, "Discord name must be 32 characters or less")
     .nullable(),
   telegramname: z
     .string()
-    .max(32, 'Telegram name must be 32 characters or less')
+    .max(32, "Telegram name must be 32 characters or less")
     .nullable(),
   furaffinityname: z
     .string()
-    .max(32, 'Furaffinity name must be 32 characters or less')
+    .max(32, "Furaffinity name must be 32 characters or less")
     .nullable(),
   X_name: z
     .string()
-    .max(32, 'X / Twitter name must be 32 characters or less')
+    .max(32, "X / Twitter name must be 32 characters or less")
     .nullable(),
   twitchname: z
     .string()
-    .max(32, 'Twitch name must be 32 characters or less')
+    .max(32, "Twitch name must be 32 characters or less")
     .nullable(),
   blueskyname: z
     .string()
-    .max(32, 'Bluesky name must be 32 characters or less')
-    .nullable()
+    .max(32, "Bluesky name must be 32 characters or less")
+    .nullable(),
 })
 
 export default function SocialsView({ accountData }) {
@@ -42,7 +42,7 @@ export default function SocialsView({ accountData }) {
   const [userData, setUserData] = useState(null)
 
   useEffect(() => {
-    getDocument('hp_db', 'userdata', accountData.$id).then(
+    getDocument("hp_db", "userdata", accountData.$id).then(
       (data: UserDataDocumentsType) => setUserData(data)
     )
   }, [accountData])
@@ -61,18 +61,18 @@ export default function SocialsView({ accountData }) {
     try {
       setIsUploading(true)
 
-      await databases.updateDocument('hp_db', 'userdata', accountData.$id, {
+      await databases.updateDocument("hp_db", "userdata", accountData.$id, {
         discordname: userData.discordname,
         telegramname: userData.telegramname,
         furaffinityname: userData.furaffinityname,
         X_name: userData.X_name,
         twitchname: userData.twitchname,
-        blueskyname: userData.blueskyname
+        blueskyname: userData.blueskyname,
       })
 
-      toast.success('User data saved successfully.')
+      toast.success("User data saved successfully.")
     } catch (error) {
-      toast.error('Failed to save user data. Please try again later.')
+      toast.error("Failed to save user data. Please try again later.")
       Sentry.captureException(error)
     } finally {
       setIsUploading(false)
@@ -100,12 +100,12 @@ export default function SocialsView({ accountData }) {
                     type="text"
                     name="discordname"
                     id="discordname"
-                    value={userData ? userData.discordname : ''} // Set the value from state
+                    value={userData ? userData.discordname : ""} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
                           ...userData,
-                          discordname: e.target.value
+                          discordname: e.target.value,
                         })
                       }
                     }} // Update state when the input changes, only if the length is less than or equal to 32
@@ -133,12 +133,12 @@ export default function SocialsView({ accountData }) {
                     type="text"
                     name="telegramname"
                     id="telegramname"
-                    value={userData ? userData.telegramname : ''} // Set the value from state
+                    value={userData ? userData.telegramname : ""} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
                           ...userData,
-                          telegramname: e.target.value
+                          telegramname: e.target.value,
                         })
                       }
                     }} // Update state when the input changes, only if the length is less than or equal to 32
@@ -161,12 +161,12 @@ export default function SocialsView({ accountData }) {
                     type="text"
                     name="furaffinityname"
                     id="furaffinityname"
-                    value={userData ? userData.furaffinityname : ''} // Set the value from state
+                    value={userData ? userData.furaffinityname : ""} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
                           ...userData,
-                          furaffinityname: e.target.value
+                          furaffinityname: e.target.value,
                         })
                       }
                     }} // Update state when the input changes, only if the length is less than or equal to 32
@@ -194,12 +194,12 @@ export default function SocialsView({ accountData }) {
                     type="text"
                     name="X_name"
                     id="X_name"
-                    value={userData ? userData.X_name : ''} // Set the value from state
+                    value={userData ? userData.X_name : ""} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
                           ...userData,
-                          X_name: e.target.value
+                          X_name: e.target.value,
                         })
                       }
                     }} // Update state when the input changes, only if the length is less than or equal to 32
@@ -222,12 +222,12 @@ export default function SocialsView({ accountData }) {
                     type="text"
                     name="twitchname"
                     id="twitchname"
-                    value={userData ? userData.twitchname : ''} // Set the value from state
+                    value={userData ? userData.twitchname : ""} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
                           ...userData,
-                          twitchname: e.target.value
+                          twitchname: e.target.value,
                         })
                       }
                     }} // Update state when the input changes, only if the length is less than or equal to 32
@@ -250,12 +250,12 @@ export default function SocialsView({ accountData }) {
                     type="text"
                     name="blueskyname"
                     id="blueskyname"
-                    value={userData ? userData.blueskyname : ''} // Set the value from state
+                    value={userData ? userData.blueskyname : ""} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
                           ...userData,
-                          blueskyname: e.target.value
+                          blueskyname: e.target.value,
                         })
                       }
                     }} // Update state when the input changes, only if the length is less than or equal to 32

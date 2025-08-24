@@ -1,10 +1,11 @@
-'use client'
-import React, { useRef, useState } from 'react'
-import ReactCrop, { Crop, PixelCrop } from 'react-image-crop'
-import { canvasPreview } from './canvasPreview'
-import { useDebounceEffect } from './useDebounceEffect'
-import 'react-image-crop/dist/ReactCrop.css'
-import { Input } from '@/components/ui/input'
+"use client"
+import React, { useRef, useState } from "react"
+import type { Crop, PixelCrop } from "react-image-crop"
+import ReactCrop from "react-image-crop"
+import { canvasPreview } from "./canvasPreview"
+import { useDebounceEffect } from "./useDebounceEffect"
+import "react-image-crop/dist/ReactCrop.css"
+import { Input } from "@/components/ui/input"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,12 +14,12 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
-} from '@/components/ui/alert-dialog'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { centerAspectCrop, createBlob } from './uploadHelper'
-import { toast } from 'sonner'
-import { storage, ID } from '@/app/appwrite-client'
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { centerAspectCrop, createBlob } from "./uploadHelper"
+import { toast } from "sonner"
+import { storage, ID } from "@/app/appwrite-client"
 
 interface ImageUploaderProps {
   isUploading: boolean
@@ -49,16 +50,16 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   label,
   description,
   recommendedResolution,
-  defaultImage = '/logos/hp_logo_x512.webp'
+  defaultImage = "/logos/hp_logo_x512.webp",
 }) => {
-  const [imgSrc, setImgSrc] = useState('')
+  const [imgSrc, setImgSrc] = useState("")
   const previewCanvasRef = useRef<HTMLCanvasElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
   const [crop, setCrop] = useState<Crop>()
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
-  const [type, setType] = useState('image/png')
-  const [name, setName] = useState('')
+  const [type, setType] = useState("image/png")
+  const [name, setName] = useState("")
   const [open, setOpen] = useState(false)
   const scale = 1
   const rotate = 0
@@ -71,15 +72,15 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           `File size exceeds the ${(maxSizeInBytes / 1024 / 1024).toFixed(1)} MB limit.`
         )
         if (fileInputRef.current) {
-          fileInputRef.current.value = ''
+          fileInputRef.current.value = ""
         }
         return
       }
       setOpen(true)
       setCrop(undefined)
       const reader = new FileReader()
-      reader.addEventListener('load', () =>
-        setImgSrc(reader.result?.toString() || '')
+      reader.addEventListener("load", () =>
+        setImgSrc(reader.result?.toString() || "")
       )
       setType(file.type)
       setName(file.name)
@@ -97,21 +98,21 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   async function onUploadCropClick() {
     const blob = await createBlob(imgRef, previewCanvasRef, completedCrop, type)
     const formData = new FormData()
-    formData.append('file', blob, name || 'Unnamed')
+    formData.append("file", blob, name || "Unnamed")
     try {
-      const file = formData.get('file') as File
+      const file = formData.get("file") as File
       setIsUploading(true)
       // Call onBeforeUpload if provided
       if (onBeforeUpload) {
         try {
           const result = await onBeforeUpload(file)
           if (result === false) {
-            toast.error('Upload was cancelled.')
+            toast.error("Upload was cancelled.")
             setIsUploading(false)
             return
           }
         } catch {
-          toast.error('Pre-upload check failed.')
+          toast.error("Pre-upload check failed.")
           setIsUploading(false)
           return
         }
@@ -123,11 +124,11 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         file
       )
       await onAfterUpload(fileData.$id, file)
-      setImgSrc('')
+      setImgSrc("")
       setOpen(false)
-      if (fileInputRef.current) fileInputRef.current.value = ''
+      if (fileInputRef.current) fileInputRef.current.value = ""
     } catch {
-      toast.error('Failed to upload image.')
+      toast.error("Failed to upload image.")
     } finally {
       setIsUploading(false)
     }
@@ -165,7 +166,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
             alt="Preview"
             className="size-24 flex-none rounded-lg object-cover"
           />
-          <div className={'space-y-2'}>
+          <div className={"space-y-2"}>
             <Input
               ref={fileInputRef}
               accept="image/*"
@@ -184,20 +185,20 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           </div>
         </div>
       </div>
-      <div className={'flex'}>
+      <div className={"flex"}>
         <AlertDialog onOpenChange={setOpen} open={open}>
-          <AlertDialogContent className={'h-full lg:h-auto'}>
-            <ScrollArea className={'h-[500px] lg:h-[700px]'}>
+          <AlertDialogContent className={"h-full lg:h-auto"}>
+            <ScrollArea className={"h-[500px] lg:h-[700px]"}>
               <AlertDialogHeader>
                 <AlertDialogTitle>
                   Welcome to the custom crop tool
                 </AlertDialogTitle>
                 <AlertDialogDescription>
-                  Please make sure your image is at least{' '}
+                  Please make sure your image is at least{" "}
                   {recommendedResolution.replace(
-                    ' resolution recommended.',
-                    ''
-                  )}{' '}
+                    " resolution recommended.",
+                    ""
+                  )}{" "}
                   for the best results.
                 </AlertDialogDescription>
               </AlertDialogHeader>
@@ -210,7 +211,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                     aspect={aspect}
                     maxHeight={750}
                     keepSelection={true}
-                    className={''}
+                    className={""}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -218,21 +219,21 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                       alt="Crop me"
                       src={imgSrc}
                       style={{
-                        transform: `scale(${scale}) rotate(${rotate}deg)`
+                        transform: `scale(${scale}) rotate(${rotate}deg)`,
                       }}
                       onLoad={onImageLoad}
                     />
                   </ReactCrop>
                 )}
                 {!!completedCrop && (
-                  <div className={'hidden'}>
+                  <div className={"hidden"}>
                     <canvas
                       ref={previewCanvasRef}
                       style={{
-                        border: '1px solid black',
-                        objectFit: 'contain',
+                        border: "1px solid black",
+                        objectFit: "contain",
                         width: completedCrop.width,
-                        height: completedCrop.height
+                        height: completedCrop.height,
                       }}
                     />
                   </div>
@@ -242,7 +243,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
             <AlertDialogFooter>
               <AlertDialogCancel
                 onClick={() => {
-                  if (fileInputRef.current) fileInputRef.current.value = ''
+                  if (fileInputRef.current) fileInputRef.current.value = ""
                 }}
               >
                 Cancel

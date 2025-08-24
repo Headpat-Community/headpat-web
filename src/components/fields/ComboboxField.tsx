@@ -1,32 +1,32 @@
-import React from 'react'
-import { Check, ChevronsUpDown, Info } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+import React from "react"
+import { Check, ChevronsUpDown, Info } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList
-} from '@/components/ui/command'
+  CommandList,
+} from "@/components/ui/command"
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger
-} from '@/components/ui/popover'
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import {
   FormControl,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form'
+  FormMessage,
+} from "@/components/ui/form"
 import {
   HoverCard,
   HoverCardContent,
-  HoverCardTrigger
-} from '@/components/ui/hover-card'
-import { Controller } from 'react-hook-form'
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import { Controller } from "react-hook-form"
 
 interface ComboBoxFieldProps {
   label: string
@@ -39,15 +39,15 @@ const ComboBoxField: React.FC<ComboBoxFieldProps> = ({
   label,
   description,
   options,
-  field
+  field,
 }) => {
   const [open, setOpen] = React.useState(false)
   const [selectedValue, setSelectedValue] = React.useState<string>(
-    field.value || ''
+    field.value || ""
   )
 
   const handleSelect = (currentValue: string) => {
-    const newValue = currentValue === selectedValue ? '' : currentValue
+    const newValue = currentValue === selectedValue ? "" : currentValue
     setSelectedValue(newValue)
     field.onChange(newValue)
     setOpen(false)
@@ -85,7 +85,7 @@ const ComboBoxField: React.FC<ComboBoxFieldProps> = ({
                     {selectedValue
                       ? options.find((option) => option.value === selectedValue)
                           ?.label
-                      : 'Select an option...'}
+                      : "Select an option..."}
                     <ChevronsUpDown className="opacity-50" />
                   </Button>
                 </PopoverTrigger>
@@ -93,7 +93,7 @@ const ComboBoxField: React.FC<ComboBoxFieldProps> = ({
                   <Command>
                     <CommandInput
                       placeholder="Search option..."
-                      className={'focus:ring-0 focus:border-0'}
+                      className={"focus:border-0 focus:ring-0"}
                     />
                     <CommandList>
                       <CommandEmpty>No option found.</CommandEmpty>
@@ -107,10 +107,10 @@ const ComboBoxField: React.FC<ComboBoxFieldProps> = ({
                             {option.label}
                             <Check
                               className={cn(
-                                'ml-auto',
+                                "ml-auto",
                                 selectedValue === option.value
-                                  ? 'opacity-100'
-                                  : 'opacity-0'
+                                  ? "opacity-100"
+                                  : "opacity-0"
                               )}
                             />
                           </CommandItem>

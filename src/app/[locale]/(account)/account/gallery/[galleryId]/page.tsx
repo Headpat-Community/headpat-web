@@ -1,12 +1,12 @@
-import Client from './page.client'
-import { notFound } from 'next/navigation'
-import { createAdminClient } from '@/app/appwrite-session'
-import { getUser } from '@/utils/server-api/account/user'
-import { redirect } from 'next/navigation'
-import { GalleryDocumentsType } from '@/utils/types/models'
+import Client from "./page.client"
+import { notFound } from "next/navigation"
+import { createAdminClient } from "@/app/appwrite-session"
+import { getUser } from "@/utils/server-api/account/user"
+import { redirect } from "next/navigation"
+import type { GalleryDocumentsType } from "@/utils/types/models"
 
 export const metadata = {
-  title: 'Account Gallery'
+  title: "Account Gallery",
 }
 
 export default async function AccountSingleGalleryPage(props) {
@@ -18,7 +18,7 @@ export default async function AccountSingleGalleryPage(props) {
   try {
     userData = await getUser()
   } catch {
-    return redirect('/login')
+    return redirect("/login")
   }
 
   const userId = userData?.$id
@@ -29,8 +29,8 @@ export default async function AccountSingleGalleryPage(props) {
 
   try {
     singleGallery = await databases.getDocument(
-      'hp_db',
-      'gallery-images',
+      "hp_db",
+      "gallery-images",
       galleryId
     )
 

@@ -1,5 +1,6 @@
-import { type ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { clsx } from "clsx"
+import type { ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -10,12 +11,12 @@ export function cn(...inputs: ClassValue[]) {
  */
 export function safeResponse<T>(
   response: T,
-  errorMessage: string = 'An error occurred'
+  errorMessage: string = "An error occurred"
 ): T {
   try {
     return response
   } catch (error) {
-    console.error('Response error:', error)
+    console.error("Response error:", error)
     throw new Error(errorMessage)
   }
 }

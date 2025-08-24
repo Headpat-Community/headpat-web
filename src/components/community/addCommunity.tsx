@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import {
   AlertDialog,
@@ -8,44 +8,45 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger
-} from '@/components/ui/alert-dialog'
-import React from 'react'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Switch } from '@/components/ui/switch'
-import { z } from 'zod'
-import { toast } from 'sonner'
-import { Button } from '@/components/ui/button'
-import { ExecutionMethod, Models } from 'node-appwrite'
-import { functions } from '@/app/appwrite-client'
-import { useRouter } from 'next/navigation'
-import { FunctionResponse } from '@/utils/types/models'
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import React from "react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Switch } from "@/components/ui/switch"
+import { z } from "zod"
+import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
+import type { Models } from "node-appwrite"
+import { ExecutionMethod } from "node-appwrite"
+import { functions } from "@/app/appwrite-client"
+import { useRouter } from "next/navigation"
+import type { FunctionResponse } from "@/utils/types/models"
 
 const communitySchema = z.object({
   name: z
     .string()
-    .min(4, 'Name must be 4 characters or more')
-    .max(64, 'Name must be 64 characters or less'),
+    .min(4, "Name must be 4 characters or more")
+    .max(64, "Name must be 64 characters or less"),
   description: z
     .string()
-    .max(4096, 'Description must be 4096 characters or less'),
+    .max(4096, "Description must be 4096 characters or less"),
   isPrivate: z.boolean(),
-  nsfw: z.boolean()
+  nsfw: z.boolean(),
 })
 
 export default function AddCommunity({
-  children
+  children,
 }: {
   children: React.ReactNode
 }) {
   const router = useRouter()
   const [communityData, setCommunityData] = React.useState({
-    name: '',
-    description: '',
+    name: "",
+    description: "",
     isPrivate: false,
-    nsfw: false
+    nsfw: false,
   })
   const [isSubmitting, setIsSubmitting] = React.useState(false)
 
@@ -60,9 +61,9 @@ export default function AddCommunity({
       return
     }
 
-    const loadingToast = toast.loading('Creating community...')
+    const loadingToast = toast.loading("Creating community...")
     const data = await functions.createExecution(
-      'community-endpoints',
+      "community-endpoints",
       JSON.stringify(communityData),
       false,
       `/community/create`,
@@ -71,30 +72,30 @@ export default function AddCommunity({
     const resultCreate: Models.Team<Models.Preferences> | FunctionResponse =
       JSON.parse(data.responseBody)
 
-    if ('type' in resultCreate) {
-      if (resultCreate.type === 'community_create_unauthorized') {
+    if ("type" in resultCreate) {
+      if (resultCreate.type === "community_create_unauthorized") {
         toast.error(
-          'You are not signed in. Please sign in to create a community.'
+          "You are not signed in. Please sign in to create a community."
         )
         return
-      } else if (resultCreate.type === 'community_create_no_name') {
-        toast.success('No name provided for the community.')
+      } else if (resultCreate.type === "community_create_no_name") {
+        toast.success("No name provided for the community.")
       }
       toast.dismiss(loadingToast)
       setIsSubmitting(false)
     } else {
       toast.dismiss(loadingToast)
-      toast.success('Community created successfully!')
+      toast.success("Community created successfully!")
       router.push(`/community/${resultCreate.$id}`)
     }
   }
 
   const handleClose = () => {
     setCommunityData({
-      name: '',
-      description: '',
+      name: "",
+      description: "",
       isPrivate: false,
-      nsfw: false
+      nsfw: false,
     })
   }
 
@@ -109,7 +110,7 @@ export default function AddCommunity({
           Ready to share your quirky interests with the world? Create a new
           community and start building your community today!
         </AlertDialogDescription>
-        <div className={'space-y-4'}>
+        <div className={"space-y-4"}>
           <div>
             <Label>Name</Label>
             <Input
@@ -132,7 +133,7 @@ export default function AddCommunity({
               onChange={(e) =>
                 setCommunityData((prev) => ({
                   ...prev,
-                  description: e.target.value
+                  description: e.target.value,
                 }))
               }
             />
@@ -144,7 +145,7 @@ export default function AddCommunity({
               onCheckedChange={() => {
                 setCommunityData((prev) => ({
                   ...prev,
-                  isPrivate: !prev.isPrivate
+                  isPrivate: !prev.isPrivate,
                 }))
               }}
             />

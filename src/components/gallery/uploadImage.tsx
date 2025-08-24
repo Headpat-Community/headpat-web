@@ -1,17 +1,17 @@
-'use client'
-import React, { useRef, useState } from 'react'
-import { databases, ID, storage } from '@/app/appwrite-client'
-import * as Sentry from '@sentry/nextjs'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Textarea } from '@/components/ui/textarea'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
-import imageCompression from 'browser-image-compression'
-import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
-import { encode } from 'blurhash'
+"use client"
+import React, { useRef, useState } from "react"
+import { databases, ID, storage } from "@/app/appwrite-client"
+import * as Sentry from "@sentry/nextjs"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Textarea } from "@/components/ui/textarea"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
+import imageCompression from "browser-image-compression"
+import { Button } from "@/components/ui/button"
+import { Progress } from "@/components/ui/progress"
+import { encode } from "blurhash"
 
 export default function UploadPage({ userId }: { userId: string }) {
   const [isUploading, setIsUploading] = useState(false)
@@ -22,9 +22,9 @@ export default function UploadPage({ userId }: { userId: string }) {
   const [blurHash, setBlurHash] = useState<string>(null)
   const fileInputRef = useRef(null)
   const [data, setData] = useState({
-    name: '',
-    longText: '',
-    nsfw: false
+    name: "",
+    longText: "",
+    nsfw: false,
   })
 
   const maxSizeInBytes = 8 * 1024 * 1024 // 8 MB
@@ -33,10 +33,10 @@ export default function UploadPage({ userId }: { userId: string }) {
     return new Promise((resolve, reject) => {
       const img = new Image()
       img.onload = () => {
-        const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')
+        const canvas = document.createElement("canvas")
+        const ctx = canvas.getContext("2d")
         if (!ctx) {
-          reject(new Error('Could not get canvas context'))
+          reject(new Error("Could not get canvas context"))
           return
         }
 
@@ -72,11 +72,11 @@ export default function UploadPage({ userId }: { userId: string }) {
       const file = event.target.files[0]
 
       // Handle GIFs and videos separately without compression
-      if (file.type.includes('image/gif') || file.type.includes('video')) {
+      if (file.type.includes("image/gif") || file.type.includes("video")) {
         if (file.size > maxSizeInBytes) {
-          toast.error('File size exceeds the 8 MB limit.')
+          toast.error("File size exceeds the 8 MB limit.")
           if (fileInputRef.current) {
-            fileInputRef.current.value = '' // Reset the input field
+            fileInputRef.current.value = "" // Reset the input field
           }
           return
         }
@@ -94,16 +94,16 @@ export default function UploadPage({ userId }: { userId: string }) {
           useWebWorker: true,
           onProgress: (progress) => {
             setProgress(progress)
-          }
+          },
         })
 
         // Then check the size
         if (compressedFile.size > maxSizeInBytes) {
           toast.error(
-            'File size exceeds the 8 MB limit even after compression.'
+            "File size exceeds the 8 MB limit even after compression."
           )
           if (fileInputRef.current) {
-            fileInputRef.current.value = '' // Reset the input
+            fileInputRef.current.value = "" // Reset the input
           }
           return
         }
@@ -117,7 +117,7 @@ export default function UploadPage({ userId }: { userId: string }) {
         // Convert Blob back to a File object
         const newFile = new File([finalFile], file.name, {
           type: finalFile.type,
-          lastModified: file.lastModified
+          lastModified: file.lastModified,
         })
 
         // Generate blurhash for the image
@@ -127,14 +127,14 @@ export default function UploadPage({ userId }: { userId: string }) {
         setSelectedFileInput(imgSrc)
         setSelectedFile(newFile)
       } catch (error) {
-        console.error('Error compressing file:', error)
-        toast.error('Error compressing file.')
+        console.error("Error compressing file:", error)
+        toast.error("Error compressing file.")
         if (fileInputRef.current) {
-          fileInputRef.current.value = '' // Reset the input
+          fileInputRef.current.value = "" // Reset the input
         }
       }
     } else {
-      toast.error('No file selected.')
+      toast.error("No file selected.")
     }
   }
 
@@ -144,11 +144,11 @@ export default function UploadPage({ userId }: { userId: string }) {
       const file = event.dataTransfer.files[0]
 
       // Handle GIFs and videos separately without compression
-      if (file.type.includes('image/gif') || file.type.includes('video')) {
+      if (file.type.includes("image/gif") || file.type.includes("video")) {
         if (file.size > maxSizeInBytes) {
-          toast.error('File size exceeds the 8 MB limit.')
+          toast.error("File size exceeds the 8 MB limit.")
           if (fileInputRef.current) {
-            fileInputRef.current.value = '' // Reset the input field
+            fileInputRef.current.value = "" // Reset the input field
           }
           return
         }
@@ -166,16 +166,16 @@ export default function UploadPage({ userId }: { userId: string }) {
           useWebWorker: true,
           onProgress: (progress) => {
             setProgress(progress)
-          }
+          },
         })
 
         // Then check the size
         if (compressedFile.size > maxSizeInBytes) {
           toast.error(
-            'File size exceeds the 8 MB limit even after compression.'
+            "File size exceeds the 8 MB limit even after compression."
           )
           if (fileInputRef.current) {
-            fileInputRef.current.value = '' // Reset the input field
+            fileInputRef.current.value = "" // Reset the input field
           }
           return
         }
@@ -189,7 +189,7 @@ export default function UploadPage({ userId }: { userId: string }) {
         // Convert Blob back to a File object
         const newFile = new File([finalFile], file.name, {
           type: finalFile.type,
-          lastModified: file.lastModified
+          lastModified: file.lastModified,
         })
 
         // Generate blurhash for the image
@@ -199,11 +199,11 @@ export default function UploadPage({ userId }: { userId: string }) {
         setSelectedFileInput(imgSrc)
         setSelectedFile(newFile)
       } catch (error) {
-        console.error('Error compressing file:', error)
-        toast.error('Error compressing file.')
+        console.error("Error compressing file:", error)
+        toast.error("Error compressing file.")
       }
     } else {
-      toast.error('No file dropped.')
+      toast.error("No file dropped.")
     }
   }
 
@@ -218,9 +218,9 @@ export default function UploadPage({ userId }: { userId: string }) {
     event.preventDefault()
 
     if (selectedFile.size > maxSizeInBytes) {
-      toast.error('File size exceeds the 8 MB limit.')
+      toast.error("File size exceeds the 8 MB limit.")
       if (fileInputRef.current) {
-        fileInputRef.current.value = '' // Reset the input field
+        fileInputRef.current.value = "" // Reset the input field
       }
       return
     }
@@ -228,13 +228,13 @@ export default function UploadPage({ userId }: { userId: string }) {
     try {
       setIsUploading(true) // Set isUploading to true before making the API call
 
-      const fileData = storage.createFile('gallery', ID.unique(), selectedFile)
+      const fileData = storage.createFile("gallery", ID.unique(), selectedFile)
 
       fileData.then(
         function (fileDataResponse) {
           const postDocument = databases.createDocument(
-            'hp_db',
-            'gallery-images',
+            "hp_db",
+            "gallery-images",
             fileDataResponse.$id,
             {
               name: data.name,
@@ -243,7 +243,7 @@ export default function UploadPage({ userId }: { userId: string }) {
               galleryId: fileDataResponse.$id,
               mimeType: fileDataResponse.mimeType,
               userId: userId,
-              blurHash: blurHash // Add blurhash to the document
+              blurHash: blurHash, // Add blurhash to the document
             }
           )
 
@@ -256,7 +256,7 @@ export default function UploadPage({ userId }: { userId: string }) {
             },
             function (error) {
               console.log(error) // Failure
-              storage.deleteFile('gallery', fileDataResponse.$id)
+              storage.deleteFile("gallery", fileDataResponse.$id)
               Sentry.captureException(error)
               toast.error(
                 "You encountered an error. But don't worry, we're on it."
@@ -300,7 +300,7 @@ export default function UploadPage({ userId }: { userId: string }) {
                   Cover photo
                 </label>
                 <div
-                  className="mt-2 flex justify-center rounded-lg border border-dashed border-black/25 px-6 py-10 dark:border-white/25 relative cursor-pointer"
+                  className="relative mt-2 flex cursor-pointer justify-center rounded-lg border border-dashed border-black/25 px-6 py-10 dark:border-white/25"
                   onDragOver={(event) => event.preventDefault()}
                   onDragEnter={(event) => event.preventDefault()}
                   onDrop={handleDrop}
@@ -311,11 +311,11 @@ export default function UploadPage({ userId }: { userId: string }) {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         id="selected-image"
-                        className="mx-auto h-96 min-w-full rounded-md object-contain cursor-pointer"
+                        className="mx-auto h-96 min-w-full cursor-pointer rounded-md object-contain"
                         alt="Placeholder Image"
                         src={
                           selectedFileInput ||
-                          '/images/placeholder-image-color.webp'
+                          "/images/placeholder-image-color.webp"
                         } // Fallback to a placeholder if selectedFileInput is null
                       />
                     </Label>
@@ -336,13 +336,13 @@ export default function UploadPage({ userId }: { userId: string }) {
 
           {/* Progress bar */}
           {progress !== 0 && progress !== 100 && (
-            <div className={'border-b border-white/10 pb-8'}>
+            <div className={"border-b border-white/10 pb-8"}>
               <Progress value={progress} className="w-full" />
             </div>
           )}
 
-          <div className={'border-b border-white/10 pb-8'}>
-            <div className="flex text-sm leading-6 text-gray-400 items-center">
+          <div className={"border-b border-white/10 pb-8"}>
+            <div className="flex items-center text-sm leading-6 text-gray-400">
               <Label>Supported:</Label>
               <p className="pl-1">
                 PNG, JPEG, GIF, SVG, TIFF, ICO, DVU up to 8MB
@@ -407,7 +407,7 @@ export default function UploadPage({ userId }: { userId: string }) {
             type="submit"
             disabled={isUploading} // Disable the button if isUploading is true
           >
-            {isUploading ? 'Uploading...' : 'Save'}
+            {isUploading ? "Uploading..." : "Save"}
             {/* Show different text based on the upload state */}
           </Button>
         </div>

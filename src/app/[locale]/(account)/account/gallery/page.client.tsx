@@ -1,11 +1,12 @@
-'use client'
-import { SetStateAction, useEffect, useState } from 'react'
-import Image from 'next/image'
-import Loading from '@/app/loading'
-import { databases, Query, storage } from '@/app/appwrite-client'
-import * as Sentry from '@sentry/nextjs'
-import Link from 'next/link'
-import { toast } from 'sonner'
+"use client"
+import type { SetStateAction } from "react"
+import { useEffect, useState } from "react"
+import Image from "next/image"
+import Loading from "@/app/loading"
+import { databases, Query, storage } from "@/app/appwrite-client"
+import * as Sentry from "@sentry/nextjs"
+import Link from "next/link"
+import { toast } from "sonner"
 
 export default function FetchGallery({ enableNsfw, userId }) {
   const [gallery, setGallery] = useState([])
@@ -15,12 +16,12 @@ export default function FetchGallery({ enableNsfw, userId }) {
 
   const getGalleryImageUrl = (galleryId: string) => {
     if (!galleryId) return
-    return storage.getFileView('gallery', `${galleryId}`)
+    return storage.getFileView("gallery", `${galleryId}`)
   }
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
-    const page = parseInt(urlParams.get('page')) || 1
+    const page = parseInt(urlParams.get("page")) || 1
     setCurrentPage(page)
   }, [])
 
@@ -32,22 +33,22 @@ export default function FetchGallery({ enableNsfw, userId }) {
 
       const filters = !enableNsfw
         ? [
-            Query.equal('userId', userId),
-            Query.equal('nsfw', false),
+            Query.equal("userId", userId),
+            Query.equal("nsfw", false),
             Query.limit(pageSize),
-            Query.offset(offset)
+            Query.offset(offset),
           ]
         : [
-            Query.equal('userId', userId),
+            Query.equal("userId", userId),
             Query.limit(pageSize),
-            Query.offset(offset)
+            Query.offset(offset),
           ]
 
       setIsLoading(true)
 
       const gallery = await databases.listDocuments(
-        'hp_db',
-        'gallery-images',
+        "hp_db",
+        "gallery-images",
         filters
       )
 
@@ -58,7 +59,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
     }
 
     fetchGalleryData().catch((error) => {
-      toast.error('Failed to fetch gallery. Please try again later.')
+      toast.error("Failed to fetch gallery. Please try again later.")
       Sentry.captureException(error)
     })
   }, [userId, enableNsfw, currentPage])
@@ -85,7 +86,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
                   {item && (
                     <div
                       className={`overflow-hidden ${
-                        item.nsfw && !enableNsfw ? 'relative' : ''
+                        item.nsfw && !enableNsfw ? "relative" : ""
                       }`}
                     >
                       {item.nsfw && !enableNsfw && (
@@ -95,7 +96,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
                         <Image
                           src={getGalleryImageUrl(item.galleryId)}
                           alt={item.name}
-                          className={`imgsinglegallery h-full max-h-64 w-full max-w-[600px] object-contain rounded-lg`}
+                          className={`imgsinglegallery h-full max-h-64 w-full max-w-[600px] rounded-lg object-contain`}
                           width={600}
                           height={600}
                           loading="lazy" // Add this attribute for lazy loading
@@ -116,7 +117,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
           <button
             key={page}
             className={`mx-2 rounded-lg px-4 py-2 ${
-              page === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200'
+              page === currentPage ? "bg-blue-500 text-white" : "bg-gray-200"
             }`}
             onClick={() => handlePageChange(page)}
           >

@@ -1,17 +1,17 @@
-'use client'
-import { TabsContent } from '@/components/ui/tabs'
-import CommunityAdminMain from '@/components/community/admin/main'
-import { functions } from '@/app/appwrite-client'
-import { ExecutionMethod } from 'node-appwrite'
-import { useCallback, useEffect, useState } from 'react'
-import NoAccess from '@/components/static/noAccess'
-import { hasAdminPanelAccess } from '@/utils/actions/community/checkRoles'
-import { toast } from 'sonner'
-import CommunityAdminSettings from '@/components/community/admin/settings'
-import { CommunityDocumentsType } from '@/utils/types/models'
+"use client"
+import { TabsContent } from "@/components/ui/tabs"
+import CommunityAdminMain from "@/components/community/admin/main"
+import { functions } from "@/app/appwrite-client"
+import { ExecutionMethod } from "node-appwrite"
+import { useCallback, useEffect, useState } from "react"
+import NoAccess from "@/components/static/noAccess"
+import { hasAdminPanelAccess } from "@/utils/actions/community/checkRoles"
+import { toast } from "sonner"
+import CommunityAdminSettings from "@/components/community/admin/settings"
+import type { CommunityDocumentsType } from "@/utils/types/models"
 
 export default function PageClient({
-  community
+  community,
 }: {
   community: CommunityDocumentsType
 }) {
@@ -21,8 +21,8 @@ export default function PageClient({
   const getOwnerStatus = useCallback(async () => {
     try {
       const data = await functions.createExecution(
-        'community-endpoints',
-        '',
+        "community-endpoints",
+        "",
         false,
         `/community/isFollowing?communityId=${community.$id}`,
         ExecutionMethod.GET
@@ -31,12 +31,12 @@ export default function PageClient({
       const response = JSON.parse(data.responseBody)
 
       if (response.code === 500) {
-        toast.error('Error fetching community data. Please try again later.')
+        toast.error("Error fetching community data. Please try again later.")
       }
 
       setHasPermission(await hasAdminPanelAccess(response.roles))
     } catch {
-      toast.error('Error fetching community data. Please try again later.')
+      toast.error("Error fetching community data. Please try again later.")
     }
   }, [community.$id])
 

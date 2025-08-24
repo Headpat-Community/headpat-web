@@ -1,7 +1,7 @@
-import { PixelCrop } from 'react-image-crop'
-import { canvasPreview } from './canvasPreview'
+import type { PixelCrop } from "react-image-crop"
+import { canvasPreview } from "./canvasPreview"
 
-let previewUrl = ''
+let previewUrl = ""
 
 function toBlob(canvas: HTMLCanvasElement): Promise<Blob | null> {
   return new Promise((resolve) => {
@@ -17,14 +17,14 @@ export async function imgPreview(
   scale = 1,
   rotate = 0
 ) {
-  const canvas = document.createElement('canvas')
+  const canvas = document.createElement("canvas")
   await canvasPreview(image, canvas, crop, scale, rotate)
 
   const blob = await toBlob(canvas)
 
   if (!blob) {
-    console.error('Failed to create blob')
-    return ''
+    console.error("Failed to create blob")
+    return ""
   }
 
   if (previewUrl) {

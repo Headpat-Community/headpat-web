@@ -1,6 +1,6 @@
-'use client'
-import { useState } from 'react'
-import { toast } from 'sonner'
+"use client"
+import { useState } from "react"
+import { toast } from "sonner"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,41 +9,41 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
-} from '@/components/ui/alert-dialog'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { reportGalleryImage } from '@/utils/actions/moderation/reportGalleryImage'
-import { GalleryDocumentsType } from '@/utils/types/models'
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { reportGalleryImage } from "@/utils/actions/moderation/reportGalleryImage"
+import type { GalleryDocumentsType } from "@/utils/types/models"
 
 export default function ReportGalleryModal({
   open,
   setOpen,
-  image
+  image,
 }: {
   open: boolean
   setOpen: (open: boolean) => void
   image: GalleryDocumentsType
 }) {
-  const [reportReason, setReportReason] = useState<string>('')
-  const [otherReason, setOtherReason] = useState<string>('')
+  const [reportReason, setReportReason] = useState<string>("")
+  const [otherReason, setOtherReason] = useState<string>("")
 
   const reportUser = async () => {
     try {
       const data = await reportGalleryImage({
         reportedGalleryId: image.$id,
-        reason: reportReason === 'Other' ? otherReason : reportReason
+        reason: reportReason === "Other" ? otherReason : reportReason,
       })
 
       setOpen(false)
-      if (data.type === 'report_success') {
-        toast.success('Thanks for keeping the community safe!')
-        setReportReason('')
-        setOtherReason('')
+      if (data.type === "report_success") {
+        toast.success("Thanks for keeping the community safe!")
+        setReportReason("")
+        setOtherReason("")
       }
     } catch {
-      toast.error('Failed to report user. Please try again later.')
+      toast.error("Failed to report user. Please try again later.")
     }
   }
 
@@ -56,14 +56,14 @@ export default function ReportGalleryModal({
   return (
     <>
       <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent className={'w-full'}>
+        <AlertDialogContent className={"w-full"}>
           <AlertDialogHeader>
             <AlertDialogTitle>Report Image</AlertDialogTitle>
           </AlertDialogHeader>
           <AlertDialogDescription>
             What is the reason for reporting this image?
           </AlertDialogDescription>
-          <div className={'z-50'}>
+          <div className={"z-50"}>
             <RadioGroup
               value={reportReason}
               onValueChange={setReportReason}
@@ -71,25 +71,25 @@ export default function ReportGalleryModal({
             >
               <RadioGroupItemWithLabel
                 value="Inappropriate content"
-                onLabelPress={onLabelPress('Inappropriate content')}
+                onLabelPress={onLabelPress("Inappropriate content")}
               />
               <RadioGroupItemWithLabel
                 value="Spam"
-                onLabelPress={onLabelPress('Spam')}
+                onLabelPress={onLabelPress("Spam")}
               />
               <RadioGroupItemWithLabel
                 value="Harassment"
-                onLabelPress={onLabelPress('Harassment')}
+                onLabelPress={onLabelPress("Harassment")}
               />
               <RadioGroupItemWithLabel
                 value="Impersonation"
-                onLabelPress={onLabelPress('Impersonation')}
+                onLabelPress={onLabelPress("Impersonation")}
               />
               <RadioGroupItemWithLabel
                 value="Other"
-                onLabelPress={onLabelPress('Other')}
+                onLabelPress={onLabelPress("Other")}
               />
-              {reportReason === 'Other' && (
+              {reportReason === "Other" && (
                 <Input
                   placeholder="Please specify"
                   value={otherReason}
@@ -100,13 +100,13 @@ export default function ReportGalleryModal({
           </div>
           <AlertDialogFooter>
             <AlertDialogAction
-              className={'bg-destructive'}
+              className={"bg-destructive"}
               onClick={reportUser}
               disabled={
-                !reportReason || (reportReason === 'Other' && !otherReason)
+                !reportReason || (reportReason === "Other" && !otherReason)
               }
             >
-              <span className={'text-white'}>Report</span>
+              <span className={"text-white"}>Report</span>
             </AlertDialogAction>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
           </AlertDialogFooter>
@@ -118,13 +118,13 @@ export default function ReportGalleryModal({
 
 function RadioGroupItemWithLabel({
   value,
-  onLabelPress
+  onLabelPress,
 }: {
   value: string
   onLabelPress: () => void
 }) {
   return (
-    <div className={'flex gap-2 items-center'}>
+    <div className={"flex items-center gap-2"}>
       <RadioGroupItem aria-labelledby={`label-for-${value}`} value={value} />
       <Label id={`label-for-${value}`} onClick={onLabelPress}>
         {value}

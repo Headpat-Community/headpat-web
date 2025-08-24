@@ -1,5 +1,5 @@
-'use client'
-import React, { useCallback, memo } from 'react'
+"use client"
+import React, { useCallback, memo } from "react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -7,10 +7,10 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
-} from '@/components/ui/alert-dialog'
-import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
 
 interface FiltersModalProps {
   openModal: boolean
@@ -30,7 +30,7 @@ interface FiltersModalProps {
 // Memoized filter toggle handlers to prevent unnecessary re-renders
 const FilterToggleHandlers = memo(function FilterToggleHandlers({
   filters,
-  setFilters
+  setFilters,
 }: {
   filters: { showEvents: boolean; showUsers: boolean }
   setFilters: React.Dispatch<
@@ -40,36 +40,36 @@ const FilterToggleHandlers = memo(function FilterToggleHandlers({
   const handleEventsToggle = useCallback(() => {
     setFilters((prev) => ({
       ...prev,
-      showEvents: !prev.showEvents
+      showEvents: !prev.showEvents,
     }))
   }, [setFilters])
 
   const handleUsersToggle = useCallback(() => {
     setFilters((prev) => ({
       ...prev,
-      showUsers: !prev.showUsers
+      showUsers: !prev.showUsers,
     }))
   }, [setFilters])
 
   return (
-    <div className={'space-y-4'}>
+    <div className={"space-y-4"}>
       <div className="flex items-center gap-2">
         <Switch
-          id={'showEvents'}
+          id={"showEvents"}
           checked={filters.showEvents}
           onCheckedChange={handleEventsToggle}
         />
-        <Label id={'showEvents'} onClick={handleEventsToggle}>
+        <Label id={"showEvents"} onClick={handleEventsToggle}>
           Show events
         </Label>
       </div>
       <div className="flex items-center gap-2">
         <Switch
-          id={'showMutuals'}
+          id={"showMutuals"}
           checked={filters.showUsers}
           onCheckedChange={handleUsersToggle}
         />
-        <Label id={'showMutuals'} onClick={handleUsersToggle}>
+        <Label id={"showMutuals"} onClick={handleUsersToggle}>
           Show Users
         </Label>
       </div>
@@ -81,7 +81,7 @@ const FiltersModal = memo(function FiltersModal({
   openModal,
   setOpenModal,
   filters,
-  setFilters
+  setFilters,
 }: FiltersModalProps) {
   return (
     <AlertDialog onOpenChange={setOpenModal} open={openModal}>

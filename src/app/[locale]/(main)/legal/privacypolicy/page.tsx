@@ -1,7 +1,7 @@
-import PrivacyPolicy from './privacypolicy.mdx'
+import PrivacyPolicy from "./privacypolicy.mdx"
 
 export const metadata = {
-  title: 'Privacy Policy'
+  title: "Privacy Policy",
 }
 
 export default function PrivacyPolicyPage() {

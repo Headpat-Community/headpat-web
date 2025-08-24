@@ -6,12 +6,12 @@ import {
   useRef,
   useCallback,
   useMemo,
-  memo
-} from 'react'
+  memo,
+} from "react"
 
-import { GoogleMapsContext, useMapsLibrary } from '@vis.gl/react-google-maps'
+import { GoogleMapsContext, useMapsLibrary } from "@vis.gl/react-google-maps"
 
-import type { Ref } from 'react'
+import type { Ref } from "react"
 
 type PolylineEventProps = {
   onClick?: (e: google.maps.MapMouseEvent) => void
@@ -37,12 +37,12 @@ export type PolylineRef = Ref<google.maps.Polyline | null>
 
 // Memoized event mapping to prevent recreation
 const EVENT_MAPPINGS = [
-  ['click', 'onClick'],
-  ['drag', 'onDrag'],
-  ['dragstart', 'onDragStart'],
-  ['dragend', 'onDragEnd'],
-  ['mouseover', 'onMouseOver'],
-  ['mouseout', 'onMouseOut']
+  ["click", "onClick"],
+  ["drag", "onDrag"],
+  ["dragstart", "onDragStart"],
+  ["dragend", "onDragEnd"],
+  ["mouseover", "onMouseOver"],
+  ["mouseout", "onMouseOut"],
 ] as const
 
 function usePolyline(props: PolylineProps) {
@@ -65,12 +65,12 @@ function usePolyline(props: PolylineProps) {
       onDragStart,
       onDragEnd,
       onMouseOver,
-      onMouseOut
+      onMouseOut,
     }),
     [onClick, onDrag, onDragStart, onDragEnd, onMouseOver, onMouseOut]
   )
 
-  const geometryLibrary = useMapsLibrary('geometry')
+  const geometryLibrary = useMapsLibrary("geometry")
   const map = useContext(GoogleMapsContext)?.map
   const polylineRef = useRef<google.maps.Polyline | null>(null)
 
@@ -111,7 +111,7 @@ function usePolyline(props: PolylineProps) {
     const polyline = polylineRef.current
     if (!map || !polyline) {
       if (map === undefined)
-        console.error('<Polyline> has to be inside a Map component.')
+        console.error("<Polyline> has to be inside a Map component.")
       return
     }
 
@@ -165,4 +165,4 @@ export const Polyline = memo(
   })
 )
 
-Polyline.displayName = 'Polyline'
+Polyline.displayName = "Polyline"

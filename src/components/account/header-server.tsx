@@ -5,36 +5,36 @@ import {
   LineChart,
   Menu,
   Package,
-  Users
-} from 'lucide-react'
+  Users,
+} from "lucide-react"
 
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { ThemeToggle } from '@/components/ThemeToggle'
-import Image from 'next/image'
-import AccountAnnouncements from '@/components/account/accountAnnouncements'
-import Link from 'next/link'
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { ThemeToggle } from "@/components/ThemeToggle"
+import Image from "next/image"
+import AccountAnnouncements from "@/components/account/accountAnnouncements"
+import Link from "next/link"
 //import ChangeLanguage from '@/components/system/changeLanguage'
 
 export default async function Dashboard({ children }) {
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <div className="hidden border-r bg-muted/40 md:block">
-        <div className="flex h-full max-h-screen flex-col gap-2 sticky top-0">
+      <div className="bg-muted/40 hidden border-r md:block">
+        <div className="sticky top-0 flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-            <Link href={'/'} className="flex items-center gap-2 font-semibold">
+            <Link href={"/"} className="flex items-center gap-2 font-semibold">
               <Image
-                src={'/logos/hp_logo_x512.webp'}
-                alt={'Headpat logo'}
-                className={'h-8 w-8 rounded-full'}
+                src={"/logos/hp_logo_x512.webp"}
+                alt={"Headpat logo"}
+                className={"h-8 w-8 rounded-full"}
                 width={24}
                 height={24}
               />
@@ -50,15 +50,15 @@ export default async function Dashboard({ children }) {
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <Link
-                href={'/'}
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                href={"/"}
+                className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
               >
                 <Home className="size-4" />
                 Homepage
               </Link>
               <Link
-                href={'/account'}
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                href={"/account"}
+                className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
               >
                 <LayoutDashboard className="size-4" />
                 Dashboard
@@ -68,37 +68,37 @@ export default async function Dashboard({ children }) {
                 </Badge>
                 */}
               </Link>
-              <div className="flex items-center px-4 text-center text-2xl my-2">
-                <div className="h-[1px] w-1/2 bg-muted-foreground" />
-                <div className="mx-4 text-base text-muted-foreground">
+              <div className="my-2 flex items-center px-4 text-center text-2xl">
+                <div className="bg-muted-foreground h-[1px] w-1/2" />
+                <div className="text-muted-foreground mx-4 text-base">
                   Gallery
                 </div>
-                <div className="h-[1px] w-1/2 bg-muted-foreground" />
+                <div className="bg-muted-foreground h-[1px] w-1/2" />
               </div>
               <Link
-                href={'/account/gallery/upload'}
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                href={"/account/gallery/upload"}
+                className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
               >
                 <Package className="size-4" />
                 Upload Image
               </Link>
               <Link
-                href={'/account/gallery'}
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                href={"/account/gallery"}
+                className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
               >
                 <Users className="size-4" />
                 Manage Gallery
               </Link>
-              <div className="flex items-center px-4 text-center text-2xl my-2">
-                <div className="h-[1px] w-1/2 bg-muted-foreground" />
-                <div className="mx-4 text-base text-muted-foreground">
+              <div className="my-2 flex items-center px-4 text-center text-2xl">
+                <div className="bg-muted-foreground h-[1px] w-1/2" />
+                <div className="text-muted-foreground mx-4 text-base">
                   Community
                 </div>
-                <div className="h-[1px] w-1/2 bg-muted-foreground" />
+                <div className="bg-muted-foreground h-[1px] w-1/2" />
               </div>
               <Link
-                href={'/community'}
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                href={"/community"}
+                className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
               >
                 <LineChart className="size-4" />
                 Manage Communities
@@ -108,7 +108,7 @@ export default async function Dashboard({ children }) {
         </div>
       </div>
       <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 sticky top-0 z-10">
+        <header className="bg-muted/40 sticky top-0 z-10 flex h-14 items-center gap-4 border-b px-4 lg:h-[60px] lg:px-6">
           <AccountAnnouncements />
           <Sheet>
             <SheetTrigger asChild>
@@ -128,9 +128,9 @@ export default async function Dashboard({ children }) {
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <Image
-                    src={'/logos/hp_logo_x512.webp'}
-                    alt={'Headpat logo'}
-                    className={'h-10 w-10'}
+                    src={"/logos/hp_logo_x512.webp"}
+                    alt={"Headpat logo"}
+                    className={"h-10 w-10"}
                     width={24}
                     height={24}
                   />
@@ -138,14 +138,14 @@ export default async function Dashboard({ children }) {
                 </Link>
                 <Link
                   href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2"
                 >
                   <Home className="h-5 w-5" />
                   Homepage
                 </Link>
                 <Link
                   href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
+                  className="bg-muted text-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2"
                 >
                   <LayoutDashboard className="h-5 w-5" />
                   Dashboard
@@ -155,37 +155,37 @@ export default async function Dashboard({ children }) {
                   </Badge>
                   */}
                 </Link>
-                <div className="flex items-center px-4 text-center text-2xl my-2">
-                  <div className="h-[1px] w-1/2 bg-muted-foreground" />
-                  <div className="mx-4 text-base text-muted-foreground">
+                <div className="my-2 flex items-center px-4 text-center text-2xl">
+                  <div className="bg-muted-foreground h-[1px] w-1/2" />
+                  <div className="text-muted-foreground mx-4 text-base">
                     Gallery
                   </div>
-                  <div className="h-[1px] w-1/2 bg-muted-foreground" />
+                  <div className="bg-muted-foreground h-[1px] w-1/2" />
                 </div>
                 <Link
                   href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2"
                 >
                   <Package className="h-5 w-5" />
                   Upload Image
                 </Link>
                 <Link
                   href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2"
                 >
                   <Users className="h-5 w-5" />
                   Manage Gallery
                 </Link>
-                <div className="flex items-center px-4 text-center text-2xl my-2">
-                  <div className="h-[1px] w-1/2 bg-muted-foreground" />
-                  <div className="mx-4 text-base text-muted-foreground">
+                <div className="my-2 flex items-center px-4 text-center text-2xl">
+                  <div className="bg-muted-foreground h-[1px] w-1/2" />
+                  <div className="text-muted-foreground mx-4 text-base">
                     Community
                   </div>
-                  <div className="h-[1px] w-1/2 bg-muted-foreground" />
+                  <div className="bg-muted-foreground h-[1px] w-1/2" />
                 </div>
                 <Link
                   href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2"
                 >
                   <LineChart className="h-5 w-5" />
                   Manage Communities
@@ -220,14 +220,14 @@ export default async function Dashboard({ children }) {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <Link href={'/account'}>
+              <Link href={"/account"}>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
               </Link>
-              <Link href={'/support'}>
+              <Link href={"/support"}>
                 <DropdownMenuItem>Support</DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator />
-              <Link href={'/logout'}>
+              <Link href={"/logout"}>
                 <DropdownMenuItem>Logout</DropdownMenuItem>
               </Link>
             </DropdownMenuContent>

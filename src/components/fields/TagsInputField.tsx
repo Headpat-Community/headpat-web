@@ -1,14 +1,14 @@
-import React from 'react'
-import { FormControl, FormItem, FormLabel } from '@/components/ui/form'
-import { Info, XIcon } from 'lucide-react'
+import React from "react"
+import { FormControl, FormItem, FormLabel } from "@/components/ui/form"
+import { Info, XIcon } from "lucide-react"
 import {
   HoverCard,
   HoverCardContent,
-  HoverCardTrigger
-} from '@/components/ui/hover-card'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 
 interface TagInputFieldProps {
   label: string
@@ -25,9 +25,9 @@ const TagsInputField: React.FC<TagInputFieldProps> = ({
   placeholder,
   field,
   error,
-  maxLength
+  maxLength,
 }) => {
-  const [inputValue, setInputValue] = React.useState('')
+  const [inputValue, setInputValue] = React.useState("")
 
   const updateTags = React.useCallback(
     (newTags: string[]) => {
@@ -40,7 +40,7 @@ const TagsInputField: React.FC<TagInputFieldProps> = ({
     const newTag = inputValue.trim()
     if (newTag && !field.value.includes(newTag)) {
       updateTags([...field.value, newTag])
-      setInputValue('')
+      setInputValue("")
     }
   }, [inputValue, field.value, updateTags])
 
@@ -53,7 +53,7 @@ const TagsInputField: React.FC<TagInputFieldProps> = ({
 
   const handleInputKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter') {
+      if (e.key === "Enter") {
         e.preventDefault()
         addTag()
       }
@@ -92,7 +92,7 @@ const TagsInputField: React.FC<TagInputFieldProps> = ({
                   <Badge
                     key={tag}
                     variant="secondary"
-                    className="text-sm py-1 px-2"
+                    className="px-2 py-1 text-sm"
                   >
                     {tag}
                     <Button

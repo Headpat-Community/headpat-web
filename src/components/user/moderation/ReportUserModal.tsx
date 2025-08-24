@@ -6,45 +6,45 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
-} from '@/components/ui/alert-dialog'
-import React, { useState } from 'react'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { toast } from 'sonner'
-import { reportUserProfile } from '@/utils/actions/user/reportUserProfile'
-import { UserDataDocumentsType } from '@/utils/types/models'
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import React, { useState } from "react"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { toast } from "sonner"
+import { reportUserProfile } from "@/utils/actions/user/reportUserProfile"
+import type { UserDataDocumentsType } from "@/utils/types/models"
 
 export default function ReportUserModal({
   open,
   setOpen,
-  user
+  user,
 }: {
   open: boolean
   setOpen: (open: boolean) => void
   user: UserDataDocumentsType
 }) {
-  const [reportReason, setReportReason] = useState<string>('')
-  const [otherReason, setOtherReason] = useState<string>('')
+  const [reportReason, setReportReason] = useState<string>("")
+  const [otherReason, setOtherReason] = useState<string>("")
 
   const reportUser = async () => {
     try {
       const data = await reportUserProfile({
         reportedUserId: user.$id,
-        reason: reportReason === 'Other' ? otherReason : reportReason
+        reason: reportReason === "Other" ? otherReason : reportReason,
       })
       setOpen(false)
-      if (data.type === 'report_success') {
-        toast.success('Success', {
-          description: 'Thanks for keeping the community safe!'
+      if (data.type === "report_success") {
+        toast.success("Success", {
+          description: "Thanks for keeping the community safe!",
         })
-        setReportReason('')
-        setOtherReason('')
+        setReportReason("")
+        setOtherReason("")
       }
     } catch (e) {
       console.error(e)
-      toast.error('An error occurred while reporting the user')
+      toast.error("An error occurred while reporting the user")
     }
   }
 
@@ -56,14 +56,14 @@ export default function ReportUserModal({
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogContent className={'w-full'}>
+      <AlertDialogContent className={"w-full"}>
         <AlertDialogHeader>
           <AlertDialogTitle>Report {user?.displayName}</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogDescription>
           What is the reason for reporting this user?
         </AlertDialogDescription>
-        <div className={'z-50'}>
+        <div className={"z-50"}>
           <RadioGroup
             value={reportReason}
             onValueChange={setReportReason}
@@ -71,25 +71,25 @@ export default function ReportUserModal({
           >
             <RadioGroupItemWithLabel
               value="Inappropriate content"
-              onLabelPress={onLabelPress('Inappropriate content')}
+              onLabelPress={onLabelPress("Inappropriate content")}
             />
             <RadioGroupItemWithLabel
               value="Spam"
-              onLabelPress={onLabelPress('Spam')}
+              onLabelPress={onLabelPress("Spam")}
             />
             <RadioGroupItemWithLabel
               value="Harassment"
-              onLabelPress={onLabelPress('Harassment')}
+              onLabelPress={onLabelPress("Harassment")}
             />
             <RadioGroupItemWithLabel
               value="Impersonation"
-              onLabelPress={onLabelPress('Impersonation')}
+              onLabelPress={onLabelPress("Impersonation")}
             />
             <RadioGroupItemWithLabel
               value="Other"
-              onLabelPress={onLabelPress('Other')}
+              onLabelPress={onLabelPress("Other")}
             />
-            {reportReason === 'Other' && (
+            {reportReason === "Other" && (
               <Input
                 placeholder="Please specify"
                 value={otherReason}
@@ -100,10 +100,10 @@ export default function ReportUserModal({
         </div>
         <AlertDialogFooter>
           <AlertDialogAction
-            className={'bg-destructive'}
+            className={"bg-destructive"}
             onClick={reportUser}
             disabled={
-              !reportReason || (reportReason === 'Other' && !otherReason)
+              !reportReason || (reportReason === "Other" && !otherReason)
             }
           >
             Report
@@ -117,13 +117,13 @@ export default function ReportUserModal({
 
 function RadioGroupItemWithLabel({
   value,
-  onLabelPress
+  onLabelPress,
 }: {
   value: string
   onLabelPress: () => void
 }) {
   return (
-    <div className={'flex gap-2 items-center'}>
+    <div className={"flex items-center gap-2"}>
       <RadioGroupItem aria-labelledby={`label-for-${value}`} value={value} />
       <Label id={`label-for-${value}`} onClick={onLabelPress}>
         {value}

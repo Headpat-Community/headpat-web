@@ -1,10 +1,10 @@
-import { ExecutionMethod } from 'node-appwrite'
-import { functions } from '@/app/appwrite-client'
+import { ExecutionMethod } from "node-appwrite"
+import { functions } from "@/app/appwrite-client"
 
 export async function blockUser(body: any) {
   try {
     const data = await functions.createExecution(
-      'user-endpoints',
+      "user-endpoints",
       JSON.stringify(body),
       false,
       `/user/prefs`,
