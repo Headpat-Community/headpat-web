@@ -122,7 +122,7 @@ export default function Login() {
       await init()
       toast.success("Logged in successfully.")
       router.push("/account")
-    } catch (error: any) {
+    } catch {
       toast.error("An unexpected error occurred")
     }
   }
@@ -158,7 +158,7 @@ export default function Login() {
       await init()
       toast.success("Logged in successfully.")
       router.push("/account")
-    } catch (error: any) {
+    } catch {
       toast.error("An unexpected error occurred")
     }
   }
