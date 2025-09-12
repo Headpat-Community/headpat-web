@@ -528,6 +528,10 @@ export interface CommunityDocumentsType extends Models.Document {
    */
   followersCount: number
   /**
+   * If user is following the community.
+   */
+  isFollowing: boolean
+  /**
    * The community preferences.
    */
   prefs: CommunityPrefsDocumentsType
