@@ -32,6 +32,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(session)
   } catch (error) {
-    return NextResponse.json({ error: error, status: error.code })
+    return NextResponse.json({
+      error: error instanceof Error ? error.message : "Unknown error",
+      status: error instanceof Error && "code" in error ? error.code : 500,
+    })
   }
 }

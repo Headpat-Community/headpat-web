@@ -36,7 +36,11 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function RootLayout({ children }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const locale = await getLocale()
   const { databases } = await createSessionServerClient()
   const status = await databases
