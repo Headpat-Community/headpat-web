@@ -527,11 +527,39 @@ export interface CommunityDocumentsType extends Models.Document {
    * The amount of followers the community has.
    */
   followersCount: number
+  /**
+   * The community preferences.
+   */
+  prefs: CommunityPrefsDocumentsType
+  /**
+   * The roles of the community.
+   */
+  roles?: string[]
+}
+
+export interface CommunityPrefsType {
+  total: number
+  rows: CommunityPrefsDocumentsType[]
+}
+
+export interface CommunityPrefsDocumentsType extends Models.Document {
+  /**
+   * The community ID.
+   */
+  communityId: string
+  /**
+   * If the community is blocked.
+   */
+  isBlocked?: boolean
+  /**
+   * If the community is muted.
+   */
+  isMuted?: boolean
 }
 
 export interface CommunitySettingsType {
   total: number
-  documents: CommunitySettingsDocumentsType[]
+  rows: CommunitySettingsDocumentsType[]
 }
 
 export interface CommunitySettingsDocumentsType extends Models.Document {
