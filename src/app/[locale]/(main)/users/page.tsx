@@ -1,8 +1,10 @@
 import PageClient from "./page.client"
 import { getTranslations } from "gt-next/server"
 
-export async function generateMetadata({ params }) {
-  const paramsResponse = await params
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }>
+}) {
+  const paramsResponse = await props.params
   const { locale } = paramsResponse
   const meta = await getTranslations("UsersMetadata")
 
@@ -24,7 +26,7 @@ export async function generateMetadata({ params }) {
       locale: locale,
       type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN!),
   }
 }
 

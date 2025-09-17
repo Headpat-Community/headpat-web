@@ -1,14 +1,14 @@
 "use client"
-import { useEffect, useState } from "react"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import * as Sentry from "@sentry/nextjs"
-import { getDocument } from "@/components/api/documents"
-import z from "zod"
 import { databases } from "@/app/appwrite-client"
+import { getDocument } from "@/components/api/documents"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import type { AccountPrefs, UserDataDocumentsType } from "@/utils/types/models"
+import * as Sentry from "@sentry/nextjs"
+import { useEffect, useState } from "react"
 import { toast } from "sonner"
-import type { UserDataDocumentsType } from "@/utils/types/models"
+import z from "zod"
 
 const schema = z.object({
   discordname: z
@@ -37,9 +37,13 @@ const schema = z.object({
     .nullable(),
 })
 
-export default function SocialsView({ accountData }) {
+export default function SocialsView({
+  accountData,
+}: {
+  accountData: AccountPrefs
+}) {
   const [isUploading, setIsUploading] = useState(false)
-  const [userData, setUserData] = useState(null)
+  const [userData, setUserData] = useState<UserDataDocumentsType | null>(null)
 
   useEffect(() => {
     getDocument("hp_db", "userdata", accountData.$id).then(
@@ -53,7 +57,7 @@ export default function SocialsView({ accountData }) {
     try {
       // Validate the entire communitySettings object
       schema.parse(userData)
-    } catch (error) {
+    } catch (error: any) {
       toast.error(error.errors[0].message)
       return
     }
@@ -61,13 +65,18 @@ export default function SocialsView({ accountData }) {
     try {
       setIsUploading(true)
 
-      await databases.updateDocument("hp_db", "userdata", accountData.$id, {
-        discordname: userData.discordname,
-        telegramname: userData.telegramname,
-        furaffinityname: userData.furaffinityname,
-        X_name: userData.X_name,
-        twitchname: userData.twitchname,
-        blueskyname: userData.blueskyname,
+      await databases.updateRow({
+        databaseId: "hp_db",
+        tableId: "userdata",
+        rowId: accountData.$id,
+        data: {
+          discordname: userData?.discordname,
+          telegramname: userData?.telegramname,
+          furaffinityname: userData?.furaffinityname,
+          X_name: userData?.X_name,
+          twitchname: userData?.twitchname,
+          blueskyname: userData?.blueskyname,
+        },
       })
 
       toast.success("User data saved successfully.")
@@ -100,11 +109,11 @@ export default function SocialsView({ accountData }) {
                     type="text"
                     name="discordname"
                     id="discordname"
-                    value={userData ? userData.discordname : ""} // Set the value from state
+                    value={userData?.discordname || ""} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
-                          ...userData,
+                          ...userData!,
                           discordname: e.target.value,
                         })
                       }
@@ -133,11 +142,11 @@ export default function SocialsView({ accountData }) {
                     type="text"
                     name="telegramname"
                     id="telegramname"
-                    value={userData ? userData.telegramname : ""} // Set the value from state
+                    value={userData?.telegramname || ""} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
-                          ...userData,
+                          ...userData!,
                           telegramname: e.target.value,
                         })
                       }
@@ -161,11 +170,11 @@ export default function SocialsView({ accountData }) {
                     type="text"
                     name="furaffinityname"
                     id="furaffinityname"
-                    value={userData ? userData.furaffinityname : ""} // Set the value from state
+                    value={userData?.furaffinityname || ""} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
-                          ...userData,
+                          ...userData!,
                           furaffinityname: e.target.value,
                         })
                       }
@@ -194,11 +203,11 @@ export default function SocialsView({ accountData }) {
                     type="text"
                     name="X_name"
                     id="X_name"
-                    value={userData ? userData.X_name : ""} // Set the value from state
+                    value={userData?.X_name || ""} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
-                          ...userData,
+                          ...userData!,
                           X_name: e.target.value,
                         })
                       }
@@ -222,11 +231,11 @@ export default function SocialsView({ accountData }) {
                     type="text"
                     name="twitchname"
                     id="twitchname"
-                    value={userData ? userData.twitchname : ""} // Set the value from state
+                    value={userData?.twitchname || ""} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
-                          ...userData,
+                          ...userData!,
                           twitchname: e.target.value,
                         })
                       }
@@ -250,11 +259,11 @@ export default function SocialsView({ accountData }) {
                     type="text"
                     name="blueskyname"
                     id="blueskyname"
-                    value={userData ? userData.blueskyname : ""} // Set the value from state
+                    value={userData?.blueskyname || ""} // Set the value from state
                     onChange={(e) => {
                       if (e.target.value.length <= 32) {
                         setUserData({
-                          ...userData,
+                          ...userData!,
                           blueskyname: e.target.value,
                         })
                       }

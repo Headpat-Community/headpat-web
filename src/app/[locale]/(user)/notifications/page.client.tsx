@@ -50,7 +50,7 @@ export default function PageClient() {
   }, [])
 
   React.useEffect(() => {
-    fetchNotifications().then()
+    void fetchNotifications()
   }, [])
 
   if (!current) {
@@ -95,7 +95,11 @@ export default function PageClient() {
   )
 }
 
-const Notification = ({ notification }) => {
+const Notification = ({
+  notification,
+}: {
+  notification: NotificationsDocumentsType
+}) => {
   const userData = notification.userData
   const isDeleted = !userData
 
@@ -116,13 +120,13 @@ const Notification = ({ notification }) => {
                 <AvatarImage
                   src={
                     getAvatarImageUrlPreview(
-                      userData?.avatarId,
+                      userData?.avatarId || "",
                       "width=250&height=250"
-                    ) || null
+                    ) || ""
                   }
                 />
                 <AvatarFallback>
-                  {userData?.displayName.charAt(0).toUpperCase() || "U"}
+                  {userData?.displayName?.charAt(0).toUpperCase() || "U"}
                 </AvatarFallback>
               </Avatar>
             </UserCard>

@@ -5,7 +5,9 @@ import ArchivedEvents from "@/components/events/archivedEvents"
 import UpcomingEvents from "@/components/events/upcomingEvents"
 import FeatureAccess from "@/components/FeatureAccess"
 
-export async function generateMetadata(props) {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }>
+}) {
   const params = await props.params
 
   const { locale } = params
@@ -30,7 +32,7 @@ export async function generateMetadata(props) {
       locale: locale,
       type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN!),
   }
 }
 

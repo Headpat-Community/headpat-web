@@ -1,27 +1,34 @@
 "use client"
+import { databases, Query, storage } from "@/app/appwrite-client"
+import Loading from "@/app/loading"
+import type { GalleryDocumentsType, GalleryType } from "@/utils/types/models"
+import * as Sentry from "@sentry/nextjs"
+import Image from "next/image"
+import Link from "next/link"
 import type { SetStateAction } from "react"
 import { useEffect, useState } from "react"
-import Image from "next/image"
-import Loading from "@/app/loading"
-import { databases, Query, storage } from "@/app/appwrite-client"
-import * as Sentry from "@sentry/nextjs"
-import Link from "next/link"
 import { toast } from "sonner"
 
-export default function FetchGallery({ enableNsfw, userId }) {
-  const [gallery, setGallery] = useState([])
+export default function FetchGallery({
+  enableNsfw,
+  userId,
+}: {
+  enableNsfw: boolean
+  userId: string
+}) {
+  const [gallery, setGallery] = useState<GalleryDocumentsType[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
 
   const getGalleryImageUrl = (galleryId: string) => {
     if (!galleryId) return
-    return storage.getFileView("gallery", `${galleryId}`)
+    return storage.getFileView({ bucketId: "gallery", fileId: `${galleryId}` })
   }
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
-    const page = parseInt(urlParams.get("page")) || 1
+    const page = parseInt(urlParams.get("page") || "1")
     setCurrentPage(page)
   }, [])
 
@@ -46,14 +53,14 @@ export default function FetchGallery({ enableNsfw, userId }) {
 
       setIsLoading(true)
 
-      const gallery = await databases.listDocuments(
-        "hp_db",
-        "gallery-images",
-        filters
-      )
+      const gallery: GalleryType = await databases.listRows({
+        databaseId: "hp_db",
+        tableId: "gallery-images",
+        queries: filters,
+      })
 
       //const gallery = await getGallery(apiUrl)
-      setGallery(gallery.documents || [])
+      setGallery(gallery.rows || [])
       setTotalPages(gallery.total / pageSize)
       setIsLoading(false)
     }
@@ -94,7 +101,7 @@ export default function FetchGallery({ enableNsfw, userId }) {
                       )}
                       <Link href={`/account/gallery/${item.$id}`}>
                         <Image
-                          src={getGalleryImageUrl(item.galleryId)}
+                          src={getGalleryImageUrl(item.galleryId) || ""}
                           alt={item.name}
                           className={`imgsinglegallery h-full max-h-64 w-full max-w-[600px] rounded-lg object-contain`}
                           width={600}

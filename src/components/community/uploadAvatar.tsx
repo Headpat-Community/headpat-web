@@ -11,10 +11,17 @@ export default function UploadAvatar({
   isUploading,
   setIsUploading,
   communityData,
+}: {
+  isUploading: boolean
+  setIsUploading: (isUploading: boolean) => void
+  communityData: CommunityDocumentsType
 }) {
   const getAvatarImageUrl = (avatarId: string) => {
     if (!avatarId) return undefined
-    return storage.getFileView("community-avatars", `${avatarId}`)
+    return storage.getFileView({
+      bucketId: "community-avatars",
+      fileId: avatarId,
+    })
   }
 
   const handleBeforeUpload = async () => {
@@ -42,8 +49,11 @@ export default function UploadAvatar({
   const handleAfterUpload = async (fileId: string): Promise<void> => {
     try {
       // Get the community document
-      const avatarDocument: CommunityDocumentsType =
-        await databases.getDocument("hp_db", "community", communityData.$id)
+      const avatarDocument: CommunityDocumentsType = await databases.getRow({
+        databaseId: "hp_db",
+        tableId: "community",
+        rowId: communityData.$id,
+      })
       // If the community already has an avatar, delete it
       if (avatarDocument.avatarId) {
         await storage
@@ -53,18 +63,22 @@ export default function UploadAvatar({
           })
       }
       // Update the community's avatarId
-      await databases.updateDocument("hp_db", "community", communityData.$id, {
-        avatarId: fileId,
+      await databases.updateRow({
+        databaseId: "hp_db",
+        tableId: "community",
+        rowId: communityData.$id,
+        data: {
+          avatarId: fileId,
+        },
       })
       toast.success("Your avatar has been uploaded successfully.")
       // Post-upload function call
-      await functions.createExecution(
-        "community-endpoints",
-        "",
-        true,
-        `/community/upload/finish?communityId=${communityData.$id}`,
-        ExecutionMethod.POST
-      )
+      await functions.createExecution({
+        functionId: "community-endpoints",
+        async: true,
+        xpath: `/community/upload/finish?communityId=${communityData.$id}`,
+        method: ExecutionMethod.POST,
+      })
       window.location.reload()
     } catch (error) {
       toast.error("Failed to upload avatar.")

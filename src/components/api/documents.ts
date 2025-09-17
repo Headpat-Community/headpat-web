@@ -8,16 +8,16 @@ import type { Models } from "node-appwrite"
  * @param collectionId
  * @param documentId
  */
-export function getDocument<T extends Models.Document>(
+export function getDocument<T extends Models.Row>(
   databaseId: string,
   collectionId: string,
   documentId: string
 ): Promise<T> {
-  return databases.getDocument(
-    `${databaseId}`,
-    `${collectionId}`,
-    `${documentId}`
-  )
+  return databases.getRow({
+    databaseId: `${databaseId}`,
+    tableId: `${collectionId}`,
+    rowId: `${documentId}`,
+  })
 }
 
 /**
@@ -26,12 +26,16 @@ export function getDocument<T extends Models.Document>(
  * @param collectionId
  * @param query
  */
-export function listDocuments<T extends Models.Document>(
+export function listDocuments<T extends Models.Row>(
   databaseId: string,
   collectionId: string,
   query?: any
-): Promise<Models.DocumentList<T>> {
-  return databases.listDocuments(`${databaseId}`, `${collectionId}`, query)
+): Promise<Models.RowList<T>> {
+  return databases.listRows({
+    databaseId: `${databaseId}`,
+    tableId: `${collectionId}`,
+    queries: query,
+  })
 }
 
 /**
@@ -41,15 +45,16 @@ export function listDocuments<T extends Models.Document>(
  * @param documentId
  * @param body
  */
-export function updateDocument<T extends Models.Document>(
+export function updateDocument<T extends Models.Row>(
   databaseId: string,
   collectionId: string,
   documentId: string,
   body: any
 ): Promise<T> {
-  return databases.updateDocument(
-    `${databaseId}`,
-    `${collectionId}, ${documentId}`,
-    body
-  )
+  return databases.updateRow({
+    databaseId: `${databaseId}`,
+    tableId: `${collectionId}`,
+    rowId: `${documentId}`,
+    data: body,
+  })
 }

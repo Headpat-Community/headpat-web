@@ -1,11 +1,10 @@
 "use client"
-import { useEffect, useState } from "react"
 import { useUser } from "@/components/contexts/UserContext"
-import { useRouter } from "next/navigation"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
 
 export default function LogoutPage() {
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<any>(null)
   const { current, logout } = useUser()
   const router = useRouter()
   const searchParams = useSearchParams()

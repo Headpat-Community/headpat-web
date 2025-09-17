@@ -1,15 +1,15 @@
+import { formatDate } from "@/components/calculateTimeLeft"
+import { getAvatarImageUrlPreview } from "@/components/getStorageItem"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
-import { getAvatarImageUrlPreview } from "@/components/getStorageItem"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { CakeIcon, CalendarDays } from "lucide-react"
 import type { UserDataDocumentsType } from "@/utils/types/models"
-import { formatDate } from "@/components/calculateTimeLeft"
-import React, { useMemo, memo } from "react"
+import { CakeIcon, CalendarDays } from "lucide-react"
 import Link from "next/link"
+import React, { memo, useMemo } from "react"
 
 interface UserCardProps {
   user: UserDataDocumentsType
@@ -33,7 +33,8 @@ function UserCardComponent({ user, isChild, children }: UserCardProps) {
   // Memoize avatar image URL
   const avatarImageUrl = useMemo(() => {
     return (
-      getAvatarImageUrlPreview(user?.avatarId, "width=250&height=250") || null
+      getAvatarImageUrlPreview(user?.avatarId || "", "width=250&height=250") ||
+      ""
     )
   }, [user?.avatarId])
 
@@ -48,7 +49,7 @@ function UserCardComponent({ user, isChild, children }: UserCardProps) {
       <HoverCardContent className="w-80">
         <div className="flex space-x-4">
           <Avatar>
-            <AvatarImage src={avatarImageUrl} alt={user?.displayName} />
+            <AvatarImage src={avatarImageUrl} alt={user?.displayName || ""} />
             <AvatarFallback>{userInitial}</AvatarFallback>
           </Avatar>
           <div className="space-y-1">

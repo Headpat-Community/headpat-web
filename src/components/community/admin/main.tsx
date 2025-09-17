@@ -1,6 +1,6 @@
 "use client"
 import { databases } from "@/app/appwrite-client"
-import { useCallback, useEffect, useState } from "react"
+import { useState } from "react"
 import UploadAvatar from "@/components/community/uploadAvatar"
 import UploadBanner from "@/components/community/uploadBanner"
 import { Button } from "@/components/ui/button"
@@ -40,9 +40,6 @@ export default function CommunityAdminMain({
 }: {
   community: CommunityDocumentsType
 }) {
-  const [isLoading, setIsLoading] = useState(true)
-  const [communityData, setCommunityData] =
-    useState<CommunityDocumentsType | null>(null)
   const [isUploading, setIsUploading] = useState(false)
 
   const form = useForm<FormValues>({
@@ -54,25 +51,6 @@ export default function CommunityAdminMain({
     },
   })
 
-  const getCommunity = useCallback(async () => {
-    const data: CommunityDocumentsType = await databases.getDocument(
-      "hp_db",
-      "community",
-      community.$id
-    )
-    setCommunityData(data)
-    // Update form values when we get the data
-    form.reset({
-      name: data.name,
-      description: data.description,
-      status: data.status,
-    })
-  }, [community.$id, form])
-
-  useEffect(() => {
-    getCommunity().then(() => setIsLoading(false))
-  }, [community, getCommunity])
-
   const onSubmit = async (values: FormValues) => {
     const loadingToast = toast.loading("Updating community data...")
     try {
@@ -81,12 +59,12 @@ export default function CommunityAdminMain({
         description: values.description || null,
         status: values.status || null,
       }
-      await databases.updateDocument(
-        "hp_db",
-        "community",
-        community.$id,
-        dataToUpdate
-      )
+      await databases.updateRow({
+        databaseId: "hp_db",
+        tableId: "community",
+        rowId: community.$id,
+        data: dataToUpdate,
+      })
       toast.success("Community data updated successfully.")
     } catch (error) {
       Sentry.captureException(error)
@@ -96,9 +74,7 @@ export default function CommunityAdminMain({
     }
   }
 
-  return isLoading ? (
-    <div>Loading...</div>
-  ) : (
+  return (
     <>
       <div className="divide-y divide-black/5 dark:divide-white/5">
         <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
@@ -119,13 +95,13 @@ export default function CommunityAdminMain({
               <UploadAvatar
                 isUploading={isUploading}
                 setIsUploading={setIsUploading}
-                communityData={communityData}
+                communityData={community}
               />
               <div className={"my-4"} />
               <UploadBanner
                 isUploading={isUploading}
                 setIsUploading={setIsUploading}
-                communityData={communityData}
+                communityData={community}
               />
 
               <div className="mt-12 grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-full sm:grid-cols-6">

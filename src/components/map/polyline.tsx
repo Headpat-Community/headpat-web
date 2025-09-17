@@ -1,12 +1,12 @@
 import {
   forwardRef,
+  memo,
+  useCallback,
   useContext,
   useEffect,
   useImperativeHandle,
-  useRef,
-  useCallback,
   useMemo,
-  memo,
+  useRef,
 } from "react"
 
 import { GoogleMapsContext, useMapsLibrary } from "@vis.gl/react-google-maps"
@@ -159,7 +159,7 @@ export const Polyline = memo(
   forwardRef((props: PolylineProps, ref: PolylineRef) => {
     const polylineRef = usePolyline(props)
 
-    useImperativeHandle(ref, () => polylineRef.current, [polylineRef])
+    useImperativeHandle(ref, () => polylineRef.current!, [polylineRef])
 
     return null
   })

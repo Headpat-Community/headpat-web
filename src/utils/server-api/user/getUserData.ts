@@ -1,10 +1,10 @@
 import { createSessionServerClient } from "@/app/appwrite-session"
+import { getUser } from "@/utils/server-api/account/user"
 import type {
   UserDataType,
   UserProfileDocumentsType,
 } from "@/utils/types/models"
 import { Query } from "node-appwrite"
-import { getUser } from "@/utils/server-api/account/user"
 
 /**
  * This function is used to get the user data.
@@ -16,7 +16,11 @@ export async function getUserDataFromProfileUrl(
 ): Promise<UserDataType> {
   const { databases } = await createSessionServerClient()
   return await databases
-    .listDocuments("hp_db", "userdata", [Query.equal("profileUrl", profileUrl)])
+    .listRows({
+      databaseId: "hp_db",
+      tableId: "userdata",
+      queries: [Query.equal("profileUrl", profileUrl)],
+    })
     .catch((error) => {
       return JSON.parse(JSON.stringify(error))
     })
@@ -31,7 +35,11 @@ export async function getUserData(): Promise<UserProfileDocumentsType> {
   const { databases } = await createSessionServerClient()
   const accountData = await getUser()
   return await databases
-    .getDocument("hp_db", "userdata", `${accountData.$id}`)
+    .getRow({
+      databaseId: "hp_db",
+      tableId: "userdata",
+      rowId: accountData.$id,
+    })
     .catch((error) => {
       return JSON.parse(JSON.stringify(error))
     })

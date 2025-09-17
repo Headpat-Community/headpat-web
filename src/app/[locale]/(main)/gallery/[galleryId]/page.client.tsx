@@ -8,17 +8,18 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import UserCard from "@/components/user/userCard"
 import type {
+  AccountPrefs,
   GalleryDocumentsType,
   UserDataDocumentsType,
 } from "@/utils/types/models"
 import { useQuery } from "@tanstack/react-query"
 import { decode } from "blurhash"
+import { useTranslations } from "gt-next/client"
 import Image from "next/image"
 import Link from "next/link"
 import { ExecutionMethod } from "node-appwrite"
 import { useEffect, useState } from "react"
 import sanitize from "sanitize-html"
-import { useTranslations } from "gt-next/client"
 
 export default function PageClient({ galleryId }: { galleryId: string }) {
   const [moderationModalOpen, setModerationModalOpen] = useState(false)
@@ -31,21 +32,24 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
     queryFn: async () => {
       // Step 1: Fetch image and prefs in parallel
       const [image, imagePrefsRaw] = await Promise.all([
-        databases.getDocument("hp_db", "gallery-images", `${galleryId}`),
-        functions.createExecution(
-          "gallery-endpoints",
-          "",
-          false,
-          `/gallery/prefs?galleryId=${galleryId}`,
-          ExecutionMethod.GET
-        ),
+        databases.getRow({
+          databaseId: "hp_db",
+          tableId: "gallery-images",
+          rowId: galleryId,
+        }),
+        functions.createExecution({
+          functionId: "gallery-endpoints",
+          async: false,
+          xpath: `/gallery/prefs?galleryId=${galleryId}`,
+          method: ExecutionMethod.GET,
+        }),
       ])
       // Step 2: Fetch user data using userId from image
-      const userData: UserDataDocumentsType = await databases.getDocument(
-        "hp_db",
-        "userdata",
-        image.userId
-      )
+      const userData: UserDataDocumentsType = await databases.getRow({
+        databaseId: "hp_db",
+        tableId: "userdata",
+        rowId: image.userId,
+      })
       return {
         image,
         imagePrefs: JSON.parse(imagePrefsRaw.responseBody),
@@ -146,7 +150,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                           className={`imgsinglegallery mx-auto h-[550px] w-auto max-w-full rounded-lg object-contain`}
                           unoptimized={true}
                           placeholder="blur"
-                          blurDataURL={getBlurDataURL(image?.blurHash)}
+                          blurDataURL={getBlurDataURL(image?.blurHash || "")}
                         />
                       )}
                     </>
@@ -263,7 +267,10 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                             <div className="flex items-center px-4 py-6 sm:gap-4 sm:px-0">
                               {image ? (
                                 <Link
-                                  href={getGalleryImageUrlView(image.galleryId)}
+                                  href={
+                                    getGalleryImageUrlView(image.galleryId) ||
+                                    ""
+                                  }
                                   target={"_blank"}
                                 >
                                   <Button variant={"outline"}>
@@ -280,7 +287,7 @@ export default function PageClient({ galleryId }: { galleryId: string }) {
                                   image={image}
                                   imagePrefs={localImagePrefs}
                                   setImagePrefs={setLocalImagePrefs}
-                                  current={current}
+                                  current={current as AccountPrefs}
                                 />
                               )}
 

@@ -1,25 +1,23 @@
-import { NextResponse } from "next/server"
 import { createSessionServerClient } from "@/app/appwrite-session"
 import type { UserDataDocumentsType, UserDataType } from "@/utils/types/models"
+import { NextResponse } from "next/server"
 
 // Cache sitemap for 10 minutes to lower memory/CPU pressure on bursts
 export async function GET() {
   try {
     const { databases } = await createSessionServerClient()
 
-    const users: UserDataType = await databases.listDocuments(
-      "hp_db",
-      "userdata"
-    )
+    const users: UserDataType = await databases.listRows({
+      databaseId: "hp_db",
+      tableId: "userdata",
+    })
 
-    const productsMapping = users.documents.map(
-      (user: UserDataDocumentsType) => ({
-        url: `${process.env.NEXT_PUBLIC_DOMAIN}/user/${user.profileUrl}`,
-        lastModified: user.$updatedAt,
-        changeFrequency: "weekly",
-        priority: 0.5,
-      })
-    )
+    const productsMapping = users.rows.map((user: UserDataDocumentsType) => ({
+      url: `${process.env.NEXT_PUBLIC_DOMAIN}/user/${user.profileUrl}`,
+      lastModified: user.$updatedAt,
+      changeFrequency: "weekly",
+      priority: 0.5,
+    }))
 
     let sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n`
 
@@ -39,7 +37,7 @@ export async function GET() {
         priority: 1,
       },
       {
-        url: `${process.env.NEXT_PUBLIC_DOMAIN}/pawcraft`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/users`,
         lastModified: currentYear + "-01-01T00:00:00.000+00:00",
         changeFrequency: "yearly",
         priority: 1,
@@ -47,7 +45,7 @@ export async function GET() {
       ...productsMapping,
     ]
 
-    for (const mapping of mappings) {
+    for (const mapping of mappings as any) {
       sitemap += "<url>\n"
       sitemap += `<loc>${mapping.url}</loc>\n`
       if (mapping["news"]) {

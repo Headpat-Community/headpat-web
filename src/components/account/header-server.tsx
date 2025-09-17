@@ -8,6 +8,8 @@ import {
   Users,
 } from "lucide-react"
 
+import AccountAnnouncements from "@/components/account/accountAnnouncements"
+import { ThemeToggle } from "@/components/ThemeToggle"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -18,13 +20,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { ThemeToggle } from "@/components/ThemeToggle"
 import Image from "next/image"
-import AccountAnnouncements from "@/components/account/accountAnnouncements"
 import Link from "next/link"
-//import ChangeLanguage from '@/components/system/changeLanguage'
 
-export default async function Dashboard({ children }) {
+export default async function Dashboard({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="bg-muted/40 hidden border-r md:block">

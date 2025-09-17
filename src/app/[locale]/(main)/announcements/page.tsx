@@ -5,7 +5,9 @@ import { getTranslations } from "gt-next/server"
 import type { AnnouncementDataType } from "@/utils/types/models"
 import * as Sentry from "@sentry/nextjs"
 
-export async function generateMetadata(props) {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }>
+}) {
   const params = await props.params
 
   const { locale } = params
@@ -30,17 +32,20 @@ export async function generateMetadata(props) {
       locale: locale,
       type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN!),
   }
 }
 
 export default async function AnnouncementsPage() {
   const { databases } = await createAdminClient()
-  let announcementData: AnnouncementDataType["documents"] = []
+  let announcementData: AnnouncementDataType["rows"] = []
   try {
     const announcementDataResponse: AnnouncementDataType =
-      await databases.listDocuments("hp_db", "announcements")
-    announcementData = announcementDataResponse.documents
+      await databases.listRows({
+        databaseId: "hp_db",
+        tableId: "announcements",
+      })
+    announcementData = announcementDataResponse.rows
   } catch (error) {
     Sentry.captureException(error)
   }

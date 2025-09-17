@@ -116,11 +116,11 @@ export const UserProvider = memo(function UserProvider(props: {
       setUser(loggedIn)
 
       // Get the user data from the database
-      const userData: UserDataDocumentsType = await databases.getDocument(
-        "hp_db",
-        "userdata",
-        loggedIn.$id
-      )
+      const userData: UserDataDocumentsType = await databases.getRow({
+        databaseId: "hp_db",
+        tableId: "userdata",
+        rowId: loggedIn.$id,
+      })
       setUserData(userData)
       return loggedIn
     } catch (error: any) {
@@ -153,11 +153,11 @@ export const UserProvider = memo(function UserProvider(props: {
   const fetchAndCacheUserData = useCallback(
     async (loggedIn: AccountPrefs) => {
       try {
-        const userData: UserDataDocumentsType = await databases.getDocument(
-          "hp_db",
-          "userdata",
-          loggedIn.$id
-        )
+        const userData: UserDataDocumentsType = await databases.getRow({
+          databaseId: "hp_db",
+          tableId: "userdata",
+          rowId: loggedIn.$id,
+        })
 
         setUserData(userData)
 

@@ -4,8 +4,10 @@ import Link from "next/link"
 import { getTranslations } from "gt-next/server"
 import { HoverBorderGradient } from "@/components/ui/motion/hover-border-gradient"
 
-export async function generateMetadata({ params }) {
-  const paramsResponse = await params
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }>
+}) {
+  const paramsResponse = await props.params
   const meta = await getTranslations("MainMetadata")
 
   return {
@@ -29,7 +31,7 @@ export async function generateMetadata({ params }) {
       locale: paramsResponse.locale,
       type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN!),
   }
 }
 

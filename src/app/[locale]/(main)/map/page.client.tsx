@@ -1,32 +1,33 @@
 "use client"
-import React, { useCallback, useEffect, useState } from "react"
-import { AdvancedMarker, APIProvider, Map } from "@vis.gl/react-google-maps"
+import { client, databases, Query } from "@/app/appwrite-client"
+import { listDocuments } from "@/components/api/documents"
+import { formatDateLocale } from "@/components/calculateTimeLeft"
+import { useUser } from "@/components/contexts/UserContext"
+import { Circle } from "@/components/map/circle"
+import FiltersModal from "@/components/map/FiltersModal"
+import { Polygon } from "@/components/map/polygon"
+import SettingsModal from "@/components/map/SettingsModal"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { formatDateLocale } from "@/components/calculateTimeLeft"
-import { listDocuments } from "@/components/api/documents"
-import { toast } from "sonner"
-import { client, databases, Query } from "@/app/appwrite-client"
-import { Polygon } from "@/components/map/polygon"
-import { Circle } from "@/components/map/circle"
-import sanitizeHtml from "sanitize-html"
-import { useUser } from "@/components/contexts/UserContext"
-import FiltersModal from "@/components/map/FiltersModal"
-import { Button } from "@/components/ui/button"
-import { FilterIcon, SettingsIcon } from "lucide-react"
-import SettingsModal from "@/components/map/SettingsModal"
 import type {
+  AccountPrefs,
   EventsDocumentsType,
   EventsType,
   LocationDocumentsType,
   LocationType,
   UserDataDocumentsType,
 } from "@/utils/types/models"
+import { AdvancedMarker, APIProvider, Map } from "@vis.gl/react-google-maps"
+import { FilterIcon, SettingsIcon } from "lucide-react"
+import React, { useCallback, useEffect, useState } from "react"
+import sanitizeHtml from "sanitize-html"
+import { toast } from "sonner"
 
 type User = {
   lat: number
@@ -37,15 +38,19 @@ type User = {
 }
 
 export default function PageClient() {
-  const [events, setEvents] = useState<EventsType>(null)
+  const [events, setEvents] = useState<EventsType | null>(null)
   const [filters, setFilters] = useState({
     showEvents: true,
     showUsers: true,
   })
-  const [friendsLocations, setFriendsLocations] = useState(null)
+  const [friendsLocations, setFriendsLocations] = useState<
+    LocationDocumentsType[] | null
+  >(null)
   const [filtersOpen, setFiltersOpen] = useState<boolean>(false)
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false)
-  const [userStatus, setUserStatus] = useState<LocationDocumentsType>(null)
+  const [userStatus, setUserStatus] = useState<LocationDocumentsType | null>(
+    null
+  )
 
   const { current } = useUser()
 
@@ -84,28 +89,28 @@ export default function PageClient() {
 
   const fetchUserLocations = useCallback(async () => {
     try {
-      const query = []
+      const query: string[] = []
       /*
        if (current?.$id) {
        query = [Query.notEqual('$id', current?.$id)]
        }
        */
 
-      const data: LocationType = await databases.listDocuments(
-        "hp_db",
-        "locations",
-        query
-      )
+      const data: LocationType = await databases.listRows({
+        databaseId: "hp_db",
+        tableId: "locations",
+        queries: query,
+      })
 
-      const promises = data.documents.map(async (doc) => {
+      const promises = data.rows.map(async (doc) => {
         if (current && current.$id === doc.$id) {
           setUserStatus(doc)
         }
-        const userData: UserDataDocumentsType = await databases.getDocument(
-          "hp_db",
-          "userdata",
-          doc.$id
-        )
+        const userData: UserDataDocumentsType = await databases.getRow({
+          databaseId: "hp_db",
+          tableId: "userdata",
+          rowId: doc.$id,
+        })
         return { ...doc, userData }
       })
 
@@ -123,10 +128,11 @@ export default function PageClient() {
 
   const handleSubscribedEvents = useCallback(() => {
     return client.subscribe(
-      ["databases.hp_db.collections.locations.documents"],
+      ["databases.hp_db.collections.locations.rows"],
       async (response) => {
         const eventType = response.events[0].split(".").pop()
-        const updatedDocument: any = response.payload
+        const updatedDocument: LocationDocumentsType =
+          response.payload as LocationDocumentsType
 
         switch (eventType) {
           case "update":
@@ -134,61 +140,70 @@ export default function PageClient() {
               setUserStatus(updatedDocument)
             }
 
-            setFriendsLocations((prevLocations: LocationDocumentsType[]) => {
-              const existingLocation = prevLocations.find(
-                (location) => location?.$id === updatedDocument.$id
-              )
-              if (existingLocation) {
-                return prevLocations.map((location) =>
-                  location?.$id === updatedDocument.$id
-                    ? {
-                        ...location,
-                        ...updatedDocument,
-                        userData: location.userData,
-                      }
-                    : location
+            setFriendsLocations(
+              (prevLocations: LocationDocumentsType[] | null) => {
+                if (!prevLocations) return []
+                const existingLocation = prevLocations.find(
+                  (location) => location?.$id === updatedDocument.$id
                 )
-              } else {
-                return [...prevLocations, updatedDocument]
+                if (existingLocation) {
+                  return prevLocations.map((location) =>
+                    location?.$id === updatedDocument.$id
+                      ? {
+                          ...location,
+                          ...updatedDocument,
+                          userData: location.userData,
+                        }
+                      : location
+                  )
+                } else {
+                  return [...prevLocations, updatedDocument]
+                }
               }
-            })
+            )
             break
           case "delete":
             if (current && updatedDocument.$id === current.$id) {
               setUserStatus(null)
             }
-            setFriendsLocations((prevLocations: LocationDocumentsType[]) => {
-              return prevLocations.filter(
-                (location) => location?.$id !== updatedDocument.$id
-              )
-            })
+            setFriendsLocations(
+              (prevLocations: LocationDocumentsType[] | null) => {
+                if (!prevLocations) return []
+                return prevLocations.filter(
+                  (location) => location?.$id !== updatedDocument.$id
+                )
+              }
+            )
             break
           case "create":
             if (current && updatedDocument.$id === current.$id) {
               setUserStatus(updatedDocument)
             }
 
-            const userData: UserDataDocumentsType = await databases.getDocument(
-              "hp_db",
-              "userdata",
-              `${updatedDocument.$id}`
-            )
+            const userData: UserDataDocumentsType = await databases.getRow({
+              databaseId: "hp_db",
+              tableId: "userdata",
+              rowId: updatedDocument.$id,
+            })
             const updatedLocationWithUserData = { ...updatedDocument, userData }
 
-            setFriendsLocations((prevLocations: LocationDocumentsType[]) => {
-              const locationExists = prevLocations.some(
-                (location) => location?.$id === updatedDocument.$id
-              )
-              if (locationExists) {
-                return prevLocations.map((location) =>
-                  location.$id === updatedDocument.$id
-                    ? updatedLocationWithUserData
-                    : location
+            setFriendsLocations(
+              (prevLocations: LocationDocumentsType[] | null) => {
+                if (!prevLocations) return [updatedLocationWithUserData || []]
+                const locationExists = prevLocations.some(
+                  (location) => location?.$id === updatedDocument.$id
                 )
-              } else {
-                return [...prevLocations, updatedLocationWithUserData]
+                if (locationExists) {
+                  return prevLocations.map((location) =>
+                    location.$id === updatedDocument.$id
+                      ? updatedLocationWithUserData
+                      : location
+                  )
+                } else {
+                  return [...prevLocations, updatedLocationWithUserData]
+                }
               }
-            })
+            )
             break
           default:
             console.error("Unknown event type:", eventType)
@@ -212,9 +227,9 @@ export default function PageClient() {
 
   const advancedMarkerClick = (user: User) => {
     setCurrentUser({
-      title: user.userData?.displayName,
+      title: user.userData?.displayName || "",
       status: user.status,
-      description: user.userData?.bio,
+      description: user.userData?.bio || "",
     })
     setModalUserOpen(true)
   }
@@ -287,11 +302,11 @@ export default function PageClient() {
           setOpenModal={setSettingsOpen}
           userStatus={userStatus}
           setUserStatus={setUserStatus}
-          current={current}
+          current={current as AccountPrefs}
         />
       )}
 
-      <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}>
+      <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY!}>
         <Map
           mapId={"bf51a910020fa25a"}
           defaultZoom={3}
@@ -315,7 +330,7 @@ export default function PageClient() {
                       }}
                     >
                       <AvatarImage
-                        src={getUserAvatar(user?.userData?.avatarId)}
+                        src={getUserAvatar(user?.userData?.avatarId || "")}
                       />
                       <AvatarFallback>
                         {user?.userData?.displayName
@@ -328,7 +343,7 @@ export default function PageClient() {
               }
             })}
           {filters.showEvents &&
-            events?.documents.map((event, index) => {
+            events?.rows.map((event, index) => {
               if (event?.locationZoneMethod === "polygon") {
                 const coords = event?.coordinates.map((coord) => {
                   const [lat, lng] = coord.split(",").map(Number)

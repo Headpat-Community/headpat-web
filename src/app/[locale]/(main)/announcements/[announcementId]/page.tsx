@@ -1,9 +1,9 @@
 import { createAdminClient } from "@/app/appwrite-session"
-import Link from "next/link"
 import { getAvatarImageUrlPreview } from "@/components/getStorageItem"
-import sanitize from "sanitize-html"
 import { Button } from "@/components/ui/button"
 import type { AnnouncementDocumentsType } from "@/utils/types/models"
+import Link from "next/link"
+import sanitize from "sanitize-html"
 
 export const metadata = {
   title: "Announcements",
@@ -18,8 +18,11 @@ export default async function Page(props: {
 
   const { databases } = await createAdminClient()
 
-  const announcementData: AnnouncementDocumentsType =
-    await databases.getDocument("hp_db", "announcements", announcementId)
+  const announcementData: AnnouncementDocumentsType = await databases.getRow({
+    databaseId: "hp_db",
+    tableId: "announcements",
+    rowId: announcementId,
+  })
 
   const description = sanitize(announcementData?.description)
   const descriptionSanitized = description.replace(/\n/g, "<br />")
@@ -50,7 +53,7 @@ export default async function Page(props: {
                   <img
                     className="mr-4 h-12 w-12 flex-none rounded-full"
                     src={getAvatarImageUrlPreview(
-                      announcementData?.userData?.avatarId,
+                      announcementData?.userData?.avatarId || "",
                       "width=100&output=webp&quality=75"
                     )}
                     alt=""

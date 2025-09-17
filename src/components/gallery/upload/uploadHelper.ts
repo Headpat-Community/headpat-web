@@ -1,4 +1,5 @@
 "use client"
+import type { PixelCrop } from "react-image-crop"
 import { centerCrop, makeAspectCrop } from "react-image-crop"
 
 export function centerAspectCrop(
@@ -41,10 +42,10 @@ export async function getCroppedImageBlob(
 }
 
 export async function createBlob(
-  imgRef,
-  previewCanvasRef,
-  completedCrop,
-  type
+  imgRef: React.RefObject<HTMLImageElement>,
+  previewCanvasRef: React.RefObject<HTMLCanvasElement>,
+  completedCrop: PixelCrop,
+  type: string
 ) {
   const image = imgRef.current
   const previewCanvas = previewCanvasRef.current

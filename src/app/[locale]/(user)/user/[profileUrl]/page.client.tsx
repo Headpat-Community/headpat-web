@@ -125,15 +125,21 @@ export default function PageClient({ userId }: { userId: string }) {
       try {
         // Base queries that are always needed
         const baseQueries = [
-          databases.getDocument("hp_db", "userdata", userId),
-          databases.listDocuments("hp_db", "followers", [
-            Query.equal("followerId", userId),
-            Query.limit(1),
-          ]),
-          databases.listDocuments("hp_db", "followers", [
-            Query.equal("userId", userId),
-            Query.limit(1),
-          ]),
+          databases.getRow({
+            databaseId: "hp_db",
+            tableId: "userdata",
+            rowId: userId,
+          }),
+          databases.listRows({
+            databaseId: "hp_db",
+            tableId: "followers",
+            queries: [Query.equal("followerId", userId), Query.limit(1)],
+          }),
+          databases.listRows({
+            databaseId: "hp_db",
+            tableId: "followers",
+            queries: [Query.equal("userId", userId), Query.limit(1)],
+          }),
         ]
 
         // Only fetch userprefs if current user is logged in
@@ -143,20 +149,28 @@ export default function PageClient({ userId }: { userId: string }) {
         if (current?.$id) {
           // Add isFollowing query for logged-in users
           baseQueries.push(
-            databases.listDocuments("hp_db", "followers", [
-              Query.and([
-                Query.equal("userId", current.$id),
-                Query.equal("followerId", userId),
-              ]),
-            ])
+            databases.listRows({
+              databaseId: "hp_db",
+              tableId: "followers",
+              queries: [
+                Query.and([
+                  Query.equal("userId", current.$id),
+                  Query.equal("followerId", userId),
+                ]),
+              ],
+            })
           )
 
           // Only fetch userprefs if viewing own profile or if needed for moderation
           if (current.$id === userId) {
             baseQueries.push(
               databases
-                .getDocument("hp_db", "userprefs", userId)
-                .catch(() => null)
+                .getRow({
+                  databaseId: "hp_db",
+                  tableId: "userprefs",
+                  rowId: userId,
+                })
+                .catch(() => null) as Promise<any>
             )
           }
         }
@@ -173,7 +187,11 @@ export default function PageClient({ userId }: { userId: string }) {
           isFollowingResponse = results[3] as any
           // userprefs is only included if viewing own profile
           if (current.$id === userId && results.length > 4) {
-            userPrefs = results[4]
+            try {
+              userPrefs = results[4]
+            } catch {
+              userPrefs = null
+            }
           }
         }
 
@@ -222,7 +240,7 @@ export default function PageClient({ userId }: { userId: string }) {
 
   const isBirthday = birthday === today
 
-  const sanitizedBio = sanitizeHtml(userData?.bio)
+  const sanitizedBio = sanitizeHtml(userData?.bio || "")
   const bioWithLineBreaks = sanitizedBio.replace(/\n/g, "<br />")
 
   return (
@@ -232,10 +250,12 @@ export default function PageClient({ userId }: { userId: string }) {
         <header className={"p-0 py-4"}>
           <div>
             <Image
-              src={getBannerImageUrlPreview(
-                userData.profileBannerId,
-                "width=1200&height=250&output=webp"
-              )}
+              src={
+                getBannerImageUrlPreview(
+                  userData.profileBannerId,
+                  "width=1200&height=250&output=webp"
+                ) || ""
+              }
               alt={"User Banner"}
               className={
                 "h-auto max-h-[250px] w-full max-w-[1200px] rounded-md object-cover"
@@ -259,7 +279,7 @@ export default function PageClient({ userId }: { userId: string }) {
         <div className={"col-span-1 lg:col-span-1"}>
           <AspectRatio ratio={1}>
             <Image
-              src={getAvatarImageUrlView(userData.avatarId)}
+              src={getAvatarImageUrlView(userData.avatarId || "")}
               alt={"User Avatar"}
               className={cn("rounded-t-xl object-contain", {
                 "rounded-b-xl": !(
@@ -359,7 +379,7 @@ export default function PageClient({ userId }: { userId: string }) {
               {current?.$id !== userData?.$id &&
                 (userData.isFollowing !== undefined ? (
                   <FollowerButton
-                    displayName={userData?.displayName}
+                    displayName={userData?.displayName || ""}
                     followerId={userData.$id}
                     isFollowing={userData.isFollowing}
                   />

@@ -5,7 +5,9 @@ import type { Metadata } from "next"
 import type { GalleryType } from "@/utils/types/models"
 import { notFound } from "next/navigation"
 
-export async function generateMetadata(props): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string; galleryId: string }>
+}): Promise<Metadata> {
   const params = await props.params
 
   const { locale, galleryId } = params
@@ -16,21 +18,21 @@ export async function generateMetadata(props): Promise<Metadata> {
     return `https://api.headpat.place/v1/storage/buckets/gallery/files/${galleryId}/view?project=hp-main`
   }
 
-  const gallery: GalleryType = await databases.listDocuments(
-    "hp_db",
-    "gallery-images",
-    [Query.equal("$id", galleryId)]
-  )
+  const gallery: GalleryType = await databases.listRows({
+    databaseId: "hp_db",
+    tableId: "gallery-images",
+    queries: [Query.equal("$id", galleryId)],
+  })
 
-  if (gallery.documents.length === 0) {
+  if (gallery.rows.length === 0) {
     return notFound()
   }
 
-  const isNsfw = gallery.documents[0]?.nsfw
+  const isNsfw = gallery.rows[0]?.nsfw
 
   const metadata: Metadata = {
-    title: gallery.documents[0]?.name,
-    description: gallery.documents[0].longText,
+    title: gallery.rows[0]?.name,
+    description: gallery.rows[0].longText,
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/gallery/${galleryId}`,
       languages: {
@@ -40,20 +42,20 @@ export async function generateMetadata(props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title: gallery.documents[0].name,
-      description: gallery.documents[0].longText,
+      title: gallery.rows[0].name,
+      description: gallery.rows[0].longText,
       siteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
       locale: locale,
       type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN!),
   }
 
   if (!isNsfw) {
-    metadata.openGraph.images = [
+    metadata.openGraph!.images = [
       {
         url: getImageUrl(galleryId),
-        alt: gallery.documents[0].name,
+        alt: gallery.rows[0].name,
       },
     ]
   }
@@ -61,7 +63,9 @@ export async function generateMetadata(props): Promise<Metadata> {
   return metadata
 }
 
-export default async function GalleryPage(props) {
+export default async function GalleryPage(props: {
+  params: Promise<{ galleryId: string }>
+}) {
   const params = await props.params
 
   const { galleryId } = params

@@ -4,7 +4,7 @@ import {
   Account,
   Teams,
   Functions,
-  Databases,
+  TablesDB,
   Storage,
   Messaging,
   Locale,
@@ -38,7 +38,7 @@ export async function createSessionServerClient() {
       return new Teams(client)
     },
     get databases() {
-      return new Databases(client)
+      return new TablesDB(client)
     },
     get storage() {
       return new Storage(client)
@@ -79,7 +79,7 @@ export async function createSessionClient(request: any) {
       return new Teams(client)
     },
     get databases() {
-      return new Databases(client)
+      return new TablesDB(client)
     },
     get storage() {
       return new Storage(client)
@@ -113,7 +113,7 @@ export async function createAdminClient() {
       return new Teams(client)
     },
     get databases() {
-      return new Databases(client)
+      return new TablesDB(client)
     },
     get storage() {
       return new Storage(client)

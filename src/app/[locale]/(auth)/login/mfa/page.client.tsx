@@ -1,16 +1,16 @@
 "use client"
-import * as Sentry from "@sentry/nextjs"
+import { account } from "@/app/appwrite-client"
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import { account } from "@/app/appwrite-client"
 import { getMfaFactors } from "@/utils/server-api/account/user"
+import * as Sentry from "@sentry/nextjs"
+import { useRouter } from "next/navigation"
 import { AuthenticationFactor } from "node-appwrite"
+import { useEffect, useState } from "react"
 import { toast } from "sonner"
 
 export default function MfaPageClient() {
@@ -23,7 +23,7 @@ export default function MfaPageClient() {
       try {
         await account.get()
         router.push("/account")
-      } catch (error) {
+      } catch (error: any) {
         if (error.type === "general_unauthorized_scope") {
           router.push("/login")
         } else {
@@ -55,7 +55,7 @@ export default function MfaPageClient() {
       await account.updateMfaChallenge(challengeId, otp)
 
       router.replace("/account")
-    } catch (error) {
+    } catch (error: any) {
       if (error.type === "user_invalid_token") {
         toast.error(
           "Incorrect code. Please try again. If you're having trouble, please contact support."

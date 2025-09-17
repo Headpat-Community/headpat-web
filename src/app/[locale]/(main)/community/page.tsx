@@ -3,7 +3,9 @@ import { getTranslations } from "gt-next/server"
 import AllCommunities from "@/components/community/allCommunities"
 import MyCommunities from "@/components/community/myCommunities"
 
-export async function generateMetadata(props) {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }>
+}) {
   const params = await props.params
 
   const { locale } = params
@@ -28,7 +30,7 @@ export async function generateMetadata(props) {
       locale: locale,
       type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN!),
   }
 }
 

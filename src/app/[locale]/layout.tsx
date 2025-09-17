@@ -1,7 +1,11 @@
 import HeaderClient from "@/components/sidebar/header-client"
 import { getTranslations } from "gt-next/server"
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
   const paramsResponse = await params
   const meta = await getTranslations("MainMetadata")
 
@@ -32,11 +36,15 @@ export async function generateMetadata({ params }) {
       locale: paramsResponse.locale,
       type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN!),
   }
 }
 
-export default function LocaleLayout({ children }) {
+export default function LocaleLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <div>
       <HeaderClient>{children}</HeaderClient>

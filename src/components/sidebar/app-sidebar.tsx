@@ -157,7 +157,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <Separator />
         <span className="text-muted-foreground text-center text-sm">
-          BETA 0.8.13 <RocketIcon className="inline-block size-4" />
+          BETA 0.8.14 <RocketIcon className="inline-block size-4" />
         </span>
         <Separator />
         <NavUser />

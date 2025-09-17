@@ -10,7 +10,7 @@ export async function generateMetadata() {
       title: "Page Not Found",
       type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN!),
   }
 }
 

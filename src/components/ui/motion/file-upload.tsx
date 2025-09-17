@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils"
-import React, { useRef, useState } from "react"
 import { motion } from "framer-motion"
-import { useDropzone } from "react-dropzone"
 import { UploadIcon } from "lucide-react"
+import { useRef, useState } from "react"
+import { useDropzone } from "react-dropzone"
 
 const mainVariant = {
   initial: {
@@ -35,7 +35,7 @@ export const FileUpload = ({
 
   const handleFileChange = (newFiles: File[]) => {
     setFiles((prevFiles) => [...prevFiles, ...newFiles])
-    onChange(newFiles)
+    onChange?.(newFiles)
   }
 
   const handleClick = () => {

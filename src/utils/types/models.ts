@@ -26,10 +26,10 @@ export interface AccountPrefs extends AccountType {
 
 export interface MessagesType {
   total: number
-  documents: MessagesDocumentsType[]
+  rows: MessagesDocumentsType[]
 }
 
-export interface MessagesDocumentsType extends Models.Document {
+export interface MessagesDocumentsType extends Models.Row {
   /**
    * The user ID of the sender.
    */
@@ -61,10 +61,10 @@ export interface MessagesDocumentsType extends Models.Document {
 
 export interface MessageConversationsType {
   total: number
-  documents: MessageConversationsDocumentsType[]
+  rows: MessageConversationsDocumentsType[]
 }
 
-export interface MessageConversationsDocumentsType extends Models.Document {
+export interface MessageConversationsDocumentsType extends Models.Row {
   /**
    * The user IDs of the participants in the conversation.
    */
@@ -85,10 +85,10 @@ export interface MessageConversationsDocumentsType extends Models.Document {
 
 export interface FollowerType {
   total: number
-  documents: FollowerDocumentsType[]
+  rows: FollowerDocumentsType[]
 }
 
-export interface FollowerDocumentsType extends Models.Document {
+export interface FollowerDocumentsType extends Models.Row {
   /**
    * The user ID of the user that is following.
    */
@@ -104,14 +104,14 @@ export interface FollowerDocumentsType extends Models.Document {
  */
 export interface UserDataType {
   total: number
-  documents: UserProfileDocumentsType[]
+  rows: UserProfileDocumentsType[]
 }
 
 /**
  * This data is returned from the API by calling the userData function.
  * @see UserDataType
  */
-export interface UserDataDocumentsType extends Models.Document {
+export interface UserDataDocumentsType extends Models.Row {
   /**
    * The avatar ID of the user.
    */
@@ -205,14 +205,14 @@ export interface UserProfileDocumentsType extends UserDataDocumentsType {
  */
 export interface UserPrefsType {
   total: number
-  documents: UserPrefsDocumentsType[]
+  rows: UserPrefsDocumentsType[]
 }
 
 /**
  * This data is returned from the API within the `documents` array.
  * @see UserPrefsType
  */
-export interface UserPrefsDocumentsType extends Models.Document {
+export interface UserPrefsDocumentsType extends Models.Row {
   /**
    * The user ID of the user.
    */
@@ -245,14 +245,14 @@ export interface UserPrefsDocumentsType extends Models.Document {
  */
 export interface UserSettingsType {
   total: number
-  documents: UserSettingsDocumentsType[]
+  rows: UserSettingsDocumentsType[]
 }
 
 /**
  * This data is returned from the API within the `documents` array.
  * @see UserSettingsType
  */
-export interface UserSettingsDocumentsType extends Models.Document {
+export interface UserSettingsDocumentsType extends Models.Row {
   roles: string[]
 }
 
@@ -262,14 +262,14 @@ export interface UserSettingsDocumentsType extends Models.Document {
  */
 export interface LocationType {
   total: number
-  documents: LocationDocumentsType[]
+  rows: LocationDocumentsType[]
 }
 
 /**
  * This data is returned in the friends/map view.
  * @see UserDataDocumentsType
  */
-export interface LocationDocumentsType extends Models.Document {
+export interface LocationDocumentsType extends Models.Row {
   lat: number
   long: number
   timeUntilEnd: string
@@ -284,7 +284,7 @@ export interface LocationDocumentsType extends Models.Document {
  */
 export interface AnnouncementDataType {
   total: number
-  documents: AnnouncementDocumentsType[]
+  rows: AnnouncementDocumentsType[]
 }
 
 /**
@@ -293,7 +293,7 @@ export interface AnnouncementDataType {
  * @interface
  * @since 2.0.0
  */
-export interface AnnouncementDocumentsType extends Models.Document {
+export interface AnnouncementDocumentsType extends Models.Row {
   /**
    * The title of the announcement.
    */
@@ -324,7 +324,7 @@ export interface AnnouncementDocumentsType extends Models.Document {
  */
 export interface GalleryType {
   total: number
-  documents: GalleryDocumentsType[]
+  rows: GalleryDocumentsType[]
 }
 
 /**
@@ -333,7 +333,7 @@ export interface GalleryType {
  * @interface
  * @since 2.0.0
  */
-export interface GalleryDocumentsType extends Models.Document {
+export interface GalleryDocumentsType extends Models.Row {
   /**
    * The gallery ID.
    */
@@ -376,10 +376,10 @@ export interface GalleryDocumentsType extends Models.Document {
  */
 export interface GalleryPrefsType {
   total: number
-  documents: GalleryPrefsDocumentsType[]
+  rows: GalleryPrefsDocumentsType[]
 }
 
-export interface GalleryPrefsDocumentsType extends Models.Document {
+export interface GalleryPrefsDocumentsType extends Models.Row {
   /**
    * The user ID.
    */
@@ -402,7 +402,7 @@ export interface GalleryPrefsDocumentsType extends Models.Document {
  */
 export interface EventsType {
   total: number
-  documents: EventsDocumentsType[]
+  rows: EventsDocumentsType[]
 }
 
 /**
@@ -411,7 +411,7 @@ export interface EventsType {
  * @interface
  * @since 2.0.0
  */
-export interface EventsDocumentsType extends Models.Document {
+export interface EventsDocumentsType extends Models.Row {
   /**
    * The title of the event.
    */
@@ -491,10 +491,10 @@ export interface EventsDocumentsType extends Models.Document {
 
 export interface CommunityType {
   total: number
-  documents: CommunityDocumentsType[]
+  rows: CommunityDocumentsType[]
 }
 
-export interface CommunityDocumentsType extends Models.Document {
+export interface CommunityDocumentsType extends Models.Row {
   /**
    * The name of the community.
    */
@@ -546,7 +546,7 @@ export interface CommunityPrefsType {
   rows: CommunityPrefsDocumentsType[]
 }
 
-export interface CommunityPrefsDocumentsType extends Models.Document {
+export interface CommunityPrefsDocumentsType extends Models.Row {
   /**
    * The community ID.
    */
@@ -566,7 +566,7 @@ export interface CommunitySettingsType {
   rows: CommunitySettingsDocumentsType[]
 }
 
-export interface CommunitySettingsDocumentsType extends Models.Document {
+export interface CommunitySettingsDocumentsType extends Models.Row {
   /**
    * If the community is indexed by search engines and findable.
    */
@@ -583,20 +583,20 @@ export interface CommunitySettingsDocumentsType extends Models.Document {
 
 export interface CommunityFollowersType {
   total: number
-  documents: CommunityFollowersDocuments[]
+  rows: CommunityFollowersDocuments[]
 }
 
-export interface CommunityFollowersDocuments extends Models.Document {
+export interface CommunityFollowersDocuments extends Models.Row {
   userId: string
   communityId: string
 }
 
 export interface NotificationsType {
   total: number
-  documents: NotificationsDocumentsType[]
+  rows: NotificationsDocumentsType[]
 }
 
-export interface NotificationsDocumentsType extends Models.Document {
+export interface NotificationsDocumentsType extends Models.Row {
   /**
    * The title of the notification.
    */
@@ -621,20 +621,20 @@ export interface NotificationsDocumentsType extends Models.Document {
 
 export interface ConfigFeaturesType {
   total: number
-  documents: ConfigFeaturesDocumentsType[]
+  rows: ConfigFeaturesDocumentsType[]
 }
 
-export interface ConfigFeaturesDocumentsType extends Models.Document {
+export interface ConfigFeaturesDocumentsType extends Models.Row {
   isEnabled: boolean
   type: "public" | "earlyaccess" | "staff" | "dev"
 }
 
 export interface ChangelogType {
   total: number
-  documents: ChangelogDocumentsType[]
+  rows: ChangelogDocumentsType[]
 }
 
-export interface ChangelogDocumentsType extends Models.Document {
+export interface ChangelogDocumentsType extends Models.Row {
   /**
    * The title of the change
    */

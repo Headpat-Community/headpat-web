@@ -6,7 +6,11 @@ import PaginationComponent from "@/components/Pagination"
 import { useHeader } from "@/components/sidebar/header-client"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import type { GalleryDocumentsType, GalleryType } from "@/utils/types/models"
+import type {
+  AccountPrefs,
+  GalleryDocumentsType,
+  GalleryType,
+} from "@/utils/types/models"
 import { captureException } from "@sentry/nextjs"
 import { ImageFormat } from "appwrite"
 import { decode } from "blurhash"
@@ -128,25 +132,25 @@ export default function FetchGallery() {
         filters.push(Query.orderDesc("$createdAt"))
       } else if (sortType === "random") {
         // Get total count first
-        const totalCount = await databases.listDocuments(
-          "hp_db",
-          "gallery-images",
-          [Query.limit(1)]
-        )
+        const totalCount = await databases.listRows({
+          databaseId: "hp_db",
+          tableId: "gallery-images",
+          queries: [Query.limit(1)],
+        })
         setTotalPages(Math.ceil(totalCount.total / pageSize))
 
         // If we're on page 1, fetch and shuffle all items
         if (currentPage === 1) {
           setSeenItems(new Set()) // Reset seen items when going back to page 1
-          const allGallery = await databases.listDocuments(
-            "hp_db",
-            "gallery-images",
-            !current?.prefs?.nsfw
+          const allGallery = await databases.listRows({
+            databaseId: "hp_db",
+            tableId: "gallery-images",
+            queries: !current?.prefs?.nsfw
               ? [Query.equal("nsfw", false), Query.limit(1000)]
-              : [Query.limit(1000)]
-          )
+              : [Query.limit(1000)],
+          })
           const allDocuments =
-            allGallery.documents as unknown as GalleryDocumentsType[]
+            allGallery.rows as unknown as GalleryDocumentsType[]
           const shuffled = [...allDocuments].sort(() => Math.random() - 0.5)
 
           // Store the first page and seen items
@@ -167,24 +171,24 @@ export default function FetchGallery() {
           unseenFilters.push(Query.and(notEqualQueries))
         }
 
-        const newGallery = await databases.listDocuments(
-          "hp_db",
-          "gallery-images",
-          unseenFilters
-        )
+        const newGallery = await databases.listRows({
+          databaseId: "hp_db",
+          tableId: "gallery-images",
+          queries: unseenFilters,
+        })
 
         // If we've seen all items, reset seen items and fetch from the beginning
-        if (newGallery.documents.length === 0) {
+        if (newGallery.rows.length === 0) {
           setSeenItems(new Set())
-          const allGallery = await databases.listDocuments(
-            "hp_db",
-            "gallery-images",
-            !current?.prefs?.nsfw
+          const allGallery = await databases.listRows({
+            databaseId: "hp_db",
+            tableId: "gallery-images",
+            queries: !current?.prefs?.nsfw
               ? [Query.equal("nsfw", false), Query.limit(1000)]
-              : [Query.limit(1000)]
-          )
+              : [Query.limit(1000)],
+          })
           const allDocuments =
-            allGallery.documents as unknown as GalleryDocumentsType[]
+            allGallery.rows as unknown as GalleryDocumentsType[]
           const shuffled = [...allDocuments].sort(() => Math.random() - 0.5)
           const pageItems = shuffled.slice(0, pageSize)
           setGallery(pageItems)
@@ -193,7 +197,7 @@ export default function FetchGallery() {
         }
 
         const newDocuments =
-          newGallery.documents as unknown as GalleryDocumentsType[]
+          newGallery.rows as unknown as GalleryDocumentsType[]
         const shuffled = [...newDocuments].sort(() => Math.random() - 0.5)
         const pageItems = shuffled.slice(0, pageSize)
 
@@ -206,16 +210,16 @@ export default function FetchGallery() {
       }
 
       try {
-        const gallery: GalleryType = await databases.listDocuments(
-          "hp_db",
-          "gallery-images",
-          filters
-        )
+        const gallery: GalleryType = await databases.listRows({
+          databaseId: "hp_db",
+          tableId: "gallery-images",
+          queries: filters,
+        })
 
-        setGallery(gallery.documents)
+        setGallery(gallery.rows)
         setTotalPages(Math.ceil(gallery.total / pageSize))
       } catch (error) {
-        toast.error(error)
+        toast.error(error as string)
         captureException(error)
       }
     }
@@ -234,7 +238,10 @@ export default function FetchGallery() {
   // Add header component
   useEffect(() => {
     const uploadButton = (
-      <UploadButton current={current} key="gallery-upload-button" />
+      <UploadButton
+        current={current as AccountPrefs}
+        key="gallery-upload-button"
+      />
     )
     addHeaderComponent(uploadButton)
     return () => removeHeaderComponent(uploadButton)
@@ -262,9 +269,10 @@ export default function FetchGallery() {
                 gallery.map((item) => {
                   const format = item.mimeType?.split("/").pop()
                   const imageFormat = format
-                    ? (ImageFormat[
-                        format.charAt(0).toUpperCase() + format.slice(1)
-                      ] as ImageFormat)
+                    ? ImageFormat[
+                        (format.charAt(0).toUpperCase() +
+                          format.slice(1)) as keyof typeof ImageFormat
+                      ]
                     : undefined
 
                   return (
@@ -302,10 +310,12 @@ export default function FetchGallery() {
                               </div>
                             )}
                             <Image
-                              src={getGalleryImageUrl(
-                                item.galleryId,
-                                imageFormat
-                              )}
+                              src={
+                                getGalleryImageUrl(
+                                  item.galleryId,
+                                  imageFormat
+                                ) || "/images/placeholder-image-color.webp"
+                              }
                               alt={item.name || "Gallery Image"}
                               className={`h-full max-h-[600px] w-full max-w-[600px] rounded-lg object-cover`}
                               width={256}
@@ -315,7 +325,7 @@ export default function FetchGallery() {
                               loading="lazy"
                               unoptimized={true}
                               placeholder="blur"
-                              blurDataURL={getBlurDataURL(item.blurHash)}
+                              blurDataURL={getBlurDataURL(item.blurHash || "")}
                             />
                             {(item.mimeType === "image/gif" ||
                               item.mimeType.includes("video")) && (
@@ -345,9 +355,10 @@ export default function FetchGallery() {
                 gallery.map((item) => {
                   const format = item.mimeType?.split("/").pop()
                   const imageFormat = format
-                    ? (ImageFormat[
-                        format.charAt(0).toUpperCase() + format.slice(1)
-                      ] as ImageFormat)
+                    ? ImageFormat[
+                        (format.charAt(0).toUpperCase() +
+                          format.slice(1)) as keyof typeof ImageFormat
+                      ]
                     : undefined
 
                   return (
@@ -385,10 +396,12 @@ export default function FetchGallery() {
                               </div>
                             )}
                             <Image
-                              src={getGalleryImageUrl(
-                                item.galleryId,
-                                imageFormat
-                              )}
+                              src={
+                                getGalleryImageUrl(
+                                  item.galleryId,
+                                  imageFormat
+                                ) || "/images/placeholder-image-color.webp"
+                              }
                               alt={item.name || "Gallery Image"}
                               className={`h-full max-h-[600px] w-full max-w-[600px] rounded-lg object-cover`}
                               width={256}
@@ -398,7 +411,7 @@ export default function FetchGallery() {
                               loading="lazy"
                               unoptimized={true}
                               placeholder="blur"
-                              blurDataURL={getBlurDataURL(item.blurHash)}
+                              blurDataURL={getBlurDataURL(item.blurHash || "")}
                             />
                             {(item.mimeType === "image/gif" ||
                               item.mimeType.includes("video")) && (

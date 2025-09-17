@@ -13,7 +13,9 @@ const COMMUNITIES_PATH = "/communities?limit=250"
 const EXECUTION_METHOD = ExecutionMethod.GET
 
 export default memo(function AllCommunities() {
-  const [communities, setCommunities] = useState<CommunityDocumentsType[]>(null)
+  const [communities, setCommunities] = useState<
+    CommunityDocumentsType[] | null
+  >(null)
   const [isFetching, setIsFetching] = useState<boolean>(true)
   const { saveAllCache } = useDataCache()
 

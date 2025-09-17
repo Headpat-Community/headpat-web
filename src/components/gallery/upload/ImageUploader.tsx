@@ -1,11 +1,5 @@
 "use client"
-import React, { useRef, useState } from "react"
-import type { Crop, PixelCrop } from "react-image-crop"
-import ReactCrop from "react-image-crop"
-import { canvasPreview } from "./canvasPreview"
-import { useDebounceEffect } from "./useDebounceEffect"
-import "react-image-crop/dist/ReactCrop.css"
-import { Input } from "@/components/ui/input"
+import { ID, storage } from "@/app/appwrite-client"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,10 +10,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { centerAspectCrop, createBlob } from "./uploadHelper"
+import React, { useRef, useState } from "react"
+import type { Crop, PixelCrop } from "react-image-crop"
+import ReactCrop from "react-image-crop"
+import "react-image-crop/dist/ReactCrop.css"
 import { toast } from "sonner"
-import { storage, ID } from "@/app/appwrite-client"
+import { canvasPreview } from "./canvasPreview"
+import { centerAspectCrop, createBlob } from "./uploadHelper"
+import { useDebounceEffect } from "./useDebounceEffect"
 
 interface ImageUploaderProps {
   isUploading: boolean
@@ -96,7 +96,13 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   }
 
   async function onUploadCropClick() {
-    const blob = await createBlob(imgRef, previewCanvasRef, completedCrop, type)
+    if (!imgRef.current || !previewCanvasRef.current || !completedCrop) return
+    const blob = await createBlob(
+      imgRef as React.RefObject<HTMLImageElement>,
+      previewCanvasRef as React.RefObject<HTMLCanvasElement>,
+      completedCrop,
+      type
+    )
     const formData = new FormData()
     formData.append("file", blob, name || "Unnamed")
     try {
@@ -162,7 +168,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         <div className="col-span-full flex items-center gap-x-8">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={getImageUrl(currentImageId) || defaultImage}
+            src={getImageUrl(currentImageId || "") || defaultImage}
             alt="Preview"
             className="size-24 flex-none rounded-lg object-cover"
           />

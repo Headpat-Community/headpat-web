@@ -1,7 +1,9 @@
 import type { Metadata } from "next"
 import PageClient from "./page.client"
 
-export async function generateMetadata(props): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
   const params = await props.params
   const { locale } = params
 
@@ -23,7 +25,7 @@ export async function generateMetadata(props): Promise<Metadata> {
       locale: locale,
       type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN!),
   }
 
   return metadata

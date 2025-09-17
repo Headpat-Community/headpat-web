@@ -9,7 +9,7 @@ import UserCard from "@/components/user/userCard"
 import type { UserDataDocumentsType } from "@/utils/types/models"
 
 export default function PageClient({ communityId }: { communityId: string }) {
-  const [followers, setFollowers] = useState<UserDataDocumentsType[]>(null)
+  const [followers, setFollowers] = useState<UserDataDocumentsType[]>([])
   const [isFetching, setIsFetching] = useState<boolean>(true)
 
   const fetchFollowers = useCallback(async () => {
@@ -75,9 +75,9 @@ export default function PageClient({ communityId }: { communityId: string }) {
                         getAvatarImageUrlPreview(
                           user.avatarId,
                           "width=250&height=250"
-                        ) || null
+                        ) || ""
                       }
-                      alt={user.displayName}
+                      alt={user.displayName || ""}
                       className="rounded-md object-cover"
                       width={1000}
                       height={1000}

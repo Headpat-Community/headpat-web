@@ -35,7 +35,9 @@ const SignInPrompt = memo(function SignInPrompt() {
 })
 
 export default memo(function MyCommunities() {
-  const [communities, setCommunities] = useState<CommunityDocumentsType[]>(null)
+  const [communities, setCommunities] = useState<
+    CommunityDocumentsType[] | null
+  >(null)
   const [isFetching, setIsFetching] = useState<boolean>(true)
   const { current } = useUser()
   const { saveAllCache } = useDataCache()
@@ -76,7 +78,7 @@ export default memo(function MyCommunities() {
   // Memoized effect to prevent unnecessary re-runs
   useEffect(() => {
     if (!current) {
-      setCommunities(null)
+      setCommunities([])
       setIsFetching(false)
       return
     }
