@@ -2,7 +2,7 @@
   "author": "Faye",
   "dependencies": {
     "@googlemaps/markerclusterer": "^2.6.2",
-    "@hookform/resolvers": "^3.10.0",
+    "@hookform/resolvers": "^5.2.2",
     "@icons-pack/react-simple-icons": "^13.7.0",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
