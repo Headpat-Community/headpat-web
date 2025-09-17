@@ -39,7 +39,7 @@ const FollowerButton = memo(function FollowerButton({
   displayName: string
   communityId: string
 }) {
-  const [isFollowingState, setIsFollowingState] = useState<boolean>(null)
+  const [isFollowingState, setIsFollowingState] = useState<boolean>(false)
   const [hasPermissions, setHasPermissions] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const router = useRouter()
@@ -246,7 +246,7 @@ function PageClient({
           >
             <AspectRatio ratio={2 / 2}>
               <Image
-                src={getCommunityAvatarUrlView(community.avatarId)}
+                src={getCommunityAvatarUrlView(community.avatarId) || ""}
                 alt={"Community Avatar"}
                 className={"rounded-xl object-contain"}
                 fill={true}

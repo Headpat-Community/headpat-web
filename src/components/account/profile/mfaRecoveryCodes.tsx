@@ -1,3 +1,5 @@
+import { account } from "@/app/appwrite-client"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -9,20 +11,18 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { account } from "@/app/appwrite-client"
-import { AuthenticationFactor } from "appwrite"
-import { useState } from "react"
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
-import * as Sentry from "@sentry/nextjs"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import * as Sentry from "@sentry/nextjs"
+import { AuthenticationFactor } from "appwrite"
 import { ShieldAlertIcon } from "lucide-react"
+import { useState } from "react"
 import { toast } from "sonner"
 
 export default function MfaRecoveryCodes() {
@@ -40,7 +40,7 @@ export default function MfaRecoveryCodes() {
 
         setChallengeId(mfaRequestResult.$id)
         setMfaMode("challengeStarted")
-      } catch (error) {
+      } catch (error: any) {
         if (error.type === "general_rate_limit_exceeded") {
           toast.error(
             "You have exceeded the rate limit for this action. Please try again later."

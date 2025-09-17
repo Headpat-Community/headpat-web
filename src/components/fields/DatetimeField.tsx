@@ -65,15 +65,14 @@ const DatetimeField: React.FC<DatetimeFieldProps> = ({
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
             <Calendar
-              // @ts-expect-error: Dynamic mode
-              mode={mode}
+              mode={mode as "single"}
               selected={field.value ? new Date(field.value) : undefined}
-              // @ts-expect-error: Dynamic mode
-              onSelect={field.value ? new Date(field.value) : undefined}
+              onSelect={field.onChange}
               autoFocus
               startMonth={fromYear}
               endMonth={toYear}
               captionLayout={captionLayout}
+              required
             />
           </PopoverContent>
         </Popover>

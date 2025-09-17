@@ -1,16 +1,16 @@
 "use client"
-import React, { useState, useEffect } from "react"
-import Image from "next/image"
 import { ErrorMessage } from "@/components/alerts"
-import { emailVerification } from "@/utils/actions/user-actions"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { emailVerification } from "@/utils/actions/user-actions"
+import Image from "next/image"
+import React, { useEffect, useState } from "react"
 
 const ResetPassword = () => {
-  const [code, setCode] = useState("")
-  const [userId, setUserId] = useState("")
-  const [error, setError] = useState("")
+  const [code, setCode] = useState<string>("")
+  const [userId, setUserId] = useState<string>("")
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
@@ -24,7 +24,7 @@ const ResetPassword = () => {
     }
   }, [])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const body = {
@@ -54,7 +54,12 @@ const ResetPassword = () => {
             Verify E-Mail
           </h4>
 
-          <form className="mt-10 space-y-6" action="#" method="POST">
+          <form
+            className="mt-10 space-y-6"
+            action="#"
+            method="POST"
+            onSubmit={handleSubmit}
+          >
             <div>
               <Label htmlFor="userId">User ID</Label>
               <div className="mt-2">
@@ -86,7 +91,7 @@ const ResetPassword = () => {
             </div>
 
             <div>
-              <Button type="submit" className="w-full" onClick={handleSubmit}>
+              <Button type="submit" className="w-full">
                 Verify
               </Button>
             </div>

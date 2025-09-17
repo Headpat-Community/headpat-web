@@ -3,7 +3,7 @@ import {
   Client,
   Account,
   Teams,
-  Databases,
+  TablesDB,
   Storage,
   Functions,
   Messaging,
@@ -17,7 +17,7 @@ export const client = new Client()
 
 export const account: Account = new Account(client)
 export const teams: Teams = new Teams(client)
-export const databases: Databases = new Databases(client)
+export const databases: TablesDB = new TablesDB(client)
 export const storage: Storage = new Storage(client)
 export const functions: Functions = new Functions(client)
 export const messaging: Messaging = new Messaging(client)

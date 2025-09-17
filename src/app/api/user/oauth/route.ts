@@ -5,9 +5,18 @@ import { NextResponse } from "next/server"
 
 export async function GET(request: NextRequest) {
   const userId = request.nextUrl.searchParams.get("userId")
+  if (!userId) {
+    return NextResponse.json({ error: "User ID is required" }, { status: 400 })
+  }
   const secret = request.nextUrl.searchParams.get("secret")
+  if (!secret) {
+    return NextResponse.json({ error: "Secret is required" }, { status: 400 })
+  }
   const { account } = await createAdminClient()
-  const session = await account.createSession(userId, secret)
+  const session = await account.createSession({
+    userId: userId,
+    secret: secret,
+  })
 
   const cookieStore = await cookies()
   cookieStore.set(

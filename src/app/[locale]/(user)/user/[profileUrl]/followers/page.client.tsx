@@ -1,18 +1,18 @@
 "use client"
-import { Card } from "@/components/ui/card"
-import Image from "next/image"
-import { getAvatarImageUrlPreview } from "@/components/getStorageItem"
-import { ExecutionMethod } from "node-appwrite"
 import { functions } from "@/app/appwrite-client"
-import { useCallback, useEffect, useState } from "react"
-import { toast } from "sonner"
+import { getAvatarImageUrlPreview } from "@/components/getStorageItem"
+import { Card } from "@/components/ui/card"
 import UserCard from "@/components/user/userCard"
 import type { UserDataDocumentsType, UserDataType } from "@/utils/types/models"
+import Image from "next/image"
+import { ExecutionMethod } from "node-appwrite"
+import { useCallback, useEffect, useState } from "react"
+import { toast } from "sonner"
 
 export default function ClientPage({ userData }: { userData: UserDataType }) {
   const [users, setUsers] = useState<UserDataDocumentsType[]>([])
   const [isFetching, setIsFetching] = useState<boolean>(true)
-  const user = userData.documents[0]
+  const user = userData.rows[0]
 
   const fetchUsers = useCallback(async () => {
     setIsFetching(true)
@@ -36,7 +36,7 @@ export default function ClientPage({ userData }: { userData: UserDataType }) {
   }, [user.$id])
 
   useEffect(() => {
-    fetchUsers().then()
+    void fetchUsers()
   }, [fetchUsers])
 
   if (isFetching && users.length === 0) {
@@ -80,9 +80,9 @@ export default function ClientPage({ userData }: { userData: UserDataType }) {
                       getAvatarImageUrlPreview(
                         user.avatarId,
                         "width=250&height=250"
-                      ) || null
+                      ) || ""
                     }
-                    alt={user.displayName}
+                    alt={user.displayName || ""}
                     className="rounded-md object-cover"
                     width={1000}
                     height={1000}

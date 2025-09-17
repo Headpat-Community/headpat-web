@@ -4,7 +4,9 @@ import { createSessionServerClient } from "@/app/appwrite-session"
 import { Query } from "node-appwrite"
 import type { ChangelogType } from "@/utils/types/models"
 
-export async function generateMetadata(props) {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }>
+}) {
   const params = await props.params
 
   const { locale } = params
@@ -29,16 +31,16 @@ export async function generateMetadata(props) {
       locale: locale,
       type: "website",
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN!),
   }
 }
 
 export default async function Page() {
   const { databases } = await createSessionServerClient()
-  const changelogData: ChangelogType = await databases.listDocuments(
-    "hp_db",
-    "changelog",
-    [Query.orderDesc("version")]
-  )
-  return <ListComponent changelogData={changelogData.documents} />
+  const changelogData: ChangelogType = await databases.listRows({
+    databaseId: "hp_db",
+    tableId: "changelog",
+    queries: [Query.orderDesc("version")],
+  })
+  return <ListComponent changelogData={changelogData.rows} />
 }

@@ -20,10 +20,19 @@ import sanitize from "sanitize-html"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useUser } from "@/components/contexts/UserContext"
 import { useRouter } from "next/navigation"
-import type { EventsDocumentsType } from "@/utils/types/models"
+import type {
+  CommunityDocumentsType,
+  EventsDocumentsType,
+} from "@/utils/types/models"
 import Link from "next/link"
 
-export default function PageClient({ eventData, communityData }) {
+export default function PageClient({
+  eventData,
+  communityData,
+}: {
+  eventData: EventsDocumentsType
+  communityData: CommunityDocumentsType
+}) {
   const [event, setEvent] = React.useState<EventsDocumentsType>(eventData)
   const { current } = useUser()
   const router = useRouter()
@@ -34,11 +43,11 @@ export default function PageClient({ eventData, communityData }) {
 
   const fetchEvents = async () => {
     try {
-      const document: EventsDocumentsType = await databases.getDocument(
-        "hp_db",
-        "events",
-        `${eventData.$id}`
-      )
+      const document: EventsDocumentsType = await databases.getRow({
+        databaseId: "hp_db",
+        tableId: "events",
+        rowId: eventData.$id,
+      })
 
       setEvent(document)
 
@@ -215,7 +224,7 @@ export default function PageClient({ eventData, communityData }) {
                   ? image.startsWith("http")
                     ? image
                     : `https://${image}`
-                  : getEventImageUrlView(image)
+                  : getEventImageUrlView(image) || ""
                 return (
                   <div key={index} className="aspect-video">
                     <Link href={imageUrl} target="_blank">
@@ -265,7 +274,7 @@ export default function PageClient({ eventData, communityData }) {
                 !current
                   ? () => router.push("/login")
                   : isEventEnded
-                    ? null
+                    ? undefined
                     : event.isAttending
                       ? unattendEvent
                       : attendEvent

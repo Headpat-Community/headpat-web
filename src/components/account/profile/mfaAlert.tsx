@@ -1,3 +1,4 @@
+import { account, avatars } from "@/app/appwrite-client"
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -9,9 +10,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { account, avatars } from "@/app/appwrite-client"
-import { AuthenticationFactor, AuthenticatorType } from "appwrite"
-import { useState } from "react"
 import {
   InputOTP,
   InputOTPGroup,
@@ -19,10 +17,13 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp"
 import * as Sentry from "@sentry/nextjs"
+import { AuthenticationFactor, AuthenticatorType } from "appwrite"
+import type { Models } from "appwrite"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { toast } from "sonner"
 
-export default function MfaAlert({ mfaList }) {
+export default function MfaAlert({ mfaList }: { mfaList: Models.MfaFactors }) {
   const [open, setOpen] = useState<boolean>(false)
   const [mfaMode, setMfaMode] = useState<string>("")
   const [qrCodeImage, setQrCodeImage] = useState<string>("")
@@ -47,9 +48,9 @@ export default function MfaAlert({ mfaList }) {
       )
       await account.updateMfaChallenge(createChallengeResult.$id, code)
 
-      const mfaDeleteResult = await account.deleteMfaAuthenticator(
-        AuthenticatorType.Totp
-      )
+      const mfaDeleteResult = await account.deleteMfaAuthenticator({
+        type: AuthenticatorType.Totp,
+      })
       if (mfaDeleteResult) {
         toast.success("You have successfully disabled 2FA.")
         await account.updateMFA(false)
@@ -78,7 +79,7 @@ export default function MfaAlert({ mfaList }) {
 
       setMfaMode("totpFinished")
       setOpen(false)
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 401) {
         toast.error("The code you entered is invalid. Please try again.")
       }

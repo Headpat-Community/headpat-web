@@ -1,7 +1,7 @@
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
-export default function DoesNotExist({ name }) {
+export default function DoesNotExist({ name }: { name: string }) {
   return (
     <div className="h-svh">
       <div className="m-auto flex h-full w-full flex-col items-center justify-center gap-2">

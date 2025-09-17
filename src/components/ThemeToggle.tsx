@@ -12,12 +12,20 @@ export const ThemeToggle = () => {
   const changeTheme = async () => {
     if (!buttonRef.current) return
 
-    await document.startViewTransition(() => {
-      flushSync(() => {
-        const dark = document.documentElement.classList.toggle("dark")
-        setTheme(dark ? "dark" : "light")
-      })
-    }).ready
+    // Check if startViewTransition is supported
+    if (typeof document.startViewTransition === "function") {
+      await document.startViewTransition(() => {
+        flushSync(() => {
+          const dark = document.documentElement.classList.toggle("dark")
+          setTheme(dark ? "dark" : "light")
+        })
+      }).ready
+    } else {
+      // Fallback for browsers that don't support view transitions
+      const dark = document.documentElement.classList.toggle("dark")
+      setTheme(dark ? "dark" : "light")
+      return
+    }
 
     const { top, left, width, height } =
       buttonRef.current.getBoundingClientRect()

@@ -80,7 +80,7 @@ export default function GeneralAccountView({
   mfaList: Models.MfaFactors
 }) {
   const [userMe, setUserMe] = useState(accountData)
-  const [userData, setUserData] = useState(null)
+  const [userData, setUserData] = useState<UserDataDocumentsType | null>(null)
   const router = useRouter()
   const { setUser } = useUser()
 
@@ -122,9 +122,8 @@ export default function GeneralAccountView({
       toast.success("E-Mail updated successfully.")
       setUserData((prevUserData: any) => ({
         ...prevUserData,
-        email: userData.email,
       }))
-    } catch (error) {
+    } catch (error: any) {
       if (error.type == "user_invalid_credentials") {
         toast.error("Password doesn't match.")
       } else if (error.type == "user_target_already_exists") {
@@ -142,7 +141,7 @@ export default function GeneralAccountView({
     try {
       await account.updatePassword(values.newpassword, values.password)
       toast.success("Password updated successfully.")
-    } catch (error) {
+    } catch (error: any) {
       if (error.type === "general_argument_invalid") {
         toast.error(
           "Password must be at least 8 characters long and cannot be a common password."
@@ -213,14 +212,14 @@ export default function GeneralAccountView({
   const handleProfileUrlChange = async (
     values: z.infer<typeof profileUrlFormSchema>
   ) => {
-    const promise = await databases.updateDocument(
-      "hp_db",
-      "userdata",
-      userMe?.$id,
-      {
+    const promise = await databases.updateRow({
+      databaseId: "hp_db",
+      tableId: "userdata",
+      rowId: userMe?.$id,
+      data: {
         profileUrl: values.profileUrl,
-      }
-    )
+      },
+    })
 
     if (promise.type === "document_invalid_structure") {
       toast.error("Invalid structure.")

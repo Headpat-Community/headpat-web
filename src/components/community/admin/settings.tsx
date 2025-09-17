@@ -39,14 +39,14 @@ export default function CommunityAdminSettings({
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [communitySettings, setCommunitySettings] =
-    useState<CommunitySettingsDocumentsType>(null)
+    useState<CommunitySettingsDocumentsType | null>(null)
 
   const getSettings = useCallback(async () => {
-    const data: CommunitySettingsDocumentsType = await databases.getDocument(
-      "hp_db",
-      "community-settings",
-      community.$id
-    )
+    const data: CommunitySettingsDocumentsType = await databases.getRow({
+      databaseId: "hp_db",
+      tableId: "community-settings",
+      rowId: community.$id,
+    })
     setCommunitySettings(data)
   }, [community.$id])
 
@@ -67,19 +67,24 @@ export default function CommunityAdminSettings({
 
     const loadingToast = toast.loading("Updating community data...")
     try {
-      await databases.updateDocument(
-        "hp_db",
-        "community-settings",
-        community.$id,
-        {
-          isFindable: communitySettings.isFindable,
-          hasPublicPage: communitySettings.hasPublicPage,
-          nsfw: communitySettings.nsfw,
-        }
-      )
+      await databases.updateRow({
+        databaseId: "hp_db",
+        tableId: "community-settings",
+        rowId: community.$id,
+        data: {
+          isFindable: communitySettings?.isFindable,
+          hasPublicPage: communitySettings?.hasPublicPage,
+          nsfw: communitySettings?.nsfw,
+        },
+      })
 
-      await databases.updateDocument("hp_db", "community", community.$id, {
-        communitySettings: "headpat-official",
+      await databases.updateRow({
+        databaseId: "hp_db",
+        tableId: "community",
+        rowId: community.$id,
+        data: {
+          communitySettings: communitySettings?.$id,
+        },
       })
       toast.success("Community settings updated successfully.")
     } catch (error) {
@@ -151,8 +156,8 @@ export default function CommunityAdminSettings({
                   checked={communitySettings?.isFindable}
                   onCheckedChange={() =>
                     setCommunitySettings((prev) => ({
-                      ...prev,
-                      isFindable: !prev.isFindable,
+                      ...prev!,
+                      isFindable: !prev!.isFindable,
                     }))
                   }
                 />
@@ -160,8 +165,8 @@ export default function CommunityAdminSettings({
                   id={"isFindable"}
                   onClick={() => {
                     setCommunitySettings((prev) => ({
-                      ...prev,
-                      isFindable: !prev.isFindable,
+                      ...prev!,
+                      isFindable: !prev!.isFindable,
                     }))
                   }}
                 >
@@ -175,8 +180,8 @@ export default function CommunityAdminSettings({
                   checked={communitySettings?.hasPublicPage}
                   onCheckedChange={() =>
                     setCommunitySettings((prev) => ({
-                      ...prev,
-                      hasPublicPage: !prev.hasPublicPage,
+                      ...prev!,
+                      hasPublicPage: !prev!.hasPublicPage,
                     }))
                   }
                 />
@@ -184,8 +189,8 @@ export default function CommunityAdminSettings({
                   id={"hasPublicPage"}
                   onClick={() => {
                     setCommunitySettings((prev) => ({
-                      ...prev,
-                      hasPublicPage: !prev.hasPublicPage,
+                      ...prev!,
+                      hasPublicPage: !prev!.hasPublicPage,
                     }))
                   }}
                 >
@@ -199,8 +204,8 @@ export default function CommunityAdminSettings({
                   checked={communitySettings?.nsfw}
                   onCheckedChange={() =>
                     setCommunitySettings((prev) => ({
-                      ...prev,
-                      nsfw: !prev.nsfw,
+                      ...prev!,
+                      nsfw: !prev!.nsfw,
                     }))
                   }
                 />
@@ -208,8 +213,8 @@ export default function CommunityAdminSettings({
                   id={"nsfw"}
                   onClick={() => {
                     setCommunitySettings((prev) => ({
-                      ...prev,
-                      nsfw: !prev.nsfw,
+                      ...prev!,
+                      nsfw: !prev!.nsfw,
                     }))
                   }}
                 >

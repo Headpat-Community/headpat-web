@@ -21,8 +21,11 @@ export default async function AnnouncementNotification() {
     announcementData = cached.data
   } else {
     const announcementDataResponse: AnnouncementDataType =
-      await databases.listDocuments("hp_db", "announcements")
-    announcementData = announcementDataResponse.documents[0]
+      await databases.listRows({
+        databaseId: "hp_db",
+        tableId: "announcements",
+      })
+    announcementData = announcementDataResponse.rows[0]
 
     // Update cache
     announcementCache.set(cacheKey, {
@@ -33,7 +36,7 @@ export default async function AnnouncementNotification() {
     // Clean up old cache entries to prevent memory leaks
     if (announcementCache.size > 10) {
       const firstKey = announcementCache.keys().next().value
-      announcementCache.delete(firstKey)
+      announcementCache.delete(firstKey!)
     }
   }
 
@@ -91,7 +94,7 @@ export default async function AnnouncementNotification() {
           </p>
           <Link
             href={`/announcements/${announcementData.$id}`}
-            className="shadow-xs flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+            className="shadow-xs flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white hover:bg-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
           >
             More info <span aria-hidden="true">&rarr;</span>
           </Link>

@@ -1,26 +1,26 @@
 "use client"
-import React, { useRef, useState } from "react"
 import { databases, ID, storage } from "@/app/appwrite-client"
-import * as Sentry from "@sentry/nextjs"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Textarea } from "@/components/ui/textarea"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
-import imageCompression from "browser-image-compression"
-import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
+import { Textarea } from "@/components/ui/textarea"
+import * as Sentry from "@sentry/nextjs"
 import { encode } from "blurhash"
+import imageCompression from "browser-image-compression"
+import { useRouter } from "next/navigation"
+import React, { useRef, useState } from "react"
+import { toast } from "sonner"
 
 export default function UploadPage({ userId }: { userId: string }) {
   const [isUploading, setIsUploading] = useState(false)
   const [progress, setProgress] = useState(0)
   const router = useRouter()
-  const [selectedFileInput, setSelectedFileInput] = useState<string>(null)
-  const [selectedFile, setSelectedFile] = useState<File>(null)
-  const [blurHash, setBlurHash] = useState<string>(null)
-  const fileInputRef = useRef(null)
+  const [selectedFileInput, setSelectedFileInput] = useState<string>("")
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [blurHash, setBlurHash] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [data, setData] = useState({
     name: "",
     longText: "",
@@ -76,7 +76,7 @@ export default function UploadPage({ userId }: { userId: string }) {
         if (file.size > maxSizeInBytes) {
           toast.error("File size exceeds the 8 MB limit.")
           if (fileInputRef.current) {
-            fileInputRef.current.value = "" // Reset the input field
+            fileInputRef.current.value = "" as unknown as string // Reset the input field
           }
           return
         }
@@ -103,7 +103,7 @@ export default function UploadPage({ userId }: { userId: string }) {
             "File size exceeds the 8 MB limit even after compression."
           )
           if (fileInputRef.current) {
-            fileInputRef.current.value = "" // Reset the input
+            fileInputRef.current.value = "" as unknown as string // Reset the input
           }
           return
         }
@@ -130,7 +130,7 @@ export default function UploadPage({ userId }: { userId: string }) {
         console.error("Error compressing file:", error)
         toast.error("Error compressing file.")
         if (fileInputRef.current) {
-          fileInputRef.current.value = "" // Reset the input
+          fileInputRef.current.value = "" as unknown as string // Reset the input
         }
       }
     } else {
@@ -148,7 +148,7 @@ export default function UploadPage({ userId }: { userId: string }) {
         if (file.size > maxSizeInBytes) {
           toast.error("File size exceeds the 8 MB limit.")
           if (fileInputRef.current) {
-            fileInputRef.current.value = "" // Reset the input field
+            fileInputRef.current.value = "" as unknown as string // Reset the input field
           }
           return
         }
@@ -175,7 +175,7 @@ export default function UploadPage({ userId }: { userId: string }) {
             "File size exceeds the 8 MB limit even after compression."
           )
           if (fileInputRef.current) {
-            fileInputRef.current.value = "" // Reset the input field
+            fileInputRef.current.value = "" as unknown as string // Reset the input field
           }
           return
         }
@@ -211,32 +211,40 @@ export default function UploadPage({ userId }: { userId: string }) {
     event: React.MouseEvent<HTMLImageElement, MouseEvent>
   ) => {
     event.nativeEvent.stopImmediatePropagation() // Use the native event to stop propagation
-    fileInputRef.current.click()
+    fileInputRef.current?.click()
   }
 
   const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    if (selectedFile.size > maxSizeInBytes) {
+    if (selectedFile && selectedFile.size > maxSizeInBytes) {
       toast.error("File size exceeds the 8 MB limit.")
       if (fileInputRef.current) {
-        fileInputRef.current.value = "" // Reset the input field
+        fileInputRef.current.value = "" as unknown as string // Reset the input field
       }
       return
     }
 
     try {
       setIsUploading(true) // Set isUploading to true before making the API call
+      if (!selectedFile) {
+        toast.error("No file selected.")
+        return
+      }
 
-      const fileData = storage.createFile("gallery", ID.unique(), selectedFile)
+      const fileData = storage.createFile({
+        bucketId: "gallery",
+        fileId: ID.unique(),
+        file: selectedFile,
+      })
 
       fileData.then(
         function (fileDataResponse) {
-          const postDocument = databases.createDocument(
-            "hp_db",
-            "gallery-images",
-            fileDataResponse.$id,
-            {
+          const postDocument = databases.createRow({
+            databaseId: "hp_db",
+            tableId: "gallery-images",
+            rowId: fileDataResponse.$id,
+            data: {
               name: data.name,
               longText: data.longText,
               nsfw: data.nsfw,
@@ -244,8 +252,8 @@ export default function UploadPage({ userId }: { userId: string }) {
               mimeType: fileDataResponse.mimeType,
               userId: userId,
               blurHash: blurHash, // Add blurhash to the document
-            }
-          )
+            },
+          })
 
           postDocument.then(
             function () {
@@ -256,7 +264,10 @@ export default function UploadPage({ userId }: { userId: string }) {
             },
             function (error) {
               console.log(error) // Failure
-              storage.deleteFile("gallery", fileDataResponse.$id)
+              storage.deleteFile({
+                bucketId: "gallery",
+                fileId: fileDataResponse.$id,
+              })
               Sentry.captureException(error)
               toast.error(
                 "You encountered an error. But don't worry, we're on it."

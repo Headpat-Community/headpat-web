@@ -11,6 +11,11 @@ export default function UploadBanner({
   setIsUploading,
   userId,
   userData,
+}: {
+  isUploading: boolean
+  setIsUploading: (isUploading: boolean) => void
+  userId: string
+  userData: UserDataDocumentsType
 }) {
   const getBannerImageUrl = (bannerId: string) => {
     if (!bannerId) return undefined
@@ -20,11 +25,11 @@ export default function UploadBanner({
   const handleAfterUpload = async (fileId: string) => {
     try {
       // Get the user's banner document
-      const bannerDocument: UserDataDocumentsType = await databases.getDocument(
-        "hp_db",
-        "userdata",
-        userId
-      )
+      const bannerDocument: UserDataDocumentsType = await databases.getRow({
+        databaseId: "hp_db",
+        tableId: "userdata",
+        rowId: userId,
+      })
       // If the user already has a banner, delete it
       if (bannerDocument.profileBannerId) {
         await storage
@@ -34,8 +39,13 @@ export default function UploadBanner({
           })
       }
       // Update the user's bannerId
-      await databases.updateDocument("hp_db", "userdata", userId, {
-        profileBannerId: fileId,
+      await databases.updateRow({
+        databaseId: "hp_db",
+        tableId: "userdata",
+        rowId: userId,
+        data: {
+          profileBannerId: fileId,
+        },
       })
       toast.success("Your banner has been uploaded successfully.")
     } catch (error) {
@@ -51,7 +61,7 @@ export default function UploadBanner({
       aspect={4.8}
       maxSizeInBytes={5 * 1024 * 1024}
       storageBucket="banners"
-      currentImageId={userData?.profileBannerId}
+      currentImageId={userData?.profileBannerId || undefined}
       getImageUrl={getBannerImageUrl}
       onAfterUpload={handleAfterUpload}
       label="Banner image"

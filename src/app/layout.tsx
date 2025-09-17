@@ -44,7 +44,7 @@ export default async function RootLayout({
   const locale = await getLocale()
   const { databases } = await createSessionServerClient()
   const status = await databases
-    .getDocument("config", "status", "website")
+    .getRow({ databaseId: "config", tableId: "status", rowId: "website" })
     .catch(() => ({ isMaintenance: true }))
 
   if (status.isMaintenance) {

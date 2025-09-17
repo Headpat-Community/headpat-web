@@ -14,7 +14,13 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useRouter } from "next/navigation"
 import type { GalleryDocumentsType } from "@/utils/types/models"
 
-export default function FetchGallery({ singleGallery, galleryId }) {
+export default function FetchGallery({
+  singleGallery,
+  galleryId,
+}: {
+  singleGallery: GalleryDocumentsType
+  galleryId: string
+}) {
   const router = useRouter()
   const [isUploading, setIsUploading] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -31,19 +37,23 @@ export default function FetchGallery({ singleGallery, galleryId }) {
       // Get the ID from the URL
       setIsDeleting(true)
 
-      const listDataResponse = getDocument(
+      const listDataResponse = getDocument<GalleryDocumentsType>(
         "hp_db",
         "gallery-images",
         `${galleryId}`
       )
 
       listDataResponse.then(
-        function (response: GalleryDocumentsType) {
+        function (response) {
           const documentId = response.$id
           const imageId = response.galleryId
 
-          storage.deleteFile("gallery", imageId)
-          databases.deleteDocument("hp_db", "gallery-images", documentId)
+          storage.deleteFile({ bucketId: "gallery", fileId: imageId })
+          databases.deleteRow({
+            databaseId: "hp_db",
+            tableId: "gallery-images",
+            rowId: documentId,
+          })
 
           toast.success("Success", {
             description: "Image successfully deleted! Sending you back...",
@@ -75,10 +85,15 @@ export default function FetchGallery({ singleGallery, galleryId }) {
 
     try {
       // Make the PATCH request
-      await databases.updateDocument("hp_db", "gallery-images", galleryId, {
-        name: userData.name,
-        longText: userData.longText,
-        nsfw: userData.nsfw,
+      await databases.updateRow({
+        databaseId: "hp_db",
+        tableId: "gallery-images",
+        rowId: galleryId,
+        data: {
+          name: userData.name,
+          longText: userData.longText,
+          nsfw: userData.nsfw,
+        },
       })
 
       // Handle response and update state accordingly
@@ -169,7 +184,7 @@ export default function FetchGallery({ singleGallery, galleryId }) {
                 onCheckedChange={(e) =>
                   setUserData({
                     ...userData,
-                    nsfw: e,
+                    nsfw: e as boolean,
                   })
                 }
               />

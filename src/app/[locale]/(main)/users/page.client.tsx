@@ -36,22 +36,22 @@ export default function ClientPage() {
     queryKey: ["users", currentPage],
     queryFn: async () => {
       try {
-        const response: UserDataType = await databases.listDocuments(
-          "hp_db",
-          "userdata",
-          [
+        const response: UserDataType = await databases.listRows({
+          databaseId: "hp_db",
+          tableId: "userdata",
+          queries: [
             Query.orderDesc("$createdAt"),
             Query.limit(USERS_PER_PAGE),
             Query.offset(currentPage * USERS_PER_PAGE),
-          ]
-        )
+          ],
+        })
 
         // Update total count on first page
         if (currentPage === 0) {
           setTotalUsers(response.total)
         }
 
-        return response.documents
+        return response.rows
       } catch (error) {
         console.error("Error fetching users:", error)
         toast.error("Failed to fetch users. Please try again later.")
@@ -110,9 +110,9 @@ export default function ClientPage() {
                       getAvatarImageUrlPreview(
                         user.avatarId,
                         "width=250&height=250"
-                      ) || null
+                      ) || ""
                     }
-                    alt={user.displayName}
+                    alt={user.displayName || ""}
                     className="rounded-md object-cover"
                     width={250}
                     height={250}

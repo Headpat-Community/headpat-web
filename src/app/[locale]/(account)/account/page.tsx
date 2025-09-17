@@ -1,13 +1,17 @@
+import FrontpageView from "@/components/account/views/frontpage"
+import GeneralAccountView from "@/components/account/views/general"
+import SocialsView from "@/components/account/views/socials"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { getMfaList, getUser } from "@/utils/server-api/account/user"
+import { getTranslations } from "gt-next/server"
 import { Suspense } from "react"
 import Loading from "../../../loading"
-import { getMfaList, getUser } from "@/utils/server-api/account/user"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import GeneralAccountView from "@/components/account/views/general"
-import FrontpageView from "@/components/account/views/frontpage"
-import SocialsView from "@/components/account/views/socials"
-import { getTranslations } from "gt-next/server"
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
   const paramsResponse = await params
   const meta = await getTranslations("AccountMetadata")
 

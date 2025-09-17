@@ -1,5 +1,5 @@
-import type { CommunityDocumentsType } from "@/utils/types/models"
 import { createAdminClient } from "@/app/appwrite-session"
+import type { CommunityDocumentsType } from "@/utils/types/models"
 
 /**
  * This function is used to get a community by id
@@ -11,7 +11,11 @@ export async function getCommunity(
 ): Promise<CommunityDocumentsType> {
   const { databases } = await createAdminClient()
   return await databases
-    .getDocument("hp_db", "community", communityId)
+    .getRow({
+      databaseId: "hp_db",
+      tableId: "community",
+      rowId: communityId,
+    })
     .catch((error) => {
       return JSON.parse(JSON.stringify(error))
     })

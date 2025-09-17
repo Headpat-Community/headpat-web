@@ -160,7 +160,7 @@ export const Polygon = memo(
   forwardRef((props: PolygonProps, ref: PolygonRef) => {
     const polygonRef = usePolygon(props)
 
-    useImperativeHandle(ref, () => polygonRef.current, [polygonRef])
+    useImperativeHandle(ref, () => polygonRef.current!, [polygonRef])
 
     return null
   })

@@ -1,14 +1,17 @@
 import { createAdminClient } from "@/app/appwrite-session"
-import { notFound } from "next/navigation"
-import Link from "next/link"
 import type { AnnouncementDataType } from "@/utils/types/models"
+import Link from "next/link"
+import { notFound } from "next/navigation"
 
 export default async function AccountAnnouncements() {
   const { databases } = await createAdminClient()
 
   const announcementDataResponse: AnnouncementDataType =
-    await databases.listDocuments("hp_db", "announcements")
-  const announcementData = announcementDataResponse.documents[0]
+    await databases.listRows({
+      databaseId: "hp_db",
+      tableId: "announcements",
+    })
+  const announcementData = announcementDataResponse.rows[0]
 
   if (!announcementData) {
     return notFound()

@@ -11,6 +11,10 @@ export default function UploadBanner({
   isUploading,
   setIsUploading,
   communityData,
+}: {
+  isUploading: boolean
+  setIsUploading: (isUploading: boolean) => void
+  communityData: CommunityDocumentsType
 }) {
   const getBannerImageUrl = (bannerId: string) => {
     if (!bannerId) return undefined
@@ -19,13 +23,12 @@ export default function UploadBanner({
 
   const handleBeforeUpload = async () => {
     // Pre-upload function call
-    const data = await functions.createExecution(
-      "community-endpoints",
-      "",
-      false,
-      `/community/upload?communityId=${communityData.$id}&type=banner`,
-      ExecutionMethod.POST
-    )
+    const data = await functions.createExecution({
+      functionId: "community-endpoints",
+      async: false,
+      xpath: `/community/upload?communityId=${communityData.$id}&type=banner`,
+      method: ExecutionMethod.POST,
+    })
     const response = JSON.parse(data.responseBody)
     if (response.type === "community_upload_missing_id") {
       toast.error("Community ID is missing. Please try again later.")
@@ -42,8 +45,11 @@ export default function UploadBanner({
   const handleAfterUpload = async (fileId: string): Promise<void> => {
     try {
       // Get the community document
-      const bannerDocument: CommunityDocumentsType =
-        await databases.getDocument("hp_db", "community", communityData.$id)
+      const bannerDocument: CommunityDocumentsType = await databases.getRow({
+        databaseId: "hp_db",
+        tableId: "community",
+        rowId: communityData.$id,
+      })
       // If the community already has a banner, delete it
       if (bannerDocument.bannerId) {
         await storage
@@ -53,18 +59,22 @@ export default function UploadBanner({
           })
       }
       // Update the community's bannerId
-      await databases.updateDocument("hp_db", "community", communityData.$id, {
-        bannerId: fileId,
+      await databases.updateRow({
+        databaseId: "hp_db",
+        tableId: "community",
+        rowId: communityData.$id,
+        data: {
+          bannerId: fileId,
+        },
       })
       toast.success("Your banner has been uploaded successfully.")
       // Post-upload function call
-      await functions.createExecution(
-        "community-endpoints",
-        "",
-        true,
-        `/community/upload/finish?communityId=${communityData.$id}`,
-        ExecutionMethod.POST
-      )
+      await functions.createExecution({
+        functionId: "community-endpoints",
+        async: true,
+        xpath: `/community/upload/finish?communityId=${communityData.$id}`,
+        method: ExecutionMethod.POST,
+      })
       window.location.reload()
     } catch (error) {
       toast.error("Failed to upload banner.")

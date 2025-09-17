@@ -9,7 +9,9 @@ export const metadata = {
   title: "Account Gallery",
 }
 
-export default async function AccountSingleGalleryPage(props) {
+export default async function AccountSingleGalleryPage(props: {
+  params: Promise<{ galleryId: string }>
+}) {
   const params = await props.params
 
   const { galleryId } = params
@@ -28,11 +30,11 @@ export default async function AccountSingleGalleryPage(props) {
   let singleGallery: GalleryDocumentsType
 
   try {
-    singleGallery = await databases.getDocument(
-      "hp_db",
-      "gallery-images",
-      galleryId
-    )
+    singleGallery = await databases.getRow({
+      databaseId: "hp_db",
+      tableId: "gallery-images",
+      rowId: galleryId,
+    })
 
     const galleryUserId = singleGallery?.userId
 

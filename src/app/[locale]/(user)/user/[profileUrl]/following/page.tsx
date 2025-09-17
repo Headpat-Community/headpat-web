@@ -1,11 +1,11 @@
-import { getUserDataFromProfileUrl } from "@/utils/server-api/user/getUserData"
-import ClientPage from "./page.client"
-import { createSessionServerClient } from "@/app/appwrite-session"
 import { Query } from "@/app/appwrite-server"
-import sanitizeHtml from "sanitize-html"
+import { createSessionServerClient } from "@/app/appwrite-session"
 import { getAvatarImageUrlView } from "@/components/getStorageItem"
-import type { Metadata } from "next"
+import { getUserDataFromProfileUrl } from "@/utils/server-api/user/getUserData"
 import type { UserDataType } from "@/utils/types/models"
+import type { Metadata } from "next"
+import sanitizeHtml from "sanitize-html"
+import ClientPage from "./page.client"
 
 export async function generateMetadata(props: {
   params: Promise<{ profileUrl: string; locale: string }>
@@ -15,19 +15,19 @@ export async function generateMetadata(props: {
   const { profileUrl, locale } = params
 
   const { databases } = await createSessionServerClient()
-  const userDataResponse: UserDataType = await databases.listDocuments(
-    "hp_db",
-    "userdata",
-    [Query.equal("profileUrl", profileUrl)]
-  )
-  const userData = userDataResponse.documents[0]
-  const sanitizedBio = sanitizeHtml(userData?.bio)
+  const userDataResponse: UserDataType = await databases.listRows({
+    databaseId: "hp_db",
+    tableId: "userdata",
+    queries: [Query.equal("profileUrl", profileUrl)],
+  })
+  const userData = userDataResponse.rows[0]
+  const sanitizedBio = sanitizeHtml(userData?.bio || "")
 
   return {
     title: userData.displayName || userData?.profileUrl,
     description: sanitizedBio || "",
     icons: {
-      icon: getAvatarImageUrlView(userData.avatarId),
+      icon: getAvatarImageUrlView(userData.avatarId || ""),
     },
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/user/${profileUrl}`,
@@ -40,7 +40,7 @@ export async function generateMetadata(props: {
     openGraph: {
       title: userData.displayName || userData?.profileUrl,
       description: sanitizedBio || "",
-      images: getAvatarImageUrlView(userData.avatarId),
+      images: getAvatarImageUrlView(userData.avatarId || ""),
       locale: locale,
       type: "profile",
     },
@@ -48,7 +48,7 @@ export async function generateMetadata(props: {
       index: false,
       follow: false,
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN!),
   }
 }
 

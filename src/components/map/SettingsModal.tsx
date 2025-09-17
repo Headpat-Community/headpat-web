@@ -1,5 +1,6 @@
 "use client"
-import React, { useCallback, useMemo, memo } from "react"
+import { databases } from "@/app/appwrite-client"
+import InputField from "@/components/fields/InputField"
 import {
   AlertDialog,
   AlertDialogContent,
@@ -8,17 +9,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
-import { databases } from "@/app/appwrite-client"
-import type { LocationDocumentsType } from "@/utils/types/models"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
+import { Button } from "@/components/ui/button"
 import { Form, FormField } from "@/components/ui/form"
-import InputField from "@/components/fields/InputField"
-import { Button } from "../ui/button"
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
+import type { LocationDocumentsType } from "@/utils/types/models"
+import { zodResolver } from "@hookform/resolvers/zod"
 import * as Sentry from "@sentry/nextjs"
+import React, { memo, useCallback, useMemo } from "react"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 
 const settingsFormSchema = z.object({
   status: z.string().max(40, "Status must be less than 40 characters"),
@@ -110,9 +110,14 @@ const SettingsModal = memo(function SettingsModal({
   const onSubmit = useCallback(
     async (values: SettingsFormValues) => {
       try {
-        await databases.updateDocument("hp_db", "locations", current.$id, {
-          status: values.status,
-          statusColor: values.statusColor,
+        await databases.updateRow({
+          databaseId: "hp_db",
+          tableId: "locations",
+          rowId: current.$id,
+          data: {
+            status: values.status,
+            statusColor: values.statusColor,
+          },
         })
         setUserStatus({
           ...userStatus,

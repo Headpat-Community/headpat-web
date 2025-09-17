@@ -1,17 +1,17 @@
 "use client"
-import React, { useState } from "react"
-import Image from "next/image"
 import { ErrorMessage, SuccessMessage } from "@/components/alerts"
-import Link from "next/link"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import Image from "next/image"
+import Link from "next/link"
+import React, { useState } from "react"
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState("")
-  const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(null)
+  const [email, setEmail] = useState<string>("")
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
       const response = await fetch("/api/user/forgotPassword", {
@@ -23,7 +23,7 @@ const ForgotPassword = () => {
       })
 
       if (response.status === 400) {
-        setError(`E-Mail inkorrekt!`)
+        setError("E-Mail inkorrekt!")
         setTimeout(() => {
           setError(null)
         }, 5000)
@@ -69,7 +69,12 @@ const ForgotPassword = () => {
             Forgot password?
           </h4>
 
-          <form className="mt-10 space-y-6" action="#" method="POST">
+          <form
+            className="mt-10 space-y-6"
+            action="#"
+            method="POST"
+            onSubmit={handleSubmit}
+          >
             <div>
               <label
                 htmlFor="email"
@@ -91,7 +96,7 @@ const ForgotPassword = () => {
             </div>
 
             <div>
-              <Button type="submit" onClick={handleSubmit} className="w-full">
+              <Button type="submit" className="w-full">
                 Send E-Mail
               </Button>
             </div>

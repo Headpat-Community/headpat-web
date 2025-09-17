@@ -1,16 +1,16 @@
 import {
   forwardRef,
+  memo,
+  useCallback,
   useContext,
   useEffect,
   useImperativeHandle,
-  useRef,
-  useCallback,
   useMemo,
-  memo,
+  useRef,
 } from "react"
 
-import type { Ref } from "react"
 import { GoogleMapsContext, latLngEquals } from "@vis.gl/react-google-maps"
+import type { Ref } from "react"
 
 type CircleEventProps = {
   onClick?: (e: google.maps.MapMouseEvent) => void
@@ -185,7 +185,7 @@ export const Circle = memo(
   forwardRef((props: CircleProps, ref: CircleRef) => {
     const circleRef = useCircle(props)
 
-    useImperativeHandle(ref, () => circleRef.current, [circleRef])
+    useImperativeHandle(ref, () => circleRef.current!, [circleRef])
 
     return null
   })

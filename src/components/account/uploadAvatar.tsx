@@ -12,6 +12,11 @@ export default function UploadAvatar({
   setIsUploading,
   userId,
   userData,
+}: {
+  isUploading: boolean
+  setIsUploading: (isUploading: boolean) => void
+  userId: string
+  userData: UserDataDocumentsType
 }) {
   // Helper to get avatar image URL
   const getAvatarImageUrl = (avatarId: string) => {
@@ -23,11 +28,11 @@ export default function UploadAvatar({
   const handleAfterUpload = async (fileId: string) => {
     try {
       // Get the user's avatar document
-      const avatarDocument: UserDataDocumentsType = await databases.getDocument(
-        "hp_db",
-        "userdata",
-        userId
-      )
+      const avatarDocument: UserDataDocumentsType = await databases.getRow({
+        databaseId: "hp_db",
+        tableId: "userdata",
+        rowId: userId,
+      })
       // If the user already has an avatar, delete it
       if (avatarDocument.avatarId) {
         await storage
@@ -38,8 +43,13 @@ export default function UploadAvatar({
           })
       }
       // Update the user's avatarId
-      await databases.updateDocument("hp_db", "userdata", userId, {
-        avatarId: fileId,
+      await databases.updateRow({
+        databaseId: "hp_db",
+        tableId: "userdata",
+        rowId: userId,
+        data: {
+          avatarId: fileId,
+        },
       })
       toast.success("Your avatar has been uploaded successfully.")
     } catch (error) {
@@ -55,7 +65,7 @@ export default function UploadAvatar({
       aspect={1}
       maxSizeInBytes={1024 * 1024}
       storageBucket="avatars"
-      currentImageId={userData?.avatarId}
+      currentImageId={userData?.avatarId || undefined}
       getImageUrl={getAvatarImageUrl}
       onAfterUpload={handleAfterUpload}
       label="Avatar image"

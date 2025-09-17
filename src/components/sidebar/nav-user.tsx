@@ -2,6 +2,7 @@
 
 import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from "lucide-react"
 
+import { useUser } from "@/components/contexts/UserContext"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -18,7 +19,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { useUser } from "@/components/contexts/UserContext"
 import Link from "next/link"
 
 const getAvatar = (id: string) => {
@@ -42,7 +42,7 @@ export function NavUser() {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
-                  src={getAvatar(userData?.avatarId)}
+                  src={getAvatar(userData?.avatarId || "")}
                   alt={userData?.displayName || userData?.$id}
                 />
                 <AvatarFallback className="rounded-lg">
@@ -67,7 +67,7 @@ export function NavUser() {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage
-                    src={getAvatar(userData?.avatarId)}
+                    src={getAvatar(userData?.avatarId || "")}
                     alt={userData?.displayName || userData?.$id}
                   />
                   <AvatarFallback className="rounded-lg">

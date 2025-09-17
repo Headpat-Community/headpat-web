@@ -33,7 +33,7 @@ export default function FrontpageView({
 }) {
   const [isUploading, setIsUploading] = useState<boolean>(false)
   const [localUserData, setLocalUserData] =
-    useState<UserDataDocumentsType>(null)
+    useState<UserDataDocumentsType | null>(null)
 
   const { data: userData, isLoading } = useQuery<UserDataDocumentsType>({
     queryKey: ["userdata", accountData.$id],
@@ -57,7 +57,7 @@ export default function FrontpageView({
     try {
       // Validate the entire communitySettings object
       schema.parse(localUserData)
-    } catch (error) {
+    } catch (error: any) {
       toast.error(error.errors[0].message)
       return
     }
@@ -67,7 +67,7 @@ export default function FrontpageView({
 
       // Convert DD/MM/YYYY to ISO date format for database storage
       let birthdayForDB = null
-      if (localUserData.birthday) {
+      if (localUserData?.birthday) {
         const dateParts = localUserData.birthday.split("/")
         if (dateParts.length === 3) {
           const [day, month, year] = dateParts
@@ -82,26 +82,26 @@ export default function FrontpageView({
         }
       }
 
-      const promise = databases.updateDocument(
-        "hp_db",
-        "userdata",
-        accountData.$id,
-        {
-          status: localUserData.status,
-          bio: localUserData.bio,
-          displayName: localUserData.displayName,
+      const promise = databases.updateRow({
+        databaseId: "hp_db",
+        tableId: "userdata",
+        rowId: accountData.$id,
+        data: {
+          status: localUserData?.status,
+          bio: localUserData?.bio,
+          displayName: localUserData?.displayName,
           birthday: birthdayForDB,
-          pronouns: localUserData.pronouns,
-          location: localUserData.location,
-        }
-      )
+          pronouns: localUserData?.pronouns,
+          location: localUserData?.location,
+        },
+      })
 
       promise.then(
         function () {
           setIsUploading(false)
           toast.success("Your data has been uploaded successfully.")
         },
-        function (error) {
+        function (error: any) {
           console.log(error) // Failure
           setIsUploading(false)
           toast.error("Failed to upload data.")
@@ -140,6 +140,10 @@ export default function FrontpageView({
         </div>
       </div>
     )
+  }
+
+  if (!localUserData) {
+    return null
   }
 
   return (
