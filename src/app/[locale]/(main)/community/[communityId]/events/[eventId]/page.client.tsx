@@ -38,7 +38,7 @@ export default function PageClient({
   const router = useRouter()
 
   React.useEffect(() => {
-    fetchEvents().then()
+    void fetchEvents()
   }, [])
 
   const fetchEvents = async () => {
@@ -228,6 +228,7 @@ export default function PageClient({
                 return (
                   <div key={index} className="aspect-video">
                     <Link href={imageUrl} target="_blank">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={imageUrl}
                         alt={`${event.title} - Image ${index + 1}`}

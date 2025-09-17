@@ -79,7 +79,7 @@ export const calculateTimeLeft = (
   // Cache the result (limit cache size to prevent memory leaks)
   if (timeCalculationCache.size > 100) {
     const firstKey = timeCalculationCache.keys().next().value
-    timeCalculationCache.delete(firstKey)
+    timeCalculationCache.delete(firstKey!)
   }
   timeCalculationCache.set(cacheKey, result)
 
@@ -108,7 +108,7 @@ export const formatDate = (date: Date) => {
   // Cache the result (limit cache size to prevent memory leaks)
   if (dateFormatCache.size > 100) {
     const firstKey = dateFormatCache.keys().next().value
-    dateFormatCache.delete(firstKey)
+    dateFormatCache.delete(firstKey!)
   }
   dateFormatCache.set(cacheKey, result)
 
@@ -143,7 +143,7 @@ export const formatDateLocale = (date: Date) => {
   // Cache the result (limit cache size to prevent memory leaks)
   if (dateFormatCache.size > 100) {
     const firstKey = dateFormatCache.keys().next().value
-    dateFormatCache.delete(firstKey)
+    dateFormatCache.delete(firstKey!)
   }
   dateFormatCache.set(cacheKey, result)
 
