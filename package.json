@@ -76,7 +76,7 @@
     "react-image-crop": "^11.0.10",
     "react-intersection-observer": "^9.16.0",
     "react-resizable-panels": "^2.1.9",
-    "react-router-dom": "^6.30.1",
+    "react-router-dom": "^7.9.1",
     "react-scan": "^0.3.6",
     "recharts": "^3.2.1",
     "require-in-the-middle": "^7.5.2",
