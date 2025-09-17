@@ -1,0 +1,77 @@
+name: Automated PRs
+
+# requires the following workflow permissions (settings -> actions -> general)
+# read & write permissions
+# create & approve pull request
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  create_prs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: PR target branch
+        id: target
+        run: |
+          echo "branch=${{ fromJSON('{"develop":"main","main":"develop"}')[github.ref_name] }}" >> $GITHUB_OUTPUT
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          sparse-checkout: |
+            .github
+
+      - name: Check for existing PR
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          prs=$(gh pr list \
+              --head '${{ github.ref_name }}' \
+              --base '${{ steps.target.outputs.branch }}' \
+              --json title \
+              --jq 'length')
+          if ((prs == 0)); then
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create PR
+        if: steps.check.outputs.skip == 'false'
+        id: open-pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr create \
+            --base "${{ steps.target.outputs.branch }}" \
+            --title "chore: merge ${{ github.ref_name }} into ${{ steps.target.outputs.branch }}" \
+            --body "Merge ${{ github.ref_name }} into ${{ steps.target.outputs.branch }}"
+          echo "pr_number=$(gh pr view --json number -q .number || echo "")" >> $GITHUB_OUTPUT
+
+      # enable if branch protection rules are set up
+      #   - name: Approve prod -> dev PR
+      #     if: github.ref_name == 'main'
+      #     env:
+      #       GH_TOKEN: ${{ github.token }}
+      #     run: |
+      #       gh pr review \
+      #       --approve "${{ steps.open-pr.outputs.pr_number }}"
+
+      - name: Enable auto-merge for prod -> dev PR
+        if: github.ref_name == 'main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr merge --merge \
+          --auto "${{ steps.open-pr.outputs.pr_number }}"
