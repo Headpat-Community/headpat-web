@@ -60,13 +60,13 @@ jobs:
           echo "pr_number=$(gh pr view --json number -q .number || echo "")" >> $GITHUB_OUTPUT
 
       # enable if branch protection rules are set up
-      #   - name: Approve prod -> dev PR
-      #     if: github.ref_name == 'main'
-      #     env:
-      #       GH_TOKEN: ${{ github.token }}
-      #     run: |
-      #       gh pr review \
-      #       --approve "${{ steps.open-pr.outputs.pr_number }}"
+      - name: Approve prod -> dev PR
+        if: github.ref_name == 'main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr review \
+          --approve "${{ steps.open-pr.outputs.pr_number }}"
 
       - name: Enable auto-merge for prod -> dev PR
         if: github.ref_name == 'main'
