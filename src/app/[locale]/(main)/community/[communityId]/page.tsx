@@ -17,6 +17,7 @@ export async function generateMetadata(props: {
     const community = await getCommunity(communityId)
 
     if (!community?.$id) {
+      console.error("Community not found:", communityId)
       return notFound()
     }
 
@@ -65,8 +66,10 @@ export default async function Page(props: {
     const { communityId } = params
 
     const community = await getCommunity(communityId)
+    console.log("Community:", community)
 
     if (!community?.$id) {
+      console.error("Community not found:", communityId)
       return notFound()
     }
 

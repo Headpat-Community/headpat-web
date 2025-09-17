@@ -173,13 +173,12 @@ function PageClient({
   // Memoized fetch function to prevent unnecessary re-renders
   const fetchCommunity = useCallback(async () => {
     try {
-      const data = await functions.createExecution(
-        COMMUNITY_ENDPOINT,
-        "",
-        false,
-        `/community?communityId=${communityId}`,
-        EXECUTION_METHOD
-      )
+      const data = await functions.createExecution({
+        functionId: COMMUNITY_ENDPOINT,
+        async: false,
+        xpath: `/community?communityId=${communityId}`,
+        method: EXECUTION_METHOD,
+      })
       const response = JSON.parse(data.responseBody)
       setCommunity(response)
     } catch (error) {

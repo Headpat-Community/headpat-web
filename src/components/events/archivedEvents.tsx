@@ -12,13 +12,12 @@ export default function ArchivedEvents() {
   const fetchEvents = async () => {
     const loadingToast = toast.loading("Loading events...")
     try {
-      const data = await functions.createExecution(
-        "event-endpoints",
-        "",
-        false,
-        "/events/archived",
-        ExecutionMethod.GET
-      )
+      const data = await functions.createExecution({
+        functionId: "event-endpoints",
+        async: false,
+        xpath: "/events/archived",
+        method: ExecutionMethod.GET,
+      })
       const response: EventsDocumentsType[] = JSON.parse(data.responseBody)
 
       setEvents(response)
@@ -30,7 +29,7 @@ export default function ArchivedEvents() {
   }
 
   useEffect(() => {
-    fetchEvents().then()
+    void fetchEvents()
   }, [])
 
   if (events?.length === 0 || !events)

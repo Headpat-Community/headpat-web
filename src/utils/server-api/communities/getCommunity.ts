@@ -1,5 +1,6 @@
 import { createAdminClient } from "@/app/appwrite-session"
 import type { CommunityDocumentsType } from "@/utils/types/models"
+import { Query } from "node-appwrite"
 
 /**
  * This function is used to get a community by id
@@ -15,6 +16,7 @@ export async function getCommunity(
       databaseId: "hp_db",
       tableId: "community",
       rowId: communityId,
+      queries: [Query.select(["*", "communitySettings.*"])],
     })
     .catch((error) => {
       return JSON.parse(JSON.stringify(error))
