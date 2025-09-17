@@ -12,8 +12,8 @@ export const useFeatureStatus = (feature: string) => {
     const fetchFeatureStatus = async () => {
       try {
         const data: ConfigFeaturesDocumentsType = await databases.getRow({
-          databaseId: "hp_db",
-          tableId: "config",
+          databaseId: "config",
+          tableId: "features",
           rowId: feature,
         })
         setFeatureStatus(data)
@@ -22,7 +22,7 @@ export const useFeatureStatus = (feature: string) => {
       }
     }
 
-    fetchFeatureStatus().then()
+    void fetchFeatureStatus()
   }, [feature])
 
   return featureStatus

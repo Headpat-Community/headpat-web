@@ -12,13 +12,12 @@ export default function CurrentEvents() {
   const fetchEvents = async () => {
     const loadingToast = toast.loading("Loading events...")
     try {
-      const data = await functions.createExecution(
-        "event-endpoints",
-        "",
-        false,
-        "/events",
-        ExecutionMethod.GET
-      )
+      const data = await functions.createExecution({
+        functionId: "event-endpoints",
+        async: false,
+        xpath: "/events",
+        method: ExecutionMethod.GET,
+      })
       const response: EventsDocumentsType[] = JSON.parse(data.responseBody)
 
       setEvents(response)
@@ -30,7 +29,7 @@ export default function CurrentEvents() {
   }
 
   useEffect(() => {
-    fetchEvents().then()
+    void fetchEvents()
   }, [])
 
   if (events?.length === 0 || !events)

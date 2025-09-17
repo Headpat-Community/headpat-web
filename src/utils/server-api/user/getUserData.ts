@@ -34,6 +34,9 @@ export async function getUserDataFromProfileUrl(
 export async function getUserData(): Promise<UserProfileDocumentsType> {
   const { databases } = await createSessionServerClient()
   const accountData = await getUser()
+  if (!accountData?.$id) {
+    return {} as UserProfileDocumentsType
+  }
   return await databases
     .getRow({
       databaseId: "hp_db",

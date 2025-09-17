@@ -3,6 +3,7 @@ import { getAvatarImageUrlPreview } from "@/components/getStorageItem"
 import { Button } from "@/components/ui/button"
 import type { AnnouncementDocumentsType } from "@/utils/types/models"
 import Link from "next/link"
+import { Query } from "node-appwrite"
 import sanitize from "sanitize-html"
 
 export const metadata = {
@@ -22,6 +23,7 @@ export default async function Page(props: {
     databaseId: "hp_db",
     tableId: "announcements",
     rowId: announcementId,
+    queries: [Query.select(["*", "userData.*"])],
   })
 
   const description = sanitize(announcementData?.description)
