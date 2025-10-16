@@ -1,3181 +1,2997 @@
 {
-    "projectId": "hp-main",
-    "projectName": "Headpat - Place",
-    "settings": {
-        "services": {
-            "account": true,
-            "avatars": true,
-            "databases": true,
-            "locale": true,
-            "health": true,
-            "storage": true,
-            "teams": true,
-            "users": false,
-            "sites": true,
-            "functions": true,
-            "graphql": true,
-            "messaging": false
-        },
-        "auth": {
-            "methods": {
-                "jwt": true,
-                "phone": false,
-                "invites": false,
-                "anonymous": false,
-                "email-otp": false,
-                "magic-url": false,
-                "email-password": true
-            },
-            "security": {
-                "duration": 31536000,
-                "limit": 0,
-                "sessionsLimit": 10,
-                "passwordHistory": 0,
-                "passwordDictionary": true,
-                "personalDataCheck": true,
-                "sessionAlerts": true,
-                "mockNumbers": []
-            }
-        }
+  "projectId": "hp-main",
+  "endpoint": "https://fra.cloud.appwrite.io/v1",
+  "projectName": "Headpat - Place",
+  "settings": {
+    "services": {
+      "account": true,
+      "avatars": true,
+      "databases": true,
+      "locale": true,
+      "health": true,
+      "storage": true,
+      "teams": true,
+      "users": false,
+      "sites": true,
+      "functions": true,
+      "graphql": true,
+      "messaging": false
     },
-    "functions": [
+    "auth": {
+      "methods": {
+        "jwt": true,
+        "phone": false,
+        "invites": false,
+        "anonymous": false,
+        "email-otp": false,
+        "magic-url": false,
+        "email-password": true
+      },
+      "security": {
+        "duration": 31536000,
+        "limit": 0,
+        "sessionsLimit": 10,
+        "passwordHistory": 0,
+        "passwordDictionary": true,
+        "personalDataCheck": true,
+        "sessionAlerts": true,
+        "mockNumbers": []
+      }
+    }
+  },
+  "functions": [
+    {
+      "$id": "655b59a88daa48575900",
+      "execute": [],
+      "name": "hp-create-userdata-function",
+      "enabled": true,
+      "logging": true,
+      "runtime": "bun-1.1",
+      "scopes": ["documents.read", "documents.write"],
+      "events": ["users.*.sessions.*.create"],
+      "schedule": "",
+      "timeout": 30,
+      "entrypoint": "src/main.ts",
+      "commands": "bun i",
+      "specification": "s-0.5vcpu-512mb",
+      "path": "functions/hp-create-userdata-function"
+    },
+    {
+      "$id": "668027e1000b9b52ff1f",
+      "execute": [],
+      "name": "Notifications",
+      "enabled": true,
+      "logging": true,
+      "runtime": "bun-1.1",
+      "scopes": ["documents.read", "documents.write", "messages.write"],
+      "events": ["databases.hp_db.collections.followers.documents.*.create"],
+      "schedule": "",
+      "timeout": 15,
+      "entrypoint": "src/main.ts",
+      "commands": "bun i",
+      "specification": "s-0.5vcpu-512mb",
+      "path": "functions/Notifications"
+    },
+    {
+      "$id": "668f060000043152b315",
+      "execute": ["any"],
+      "name": "Voting counter",
+      "enabled": true,
+      "logging": true,
+      "runtime": "node-18.0",
+      "scopes": [],
+      "events": ["databases.interactive.collections.answers.documents.*"],
+      "schedule": "",
+      "timeout": 15,
+      "entrypoint": "src/main.js",
+      "commands": "npm i",
+      "specification": "s-0.5vcpu-512mb",
+      "path": "functions/Voting counter"
+    },
+    {
+      "$id": "66b0fdc200290eeb6d50",
+      "execute": ["any"],
+      "name": "Voting counter - main",
+      "enabled": true,
+      "logging": true,
+      "runtime": "node-18.0",
+      "scopes": [],
+      "events": ["databases.interactive.collections.answers-main.documents.*"],
+      "schedule": "",
+      "timeout": 15,
+      "entrypoint": "src/main.js",
+      "commands": "npm i",
+      "specification": "s-0.5vcpu-512mb",
+      "path": "functions/Voting counter - main"
+    },
+    {
+      "$id": "community-endpoints",
+      "execute": ["any"],
+      "name": "Community Endpoints",
+      "enabled": true,
+      "logging": true,
+      "runtime": "bun-1.1",
+      "scopes": [
+        "users.read",
+        "users.write",
+        "teams.read",
+        "teams.write",
+        "documents.read",
+        "documents.write",
+        "files.read",
+        "files.write"
+      ],
+      "events": [],
+      "schedule": "",
+      "timeout": 600,
+      "entrypoint": "src/main.ts",
+      "commands": "bun i",
+      "specification": "s-0.5vcpu-512mb",
+      "path": "functions/Community Endpoints"
+    },
+    {
+      "$id": "user-endpoints",
+      "execute": ["any"],
+      "name": "User Endpoints",
+      "enabled": true,
+      "logging": true,
+      "runtime": "bun-1.1",
+      "scopes": [
+        "users.read",
+        "users.write",
+        "documents.read",
+        "documents.write",
+        "files.read",
+        "files.write"
+      ],
+      "events": [],
+      "schedule": "",
+      "timeout": 600,
+      "entrypoint": "src/main.ts",
+      "commands": "bun i",
+      "specification": "s-0.5vcpu-512mb",
+      "path": "functions/User Endpoints"
+    },
+    {
+      "$id": "event-endpoints",
+      "execute": ["any"],
+      "name": "Event Endpoints",
+      "enabled": true,
+      "logging": true,
+      "runtime": "bun-1.1",
+      "scopes": ["documents.read", "documents.write"],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "entrypoint": "src/main.ts",
+      "commands": "bun i",
+      "specification": "s-1vcpu-512mb",
+      "path": "functions/Event Endpoints"
+    },
+    {
+      "$id": "gallery-endpoints",
+      "execute": ["any"],
+      "name": "Gallery endpoints",
+      "enabled": true,
+      "logging": true,
+      "runtime": "bun-1.1",
+      "scopes": [],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "entrypoint": "src/main.ts",
+      "commands": "bun i",
+      "specification": "s-0.5vcpu-512mb",
+      "path": "functions/Gallery endpoints"
+    },
+    {
+      "$id": "moderation-endpoints",
+      "execute": ["users"],
+      "name": "Moderation endpoints",
+      "enabled": true,
+      "logging": true,
+      "runtime": "bun-1.1",
+      "scopes": ["documents.write"],
+      "events": [],
+      "schedule": "",
+      "timeout": 10,
+      "entrypoint": "src/main.ts",
+      "commands": "bun i",
+      "specification": "s-0.5vcpu-512mb",
+      "path": "functions/Moderation endpoints"
+    },
+    {
+      "$id": "sharing-endpoints",
+      "execute": [],
+      "name": "Sharing endpoints",
+      "enabled": true,
+      "logging": true,
+      "runtime": "bun-1.1",
+      "scopes": ["documents.read", "documents.write"],
+      "events": [
+        "databases.hp_db.collections.locations-permissions.documents.*.create",
+        "databases.hp_db.collections.locations-permissions.documents.*.delete",
+        "databases.hp_db.collections.locations.documents.*.create"
+      ],
+      "schedule": "",
+      "timeout": 15,
+      "entrypoint": "src/main.ts",
+      "commands": "bun i",
+      "specification": "s-1vcpu-512mb",
+      "path": "functions/Sharing endpoints"
+    },
+    {
+      "$id": "messaging-events",
+      "execute": [],
+      "name": "Messaging Events",
+      "enabled": true,
+      "logging": true,
+      "runtime": "node-22",
+      "scopes": ["users.read", "documents.read", "documents.write"],
+      "events": [
+        "databases.hp_db.collections.messages.documents.*",
+        "databases.hp_db.collections.messages-conversations.documents.*"
+      ],
+      "schedule": "",
+      "timeout": 15,
+      "entrypoint": "dist/main.js",
+      "commands": "npm i && npm run build",
+      "specification": "s-1vcpu-512mb",
+      "path": "functions/Messaging Events"
+    },
+    {
+      "$id": "673e0e27001b6be2b2dc",
+      "execute": ["any"],
+      "name": "Discord Command Bot",
+      "enabled": true,
+      "logging": true,
+      "runtime": "node-22",
+      "scopes": [],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "entrypoint": "dist/main.js",
+      "commands": "npm install && npm run build && npm run setup",
+      "specification": "s-1vcpu-512mb",
+      "path": "functions/Discord Command Bot"
+    },
+    {
+      "$id": "sharing-cleanup",
+      "execute": [],
+      "name": "Sharing cleanup",
+      "enabled": true,
+      "logging": true,
+      "runtime": "bun-1.1",
+      "scopes": ["documents.read", "documents.write"],
+      "events": [],
+      "schedule": "*/1 * * * *",
+      "timeout": 60,
+      "entrypoint": "src/main.ts",
+      "commands": "bun i",
+      "specification": "s-0.5vcpu-512mb",
+      "path": "functions/Sharing cleanup"
+    }
+  ],
+  "databases": [
+    {
+      "$id": "hp_db",
+      "name": "hp_db",
+      "enabled": true
+    },
+    {
+      "$id": "interactive",
+      "name": "interactive",
+      "enabled": true
+    },
+    {
+      "$id": "automations",
+      "name": "automations",
+      "enabled": true
+    },
+    {
+      "$id": "errors",
+      "name": "errors",
+      "enabled": true
+    },
+    {
+      "$id": "moderation",
+      "name": "moderation",
+      "enabled": true
+    },
+    {
+      "$id": "config",
+      "name": "config",
+      "enabled": true
+    }
+  ],
+  "collections": [
+    {
+      "$id": "gallery-images",
+      "$permissions": ["create(\"users\")", "read(\"any\")"],
+      "databaseId": "hp_db",
+      "name": "gallery-images",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
         {
-            "$id": "655b59a88daa48575900",
-            "execute": [],
-            "name": "hp-create-userdata-function",
-            "enabled": true,
-            "logging": true,
-            "runtime": "bun-1.1",
-            "scopes": [
-                "documents.read",
-                "documents.write"
-            ],
-            "events": [
-                "users.*.sessions.*.create"
-            ],
-            "schedule": "",
-            "timeout": 30,
-            "entrypoint": "src/main.ts",
-            "commands": "bun i",
-            "specification": "s-0.5vcpu-512mb",
-            "path": "functions/hp-create-userdata-function"
+          "key": "galleryId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "668027e1000b9b52ff1f",
-            "execute": [],
-            "name": "Notifications",
-            "enabled": true,
-            "logging": true,
-            "runtime": "bun-1.1",
-            "scopes": [
-                "documents.read",
-                "documents.write",
-                "messages.write"
-            ],
-            "events": [
-                "databases.hp_db.collections.followers.documents.*.create"
-            ],
-            "schedule": "",
-            "timeout": 15,
-            "entrypoint": "src/main.ts",
-            "commands": "bun i",
-            "specification": "s-0.5vcpu-512mb",
-            "path": "functions/Notifications"
+          "key": "name",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 32,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "community-endpoints",
-            "execute": [
-                "any"
-            ],
-            "name": "Community Endpoints",
-            "enabled": true,
-            "logging": true,
-            "runtime": "bun-1.1",
-            "scopes": [
-                "users.read",
-                "users.write",
-                "teams.read",
-                "teams.write",
-                "documents.read",
-                "documents.write",
-                "files.read",
-                "files.write"
-            ],
-            "events": [],
-            "schedule": "",
-            "timeout": 600,
-            "entrypoint": "src/main.ts",
-            "commands": "bun i",
-            "specification": "s-0.5vcpu-512mb",
-            "path": "functions/Community Endpoints"
+          "key": "userId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "user-endpoints",
-            "execute": [
-                "any"
-            ],
-            "name": "User Endpoints",
-            "enabled": true,
-            "logging": true,
-            "runtime": "bun-1.1",
-            "scopes": [
-                "users.read",
-                "users.write",
-                "documents.read",
-                "documents.write",
-                "files.read",
-                "files.write"
-            ],
-            "events": [],
-            "schedule": "",
-            "timeout": 600,
-            "entrypoint": "src/main.ts",
-            "commands": "bun i",
-            "specification": "s-0.5vcpu-512mb",
-            "path": "functions/User Endpoints"
+          "key": "longText",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 2048,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "event-endpoints",
-            "execute": [
-                "any"
-            ],
-            "name": "Event Endpoints",
-            "enabled": true,
-            "logging": true,
-            "runtime": "bun-1.1",
-            "scopes": [
-                "documents.read",
-                "documents.write"
-            ],
-            "events": [],
-            "schedule": "",
-            "timeout": 15,
-            "entrypoint": "src/main.ts",
-            "commands": "bun i",
-            "specification": "s-1vcpu-512mb",
-            "path": "functions/Event Endpoints"
+          "key": "nsfw",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
         },
         {
-            "$id": "gallery-endpoints",
-            "execute": [
-                "any"
-            ],
-            "name": "Gallery endpoints",
-            "enabled": true,
-            "logging": true,
-            "runtime": "bun-1.1",
-            "scopes": [],
-            "events": [],
-            "schedule": "",
-            "timeout": 15,
-            "entrypoint": "src/main.ts",
-            "commands": "bun i",
-            "specification": "s-0.5vcpu-512mb",
-            "path": "functions/Gallery endpoints"
+          "key": "tags",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 64,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "moderation-endpoints",
-            "execute": [
-                "users"
-            ],
-            "name": "Moderation endpoints",
-            "enabled": true,
-            "logging": true,
-            "runtime": "bun-1.1",
-            "scopes": [
-                "documents.write"
-            ],
-            "events": [],
-            "schedule": "",
-            "timeout": 10,
-            "entrypoint": "src/main.ts",
-            "commands": "bun i",
-            "specification": "s-0.5vcpu-512mb",
-            "path": "functions/Moderation endpoints"
+          "key": "mimeType",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 32,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "sharing-endpoints",
-            "execute": [],
-            "name": "Sharing endpoints",
-            "enabled": true,
-            "logging": true,
-            "runtime": "bun-1.1",
-            "scopes": [
-                "documents.read",
-                "documents.write"
-            ],
-            "events": [
-                "databases.hp_db.collections.locations-permissions.documents.*.create",
-                "databases.hp_db.collections.locations-permissions.documents.*.delete",
-                "databases.hp_db.collections.locations.documents.*.create"
-            ],
-            "schedule": "",
-            "timeout": 15,
-            "entrypoint": "src/main.ts",
-            "commands": "bun i",
-            "specification": "s-1vcpu-512mb",
-            "path": "functions/Sharing endpoints"
-        },
-        {
-            "$id": "messaging-events",
-            "execute": [],
-            "name": "Messaging Events",
-            "enabled": true,
-            "logging": true,
-            "runtime": "node-22",
-            "scopes": [
-                "users.read",
-                "documents.read",
-                "documents.write"
-            ],
-            "events": [
-                "databases.hp_db.collections.messages.documents.*",
-                "databases.hp_db.collections.messages-conversations.documents.*"
-            ],
-            "schedule": "",
-            "timeout": 15,
-            "entrypoint": "dist/main.js",
-            "commands": "npm i && npm run build",
-            "specification": "s-1vcpu-512mb",
-            "path": "functions/Messaging Events"
-        },
-        {
-            "$id": "sharing-cleanup",
-            "execute": [],
-            "name": "Sharing cleanup",
-            "enabled": true,
-            "logging": true,
-            "runtime": "bun-1.1",
-            "scopes": [
-                "documents.read",
-                "documents.write"
-            ],
-            "events": [],
-            "schedule": "*/1 * * * *",
-            "timeout": 60,
-            "entrypoint": "src/main.ts",
-            "commands": "bun i",
-            "specification": "s-0.5vcpu-512mb",
-            "path": "functions/Sharing cleanup"
+          "key": "blurHash",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
         }
-    ],
-    "databases": [
+      ],
+      "indexes": [
         {
-            "$id": "hp_db",
-            "name": "hp_db",
-            "enabled": true
+          "key": "userId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["userId"],
+          "orders": ["ASC"]
         },
         {
-            "$id": "interactive",
-            "name": "interactive",
-            "enabled": true
-        },
-        {
-            "$id": "automations",
-            "name": "automations",
-            "enabled": true
-        },
-        {
-            "$id": "errors",
-            "name": "errors",
-            "enabled": true
-        },
-        {
-            "$id": "moderation",
-            "name": "moderation",
-            "enabled": true
-        },
-        {
-            "$id": "config",
-            "name": "config",
-            "enabled": true
+          "key": "galleryId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["galleryId"],
+          "orders": ["ASC"]
         }
-    ],
-    "collections": [
+      ]
+    },
+    {
+      "$id": "userdata",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "hp_db",
+      "name": "userdata",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
         {
-            "$id": "gallery-images",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"any\")"
-            ],
-            "databaseId": "hp_db",
-            "name": "gallery-images",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "galleryId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 32,
-                    "default": null
-                },
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "longText",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 2048,
-                    "default": null
-                },
-                {
-                    "key": "nsfw",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "tags",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 64,
-                    "default": null
-                },
-                {
-                    "key": "mimeType",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 32,
-                    "default": null
-                },
-                {
-                    "key": "blurHash",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "userId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "userId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "galleryId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "galleryId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
+          "key": "status",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 24,
+          "default": "I'm new here!",
+          "encrypt": false
         },
         {
-            "$id": "userdata",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "hp_db",
-            "name": "userdata",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "status",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 24,
-                    "default": "I'm new here!"
-                },
-                {
-                    "key": "birthday",
-                    "type": "datetime",
-                    "required": false,
-                    "array": false,
-                    "format": "",
-                    "default": "1900-01-01T00:00"
-                },
-                {
-                    "key": "profileUrl",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 48,
-                    "default": null
-                },
-                {
-                    "key": "pronouns",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 16,
-                    "default": null
-                },
-                {
-                    "key": "discordname",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 32,
-                    "default": null
-                },
-                {
-                    "key": "telegramname",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 32,
-                    "default": null
-                },
-                {
-                    "key": "furaffinityname",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 32,
-                    "default": null
-                },
-                {
-                    "key": "X_name",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 32,
-                    "default": null
-                },
-                {
-                    "key": "twitchname",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 32,
-                    "default": null
-                },
-                {
-                    "key": "location",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "displayName",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 48,
-                    "default": null
-                },
-                {
-                    "key": "avatarId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "bio",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 4096,
-                    "default": null
-                },
-                {
-                    "key": "profileBannerId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "userSettings",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedCollection": "user-settings",
-                    "relationType": "oneToOne",
-                    "twoWay": false,
-                    "twoWayKey": "670dcfdf002e8f2f0eb2",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                },
-                {
-                    "key": "blueskyname",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "profileUrl",
-                    "type": "unique",
-                    "status": "available",
-                    "attributes": [
-                        "profileUrl"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "index_id",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "$id"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "displayName_fulltext",
-                    "type": "fulltext",
-                    "status": "available",
-                    "attributes": [
-                        "displayName"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
+          "key": "birthday",
+          "type": "datetime",
+          "required": false,
+          "array": false,
+          "format": "",
+          "default": "1900-01-01T00:00"
         },
         {
-            "$id": "announcements",
-            "$permissions": [
-                "read(\"any\")",
-                "create(\"team:hp_admin\")",
-                "read(\"team:hp_admin\")",
-                "update(\"team:hp_admin\")",
-                "delete(\"team:hp_admin\")"
-            ],
-            "databaseId": "hp_db",
-            "name": "announcements",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "description",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 2048,
-                    "default": null
-                },
-                {
-                    "key": "validUntil",
-                    "type": "datetime",
-                    "required": false,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "title",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 32,
-                    "default": null
-                },
-                {
-                    "key": "sideText",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 32,
-                    "default": null
-                },
-                {
-                    "key": "userData",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedCollection": "userdata",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "announcements",
-                    "onDelete": "setNull",
-                    "side": "parent"
-                }
-            ],
-            "indexes": []
+          "key": "profileUrl",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 48,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "events",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "events",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "description",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 2048,
-                    "default": null
-                },
-                {
-                    "key": "date",
-                    "type": "datetime",
-                    "required": false,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "dateUntil",
-                    "type": "datetime",
-                    "required": false,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "label",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 24,
-                    "default": null
-                },
-                {
-                    "key": "title",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 64,
-                    "default": null
-                },
-                {
-                    "key": "coordinates",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "location",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "locationZoneMethod",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "elements": [
-                        "circle",
-                        "polygon",
-                        "virtual"
-                    ],
-                    "format": "enum",
-                    "default": "virtual"
-                },
-                {
-                    "key": "circleRadius",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000,
-                    "default": 50
-                },
-                {
-                    "key": "communityId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "isPaid",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "visitorCapacity",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 9223372036854775807,
-                    "default": null
-                },
-                {
-                    "key": "images",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "pricing",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "tags",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 24,
-                    "default": null
-                },
-                {
-                    "key": "languages",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 64,
-                    "default": null
-                },
-                {
-                    "key": "website",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "format": "url",
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "date",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "date"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "dateUntil",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "dateUntil"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
+          "key": "pronouns",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 16,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "locations",
-            "$permissions": [
-                "create(\"users\")"
-            ],
-            "databaseId": "hp_db",
-            "name": "locations",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "lat",
-                    "type": "double",
-                    "required": false,
-                    "array": false,
-                    "min": -1.7976931348623157e+308,
-                    "max": 1.7976931348623157e+308,
-                    "default": 0
-                },
-                {
-                    "key": "long",
-                    "type": "double",
-                    "required": false,
-                    "array": false,
-                    "min": -1.7976931348623157e+308,
-                    "max": 1.7976931348623157e+308,
-                    "default": null
-                },
-                {
-                    "key": "timeUntilEnd",
-                    "type": "datetime",
-                    "required": false,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "status",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 64,
-                    "default": null
-                },
-                {
-                    "key": "statusColor",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 16,
-                    "default": "green"
-                }
-            ],
-            "indexes": []
+          "key": "discordname",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 32,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "user-rating",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "user-rating",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                }
-            ],
-            "indexes": []
+          "key": "telegramname",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 32,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "followers",
-            "$permissions": [
-                "read(\"any\")",
-                "create(\"users\")"
-            ],
-            "databaseId": "hp_db",
-            "name": "followers",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "followerId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "userId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "userId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "followerId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "followerId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "follower_unique",
-                    "type": "unique",
-                    "status": "available",
-                    "attributes": [
-                        "userId",
-                        "followerId"
-                    ],
-                    "orders": [
-                        "ASC",
-                        "ASC"
-                    ]
-                }
-            ]
+          "key": "furaffinityname",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 32,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "community",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "community",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 64,
-                    "default": null
-                },
-                {
-                    "key": "description",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 4096,
-                    "default": null
-                },
-                {
-                    "key": "tags",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 32,
-                    "default": null
-                },
-                {
-                    "key": "bannerId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "avatarId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "status",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 24,
-                    "default": null
-                },
-                {
-                    "key": "communitySettings",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedCollection": "community-settings",
-                    "relationType": "oneToOne",
-                    "twoWay": false,
-                    "twoWayKey": "community",
-                    "onDelete": "restrict",
-                    "side": "parent"
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "name",
-                    "type": "fulltext",
-                    "status": "available",
-                    "attributes": [
-                        "name"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "indexId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "$id"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
+          "key": "X_name",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 32,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "community-followers",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "hp_db",
-            "name": "community-followers",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "communityId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "userId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "userId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "communityId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "communityId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "follower_unique",
-                    "type": "unique",
-                    "status": "available",
-                    "attributes": [
-                        "userId",
-                        "communityId"
-                    ],
-                    "orders": [
-                        "ASC",
-                        "ASC"
-                    ]
-                }
-            ]
+          "key": "twitchname",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 32,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "community-comments",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "community-comments",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "comment",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 2048,
-                    "default": null
-                },
-                {
-                    "key": "communityId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "postId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "userId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "userId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
+          "key": "location",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "user-notifications",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "user-notifications",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "message",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 2048,
-                    "default": null
-                },
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "read",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "type",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "elements": [
-                        "newFollower",
-                        "newMessage",
-                        "newEvent",
-                        "newAnnouncement"
-                    ],
-                    "format": "enum",
-                    "default": null
-                },
-                {
-                    "key": "fromId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "userId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "userId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "message",
-                    "type": "fulltext",
-                    "status": "available",
-                    "attributes": [
-                        "message"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
+          "key": "displayName",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 48,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "messages",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "messages",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "senderId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "body",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 4096,
-                    "default": null
-                },
-                {
-                    "key": "conversationId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "messageType",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "elements": [
-                        "text",
-                        "location",
-                        "contact",
-                        "sticker",
-                        "reply",
-                        "forward",
-                        "file"
-                    ],
-                    "format": "enum",
-                    "default": "text"
-                },
-                {
-                    "key": "attachments",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 128,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "senderId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "senderId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "conversationId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "conversationId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
+          "key": "avatarId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "user-prefs",
-            "$permissions": [
-                "create(\"users\")"
-            ],
-            "databaseId": "hp_db",
-            "name": "user-prefs",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "notes",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 2048,
-                    "default": null
-                },
-                {
-                    "key": "isFavorited",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "isBlocked",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "isMuted",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "nickName",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 48,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "userId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "userId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "isFavorited",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "isFavorited"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "isBlocked",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "isBlocked"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "isMuted",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "isMuted"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
+          "key": "bio",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 4096,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "community-posts",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "community-posts",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "communityId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "message",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 30000,
-                    "default": null
-                }
-            ],
-            "indexes": []
+          "key": "profileBannerId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
         },
         {
-            "$id": "community-prefs",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "community-prefs",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "communityId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "isMuted",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "isBlocked",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "communityId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "communityId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
+          "key": "userSettings",
+          "type": "relationship",
+          "required": false,
+          "array": false,
+          "relatedCollection": "user-settings",
+          "relationType": "oneToOne",
+          "twoWay": false,
+          "twoWayKey": "670dcfdf002e8f2f0eb2",
+          "onDelete": "restrict",
+          "side": "parent"
         },
         {
-            "$id": "gallery-prefs",
-            "$permissions": [
-                "create(\"users\")"
-            ],
-            "databaseId": "hp_db",
-            "name": "gallery-prefs",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "galleryId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "isHidden",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "community-settings",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "community-settings",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "isFindable",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "hasPublicPage",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "nsfw",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "indexId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "$id"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "changelog",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "hp_db",
-            "name": "changelog",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "title",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 64,
-                    "default": null
-                },
-                {
-                    "key": "version",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 64,
-                    "default": null
-                },
-                {
-                    "key": "description",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 4096,
-                    "default": null
-                },
-                {
-                    "key": "improvementsWeb",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 256,
-                    "default": null
-                },
-                {
-                    "key": "bugfixesWeb",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 256,
-                    "default": null
-                },
-                {
-                    "key": "featuresWeb",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 256,
-                    "default": null
-                },
-                {
-                    "key": "date",
-                    "type": "datetime",
-                    "required": true,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "improvementsApp",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 256,
-                    "default": null
-                },
-                {
-                    "key": "bugfixesApp",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 256,
-                    "default": null
-                },
-                {
-                    "key": "featuresApp",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 256,
-                    "default": null
-                },
-                {
-                    "key": "draft",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": true
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "version_unique",
-                    "type": "unique",
-                    "status": "available",
-                    "attributes": [
-                        "version"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "date",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "date"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "events-attendees",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "events-attendees",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "eventId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "paid",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "unique_attendee",
-                    "type": "unique",
-                    "status": "available",
-                    "attributes": [
-                        "eventId",
-                        "userId"
-                    ],
-                    "orders": [
-                        "ASC",
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "user-settings",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "hp_db",
-            "name": "user-settings",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "badges",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 64,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "index_Id",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "$id"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "messages-conversations",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "messages-conversations",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "participants",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "lastMessage",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "communityId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "status",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "isCommunity",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "isCommunity",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "isCommunity"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "participants",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "participants"
-                    ],
-                    "orders": [
-                        null
-                    ]
-                },
-                {
-                    "key": "communityId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "communityId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "messages-typingIndicators",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "messages-typingIndicators",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "conversationId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "messages-settings",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "messages-settings",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "conversationId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "enableNotifications",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "locations-permissions",
-            "$permissions": [
-                "create(\"users\")"
-            ],
-            "databaseId": "hp_db",
-            "name": "locations-permissions",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "sharerUserId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "requesterId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "timeUntil",
-                    "type": "datetime",
-                    "required": true,
-                    "array": false,
-                    "format": "",
-                    "default": null
-                },
-                {
-                    "key": "isCommunity",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "sharerUserId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "sharerUserId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "requesterUserId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "requesterUserId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "unique_keys",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "sharerUserId",
-                        "requesterId"
-                    ],
-                    "orders": [
-                        "ASC",
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "locations-permissions-ended",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "locations-permissions-ended",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "sharerUserId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "requesterId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "isCommunity",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "sharerUserId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "sharerUserId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "requesterId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "requesterId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "user-notifications-settings",
-            "$permissions": [],
-            "databaseId": "hp_db",
-            "name": "user-notifications-settings",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "followers",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "messaging",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "questions",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "interactive",
-            "name": "questions",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "questions",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 256,
-                    "default": null
-                },
-                {
-                    "key": "order",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 9223372036854775807,
-                    "default": null
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "answers",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "interactive",
-            "name": "answers",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "ipAddress",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "format": "ip",
-                    "default": null
-                },
-                {
-                    "key": "questionId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "optionId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "system",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "interactive",
-            "name": "system",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "paused",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "questionId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "countedAnswers",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "interactive",
-            "name": "countedAnswers",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "optionId",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 9223372036854775807,
-                    "default": null
-                },
-                {
-                    "key": "amount",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 9223372036854775807,
-                    "default": null
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "questions-main",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "interactive",
-            "name": "questions-main",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "questions",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 256,
-                    "default": null
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "system-main",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "interactive",
-            "name": "system-main",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "questionId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "paused",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "answers-main",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "interactive",
-            "name": "answers-main",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "ipAddress",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "format": "ip",
-                    "default": null
-                },
-                {
-                    "key": "questionId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "optionId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "countedAnswers-main",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "interactive",
-            "name": "countedAnswers-main",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "optionId",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 9223372036854775807,
-                    "default": null
-                },
-                {
-                    "key": "amount",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 9223372036854775807,
-                    "default": null
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "accountDeletions",
-            "$permissions": [],
-            "databaseId": "automations",
-            "name": "accountDeletions",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "reason",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 1024,
-                    "default": null
-                },
-                {
-                    "key": "completed",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "displayName",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 256,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "userId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "userId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "notifications",
-            "$permissions": [],
-            "databaseId": "automations",
-            "name": "notifications",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [],
-            "indexes": []
-        },
-        {
-            "$id": "communityDeletions",
-            "$permissions": [],
-            "databaseId": "automations",
-            "name": "communityDeletions",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "communityId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "hasError",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "reason",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 2048,
-                    "default": null
-                },
-                {
-                    "key": "completed",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "name",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 256,
-                    "default": null
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "notifications",
-            "$permissions": [],
-            "databaseId": "errors",
-            "name": "notifications",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "message",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 8192,
-                    "default": null
-                },
-                {
-                    "key": "type",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "statusCode",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": 0,
-                    "max": 9223372036854775807,
-                    "default": null
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "messaging",
-            "$permissions": [],
-            "databaseId": "errors",
-            "name": "messaging",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "errorType",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "elements": [
-                        "deletion",
-                        "creation"
-                    ],
-                    "format": "enum",
-                    "default": null
-                },
-                {
-                    "key": "messagingType",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "elements": [
-                        "conversation",
-                        "message"
-                    ],
-                    "format": "enum",
-                    "default": null
-                },
-                {
-                    "key": "documentId",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "errorMessage",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 4096,
-                    "default": null
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "errorType",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "errorType"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "messagingType",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "messagingType"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "documentId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "documentId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "locations",
-            "$permissions": [],
-            "databaseId": "errors",
-            "name": "locations",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "type",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "elements": [
-                        "locations",
-                        "permissions"
-                    ],
-                    "format": "enum",
-                    "default": null
-                },
-                {
-                    "key": "errorMessage",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 9999999,
-                    "default": null
-                },
-                {
-                    "key": "documentId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "reports-gallery",
-            "$permissions": [],
-            "databaseId": "moderation",
-            "name": "reports-gallery",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "reportedByUserId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "reportedGalleryId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "reason",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 2048,
-                    "default": null
-                },
-                {
-                    "key": "status",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "elements": [
-                        "accepted",
-                        "denied",
-                        "pending"
-                    ],
-                    "format": "enum",
-                    "default": "pending"
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "reportedByUserId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "reportedByUserId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "reportedGalleryId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "reportedGalleryId"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                },
-                {
-                    "key": "status",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "status"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "reports-profile",
-            "$permissions": [],
-            "databaseId": "moderation",
-            "name": "reports-profile",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "reportedByUserId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "reportedUserId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "reason",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 2048,
-                    "default": null
-                },
-                {
-                    "key": "status",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "elements": [
-                        "accepted",
-                        "declined",
-                        "pending"
-                    ],
-                    "format": "enum",
-                    "default": "pending"
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "reports-community",
-            "$permissions": [],
-            "databaseId": "moderation",
-            "name": "reports-community",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "reportedByUserId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "reportedCommunityId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "reason",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 2048,
-                    "default": null
-                },
-                {
-                    "key": "status",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "elements": [
-                        "accepted",
-                        "declined",
-                        "pending"
-                    ],
-                    "format": "enum",
-                    "default": "pending"
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "reports-messaging",
-            "$permissions": [],
-            "databaseId": "moderation",
-            "name": "reports-messaging",
-            "enabled": true,
-            "documentSecurity": true,
-            "attributes": [
-                {
-                    "key": "userId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "reportedMessageId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "conversationId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "reason",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 2048,
-                    "default": null
-                },
-                {
-                    "key": "status",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "elements": [
-                        "accepted",
-                        "declined",
-                        "pending"
-                    ],
-                    "format": "enum",
-                    "default": "pending"
-                },
-                {
-                    "key": "body",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 20000,
-                    "default": null
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "legal",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "config",
-            "name": "legal",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "version",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                }
-            ],
-            "indexes": []
-        },
-        {
-            "$id": "features",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "config",
-            "name": "features",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "isEnabled",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
-                    "key": "type",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "elements": [
-                        "public",
-                        "earlyaccess",
-                        "staff",
-                        "dev"
-                    ],
-                    "format": "enum",
-                    "default": "dev"
-                }
-            ],
-            "indexes": [
-                {
-                    "key": "indexId",
-                    "type": "key",
-                    "status": "available",
-                    "attributes": [
-                        "$id"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
-        },
-        {
-            "$id": "status",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "databaseId": "config",
-            "name": "status",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [
-                {
-                    "key": "isMaintenance",
-                    "type": "boolean",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                }
-            ],
-            "indexes": []
+          "key": "blueskyname",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
         }
-    ],
-    "buckets": [
+      ],
+      "indexes": [
         {
-            "$id": "banners",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"any\")"
-            ],
-            "fileSecurity": true,
-            "name": "banners",
-            "enabled": true,
-            "maximumFileSize": 6000000,
-            "allowedFileExtensions": [
-                "jpg",
-                "png",
-                "webp",
-                "heif",
-                "hevc",
-                "jpeg"
-            ],
-            "compression": "zstd",
-            "encryption": true,
-            "antivirus": true
+          "key": "profileUrl",
+          "type": "unique",
+          "status": "available",
+          "attributes": ["profileUrl"],
+          "orders": ["ASC"]
         },
         {
-            "$id": "avatars",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"any\")"
-            ],
-            "fileSecurity": true,
-            "name": "avatars",
-            "enabled": true,
-            "maximumFileSize": 2000000,
-            "allowedFileExtensions": [
-                "jpg",
-                "png",
-                "webp",
-                "gif",
-                "apng",
-                "jpeg",
-                "heif",
-                "hevc"
-            ],
-            "compression": "zstd",
-            "encryption": true,
-            "antivirus": true
+          "key": "index_id",
+          "type": "key",
+          "status": "available",
+          "attributes": ["$id"],
+          "orders": ["ASC"]
         },
         {
-            "$id": "badges",
-            "$permissions": [
-                "create(\"users\")"
-            ],
-            "fileSecurity": true,
-            "name": "badges",
-            "enabled": true,
-            "maximumFileSize": 10000000,
-            "allowedFileExtensions": [
-                "jpg",
-                "png"
-            ],
-            "compression": "zstd",
-            "encryption": true,
-            "antivirus": true
-        },
-        {
-            "$id": "gallery",
-            "$permissions": [
-                "create(\"users\")",
-                "read(\"any\")"
-            ],
-            "fileSecurity": true,
-            "name": "gallery",
-            "enabled": true,
-            "maximumFileSize": 10000000,
-            "allowedFileExtensions": [
-                "gif",
-                "jpg",
-                "png",
-                "mp4",
-                "jpeg",
-                "webp",
-                "heif",
-                "hevc",
-                "mov",
-                "heic",
-                "avif"
-            ],
-            "compression": "zstd",
-            "encryption": true,
-            "antivirus": true
-        },
-        {
-            "$id": "community-avatars",
-            "$permissions": [
-                "read(\"any\")",
-                "create(\"label:communityUpload\")",
-                "read(\"label:communityUpload\")",
-                "update(\"label:communityUpload\")",
-                "delete(\"label:communityUpload\")"
-            ],
-            "fileSecurity": true,
-            "name": "community-avatars",
-            "enabled": true,
-            "maximumFileSize": 10000000,
-            "allowedFileExtensions": [
-                "jpg",
-                "png",
-                "webp",
-                "jpeg",
-                "heif",
-                "hevc"
-            ],
-            "compression": "zstd",
-            "encryption": true,
-            "antivirus": true
-        },
-        {
-            "$id": "community-banners",
-            "$permissions": [
-                "read(\"any\")",
-                "create(\"label:communityUpload\")",
-                "update(\"label:communityUpload\")"
-            ],
-            "fileSecurity": true,
-            "name": "community-banners",
-            "enabled": true,
-            "maximumFileSize": 10000000,
-            "allowedFileExtensions": [
-                "jpg",
-                "png",
-                "gif",
-                "webp",
-                "heif",
-                "hevc"
-            ],
-            "compression": "zstd",
-            "encryption": true,
-            "antivirus": true
-        },
-        {
-            "$id": "interactive",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "fileSecurity": false,
-            "name": "interactive",
-            "enabled": true,
-            "maximumFileSize": 50000000,
-            "allowedFileExtensions": [],
-            "compression": "zstd",
-            "encryption": true,
-            "antivirus": true
-        },
-        {
-            "$id": "interactive-main",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "fileSecurity": false,
-            "name": "interactive-main",
-            "enabled": true,
-            "maximumFileSize": 50000000,
-            "allowedFileExtensions": [],
-            "compression": "zstd",
-            "encryption": true,
-            "antivirus": true
-        },
-        {
-            "$id": "messaging-attachments",
-            "$permissions": [
-                "create(\"users\")"
-            ],
-            "fileSecurity": true,
-            "name": "messaging-attachments",
-            "enabled": true,
-            "maximumFileSize": 25000000,
-            "allowedFileExtensions": [],
-            "compression": "zstd",
-            "encryption": true,
-            "antivirus": true
-        },
-        {
-            "$id": "messaging-stickers",
-            "$permissions": [
-                "create(\"users\")"
-            ],
-            "fileSecurity": true,
-            "name": "messaging-stickers",
-            "enabled": true,
-            "maximumFileSize": 1000000,
-            "allowedFileExtensions": [
-                "jpg",
-                "png",
-                "jpeg",
-                "webp"
-            ],
-            "compression": "zstd",
-            "encryption": true,
-            "antivirus": true
-        },
-        {
-            "$id": "event-images",
-            "$permissions": [
-                "create(\"users\")",
-                "update(\"users\")",
-                "read(\"any\")"
-            ],
-            "fileSecurity": true,
-            "name": "event-images",
-            "enabled": true,
-            "maximumFileSize": 5000000,
-            "allowedFileExtensions": [
-                "png",
-                "jpg",
-                "jpeg"
-            ],
-            "compression": "zstd",
-            "encryption": true,
-            "antivirus": true
-        },
-        {
-            "$id": "main-storage",
-            "$permissions": [
-                "read(\"any\")"
-            ],
-            "fileSecurity": false,
-            "name": "main-storage",
-            "enabled": true,
-            "maximumFileSize": 5000000,
-            "allowedFileExtensions": [],
-            "compression": "zstd",
-            "encryption": true,
-            "antivirus": true
+          "key": "displayName_fulltext",
+          "type": "fulltext",
+          "status": "available",
+          "attributes": ["displayName"],
+          "orders": ["ASC"]
         }
-    ]
+      ]
+    },
+    {
+      "$id": "announcements",
+      "$permissions": [
+        "read(\"any\")",
+        "create(\"team:hp_admin\")",
+        "read(\"team:hp_admin\")",
+        "update(\"team:hp_admin\")",
+        "delete(\"team:hp_admin\")"
+      ],
+      "databaseId": "hp_db",
+      "name": "announcements",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "description",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 2048,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "validUntil",
+          "type": "datetime",
+          "required": false,
+          "array": false,
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "title",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 32,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "sideText",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 32,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "userData",
+          "type": "relationship",
+          "required": false,
+          "array": false,
+          "relatedCollection": "userdata",
+          "relationType": "manyToOne",
+          "twoWay": false,
+          "twoWayKey": "announcements",
+          "onDelete": "setNull",
+          "side": "parent"
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "events",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "events",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "description",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 2048,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "date",
+          "type": "datetime",
+          "required": false,
+          "array": false,
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "dateUntil",
+          "type": "datetime",
+          "required": false,
+          "array": false,
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "label",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 24,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "title",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "coordinates",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "location",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "locationZoneMethod",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "elements": ["circle", "polygon", "virtual"],
+          "format": "enum",
+          "default": "virtual"
+        },
+        {
+          "key": "circleRadius",
+          "type": "integer",
+          "required": false,
+          "array": false,
+          "min": 0,
+          "max": 1000,
+          "default": 50
+        },
+        {
+          "key": "communityId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "isPaid",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "visitorCapacity",
+          "type": "integer",
+          "required": false,
+          "array": false,
+          "min": 0,
+          "max": 9223372036854775807,
+          "default": null
+        },
+        {
+          "key": "images",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "pricing",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "tags",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 24,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "languages",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "website",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "format": "url",
+          "default": null
+        }
+      ],
+      "indexes": [
+        {
+          "key": "date",
+          "type": "key",
+          "status": "available",
+          "attributes": ["date"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "dateUntil",
+          "type": "key",
+          "status": "available",
+          "attributes": ["dateUntil"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "locations",
+      "$permissions": ["create(\"users\")"],
+      "databaseId": "hp_db",
+      "name": "locations",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "lat",
+          "type": "double",
+          "required": false,
+          "array": false,
+          "min": -1.7976931348623157e308,
+          "max": 1.7976931348623157e308,
+          "default": 0
+        },
+        {
+          "key": "long",
+          "type": "double",
+          "required": false,
+          "array": false,
+          "min": -1.7976931348623157e308,
+          "max": 1.7976931348623157e308,
+          "default": null
+        },
+        {
+          "key": "timeUntilEnd",
+          "type": "datetime",
+          "required": false,
+          "array": false,
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "status",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "statusColor",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 16,
+          "default": "green",
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "user-rating",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "user-rating",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "userId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "followers",
+      "$permissions": ["read(\"any\")", "create(\"users\")"],
+      "databaseId": "hp_db",
+      "name": "followers",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "userId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "followerId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "userId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["userId"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "followerId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["followerId"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "follower_unique",
+          "type": "unique",
+          "status": "available",
+          "attributes": ["userId", "followerId"],
+          "orders": ["ASC", "ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "community",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "community",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "name",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "description",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 4096,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "tags",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 32,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "bannerId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "avatarId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "status",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 24,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "communitySettings",
+          "type": "relationship",
+          "required": false,
+          "array": false,
+          "relatedCollection": "community-settings",
+          "relationType": "oneToOne",
+          "twoWay": false,
+          "twoWayKey": "community",
+          "onDelete": "restrict",
+          "side": "parent"
+        }
+      ],
+      "indexes": [
+        {
+          "key": "name",
+          "type": "fulltext",
+          "status": "available",
+          "attributes": ["name"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "indexId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["$id"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "community-followers",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "hp_db",
+      "name": "community-followers",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "userId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "communityId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "userId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["userId"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "communityId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["communityId"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "follower_unique",
+          "type": "unique",
+          "status": "available",
+          "attributes": ["userId", "communityId"],
+          "orders": ["ASC", "ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "community-comments",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "community-comments",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "userId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "comment",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 2048,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "communityId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "postId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "userId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["userId"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "user-notifications",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "user-notifications",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "message",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 2048,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "userId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "read",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "type",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "elements": [
+            "newFollower",
+            "newMessage",
+            "newEvent",
+            "newAnnouncement"
+          ],
+          "format": "enum",
+          "default": null
+        },
+        {
+          "key": "fromId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "userId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["userId"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "message",
+          "type": "fulltext",
+          "status": "available",
+          "attributes": ["message"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "messages",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "messages",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "senderId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "body",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 4096,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "conversationId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "messageType",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "elements": [
+            "text",
+            "location",
+            "contact",
+            "sticker",
+            "reply",
+            "forward",
+            "file"
+          ],
+          "format": "enum",
+          "default": "text"
+        },
+        {
+          "key": "attachments",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "senderId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["senderId"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "conversationId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["conversationId"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "user-prefs",
+      "$permissions": ["create(\"users\")"],
+      "databaseId": "hp_db",
+      "name": "user-prefs",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "userId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "notes",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 2048,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "isFavorited",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "isBlocked",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "isMuted",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "nickName",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 48,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "userId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["userId"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "isFavorited",
+          "type": "key",
+          "status": "available",
+          "attributes": ["isFavorited"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "isBlocked",
+          "type": "key",
+          "status": "available",
+          "attributes": ["isBlocked"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "isMuted",
+          "type": "key",
+          "status": "available",
+          "attributes": ["isMuted"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "community-posts",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "community-posts",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "userId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "communityId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "message",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 30000,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "community-prefs",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "community-prefs",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "communityId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "isMuted",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "isBlocked",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "communityId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["communityId"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "gallery-prefs",
+      "$permissions": ["create(\"users\")"],
+      "databaseId": "hp_db",
+      "name": "gallery-prefs",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "userId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "galleryId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "isHidden",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "community-settings",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "community-settings",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "isFindable",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "hasPublicPage",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "nsfw",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "indexId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["$id"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "changelog",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "hp_db",
+      "name": "changelog",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "title",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "version",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "description",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 4096,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "improvementsWeb",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "bugfixesWeb",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "featuresWeb",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "date",
+          "type": "datetime",
+          "required": true,
+          "array": false,
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "improvementsApp",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "bugfixesApp",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "featuresApp",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "draft",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": true
+        },
+        {
+          "key": "type",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "elements": ["app", "web"],
+          "format": "enum",
+          "default": null
+        }
+      ],
+      "indexes": [
+        {
+          "key": "date",
+          "type": "key",
+          "status": "available",
+          "attributes": ["date"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "events-attendees",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "events-attendees",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "eventId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "userId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "paid",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "unique_attendee",
+          "type": "unique",
+          "status": "available",
+          "attributes": ["eventId", "userId"],
+          "orders": ["ASC", "ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "user-settings",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "hp_db",
+      "name": "user-settings",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "badges",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "index_Id",
+          "type": "key",
+          "status": "available",
+          "attributes": ["$id"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "messages-conversations",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "messages-conversations",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "participants",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "lastMessage",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "communityId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "status",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "isCommunity",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "isCommunity",
+          "type": "key",
+          "status": "available",
+          "attributes": ["isCommunity"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "participants",
+          "type": "key",
+          "status": "available",
+          "attributes": ["participants"],
+          "orders": [null]
+        },
+        {
+          "key": "communityId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["communityId"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "messages-typingIndicators",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "messages-typingIndicators",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "conversationId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "userId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "messages-settings",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "messages-settings",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "userId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "conversationId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "enableNotifications",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "locations-permissions",
+      "$permissions": ["create(\"users\")"],
+      "databaseId": "hp_db",
+      "name": "locations-permissions",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "sharerUserId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "requesterId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "timeUntil",
+          "type": "datetime",
+          "required": true,
+          "array": false,
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "isCommunity",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "sharerUserId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["sharerUserId"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "requesterUserId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["requesterUserId"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "unique_keys",
+          "type": "key",
+          "status": "available",
+          "attributes": ["sharerUserId", "requesterId"],
+          "orders": ["ASC", "ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "locations-permissions-ended",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "locations-permissions-ended",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "sharerUserId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "requesterId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "isCommunity",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "sharerUserId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["sharerUserId"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "requesterId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["requesterId"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "user-notifications-settings",
+      "$permissions": [],
+      "databaseId": "hp_db",
+      "name": "user-notifications-settings",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "followers",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "messaging",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "questions",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "interactive",
+      "name": "questions",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "questions",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "order",
+          "type": "integer",
+          "required": false,
+          "array": false,
+          "min": 0,
+          "max": 9223372036854775807,
+          "default": null
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "answers",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "interactive",
+      "name": "answers",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "ipAddress",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "format": "ip",
+          "default": null
+        },
+        {
+          "key": "questionId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "optionId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "system",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "interactive",
+      "name": "system",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "paused",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "questionId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "countedAnswers",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "interactive",
+      "name": "countedAnswers",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "optionId",
+          "type": "integer",
+          "required": false,
+          "array": false,
+          "min": 0,
+          "max": 9223372036854775807,
+          "default": null
+        },
+        {
+          "key": "amount",
+          "type": "integer",
+          "required": false,
+          "array": false,
+          "min": 0,
+          "max": 9223372036854775807,
+          "default": null
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "questions-main",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "interactive",
+      "name": "questions-main",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "questions",
+          "type": "string",
+          "required": false,
+          "array": true,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "system-main",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "interactive",
+      "name": "system-main",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "questionId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "paused",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "answers-main",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "interactive",
+      "name": "answers-main",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "ipAddress",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "format": "ip",
+          "default": null
+        },
+        {
+          "key": "questionId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "optionId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "countedAnswers-main",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "interactive",
+      "name": "countedAnswers-main",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "optionId",
+          "type": "integer",
+          "required": false,
+          "array": false,
+          "min": 0,
+          "max": 9223372036854775807,
+          "default": null
+        },
+        {
+          "key": "amount",
+          "type": "integer",
+          "required": false,
+          "array": false,
+          "min": 0,
+          "max": 9223372036854775807,
+          "default": null
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "accountDeletions",
+      "$permissions": [],
+      "databaseId": "automations",
+      "name": "accountDeletions",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "userId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "reason",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 1024,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "completed",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "displayName",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "userId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["userId"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "notifications",
+      "$permissions": [],
+      "databaseId": "automations",
+      "name": "notifications",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [],
+      "indexes": []
+    },
+    {
+      "$id": "communityDeletions",
+      "$permissions": [],
+      "databaseId": "automations",
+      "name": "communityDeletions",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "communityId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "hasError",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "reason",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 2048,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "completed",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "notifications",
+      "$permissions": [],
+      "databaseId": "errors",
+      "name": "notifications",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "message",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 8192,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "type",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "statusCode",
+          "type": "integer",
+          "required": false,
+          "array": false,
+          "min": 0,
+          "max": 9223372036854775807,
+          "default": null
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "messaging",
+      "$permissions": [],
+      "databaseId": "errors",
+      "name": "messaging",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "errorType",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "elements": ["deletion", "creation"],
+          "format": "enum",
+          "default": null
+        },
+        {
+          "key": "messagingType",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "elements": ["conversation", "message"],
+          "format": "enum",
+          "default": null
+        },
+        {
+          "key": "documentId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "errorMessage",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 4096,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "errorType",
+          "type": "key",
+          "status": "available",
+          "attributes": ["errorType"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "messagingType",
+          "type": "key",
+          "status": "available",
+          "attributes": ["messagingType"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "documentId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["documentId"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "locations",
+      "$permissions": [],
+      "databaseId": "errors",
+      "name": "locations",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "type",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "elements": ["locations", "permissions"],
+          "format": "enum",
+          "default": null
+        },
+        {
+          "key": "errorMessage",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 9999999,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "documentId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "reports-gallery",
+      "$permissions": [],
+      "databaseId": "moderation",
+      "name": "reports-gallery",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "reportedByUserId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "reportedGalleryId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "reason",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 2048,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "status",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "elements": ["accepted", "denied", "pending"],
+          "format": "enum",
+          "default": "pending"
+        }
+      ],
+      "indexes": [
+        {
+          "key": "reportedByUserId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["reportedByUserId"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "reportedGalleryId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["reportedGalleryId"],
+          "orders": ["ASC"]
+        },
+        {
+          "key": "status",
+          "type": "key",
+          "status": "available",
+          "attributes": ["status"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "reports-profile",
+      "$permissions": [],
+      "databaseId": "moderation",
+      "name": "reports-profile",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "reportedByUserId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "reportedUserId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "reason",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 2048,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "status",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "elements": ["accepted", "declined", "pending"],
+          "format": "enum",
+          "default": "pending"
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "reports-community",
+      "$permissions": [],
+      "databaseId": "moderation",
+      "name": "reports-community",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "reportedByUserId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "reportedCommunityId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "reason",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 2048,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "status",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "elements": ["accepted", "declined", "pending"],
+          "format": "enum",
+          "default": "pending"
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "reports-messaging",
+      "$permissions": [],
+      "databaseId": "moderation",
+      "name": "reports-messaging",
+      "enabled": true,
+      "documentSecurity": true,
+      "attributes": [
+        {
+          "key": "userId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "reportedMessageId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "conversationId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "reason",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 2048,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "status",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "elements": ["accepted", "declined", "pending"],
+          "format": "enum",
+          "default": "pending"
+        },
+        {
+          "key": "body",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 20000,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "legal",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "config",
+      "name": "legal",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "version",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "$id": "features",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "config",
+      "name": "features",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "isEnabled",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        },
+        {
+          "key": "type",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "elements": ["public", "earlyaccess", "staff", "dev"],
+          "format": "enum",
+          "default": "dev"
+        }
+      ],
+      "indexes": [
+        {
+          "key": "indexId",
+          "type": "key",
+          "status": "available",
+          "attributes": ["$id"],
+          "orders": ["ASC"]
+        }
+      ]
+    },
+    {
+      "$id": "status",
+      "$permissions": ["read(\"any\")"],
+      "databaseId": "config",
+      "name": "status",
+      "enabled": true,
+      "documentSecurity": false,
+      "attributes": [
+        {
+          "key": "isMaintenance",
+          "type": "boolean",
+          "required": false,
+          "array": false,
+          "default": false
+        }
+      ],
+      "indexes": []
+    }
+  ],
+  "buckets": [
+    {
+      "$id": "banners",
+      "$permissions": ["create(\"users\")", "read(\"any\")"],
+      "fileSecurity": true,
+      "name": "banners",
+      "enabled": true,
+      "maximumFileSize": 6000000,
+      "allowedFileExtensions": ["jpg", "png", "webp", "heif", "hevc", "jpeg"],
+      "compression": "zstd",
+      "encryption": true,
+      "antivirus": true
+    },
+    {
+      "$id": "avatars",
+      "$permissions": ["create(\"users\")", "read(\"any\")"],
+      "fileSecurity": true,
+      "name": "avatars",
+      "enabled": true,
+      "maximumFileSize": 2000000,
+      "allowedFileExtensions": [
+        "jpg",
+        "png",
+        "webp",
+        "gif",
+        "apng",
+        "jpeg",
+        "heif",
+        "hevc"
+      ],
+      "compression": "zstd",
+      "encryption": true,
+      "antivirus": true
+    },
+    {
+      "$id": "badges",
+      "$permissions": ["create(\"users\")"],
+      "fileSecurity": true,
+      "name": "badges",
+      "enabled": true,
+      "maximumFileSize": 10000000,
+      "allowedFileExtensions": ["jpg", "png"],
+      "compression": "zstd",
+      "encryption": true,
+      "antivirus": true
+    },
+    {
+      "$id": "gallery",
+      "$permissions": ["create(\"users\")", "read(\"any\")"],
+      "fileSecurity": true,
+      "name": "gallery",
+      "enabled": true,
+      "maximumFileSize": 10000000,
+      "allowedFileExtensions": [
+        "gif",
+        "jpg",
+        "png",
+        "mp4",
+        "jpeg",
+        "webp",
+        "heif",
+        "hevc",
+        "mov",
+        "heic",
+        "avif"
+      ],
+      "compression": "zstd",
+      "encryption": true,
+      "antivirus": true
+    },
+    {
+      "$id": "community-avatars",
+      "$permissions": [
+        "read(\"any\")",
+        "create(\"label:communityUpload\")",
+        "read(\"label:communityUpload\")",
+        "update(\"label:communityUpload\")",
+        "delete(\"label:communityUpload\")"
+      ],
+      "fileSecurity": true,
+      "name": "community-avatars",
+      "enabled": true,
+      "maximumFileSize": 10000000,
+      "allowedFileExtensions": ["jpg", "png", "webp", "jpeg", "heif", "hevc"],
+      "compression": "zstd",
+      "encryption": true,
+      "antivirus": true
+    },
+    {
+      "$id": "community-banners",
+      "$permissions": [
+        "read(\"any\")",
+        "create(\"label:communityUpload\")",
+        "update(\"label:communityUpload\")"
+      ],
+      "fileSecurity": true,
+      "name": "community-banners",
+      "enabled": true,
+      "maximumFileSize": 10000000,
+      "allowedFileExtensions": ["jpg", "png", "gif", "webp", "heif", "hevc"],
+      "compression": "zstd",
+      "encryption": true,
+      "antivirus": true
+    },
+    {
+      "$id": "interactive",
+      "$permissions": ["read(\"any\")"],
+      "fileSecurity": false,
+      "name": "interactive",
+      "enabled": true,
+      "maximumFileSize": 50000000,
+      "allowedFileExtensions": [],
+      "compression": "zstd",
+      "encryption": true,
+      "antivirus": true
+    },
+    {
+      "$id": "interactive-main",
+      "$permissions": ["read(\"any\")"],
+      "fileSecurity": false,
+      "name": "interactive-main",
+      "enabled": true,
+      "maximumFileSize": 50000000,
+      "allowedFileExtensions": [],
+      "compression": "zstd",
+      "encryption": true,
+      "antivirus": true
+    },
+    {
+      "$id": "messaging-attachments",
+      "$permissions": ["create(\"users\")"],
+      "fileSecurity": true,
+      "name": "messaging-attachments",
+      "enabled": true,
+      "maximumFileSize": 25000000,
+      "allowedFileExtensions": [],
+      "compression": "zstd",
+      "encryption": true,
+      "antivirus": true
+    },
+    {
+      "$id": "messaging-stickers",
+      "$permissions": ["create(\"users\")"],
+      "fileSecurity": true,
+      "name": "messaging-stickers",
+      "enabled": true,
+      "maximumFileSize": 1000000,
+      "allowedFileExtensions": ["jpg", "png", "jpeg", "webp"],
+      "compression": "zstd",
+      "encryption": true,
+      "antivirus": true
+    },
+    {
+      "$id": "event-images",
+      "$permissions": [
+        "create(\"users\")",
+        "update(\"users\")",
+        "read(\"any\")"
+      ],
+      "fileSecurity": true,
+      "name": "event-images",
+      "enabled": true,
+      "maximumFileSize": 5000000,
+      "allowedFileExtensions": ["png", "jpg", "jpeg"],
+      "compression": "zstd",
+      "encryption": true,
+      "antivirus": true
+    },
+    {
+      "$id": "main-storage",
+      "$permissions": ["read(\"any\")"],
+      "fileSecurity": false,
+      "name": "main-storage",
+      "enabled": true,
+      "maximumFileSize": 5000000,
+      "allowedFileExtensions": [],
+      "compression": "zstd",
+      "encryption": true,
+      "antivirus": true
+    }
+  ]
 }
